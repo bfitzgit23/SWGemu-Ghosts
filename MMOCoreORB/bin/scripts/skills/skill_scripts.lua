@@ -1,0 +1,7 @@
+includeFile("skills/artisan_novice.lua")
+includeFile("skills/merchant_novice.lua")
+includeFile("skills/merchant_business.lua")
+includeFile("skills/merchant_advertising.lua")
+includeFile("skills/merchant_marketeer.lua")
+includeFile("skills/merchant_master.lua")
+includeFile("skill/crafting_merchant_master.lua")

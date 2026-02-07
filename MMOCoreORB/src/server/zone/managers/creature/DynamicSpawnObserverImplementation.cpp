@@ -1,0 +1,157 @@
+#include "server/zone/managers/creature/DynamicSpawnObserver.h"
+#include "server/zone/objects/creature/events/RespawnCreatureTask.h"
+#include "server/zone/objects/creature/events/DespawnDynamicSpawnTask.h"
+#include "server/zone/objects/creature/ai/CreatureTemplate.h"
+#include "server/zone/managers/creature/CreatureManager.h"
+#include "server/zone/managers/creature/CreatureTemplateManager.h"
+#include "server/zone/objects/creature/ai/Creature.h"
+#include "server/chat/ChatManager.h"
+
+int DynamicSpawnObserverImplementation::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, int64 arg2) {
+
+	if (eventType == ObserverEventType::OBJECTREMOVEDFROMZONE) {
+		despawnSpawns();
+		return 1;
+	} else if (eventType != ObserverEventType::CREATUREDESPAWNED) {
+		return 0;
+	}
+
+	Reference<AiAgent*> ai = cast<AiAgent*>(arg1);
+	Reference<SceneObject*> spawn = cast<SceneObject*>(observable);
+
+	if (ai == nullptr || spawn == nullptr)
+		return 0;
+
+	if (ai->getRespawnCounter() > 1) {
+		spawnedCreatures.removeElement(ai.get());
+		ai->setHomeObject(nullptr);
+		ai->resetRespawnCounter();
+
+		if (spawnedCreatures.isEmpty()) {
+//timer also applies to empty and unharvested
+			Reference<Task*> task = new DespawnDynamicSpawnTask(spawn);
+			task->schedule(60000);
+
+			return 1;
+		}
+
+		return 0;
+	}
+
+	Zone* zone = spawn->getZone();
+
+	if (zone == nullptr)
+		return 0;
+
+	int level = ai->getLevel();
+
+	if (ai->isCreature()) {
+		Creature* creature = ai.castTo<Creature*>();
+		level = creature->getAdultLevel();
+	}
+//npc creature respawn timer after killed
+	Reference<Task*> task = new RespawnCreatureTask(ai.get(), zone, level);
+	task->schedule((60 + (level * 2)) * 1000);
+
+	return 0;
+}
+
+void DynamicSpawnObserverImplementation::spawnInitialMobiles(SceneObject* building) {
+	if (building->getZone() == nullptr)
+		return;
+
+//	int spawnLimitAdjustment = difficulty;
+//
+//	int totalNumberToSpawn = System::random(lairTemplate->getSpawnLimit() * 2);
+	VectorMap<String, int> objectsToSpawn; // String mobileTemplate, int number to spawn
+	const Vector<String>* mobiles = lairTemplate->getWeightedMobiles();
+	uint32 lairTemplateCRC = getLairTemplateName().hashCode();
+
+//	if (totalNumberToSpawn < 5)
+//		totalNumberToSpawn = 5;
+//
+//	if (totalNumberToSpawn > 10)
+//		totalNumberToSpawn = 10;
+
+	int amountToSpawn = System::random(lairTemplate->getSpawnLimit() * 2);
+
+	int levelincrease = System::random(difficulty * 2);
+
+	int newamountToSpawn = amountToSpawn + levelincrease;
+
+	if (newamountToSpawn < 5)
+		newamountToSpawn = 5;
+
+	if (newamountToSpawn > 15)
+		newamountToSpawn = 15;
+
+	for (int i = 0; i < newamountToSpawn; i++) {
+		int num = System::random(mobiles->size() - 1);
+		const String& mob = mobiles->get(num);
+
+		int find = objectsToSpawn.find(mob);
+
+		if (find != -1) {
+			int& value = objectsToSpawn.elementAt(find).getValue();
+			++value;
+		} else {
+			objectsToSpawn.put(mob, 1);
+		}
+	}
+
+	for (int i = 0; i < objectsToSpawn.size(); ++i) {
+		const String& templateToSpawn = objectsToSpawn.elementAt(i).getKey();
+		int numberToSpawn = objectsToSpawn.elementAt(i).getValue();
+
+		CreatureTemplate* creatureTemplate = CreatureTemplateManager::instance()->getTemplate(templateToSpawn);
+
+		if (creatureTemplate == nullptr)
+			continue;
+
+		float tamingChance = creatureTemplate->getTame();
+
+		CreatureManager* creatureManager = building->getZone()->getCreatureManager();
+
+		for (int j = 0; j < numberToSpawn; j++) {
+
+			float x = building->getPositionX() + (size - System::random(size * 20) / 10.0f);
+			float y = building->getPositionY() + (size - System::random(size * 20) / 10.0f);
+			float z = building->getZone()->getHeight(x, y);
+
+			ManagedReference<CreatureObject*> creo = nullptr;
+
+			if (creatureManager->checkSpawnAsBaby(tamingChance, babiesSpawned, 500)) {
+				creo = creatureManager->spawnCreatureAsBaby(templateToSpawn.hashCode(), x, z, y);
+				babiesSpawned++;
+			}
+
+			if (creo == nullptr)
+				creo = creatureManager->spawnCreatureWithAi(templateToSpawn.hashCode(), x, z, y);
+
+			if (creo == nullptr)
+				continue;
+
+			if (!creo->isAiAgent()) {
+				error("spawned non player creature with template " + templateToSpawn);
+			} else {
+				AiAgent* ai = cast<AiAgent*>( creo.get());
+
+				Locker clocker(ai, building);
+
+				ai->setDespawnOnNoPlayerInRange(false);
+				ai->setHomeLocation(x, z, y);
+				ai->setRespawnTimer(0);
+				ai->resetRespawnCounter();
+				ai->setHomeObject(building);
+				ai->setLairTemplateCRC(lairTemplateCRC);
+
+				if (ai->isNonPlayerCreatureObject() && System::random(3) == 0) {
+					unsigned int id = ai->getZoneServer()->getChatManager()->getRandomMoodID();
+					ai->setMood(id);
+				}
+
+				spawnedCreatures.add(creo);
+			}
+		}
+	}
+}

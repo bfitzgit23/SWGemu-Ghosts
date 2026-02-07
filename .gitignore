@@ -1,0 +1,65 @@
+
+# Sensitive files - NEVER commit these
+
+MMOCoreORB/bin/conf/config.lua
+
+MMOCoreORB/bin/conf/config-local.lua
+
+*.sql
+
+# Compiled binaries
+
+MMOCoreORB/bin/core3
+
+MMOCoreORB/bin/*.so
+
+*.o
+
+*.a
+
+# Build artifacts
+
+MMOCoreORB/build/
+
+MMOCoreORB/bin/log/
+
+MMOCoreORB/bin/*.log
+
+# Database files
+
+*.db
+
+*.myd
+
+*.myi
+
+*.frm
+
+# TRE files (too large)
+
+*.tre
+
+# IDE/Editor files
+
+.vscode/
+
+.idea/
+
+*.swp
+
+*~
+
+# OS files
+
+.DS_Store
+
+Thumbs.db
+
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tre
+*.zip
+*.tre
+*.rar
