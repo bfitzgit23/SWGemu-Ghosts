@@ -1,168 +1,40 @@
-ARG VERSION
+FROM debian:jessie
 
-FROM debian:buster
-USER root
+RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc/apt/apt.conf.d/01norecommends
 
-# Prep and update system
-# Note to avoid java install failure we make the  /share/man pages: see https://github.com/kubernetes/kubernetes/issues/1806
-RUN set -xe; \
-    for i in 1 2 3 4 5 6 7 8; do mkdir -p /usr/share/man/man$i; done; \
-    export UCF_FORCE_CONFFOLD=YES; \
-    unset UCF_FORCE_CONFFNEW; \
-    export DEBIAN_FRONTEND=noninteractive; \
-    echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > /etc/apt/apt.conf.d/01norecommends; \
-    apt-get update; \
-    apt-get upgrade -y;
+RUN apt-get update && apt-get upgrade -y
 
-#RUN set -xe; \
-#    apt-get update && \
-#    apt-get install -y --no-install-recommends \
-#    openjdk-17-jdk \
-#    mariadb-server mariadb-client \
-#    clang cmake ninja-build wget git; \
-#    java -version;
+RUN echo "mysql-server mysql-server/root_password password root" | debconf-set-selections
+RUN echo "mysql-server mysql-server/root_password_again password root" | debconf-set-selections
 
-ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-ENV PATH=${JAVA_HOME}/bin:${PATH}
+RUN apt-get install -y gcc g++ make autoconf automake autotools-dev git libc6-dev libdb5.3-dev libreadline-dev libmysqlclient-dev libssl-dev git vim openjdk-7-jre-headless gdb gccxml mysql-server
 
+#RUN find /var/lib/mysql -type f -exec touch {} \; && service mysql start
 
-# Install build packages, using clang latest stable as /usr/bin/clang etc.
-RUN set -xe; \
-    apt-get install -y apt-transport-https ca-certificates ca-certificates-java git gnupg lsb-release moreutils software-properties-common wget; \
-    wget -O /tmp/llvm.sh https://apt.llvm.org/llvm.sh; \
-    chmod +x /tmp/llvm.sh; \
-    /tmp/llvm.sh all || /tmp/llvm.sh all; \
-    (set +x;cd /usr/bin;for i in ../lib/llvm-*/bin/*; do ln -sfv $i .; done); \
-    clang --version; \
-    ld.lld --version; \
-    apt-get update; \
-    apt-get install -y --fix-missing \
-	binutils \
-	db5.3-util \
-	gdb \
-	less \
-	strace \
-	time \
-        autoconf \
-        automake \
-        autotools-dev \
-        bc \
-        binutils \
-        castxml \
-        ccache \
-        cmake \
-        cpio \
-        cppcheck \
-        curl \
-        db5.3-util \
-        dnsutils \
-        doxygen \
-        figlet \
-        file \
-        g++ \
-        gcc \
-        gcovr \
-        gdb \
-        gettext-base \
-        git-lfs \
-        git-man \
-        htop \
-        iproute2 \
-        iputils-ping \
-        jq \
-        less \
-        libboost-all-dev \
-        libc6 \
-        libc6-dev \
-        libcpprest-dev \
-        libdb5.3 \
-        libdb5.3-dev \
-        libjemalloc-dev \
-        libjemalloc2 \
-        libmariadb-dev \
-        libmariadb-dev-compat \
-        libncurses5 \
-        libncurses5-dev \
-        libpcre3 \
-        libpcre3-dev \
-        libreadline-dev \
-        libreadline6-dev \
-        libssl-dev \
-        libtool \
-        make \
-        man \
-        man-db \
-        manpages \
-        manpages-dev \
-        mariadb-client \
-        mariadb-server \
-        net-tools \
-        netcat\* \
-        ninja-build \
-        openssh-server \
-        pv \
-        pwgen \
-        rsync \
-        runit \
-        screen \
-        silversearcher-ag \
-        sloccount \
-        strace \
-        sudo \
-        tcpdump \
-        time \
-        traceroute \
-        tree \
-        unzip \
-        valgrind \
-        vim-nox \
-        wget \
-    ; \
-    apt-get install lua5.3 liblua5.3-0 liblua5.3-dev; \
-    apt-get install lua-inspect lua-socket lua-sec lua-filesystem lua-cjson; \
-    apt-get autoremove -y; \
-    rm -rf /var/lib/apt/lists/* /var/log/dpkg.log* /var/log/apt/*;
-###libreadline8 \
-ENV RUN_USER=swgemu \
-    HOME_DIR=/home/swgemu \
-    SHELL=/bin/bash \
-    TZ=Etc/UTC \
-    LANG=C.UTF-8 \
-    PORT_GROUP=44
+#RUN echo 'CREATE DATABASE swgemu;' | mysql -uroot -proot
+#RUN echo 'GRANT ALL ON *.* TO `swgemu`@`localhost` IDENTIFIED BY "123456";' | mysql -uroot -proot
 
-ENV STATUSPORT=${PORT_GROUP}455 \
-    LOGINPORT=${PORT_GROUP}453 \
-    PINGPORT=${PORT_GROUP}462 \
-    ZONESERVERPORT=${PORT_GROUP}463 \
-    WITH_GDB=true \
-    SSHPORT=2222 \
-    DBUSER=swgemu \
-    ADMIN_USER=admin \
-    REPOS='Returns' \
-    REPO_PUBLIC_URL=https://github.com/bfitzgit23/ \
-    REPO_PUBLIC_BRANCH='pre9jedi'
+RUN mkdir -p /swgemu/MMOEngine && mkdir -p /swgemu/MMOCoreORB
+#RUN ln -s /swgemu/MMOEngine/bin/idlc /usr/local/bin/idlc
 
-ENV PATH=${HOME_DIR}/bin:/usr/local/bin:${PATH}
+RUN apt-get install -y wget && wget http://www.lua.org/ftp/lua-5.3.3.tar.gz && tar -xvf lua-5.3.3.tar.gz && cd lua-5.3.3 && make linux install && cd .. && rm -R lua-5.3.3 && rm lua-5.3.3.tar.gz && ldconfig
 
-EXPOSE ${STATUSPORT}/tcp ${LOGINPORT}/udp ${PINGPORT}/udp ${ZONESERVERPORT}/udp
+RUN mkdir -p /home/swgemu/workspace/tre
 
-COPY files /
+#RUN apt-get install -y clang-3.5
 
-EXPOSE 3306
-VOLUME ${HOME_DIR}
+RUN mkdir git && cd git && git clone http://review.swgemu.com/p/Core3.git && git clone http://review.swgemu.com/p/PublicEngine.git && cd PublicEngine/MMOEngine && make && chmod +x bin/idlc && cp bin/idlc /usr/local/bin/idlc && cd ../../Core3 && git checkout unstable && ln -s ../PublicEngine/MMOEngine MMOEngine
 
-RUN set -xe; \
-    if [ ! -d /var/run/mysqld ]; then \
-        mkdir -vp /var/run/mysql /var/run/mysqld; \
-        chown -vR mysql:mysql /var/run/mysqld; \
-        chmod 777 /var/run/mysqld; \
-        rm -vfr /var/lib/mysql; \
-        mkdir -vp `dirname ${HOME_DIR}`/mysql; \
-        ln -fvs ${HOME_DIR}/mysql /var/lib/mysql; \
-        sed -e 's/^syslog/skip_syslog/' -i /etc/mysql/mariadb.conf.d/50-mysqld_safe.cnf; \
-    fi; \
-    useradd -U ${RUN_USER} -u 44400 -G adm,sudo -s ${SHELL} -d ${HOME_DIR}; \
-    echo "LANG=${LANG}" > /etc/environment; \
-    sed -e '/%sudo/s/ ALL/ NOPASSWD: ALL/' -i /etc/sudoers;
+ENV CLASSPATH="/git/PublicEngine/MMOEngine/bin/idlc.jar"
+RUN echo 'export CLASSPATH="/git/PublicEngine/MMOEngine/bin/idlc.jar"' >> /root/.profile
 
-ENTRYPOINT ["/run.sh"]
+RUN cd git/Core3/MMOCoreORB && make config && make build
+
+RUN apt-get install -y supervisor
+
+# copy the supervisor conf file into the image
+ADD scripts/supervisord-core3.conf /etc/supervisor/conf.d/supervisord-core3.conf
+
+ADD scripts/run.sh /tmp/
+RUN /bin/chmod +x /tmp/run.sh
+CMD /tmp/run.sh
