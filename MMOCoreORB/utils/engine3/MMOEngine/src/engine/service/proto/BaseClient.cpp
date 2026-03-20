@@ -5,6 +5,7 @@
 
 //#define TRACE_CLIENTS
 
+#include "engine/log/Logger.h"
 #include "engine/core/Core.h"
 
 #include "BaseClient.h"
@@ -13,18 +14,83 @@
 #include "events/BaseClientCleanupEvent.h"
 #include "events/BaseClientNetStatusRequestEvent.h"
 #include "events/BaseClientEvent.h"
+#include "events/BaseClientHealthEvent.h"
 
 #include "packets/SessionIDRequestMessage.h"
 #include "packets/AcknowledgeMessage.h"
 #include "packets/OutOfOrderMessage.h"
 #include "packets/DisconnectMessage.h"
 #include "packets/NetStatusRequestMessage.h"
+#include "packets/NetStatusResponseMessage.h"
 
 #include "engine/stm/TransactionalMemoryManager.h"
 
-#define MAX_BUFFER_PACKETS_TICK_COUNT 500
-#define INITIAL_LOCKFREE_BUFFER_CAPACITY 500
-#define MAX_SENT_PACKETS_PER_TICK 20
+#define CACHED_PROPERTY_VALUE(type, getter, defaultValue, key) \
+	cachedValueInternal<type, String::hashCode(key)>(key, getter, defaultValue)
+
+namespace {
+	static Logger logger("BaseClient", Logger::WARNING);
+	template<typename Type, uint32 instance>
+	Type cachedValueInternal(const char* configKey, Type (getter)(const String&, Type), Type defaultValue)
+	{
+		static Mutex mutex;
+		Locker guard(&mutex);
+		static Type cachedValue = defaultValue;
+		static int cachedVersion = 0;
+		int currentVersion = Core::getPropertiesVersion();
+
+		if (currentVersion > cachedVersion) {
+			cachedVersion = currentVersion;
+			cachedValue = getter(configKey, defaultValue);
+			logger.info(true) << configKey << "=" << cachedValue;
+		}
+
+		return cachedValue;
+	}
+
+	int getMaxBufferPacketsTickCount() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 500, "BaseClient.maxBufferPacketsTickCount");
+	}
+
+	int getInitialLockfreeBufferCapacity() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 500, "BaseClient.initialLockfreeBufferCapacity");
+	}
+
+	int getMaxSentPacketsPerTick() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 20, "BaseClient.maxSentPacketsPerTick");
+	}
+
+	int getMaxOutstandingPackets() {
+		auto value = CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 0, "BaseClient.maxOutstandingPackets");
+
+		if (value <= 0) {
+			// If not set default to 10 x BaseClient.initialLockfreeBufferCapacity
+			value = getInitialLockfreeBufferCapacity() * 10;
+		}
+
+		return value;
+	}
+
+	int getMaxCheckupTime() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 2000, "BaseClient.maxCheckupTime");
+	}
+
+	int getMinCheckupTime() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 100, "BaseClient.minCheckupTime");
+	}
+
+	int getHealthCheckInterval() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 60, "BaseClient.healthCheckInterval");
+	}
+
+	int getRemoteDeltaThreshold() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 25000, "BaseClient.remoteDeltaThreshold");
+	}
+
+	int getClockDeltaThreshold() {
+		return CACHED_PROPERTY_VALUE(int, Core::getIntProperty, 1800, "BaseClient.clockDeltaThreshold");
+	}
+}
 
 class AcknowledgeClientPackets : public Task {
         Reference<BaseClient*> client;
@@ -41,8 +107,9 @@ public:
         }
 };
 
-BaseClient::BaseClient() : DatagramServiceClient(),
-		BaseProtocol(), Mutex(true) {
+void BaseClient::initializeCommon(const String& addr) {
+	ip_full = addr;
+
 	bufferedPacket = nullptr;
 	receiveBuffer.setInsertPlan(SortedVector<BasePacket*>::NO_DUPLICATE);
 
@@ -56,79 +123,52 @@ BaseClient::BaseClient() : DatagramServiceClient(),
 
 	keepSocket = false;
 
-	setDebugLogLevel();
-   	setGlobalLogging(true);
+	setLockName("BaseClient " + ip_full);
+	setLoggingName("BaseClient " + ip_full);
+	setLogToConsole(false);
+
+	info() << __FUNCTION__;
+
+	const static int vars = Core::initializeProperties("BaseClient");
 
 #ifdef LOCKFREE_BCLIENT_BUFFERS
-	sendLockFreeBuffer = new packet_buffer_t(INITIAL_LOCKFREE_BUFFER_CAPACITY);
+	sendLockFreeBuffer = new packet_buffer_t(getInitialLockfreeBufferCapacity());
 
 	fatal(sendLockFreeBuffer->is_lock_free(), "lock free buffer is not lock free");
 #endif
 
+	creationTime.updateToCurrentTime(Time::MONOTONIC_TIME);
+
+	configureClient(true);
+
+	healthEvent = new BaseClientHealthEvent(this);
+	healthEvent->scheduleInIoScheduler(getHealthCheckInterval() * 1000);
+
    	//reentrantTask->schedulePeriodic(10, 10);
+}
+
+BaseClient::BaseClient() : DatagramServiceClient(),
+		BaseProtocol(), Mutex(true) {
+	initializeCommon("-");
 }
 
 BaseClient::BaseClient(const String& addr, int port) : DatagramServiceClient(addr, port),
 		BaseProtocol(), Mutex(true) {
-	bufferedPacket = nullptr;
-	receiveBuffer.setInsertPlan(SortedVector<BasePacket*>::NO_DUPLICATE);
-
-	fragmentedPacket = nullptr;
-
-	checkupEvent = nullptr;
-	netcheckupEvent = nullptr;
-	netRequestEvent = nullptr;
-
-	reentrantTask = new BaseClientEvent(this);
-
-	keepSocket = false;
-
-	setInfoLogLevel();
-   	setGlobalLogging(true);
-
-#ifdef LOCKFREE_BCLIENT_BUFFERS
-	sendLockFreeBuffer = new packet_buffer_t(INITIAL_LOCKFREE_BUFFER_CAPACITY);
-
-	fatal(sendLockFreeBuffer->is_lock_free(), "lock free buffer is not lock free");
-#endif
-
-   	//reentrantTask->schedulePeriodic(10, 10);
+	initializeCommon(addr);
 }
 
 BaseClient::BaseClient(Socket* sock, SocketAddress& addr) : DatagramServiceClient(sock, addr),
 		BaseProtocol(), Mutex(true) {
-	bufferedPacket = nullptr;
-
-	fragmentedPacket = nullptr;
-
-	checkupEvent = nullptr;
-	netcheckupEvent = nullptr;
-	netRequestEvent = nullptr;
-
-	reentrantTask = new BaseClientEvent(this);
-
-  	ip = addr.getFullIPAddress();
-   	setLockName("Client " + ip);
-   	//setMutexLogging(false);
-
-   	/*String prip = addr.getFullPrintableIPAddress();
-   	setFileLogger("log/" + prip);*/
-
-	keepSocket = true;
-
-	setInfoLogLevel();
-   	setGlobalLogging(true);
-
-#ifdef LOCKFREE_BCLIENT_BUFFERS
-	sendLockFreeBuffer = new packet_buffer_t(INITIAL_LOCKFREE_BUFFER_CAPACITY);
-
-	fatal(sendLockFreeBuffer->is_lock_free(), "boost lock free buffer is not lock free");
-#endif
-
-   	//reentrantTask->schedulePeriodic(10, 10);
+	initializeCommon(addr.getFullIPAddress());
 }
 
 BaseClient::~BaseClient() {
+	if (healthEvent != nullptr) {
+		healthEvent->shutdown();
+
+		healthEvent = nullptr;
+	}
+
 	if (checkupEvent != nullptr) {
 		checkupEvent->cancel();
 
@@ -155,7 +195,7 @@ BaseClient::~BaseClient() {
 	sendLockFreeBuffer = nullptr;
 #endif
 
-	debug("deleted");
+	info() << "Deleted Session";
 }
 
 void BaseClient::initialize() {
@@ -180,9 +220,10 @@ void BaseClient::initialize() {
 
 	service = nullptr;
 
-	checkupEvent = new BasePacketChekupEvent(this);
+	checkupEvent = new BasePacketChekupEvent(this, getMinCheckupTime(), getMaxCheckupTime());
 	netcheckupEvent = new BaseClientNetStatusCheckupEvent(this);
 
+	lastNetStatusTimeStamp.updateToCurrentTime(Time::MONOTONIC_TIME);
    	lastNetStatusTimeStamp.addMiliTime(NETSTATUSCHECKUP_TIMEOUT);
    	balancePacketCheckupTime();
 
@@ -191,8 +232,41 @@ void BaseClient::initialize() {
    	netRequestEvent = new BaseClientNetStatusRequestEvent(this);
 }
 
+void BaseClient::configureClient(bool force) {
+	auto currentConfigVersion = Core::getPropertiesVersion();
+
+	if (!force && currentConfigVersion <= configVersion) {
+		return;
+	}
+
+	auto newMaxBufferPacketsTickCount = getMaxBufferPacketsTickCount();
+
+	if (configMaxBufferPacketsTickCount != newMaxBufferPacketsTickCount) {
+		configMaxBufferPacketsTickCount = newMaxBufferPacketsTickCount;
+		info() << "configureClient: configMaxBufferPacketsTickCount=" << configMaxBufferPacketsTickCount;
+	}
+
+	auto newMaxSentPacketsPerTick = getMaxSentPacketsPerTick();
+
+	if (configMaxSentPacketsPerTick != newMaxSentPacketsPerTick) {
+		configMaxSentPacketsPerTick = newMaxSentPacketsPerTick;
+		info() << "configureClient: configMaxSentPacketsPerTick=" << configMaxSentPacketsPerTick;
+	}
+
+	auto newMaxOutstandingPackets = getMaxOutstandingPackets();
+
+	if (configMaxOutstandingPackets != newMaxOutstandingPackets) {
+		configMaxOutstandingPackets = newMaxOutstandingPackets;
+		info() << "configureClient: configMaxOutstandingPackets=" << configMaxOutstandingPackets;
+	}
+
+	configVersion = currentConfigVersion;
+}
+
 void BaseClient::close() {
 	disconnected = true;
+
+	healthEvent->shutdown();
 
 	reentrantTask->cancel();
 
@@ -232,8 +306,11 @@ void BaseClient::close() {
 
 	sequenceBuffer.removeAll();
 
+	int countDiscarded = 0;
+
 #ifdef LOCKFREE_BCLIENT_BUFFERS
 	while (!sendLockFreeBuffer->empty()) {
+		++countDiscarded;
 		BasePacket* pack;
 
 		if (sendLockFreeBuffer->pop(pack)) {
@@ -245,11 +322,16 @@ void BaseClient::close() {
 	}
 #else
 	for (int i = 0; i < sendUnreliableBuffer.size(); ++i) {
+		++countDiscarded;
 		delete sendUnreliableBuffer.get(i);
 	}
 
 	sendUnreliableBuffer.removeAll();
 #endif
+
+	if (countDiscarded > 0) {
+		info() << "Close: countDiscarded = " << countDiscarded;
+	}
 
 	if (fragmentedPacket != nullptr) {
 		if (fragmentedPacket->getReferenceCount())
@@ -260,14 +342,12 @@ void BaseClient::close() {
 		fragmentedPacket = nullptr;
 	}
 
+	reportStats("Close");
+
 	//serverSequence = 0;
 	clientSequence = 0;
 
 	acknowledgedServerSequence = -1;
-
-	reportStats();
-
-	closeFileLogger();
 
 	//ServiceClient::close();
 
@@ -291,10 +371,11 @@ void BaseClient::send(Packet* pack, bool doLock) {
 			}
 		}
 	} catch (SocketException& e) {
-		error("on send()" + e.getMessage());
-
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
 		setError();
-		disconnect(false);
+		disconnect(err.toString());
 	}
 
 	delete pack;
@@ -316,10 +397,11 @@ void BaseClient::send(BasePacket* pack, bool doLock) {
 				debug() << "LOSING " << *pack;
 		}
 	} catch (SocketException& e) {
-		error("on send()" + e.getMessage());
-
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
 		setError();
-		disconnect(false);
+		disconnect(err.toString());
 	}
 
 	if (pack->getReferenceCount())
@@ -388,8 +470,14 @@ void BaseClient::sendPacket(BasePacket* pack, bool doLock) {
 		} else {
 			sendSequenceLess(pack);
 		}
+	} catch (SocketException& e) {
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
+		setError();
+		disconnect(err.toString());
 	} catch (...) {
-		disconnect("unreported exception on sendPacket()", false);
+		disconnect("unreported exception on sendPacket()");
 	}
 
 	unlock(doLock);
@@ -443,7 +531,11 @@ void BaseClient::sendSequenceLess(BasePacket* pack) {
 		else
 			delete pack;
 
-		disconnect("on sendPacket()" + e.getMessage(), false);
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
+		setError();
+		disconnect(err.toString());
 	}
 }
 
@@ -460,9 +552,13 @@ void BaseClient::sendSequenced(BasePacket* pack) {
 			reentrantTask->scheduleInIoScheduler(10);
 #endif
 	} catch (SocketException& e) {
-		disconnect("sending packet", false);
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
+		setError();
+		disconnect(err.toString());
 	} catch (ArrayIndexOutOfBoundsException& e) {
-		error("on sendQueued() - " + e.getMessage());
+		error("ArrayIndexOutOfBoundsException on sendSequenced() - " + e.getMessage());
 	}
 
 	/*#ifdef TRACE_CLIENTS
@@ -487,9 +583,13 @@ void BaseClient::sendFragmented(BasePacket* pack) {
 		else
 			delete frag;
 	} catch (SocketException& e) {
-		disconnect("sending packet", false);
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
+		setError();
+		disconnect(err.toString());
 	} catch (ArrayIndexOutOfBoundsException& e) {
-		error("on sendFragmented() - " + e.getMessage());
+		error("ArrayIndexOutOfBoundsException on sendFragmented() - " + e.getMessage());
 	}
 }
 
@@ -562,14 +662,18 @@ int BaseClient::sendReliablePackets(int count) {
 #endif
 
 	} catch (SocketException& e) {
-		disconnect("on activate() - " + e.getMessage(), false);
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
+		setError();
+		disconnect(err.toString());
 	} catch (Exception& e) {
 		error(e.getMessage());
 		e.printStackTrace();
 
-		disconnect("unreported exception on run()", false);
+		disconnect("exception on sendReliablePackets()");
 	} catch (...) {
-		disconnect("unreported exception on run()", false);
+		disconnect("unreported exception on sendReliablePackets()");
 	}
 
 	return sentPackets;
@@ -597,10 +701,11 @@ void BaseClient::sendUnreliablePacket(BasePacket* pack) {
 			delete pack;
 
 	} catch (SocketException& e) {
-		error("on activate() - " + e.getMessage());
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
 	} catch (Exception& e) {
-		error("exception on sendUnreliablePacket()");
-		error(e.getMessage());
+		error("Exception on sendUnreliablePacket() - " + e.getMessage());
 		e.printStackTrace();
 	} catch (...) {
 		error("unreported exception on sendUnreliablePacket()");
@@ -650,7 +755,9 @@ void BaseClient::sendUnreliablePackets() {
 		}
 #endif
 	} catch (SocketException& e) {
-		error("on activate() - " + e.getMessage());
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
 	} catch (Exception& e) {
 		error("exception on sendUnreliablePackets()");
 		error(e.getMessage());
@@ -670,8 +777,8 @@ void BaseClient::run() {
 	lock();
 
 #ifdef LOCKFREE_BCLIENT_BUFFERS
-	while ((i++ < MAX_BUFFER_PACKETS_TICK_COUNT)
-			&& (j < MAX_SENT_PACKETS_PER_TICK)
+	while ((i++ < configMaxBufferPacketsTickCount)
+			&& (j < configMaxSentPacketsPerTick)
 			&& sendLockFreeBuffer->pop(incomingPack)) {
 		try {
 			BasePacket* pack;
@@ -700,7 +807,7 @@ void BaseClient::run() {
 				}
 			}
 		} catch (...) {
-			disconnect("unreported exception on lockfree sendPacket()", false);
+			disconnect("unreported exception in run");
 
 			unlock();
 
@@ -708,8 +815,9 @@ void BaseClient::run() {
 		}
 	}
 
-	if (i >= MAX_BUFFER_PACKETS_TICK_COUNT) {
-		warning() << "more than " << MAX_BUFFER_PACKETS_TICK_COUNT << " packets in sendLockFreeBuffer on BaseClient tick";
+	if (i >= configMaxBufferPacketsTickCount) {
+		warning() << "more than " << configMaxBufferPacketsTickCount << " packets in sendLockFreeBuffer on BaseClient tick";
+		reportStats("configMaxBufferPacketsTickCount exceeded");
 	}
 
 	sendReliablePackets();
@@ -773,8 +881,15 @@ BasePacket* BaseClient::getNextSequencedPacket() {
 
 //      resendPackets();
 
-		if (sendBuffer.size() > 6000) {
-			error() << "WARNING - send buffer overload [" << sendBuffer.size() << "]";
+		auto outstandingCount = sendBuffer.size();
+
+		if (outstandingCount > maxOutstanding) {
+			maxOutstanding = outstandingCount;
+			reportStats("outstandingCount > maxOutstanding");
+		}
+
+		if (outstandingCount > configMaxOutstandingPackets) {
+			error() << "WARNING - send buffer overload [" << outstandingCount << "], disconnecting.";
 
 			disconnect(false);
 		}
@@ -827,6 +942,8 @@ bool BaseClient::validatePacket(Packet* pack) {
    			debug() << "OUT of order READ(" << seq << ") expected " << clientSequence;
 		#endif
 
+		numOutOfOrder++;
+
 		return false;
 	} /*else
 		throw Exception("received same packet sequence");*/
@@ -875,6 +992,8 @@ BasePacket* BaseClient::receiveFragmentedPacket(Packet* pack) {
 	}
 
 	if (!fragmentedPacket->addFragment(pack)) {
+		error() << "addFragment failed: " << fragmentedPacket->getError() << "; fragmentedPacket: " << *fragmentedPacket << endl << "packet: " << *pack;
+
 		if (fragmentedPacket->getReferenceCount())
 			fragmentedPacket->release();
 		else
@@ -886,7 +1005,6 @@ BasePacket* BaseClient::receiveFragmentedPacket(Packet* pack) {
 	}
 
 	try {
-
 		if (fragmentedPacket->isComplete()) {
 			fragmentedPacket->setOffset(0);
 
@@ -896,11 +1014,12 @@ BasePacket* BaseClient::receiveFragmentedPacket(Packet* pack) {
 			fragmentedPacket = nullptr;
 		}
 	} catch (const Exception& e) {
-		error(e.getMessage());
-		error(pack->toStringData());
-
 		if (fragmentedPacket != nullptr) {
-			error() << "current fragmented packet.." << *fragmentedPacket;
+			error()
+				<< "fragmentedPacket->isComplete() exception: " << e.getMessage()
+				<< "; error: " << fragmentedPacket->getError()
+				<< "; fragmentedPacket: " << *fragmentedPacket
+				<< "; packet: " << *pack;
 
 			if (fragmentedPacket->getReferenceCount())
 				fragmentedPacket->release();
@@ -909,13 +1028,16 @@ BasePacket* BaseClient::receiveFragmentedPacket(Packet* pack) {
 
 			fragmentedPacket = nullptr;
 			packet = nullptr;
+		} else {
+			error() << "fragmentedPacket->isComplete() exception: " << e.getMessage() << "; packet: " << *pack;
 		}
 	} catch (...) {
-		error("unreproted exception caught in BasePacket* BaseClient::recieveFragmentedPacket");
-		error(pack->toStringData());
-
 		if (fragmentedPacket != nullptr) {
-			error() << "current fragmented packet.." << *fragmentedPacket;
+			error()
+				<< "fragmentedPacket->isComplete() exception: unreproted exception caught"
+				<< "; error: " << fragmentedPacket->getError()
+				<< "; fragmentedPacket: " << *fragmentedPacket
+				<< "; packet: " << *pack;
 
 			if (fragmentedPacket->getReferenceCount())
 				fragmentedPacket->release();
@@ -924,6 +1046,8 @@ BasePacket* BaseClient::receiveFragmentedPacket(Packet* pack) {
 
 			fragmentedPacket = nullptr;
 			packet = nullptr;
+		} else {
+			error() << "fragmentedPacket->isComplete() exception: unreproted exception caught; packet: " << *pack;
 		}
 	}
 
@@ -960,11 +1084,11 @@ void BaseClient::checkupServerPackets(BasePacket* pack) {
 				checkupEvent->scheduleInIoScheduler(pack->getTimeout());
 		}
 	} catch (SocketException& e) {
-		disconnect("on checkupServerPackets() - " + e.getMessage(), false);
+		disconnect("on checkupServerPackets() - " + e.getMessage());
 	} catch (ArrayIndexOutOfBoundsException& e) {
 		error("on checkupServerPackets() - " + e.getMessage());
 	} catch (...) {
-		disconnect("unreported exception on checkupServerPackets()", false);
+		disconnect("unreported exception on checkupServerPackets()");
 	}
 
 	unlock();
@@ -973,7 +1097,7 @@ void BaseClient::checkupServerPackets(BasePacket* pack) {
 void BaseClient::resendPackets() {
 	/*#ifdef TRACE_CLIENTS
 		StringBuffer msg2;
-		msg2 << "[" << seq << "] resending " << MIN(sequenceBuffer.size(), 5) << " packets to \'" << ip << "\' ["
+		msg2 << "[" << seq << "] resending " << MIN(sequenceBuffer.size(), 5) << " packets to \'" << ip_full << "\' ["
 			 << checkupEvent->getCheckupTime() << "]";
 		debug(msg2, true);
 	#endif*/
@@ -985,7 +1109,7 @@ void BaseClient::resendPackets() {
 	int maxPacketResent = (int) Math::max(5.f, (float)30000.f * checkupTime / 496.f); //30kb * second assuming 496 packet size
 
 	/*StringBuffer msg2;
-	msg2 << "resending MIN(" << sequenceBuffer.size() << " and " << maxPacketResent << ") packets to \'" << ip << "\' ["
+	msg2 << "resending MIN(" << sequenceBuffer.size() << " and " << maxPacketResent << ") packets to \'" << ip_full << "\' ["
 			<< ((BasePacketChekupEvent*)(checkupEvent.get()))->getCheckupTime() << "]";
 	info(msg2, true);*/
 
@@ -1101,9 +1225,10 @@ void BaseClient::setPacketCheckupTime(uint32 time) {
 			debug(msg);
 		#endif
 
+		info() << "CheckupTime = " << time;
 		checkupEvent->setCheckupTime(time);
 	} catch (...) {
-		disconnect("unreported exception on setPacketCheckupTime()", false);
+		disconnect("unreported exception on setPacketCheckupTime()");
 	}
 
 	unlock();
@@ -1127,9 +1252,9 @@ void BaseClient::acknowledgeClientPackets(uint16 seq) {
 		BasePacket* ack = new AcknowledgeMessage(seq);
 		sendPacket(ack, false);
 	} catch (SocketException& e) {
-		disconnect("acknowledging client packets", false);
+		disconnect("SocketException acknowledging client packets");
 	} catch (...) {
-		disconnect("unreported exception on acknowledgeClientPackets()", false);
+		disconnect("unreported exception on acknowledgeClientPackets()");
 	}
 
 	unlock();
@@ -1162,6 +1287,8 @@ void BaseClient::acknowledgeServerPackets(uint16 seq) {
 		        return;
 		}
 
+		remoteStats.updateAckStats(checkupEvent->getElapsedTimeMs());
+
 		checkupEvent->cancel();
 
 		flushSendBuffer(realseq);
@@ -1187,7 +1314,7 @@ void BaseClient::acknowledgeServerPackets(uint16 seq) {
 	} catch (ArrayIndexOutOfBoundsException& e) {
 		debug("on acknowledgeServerPackets() - " + e.getMessage());
 	} catch (...) {
-		disconnect("unreported exception on acknowledgeServerPackets()", false);
+		disconnect("unreported exception on acknowledgeServerPackets()");
 	}
 
 	unlock();
@@ -1224,20 +1351,64 @@ void BaseClient::flushSendBuffer(int seq) {
 	#endif
 }
 
-bool BaseClient::updateNetStatus(uint16 recievedTick) {
+void BaseClient::resetNetStatusTimeout() {
+	if (!isAvailable()) {
+		return;
+	}
+
+	lock();
+
+	lastNetStatusTimeStamp.updateToCurrentTime();
+	lastRecievedNetStatusTick = 0;
+	netcheckupEvent->rescheduleInIoScheduler(NETSTATUSCHECKUP_TIMEOUT);
+
+	unlock();
+}
+
+bool BaseClient::handleNetStatusRequest(Packet* pack) {
 	lock();
 
 	try {
-		if (!isAvailable()) {
+		if (!isAvailable() || pack == nullptr) {
 			unlock();
 			return false;
 		}
 
-		uint16 hostByte = htons(recievedTick);
+		uint16 ourTick = Time().getMiliTime() & 0xFFFF;
+		uint16 tick = pack->parseNetShort();
+
+		try {
+			uint32 unk1 = pack->parseInt();
+			uint32 unk2 = pack->parseInt();
+			uint32 unk3 = pack->parseInt();
+			uint32 unk4 = pack->parseInt();
+			uint32 unk5 = pack->parseInt();
+
+			remoteStats.setTotalPacketsSent(pack->parseNetLong());
+			remoteStats.setTotalPacketsReceived(pack->parseNetLong());
+		} catch (Exception& e) {
+			error() << __PRETTY_FUNCTION__ << " " << ip_full << ": " << e.getMessage();
+		}
+
+		remoteStats.setTickDelta(tickDiff(tick, ourTick));
+		remoteStats.setTimeStamp(lastNetStatusTimeStamp);
 
 		if (lastRecievedNetStatusTick != 0) {
-			uint16 clientDelta = hostByte - lastRecievedNetStatusTick;
-			uint16 serverDelta = lastNetStatusTimeStamp.miliDifference();
+			auto remoteDelta = tickDiff(tick, lastRecievedNetStatusTick);
+			auto localDelta = lastNetStatusTimeStamp.miliDifference(Time::MONOTONIC_TIME);
+			auto delta = abs(remoteDelta - localDelta);
+
+			if (remoteDelta > getRemoteDeltaThreshold()) {
+				StringBuffer msg;
+				msg << __FUNCTION__ << ": remoteDeltaThreshold(" << getRemoteDeltaThreshold() << ") exceeded: remoteDelta=" << remoteDelta;
+				reportStats(msg.toString());
+			}
+
+			if (delta > getClockDeltaThreshold()) {
+				StringBuffer msg;
+				msg << __FUNCTION__ << ": clockDeltaThreshold(" << getClockDeltaThreshold() << ") exceeded: delta=" << delta << "; remoteDelta=" << remoteDelta << "; localDelta=" << localDelta;
+				reportStats(msg.toString());
+			}
 
 			/*StringBuffer msg;
 			msg << "recievedTick: " << hostByte << " clientDelta:" << clientDelta << " serverDelta:" << serverDelta;
@@ -1247,7 +1418,7 @@ bool BaseClient::updateNetStatus(uint16 recievedTick) {
 				uint16 difference = clientDelta - serverDelta;
 
 				if ((difference > 200) && (++erroneusTicks > 10)) {
-					disconnect("client clock desync", false);
+					disconnect("client clock desync");
 
 					unlock();
 
@@ -1259,19 +1430,23 @@ bool BaseClient::updateNetStatus(uint16 recievedTick) {
 				*/
 		}
 
-		lastNetStatusTimeStamp.updateToCurrentTime();
-		lastRecievedNetStatusTick = hostByte;
+		lastNetStatusTimeStamp.updateToCurrentTime(Time::MONOTONIC_TIME);
+		lastRecievedNetStatusTick = tick;
 
 		#ifdef TRACE_CLIENTS
 			debug("setting net status");
 		#endif
 
 		netcheckupEvent->rescheduleInIoScheduler(NETSTATUSCHECKUP_TIMEOUT);
+
+		BasePacket* resp = new NetStatusResponseMessage(tick);
+		sendPacket(resp);
+
 	} catch (Exception& e) {
 		e.printStackTrace();
-		disconnect("Exception on updateNetStatus()", false);
+		disconnect("Exception on updateNetStatus()");
 	} catch (...) {
-		disconnect("unreported exception on updateNetStatus()", false);
+		disconnect("unreported exception on updateNetStatus()");
 	}
 
 	unlock();
@@ -1289,15 +1464,15 @@ void BaseClient::requestNetStatus() {
 			return;
 		}
 
-		uint16 tick = System::random(0xFFF);
+		uint16 ourTick = Time().getMiliTime() & 0xFFFF;
 
-		BasePacket* resp = new NetStatusRequestMessage(tick);
+		BasePacket* resp = new NetStatusRequestMessage(ourTick);
 		sendPacket(resp, false);
 
 		netRequestEvent->rescheduleInIoScheduler(NETSTATUSREQUEST_TIME);
 	} catch (Exception& e) {
 		e.printStackTrace();
-		disconnect("Exception on requestNetStatus()", false);
+		disconnect("Exception on requestNetStatus()");
 	} catch (...) {
 		disconnect("unreported exception caught in BaseClient::requestNetStatus()", true);
 	}
@@ -1323,10 +1498,10 @@ bool BaseClient::checkNetStatus() {
 		setError();
 		disconnect(false);
 	} catch (Exception& e) {
-		disconnect("Exception on checkNetStatus()", false);
+		disconnect("Exception on checkNetStatus()");
 		e.printStackTrace();
 	} catch (...) {
-		disconnect("unreported exception on checkNetStatus()", false);
+		disconnect("unreported exception on checkNetStatus()");
 	}
 
 	unlock();
@@ -1402,7 +1577,7 @@ void BaseClient::notifyReceivedSeed(uint32 seed) {
 }
 
 void BaseClient::disconnect(const String& msg, bool doLock) {
-	error(msg);
+	error() << "Force disconnect: " << msg;
 
 	setError();
 	disconnect(doLock);
@@ -1418,6 +1593,7 @@ void BaseClient::disconnect(bool doLock) {
 	}
 
 	try {
+		info() << "Disconnecting client, hasError = " << hasError();
 		#ifdef TRACE_CLIENTS
 			debug("disconnecting client");
 		#endif
@@ -1431,6 +1607,7 @@ void BaseClient::disconnect(bool doLock) {
 			}
 
 			if (!clientDisconnected) {
+				info() << "Sending DisconnectMessage";
 				BasePacket* disc = new DisconnectMessage(this);
 				prepareSend(disc);
 				DatagramServiceClient::send(disc);
@@ -1441,7 +1618,9 @@ void BaseClient::disconnect(bool doLock) {
 			debug("kicking client");
 		}
 	} catch (const SocketException& e) {
-		error("disconnecting client");
+		StringBuffer err;
+		err << "SocketException in " << __PRETTY_FUNCTION__ << ": " << e.getMessage();
+		error() << err;
 		setError();
 	} catch (...) {
 		error("unreported exception on disconnect()");
@@ -1462,21 +1641,81 @@ void BaseClient::disconnect(bool doLock) {
 	}
 }
 
-void BaseClient::reportStats(bool doLog) const {
-	int packetloss;
+void BaseClient::reportStats(const String& msg) {
+	if (getLogLevel() < Logger::INFO) {
+		return;
+	}
+
+	if (firstStatusReport.compareAndSet(false, true)) {
+		info()
+			<< "InitialLockfreeBufferCapacity=" << getInitialLockfreeBufferCapacity()
+			<< ", MaxBufferPacketsTickCount=" << configMaxBufferPacketsTickCount
+			<< ", MaxSentPacketsPerTick=" << configMaxSentPacketsPerTick
+			<< ", MaxOutstandingPackets=" << configMaxOutstandingPackets
+		    << ", MinCheckupTime=" << getMinCheckupTime()
+			<< ", MaxCheckupTime=" << getMaxCheckupTime()
+			<< ", HealthCheckInterval=" << getHealthCheckInterval()
+			<< ", RemoteDeltaThreshold=" << getRemoteDeltaThreshold()
+			<< ", ClockDeltaThreshold=" << getClockDeltaThreshold()
+			;
+	}
+
+	int resentPercent;
+
 	if (serverSequence == 0 || resentPackets == 0)
-		packetloss = 0;
+		resentPercent = 0;
 	else
-	 	packetloss = (100 * resentPackets) / (serverSequence + resentPackets);
+	 	resentPercent = (100 * resentPackets) / (serverSequence + resentPackets);
 
-	//if (packetloss > 15)
-	//	doLog = true;
+	uint32 checkupTime = 0;
 
-	StringBuffer msg;
-	msg << "STATS: sent = " << serverSequence << ", resent = " << resentPackets << " [" << packetloss << "%]";
+	if (checkupEvent != nullptr) {
+		checkupTime = checkupEvent->getCheckupTime();
+	}
 
-	if (doLog)
-		info(msg);
-	else
-		debug(msg);
+	Time now(Time::MONOTONIC_TIME);
+
+	auto elaspedMs = creationTime.miliDifference(now);
+
+	log()
+		<< "reportStats:\n{\"@timestamp\":\"" << now.getFormattedTimeFull() << "\""
+		<< ", \"ip\": \"" << ip_full << "\""
+		<< ", \"elaspedMs\": " << elaspedMs
+		<< ", \"serverSequence\": " << serverSequence
+		<< ", \"resentPackets\": " << resentPackets
+		<< ", \"resentPercent\": " << resentPercent
+		<< ", \"checkupTime\": " << checkupTime
+		<< ", \"configVersion\": " << configVersion
+		<< remoteStats.asJSONFragment(false)
+		<< ", \"numOutOfOrder\": " << numOutOfOrder
+		<< ", \"acknowledgedServerSequence\": " << acknowledgedServerSequence
+		<< ", \"realServerSequence\": " << realServerSequence
+		<< ", \"sendBufferSize\": " << sendBuffer.size()
+		<< ", \"receiveBufferSize\": " << receiveBuffer.size()
+		<< ", \"sequenceBufferSize\": " << sequenceBuffer.size()
+#ifdef LOCKFREE_BCLIENT_BUFFERS
+		<< ", \"isSendLockFreeBufferEmpty\": " << sendLockFreeBuffer->empty()
+#else // LOCKFREE_BCLIENT_BUFFERS
+		<< ", \"sendUnreliableBufferSize\": " << sendUnreliableBuffer.size()
+#endif // LOCKFREE_BCLIENT_BUFFERS
+		<< ", \"hasError\": " << hasError()
+		<< ", \"msg\": \"" << msg << "\""
+        << "}";
+}
+
+void BaseClient::runHealthCheck() {
+	Locker lock(this);
+
+	if (healthEvent == nullptr) {
+		return;
+	}
+
+	if (Core::getPropertiesVersion() > configVersion) {
+		debug() << __FUNCTION__ << ": Detected new configVersion";
+		configureClient(true);
+	}
+
+	reportStats("PeriodicReport");
+
+	healthEvent->rescheduleInIoScheduler(getHealthCheckInterval() * 1000);
 }

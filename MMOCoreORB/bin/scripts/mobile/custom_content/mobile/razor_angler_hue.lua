@@ -1,6 +1,6 @@
 razor_angler_hue = Creature:new {
-	customName = "razor_angler_hue",
-	--objectName = "",
+--	customName = "razor_angler_hue",
+  objectName = "@mob/creature_names:razor_angler_hue",
 	--randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
 	faction = "",
@@ -20,7 +20,7 @@ razor_angler_hue = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.25,
 	ferocity = 0,
 	pvpBitmask = NONE,
 	creatureBitmask = NONE,

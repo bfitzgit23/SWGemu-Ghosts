@@ -6,11 +6,11 @@ includeFile("conversations.lua")
 includeFile("dressgroup/serverobjects.lua") 
 --New Content
 includeFile("custom_content/serverobjects.lua")
---includeFile("custom_vendors/serverobjects.lua")
+includeFile("custom_vendors/serverobjects.lua")
 --New Content Mob Template Files
 includeFile("hoth/serverobjects.lua")
 --includeFile("kashyyyk/serverobjects.lua")
-includeFile("hutta/serverobjects.lua")
+includeFile("nalhutta/serverobjects.lua")
 includeFile("taanab/serverobjects.lua")
 includeFile("mustafar/serverobjects.lua")
 includeFile("geonosis/serverobjects.lua")
@@ -18,6 +18,7 @@ includeFile("korriban/serverobjects.lua")
 includeFile("mandalore/serverobjects.lua")
 
 -- Creatures
+includeFile("som/serverobjects.lua")
 includeFile("corellia/serverobjects.lua")
 includeFile("dantooine/serverobjects.lua")
 includeFile("dathomir/serverobjects.lua")
@@ -60,3 +61,9 @@ includeFile("be/serverobjects.lua")
 
 --Merchants
 includeFile("merchants/serverobjects.lua")
+
+-- New content
+includeFile("custom-dlswg/serverobjects.lua")
+includeFile("kaas/serverobjects.lua")
+includeFile("hutta/serverobjects.lua")
+includeFile("jedi/serverobjects.lua")

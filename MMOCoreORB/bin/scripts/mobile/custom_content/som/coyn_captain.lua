@@ -1,5 +1,5 @@
-  coyn_captain = Creature:new {
-	customName = "Captain Relgon Starkill",
+coyn_captain = Creature:new {
+	customName = "Coyn Captain",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

@@ -220,9 +220,9 @@ public:
 		experimentalValuesMap.setPrecision(attribute, precision);
 	}
 
-	void recalculateValues(bool initial, bool looted = false, int level = 0);
+	void recalculateValues(bool initial);
 
-	String toString() const;
+	String toString();
 
 	inline int getExperimentalPropertyTitleSize() const {
 		return experimentalValuesMap.size();

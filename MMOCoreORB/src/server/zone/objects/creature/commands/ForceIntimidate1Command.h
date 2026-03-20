@@ -25,10 +25,6 @@ public:
 		if (!checkInvalidLocomotions(creature))
 			return INVALIDLOCOMOTION;
 
-		if (isWearingArmor(creature)) {
-			return NOJEDIARMOR;
-		}
-
 		ManagedReference<SceneObject*> targetObject = server->getZoneServer()->getObject(target);
 
 		if (targetObject == nullptr || !targetObject->isCreatureObject()) {
@@ -44,7 +40,7 @@ public:
 			Reference<SortedVector<ManagedReference<TangibleObject*> >* > targets = CombatManager::instance()->getAreaTargets(creature, creature->getWeapon(), tarCreo, data);
 			if(targets->size() != 0) {
 				ForceIntimidateTask *task = new ForceIntimidateTask(tarCreo, targets, this);
-				task->schedule(100);
+				task->schedule(1500);
 			}
 		}
 

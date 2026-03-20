@@ -20,7 +20,7 @@ spiderclan_web_dancer = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -31,19 +31,46 @@ spiderclan_web_dancer = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 1500000}, -- 15.00%
-                {group = "power_crystals", chance = 750000}, -- 7.50%
-                {group = "color_crystals", chance = 750000}, -- 7.50%
-                {group = "armor_attachments", chance = 750000}, -- 7.50%
-                {group = "clothing_attachments", chance = 750000}, -- 7.50%
-                {group = "melee_weapons", chance = 625000}, -- 6.25%
-                {group = "pistols", chance = 625000}, -- 6.25%
-                {group = "rifles", chance = 625000}, -- 6.25%
-                {group = "carbines", chance = 625000}, -- 6.25%
-                {group = "wearables_common", chance = 1500000}, -- 15.00%
-                {group = "wearables_uncommon", chance = 1500000}, -- 15.00%
-			}
-		}
+				{group = "power_crystals", chance = 10000000},
+			},
+			lootChance = 500000
+		},
+		{
+			groups = {
+				{group = "color_crystals", chance = 10000000},
+			},
+			lootChance = 500000
+		},
+		{
+			groups = {
+				{group = "nightsister_common", chance = 10000000},
+			},
+			lootChance = 2000000
+		},
+		{
+			groups = {
+				{group = "armor_attachments", chance = 10000000},
+			},
+			lootChance = 250000
+		},
+		{
+			groups = {
+				{group = "clothing_attachments", chance = 10000000},
+			},
+			lootChance = 250000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000},
+			},
+			lootChance = 500000
+		},
+		{
+			groups = {
+				{group = "tailor_components", chance = 10000000},
+			},
+			lootChance = 500000
+		},
 	},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",

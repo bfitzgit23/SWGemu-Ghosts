@@ -17,7 +17,7 @@ brawlermaster = { {"unarmedlunge2",""},{"unarmedhit1",""},{"unarmedstun1",""},{"
 
 --creature level 21 to 25 use base profession master with these depending on weapons in thier weapons groups
 bountyhunternovice = { {"firelightningsingle1",""},{"bleedingshot",""},{"underhandshot",""} }
-commandonovice = {}-- {"flamesingle1",""},{"fireacidsingle1",""} }
+commandonovice = { {"flamesingle1",""},{"fireacidsingle1",""} }
 carbineernovice = { {"actionshot2",""},{"fullautosingle2",""},{"fullautoarea1",""},{"scattershot1",""},{"legshot3",""},{"burstshot1",""} }
 pistoleernovice = { {"healthshot2",""},{"pointblanksingle2",""},{"pistolmeleedefense1",""},{"disarmingshot1",""} }
 riflemannovice = { {"strafeshot1",""},{"mindshot2",""},{"flushingshot1",""},{"flurryshot1",""} }
@@ -27,8 +27,8 @@ pikemannovice = { {"polearmactionhit1",""},{"polearmhit2",""},{"polearmleghit2",
 tkanovice = { {"unarmedhit2",""},{"unarmedbodyhit1",""},{"unarmeddizzy1",""},{"unarmedknockdown1",""} }
 
 --creature level 26 to 30 use base profession master with these depending on weapons in their weapons groups
-bountyhuntermid = { {"firelightningcone1",""},{"firelightningsingle1",""},{"bleedingshot",""},{"underhandshot",""},{"eyeshot",""}}
-commandomid = {} --{"flamecone1",""},{"flamesingle1",""},{"fireacidcone1",""},{"fireacidsingle1",""} }
+bountyhuntermid = { {"firelightningcone1",""},{"firelightningsingle1",""},{"bleedingshot",""},{"underhandshot",""},{"eyeshot",""},{"knockdownfire",""} }
+commandomid = { {"flamecone1",""},{"flamesingle1",""},{"fireacidcone1",""},{"fireacidsingle1",""} }
 carbineermid = { {"actionshot2",""},{"fullautosingle2",""},{"fullautoarea2",""},{"scattershot2",""},{"legshot3",""},{"burstshot2",""},{"wildshot1",""},{"chargeshot1",""},{"cripplingshot",""} }
 pistoleermid = { {"bodyshot3",""},{"healthshot2",""},{"pointblanksingle2",""},{"pistolmeleedefense2",""},{"disarmingshot1",""},{"doubletap",""},{"stoppingshot",""} }
 riflemanmid = { {"headshot3",""},{"strafeshot1",""},{"mindshot2",""},{"flushingshot2",""},{"flurryshot2",""},{"startleshot1",""} }
@@ -38,8 +38,8 @@ pikemanmid = { {"polearmactionhit2",""},{"polearmhit2",""},{"polearmleghit3",""}
 tkamid = { {"unarmedhit2",""},{"unarmedbodyhit1",""},{"unarmeddizzy1",""},{"unarmedknockdown1",""},{"unarmedleghit1",""},{"unarmedcombo1",""},{"unarmedspinattack2",""} }
 
 --creature level 31 and above use combinations of base profesion mastery and these
-bountyhuntermaster = { {"firelightningcone1",""},{"firelightningcone2",""},{"firelightningsingle1",""},{"firelightningsingle2",""},{"bleedingshot",""},{"underhandshot",""},{"eyeshot",""},{"confusionshot",""},{"fastblast",""},{"sprayshot",""} }
-commandomaster = {}-- {"flamecone1",""},{"flamecone2",""},{"flamesingle1",""},{"flamesingle2",""},{"fireacidcone1",""},{"fireacidcone2",""},{"fireacidsingle1",""},{"fireacidsingle2",""} }
+bountyhuntermaster = { {"firelightningcone1",""},{"firelightningcone2",""},{"firelightningsingle1",""},{"firelightningsingle2",""},{"bleedingshot",""},{"underhandshot",""},{"eyeshot",""},{"knockdownfire",""},{"torsoshot",""},{"confusionshot",""},{"fastblast",""},{"sprayshot",""} }
+commandomaster = { {"flamecone1",""},{"flamecone2",""},{"flamesingle1",""},{"flamesingle2",""},{"fireacidcone1",""},{"fireacidcone2",""},{"fireacidsingle1",""},{"fireacidsingle2",""} }
 carbineermaster = { {"actionshot2",""},{"fullautosingle2",""},{"fullautoarea2",""},{"wildshot2",""},{"scattershot2",""},{"legshot3",""},{"cripplingshot",""},{"burstshot2",""},{"suppressionfire2",""},{"chargeshot2",""} }
 pistoleermaster = { {"healthshot2",""},{"pointblanksingle2",""},{"bodyshot3",""},{"pistolmeleedefense2",""},{"disarmingshot2",""},{"doubletap",""},{"stoppingshot",""},{"fanshot",""},{"pointblankarea2",""},{"multitargetpistolshot",""} }
 riflemanmaster = { {"headshot3",""},{"strafeshot2",""},{"mindshot2",""},{"flushingshot2",""},{"startleshot2",""},{"flurryshot2",""} }
@@ -49,11 +49,9 @@ pikemanmaster = { {"polearmactionhit2",""},{"polearmarea2",""},{"polearmhit3",""
 tkamaster = { {"unarmedhit3",""},{"unarmedleghit1",""},{"unarmedbodyhit1",""},{"unarmedheadhit1",""},{"unarmedspinattack2",""},{"unarmedcombo2",""},{"unarmedknockdown2",""},{"unarmeddizzy1",""} }
 
 --npc jedi skills
-lightsabermaster = { {"saberheadhit1",""},{"saber1hhit1",""},{"sabercombohit1",""},{"saber1hflurry",""},{"saberbodyhit1",""},{"saber2hfrenzy",""},{"saber2hhit1",""},{"saber2hphantom",""},{"sabersweep1",""},{"saberpolearmdervish",""},{"saberpolearmhit1",""},{"saberleghit1",""},{"saberspinattack1",""} }
-forcepowermaster = { {"forcelightningsingle2",""},{"forcelightningcone2",""},{"mindblast2",""},{"forceknockdown2",""},{"forcethrow2",""},{"forcechoke",""} }
+lightsabermaster = { {"saber1hheadhit3",""},{"saber1hhit3",""},{"saber1hcombohit3",""},{"saber1hflurry2",""},{"saber2hbodyhit3",""},{"saber2hfrenzy",""},{"saber2hhit3",""},{"saber2hphantom",""},{"saber2hsweep3",""},{"saberpolearmdervish2",""},{"saberpolearmhit3",""},{"saberpolearmleghit3",""},{"saberpolearmspinattack3",""},{"saberslash2",""},{"saberthrow3",""} }
+forcepowermaster = { {"forcelightningsingle2_npc",""},{"forcelightningcone2_npc",""},{"mindblast2_npc",""},{"forceknockdown2_npc",""},{"forceweaken2_npc",""},{"forcethrow2_npc",""},{"forcechoke_npc",""} }
 
 -- npc force wielders use standard profession mastery with the addition of this command
-forcewielder ={ {"forcelightningsingle1",""},{"mindblast1",""},{"forcechoke",""},{"forceweaken1",""},{"forceknockdown1",""},{"forcelightningcone1",""} }
+forcewielder ={ {"forcelightningsingle1_npc",""},{"mindblast1_npc",""},{"forcechoke_npc",""},{"forceweaken1_npc",""},{"forceknockdown1_npc",""},{"forcelightningcone1_npc",""} }
 --Server Administrator NPC skill trees place below
-ysalamiri = { {"creaturedrainforce",""} }
-

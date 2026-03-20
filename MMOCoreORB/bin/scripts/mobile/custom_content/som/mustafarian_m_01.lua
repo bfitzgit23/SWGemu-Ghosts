@@ -1,5 +1,5 @@
 mustafarian_m_01 = Creature:new {
-	customName = "a Mustafarian Lava Miner",
+	customName = "Mustafarian",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@ mustafarian_m_01 = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

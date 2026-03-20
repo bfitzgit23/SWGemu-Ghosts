@@ -44,7 +44,7 @@ protected:
 
 public:
 	enum { BASE_BUFF, SINGLE_USE_BUFF };
-
+    
 	JediQueueCommand(const String& name, ZoneProcessServer* server) : QueueCommand(name, server) {
 		forceCost = 0;
 		duration = 0;
@@ -68,10 +68,10 @@ public:
 		return SUCCESS;
 	}
 
-	bool isJediQueueCommand() const {
+	bool isJediQueueCommand() {
 		return true;
 	}
-
+    
 	int doJediSelfBuffCommand(CreatureObject* creature) const {
 		// first and foremost, we need to toggle this buff off if we already have it
 		if (creature->hasBuff(buffCRC)) {
@@ -87,19 +87,19 @@ public:
 
         return doBuff(creature);
 	}
-
+    
 	int doBuff(CreatureObject* creature) const {
 		ManagedReference<Buff*> buff = createJediSelfBuff(creature);
-
+        
 		// Return if buff is NOT valid.
 		if (buff == nullptr)
 			return GENERALERROR;
-
+        
 		Locker locker(buff);
-
+        
 		// Add buff.
 		creature->addBuff(buff);
-
+        
 		// Force Cost.
 		doForceCost(creature);
 
@@ -107,7 +107,7 @@ public:
 		if (!clientEffect.isEmpty()) {
 			creature->playEffect(clientEffect, "");
 		}
-
+        
 		// Return.
 		return SUCCESS;
 	}
@@ -130,9 +130,6 @@ public:
 		if (res != SUCCESS)
 			return res;
 
-		if (isWearingArmor(creature))
-			return NOJEDIARMOR;
-
 		for (int i=0; i < blockingCRCs.size(); ++i) {
 			if (creature->hasBuff(blockingCRCs.get(i))) {
 				return NOSTACKJEDIBUFF;
@@ -153,7 +150,7 @@ public:
 
 		// Create buff object.
 		ManagedReference<Buff*> buff = nullptr;
-
+        
 		if(buffClass == BASE_BUFF || singleUseEventTypes.size() == 0) {
 			buff = new Buff(creature, buffCRC, duration, BuffType::JEDI);
 		} else if(buffClass == SINGLE_USE_BUFF) {;
@@ -210,6 +207,14 @@ public:
 		float buffModifier = 0;
 		int controlModifier = 0;
 
+		if (councilType == FrsManager::COUNCIL_LIGHT) {
+			controlModifier = player->getSkillMod("force_control_light");
+			buffModifier = frsLightBuffModifier;
+		} else if (councilType == FrsManager::COUNCIL_DARK) {
+			controlModifier = player->getSkillMod("force_control_dark");
+			buffModifier = frsDarkBuffModifier;
+		}
+
 		if (controlModifier == 0 || buffModifier == 0)
 			return amount;
 
@@ -233,6 +238,14 @@ public:
 		int manipulationMod = 0;
 		float frsModifier = 0;
 
+		if (councilType == FrsManager::COUNCIL_LIGHT) {
+			manipulationMod = creature->getSkillMod("force_manipulation_light");
+			frsModifier = frsLightForceCostModifier;
+		} else if (councilType == FrsManager::COUNCIL_DARK) {
+			manipulationMod = creature->getSkillMod("force_manipulation_dark");
+			frsModifier = frsDarkForceCostModifier;
+		}
+
 		if (manipulationMod == 0 || frsModifier == 0)
 			return forceCost;
 
@@ -255,6 +268,14 @@ public:
 		int manipulationMod = 0;
 		float frsModifier = 0;
 
+		if (councilType == FrsManager::COUNCIL_LIGHT) {
+			manipulationMod = creature->getSkillMod("force_manipulation_light");
+			frsModifier = frsLightExtraForceCostModifier;
+		} else if (councilType == FrsManager::COUNCIL_DARK) {
+			manipulationMod = creature->getSkillMod("force_manipulation_dark");
+			frsModifier = frsDarkExtraForceCostModifier;
+		}
+
 		if (manipulationMod == 0 || frsModifier == 0)
 			return val;
 
@@ -266,6 +287,7 @@ public:
 		ManagedReference<PlayerObject*> playerObject = creature->getPlayerObject();
 		playerObject->setForcePower(playerObject->getForcePower() - getFrsModifiedForceCost(creature));
 		VisibilityManager::instance()->increaseVisibility(creature, visMod);
+		playerObject->updateLastJediAttackableTimestamp();
 	}
 
 	void setForceCost(int fc) {
@@ -287,7 +309,7 @@ public:
 	void setSpeedMod(float sm) {
 		speedMod = sm;
 	}
-
+    
 	void setBuffClass(int bt) {
 		buffClass = bt;
 	}

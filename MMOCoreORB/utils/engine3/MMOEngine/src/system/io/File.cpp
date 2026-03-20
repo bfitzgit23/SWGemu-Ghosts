@@ -59,6 +59,8 @@ bool File::reopen() {
 }
 
 bool File::close() {
+	access = CLOSED;
+
 	if (fileDescriptor == nullptr) {
 		return true;
 	}
@@ -175,6 +177,10 @@ bool File::mkpath(const String& path, int permissions) {
 	return (status);
 }
 
+const String File::getFileName() const {
+	return name;
+}
+
 const String File::getBaseName() const {
 	static std::mutex guard;
 	std::unique_lock<std::mutex> lock(guard);
@@ -215,6 +221,12 @@ int File::seek(long offset, int origin) {
 
 long File::size() {
 	if (fileDescriptor == nullptr) {
+		struct stat st;
+
+		if (stat(name.toCharArray(), &st) == 0) {
+			return st.st_size;
+		}
+
 		return -1;
 	}
 

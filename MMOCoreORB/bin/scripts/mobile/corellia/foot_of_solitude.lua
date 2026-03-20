@@ -18,7 +18,7 @@ foot_of_solitude = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0.000000,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -28,12 +28,12 @@ foot_of_solitude = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 5000000}, -- 50.00%
-				{group = "rifles", chance = 1000000}, -- 10.00%
-				{group = "pistols", chance = 1000000}, -- 10.00%
-				{group = "melee_weapons", chance = 1000000}, -- 10.00%
-				{group = "carbines", chance = 1000000}, -- 10.00%
-				{group = "wearables_common", chance = 1000000} -- 10.00%
+				{group = "junk", chance = 5000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "wearables_common", chance = 1000000}
 			}
 		}
 	},

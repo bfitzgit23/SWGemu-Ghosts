@@ -83,4 +83,4 @@ includeFile("tangible/wearables/cybernetic/cybernetic_crafted_s03_hand_l.lua")
 includeFile("tangible/wearables/cybernetic/cybernetic_crafted_s03_hand_r.lua")
 includeFile("tangible/wearables/cybernetic/cybernetic_crafted_s05_hand_l.lua")
 includeFile("tangible/wearables/cybernetic/cybernetic_crafted_s05_hand_r.lua")
-
+includeFile("tangible/wearables/cybernetic/cyborg_crafting_headband_s01.lua")

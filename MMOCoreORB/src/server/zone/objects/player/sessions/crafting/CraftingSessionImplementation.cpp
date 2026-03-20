@@ -1,3 +1,35 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * CraftingSessionImplementation.cpp
  *
@@ -28,7 +60,6 @@
 
 #include "templates/customization/AssetCustomizationManagerTemplate.h"
 #include "templates/params/RangedIntCustomizationVariable.h"
-#include "server/zone/objects/transaction/TransactionLog.h"
 
 
 int CraftingSessionImplementation::initializeSession(CraftingTool* tool, CraftingStation* station) {
@@ -356,7 +387,6 @@ bool CraftingSessionImplementation::createManufactureSchematic(DraftSchematic* d
 		return false;
 	}
 
-	TransactionLog trx(crafter, craftingTool, schematic, TrxCode::CRAFTINGSESSION);
 	craftingTool->transferObject(schematic, 0x4, true);
 	//manufactureSchematic->sendTo(crafter, true);
 
@@ -393,7 +423,6 @@ bool CraftingSessionImplementation::createPrototypeObject(DraftSchematic* drafts
 
 	strongPrototype->createChildObjects();
 
-	TransactionLog trx(crafter, craftingTool, strongPrototype, TrxCode::CRAFTINGSESSION);
 	craftingTool->transferObject(strongPrototype, -1, false);
 	strongPrototype->sendTo(crafter, true);
 
@@ -1204,7 +1233,7 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 		closeCraftingWindow(clientCounter, true);
 
 		String xpType = manufactureSchematic->getDraftSchematic()->getXpType();
-		int xp = manufactureSchematic->getDraftSchematic()->getXpAmount() * 2;
+		int xp = manufactureSchematic->getDraftSchematic()->getXpAmount() * 6;
 //crafting timers
 		if (createItem) {
 
@@ -1214,7 +1243,7 @@ void CraftingSessionImplementation::createPrototype(int clientCounter, bool crea
 
 			// This is for practicing
 			startCreationTasks(manufactureSchematic->getComplexity() * 0, true);
-			xp = round(xp * 1.05f);
+			xp = round(xp * 10.05f);
 		}
 
 		Reference<PlayerManager*> playerManager = crafter->getZoneServer()->getPlayerManager();
@@ -1309,7 +1338,6 @@ void CraftingSessionImplementation::createManufactureSchematic(int clientCounter
 		manufactureSchematic->setPersistent(2);
 		prototype->setPersistent(2);
 
-		TransactionLog trx(crafter, datapad, manufactureSchematic, TrxCode::CRAFTINGSESSION);
 		datapad->transferObject(manufactureSchematic, -1, true);
 		manufactureSchematic->setPrototype(prototype);
 

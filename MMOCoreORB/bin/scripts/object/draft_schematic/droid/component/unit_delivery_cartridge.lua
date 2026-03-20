@@ -50,10 +50,10 @@ object_draft_schematic_droid_component_unit_delivery_cartridge = object_draft_sc
 	craftingToolTab = 32, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 10,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 50,
 
 	xpType = "crafting_droid_general",
-	xp = 50,
+	xp = 1000,
 
 	assemblySkill = "droid_assembly",
 	experimentingSkill = "droid_experimentation",

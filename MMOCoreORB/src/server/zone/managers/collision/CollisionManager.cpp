@@ -21,7 +21,7 @@ float CollisionManager::getRayOriginPoint(CreatureObject* creature) {
 	float heightOrigin = creature->getHeight() - 0.3f;
 
 	if (creature->isProne() || creature->isKnockedDown() || creature->isIncapacitated()) {
-		heightOrigin = 0.3f;
+		heightOrigin = 0.3;
 	} else if (creature->isKneeling()) {
 		heightOrigin /= 2.f;
 	}
@@ -453,8 +453,8 @@ bool CollisionManager::checkLineOfSight(SceneObject* object1, SceneObject* objec
 	float heightOrigin = 1.f;
 	float heightEnd = 1.f;
 
-	UniqueReference<SortedVector<QuadTreeEntry*>* > closeObjectsNonReference;/* new SortedVector<QuadTreeEntry* >();*/
-	UniqueReference<SortedVector<ManagedReference<QuadTreeEntry*> >*> closeObjects;/*new SortedVector<ManagedReference<QuadTreeEntry*> >();*/
+	Reference<SortedVector<QuadTreeEntry*>* > closeObjectsNonReference = nullptr;/* new SortedVector<QuadTreeEntry* >();*/
+	Reference<SortedVector<ManagedReference<QuadTreeEntry*> >*> closeObjects = nullptr;/*new SortedVector<ManagedReference<QuadTreeEntry*> >();*/
 
 	int maxInRangeObjectCount = 0;
 
@@ -508,7 +508,7 @@ bool CollisionManager::checkLineOfSight(SceneObject* object1, SceneObject* objec
 				if (app == nullptr)
 					continue;
 
-			} catch (const Exception& e) {
+			} catch (Exception& e) {
 				app = nullptr;
 			}
 
@@ -523,7 +523,7 @@ bool CollisionManager::checkLineOfSight(SceneObject* object1, SceneObject* objec
 				}
 			}
 		}
-	} catch (const Exception& e) {
+	} catch (Exception& e) {
 		Logger::console.error("unreported exception caught in bool CollisionManager::checkLineOfSight(SceneObject* object1, SceneObject* object2) ");
 		Logger::console.error(e.getMessage());
 	}

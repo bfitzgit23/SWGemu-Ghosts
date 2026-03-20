@@ -28,12 +28,12 @@ darktrooperPrefixes = { "JLB", "RAR", "KNP", "BCP", "RTZ" };
 swamptrooperPrefixes = { "GL", "TL", "RL", "NL", "CL" };
 
 reservedNames = {
---	{ "veaseomat", DECLINED_DEVELOPER },
 	{ "anal", DECLINED_PROFANE },
 	{ "ass", DECLINED_PROFANE },
 	{ "biatch", DECLINED_PROFANE },
 	{ "bitch", DECLINED_PROFANE },
 	{ "boob", DECLINED_PROFANE },
+	{ "butt", DECLINED_PROFANE },
 	{ "christ", DECLINED_PROFANE },
 	{ "clit", DECLINED_PROFANE },
 	{ "cock", DECLINED_PROFANE },
@@ -271,7 +271,7 @@ reservedNames = {
 	{ "Antidar Williams", DECLINED_FICT_RESERVED },
 	{ "Ark Roose", DECLINED_FICT_RESERVED },
 	{ "Aron Peacebringer", DECLINED_FICT_RESERVED },
---	{ "Asajj Ventress", DECLINED_FICT_RESERVED },
+	{ "Asajj Ventress", DECLINED_FICT_RESERVED },
 	{ "Ask Aak", DECLINED_FICT_RESERVED },
 	{ "Augara Jowil", DECLINED_FICT_RESERVED },
 	{ "Auren Yomm", DECLINED_FICT_RESERVED },
@@ -523,7 +523,7 @@ reservedNames = {
 	{ "Quinlan Vos", DECLINED_FICT_RESERVED },
 	{ "Rappertunie", DECLINED_FICT_RESERVED },
 	{ "Ratts Tyerell", DECLINED_FICT_RESERVED },
-	--{ "Red", DECLINED_FICT_RESERVED },
+	{ "Red", DECLINED_FICT_RESERVED },
 	{ "Ree-Yees", DECLINED_FICT_RESERVED },
 	{ "Rekkon", DECLINED_FICT_RESERVED },
 	{ "Rep Been", DECLINED_FICT_RESERVED },
@@ -632,5 +632,9 @@ reservedNames = {
 	{ "guild", DECLINED_RESERVED },
 	{ "tip", DECLINED_RESERVED },
 	{ "citizens", DECLINED_RESERVED },
-	{ "self", DECLINED_RESERVED }
+	{ "self", DECLINED_RESERVED },
+	{ "tox", DECLINED_RESERVED }, --admin name  
+	{ "syg", DECLINED_RESERVED },  --admin name
+	{ "sig", DECLINED_RESERVED }, --admin name
+  { "mohel", DECLINED_PROFANE } 
 }

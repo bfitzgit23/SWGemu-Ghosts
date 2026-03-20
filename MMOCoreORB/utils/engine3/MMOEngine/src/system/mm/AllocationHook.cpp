@@ -18,10 +18,6 @@ extern "C" malloc_zone_t **malloc_zones;
 extern "C" unsigned malloc_num_zones_allocated;
 
 #else
-// Check if glibc malloc hooks are available (removed in glibc 2.34+)
-#if defined(__GLIBC__) && defined(__GLIBC_PREREQ)
-#if !__GLIBC_PREREQ(2, 34)
-#define HAVE_MALLOC_HOOKS 1
 extern "C" void (*__free_hook)(void *__ptr, const void *);
 extern "C" void *(*__malloc_hook)(size_t __size, const void *);
 extern "C" void *(*__realloc_hook)(void *__ptr, size_t __size, const void *);
@@ -29,8 +25,6 @@ extern "C" void *(*__realloc_hook)(void *__ptr, size_t __size, const void *);
 void (*__saved_free_hook)(void *__ptr, const void *) = 0;
 void *(*__saved_malloc_hook)(size_t __size, const void *) = 0;
 void *(*__saved_realloc_hook)(void *__ptr, size_t __size, const void *) = 0;
-#endif
-#endif
 
 #endif
 
@@ -55,8 +49,8 @@ void AllocationHook::install() {
 
 	instance = this;
 
+#if WITH_STM
 #ifndef PLATFORM_MAC
-#ifdef HAVE_MALLOC_HOOKS
 	__saved_malloc_hook = __malloc_hook;
 	__saved_free_hook = __free_hook;
 	__saved_realloc_hook = __realloc_hook;
@@ -65,7 +59,7 @@ void AllocationHook::install() {
 	__malloc_hook = mallocHook;
 	__free_hook = freeHook;
 	__realloc_hook = reallocHook;
-#endif
+
 #else
 	malloc_zone_t *dz = malloc_default_zone();
 
@@ -92,17 +86,17 @@ void AllocationHook::install() {
 	}
 
 #endif
+#endif // WITH_STM
 
 	//printf("hook installed %p\n", __malloc_hook);
 }
 
 void AllocationHook::uninstall() {
+#if WITH_STM
 #ifndef PLATFORM_MAC
-#ifdef HAVE_MALLOC_HOOKS
 	__malloc_hook = __saved_malloc_hook;
 	__free_hook = __saved_free_hook;
 	__realloc_hook = __saved_realloc_hook;
-#endif
 #else
 	malloc_zone_t *dz = malloc_default_zone();
 
@@ -123,6 +117,7 @@ void AllocationHook::uninstall() {
 		vm_protect(mach_task_self(), (uintptr_t)malloc_zones, protect_size, 0, VM_PROT_READ);//put the write protection back
 	}
 #endif
+#endif // WITH_STM
 
 	instance = nullptr;
 

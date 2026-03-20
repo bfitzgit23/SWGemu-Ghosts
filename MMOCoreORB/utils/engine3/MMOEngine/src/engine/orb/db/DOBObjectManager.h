@@ -78,9 +78,18 @@ namespace engine {
 		virtual ~DOBObjectManager() {
 		}
 
+		enum {
+			SAVE_FULL   = 1 << 0,
+			SAVE_DELTA  = 1 << 1,
+			SAVE_DEBUG  = 1 << 2,
+			SAVE_REPORT = 1 << 3,
+			SAVE_DUMP   = 1 << 4,
+			SAVE_JSON   = 1 << 5
+		};
+
 		virtual Reference<DistributedObjectStub*> loadPersistentObject(uint64 objid);
 
-		void createBackup(bool forceFull);
+		void createBackup(int flags = SAVE_DELTA);
 
 		static void setUpdateToDatabaseTime(int value) {
 			UPDATETODATABASETIME = value;
@@ -98,9 +107,9 @@ namespace engine {
 
 		void cancelUpdateModifiedObjectsTask();
 
-		void updateModifiedObjectsToDatabase(bool forceFull);
+		void updateModifiedObjectsToDatabase(int flags);
 
-		virtual void onUpdateModifiedObjectsToDatabase() {
+		virtual void onUpdateModifiedObjectsToDatabase(int flags) {
 		}
 
 		virtual void onCommitData() {
@@ -134,25 +143,34 @@ namespace engine {
 
 		void finishObjectUpdate();
 		void checkCommitedObjects();
-		UpdateCollection collectModifiedObjectsFromThreads(const ArrayList<Pair<Locker*, TaskWorkerThread*>>& lockers);
+		UpdateCollection collectModifiedObjectsFromThreads(const ArrayList<Pair<Locker*, TaskWorkerThread*>>& lockers, int flags);
 
 		UpdateModifiedObjectsThread* createUpdateModifiedObjectsThread();
 
 		void dispatchUpdateModifiedObjectsThread(int& currentThread, int& lastThreadCount,
 				int& objectsToUpdateCount, engine::db::berkeley::Transaction* transaction,
-				ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete);
-
+				ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete, int flags);
 
 		int executeUpdateThreads(ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete,
-				ArrayList<DistributedObject* >* objectsToDeleteFromRAM, engine::db::berkeley::Transaction* transaction);
+				ArrayList<DistributedObject* >* objectsToDeleteFromRAM, engine::db::berkeley::Transaction* transaction, int flags);
 
-		int executeDeltaUpdateThreads(UpdateCollection& updateObjects, engine::db::berkeley::Transaction* transaction);
+		int executeDeltaUpdateThreads(UpdateCollection& updateObjects, engine::db::berkeley::Transaction* transaction, int flags);
 
 		int runObjectsMarkedForUpdate(engine::db::berkeley::Transaction* transaction,
 				ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>& objectsToDelete,
-				ArrayList<DistributedObject* >& objectsToDeleteFromRAM, VectorMap<String, int>* inRamClassCount);
+				ArrayList<DistributedObject* >& objectsToDeleteFromRAM, VectorMap<String, int>* inRamClassCount, int flags);
+
+		void dumpSnapshot(const String& baseFilename, Time timestamp,
+				ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete,
+				ArrayList<DistributedObject* >* objectsToDeleteFromRAM, int flags);
+
+		void dumpRAMtoJSON(const String& baseFilename, Time timestamp);
 
 		friend class CommitMasterTransactionThread;
+
+	private:
+		static AtomicBoolean dumpRunning;
+		void dispatchDumpTask(const String& queueName, const String& baseDirname, Vector<uint64> oidsToDump, int taskNumber);
 	};
 
   } // namespace ORB

@@ -2,13 +2,13 @@ death_watch_battle_droid = Creature:new {
 	objectName = "@mob/creature_names:mand_bunker_battle_droid",
 	socialGroup = "death_watch",
 	faction = "",
-	level = 204,
+	level = 134,
 	chanceHit = 5.5,
 	damageMin = 795,
 	damageMax = 1300,
 	baseXp = 12612,
-	baseHAM = 95200,
-	baseHAMmax = 115600,
+	baseHAM = 56000,
+	baseHAMmax = 68000,
 	armor = 2,
 	resists = {75,75,100,60,100,25,40,85,-1},
 	meatType = "",
@@ -33,15 +33,46 @@ death_watch_battle_droid = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "death_watch_bunker_commoners", chance = 1000000}, -- 10.00%
-                {group = "pistols", chance = 833333}, -- 8.33%
-                {group = "rifles", chance = 833333}, -- 8.33%
-                {group = "carbines", chance = 833333}, -- 8.33%
-                {group = "wearables_uncommon", chance = 3500001}, -- 35.00%
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
+				{group = "wearables_uncommon", chance = 10000000}
 			},
-		}
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_lieutenants", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jetpack_base", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jedi_comp_group", chance = 10000000},
+			},
+			lootChance = 200000
+		},
+		{
+			groups = {
+				{group = "black_suns", chance = 10000000}
+			},
+			lootChance = 100000
+		},
 	},
 	weapons = {"battle_droid_weapons"},
 	conversationTemplate = "",

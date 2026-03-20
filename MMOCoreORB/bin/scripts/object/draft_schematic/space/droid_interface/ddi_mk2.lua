@@ -57,7 +57,7 @@ object_draft_schematic_space_droid_interface_ddi_mk2 = object_draft_schematic_sp
    assemblySkill = "advanced_assembly", 
    experimentingSkill = "advanced_ship_experimentation", 
    customizationSkill = "advanced_customization", 
-   factoryCrateSize = 1000,
+   factoryCrateSize = 0,
 
    customizationOptions = {},
    customizationStringNames = {},

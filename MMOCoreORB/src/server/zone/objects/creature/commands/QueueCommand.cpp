@@ -33,7 +33,7 @@ QueueCommand::QueueCommand(const String& skillname, ZoneProcessServer* serv) : L
 	cooldown = 0;
 	defaultPriority = NORMAL;
 
-	setLogging(false);
+	setLogging(true);
 	setGlobalLogging(true);
 	setLoggingName("QueueCommand " + skillname);
 }
@@ -146,7 +146,7 @@ void QueueCommand::onFail(uint32 actioncntr, CreatureObject* creature, uint32 er
 		if (addToQueue)
 			creature->clearQueueAction(actioncntr, 0, 4, 0);
 		break;
-//jedi armor here
+
 	case NOJEDIARMOR:
 		creature->sendSystemMessage("@jedi_spam:not_with_armor"); // You cannot use Force powers or lightsaber abilities while wearing armor.
 		if (addToQueue)
@@ -260,9 +260,52 @@ void QueueCommand::checkForTef(CreatureObject* creature, CreatureObject* target)
 	if (target->isPlayerCreature()) {
 		PlayerObject* targetGhost = target->getPlayerObject().get();
 
-		if (!CombatManager::instance()->areInDuel(creature, target)
-				&& targetGhost != nullptr && target->getFactionStatus() == FactionStatus::OVERT && targetGhost->hasPvpTef()) {
-			ghost->updateLastGcwPvpCombatActionTimestamp();
+		if (!CombatManager::instance()->areInDuel(creature, target) && targetGhost != nullptr ) {
+			if ((targetGhost->hasPvpTef() || target->getFactionStatus() == FactionStatus::OVERT) && target->getFaction() != 0 && target->getFaction() != creature->getFaction())
+				ghost->updateLastGcwPvpCombatActionTimestamp();
+			if (targetGhost->isJediAttackable() || (targetGhost->isJedi() && target->getWeapon()->isJediWeapon()) )
+				ghost->updateLastJediAttackableTimestamp();
+			if (targetGhost->hasJediTef()){
+				ghost->updateLastJediPvpCombatActionTimestamp();
+				targetGhost->updateLastJediPvpCombatActionTimestamp();
+			}		
+		}
+	} else if (target->isPet()) {
+		ManagedReference<CreatureObject*> owner = target->getLinkedCreature().get();
+
+		if (owner != nullptr && owner->isPlayerCreature()) {
+			PlayerObject* ownerGhost = owner->getPlayerObject().get();
+
+			if (!CombatManager::instance()->areInDuel(creature, owner)
+					&& ownerGhost != nullptr && owner->getFactionStatus() == FactionStatus::OVERT && ownerGhost->hasPvpTef()) {
+				ghost->updateLastGcwPvpCombatActionTimestamp();
+			}
+		}
+	}
+}
+
+void QueueCommand::checkCmTef(CreatureObject* creature, CreatureObject* target) const {
+	if (!creature->isPlayerCreature() || creature == target)
+		return;
+
+	PlayerObject* ghost = creature->getPlayerObject().get();
+	if (ghost == nullptr)
+		return;
+
+	if (target->isPlayerCreature()){
+		PlayerObject* targetGhost = target->getPlayerObject().get();
+
+		if (!CombatManager::instance()->areInDuel(creature, target) && targetGhost != nullptr){
+			if ((targetGhost->hasPvpTef() || target->getFactionStatus() == FactionStatus::OVERT) && target->getFaction() != 0 && target->getFaction() != creature->getFaction())
+				ghost->updateLastGcwPvpCombatActionTimestamp();
+			if (targetGhost->isJediAttackable() || (targetGhost->isJedi() && target->getWeapon()->isJediWeapon())){
+				ghost->updateLastJediAttackableTimestamp();
+				targetGhost->updateLastJediPvpCombatActionTimestamp();
+			}
+			if (targetGhost->hasJediTef()){
+				ghost->updateLastJediAttackableTimestamp();
+				targetGhost->updateLastJediPvpCombatActionTimestamp();
+			}
 		}
 	} else if (target->isPet()) {
 		ManagedReference<CreatureObject*> owner = target->getLinkedCreature().get();

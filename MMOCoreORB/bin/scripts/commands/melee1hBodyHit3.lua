@@ -44,7 +44,7 @@
 Melee1hBodyHit3Command = {
         name = "melee1hbodyhit3",
 
-	damageMultiplier = 5.0,  -- Better soloability for fencers, can focus on one HAM. Better damage since their weapons aren't as strong as two-handers, etc
+	damageMultiplier = 3.5,
 	speedMultiplier = 2.25,
 	healthCostMultiplier = 1.0,
 	actionCostMultiplier = 1.0,

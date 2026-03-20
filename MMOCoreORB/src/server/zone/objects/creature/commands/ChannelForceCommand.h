@@ -27,8 +27,9 @@ public:
 		if (creature->hasAttackDelay())
 			return GENERALERROR;
 
-		if (isWearingArmor(creature)) {
-			return NOJEDIARMOR;
+		if (creature->hasBuff(BuffCRC::JEDI_AVOID_INCAPACITATION)) {
+			creature->sendSystemMessage("You cannot use Channel Force while Avoid Incapping.");
+			return INVALIDSTATE;
 		}
 
 		// Bonus is in between 250-350.
@@ -42,6 +43,10 @@ public:
 		// Do not execute if the player's force bar is full.
 		if (playerObject->getForcePower() >= playerObject->getForcePowerMax())
 			return GENERALERROR;
+
+		int enhSkills = playerObject->numSpecificSkills(creature, "force_discipline_enhancements_");
+                float enhMod = enhSkills * .056;
+                forceBonus = forceBonus * (1 + enhMod);
 
 		// To keep it from going over max...
 		if ((playerObject->getForcePowerMax() - playerObject->getForcePower()) < forceBonus)
@@ -67,6 +72,9 @@ public:
 
 		// Give Force, and subtract HAM.
 		playerObject->setForcePower(playerObject->getForcePower() + forceBonus);
+
+		String clientEffect = "clienteffect/frs_light_wisdom.cef";
+		creature->playEffect(clientEffect, "");
 
 		// Setup buffs.
 		uint32 buffCRC = STRING_HASHCODE("channelforcebuff");
@@ -101,9 +109,7 @@ public:
 			if (channelBuff != nullptr)
 				channelBuff->activateRegenTick();
 		}
-
-		creature->playEffect("clienteffect/pl_force_channel.cef", "");
-
+		creature->playEffect("clienteffect/pl_force_channel_self.cef", "");
 		return SUCCESS;
 	}
 

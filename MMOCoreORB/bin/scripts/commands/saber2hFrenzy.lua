@@ -50,7 +50,7 @@ Saber2hFrenzyCommand = {
 	actionCostMultiplier = 0,
 	mindCostMultiplier = 0,
 	areaAction = true,
-	areaRange = 10,
+	areaRange = 16,
 	forceCostMultiplier = 2.5,
 	visMod = 25,
 
@@ -84,7 +84,7 @@ Saber2hFrenzyCommand = {
 	  )
 	},
 
-	animation = "showoff_1", 
+	animation = "showoff_2", 
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "saber2hfrenzy",

@@ -22,12 +22,12 @@ namespace FileLogWriterNamespace {
 	}
 }
 
-FileLogWriter::FileLogWriter(File* file, bool append, bool rotateAtStart) : FileWriter(file, append) {
+FileLogWriter::FileLogWriter(File* file, bool append, bool rotateAtStart) : FileWriter(file, append, true) {
 	if (rotateAtStart) {
 		rotatefile(true);
 	}
 
-	currentLoggedBytes.set(file->exists() ? file->size() : 0);
+	currentLoggedBytes.set(file->size());
 }
 
 FileLogWriter::~FileLogWriter() {
@@ -37,17 +37,21 @@ FileLogWriter::~FileLogWriter() {
 	}
 }
 
-void FileLogWriter::close() {
+void FileLogWriter::closeLog(bool force) {
 	std::unique_lock<std::mutex> guard(FileLogWriterNamespace::getMutex());
 
 	auto& filemap = FileLogWriterNamespace::getFileMap();
 	auto fileName = file->getName();
 	auto writer = filemap.get(fileName);
 
-	if (writer != nullptr && writer->getReferenceCount() <= 4) {
+	if (writer != nullptr && (writer->getReferenceCount() <= 6 || force)) {
 		filemap.drop(fileName);
 		file->close();
 	}
+}
+
+void FileLogWriter::close() {
+	closeLog(false);
 }
 
 Reference<FileLogWriter*> FileLogWriter::getWriter(const String& fileName, bool append, bool rotateAtStart) {
@@ -99,6 +103,7 @@ void FileLogWriter::rotatefile(bool force) const {
 	}
 
 	if (file->size() == 0) {
+		rotateMutex.unlock();
 		return;
 	}
 

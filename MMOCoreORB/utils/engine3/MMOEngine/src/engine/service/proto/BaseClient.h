@@ -19,6 +19,8 @@
 
 #include "BaseProtocol.h"
 
+#include "BaseClientStats.h"
+
 namespace engine {
   namespace service {
     namespace proto {
@@ -41,6 +43,7 @@ namespace engine {
   namespace service {
     namespace proto {
 
+	class BaseClientHealthEvent;
 	class BaseClientNetStatusCheckupEvent;
 	class BaseClientNetStatusRequestEvent;
 	class BaseClientEvent;
@@ -54,6 +57,7 @@ namespace engine {
 		Reference<BasePacketChekupEvent*> checkupEvent;
 		Reference<BaseClientNetStatusCheckupEvent*> netcheckupEvent;
 		Reference<BaseClientNetStatusRequestEvent*> netRequestEvent;
+		Reference<BaseClientHealthEvent*> healthEvent;
 
 		BaseMultiPacket* bufferedPacket;
 		BaseFragmentedPacket* fragmentedPacket;
@@ -68,7 +72,8 @@ namespace engine {
 #endif
 		SortedVector<BasePacket*> receiveBuffer;
 
-		String ip;
+		String ip_full;
+		String ip_address;
 
 		Condition connectionEstablishedCondition;
 
@@ -76,10 +81,23 @@ namespace engine {
 
 		bool clientDisconnected = false;
 
+		// Cache hot settings
+		int configVersion = 0;
+		int configMaxBufferPacketsTickCount = 500;
+		int configMaxSentPacketsPerTick = 20;
+		int configMaxOutstandingPackets = 5000;
+
 		int acknowledgedServerSequence = -1, realServerSequence = 0;
 		int resentPackets = 0;
+		int maxOutstanding = 0;
+		int numOutOfOrder = 0;
+
+		BaseClientStats remoteStats = BaseClientStats();
 
 		bool keepSocket;
+
+		AtomicBoolean firstStatusReport = false;
+		Time creationTime;
 
 	public:
 		static const int NETSTATUSCHECKUP_TIMEOUT = 50000;
@@ -124,7 +142,8 @@ namespace engine {
 		void acknowledgeClientPackets(sys::uint16 seq);
 		void acknowledgeServerPackets(sys::uint16 seq);
 
-		bool updateNetStatus(sys::uint16 recievedTick = 0);
+		bool handleNetStatusRequest(Packet* pack);
+		void resetNetStatusTimeout();
 		bool checkNetStatus();
 		void requestNetStatus();
 
@@ -132,15 +151,17 @@ namespace engine {
 
 		virtual void notifyReceivedSeed(sys::uint32 seed);
 
-		void disconnect(const String& msg, bool doLock);
+		void disconnect(const String& msg, bool doLock = true);
 
-		inline void disconnect(const char* msg, bool doLock = false) {
+		inline void disconnect(const char* msg, bool doLock = true) {
 			disconnect(String(msg), doLock);
 		}
 
 		void disconnect(bool doLock = true);
 
-		void reportStats(bool doLog = false) const;
+		void reportStats(const String& msg);
+
+		void runHealthCheck();
 
 	protected:
 		void close();
@@ -171,12 +192,16 @@ namespace engine {
 		}
 
 		// getters
-		inline const String& getAddress() const {
-			return ip;
+		inline const String& getFullIPAddress() const {
+			return ip_full;
 		}
 
 		inline String getIPAddress() const {
-			return addr.getIPAddress();
+			return ip_address.isEmpty() ? addr.getIPAddress() : ip_address;
+		}
+
+		inline void setIPAddress(const String& newIP) {
+			ip_address = newIP;
 		}
 
 		inline int getSentPacketCount() const {
@@ -197,6 +222,19 @@ namespace engine {
 
 		friend class engine::stm::TransactionalBaseClientManager;
 
+		static int tickDiff(uint16 tick1, uint16 tick2) {
+			uint16 delta = tick1 - tick2;
+
+			if (delta > 0x7FFF) {
+				delta = 0xFFFF - delta;
+			}
+
+			return (int)delta;
+		}
+
+	private:
+		void initializeCommon(const String& addr);
+		void configureClient(bool force);
 	};
 
     } // namespace proto

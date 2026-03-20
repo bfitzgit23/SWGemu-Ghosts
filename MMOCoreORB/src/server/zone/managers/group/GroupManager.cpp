@@ -39,7 +39,10 @@ bool GroupManager::playerIsInvitingOwnPet(CreatureObject* inviter, CreatureObjec
 }
 
 void GroupManager::inviteToGroup(CreatureObject* leader, CreatureObject* target) {
-	// Galaxy-wide group invite support
+	// Pre: leader locked
+	// Post: player invited to leader's group, leader locked
+
+	Locker clocker(target, leader);
 
 	if (target == leader) {
 		leader->sendSystemMessage("@group:invite_no_target_self");
@@ -49,48 +52,69 @@ void GroupManager::inviteToGroup(CreatureObject* leader, CreatureObject* target)
 	if (leader->isGrouped()) {
 		ManagedReference<GroupObject*> group = leader->getGroup();
 
-		if (group->getLeader() != leader) {
+		if (playerIsInvitingOwnPet(leader, target)) {
+			if (!target->isInRange(leader, 120)) {
+				return;
+			}
+		}
+		else if (group->getLeader() != leader) {
 			leader->sendSystemMessage("@group:must_be_leader");
 			return;
 		}
 
-		if (group->getGroupSize() >= 50) {
+		// can't invite if the group is full
+		if (group->getGroupSize() >= 100) {
 			leader->sendSystemMessage("@group:full");
 			return;
 		}
 	}
 
 	if (target->isGrouped()) {
-		StringIdChatParameter stringId("group", "already_grouped");
-		stringId.setTT(target->getObjectID());
-		leader->sendSystemMessage(stringId);
+		if ((!leader->isGrouped()) && ((target->hasSkill("social_dancer_novice")) || (target->hasSkill("social_musician_novice"))))
+		{
+			inviteToGroup(target, leader);
+		}
+		else
+		{
+			StringIdChatParameter stringId;
+			stringId.setStringId("group", "already_grouped");
+			stringId.setTT(target->getObjectID());
+			leader->sendSystemMessage(stringId);
+			//leader->sendSystemMessage("group", "already_grouped", player->getObjectID());
+		}
 		return;
 	}
 
 	if (target->getGroupInviterID() == leader->getObjectID()) {
-		StringIdChatParameter stringId("group", "considering_your_group");
+		StringIdChatParameter stringId;
+		stringId.setStringId("group", "considering_your_group");
 		stringId.setTT(target->getObjectID());
 		leader->sendSystemMessage(stringId);
+		//leader->sendSystemMessage("group", "considering_your_group", player->getObjectID());
+
 		return;
 	} else if (target->getGroupInviterID() != 0) {
-		StringIdChatParameter stringId("group", "considering_other_group");
+		StringIdChatParameter stringId;
+		stringId.setStringId("group", "considering_other_group"); // %TT is considering joining another group.
 		stringId.setTT(target->getObjectID());
 		leader->sendSystemMessage(stringId);
+
 		return;
 	}
 
 	target->updateGroupInviterID(leader->getObjectID());
 
-	StringIdChatParameter stringId("group", "invite_leader");
+	StringIdChatParameter stringId;
+	stringId.setStringId("group", "invite_leader");
 	stringId.setTT(target->getDisplayedName());
 	leader->sendSystemMessage(stringId);
 
-	stringId.setStringId("group", "invite_target");
-	stringId.setTT(leader->getDisplayedName());
-	target->sendSystemMessage(stringId);
+	if (target->isPlayerCreature()) {
+		stringId.setStringId("group", "invite_target");
+		stringId.setTT(leader->getDisplayedName());
+		target->sendSystemMessage(stringId);
 
-	// Auto-accept for pets only
-	if (target->isPet()) {
+	} else if (target->isPet()) {
 		unsigned long long ownerId = target->getCreatureLinkID();
 		ManagedReference<CreatureObject*> owner = target->getZoneServer()->getObject(ownerId).castTo<CreatureObject*>();
 
@@ -100,7 +124,6 @@ void GroupManager::inviteToGroup(CreatureObject* leader, CreatureObject* target)
 		joinGroup(target);
 	}
 }
-
 
 void GroupManager::joinGroup(CreatureObject* player) {
 	//Pre: player locked
@@ -134,7 +157,7 @@ void GroupManager::joinGroup(CreatureObject* player) {
 
 	Locker clocker2(group, player);
 
-	if (group->getGroupSize() >= 50) {
+	if (group->getGroupSize() >= 100) {
 		clocker.release();
 
 		player->updateGroupInviterID(0);

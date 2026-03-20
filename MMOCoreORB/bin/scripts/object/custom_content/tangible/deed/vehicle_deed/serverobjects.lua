@@ -50,4 +50,3 @@ includeFile("custom_content/tangible/deed/vehicle_deed/landspeeder_xp38_deed.lua
 includeFile("custom_content/tangible/deed/vehicle_deed/mustafar_panning_droid.lua")
 includeFile("custom_content/tangible/deed/vehicle_deed/speeder_stap_deed.lua")
 includeFile("custom_content/tangible/deed/vehicle_deed/temp_walker1_deed.lua")
-includeFile("custom_content/tangible/deed/vehicle_deed/grievous_wheel_bike_deed.lua")

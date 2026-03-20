@@ -1,5 +1,5 @@
 treasure_hunter_protector = Creature:new {
-	customName = "a treasure hunter protector",
+	customName = "treasure_hunter_protector",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@ treasure_hunter_protector = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

@@ -44,9 +44,9 @@
 HealMindWoundOther1Command = {
 	name = "healmindwoundother1",
 	healWoundAmount = 100,
-	forceCost = 50,
+	forceCost = 20,
 	forceCostMultiplier = 0.1,
-	defaultTime = 3,
+	defaultTime = 1,
 	woundAttributesToHeal = MIND_ATTRIBUTE,
 	range = 32,
 }

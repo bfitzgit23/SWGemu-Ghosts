@@ -45,9 +45,6 @@
 --Children folder includes
 
 -- Server Objects
--- Ensure shared client templates are loaded before server objects
-includeFile("tangible/hair/singing_mountain_clan/objects.lua")
-
 includeFile("tangible/hair/singing_mountain_clan/hair_singing_mountain_clan_s01.lua")
 includeFile("tangible/hair/singing_mountain_clan/hair_singing_mountain_clan_s02.lua")
 includeFile("tangible/hair/singing_mountain_clan/hair_singing_mountain_clan_s03.lua")

@@ -1,3 +1,0 @@
-object_tangible_deed_vehicle_deed_xj6_air_speeder_deed = object_tangible_deed_vehicle_deed_shared_xj6_air_speeder_deed:new {
-}
-ObjectTemplates:addTemplate(object_tangible_deed_vehicle_deed_xj6_air_speeder_deed, "object/tangible/deed/vehicle_deed/xj6_air_speeder_deed.iff")

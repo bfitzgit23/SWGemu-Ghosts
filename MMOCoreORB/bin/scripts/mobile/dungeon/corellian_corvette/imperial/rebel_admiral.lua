@@ -31,16 +31,16 @@ rebel_admiral = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
-                {group = "junk", chance = 1500000}, -- 15.00%
-                {group = "rifles", chance = 625000}, -- 6.25%
-                {group = "pistols", chance = 625000}, -- 6.25%
-                {group = "melee_weapons", chance = 625000}, -- 6.25%
-                {group = "carbines", chance = 625000}, -- 6.25%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "rebel_officer_common", chance = 1500000}, -- 15.00%
-                {group = "wearables_scarce", chance = 1500000}, -- 15.00%
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 4250000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
+				{group = "clothing_attachments", chance = 100000},
+				{group = "armor_attachments", chance = 100000},
+				{group = "rebel_officer_common", chance = 450000},
+				{group = "wearables_scarce", chance = 1000000}
 			}
 		}
 	},

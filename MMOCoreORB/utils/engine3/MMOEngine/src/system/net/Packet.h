@@ -14,6 +14,9 @@
 #include <winsock2.h>
 #endif
 
+#define HTONLL(x) ((1==htonl(1)) ? (x) : (((uint64_t)htonl((x) & 0xFFFFFFFFUL)) << 32) | htonl((uint32_t)((x) >> 32)))
+#define NTOHLL(x) ((1==ntohl(1)) ? (x) : (((uint64_t)ntohl((x) & 0xFFFFFFFFUL)) << 32) | ntohl((uint32_t)((x) >> 32)))
+
 #include "system/lang/String.h"
 #include "system/lang/UnicodeString.h"
 #include "system/lang/Object.h"
@@ -31,6 +34,7 @@ namespace sys {
 	class Packet : public ObjectInputStream, public ObjectOutputStream {
 	public:
 		static const int RAW_MAX_SIZE = 496;
+		static const uint32 MAX_UNICODE_LENGTH = 33554432U;
 
 	public:
 		Packet();
@@ -228,6 +232,18 @@ namespace sys {
 			return ntohl(readInt(offs));
 		}
 
+		inline uint64 parseNetLong() {
+			uint64 value = readLong();
+
+			return NTOHLL(value);
+		}
+
+		inline uint64 parseNetLong(int offs) {
+			auto value = readLong(offs);
+
+			return NTOHLL(value);
+		}
+
 		inline uint64 parseLong() {
 			return readLong();
 		}
@@ -290,10 +306,16 @@ namespace sys {
 
 		inline void parseUnicode(UnicodeString& str) {
 			uint32 len = readInt();
-			shiftOffset(len * UnicodeString::UnicodeCharSize::value);
+			uint32 totalLen = len * UnicodeString::UnicodeCharSize::value;
+
+			if (totalLen > MAX_UNICODE_LENGTH) {
+				throw StreamIndexOutOfBoundsException(this, MAX_UNICODE_LENGTH);
+			}
+
+			shiftOffset(totalLen);
 
 			str.clear();
-			str.append(reinterpret_cast<UnicodeString::UnicodeCharType*>((offset - len * UnicodeString::UnicodeCharSize::value)), len);
+			str.append(reinterpret_cast<UnicodeString::UnicodeCharType*>((offset - totalLen)), len);
 		}
 
 		inline UnicodeString parseUnicode() {
@@ -305,13 +327,20 @@ namespace sys {
 
 		inline void parseUnicode(int offs, UnicodeString& str) {
 			uint32 len = readInt(offs);
+			uint32 totalLen = len * UnicodeString::UnicodeCharSize::value;
+
+			if (totalLen > MAX_UNICODE_LENGTH) {
+				throw StreamIndexOutOfBoundsException(this, MAX_UNICODE_LENGTH);
+			}
 
 			char* elementOffset = elementData + offs + 4;
-			if (elementOffset > end)
+
+			if (elementOffset > end) {
 				throw StreamIndexOutOfBoundsException(this, offs + 4);
+			}
 
 			str.clear();
-			str.append(reinterpret_cast<UnicodeString::UnicodeCharType*>((elementOffset - len * UnicodeString::UnicodeCharSize::value)), len);
+			str.append(reinterpret_cast<UnicodeString::UnicodeCharType*>((elementOffset - totalLen)), len);
 		}
 
 		inline void parseStream(char *buf, int len) {

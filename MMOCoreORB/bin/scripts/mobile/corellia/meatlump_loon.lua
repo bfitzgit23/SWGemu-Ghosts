@@ -20,7 +20,7 @@ meatlump_loon = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -36,11 +36,11 @@ meatlump_loon = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1500000}, -- 15.00%
-                {group = "junk", chance = 2125000}, -- 21.25%
-                {group = "loot_kit_parts", chance = 2125000}, -- 21.25%
-                {group = "tailor_components", chance = 2125000}, -- 21.25%
-                {group = "meatlump_common", chance = 2125000}, -- 21.25%
+				{group = "junk", chance = 2900000},
+				{group = "loot_kit_parts", chance = 1500000},
+				{group = "color_crystals", chance = 100000},
+				{group = "tailor_components", chance = 500000},
+				{group = "meatlump_common", chance = 5000000}
 			}
 		}
 	},

@@ -1,5 +1,5 @@
 som_mustafarian_phantom_bandit = Creature:new {
-	customName = "a Phantoms Bandit",
+	customName = "som_mustafarian_phantom_bandit",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@ som_mustafarian_phantom_bandit = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

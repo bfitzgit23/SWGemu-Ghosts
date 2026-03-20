@@ -35,7 +35,6 @@
 
 #include "server/zone/objects/building/components/GCWBaseContainerComponent.h"
 #include "server/zone/objects/building/components/EnclaveContainerComponent.h"
-#include "server/zone/objects/transaction/TransactionLog.h"
 
 void BuildingObjectImplementation::initializeTransientMembers() {
 	StructureObjectImplementation::initializeTransientMembers();
@@ -56,7 +55,7 @@ void BuildingObjectImplementation::loadTemplateData(
 	optionsBitmask = 0x00000100;
 
 	SharedBuildingObjectTemplate* buildingData =
-			dynamic_cast<SharedBuildingObjectTemplate*> (templateData);
+		dynamic_cast<SharedBuildingObjectTemplate*> (templateData);
 
 	if (buildingData == nullptr)
 		return;
@@ -118,6 +117,18 @@ int BuildingObjectImplementation::getCurrentNumberOfPlayerItems() {
 	return items;
 }
 
+int BuildingObjectImplementation::getCurrentNumberOfPlayerVendors() {
+	int vendors = 0;
+
+	for (int i = 0; i < cells.size(); ++i) {
+		auto& cell = cells.get(i);
+
+		vendors += cell->getCurrentNumberOfPlayerVendors();
+	}
+
+	return vendors;
+}
+
 void BuildingObjectImplementation::createCellObjects() {
 	for (int i = 0; i < totalCellNumber; ++i) {
 		auto newCell = getZoneServer()->createObject(0xAD431713, getPersistenceLevel());
@@ -147,10 +158,10 @@ void BuildingObjectImplementation::sendContainerObjectsTo(SceneObject* player, b
 }
 
 void BuildingObjectImplementation::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
-	debug("building sendto..");
+	//debug("building sendto..");
 
 	if (!isStaticBuilding()) { // send Baselines etc..
-		debug("sending building object create");
+		//debug("sending building object create");
 
 		SceneObjectImplementation::sendTo(player, doClose, forceLoadContainer);
 	} //else { // just send the objects that are in the building, without the cells because they are static in the client
@@ -179,7 +190,7 @@ void BuildingObjectImplementation::sendTo(SceneObject* player, bool doClose, boo
 			auto containerObject = cell->getContainerObject(j);
 
 			if (containerObject != nullptr && ((containerObject->isCreatureObject() && publicStructure) || player == containerObject
-							|| (closeObjects != nullptr && closeObjects->contains(containerObject.get()))))
+						|| (closeObjects != nullptr && closeObjects->contains(containerObject.get()))))
 				containerObject->sendTo(player, true, false);
 		}
 	}
@@ -355,7 +366,7 @@ void BuildingObjectImplementation::notifyRemoveFromZone() {
 
 void BuildingObjectImplementation::sendDestroyTo(SceneObject* player) {
 	if (!isStaticBuilding()) {
-		debug("sending building object destroy");
+		//debug("sending building object destroy");
 
 		SceneObjectImplementation::sendDestroyTo(player);
 	}
@@ -363,7 +374,7 @@ void BuildingObjectImplementation::sendDestroyTo(SceneObject* player) {
 
 void BuildingObjectImplementation::sendBaselinesTo(SceneObject* player) {
 	//send buios here
-	debug("sending building baselines");
+	//debug("sending building baselines");
 
 	BaseMessage* buio3 = new TangibleObjectMessage3(asBuildingObject());
 	player->sendMessage(buio3);
@@ -401,9 +412,9 @@ bool BuildingObjectImplementation::isAllowedEntry(CreatureObject* player) {
 	if (!isClientObject()) {
 		PlayerObject* ghost = player->getPlayerObject().get();
 
-//		if (ghost != nullptr && ghost->hasPvpTef()) {
-//			return false;
-//		}
+		if (ghost != nullptr && ghost->hasPvpTef()) {
+			return false;
+		}
 	}
 
 	if (getOwnerObjectID() == player->getObjectID())
@@ -419,7 +430,7 @@ bool BuildingObjectImplementation::isAllowedEntry(CreatureObject* player) {
 }
 
 void BuildingObjectImplementation::notifyObjectInsertedToZone(SceneObject* object) {
-	debug("BuildingObjectImplementation::notifyInsertToZone");
+	//debug("BuildingObjectImplementation::notifyInsertToZone");
 
 	auto closeObjectsVector = getCloseObjects();
 	Vector<QuadTreeEntry*> closeObjects(closeObjectsVector->size(), 10);
@@ -538,21 +549,28 @@ void BuildingObjectImplementation::notifyDissapear(QuadTreeEntry* obj) {
 		if (!cell->isContainerLoaded())
 			continue;
 
-		for (int j = 0; j < cell->getContainerObjectsSize(); ++j) {
-			auto child = cell->getContainerObject(j);
+		try
+		{
+			for (int j = 0; j < cell->getContainerObjectsSize(); ++j) {
+				auto child = cell->getContainerObject(j);
 
-			if (child == nullptr)
-				continue;
+				if (child == nullptr)
+					continue;
 
-			if (child->getCloseObjects() != nullptr)
-				child->removeInRangeObject(obj);
-			else
-				child->notifyDissapear(obj);
+				if (child->getCloseObjects() != nullptr)
+					child->removeInRangeObject(obj);
+				else
+					child->notifyDissapear(obj);
 
-			if (obj->getCloseObjects() != nullptr)
-				obj->removeInRangeObject(child);
-			else
-				obj->notifyDissapear(child);
+				if (obj->getCloseObjects() != nullptr)
+					obj->removeInRangeObject(child);
+				else
+					obj->notifyDissapear(child);
+			}
+		} catch (const Exception& exception) {
+			warning("could not remove all container objects in BuildingObject::notifyDissapear");
+
+			exception.printStackTrace();
 		}
 	}
 }
@@ -664,7 +682,7 @@ CellObject* BuildingObjectImplementation::getCell(const String& cellName) {
 }
 
 void BuildingObjectImplementation::destroyObjectFromDatabase(
-	bool destroyContainedObjects) {
+		bool destroyContainedObjects) {
 
 	float x = getPositionX();
 	float y = getPositionY();
@@ -902,8 +920,8 @@ void BuildingObjectImplementation::onExit(CreatureObject* player, uint64 parenti
 }
 
 uint32 BuildingObjectImplementation::getMaximumNumberOfPlayerItems() {
-	if (isCivicStructure() )
-		return 250;
+	//if (isCivicStructure() )
+		//return 250;
 
 	SharedStructureObjectTemplate* ssot = dynamic_cast<SharedStructureObjectTemplate*> (templateObject.get());
 
@@ -915,11 +933,11 @@ uint32 BuildingObjectImplementation::getMaximumNumberOfPlayerItems() {
 
 	//Buildings that don't cost lots have MAXPLAYERITEMS storage space.
 	if (lots == 0)
-		return 1000;
+		return MAXPLAYERITEMS;
 
-	int maxItems = (lots * 1000);
+	auto maxItems = MAXPLAYERITEMS;
 
-	return maxItems;
+	return Math::min(maxItems, lots * 200);
 }
 
 int BuildingObjectImplementation::notifyObjectInsertedToChild(SceneObject* object, SceneObject* child, SceneObject* oldParent) {
@@ -1168,9 +1186,6 @@ void BuildingObjectImplementation::payAccessFee(CreatureObject* player) {
 
 	ManagedReference<CreatureObject*> owner = getOwnerCreatureObject();
 
-	TransactionLog trx(player, owner, TrxCode::ACCESSFEE, accessFee, true);
-	trx.setAutoCommit(false);
-
 	player->subtractCashCredits(accessFee);
 
 	if (owner != nullptr) {
@@ -1178,10 +1193,7 @@ void BuildingObjectImplementation::payAccessFee(CreatureObject* player) {
 		owner->addBankCredits(accessFee, true);
 	} else {
 		error("Unable to pay access fee credits to owner");
-		trx.errorMessage() << "Unable to pay access fee to owner";
 	}
-
-	trx.commit();
 
 	if (paidAccessList.contains(player->getObjectID()))
 		paidAccessList.drop(player->getObjectID());
@@ -1501,8 +1513,8 @@ void BuildingObjectImplementation::spawnChildCreaturesFromTemplate() {
 					}
 
 				} catch (Exception& e) {
-						error("unreported exception caught in void BuildingObjectImplementation::spawnChildCreaturesFromTemplate()!");
-						e.printStackTrace();
+					error("unreported exception caught in void BuildingObjectImplementation::spawnChildCreaturesFromTemplate()!");
+					e.printStackTrace();
 				}
 
 			} // create the creature outside
@@ -1684,6 +1696,16 @@ void BuildingObjectImplementation::changeSign(const SignTemplate* signConfig) {
 
 		oldSign->destroyObjectFromWorld(true);
 		oldSign->destroyObjectFromDatabase(true);
+	} else {
+		BuildingObject* building = asBuildingObject();
+		CreatureObject* owner = getOwnerCreatureObject();
+
+		if (building != nullptr && owner != nullptr) {
+			if (!building->isCivicStructure() && !building->isCommercialStructure()) {
+				building->setCustomObjectName(owner->getFirstName() + "'s House", true);
+				signName = building->getCustomObjectName();
+			}
+		}
 	}
 
 	Locker clocker2(signObject, asBuildingObject());
@@ -1823,4 +1845,17 @@ String BuildingObjectImplementation::getCellName(uint64 cellID) const {
 		return "";
 
 	return cellProperty->getName();
+}
+
+String BuildingObjectImplementation::getPackupMessage() {
+	if (!ConfigManager::instance()->getStructurePackupEnabled())
+		return "packup_not_eligible_01";
+
+	if (isCivicStructure() || isGCWBase())
+		return "packup_not_eligible_02";
+
+	if (getCurrentNumberOfPlayerItems() <= 0)
+		return "packup_not_eligible_03";
+
+	return "";
 }

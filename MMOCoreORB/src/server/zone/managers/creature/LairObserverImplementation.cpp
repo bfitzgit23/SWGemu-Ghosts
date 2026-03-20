@@ -133,8 +133,8 @@ void LairObserverImplementation::doAggro(TangibleObject* lair, TangibleObject* a
 				// TODO: only set defender if needed
 				AiAgent* ai = cast<AiAgent*>( creo);
 				Locker clocker(creo, lair);
-				creo->setDefender(attacker);
-
+				if (lair->hasDefender(attacker))
+					creo->setDefender(attacker);
 			}
 	}
 }
@@ -158,39 +158,38 @@ void LairObserverImplementation::checkForHeal(TangibleObject* lair, TangibleObje
 void LairObserverImplementation::healLair(TangibleObject* lair, TangibleObject* attacker){
 	Locker locker(lair);
 
-//	if (lair->getZone() == nullptr)
+	if (lair->getZone() == nullptr)
 		return;
 
-//	int damageToHeal = 0;
-//	int lairMaxCondition = lair->getMaxCondition();
-//
-//	for (int i = 0; i < spawnedCreatures.size() ; ++i) {
-//		CreatureObject* creo = spawnedCreatures.get(i);
-//
-//		if (creo->isDead() || creo->getZone() == nullptr)
-//			continue;
-//
-//		//  TODO: Range check
-//		damageToHeal += lairMaxCondition / 100;
-//
-//	}
-//
-//	if (damageToHeal == 0)
-//		return;
-//
-//	if (lair->getZone() == nullptr)
-//		return;
-//
-//	lair->healDamage(lair, 0, damageToHeal, true);
-//
-//	PlayClientEffectObjectMessage* heal =
-//			new PlayClientEffectObjectMessage(lair, "clienteffect/healing_healdamage.cef", "");
-//	lair->broadcastMessage(heal, false);
-//
-//	PlayClientEffectLoc* healLoc = new PlayClientEffectLoc("clienteffect/healing_healdamage.cef",
-//			lair->getZone()->getZoneName(), lair->getPositionX(),
-//			lair->getPositionZ(), lair->getPositionY());
-//	lair->broadcastMessage(healLoc, false);
+	int damageToHeal = 0;
+	int lairMaxCondition = lair->getMaxCondition();
+
+	for (int i = 0; i < spawnedCreatures.size() ; ++i) {
+		CreatureObject* creo = spawnedCreatures.get(i);
+
+		if (creo->isDead() || creo->getZone() == nullptr) {
+			continue;
+		}
+
+		if (lair->getDistanceTo(creo) > 20.0f) {
+			continue;
+		}
+
+		//  TODO: Range check
+		damageToHeal += lairMaxCondition / 100;
+	}
+	if (damageToHeal == 0)
+		return;
+	if (lair->getZone() == nullptr)
+		return;
+	lair->healDamage(lair, 0, damageToHeal, true);
+	PlayClientEffectObjectMessage* heal =
+			new PlayClientEffectObjectMessage(lair, "clienteffect/healing_healdamage.cef", "");
+	lair->broadcastMessage(heal, false);
+	PlayClientEffectLoc* healLoc = new PlayClientEffectLoc("clienteffect/healing_healdamage.cef",
+			lair->getZone()->getZoneName(), lair->getPositionX(),
+			lair->getPositionZ(), lair->getPositionY());
+	lair->broadcastMessage(healLoc, false);
 }
 
 bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
@@ -204,8 +203,8 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 
 	if (forceSpawn) {
 		spawnNumber.increment();
-//	} else if (getMobType() == LairTemplate::NPC) {
-//		return false;
+	} else if (getMobType() == LairTemplate::NPC) {
+		return false;
 	} else {
 		int conditionDamage = lair->getConditionDamage();
 		int maxCondition = lair->getMaxCondition();
@@ -244,7 +243,7 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 	VectorMap<String, int> objectsToSpawn; // String mobileTemplate, int number to spawn
 
 	if (spawnNumber == 4) {
-		if (System::random(100) > 10)
+		if (System::random(100) > 35)
 			return false;
 
 		const VectorMap<String, int>* mobs = lairTemplate->getBossMobiles();
@@ -255,25 +254,18 @@ bool LairObserverImplementation::checkForNewSpawns(TangibleObject* lair, Tangibl
 
 	} else {
 		const Vector<String>* mobiles = lairTemplate->getWeightedMobiles();
+		int amountToSpawn = 0;
 
-		int amountToSpawn = System::random(lairTemplate->getSpawnLimit() * 2);
+		if (getMobType() == LairTemplate::CREATURE) {
+			amountToSpawn = System::random(3) + ((lairTemplate->getSpawnLimit() / 3) - 2);
+		} else {
+			amountToSpawn = System::random(lairTemplate->getSpawnLimit() / 2) + (lairTemplate->getSpawnLimit() / 2);
+		}
 
-		int levelincrease = System::random(difficulty * 2);
+		if (amountToSpawn < 1)
+			amountToSpawn = 1;
 
-		int newamountToSpawn = amountToSpawn + levelincrease;
-
-		if (newamountToSpawn < 5)
-			newamountToSpawn = 5;
-
-		if (newamountToSpawn > 15)
-			newamountToSpawn = 15;
-
-		int newspawnLimit = lairTemplate->getnewSpawnLimit();
-
-		if (newspawnLimit > 0)
-			newamountToSpawn = newspawnLimit;
-
-		for (int i = 0; i < newamountToSpawn; i++) {
+		for (int i = 0; i < amountToSpawn; i++) {
 			int num = System::random(mobiles->size() - 1);
 			const String& mob = mobiles->get(num);
 

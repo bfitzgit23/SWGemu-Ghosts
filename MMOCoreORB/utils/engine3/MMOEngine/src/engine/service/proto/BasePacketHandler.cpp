@@ -20,7 +20,7 @@
 #include "events/OutOfOrderTask.h"
 #include "events/AcknowledgeTask.h"
 
-#define BASE_PACKET_HANDLER_TASK_QUEUE "_baseclient"
+#define BASE_PACKET_HANDLER_TASK_QUEUE "BaseClient"
 
 //#define MULTI_THREADED_BASE_PACKET_HANDLER
 
@@ -127,7 +127,22 @@ void BasePacketHandler::handlePacket(BaseClient* client, Packet* pack) {
 			break;
 		}
 	} catch (const Exception& e) {
-		e.printStackTrace();
+		StringBuffer buf;
+
+		buf << "BasePacketHandler::handlePacket - exception caught: " << e.getMessage();
+
+		auto trace = e.getStackTrace();
+
+		client->error() << buf;
+		client->error() << "STACK: " << trace.toStringData();
+
+		auto logFileName = client->getLogFileName();
+
+		if (logFileName.isEmpty()) {
+			error() << "[" << client->getFullIPAddress() << "] " << buf;
+		} else {
+			error() << "[" << client->getFullIPAddress() << "] " << buf << " see " << client->getLogFileName() << " for details";
+		}
 	}
 }
 
@@ -185,17 +200,12 @@ void BasePacketHandler::doDisconnect(BaseClient* client, Packet* pack) {
 }
 
 void BasePacketHandler::doNetStatusResponse(BaseClient* client, Packet* pack) {
-	uint16 tick = NetStatusRequestMessage::parseTick(pack);
-
 #if defined(MULTI_THREADED_BASE_PACKET_HANDLER) && defined(LOCKFREE_BCLIENT_BUFFERS)
-	Reference<Task*> task = new NetStatusResponseTask(client, tick);
+	Reference<Task*> task = new NetStatusResponseTask(client, pack);
 	task->setCustomTaskQueue(BASE_PACKET_HANDLER_TASK_QUEUE);
 	task->execute();
 #else
-	if (client->updateNetStatus(tick)) {
-		BasePacket* resp = new NetStatusResponseMessage(tick);
-		client->sendPacket(resp);
-	}
+	client->handleNetStatusRequest(pack);
 #endif
 }
 
@@ -467,7 +477,20 @@ int BasePacketHandler::handleFragmentedPacket(BaseClient* client, Packet* pack) 
 		} /*else if (pack->size() < 485)
 		throw Exception("incomplete fragmented packet");*/
 	} catch (const FragmentedPacketParseException& e) {
-		error(e.getMessage());
+		StringBuffer buf;
+
+		buf << "BasePacketHandler::handleFragmentedPacket - receiveFragmentedPacket failed: " << e.getMessage();
+
+		client->error() << buf;
+
+		auto logFileName = client->getLogFileName();
+
+		if (logFileName.isEmpty()) {
+			error() << "[" << client->getFullIPAddress() << "] " << buf;
+		} else {
+			error() << "[" << client->getFullIPAddress() << "] " << buf << " see " << client->getLogFileName() << " for details";
+		}
+
 		return 1;
 	}
 

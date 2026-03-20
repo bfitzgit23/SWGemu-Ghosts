@@ -50,7 +50,6 @@ object_draft_schematic_clothing_clothing_armor_ubese_bandolier = object_draft_sc
    craftingToolTab = 2, -- (See DraftSchematicObjectTemplate.h)
    complexity = 35, 
    size = 4, 
-   factoryCrateSize = 1000,
 
    xpType = "crafting_clothing_armor", 
    xp = 40, 

@@ -1,5 +1,5 @@
 coyn_shock = Creature:new {
-	customName = "a Razor Runner shock trooper",
+	customName = "Coyn Shock Trooper",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@ coyn_shock = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

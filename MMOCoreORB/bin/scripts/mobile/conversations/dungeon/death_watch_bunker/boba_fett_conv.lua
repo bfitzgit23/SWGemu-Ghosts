@@ -7,11 +7,10 @@ bobaFettConvoTemplate = ConvoTemplate:new {
 
 intro = ConvoScreen:new {
 	id = "intro",
-	leftDialog = "@conversation/boba_fett:s_8e66f1ea", -- There's a rumor that Death Watch operatives can be found on Endor somewhere in the northwestern area of the planet.  I want you, yes you to go there and check it out.
+	leftDialog = "@conversation/boba_fett:s_8e66f1ea", -- Another of Jabba's little toys... You may want to make yourself useful by checking something out when you get a chance. You're of no use wandering around the palace aimlessly. There's a rumor that Death Watch operatives can be found on Endor somewhere in the northwestern area of the planet.
 	stopConversation = "false",
 	options = {
 		{"@conversation/boba_fett:s_ab11aabd", "formidable_opponent"}, -- Okay. Anything else you can tell me?
-		{"I had heard you fell into the Sarlacc, How in blazes did you survive?", "deny1"},
 	}
 }
 bobaFettConvoTemplate:addScreen(intro);
@@ -67,7 +66,6 @@ back_again = ConvoScreen:new {
 	options = {
 		{"@conversation/boba_fett:s_1122d80a", "formidable_opponent"},-- Can you tell me again about the Death Watch?
 		{"@conversation/boba_fett:s_515da73f", "pass_on_job"},-- Can't somebody else do it?
-		{"I had heard you fell into the Sarlacc, How in blazes did you survive?", "deny1"},
 	}
 }
 bobaFettConvoTemplate:addScreen(back_again);
@@ -89,15 +87,5 @@ not_completed_jabbas = ConvoScreen:new {
 	}
 }
 bobaFettConvoTemplate:addScreen(not_completed_jabbas);
-
-deny1 = ConvoScreen:new {
-  id = "deny1",
-  leftDialog = "", 
-  customDialogText = "That never happened, do you hear me!  One more word about it and I swear it will be your last!",
-  stopConversation = "true",
-  options = {
-  }
-}
-bobaFettConvoTemplate:addScreen(deny1);
 
 addConversationTemplate("bobaFettConvoTemplate", bobaFettConvoTemplate);

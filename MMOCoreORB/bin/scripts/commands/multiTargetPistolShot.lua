@@ -44,8 +44,8 @@
 MultiTargetPistolShotCommand = {
         name = "multitargetpistolshot",
 
-	damageMultiplier = 5.0,
-	speedMultiplier = 3.0,
+	damageMultiplier = 4.2,
+	speedMultiplier = 3.5,
 	healthCostMultiplier = 0.5,
 	actionCostMultiplier = 1.25,
 	mindCostMultiplier = 0.5,
@@ -55,18 +55,6 @@ MultiTargetPistolShotCommand = {
         areaRange = 32,
         
 	poolsToDamage = RANDOM_ATTRIBUTE,
-
-	stateEffects = {
-	  StateEffect( 
-		BLIND_EFFECT, 
-		{}, 
-		{ "blind_defense" }, 
-		{ "jedi_state_defense", "resistance_states" },
-		100, 
-		0, 
-		40 
-	  )
-	},
 
 	animation = "fire_5_special_single",
 	animType = GENERATE_RANGED,
@@ -79,4 +67,3 @@ MultiTargetPistolShotCommand = {
 }
 
 AddCommand(MultiTargetPistolShotCommand)
-

@@ -1,12 +1,18 @@
 MandaloreScreenPlay = ScreenPlay:new {
 	numberOfActs = 1,
 
-	screenplayName = "MandaloreScreenPlay"
+	screenplayName = "MandaloreScreenPlay",
+
+	started = false,
+	mobsSpawned = false,
+	sceneObjectsSpawned = false
 }
 
 registerScreenPlay("MandaloreScreenPlay", true)
 
 function MandaloreScreenPlay:start()
+	if self.started then return end
+	self.started = true
 	if (isZoneEnabled("mandalore")) then
 		self:spawnMobiles()
 		self:spawnSceneObjects()
@@ -17,9 +23,15 @@ function MandaloreScreenPlay:spawnSceneObjects()
 
 	
 
+	if self.sceneObjectsSpawned then return end
+	self.sceneObjectsSpawned = true
+
 end
 
 function MandaloreScreenPlay:spawnMobiles()
+
+	if self.mobsSpawned then return end
+	self.mobsSpawned = true
 
 	--Anything dashed out will need to be added here and removed from spawn manager once the spawnMobiles command is extended.
 

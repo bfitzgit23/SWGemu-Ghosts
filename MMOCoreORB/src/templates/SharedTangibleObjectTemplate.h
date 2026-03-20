@@ -68,8 +68,8 @@ public:
 
 	~SharedTangibleObjectTemplate();
 
-	void readObject(LuaObject* templateData) override;
-	void readObject(IffStream* iffStream) override;
+	void readObject(LuaObject* templateData);
+	void readObject(IffStream* iffStream);
 
 	void parseFileData(IffStream* str);
 
@@ -108,7 +108,7 @@ public:
 		return level;
 	}
 
-	inline bool isInvisible() const {
+	inline bool isInvisible() {
 		return invisible;
 	}
 
@@ -204,7 +204,7 @@ public:
 		return skillMods.get(mod);
 	}
 
-	bool isSharedTangibleObjectTemplate() const override {
+	bool isSharedTangibleObjectTemplate() {
 		return true;
 	}
 };

@@ -4,13 +4,13 @@ death_watch_wraith = Creature:new {
 	randomNameTag = true,
 	socialGroup = "death_watch",
 	faction = "",
-	level = 248,
+	level = 178,
 	chanceHit = 12.25,
 	damageMin = 1020,
 	damageMax = 1750,
 	baseXp = 16794,
-	baseHAM = 204000,
-	baseHAMmax = 204000,
+	baseHAM = 120000,
+	baseHAMmax = 120000,
 	armor = 2,
 	resists = {75,75,90,80,45,45,100,70,-1},
 	meatType = "",
@@ -32,18 +32,49 @@ death_watch_wraith = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "death_watch_bunker_commoners", chance = 312500}, -- 3.12%
-                {group = "death_watch_bunker_lieutenants", chance = 312500}, -- 3.12%
-                {group = "death_watch_bunker_ingredient_protective", chance = 312500}, -- 3.12%
-                {group = "death_watch_bunker_ingredient_binary", chance = 312500}, -- 3.12%
-                {group = "pistols", chance = 833333}, -- 8.33%
-                {group = "rifles", chance = 833333}, -- 8.33%
-                {group = "carbines", chance = 833333}, -- 8.33%
-                {group = "wearables_uncommon", chance = 3250001}, -- 32.50%
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
+				{group = "wearables_uncommon", chance = 10000000}
 			},
-		}
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners",   chance = 6300000},
+				{group = "death_watch_bunker_lieutenants", chance = 3500000},
+				{group = "death_watch_bunker_ingredient_protective",  chance = 100000},
+				{group = "death_watch_bunker_ingredient_binary",  chance = 100000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jetpack_base", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "black_suns", chance = 10000000}
+			},
+			lootChance = 100000
+		},
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",

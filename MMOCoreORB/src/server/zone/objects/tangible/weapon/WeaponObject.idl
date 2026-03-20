@@ -8,6 +8,7 @@ import server.zone.objects.tangible.TangibleObject;
 import server.zone.objects.scene.SceneObject;
 import server.zone.objects.creature.CreatureObject;
 import server.zone.packets.scene.AttributeListMessage;
+import server.zone.packets.object.ObjectMenuResponse;
 include server.zone.objects.manufactureschematic.craftingvalues.CraftingValues;
 include server.zone.objects.scene.SceneObjectType;
 include templates.SharedObjectTemplate;
@@ -144,6 +145,10 @@ class WeaponObject extends TangibleObject {
 	@dirty
 	public native void fillAttributeList(AttributeListMessage msg, CreatureObject object);
 
+	public native void fillObjectMenuResponse(ObjectMenuResponse menuResponse, CreatureObject player);
+
+	public native int handleObjectMenuSelect(CreatureObject player, byte selectedID);
+
 	@local
 	public native void updateCraftingValues(CraftingValues values, boolean firstUpdate);
 
@@ -258,6 +263,11 @@ class WeaponObject extends TangibleObject {
 		idealAccuracy = value;
 	}
 
+	@dirty
+	public void setArmorPiercing(int value) {
+                armorPiercing = value;
+        }
+
 	@read
 	public int getArmorPiercing() {
 		return armorPiercing;
@@ -355,6 +365,11 @@ class WeaponObject extends TangibleObject {
 	}
 
 	@read
+	public string getDeconstructionTemplate() {
+		return weaponTemplate.getDeconstructionTemplate();
+	}
+
+	@read
 	public int getNumberOfDots() {
 		return dotType.size();
 	}
@@ -417,7 +432,18 @@ class WeaponObject extends TangibleObject {
 		dotUses.elementAt(index) = u;
 	}
 
-	@read
+	public void removeDot(int index) {
+		dotType.remove(index);
+		dotAttribute.remove(index);
+		dotStrength.remove(index);
+		dotDuration.remove(index);
+		dotPotency.remove(index);
+		dotUses.remove(index);
+	}
+
+	public native void clearDots();
+
+	@dirty
 	public native string getWeaponType();
 
 	@read
@@ -462,7 +488,7 @@ class WeaponObject extends TangibleObject {
 
 	@read
 	public boolean isFlameThrower() {
-		return weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff");
+		return weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/heavy/som_republic_flamer.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/heavy/som_lava_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_rebel.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_imperial.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pulse_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_particle_beam.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_mandalorian.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_cr1_blast_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_void.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_corellian.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_som_lava_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_carbonite_cold_rifle.iff");
 	}
 
 	@read
@@ -532,12 +558,11 @@ class WeaponObject extends TangibleObject {
 
 	@read
 	public boolean hasPowerup() {
-		return powerupObject;
+		return powerupObject != null;
 	}
 
 	public native boolean applyPowerup(CreatureObject player, PowerupObject pup);
 
-	@reference
 	public native PowerupObject removePowerup();
 
 	public native void decreasePowerupUses(CreatureObject player);

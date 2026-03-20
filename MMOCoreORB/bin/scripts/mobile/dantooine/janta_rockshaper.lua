@@ -20,7 +20,7 @@ janta_rockshaper = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + HERD,
@@ -33,11 +33,21 @@ janta_rockshaper = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 2500000}, -- 25.00%
-                {group = "janta_common", chance = 2500000}, -- 25.00%
-                {group = "loot_kit_parts", chance = 2500000}, -- 25.00%
-                {group = "wearables_all", chance = 2500000}, -- 25.00%
-			}
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "janta_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "loot_kit_parts", chance = 10000000}
+			},
+			lootChance = 5000000
 		}
 	},
 	weapons = {"primitive_weapons"},

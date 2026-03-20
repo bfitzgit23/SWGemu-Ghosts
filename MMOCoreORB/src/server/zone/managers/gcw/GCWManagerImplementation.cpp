@@ -44,6 +44,7 @@
 #include "server/zone/managers/collision/CollisionManager.h"
 #include "server/zone/packets/scene/PlayClientEffectLocMessage.h"
 #include "server/zone/managers/gcw/sessions/ContrabandScanSession.h"
+#include "server/chat/ChatManager.h"
 
 void GCWManagerImplementation::initialize() {
 	loadLuaConfig();
@@ -82,8 +83,6 @@ void GCWManagerImplementation::loadLuaConfig() {
 	racialPenaltyEnabled = lua->getGlobalInt("racialPenaltyEnabled");
 	initialVulnerabilityDelay = lua->getGlobalInt("initialVulnerabilityDelay");
 	spawnDefenses = lua->getGlobalInt("spawnDefenses");
-	crackdownScansEnabled = lua->getGlobalBoolean("crackdownScansEnabled");
-	crackdownScanPrivilegedPlayers = lua->getGlobalBoolean("crackdownScanPrivilegedPlayers");
 
 	LuaObject nucleotides = lua->getGlobalObject("dnaNucleotides");
 	if (nucleotides.isValidTable()) {
@@ -380,11 +379,9 @@ void GCWManagerImplementation::updateWinningFaction() {
 	}
 
 	int scaling = 0;
-	if (score > 0) {
-		for (int i = 0; i < difficultyScalingThresholds.size(); i++) {
-			if (score >= difficultyScalingThresholds.get(i)) {
-				scaling++;
-			}
+	for (int i = 0; i < difficultyScalingThresholds.size(); i++) {
+		if (score >= difficultyScalingThresholds.get(i)) {
+			scaling++;
 		}
 	}
 	winnerDifficultyScaling = scaling;
@@ -1080,6 +1077,13 @@ void GCWManagerImplementation::verifyUplinkBand(CreatureObject* creature, Buildi
 			creature->sendSystemMessage("You isolate the carrier signal to Channel #" + String::valueOf(band + 1) + ".");
 			creature->sendSystemMessage("Jamming complete! You disable the uplink...");
 			awardSlicingXP(creature, "bountyhunter", 1000);
+			//broadcast to galaxy base is under attack
+			if (building->getPvpStatusBitmask() & CreatureFlag::OVERT){
+				String str = "A PVP Base is Under Attack! @ " + zone->getZoneName() + " " + String::valueOf(building->getPositionX()) + " " + String::valueOf( building->getPositionZ()) + " " + String::valueOf( building->getPositionY()) + ".";
+				zone->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, str);
+				zone->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, str);
+
+			}
 			return;
 		} else {
 			baseData->setState(DestructibleBuildingDataComponent::BAND);
@@ -1567,6 +1571,19 @@ void GCWManagerImplementation::scheduleBaseDestruction(BuildingObject* building,
 		int minutesRemaining = (int) ceil((double)destructionTimer / (double)60);
 		destroyMessage.setDI(minutesRemaining);
 		broadcastBuilding(building, destroyMessage);
+		StringBuffer zBroadcast;
+		zBroadcast << "Countdown: Estimated time to detonation: " << minutesRemaining << " minutes";
+		if (building->getFaction() == Factions::FACTIONREBEL){
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#FF9933 ATTENTION REBELS, YOUR BASE IS UNDER ATTACK @ " + zone->getZoneName() + " " + String::valueOf(building->getPositionX()) + " " + String::valueOf( building->getPositionZ()) + " " + String::valueOf( building->getPositionY()) + ".");
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION REBELS, YOUR BASE IS UNDER ATTACK @ " + zone->getZoneName() + " " + String::valueOf(building->getPositionX()) + " " + String::valueOf( building->getPositionZ()) + " " + String::valueOf( building->getPositionY()) + ".");
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+		} else if (building->getFaction() == Factions::FACTIONIMPERIAL){
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#7133FF ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK @ " + zone->getZoneName() + " " + String::valueOf(building->getPositionX()) + " " + String::valueOf( building->getPositionZ()) + " " + String::valueOf( building->getPositionY()) + ".");
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK @ " + zone->getZoneName() + " " + String::valueOf(building->getPositionX()) + " " + String::valueOf( building->getPositionZ()) + " " + String::valueOf( building->getPositionY()) + ".");
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+		}
 		baseData->setState(DestructibleBuildingDataComponent::SHUTDOWNSEQUENCE);
 		block.release();
 
@@ -1600,6 +1617,19 @@ void GCWManagerImplementation::doBaseDestruction(BuildingObject* building) {
 			int minutesRemaining = dTask->getCountdown();
 			msg.setDI(minutesRemaining);
 			broadcastBuilding(building, msg);
+			StringBuffer zBroadcast;
+			zBroadcast << "Countdown: Estimated time to detonation: " << minutesRemaining << " minutes";
+			if (building->getFaction() == Factions::FACTIONREBEL){
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#FF9933 ATTENTION REBELS, YOUR BASE IS UNDER ATTACK");
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION REBELS, YOUR BASE IS UNDER ATTACK");
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+			} else if (building->getFaction() == Factions::FACTIONIMPERIAL){
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#7133FF ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK");
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK");
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+			}
 			return;
 		}
 	}
@@ -1635,6 +1665,13 @@ void GCWManagerImplementation::doBaseDestruction(BuildingObject* building) {
 			}
 
 			owner->sendSystemMessage(message);
+			if (building->getFaction() == Factions::FACTIONREBEL){
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#FF9933 ATTENTION REBELS, YOUR BASE HAS BEEN DESTROYED!!");
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION REBELS, YOUR BASE HAS BEEN DESTROYED!!");
+			} else if (building->getFaction() == Factions::FACTIONIMPERIAL){
+				building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#7133FF ATTENTION IMPERIALS, YOUR BASE HAS BEEN DESTROYED!!");
+				building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION IMPERIALS, YOUR BASE HAS BEEN DESTROYED!!");
+			}
 		}
 	}
 
@@ -1677,7 +1714,7 @@ void GCWManagerImplementation::broadcastBuilding(BuildingObject* building, Strin
 void GCWManagerImplementation::startAbortSequenceDelay(BuildingObject* building, CreatureObject* creature, SceneObject* hqTerminal) {
 	if (!creature->checkCooldownRecovery("declare_overt_cooldown")) {
 		StringIdChatParameter params("@faction/faction_hq/faction_hq_response:terminal_response41"); // You have recently joined Special Forces. Before issuing the shutdown command, you must wait %TO
-		const Time* cooldownTimer = creature->getCooldownTime("declare_overt_cooldown");
+		Time* cooldownTimer = creature->getCooldownTime("declare_overt_cooldown");
 		int minutes = ceil(cooldownTimer->miliDifference() / -60000.f);
 		params.setTO(String::valueOf(minutes) + " minutes.");
 		creature->sendSystemMessage(params);
@@ -1713,7 +1750,19 @@ void GCWManagerImplementation::abortShutdownSequence(BuildingObject* building, C
 		StringIdChatParameter reloadMessage;
 		reloadMessage.setStringId("@faction/faction_hq/faction_hq_response:terminal_response07"); // COUNTDOWN ABORTED: FACILITY SHUTTING DOWN!!
 		broadcastBuilding(building, reloadMessage);
-
+		StringBuffer zBroadcast;
+		zBroadcast << "COUNTDOWN ABORTED: FACILITY SHUTTING DOWN!!";
+		if (building->getFaction() == Factions::FACTIONREBEL){
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#FF9933 ATTENTION REBELS, YOUR BASE IS UNDER ATTACK");
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION REBELS, YOUR BASE IS UNDER ATTACK");
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+		} else if (building->getFaction() == Factions::FACTIONIMPERIAL){
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, "\\#7133FF ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK");
+			building->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, "ATTENTION IMPERIALS, YOUR BASE IS UNDER ATTACK");
+			building->getZoneServer()->getChatManager()->handleGeneralDiscordGcw(nullptr, zBroadcast.toString());
+		}
 		Reference<Task*> newTask = new BaseRebootTask(_this.getReferenceUnsafeStaticCast(), building, baseData);
 		newTask->schedule(60000);
 	}
@@ -1734,8 +1783,7 @@ void GCWManagerImplementation::resetVulnerability(CreatureObject* creature, Buil
 
 	Locker clock(building, creature);
 
-	debug() << "Resetting vulnerability timer";
-
+	//info("Resetting vulnerability timer",true);
 	baseData->setLastResetTime(Time());
 
 	Time nextTime = Time();
@@ -2136,7 +2184,7 @@ void GCWManagerImplementation::performDonateMinefield(BuildingObject* building, 
 	TemplateManager* templateManager = TemplateManager::instance();
 	Reference<SharedObjectTemplate*> baseServerTemplate = building->getObjectTemplate();
 	Reference<SharedObjectTemplate*> minefieldTemplate = nullptr;
-	const ChildObject* child = nullptr;
+	ChildObject* child = nullptr;
 
 	int currentMinefieldIndex = 0;
 
@@ -2217,7 +2265,7 @@ void GCWManagerImplementation::performDonateTurret(BuildingObject* building, Cre
 	Reference<SharedObjectTemplate*> baseServerTemplate = building->getObjectTemplate();
 
 	Reference<SharedObjectTemplate*> turretTemplate = nullptr;
-	const ChildObject* child = nullptr;
+	ChildObject* child = nullptr;
 	int currentTurretIndex = 0;
 
 	Locker block(building,creature);
@@ -2288,7 +2336,7 @@ void GCWManagerImplementation::performDonateTurret(BuildingObject* building, Cre
 	}
 }
 
-uint64 GCWManagerImplementation::addChildInstallationFromDeed(BuildingObject* building, const ChildObject* child, CreatureObject* creature, Deed* deed) {
+uint64 GCWManagerImplementation::addChildInstallationFromDeed(BuildingObject* building, ChildObject* child, CreatureObject* creature, Deed* deed) {
 	Vector3 position = building->getPosition();
 
 	const Quaternion* direction = building->getDirection();
@@ -2580,16 +2628,12 @@ int GCWManagerImplementation::isStrongholdCity(String& city) {
 }
 
 void GCWManagerImplementation::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
-	if (!crackdownScansEnabled || !player->isPlayerCreature() || !scanner->isInRange(player, 16) || !CollisionManager::checkLineOfSight(scanner, player)) {
-		return;
-	}
-
-	if (!crackdownScanPrivilegedPlayers && player->isPlayerObject() && player->getPlayerObject()->isPrivileged()) {
+	if (!player->isPlayerCreature() || !scanner->isInRange(player, 16) || !CollisionManager::checkLineOfSight(scanner, player)) {
 		return;
 	}
 
 	if (scanner->checkCooldownRecovery("crackdown_scan") && player->checkCooldownRecovery("crackdown_scan")) {
-		ContrabandScanSession* contrabandScanSession = new ContrabandScanSession(scanner, player, getWinningFaction(), getWinningFactionDifficultyScaling());
+		ContrabandScanSession* contrabandScanSession = new ContrabandScanSession(scanner, player);
 		contrabandScanSession->initializeSession();
 	}
 }

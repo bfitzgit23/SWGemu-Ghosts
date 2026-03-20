@@ -49,8 +49,7 @@ object_draft_schematic_clothing_clothing_armor_ithorian_defender_bracer_r = obje
 
    craftingToolTab = 2, -- (See DraftSchematicObjectTemplate.h)
    complexity = 40, 
-   size = 4,
-   factoryCrateSize = 1000, 
+   size = 4, 
 
    xpType = "crafting_clothing_armor", 
    xp = 360, 

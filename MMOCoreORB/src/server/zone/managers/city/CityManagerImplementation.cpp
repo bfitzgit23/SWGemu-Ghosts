@@ -37,7 +37,6 @@
 #include "TaxPayMailTask.h"
 #include "templates/tangible/SharedStructureObjectTemplate.h"
 #include "server/zone/objects/player/sui/callbacks/RenameCitySuiCallback.h"
-#include "server/zone/objects/transaction/TransactionLog.h"
 
 #ifndef CITY_DEBUG
 #define CITY_DEBUG
@@ -201,9 +200,9 @@ CityRegion* CityManagerImplementation::createCity(CreatureObject* mayor, const S
 
 	city->setCustomRegionName(cityName);
 	city->setZone(mayor->getZone());
-	city->setCityRank(OUTPOST);
+	city->setCityRank(METROPOLIS);
 	city->setMayorID(mayor->getObjectID());
-	Region* region = city->addRegion(x, y, radiusPerRank.get(OUTPOST - 1), true);
+	Region* region = city->addRegion(x, y, radiusPerRank.get(METROPOLIS - 1), true);
 
 	city->resetVotingPeriod();
 	city->setAssessmentPending(true);
@@ -572,12 +571,8 @@ void CityManagerImplementation::withdrawFromCityTreasury(CityRegion* city, Creat
 		return;
 	}
 
-	{
-		TransactionLog trx(TrxCode::CITYTREASURY, mayor, value, false);
-		trx.addState("treasury", city->getCityTreasury());
-		mayor->addBankCredits(value, true);
-		city->subtractFromCityTreasury(value);
-	}
+	mayor->addBankCredits(value, true);
+	city->subtractFromCityTreasury(value);
 
 	mayor->addCooldown("city_withdrawal", CityManagerImplementation::treasuryWithdrawalCooldown);
 
@@ -600,44 +595,57 @@ void CityManagerImplementation::promptDepositCityTreasury(CityRegion* city, Crea
 
 	if (ghost == nullptr)
 		return;
+	int cash = creature->getCashCredits();
+	int bank = creature->getBankCredits();
+	int totalPlayerCredits = bank + cash;
 
 	ManagedReference<SuiTransferBox*> transfer = new SuiTransferBox(creature, SuiWindowType::CITY_TREASURY_DEPOSIT);
 	transfer->setPromptTitle("@city/city:treasury_deposit"); //Treasury Deposit
 	transfer->setPromptText("@city/city:treasury_deposit_d"); //Enter the amount you would like to transfer to the city treasury.
-	transfer->addFrom("@city/city:funds", String::valueOf(creature->getCashCredits()), String::valueOf(creature->getCashCredits()), "1");
+	transfer->addFrom("@city/city:funds", String::valueOf(totalPlayerCredits), String::valueOf(totalPlayerCredits), "1");
 	transfer->addTo("@city/city:treasury", "0", "0", "1");
 	transfer->setUsingObject(terminal);
 	transfer->setForceCloseDistance(16.f);
 	transfer->setCallback(new CityTreasuryDepositSuiCallback(zoneServer, city));
-
 	ghost->addSuiBox(transfer);
 	creature->sendMessage(transfer->generateMessage());
 }
-
 void CityManagerImplementation::depositToCityTreasury(CityRegion* city, CreatureObject* creature, int amount) {
 	int cash = creature->getCashCredits();
+	int bank = creature->getBankCredits();
+	int totalPlayerCredits = bank + cash;
+	int total = totalPlayerCredits - amount;
 
-	int total = cash - amount;
-
-	if (total < 1 || total > cash) {
+	if (total < 1 || total > totalPlayerCredits) {
 		creature->sendSystemMessage("@city/city:positive_deposit"); //You must select a positive amount to transfer to the treasury.
 		return;
 	}
-
 	double currentTreasury = city->getCityTreasury();
-
 	if ((int)currentTreasury + total > 100000000) {
 		creature->sendSystemMessage("The maximum treasury a city can have is 100.000.000");
 		return;
 	}
-
 	{
-		TransactionLog trx(creature, TrxCode::CITYTREASURY, total, true);
-		trx.addState("treasury", city->getCityTreasury());
+		// If player does not have enough cash on them, but they DO have enough credits in their bank, take the cash they have and the difference from their bank.
+		if (total > cash) {
+			int diff = total - cash;
+			if (bank >= diff) {
+				creature->subtractCashCredits(cash);
+				creature->subtractBankCredits(diff);
+				city->addToCityTreasury(total);
+				return;
+			}
+			// If they don't have enough credits in their cash OR bank then err.
+			// However, this code should never hit if the above logic works. This is just a paranoid safeguard!
+			else {
+				creature->sendSystemMessage("You do not have enough total funds to complete this transaction."); //You must select a positive amount to transfer to the treasury.
+				return;
+			}
+		}
+		// If we have enough cash on-hand then we just do this
 		creature->subtractCashCredits(total);
 		city->addToCityTreasury(total);
 	}
-
 	StringIdChatParameter params("city/city", "deposit_treasury"); //You deposit %DI credits into the treasury.
 	params.setDI(total);
 	creature->sendSystemMessage(params);
@@ -761,7 +769,7 @@ void CityManagerImplementation::processCityUpdate(CityRegion* city) {
 			Reference<PlayerObject*> ghost = mayor->getSlottedObject("ghost").castTo<PlayerObject*> ();
 
 			if (ghost != nullptr) {
-				ghost->addExperience("political", 750, true);
+				ghost->addExperience("political", 3000, true);
 			}
 		}
 		updateCityVoting(city);
@@ -1148,7 +1156,7 @@ void CityManagerImplementation::updateCityVoting(CityRegion* city, bool override
 			Reference<PlayerObject*> ghost = mayorObject->getSlottedObject("ghost").castTo<PlayerObject*>();
 
 			if (ghost != nullptr) {
-				ghost->addExperience("political", votes * 300, true);
+				ghost->addExperience("political", votes * 3000, true);
 			}
 
 			if (votes > topVotes || (votes == topVotes && candidateID == incumbentID)) {
@@ -1179,7 +1187,7 @@ void CityManagerImplementation::updateCityVoting(CityRegion* city, bool override
 			CreatureObject* oldmayorCreo = cast<CreatureObject*> (oldmayor.get());
 
 			if (oldmayorCreo != nullptr) {
-				const Time* cooldownTime = oldmayorCreo->getCooldownTime("city_specialization");
+				Time* cooldownTime = oldmayorCreo->getCooldownTime("city_specialization");
 				int64 miliDiff = 0;
 
 				if (cooldownTime != nullptr) {

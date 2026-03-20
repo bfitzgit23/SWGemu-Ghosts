@@ -103,7 +103,7 @@ void SurveySessionImplementation::startSurvey(const String& resname) {
 	}
 
 	//Get actual cost based upon player's Focus
-	int mindCost = (100 - (int)(surveyer->getHAM(CreatureAttribute::FOCUS)/15.f)) / 2;
+	int mindCost = 100 - (int)(surveyer->getHAM(CreatureAttribute::FOCUS)/15.f);
 
 	if (surveyer->getHAM(CreatureAttribute::MIND) < mindCost) {
 		surveyer->setPosture(CreaturePosture::UPRIGHT, true);
@@ -192,7 +192,7 @@ void SurveySessionImplementation::startSample(const String& resname) {
 	}
 
 	//Get actual cost based upon player's Quickness
-	int actionCost = (124 - (int)(surveyer->getHAM(CreatureAttribute::QUICKNESS)/12.5f)) / 2;
+	int actionCost = 124 - (int)(surveyer->getHAM(CreatureAttribute::QUICKNESS)/12.5f);
 
 	if (surveyer->getHAM(CreatureAttribute::ACTION) < actionCost) {
 		surveyer->setPosture(CreaturePosture::UPRIGHT, true);
@@ -228,12 +228,27 @@ void SurveySessionImplementation::startSample(const String& resname) {
 	message.setTO(lastResourceSampleName);
 	surveyer->sendSystemMessage(message);
 
+	if (!doGamble && richSampleLocation.getPosition() != Vector3(0, 0, 0) && System::random(50) == 7) {
 
+		if (ghost->hasSuiBoxWindowType(SuiWindowType::SURVEY_TOOL_CONCENTRATED_MINIGAME)) {
+			ghost->removeSuiBoxType(SuiWindowType::SURVEY_TOOL_CONCENTRATED_MINIGAME);
+		}
 
-	if (!lastResourceSampleName.isEmpty())
-		resourceManager->sendSample(surveyer, lastResourceSampleName,
-		activeSurveyTool->getSampleAnimation());
+		if (ghost->hasSuiBoxWindowType(SuiWindowType::SURVEY_TOOL_CONCENTRATED_MINIGAME2)) {
+			ghost->removeSuiBoxType(SuiWindowType::SURVEY_TOOL_CONCENTRATED_MINIGAME2);
+		}
 
+		if (System::random(1) == 1)
+			surveyCnodeMinigameSui();
+		else
+			surveyGnodeMinigameSui();
+
+	} else {
+
+		if (!lastResourceSampleName.isEmpty())
+			resourceManager->sendSample(surveyer, lastResourceSampleName,
+					activeSurveyTool->getSampleAnimation());
+	}
 }
 
 void SurveySessionImplementation::surveyCnodeMinigameSui() {
@@ -341,7 +356,7 @@ void SurveySessionImplementation::surveyGnodeMinigame(int value) {
 			return;
 		}
 
-		surveyer->inflictDamage(surveyer, CreatureAttribute::ACTION, 1, false, true);
+		surveyer->inflictDamage(surveyer, CreatureAttribute::ACTION, 300, false, true);
 		doGamble = true;
 	}
 
@@ -367,9 +382,9 @@ void SurveySessionImplementation::rescheduleSample() {
 	// Add sampletask
 	if (sampleTask == nullptr)
 		sampleTask = new SampleTask(surveyer, activeSurveyTool.get());
-//sample timer
+
 	if (surveyer->getPendingTask("sample") == nullptr)
-		surveyer->addPendingTask("sample", sampleTask, 10000);
+		surveyer->addPendingTask("sample", sampleTask, 25000);
 }
 
 void SurveySessionImplementation::rescheduleSampleResults(const ResourceSpawner* resourceSpawner, float density, const String& resname) {
@@ -384,4 +399,3 @@ void SurveySessionImplementation::rescheduleSampleResults(const ResourceSpawner*
 		surveyer->addPendingTask("sampleresults", sampleResultsTask, 3000);
 	}
 }
-

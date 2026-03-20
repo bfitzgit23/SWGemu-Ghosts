@@ -1,5 +1,6 @@
 --Copyright (C) 2010 <SWGEmu>
 
+
 --This File is part of Core3.
 
 --This program is free software; you can redistribute 
@@ -39,10 +40,9 @@
 --gives permission to release a modified version without this exception; 
 --this exception also makes it possible to release a modified version 
 
---Children folder includes
 
--- Ensure shared client templates are loaded before server objects
-includeFile("tangible/component/weapon/lightsaber/objects.lua")
+
+--Children folder includes
 
 -- Server Objects
 includeFile("tangible/component/weapon/lightsaber/base_lightsaber_lance_module.lua")
@@ -56,9 +56,8 @@ includeFile("tangible/component/weapon/lightsaber/lightsaber_module_forcecost.lu
 includeFile("tangible/component/weapon/lightsaber/lightsaber_module_krayt_dragon_pearl.lua")
 includeFile("tangible/component/weapon/lightsaber/lightsaber_module_woundchance.lua")
 includeFile("tangible/component/weapon/lightsaber/lightsaber_refined_crystal_pack.lua")
---includeFile("tangible/component/weapon/lightsaber/lightsaber_refined_crystal_pack2.lua")
 includeFile("tangible/component/weapon/lightsaber/salvation_lightsaber_crystal_module.lua")
---includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_blackwing_crystal.lua")
---includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_lava_crystal.lua")
---includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_permafrost_crystal.lua")
---includeFile("tangible/component/weapon/lightsaber/lightsaber_refined_blackwing_pack.lua")
+includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_blackwing_crystal.lua")
+includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_lava_crystal.lua")
+includeFile("custom_content/tangible/component/weapon/lightsaber/lightsaber_module_permafrost_crystal.lua")
+includeFile("tangible/component/weapon/lightsaber/lightsaber_refined_blackwing_pack.lua")

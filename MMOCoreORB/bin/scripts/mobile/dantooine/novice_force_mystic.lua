@@ -18,7 +18,7 @@ novice_force_mystic = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER + HEALER,
@@ -29,14 +29,14 @@ novice_force_mystic = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 4500001}, -- 45.00%
-                {group = "power_crystals", chance = 750000}, -- 7.50%
-                {group = "color_crystals", chance = 750000}, -- 7.50%
-                {group = "melee_weapons", chance = 833333}, -- 8.33%
-                {group = "armor_attachments", chance = 750000}, -- 7.50%
-                {group = "clothing_attachments", chance = 750000}, -- 7.50%
-                {group = "wearables_common", chance = 833333}, -- 8.33%
-                {group = "wearables_uncommon", chance = 833333}, -- 8.33%
+				{group = "junk", chance = 5000000},
+				{group = "power_crystals", chance = 500000},
+				{group = "color_crystals", chance = 500000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "armor_attachments", chance = 500000},
+				{group = "clothing_attachments", chance = 500000},
+				{group = "wearables_common", chance = 1000000},
+				{group = "wearables_uncommon", chance = 1000000}
 			}
 		}
 	},

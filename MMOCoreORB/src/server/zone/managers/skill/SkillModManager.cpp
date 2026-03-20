@@ -80,19 +80,19 @@ void SkillModManager::init() {
 
 void SkillModManager::setDefaults() {
 	skillModMin.put(WEARABLE, -25);
-	skillModMax.put(WEARABLE, 50);
+	skillModMax.put(WEARABLE, 25);
 
 	skillModMin.put(ABILITYBONUS, -125);
-	skillModMax.put(ABILITYBONUS, 250);
+	skillModMax.put(ABILITYBONUS, 125);
 
 	skillModMin.put(STRUCTURE, -125);
-	skillModMax.put(STRUCTURE, 250);
+	skillModMax.put(STRUCTURE, 125);
 
 	skillModMin.put(BUFF, -125);
-	skillModMax.put(BUFF, 250);
+	skillModMax.put(BUFF, 125);
 
 	skillModMin.put(DROID, -110);
-	skillModMax.put(DROID, 220);
+	skillModMax.put(DROID, 110);
 }
 
 void SkillModManager::verifyWearableSkillMods(CreatureObject* creature) {
@@ -268,10 +268,10 @@ void SkillModManager::verifyBuffSkillMods(CreatureObject* creature) {
 	const BuffList* buffList = creature->getBuffList();
 	for(int i = 0; i < buffList->getBuffListSize(); ++i) {
 		ManagedReference<Buff*> buff = buffList->getBuffByIndex(i);
-		const VectorMap<String, int>* skillMods = buff->getSkillModifiers();
+		VectorMap<String, int>* skillMods = buff->getSkillModifiers();
 		for(int j = 0; j < skillMods->size(); ++j) {
-			const String& name = skillMods->elementAt(j).getKey();
-			int value = skillMods->elementAt(j).getValue();
+			String name = skillMods->elementAt(j).getKey();
+			int value = skillMods->get(name);
 
 			if(mods.contains(name)) {
 				value += mods.get(name);

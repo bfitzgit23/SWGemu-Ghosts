@@ -20,7 +20,7 @@ wise_jinda_ritualist = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -35,11 +35,12 @@ wise_jinda_ritualist = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "ewok", chance = 3500000}, -- 35.00%
-                {group = "wearables_uncommon", chance = 3500000}, -- 35.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
+				{group = "ewok", chance = 8100000},
+				{group = "wearables_uncommon", chance = 1000000},
+				{group = "armor_attachments", chance = 450000},
+				{group = "clothing_attachments", chance = 450000},
 			},
+			lootChance = 1700000
 		},
 	},
 	weapons = {"ewok_weapons"},

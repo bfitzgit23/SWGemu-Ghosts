@@ -20,7 +20,7 @@ corsec_chief = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -31,10 +31,10 @@ corsec_chief = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "wearables_all", chance = 1250000}, -- 12.50%
-				{group = "corsec_weapons", chance = 1250000}, -- 12.50%
-				{group = "junk", chance = 3750000}, -- 37.50%
-				{group = "tailor_components", chance = 3750000}, -- 37.50%
+				{group = "junk", chance = 4500000},
+				{group = "wearables_all", chance = 1500000},
+				{group = "corsec_weapons", chance = 2500000},
+				{group = "tailor_components", chance = 1500000}
 			}
 		}
 	},

@@ -50,21 +50,21 @@ void PlanetManagerImplementation::initialize() {
 	loadTravelFares();
 
 	if (zone->getZoneName() == "dathomir") {
-//		Reference<ActiveArea*> area = zone->getZoneServer()->createObject(STRING_HASHCODE("object/fs_village_area.iff"), 0).castTo<ActiveArea*>();
-//
-//		Locker locker(area);
-//		area->setRadius(768.f);
-//		area->initializePosition(5306, 0, -4145);
-//		zone->transferObject(area, -1, true);
-//
-//		ManagedReference<SceneObject*> scenery = zone->getZoneServer()->createObject(STRING_HASHCODE("object/static/structure/general/fs_village_nobuild_768m.iff"), 0);
-//
-//		Locker slocker(scenery, area);
-//		scenery->initializePosition(5306, zone->getHeight(5306, -4145), -4145);
-//		area->attachScenery(scenery);
-//
-//		slocker.release();
-//		locker.release();
+		Reference<ActiveArea*> area = zone->getZoneServer()->createObject(STRING_HASHCODE("object/fs_village_area.iff"), 0).castTo<ActiveArea*>();
+
+		Locker locker(area);
+		area->setRadius(768.f);
+		area->initializePosition(5306, 0, -4145);
+		zone->transferObject(area, -1, true);
+
+		ManagedReference<SceneObject*> scenery = zone->getZoneServer()->createObject(STRING_HASHCODE("object/static/structure/general/fs_village_nobuild_768m.iff"), 0);
+
+		Locker slocker(scenery, area);
+		scenery->initializePosition(5306, zone->getHeight(5306, -4145), -4145);
+		area->attachScenery(scenery);
+
+		slocker.release();
+		locker.release();
 
 		Reference<ActiveArea*> sarlaccArea = zone->getZoneServer()->createObject(STRING_HASHCODE("object/sarlacc_area.iff"), 0).castTo<ActiveArea*>();
 
@@ -470,7 +470,7 @@ void PlanetManagerImplementation::loadTravelFares() {
 
 int PlanetManagerImplementation::getTravelFare(const String& departurePlanet, const String& arrivalPlanet) {
 	int fare = travelFares.get(departurePlanet).get(arrivalPlanet);
-	return fare; //messing with fares here and above change cost but doesnt show adjusted cost, might need tre edit
+	return fare;
 }
 
 Reference<SceneObject*> PlanetManagerImplementation::loadSnapshotObject(WorldSnapshotNode* node, WorldSnapshotIff* wsiff, int& totalObjects) {
@@ -485,6 +485,8 @@ Reference<SceneObject*> PlanetManagerImplementation::loadSnapshotObject(WorldSna
 
 	/*if (ConfigManager::instance()->isProgressMonitorActivated())
 		printf("\r\tLoading snapshot objects: [%d] / [?]\t", totalObjects);*/
+
+	//Object already exists, exit.
 	if (object != nullptr)
 		return nullptr;
 
@@ -494,11 +496,6 @@ Reference<SceneObject*> PlanetManagerImplementation::loadSnapshotObject(WorldSna
 	Vector3 position = node->getPosition();
 
 	object = zoneServer->createClientObject(serverTemplate.hashCode(), objectID);
-
-	if (object == nullptr) {
-		error("Could not create object template:" + templateName);
-		return nullptr;
-	}
 
 	Locker locker(object);
 
@@ -602,8 +599,6 @@ void PlanetManagerImplementation::loadSnapshotObjects() {
 }
 
 bool PlanetManagerImplementation::isTravelToLocationPermitted(const String& departurePoint, const String& arrivalPlanet, const String& arrivalPoint) {
-	//edit travel locations here
-
 	//Check to see that the departure point exists.
 	if (!isExistingPlanetTravelPoint(departurePoint))
 		return false;
@@ -695,31 +690,6 @@ PlanetTravelPoint* PlanetManagerImplementation::getRandomStarport() {
 	}
 
 	return planetStarports.get(System::random(planetStarports.size() - 1));
-}
-
-Vector3 PlanetManagerImplementation::getRandomSpawnPoint() {
-	Vector3 position;
-	bool found = false;
-	float minX = zone->getMinX(), maxX = zone->getMaxX();
-	float minY = zone->getMinY(), maxY = zone->getMaxY();
-	float diameterX = maxX - minX;
-	float diameterY = maxY - minY;
-	int retries = 20;
-
-	while (!found && retries > 0) {
-		position.setX(System::random(diameterX) + minX);
-		position.setY(System::random(diameterY) + minY);
-
-		found = isSpawningPermittedAt(position.getX(), position.getY());
-
-		retries--;
-	}
-
-	if (retries == 0) {
-		position.set(0, 0, 0);
-	}
-
-	return position;
 }
 
 void PlanetManagerImplementation::loadClientPoiData() {
@@ -847,7 +817,7 @@ void PlanetManagerImplementation::loadClientRegions(LuaObject* outposts) {
 			}
 
 			Locker slocker(scenery, region);
-			scenery->initializePosition(x, zone->getHeight(x, y) + 100, y);
+			scenery->initializePosition(x, zone->getHeight(x, y) + 5, y);
 			region->attachScenery(scenery);
 		}
 

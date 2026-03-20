@@ -18,9 +18,6 @@
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/chat/ChatManager.h"
 #include "server/zone/objects/player/events/DisconnectClientEvent.h"
-#ifdef WITH_SESSION_API
-#include "server/login/SessionAPIClient.h"
-#endif // WITH_SESSION_API
 
 class SelectCharacterCallback : public MessageCallback {
 	uint64 characterID;
@@ -53,45 +50,6 @@ public:
 
 			return;
 		}
-
-#ifdef WITH_SESSION_API
-		auto clientIP = client->getIPAddress();
-		auto loggedInAccounts = zoneServer->getPlayerManager()->getOnlineZoneClientMap()->getAccountsLoggedIn(clientIP);
-
-		SessionAPIClient::instance()->approvePlayerConnect(clientIP, ghost->getAccountID(), characterID, loggedInAccounts,
-				[object = Reference<SceneObject*>(obj), characterID,
-				playerCreature = Reference<CreatureObject*>(player),
-				clientObject = Reference<ZoneClientSession*>(client),
-				zoneServer](SessionApprovalResult result) {
-
-			if (!result.isActionAllowed()) {
-				clientObject->info(true) << "Player connect not approved: " << result.getLogMessage();
-
-				clientObject->sendMessage(new ErrorMessage(result.getTitle(), result.getMessage(true), 0));
-				return;
-			}
-
-			Locker locker(object);
-
-			if (result.isActionDebug() && playerCreature != nullptr) {
-				auto ghost = playerCreature->getPlayerObject();
-
-				if (ghost != nullptr) {
-					ghost->setLogLevel(Logger::DEBUG);
-				}
-			}
-
-			connectApprovedPlayer(object, characterID, playerCreature, clientObject, zoneServer);
-		});
-	};
-
-	static void connectApprovedPlayer(SceneObject* obj, uint64_t characterID, CreatureObject* player, ZoneClientSession* client, ZoneServer* zoneServer) {
-		PlayerObject* ghost = player->getPlayerObject();
-
-		if (ghost == nullptr) {
-			return;
-		}
-#endif // WITH_SESSION_API
 
 		player->setClient(client);
 		client->setPlayer(player);

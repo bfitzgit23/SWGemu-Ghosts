@@ -64,7 +64,7 @@ class QuadTreeEntry extends Observable {
 		}
 
 		/*else {
-			QuadTreeEntry* obj2 = NULL;
+			QuadTreeEntry* obj2 = nullptr;
 			obj2->getPositionX();
 
 			System::out << hex << "[0x" << obj->objectID << "] was not found in close objects for [0x"
@@ -145,7 +145,7 @@ class QuadTreeEntry extends Observable {
 	@dirty
 	public native QuadTreeEntry getRootParentUnsafe();
 
-	@read
+	@dirty
 	public abstract native boolean containsPoint(float x, float y);
 
 	@dirty
@@ -241,14 +241,14 @@ class QuadTreeEntry extends Observable {
 	    return receiverFlags;
 	}
 
-	@read
+	@dirty
 	public abstract int getReceiverFlags() {
 	    return receiverFlags;
 	}
 
 	@read
 	public boolean isInQuadTree() {
-		return node;
+		return node != null;
 	}
 
 	/*@read

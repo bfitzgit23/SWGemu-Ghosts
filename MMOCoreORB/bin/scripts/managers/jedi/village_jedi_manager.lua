@@ -1,12 +1,6 @@
-JediManager = require("managers.jedi.jedi_manager")
-local Logger = require("utils.logger")
-local QuestManager = require("managers.quest.quest_manager")
-
-jediManagerName = "VillageJediManager"
-
 NOTINABUILDING = 0
 
-NUMBEROFTREESTOMASTER = 0
+NUMBEROFTREESTOMASTER = 3
 
 VillageJediManager = JediManager:new {
 	screenplayName = jediManagerName,
@@ -44,6 +38,9 @@ function VillageJediManager:checkForceStatusCommand(pPlayer)
 	end
 
 	Glowing:checkForceStatusCommand(pPlayer)
+
+	-- Holocron Jedi system progress report
+	HolocronJedi:checkForceStatusCommand(pPlayer)
 end
 
 -- Handling of the onPlayerLoggedIn event. The progression of the player will be checked and observers will be registered.
@@ -110,9 +107,9 @@ function VillageJediManager:canLearnSkill(pPlayer, skillName)
 		end
 	end
 
---	if skillName == "force_title_jedi_rank_01" and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) < 24 then
---		return false
---	end
+	if skillName == "force_title_jedi_rank_01" and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) < 12 then
+		return false
+	end
 
 	if skillName == "force_title_jedi_rank_03" and not CreatureObject(pPlayer):villageKnightPrereqsMet("") then
 		return false
@@ -123,16 +120,13 @@ end
 
 --Check to ensure force skill prerequisites are maintained
 function VillageJediManager:canSurrenderSkill(pPlayer, skillName)
-
-	if skillName == "force_title_jedi_rank_02" or skillName == "force_title_jedi_novice" then
-		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:revoke_force_title")
+	if skillName == "force_title_jedi_novice" and CreatureObject(pPlayer):getForceSensitiveSkillCount(true) > 0 then
 		return false
 	end
 
---	if string.find(skillName, "force_sensitive_") and CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) <= 24 then
---		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:revoke_force_sensitive")
---		return false
---	end
+	if string.find(skillName, "force_sensitive_") and CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and CreatureObject(pPlayer):getForceSensitiveSkillCount(false) <= 12 then
+		return false
+	end
 
 	if string.find(skillName, "force_discipline_") and CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not CreatureObject(pPlayer):villageKnightPrereqsMet(skillName) then
 		return false

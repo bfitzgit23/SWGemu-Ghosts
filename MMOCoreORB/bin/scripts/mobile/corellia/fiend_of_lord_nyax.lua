@@ -18,7 +18,7 @@ fiend_of_lord_nyax = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -29,10 +29,10 @@ fiend_of_lord_nyax = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "pistols", chance = 833333}, -- 8.33%
-                {group = "rifles", chance = 833333}, -- 8.33%
-                {group = "carbines", chance = 833333}, -- 8.33%
-                {group = "junk", chance = 7500001}, -- 75.00%
+				{group = "junk", chance = 7000000},
+				{group = "pistols", chance = 1000000},
+				{group = "rifles", chance = 1000000},
+				{group = "carbines", chance = 1000000}
 			}
 		}
 	},

@@ -28,15 +28,15 @@ fbase_elite_dark_trooper = Creature:new {
 	diet = HERBIVORE,
 	scale = 1.5,
 
-	templates = {"object/mobile/dressed_stormtrooper_black_black.iff"},
+	templates = {"object/mobile/dark_trooper.iff"},
 	lootGroups = {
 		{
 			groups = {
 				{group = "color_crystals", chance = 300000},
-				{group = "junk", chance = 6000000},
+				{group = "junk", chance = 6500000},
 				{group = "holocron_dark", chance = 150000},
 				{group = "holocron_light", chance = 150000},
-				{group = "weapons_all", chance = 1050000},
+				{group = "rebpoints", chance = 550000},
 				{group = "armor_all", chance = 1050000},
 				{group = "clothing_attachments", chance = 150000},
 				{group = "armor_attachments", chance = 150000},

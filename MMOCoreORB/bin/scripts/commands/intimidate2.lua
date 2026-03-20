@@ -46,8 +46,6 @@ Intimidate2Command = {
 
 	damageMultiplier = 0,
 	speedMultiplier = 1,
-	areaAction = true,
-	areaRange = 16,
 	healthCostMultiplier = 0,
 	actionCostMultiplier = 0,
 	mindCostMultiplier = 0,

@@ -53,7 +53,7 @@ SceneObject::SceneObject(LuaObject* templateData) : Logger("SceneObject") {
 
 SceneObject::~SceneObject() {
 	/*if (parent != nullptr) {
-		error("DELETING OBJECT WITH PARENT NOT NULL");
+		error("DELETING OBJECT WITH PARENT NOT nullptr");
 	}*/
 	info("destroying object");
 

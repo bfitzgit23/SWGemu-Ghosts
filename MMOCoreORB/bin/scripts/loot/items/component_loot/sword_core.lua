@@ -6,8 +6,8 @@ sword_core = {
 	customObjectName = "",
 	directObjectTemplate = "object/tangible/component/weapon/sword_core.iff",
 	craftingValues = {
-		{"mindamage", 20,40,0},
-		{"maxdamage", 20,40,0},
+		{"mindamage", 4,20,0},
+		{"maxdamage", 4,20,0},
 		{"attackspeed",-0.1,-0.5,1},
 		{"woundchance",2,10,1},
 		{"hitpoints",20,100,0},

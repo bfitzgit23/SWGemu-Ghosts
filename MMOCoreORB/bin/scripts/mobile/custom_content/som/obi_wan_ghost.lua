@@ -1,5 +1,5 @@
 obi_wan_ghost = Creature:new {
-	customName = "Obi-Wan Kenobi",
+	customName = "Obi Wan",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,21 +18,23 @@ obi_wan_ghost = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
-	scale = 1.1,
-	pvpBitmask = NONE,
-  creatureBitmask = PACK,
-  optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
-  diet = HERBIVORE,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK + STALKER,
+	optionsBitmask = AIENABLED,
+	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/obi_wan_ghost.iff"},
-	lootGroups = {},
-	weapons = {},
-	conversationTemplate = "obi_wan_elysium",
-	attacks = {
-  }
-	
+	lootGroups = {
+		{
+			groups = {},
+			lootChance = 2100000
+		}
+	},
+	weapons = {"pirate_weapons_light"},
+	conversationTemplate = "",
+	attacks = merge(marksmannovice,brawlernovice)
 }
 
 CreatureTemplates:addCreatureTemplate(obi_wan_ghost, "obi_wan_ghost")

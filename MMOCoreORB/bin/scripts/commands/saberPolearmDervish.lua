@@ -84,7 +84,7 @@ SaberPolearmDervishCommand = {
 	  )
 	},
 
-	animation = "combo_jedi_2", 
+	animation = "showoff_2", 
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "saberpolearmdervish",

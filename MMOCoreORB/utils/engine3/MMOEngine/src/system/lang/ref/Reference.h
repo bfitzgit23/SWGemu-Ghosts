@@ -12,6 +12,7 @@
 
 #include "system/thread/atomic/AtomicReference.h"
 #include "system/thread/atomic/AtomicInteger.h"
+#include <atomic>
 
 namespace sys {
   namespace lang {
@@ -270,9 +271,7 @@ namespace sys {
 				(obj)->acquire();
 
 				#ifdef TRACE_REFERENCES
-				Object* castedObject = dynamic_cast<Object*>(obj);
-
-				castedObject->addHolder(id);
+				obj->addHolder(id);
 				#endif
 			}
 
@@ -282,9 +281,7 @@ namespace sys {
 				if (object.compareAndSetWeak(oldobj, obj)) {
 					if (oldobj != nullptr) {
 						#ifdef TRACE_REFERENCES
-						Object* castedObject = dynamic_cast<Object*>(oldobj);
-
-						castedObject->removeHolder(id);
+						oldobj->removeHolder(id);
 						#endif
 
 						(oldobj)->release();
@@ -306,7 +303,7 @@ namespace sys {
 		}
 
 		inline void initializeObject(O obj) {
-			object = obj;
+			object.set(obj, std::memory_order_relaxed);
 
 			acquireObject();
 		}
@@ -326,7 +323,7 @@ namespace sys {
 				object.get()->removeHolder(id);
 			#endif
 				object.get()->release();
-				object = nullptr;
+				object.set(nullptr, std::memory_order_relaxed);
 			}
 		}
 	};
@@ -336,7 +333,9 @@ namespace sys {
 		return Reference<T*>(new T(std::forward<Args>(args)...));
 	}
 
+#ifndef TRACE_REFERENCES
 	static_assert(sizeof(Reference<Object*>) == sizeof(Object*), "Reference sizeof check failed");
+#endif //TRACE_REFERENCES
 
 
   } // namespace lang

@@ -25,6 +25,7 @@
 #include "server/zone/packets/object/CombatSpam.h"
 #include "QueueCommand.h"
 #include "server/zone/objects/player/FactionStatus.h"
+#include "server/zone/managers/visibility/VisibilityManager.h"
 
 class CombatQueueCommand : public QueueCommand {
 protected:
@@ -184,12 +185,14 @@ public:
 
 				ManagedReference<TangibleObject*> targetTano = targetObject.castTo<TangibleObject*>();
 
-				if (targetTano != nullptr && creature->getFaction() != 0 && targetTano->getFaction() != 0 && targetTano->getFaction() != creature->getFaction() && creature->getFactionStatus() != FactionStatus::OVERT) {
-					if (targetTano->isCreatureObject()) {
+				//Comment out field faction change
+				/*if (targetTano != nullptr && creature->getFaction() != 0 && targetTano->getFaction() != 0 && targetTano->getFaction() != creature->getFaction() && creature->getFactionStatus() != FactionStatus::OVERT) {
+ 					if (targetTano->isCreatureObject()) {
 						ManagedReference<CreatureObject*> targetCreature = targetObject.castTo<CreatureObject*>();
 
 						if (targetCreature != nullptr) {
 							if (targetCreature->isPlayerCreature()) {
+
 								if (!CombatManager::instance()->areInDuel(creature, targetCreature) && !targetCreature->hasBountyMissionFor(creature) && !creature->hasBountyMissionFor(targetCreature) && targetCreature->getFactionStatus() == FactionStatus::OVERT)
 									ghost->doFieldFactionChange(FactionStatus::OVERT);
 							} else if (targetCreature->isPet()) {
@@ -209,7 +212,7 @@ public:
 						else if ((targetTano->getPvpStatusBitmask() & CreatureFlag::OVERT))
 							ghost->doFieldFactionChange(FactionStatus::OVERT);
 					}
-				}
+				}*/
 			}
 		}
 
@@ -281,6 +284,20 @@ public:
 		// only clear aiming states if command was successful
 		creature->removeStateBuff(CreatureState::AIMING);
 		creature->removeBuff(STRING_HASHCODE("steadyaim"));
+
+		//Give visibility
+		if (creature->isPlayerCreature()){
+			PlayerObject* visGhost = creature->getPlayerObject().get();
+			if (visGhost->isJedi()){
+				WeaponObject* visWeap = creature->getWeapon();
+				if (visWeap->isJediWeapon()){
+					VisibilityManager::instance()->increaseVisibility(creature, 25);
+					//Jedi Attackable
+					visGhost->updateLastJediAttackableTimestamp();
+				}
+
+			}
+		}
 
 		return SUCCESS;
 	}
@@ -498,7 +515,7 @@ public:
 				return "creature_attack" + intensity;
 		}
 
-		debug() << "Generated Attack Animation- " << buffer;
+		//debug() << "Generated Attack Animation- " << buffer;
 
 		return buffer.toString();
 	}
@@ -522,7 +539,7 @@ public:
 			return anim;
 		}
 
-		debug() << "Generated Attack Animation- " << anim;
+		//debug() << "Generated Attack Animation- " << anim;
 
 		return anim;
 	}
@@ -546,12 +563,12 @@ public:
 		return poolsToDamage;
 	}
 
-	inline const VectorMap<uint8, StateEffect>* getStateEffects() const {
-		return &stateEffects;
+	inline VectorMap<uint8, StateEffect>* getStateEffects() const {
+		return &(const_cast<CombatQueueCommand*>(this)->stateEffects);
 	}
 
-	inline const Vector<DotEffect>* getDotEffects() const {
-		return &dotEffects;
+	inline Vector<DotEffect>* getDotEffects() const {
+		return &(const_cast<CombatQueueCommand*>(this)->dotEffects);
 	}
 
 	void setAnimationString(const String& anim) {
@@ -622,11 +639,11 @@ public:
 		this->accuracySkillMod = acc;
 	}
 
-	bool hasCombatSpam() const {
+	bool hasCombatSpam() {
 		return !combatSpam.isEmpty();
 	}
 
-	bool isCombatCommand() const {
+	bool isCombatCommand() {
 		return true;
 	}
 
@@ -678,7 +695,7 @@ public:
 				defender->setPosture(CreaturePosture::KNOCKEDDOWN, false, false);
 
 			defender->updateKnockdownRecovery();
-			defender->updatePostureChangeDelay(1000);
+			defender->updatePostureChangeDelay(5000);
 			defender->removeBuff(STRING_HASHCODE("burstrun"));
 			defender->removeBuff(STRING_HASHCODE("retreat"));
 			defender->sendSystemMessage("@cbt_spam:posture_knocked_down");
@@ -707,7 +724,7 @@ public:
 			}
 
 			defender->updatePostureUpRecovery();
-			defender->updatePostureChangeDelay(1000);
+			defender->updatePostureChangeDelay(2500);
 			defender->removeBuff(STRING_HASHCODE("burstrun"));
 			defender->removeBuff(STRING_HASHCODE("retreat"));
 			break;
@@ -734,7 +751,7 @@ public:
 			}
 
 			defender->updatePostureDownRecovery();
-			defender->updatePostureChangeDelay(1000);
+			defender->updatePostureChangeDelay(2500);
 			defender->removeBuff(STRING_HASHCODE("burstrun"));
 			defender->removeBuff(STRING_HASHCODE("retreat"));
 			break;

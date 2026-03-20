@@ -23,7 +23,6 @@
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
 
 #include "templates/installation/FactoryObjectTemplate.h"
-#include "server/zone/objects/transaction/TransactionLog.h"
 
 void FactoryObjectImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
 	InstallationObjectImplementation::loadTemplateData(templateData);
@@ -100,6 +99,7 @@ void FactoryObjectImplementation::fillAttributeList(AttributeListMessage* alm, C
 			alm->insertAttribute("manufacture_object", prototype->getDisplayedName());
 		}
 
+		alm->insertAttribute("complexity", (int)schematic->getComplexity());
 		alm->insertAttribute("manufacture_time", timer);
 
 		ManagedReference<SceneObject*> outputHopper = getSlottedObject("output_hopper");
@@ -298,8 +298,6 @@ void FactoryObjectImplementation::handleInsertFactorySchem(
 		return;
 	}
 
-	TransactionLog trx(player, asSceneObject(), schematic, TrxCode::FACTORYOPERATION);
-
 	if(transferObject(schematic, -1, true)) {
 
 		StringIdChatParameter message("manf_station", "schematic_added"); //Schematic %TT has been inserted into the station. The station is now ready to manufacture items.
@@ -313,8 +311,6 @@ void FactoryObjectImplementation::handleInsertFactorySchem(
 
 		player->sendSystemMessage("This schematic limit is: " + String::valueOf(schematic->getManufactureLimit()));
 	} else {
-		trx.abort() << "transferObject failed.";
-
 		StringIdChatParameter message("manf_station", "schematic_not_added"); //Schematic %TT was not added to the station
 
 		if(schematic->getCustomObjectName().isEmpty())
@@ -345,8 +341,6 @@ void FactoryObjectImplementation::handleRemoveFactorySchem(CreatureObject* playe
 	if(!schematic->isManufactureSchematic())
 		return;
 
-	TransactionLog trx(asSceneObject(), player, schematic, TrxCode::FACTORYOPERATION);
-
 	if(datapad->transferObject(schematic, -1, false)) {
 		datapad->broadcastObject(schematic, true);
 
@@ -359,8 +353,6 @@ void FactoryObjectImplementation::handleRemoveFactorySchem(CreatureObject* playe
 
 		player->sendSystemMessage(message);
 	} else {
-		trx.abort() << "transferObject failed.";
-
 		StringIdChatParameter message("manf_station", "schematic_not_removed"); //Schematic %TT was not removed from the station and been placed in your datapad. Have a nice day!
 
 		if(schematic->getCustomObjectName().isEmpty())
@@ -426,14 +418,17 @@ bool FactoryObjectImplementation::startFactory() {
 			return false;
 	}
 
-	timer = ((int)schematic->getComplexity() / 8);
+	timer = ((int)schematic->getComplexity()) * 1;
+
+ 	if (timer < 1)
+ 		timer = 1; // prevent negative run time
 
 	if(!populateSchematicBlueprint(schematic))
 		return false;
 
 	// Add sampletask
 	Reference<CreateFactoryObjectTask* > createFactoryObjectTask = new CreateFactoryObjectTask(_this.getReferenceUnsafeStaticCast());
-	addPendingTask("createFactoryObject", createFactoryObjectTask, timer * 1000);
+	addPendingTask("createFactoryObject", createFactoryObjectTask, timer * 1);
 
 	operating = true;
 
@@ -573,6 +568,8 @@ void FactoryObjectImplementation::createNewObject() {
 		return;
 	}
 
+	crateSize = 1000;
+
 	if (crateSize > 1) {
 		ManagedReference<FactoryCrate*> crate = locateCrateInOutputHopper(prototype);
 
@@ -614,7 +611,7 @@ void FactoryObjectImplementation::createNewObject() {
 	Reference<Task*> pending = getPendingTask("createFactoryObject");
 
 	if (pending != nullptr)
-		pending->reschedule(timer * 1000);
+		pending->reschedule(timer * 1);
 	else
 		stopFactory("manf_error", "", "", -1);
 }

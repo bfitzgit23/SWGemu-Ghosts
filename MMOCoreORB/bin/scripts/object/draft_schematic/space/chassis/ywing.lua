@@ -50,7 +50,7 @@ object_draft_schematic_space_chassis_ywing = object_draft_schematic_space_chassi
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 27,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 3750,

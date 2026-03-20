@@ -21,7 +21,7 @@ flail_enforcer = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK,
@@ -41,11 +41,11 @@ flail_enforcer = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1500000}, -- 15.00%
-                {group = "wearables_common", chance = 1250000}, -- 12.50%
-                {group = "rifles", chance = 1250000}, -- 12.50%
-                {group = "junk", chance = 3000000}, -- 30.00%
-                {group = "flail_common", chance = 3000000}, -- 30.00%
+				{group = "junk", chance = 3500000},
+				{group = "wearables_common", chance = 3000000},
+				{group = "rifles", chance = 2000000},
+				{group = "color_crystals", chance = 1000000},
+				{group = "flail_common", chance = 500000}
 			}
 		}
 	},

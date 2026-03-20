@@ -37,13 +37,40 @@ imperial_observer = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
-                {group = "geonosian_hard", chance = 1000000}, -- 10.00%
-                {group = "geonosian_common", chance = 2500000}, -- 25.00%
-                {group = "geonosian_relic", chance = 3500000}, -- 35.00%
-			}
-		}
+				{group = "clothing_attachments", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "nge_all", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "armor_attachments", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "geonosian_hard", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "geonosian_common", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "geonosian_relic", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
 	},
 	weapons = {"imperial_weapons_heavy"},
 	conversationTemplate = "",

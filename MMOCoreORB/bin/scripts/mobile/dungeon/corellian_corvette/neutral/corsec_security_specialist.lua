@@ -33,14 +33,14 @@ corsec_security_specialist = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
-                {group = "junk", chance = 1400000}, -- 14.00%
-                {group = "weapons_all", chance = 1400000}, -- 14.00%
-                {group = "armor_all", chance = 1400000}, -- 14.00%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "rebel_officer_common", chance = 1400000}, -- 14.00%
-                {group = "wearables_all", chance = 1400000}, -- 14.00%
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 7000000},
+				{group = "weapons_all", chance = 100000},
+				{group = "armor_all", chance = 1100000},
+				{group = "clothing_attachments", chance = 150000},
+				{group = "armor_attachments", chance = 150000},
+				{group = "rebel_officer_common", chance = 400000},
+				{group = "wearables_all", chance = 1000000}
 			}
 		}
 	},

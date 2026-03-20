@@ -50,7 +50,7 @@ object_draft_schematic_space_chassis_hutt_turret_ship = object_draft_schematic_s
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 43,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 37500,

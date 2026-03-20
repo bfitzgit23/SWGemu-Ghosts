@@ -18,7 +18,7 @@ monstrous_brute = Creature:new {
 	boneType = "bone_mammal",
 	boneAmount = 778,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.25,
 	ferocity = 12,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -30,9 +30,9 @@ monstrous_brute = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "rancor_common", chance = 4000000},
-				{group = "armor_all", chance = 2000000},
-				{group = "weapons_all", chance = 2500000},
+				{group = "rancor_common", chance = 5000000},
+				{group = "armor_all", chance = 3000000},
+				{group = "weapons_all", chance = 500000},
 				{group = "wearables_all", chance = 1500000}
 			},
 			lootChance = 2740000

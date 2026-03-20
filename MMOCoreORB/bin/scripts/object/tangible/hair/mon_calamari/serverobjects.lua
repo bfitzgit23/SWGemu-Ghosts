@@ -43,9 +43,6 @@
 
 
 --Children folder includes
--- Ensure shared client templates are loaded before server objects
-includeFile("tangible/hair/mon_calamari/objects.lua")
-
 includeFile("tangible/hair/mon_calamari/base/serverobjects.lua")
 
 -- Server Objects

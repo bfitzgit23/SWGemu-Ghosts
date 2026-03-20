@@ -1,10 +1,10 @@
---and this mission_level_choice.lua -- Allows players to choose a mission level range, regardless of their own CL/Group Level
+-- Allows players to choose a mission level range, regardless of their own CL/Group Level
 
 mission_level_choice = ScreenPlay:new {
 	numberOfActs = 1,
 
 	levels = {
-		{levelRange = "Reset Level Range", levelSelect = 0},	
+		{levelRange = "Reset Level Range", levelSelect = 0},
 		{levelRange = "Easiest", levelSelect = 1},
 		{levelRange = "Mid 1", levelSelect = 2}, 
 		{levelRange = "Mid 2", levelSelect = 12}, 

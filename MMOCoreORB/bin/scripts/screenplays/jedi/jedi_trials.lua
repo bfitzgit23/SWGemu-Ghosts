@@ -1,5 +1,5 @@
 JediTrials = ScreenPlay:new {
-	padawanTrialsEnabled = false,
+	padawanTrialsEnabled = true,
 	knightTrialsEnabled = true,
 
 	-- Object ID's of the various force shrines.
@@ -29,7 +29,7 @@ function JediTrials:isEligibleForPadawanTrials(pPlayer)
 
 	local learnedBranches = VillageJediManagerCommon.getLearnedForceSensitiveBranches(pPlayer)
 
-	return CreatureObject(pPlayer):hasScreenPlayState(32, "VillageJediProgression") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and learnedBranches >= 0 and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1
+	return CreatureObject(pPlayer):hasScreenPlayState(32, "VillageJediProgression") and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and learnedBranches >= 3 and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1
 end
 
 function JediTrials:isOnPadawanTrials(pPlayer)
@@ -41,11 +41,11 @@ function JediTrials:isOnPadawanTrials(pPlayer)
 end
 
 function JediTrials:isEligibleForKnightTrials(pPlayer)
-	if (pPlayer == nil) then
+	if (pPlayer == nil or not self.knightTrialsEnabled) then
 		return false
 	end
 
-	if (CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) then
+	if (CreatureObject(pPlayer):hasSkill("force_rank_light_novice") or CreatureObject(pPlayer):hasSkill("force_rank_dark_novice")) or tonumber(readScreenPlayData(pPlayer, "KnightTrials", "completedTrials")) == 1 then
 		return false
 	end
 
@@ -74,6 +74,9 @@ function JediTrials:onPlayerLoggedIn(pPlayer)
 	end
 
 	KnightTrials:onPlayerLoggedIn(pPlayer)
+
+	-- Resume Gatekeeper trial if player was mid-trial at logout
+	GatekeeperConversation:onPlayerLoggedIn(pPlayer)
 end
 
 function JediTrials:droppedSkillDuringTrials(pPlayer, pSkill)
@@ -191,7 +194,7 @@ function JediTrials:unlockJediKnight(pPlayer)
 	PlayerObject(pGhost):setJediState(jediState)
 	PlayerObject(pGhost):setFrsCouncil(councilType)
 	PlayerObject(pGhost):setFrsRank(0)
-	CreatureObject(pPlayer):setFactionStatus(1) -- cOvert now
+	CreatureObject(pPlayer):setFactionStatus(2) -- Overt
 	CreatureObject(pPlayer):setFaction(setFactionVal)
 
 	local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
@@ -507,11 +510,6 @@ function JediTrials:completeKnightForTesting(pPlayer, councilType)
 			enclaveLoc = { 5079, 0, 305 }
 		end
 
-		local player = CreatureObject(pPlayer)
-
-		if (player:isRidingMount()) then
-			player:dismount()
-		end
 		SceneObject(pPlayer):switchZone("yavin4", enclaveLoc[1], enclaveLoc[2], enclaveLoc[3], 0)
 	end
 end

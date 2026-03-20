@@ -73,7 +73,7 @@ CreatureObject* CraftingValues::getPlayer() {
 	return player.get();
 }
 
-void CraftingValues::recalculateValues(bool initial, bool looted, int level) {
+void CraftingValues::recalculateValues(bool initial) {
 	String experimentalPropTitle, attributeName;
 	float percentage = 0.f, min = 0.f, max = 0.f, newValue = 0.f, oldValue = 0.f;
 	bool hidden = false;
@@ -105,50 +105,9 @@ void CraftingValues::recalculateValues(bool initial, bool looted, int level) {
 			newValue = max;
 		}
 
-		//info(true)<< " experimentalPropTitle: " << experimentalPropTitle;
-		//info(true)<< " attributeName: " << attributeName;
-
-		//NOTES The-Hunted
-		//SET THE PROTECTION FOR LOOTED ITEMS
-		//The attributes below correspond the the special protection values
-		//armor effectivness holds the value for all non special protection values
-		if ((attributeName == "armor_effectiveness" || attributeName == "blasteffectiveness" || attributeName == "heateffectiveness" ||
-			attributeName == "kineticeffectiveness" || attributeName == "energyeffectiveness" || attributeName == "electricaleffectiveness" ||
-			attributeName == "coldeffectiveness" || attributeName == "acideffectiveness") && looted)
-		{
-			if (level >= 300)
-			{
-				if (newValue >= 80)
-				{
-					newValue -= System::random(5);
-				}
-			}
-			else if (level >= 85 && level < 300)
-			{
-				if (newValue >= 80)
-				{
-					newValue -= System::random(15);
-				}
-			}
-			else if (level >= 1 && level < 85)
-			{
-				if (newValue >= 80)
-				{
-					newValue -= System::random(25);
-				}			
-			}
-		}
-
 		if (initial || (newValue != oldValue && !initial && !hidden)) {
 			setCurrentValue(attributeName, newValue);
 			valuesToSend.add(attributeName);
-		}
-
-		//There is no need for this if we are setting the percintages above
-		//This only needs to be done to looted items
-		if (attributeName == "armor_special_effectiveness" && looted == true)
-		{
-			newValue = 0;
 		}
 	}
 }
@@ -162,8 +121,8 @@ void CraftingValues::clearAll() {
 	clearSlots();
 }
 
-String CraftingValues::toString() const {
-	const Subclasses* tempSubclasses;
+String CraftingValues::toString() {
+	Subclasses* tempSubclasses;
 
 	StringBuffer str;
 

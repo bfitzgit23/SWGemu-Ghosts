@@ -47,7 +47,7 @@ object_draft_schematic_community_crafting_component_refined_ardanium_ii = object
 	craftingToolTab = 2148007936, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 15,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "crafting_general",
 	xp = 0,
@@ -64,7 +64,7 @@ object_draft_schematic_community_crafting_component_refined_ardanium_ii = object
 	ingredientTitleNames = {"raw_materials"},
 	ingredientSlotType = {2},
 	resourceTypes = {"object/tangible/loot/quest/shared_ardanium_ii.iff"},
-	resourceQuantities = {20},
+	resourceQuantities = {2},
 	contribution = {100},
 
 

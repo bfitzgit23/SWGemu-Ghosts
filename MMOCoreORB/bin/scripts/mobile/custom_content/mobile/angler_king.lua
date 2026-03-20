@@ -1,6 +1,6 @@
 angler_king = Creature:new {
-	customName = "angler_king",
-	--objectName = "",
+--	customName = "angler_king",
+	objectName = "@mob/creature_names:angler_king",
 	--randomNameType = NAME_GENERIC_TAG,
 	socialGroup = "townsperson",
 	faction = "",
@@ -20,7 +20,7 @@ angler_king = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = NONE,
 	creatureBitmask = NONE,

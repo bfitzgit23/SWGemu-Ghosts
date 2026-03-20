@@ -1,9 +1,6 @@
 --Child Folders
 includeFile("custom_content/tangible/veteran_reward/one_year_anniversary/serverobjects.lua")
 
--- Ensure shared client templates are loaded before server objects
-includeFile("custom_content/tangible/veteran_reward/objects.lua")
-
 -- Server Objects
 includeFile("custom_content/tangible/veteran_reward/character_respec_reset_device.lua")
 includeFile("custom_content/tangible/veteran_reward/city_flag_kit.lua")

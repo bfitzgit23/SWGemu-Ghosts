@@ -1,4 +1,5 @@
 object_tangible_wearables_cybernetic_cybernetic_crafted_s02_arm_l = object_tangible_wearables_cybernetic_shared_cybernetic_crafted_s02_arm_l:new {
+	customName = "Cybernetic Left Arm S2",
 	
 	templateType = ARMOROBJECT,
 

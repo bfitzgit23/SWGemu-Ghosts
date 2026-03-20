@@ -1,16 +1,17 @@
 exar_kun_cultist = Creature:new {
-	customName = "an Exar Kun Cultist",
+	customName = "exar_kun_cultist",
 	randomNameTag = true,
-	socialGroup = "kun",
-	level = 250,
+	socialGroup = "townsperson",
+	faction = "townsperson",
+	level = 88,
 	chanceHit = 0.8,
-	damageMin = 890,
-	damageMax = 900,
+	damageMin = 545,
+	damageMax = 800,
 	baseXp = 8408,
-	baseHAM = 75000,
-	baseHAMmax = 95000,
+	baseHAM = 21000,
+	baseHAMmax = 26000,
 	armor = 1,
-	resists = {45,45,45,70,70,70,70,70,10},
+	resists = {45,45,45,100,100,100,100,100,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -18,30 +19,18 @@ exar_kun_cultist = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
-	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY ,
+	pvpBitmask = ATTACKABLE + ENEMY,
 	creatureBitmask = HERD,
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/exar_kun_cultist.iff"},
-	lootGroups = {
-		
-		{
-			groups = {
-				{group = "power_crystals", chance = 1500000},
-				{group = "color_crystals", chance = 2500000},
-				{group = "clothing_attachments", chance = 1500000},
-				{group = "armor_attachmments", chance = 2500000},
-				{group = "dark_jedi_common", chance = 2000000},
-			},
-			lootChance = 4000000,
-		},			
-	},
+	lootGroups = {},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",
-	attacks = merge(fencermid,swordsmanmid,tkamid,pikemanmaster,brawlermaster)
+	attacks = merge(fencermid,swordsmanmid,tkamid,pikemanmaster,brawlermaster,forcewielder)
 }
 
 CreatureTemplates:addCreatureTemplate(exar_kun_cultist, "exar_kun_cultist")

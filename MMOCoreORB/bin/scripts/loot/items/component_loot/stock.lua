@@ -6,8 +6,8 @@ stock = {
 	customObjectName = "",
 	directObjectTemplate = "object/tangible/component/weapon/stock.iff",
 	craftingValues = {
-		{"mindamage", 20,40,0},
-		{"maxdamage", 20,40,0},
+		{"mindamage", 4,20,0},
+		{"maxdamage", 4,20,0},
 		{"attackspeed",0.8,0.0,1},
 		{"woundchance",1,5,1},
 		{"hitpoints",20,100,0},

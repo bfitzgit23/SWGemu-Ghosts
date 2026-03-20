@@ -1,6 +1,6 @@
 lava_flea = Creature:new {
-	customName = "a Lava Flea",
-	socialGroup = "",
+	customName = "Lava Flea",
+	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
 	chanceHit = 0.27,
@@ -18,7 +18,7 @@ lava_flea = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

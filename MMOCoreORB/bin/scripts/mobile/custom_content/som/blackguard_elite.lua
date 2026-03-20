@@ -1,5 +1,5 @@
 blackguard_elite = Creature:new {
-	customName = "a blackguard elite minion",
+	customName = "Blackguard Elite",
 	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
@@ -18,7 +18,7 @@ blackguard_elite = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,

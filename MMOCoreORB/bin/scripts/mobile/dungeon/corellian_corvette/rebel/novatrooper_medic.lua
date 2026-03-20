@@ -31,15 +31,15 @@ novatrooper_medic = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
-                {group = "junk", chance = 2250000}, -- 22.50%
-                {group = "rifles", chance = 625000}, -- 6.25%
-                {group = "pistols", chance = 625000}, -- 6.25%
-                {group = "melee_weapons", chance = 625000}, -- 6.25%
-                {group = "carbines", chance = 625000}, -- 6.25%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "wearables_all", chance = 2250000}, -- 22.50%
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 6650000},
+				{group = "rifles", chance = 550000},
+				{group = "pistols", chance = 550000},
+				{group = "melee_weapons", chance = 550000},
+				{group = "carbines", chance = 550000},
+				{group = "clothing_attachments", chance = 25000},
+				{group = "armor_attachments", chance = 25000},
+				{group = "wearables_all", chance = 1000000}
 			}
 		}
 	},

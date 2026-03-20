@@ -220618,3 +220618,29 @@ object_mobile_shared_zucca_boar_hue = SharedCreatureObjectTemplate:new {
 }
 
 ObjectTemplates:addClientTemplate(object_mobile_shared_zucca_boar_hue, "object/mobile/shared_zucca_boar_hue.iff")
+
+object_mobile_shared_bm_mobile = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_bm_mobile.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_mobile_shared_bm_mobile, "object/mobile/shared_bm_mobile.iff")
+
+object_mobile_shared_ghost_lifeday_bacca = SharedCreatureObjectTemplate:new {
+    clientTemplateFileName = "object/mobile/shared_ghost_lifeday_bacca.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_ghost_lifeday_bacca, "object/mobile/shared_ghost_lifeday_bacca.iff")
+
+object_mobile_shared_ghost_lifeday_freyyr = SharedCreatureObjectTemplate:new {
+    clientTemplateFileName = "object/mobile/shared_ghost_lifeday_freyyr.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_ghost_lifeday_freyyr, "object/mobile/shared_ghost_lifeday_freyyr.iff")
+
+object_mobile_shared_ghost_lifeday_chaldrrl = SharedCreatureObjectTemplate:new {
+    clientTemplateFileName = "object/mobile/shared_ghost_lifeday_chaldrrl.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_ghost_lifeday_chaldrrl, "object/mobile/shared_ghost_lifeday_chaldrrl.iff")
+
+object_mobile_shared_passenger_flash_speeder = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_passenger_flash_speeder.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_passenger_flash_speeder, "object/mobile/shared_passenger_flash_speeder.iff")

@@ -84,4 +84,5 @@ includeFile("sarlacc_area.lua")
 includeFile("spawn_area.lua")
 includeFile("fs_village_area.lua")
 
+--New Content
 includeFile("custom_content/serverobjects.lua")

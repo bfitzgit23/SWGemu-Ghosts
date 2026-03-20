@@ -20,7 +20,7 @@ hardened_jinda_warrior = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -33,10 +33,11 @@ hardened_jinda_warrior = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "ewok", chance = 7000000}, -- 70.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
+				{group = "ewok", chance = 9100000},
+				{group = "armor_attachments", chance = 450000},
+				{group = "clothing_attachments", chance = 450000}
 			},
+			lootChance = 2000000
 		}
 	},
 	weapons = {"ewok_weapons"},

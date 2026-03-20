@@ -49,8 +49,7 @@ object_draft_schematic_clothing_clothing_armor_kashyyykian_ceremonial_bracer_l =
 
    craftingToolTab = 2, -- (See DraftSchematicObjectTemplate.h)
    complexity = 25, 
-   size = 1,
-   factoryCrateSize = 1000, 
+   size = 1, 
 
    xpType = "crafting_clothing_armor", 
    xp = 180, 

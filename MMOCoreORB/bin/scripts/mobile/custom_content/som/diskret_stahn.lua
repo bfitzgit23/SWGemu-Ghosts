@@ -20,10 +20,9 @@ diskret_stahn = Creature:new {
 	milk = 0,
 	tamingChance = 0,
 	ferocity = 0,
-	scale = 1.2,
-	pvpBitmask = NONE,
+	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,
-	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/diskret_stahn.iff"},

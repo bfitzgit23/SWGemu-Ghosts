@@ -20,7 +20,7 @@ untrained_wielder_of_the_dark_side = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK,
@@ -31,16 +31,16 @@ untrained_wielder_of_the_dark_side = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 3250001}, -- 32.50%
-                {group = "power_crystals", chance = 750000}, -- 7.50%
-                {group = "color_crystals", chance = 750000}, -- 7.50%
-                {group = "holocron_dark", chance = 625000}, -- 6.25%
-                {group = "holocron_light", chance = 625000}, -- 6.25%
-                {group = "melee_weapons", chance = 833333}, -- 8.33%
-                {group = "armor_attachments", chance = 750000}, -- 7.50%
-                {group = "clothing_attachments", chance = 750000}, -- 7.50%
-                {group = "wearables_uncommon", chance = 833333}, -- 8.33%
-                {group = "wearables_common", chance = 833333}, -- 8.33%
+				{group = "junk", chance = 3500000},
+				{group = "power_crystals", chance = 500000},
+				{group = "color_crystals", chance = 500000},
+				{group = "holocron_dark", chance = 500000},
+				{group = "holocron_light", chance = 500000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "armor_attachments", chance = 1000000},
+				{group = "clothing_attachments", chance = 1000000},
+				{group = "wearables_uncommon", chance = 750000},
+				{group = "wearables_common", chance = 750000}
 			}
 		}
 	},

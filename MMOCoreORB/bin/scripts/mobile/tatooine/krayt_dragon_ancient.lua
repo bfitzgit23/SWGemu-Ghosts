@@ -18,32 +18,56 @@ krayt_dragon_ancient = Creature:new {
 	boneType = "bone_mammal",
 	boneAmount = 905,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.25,
 	ferocity = 30,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER + STALKER,
 	optionsBitmask = AIENABLED,
 	diet = CARNIVORE,
-	scale = 1.2,
+	scale = 1.5,
 
 	templates = {"object/mobile/krayt_dragon_hue.iff"},
 	hues = { 16, 17, 18, 19, 20, 21, 22, 23 },
 	lootGroups = {
 		{
-	        groups = {
-				{group = "krayt_dragon_common", chance = 1000000},
-				{group = "krayt_tissue_rare", chance = 3000000},
-				{group = "krayt_pearls", chance = 3000000},
-				{group = "armor_all", chance = 1500000},
-				{group = "weapons_all", chance = 1500000},
+			groups = {
+				{group = "krayt_tissue_rare", chance = 10000000},
 			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "vehicledeedsrare", chance = 10000000},
+			},
+			lootChance = 1000000
+		},
+		{
+			groups = {
+				{group = "krayt_dragon_common", chance = 10000000},
+			},
+			lootChance = 2500000
+		},
+		{
+			groups = {
+				{group = "krayt_pearls_flawless", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "tierone", chance = 1500000},
+				{group = "tiertwo", chance = 3500000},
+				{group = "tierthree", chance = 2500000},
+				{group = "tierdiamond", chance = 2500000},
+			},
+			lootChance = 5000000
 		}
 	},
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {
-		{"creatureareaattack","stateAccuracyBonus=50"},
-		{"creatureareaknockdown","stateAccuracyBonus=50"}
+		{"creatureareacombo","stateAccuracyBonus=100"},
+		{"creatureareaknockdown","stateAccuracyBonus=100"}
 	}
 }
 

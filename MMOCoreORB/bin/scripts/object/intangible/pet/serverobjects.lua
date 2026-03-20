@@ -43,6 +43,11 @@
 
 
 --Children folder includes
+includeFile("object/intangible/pet/shared_hk47_pet.lua")
+includeFile("object/intangible/pet/shared_hk77_pet.lua")
+includeFile("object/intangible/pet/hk47_pet.lua")
+includeFile("object/intangible/pet/hk77_pet.lua")
+
 
 -- Server Objects
 includeFile("intangible/pet/21b_surgical_droid.lua")

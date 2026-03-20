@@ -20,7 +20,7 @@ panshee_elder_worker = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -35,9 +35,10 @@ panshee_elder_worker = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "ewok", chance = 5000000}, -- 50.00%
-                {group = "wearables_uncommon", chance = 5000000}, -- 50.00%
+				{group = "ewok", chance = 9000000},
+				{group = "wearables_uncommon", chance = 1000000},
 			},
+			lootChance = 1540000
 		}
 	},
 	weapons = {"ewok_weapons"},

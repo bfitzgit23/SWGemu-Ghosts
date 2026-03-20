@@ -16,6 +16,7 @@ end
 function TaanabPandathScreenPlay:spawnSceneObjects()
 
 	--outside starport
+	spawnSceneObject("taanab", "object/tangible/travel/travel_terminal/shared_travel_terminal.iff", 2112.0, 45.0, 5400.0, 0, 0)
 
 end
 
@@ -90,10 +91,10 @@ function TaanabPandathScreenPlay:spawnMobiles()
 	spawnMobile("taanab", "commoner",600,1910.7,45,5466.9,153,0)
 	spawnMobile("taanab", "commoner",600,1909.1,45,5463.8,38,0)
 
-	
-	--junk dealers in spawn manager pandath.lua
+	--starport
+	spawnMobile("taanab", "ticket_collector",600,2114.0,45,5403.0,0,0)
 
-	
+	--junk dealers in spawn manager pandath.lua
 
 	--hotel
 	spawnMobile("taanab", "bartender",600,20.1,1.6,13,164,6036095)
@@ -126,7 +127,5 @@ function TaanabPandathScreenPlay:spawnMobiles()
 	spawnMobile("taanab", "trainer_medic",600,22.1,0.3,-8,-9,6036502)
 	spawnMobile("taanab", "trainer_combatmedic",600,-21.4,0.3,-10.1,166,6036506)
 	spawnMobile("taanab", "trainer_bioengineer",600,-24.4,0.3,1.3,161,6036506)
-	
-		
-	
+
 end

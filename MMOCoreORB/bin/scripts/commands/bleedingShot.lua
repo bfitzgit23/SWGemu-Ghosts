@@ -44,7 +44,7 @@
 BleedingShotCommand = {
         name = "bleedingshot",
 
-	damageMultiplier = 4.0,
+	damageMultiplier = 2.0,
 	speedMultiplier = 1.5,
 	healthCostMultiplier = 1,
 	actionCostMultiplier = 1,
@@ -64,7 +64,7 @@ BleedingShotCommand = {
 		0,
 		100,
 		30, 
-		60
+		30
 	  )
 	},
 	

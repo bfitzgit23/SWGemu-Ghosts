@@ -4,13 +4,13 @@ mytho_king = Creature:new {
 	socialGroup = "kimogila",
 	faction = "",
 	level = 300,
-	chanceHit = 75.00,
+	chanceHit = 95.00,
 	damageMin = 1750,
 	damageMax = 3750,
   	specialDamageMult = 7.5,
 	baseXp = 385000,
-	baseHAM = 900000,
-	baseHAMmax = 1000000,
+	baseHAM = 9000000,
+	baseHAMmax = 10000000,
 	armor = 3,
 	resists = {90,90,90,90,90,90,90,90,60},
 	meatType = "meat_carnivore",
@@ -85,17 +85,17 @@ mytho_king = Creature:new {
 			},
 			lootChance = 10000000
 		},
-		{
+	{
 			groups = {
-				{group = "vehicledeedsnormal", chance = 10000000},
+				{group = "worldbosscrate", chance = 10000000},
 			},
-			lootChance = 5000000
+			lootChance = 10000000
 		},
-		{
+	{
 			groups = {
-				{group = "vehicledeedsrare", chance = 10000000},
+				{group = "worldbosscrate", chance = 10000000},
 			},
-			lootChance = 2500000
+			lootChance = 10000000
 		},
 		{
 			groups = {

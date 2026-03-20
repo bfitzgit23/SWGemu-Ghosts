@@ -50,7 +50,7 @@ object_draft_schematic_chemistry_med_stimpack_range_b = object_draft_schematic_c
 	craftingToolTab = 64, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 25,
 	size = 3,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 50,
 
 	xpType = "crafting_medicine_general",
 	xp = 65,

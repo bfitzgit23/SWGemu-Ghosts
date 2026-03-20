@@ -20,7 +20,7 @@ force_crystal_hunter = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -31,16 +31,16 @@ force_crystal_hunter = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 3331251}, -- 33.31%
-                {group = "power_crystals", chance = 831250}, -- 8.31%
-                {group = "color_crystals", chance = 831250}, -- 8.31%
-                {group = "holocron_dark", chance = 300000}, -- 3.00%
-                {group = "holocron_light", chance = 300000}, -- 3.00%
-                {group = "melee_weapons", chance = 914583}, -- 9.15%
-                {group = "armor_attachments", chance = 831250}, -- 8.31%
-                {group = "clothing_attachments", chance = 831250}, -- 8.31%
-                {group = "wearables_all", chance = 914583}, -- 9.15%
-                {group = "force_hunter_rare", chance = 914583}, -- 9.15%
+				{group = "junk", chance = 3000000},
+				{group = "power_crystals", chance = 800000},
+				{group = "color_crystals", chance = 700000},
+				{group = "holocron_dark", chance = 500000},
+				{group = "holocron_light", chance = 500000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "armor_attachments", chance = 1000000},
+				{group = "clothing_attachments", chance = 1000000},
+				{group = "wearables_all", chance = 1400000},
+				{group = "force_hunter_rare", chance = 100000}
 			}
 		}
 	},

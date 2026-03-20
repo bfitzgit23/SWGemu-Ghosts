@@ -20,7 +20,7 @@ masterful_ewok_warrior = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -32,9 +32,9 @@ masterful_ewok_warrior = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "ewok", chance = 5000000}, -- 50.00%
-                {group = "wearables_all", chance = 5000000}, -- 50.00%
+				{group = "ewok", chance = 10000000}
 			},
+			lootChance = 1220000
 		}
 	},
 	weapons = {"ewok_weapons"},

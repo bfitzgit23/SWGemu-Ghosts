@@ -50,7 +50,7 @@ object_draft_schematic_space_weapon_missile_countermeasure_decoy_launcher = obje
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 13,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 125,

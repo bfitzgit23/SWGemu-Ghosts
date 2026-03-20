@@ -20,7 +20,7 @@ selonian_sentinel = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -55,11 +55,11 @@ selonian_sentinel = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "wearables_common", chance = 1250000}, -- 12.50%
-                {group = "pistols", chance = 1250000}, -- 12.50%
-                {group = "junk", chance = 2500000}, -- 25.00%
-                {group = "loot_kit_parts", chance = 2500000}, -- 25.00%
-                {group = "tailor_components", chance = 2500000}, -- 25.00%
+				{group = "junk", chance = 3000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "pistols", chance = 1000000},
+				{group = "loot_kit_parts", chance = 2500000},
+				{group = "tailor_components", chance = 1500000}
 			}
 		}
 	},

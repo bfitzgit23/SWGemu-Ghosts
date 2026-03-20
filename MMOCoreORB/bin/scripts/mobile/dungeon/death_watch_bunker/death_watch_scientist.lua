@@ -32,12 +32,40 @@ death_watch_scientist = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 2500000}, -- 25.00%
-                {group = "wearables_common", chance = 2500000}, -- 25.00%
-                {group = "loot_kit_parts", chance = 2500000}, -- 25.00%
-                {group = "tailor_components", chance = 2500000}, -- 25.00%
-			}
-		}
+				{group = "wearables_uncommon", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jetpack_base", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "black_suns", chance = 10000000}
+			},
+			lootChance = 100000
+		},
 	},
 	weapons = {"rebel_weapons_light"},
 	attacks = merge(riflemanmaster,pistoleermaster,carbineermaster,brawlermaster)

@@ -49,7 +49,7 @@ public:
 		}
 
 		//Force the delay to be at least 4 seconds.
-		delay = (delay < 4) ? 4 : delay;
+		delay = (delay < 1) ? 1 : delay;
 
 		StringIdChatParameter message("healing_response", "healing_response_58"); //You are now ready to heal more damage.
 		Reference<InjuryTreatmentTask*> task = new InjuryTreatmentTask(creature, message, "injuryTreatment");
@@ -120,7 +120,7 @@ public:
 	}
 
 	bool checkTarget(CreatureObject* creature, CreatureObject* creatureTarget) const {
-		if (!creatureTarget->hasDamage(CreatureAttribute::HEALTH) && !creatureTarget->hasDamage(CreatureAttribute::ACTION)) {
+		if (!creatureTarget->hasDamage(CreatureAttribute::HEALTH) && !creatureTarget->hasDamage(CreatureAttribute::ACTION) && !creatureTarget->hasDamage(CreatureAttribute::MIND)) {
 			return false;
 		}
 
@@ -536,10 +536,8 @@ public:
 		Locker locker(stimPack);
 		stimPack->decreaseUseCount();
 
-//		if (targetCreature != creature && !targetCreature->isPet())
-//			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself.
-
-			awardXp(creature, "medical", (healthHealed + actionHealed) * 1); //No experience for healing yourself.
+		if (targetCreature != creature && !targetCreature->isPet())
+			awardXp(creature, "medical", (healthHealed + actionHealed)); //No experience for healing yourself.
 
 		if (targetCreature != creature)
 			clocker.release();

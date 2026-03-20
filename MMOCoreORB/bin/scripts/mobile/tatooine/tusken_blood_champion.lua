@@ -1,16 +1,16 @@
 tusken_blood_champion = Creature:new {
-	objectName = "@mob/creature_names:tusken_captain",
+	objectName = "@mob/creature_names:tusken_blood_champion",
 	socialGroup = "tusken_raider",
 	faction = "tusken_raider",
-	level = 40,
-	chanceHit = 0.44,
-	damageMin = 345,
-	damageMax = 400,
-	baseXp = 4006,
-	baseHAM = 9300,
-	baseHAMmax = 11300,
-	armor = 0,
-	resists = {30,30,30,40,-1,40,30,30,-1},
+	level = 300,
+	chanceHit = 25.0,
+	damageMin = 1425,
+	damageMax = 1825,
+	baseXp = 25000,
+	baseHAM = 95000,
+	baseHAMmax = 105000,
+	armor = 1,
+	resists = {115,115,115,115,115,115,115,115,115},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -29,19 +29,32 @@ tusken_blood_champion = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 1500000},
-				{group = "tusken_common", chance = 3500000},
-				{group = "wearables_common", chance = 1000000},
-				{group = "wearables_uncommon", chance = 500000},
-				{group = "bone_armor", chance = 750000},
-				{group = "chitin_armor", chance = 750000},
-				{group = "armor_attachments", chance = 500000},
-				{group = "clothing_attachments", chance = 500000},
-				{group = "color_crystals", chance = 500000},
-				{group = "power_crystals", chance = 500000}
-			}
+				{group = "trash_rare", chance = 10000000},
+			},
+			lootChance = 2000000
+		},		
+		{
+			groups = {
+				{group = "trash_common", chance = 10000000},
+			},
+			lootChance = 10000000
+		},
+		{
+			groups = {
+				{group = "weapon_component_advanced", chance = 10000000},
+			},
+			lootChance = 7000000
+		},
+		{
+			groups = {
+				{group = "tierone", chance = 1500000},
+				{group = "tiertwo", chance = 3500000},
+				{group = "tierthree", chance = 2500000},
+				{group = "tierdiamond", chance = 2500000},
+			},
+			lootChance = 3000000
 		}
-	},
+	},	
 	weapons = {"tusken_weapons"},
 	conversationTemplate = "",
 	attacks = merge(marksmanmaster,brawlermaster,fencermaster,riflemanmaster)

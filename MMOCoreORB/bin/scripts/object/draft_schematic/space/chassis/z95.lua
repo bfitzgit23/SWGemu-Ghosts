@@ -50,7 +50,7 @@ object_draft_schematic_space_chassis_z95 = object_draft_schematic_space_chassis_
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 23,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 1250,

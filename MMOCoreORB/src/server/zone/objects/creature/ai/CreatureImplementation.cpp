@@ -79,61 +79,30 @@ void CreatureImplementation::fillAttributeList(AttributeListMessage* alm, Creatu
 
 	int creaKnowledge = player->getSkillMod("creature_knowledge");
 
-
-	//int skillNum = skillCommands.size();
-	const CreatureAttackMap* attackMap = getAttackMap();
-	int skillNum = 0;
-	if (attackMap != nullptr)
-		skillNum = attackMap->size();
-	if (creaKnowledge >= 0) {
-		String skillname = "";
-		if (skillNum >= 1)
-			skillname = attackMap->getCommand(0);
-
-		if (skillname == "creatureareaattack")
-			skillname = "unknown_attack";
-		else if (skillname.isEmpty())
-			skillname = "none";
-
-		StringBuffer skillMsg;
-		skillMsg << "@combat_effects:" << skillname;
-
-		alm->insertAttribute("pet_command_18", skillMsg.toString());
-	}
-
-	if (creaKnowledge >= 0) {
-		String skillname = "";
-		if (skillNum >= 2)
-			skillname = attackMap->getCommand(1);
-
-		if (skillname == "creatureareaattack")
-			skillname = "unknown_attack";
-		else if (skillname.isEmpty())
-			skillname = "none";
-
-		StringBuffer skillMsg;
-		skillMsg << "@combat_effects:" << skillname;
-
-		alm->insertAttribute("pet_command_19", skillMsg.toString());
-	}
-
 	if (getHideType().isEmpty() && getBoneType().isEmpty() && getMeatType().isEmpty()) {
 		if(!isPet()) // we do want to show this for pets
 			return;
 	}
 
-	if (creaKnowledge >= 0) {
-		alm->insertAttribute("ferocity", (int) getFerocity());
+	if (creaKnowledge >= 5) {
+		if (isAggressiveTo(player))
+			alm->insertAttribute("aggro", "yes");
+		else
+			alm->insertAttribute("aggro", "no");
+		if (isStalker())
+			alm->insertAttribute("stalking", "yes");
+		else
+			alm->insertAttribute("stalking", "no");
 	}
 
-	if (creaKnowledge >= 0) {
+	if (creaKnowledge >= 10) {
 		if (getTame() > 0.0f)
 			alm->insertAttribute("tamable", "yes");
 		else
 			alm->insertAttribute("tamable", "no");
 	}
 
-	if (creaKnowledge >= 0 && !isPet()) {
+	if (creaKnowledge >= 20 && !isPet()) {
 		if (!getHideType().isEmpty()) {
 			StringBuffer hideName;
 			hideName << "@obj_attr_n:" << getHideType();
@@ -154,6 +123,65 @@ void CreatureImplementation::fillAttributeList(AttributeListMessage* alm, Creatu
 			alm->insertAttribute("res_meat", "---");
 	}
 
+	if (creaKnowledge >= 30) {
+		if (isKiller())
+			alm->insertAttribute("killer", "yes");
+		else
+			alm->insertAttribute("killer", "no");
+	}
+
+	if (creaKnowledge >= 40) {
+		alm->insertAttribute("ferocity", (int) getFerocity());
+	}
+
+	if (creaKnowledge >= 45)
+		alm->insertAttribute("challenge_level", getAdultLevel());
+
+	//int skillNum = skillCommands.size();
+	const CreatureAttackMap* attackMap = getAttackMap();
+	int skillNum = 0;
+	if (attackMap != nullptr)
+		skillNum = attackMap->size();
+	if (creaKnowledge >= 70) {
+		String skillname = "";
+		if (skillNum >= 1)
+			skillname = attackMap->getCommand(0);
+
+		if (skillname == "creatureareaattack")
+			skillname = "unknown_attack";
+		else if (skillname.isEmpty())
+			skillname = "none";
+
+		StringBuffer skillMsg;
+		skillMsg << "@combat_effects:" << skillname;
+
+		alm->insertAttribute("pet_command_18", skillMsg.toString());
+	}
+
+	if (creaKnowledge >= 80) {
+		String skillname = "";
+		if (skillNum >= 2)
+			skillname = attackMap->getCommand(1);
+
+		if (skillname == "creatureareaattack")
+			skillname = "unknown_attack";
+		else if (skillname.isEmpty())
+			skillname = "none";
+
+		StringBuffer skillMsg;
+		skillMsg << "@combat_effects:" << skillname;
+
+		alm->insertAttribute("pet_command_19", skillMsg.toString());
+	}
+
+	if (creaKnowledge >= 90)
+		alm->insertAttribute("basetohit", getChanceHit());
+
+	if (creaKnowledge >= 100) {
+		StringBuffer damageMsg;
+		damageMsg << getDamageMin() << "-" << getDamageMax();
+		alm->insertAttribute("cat_wpn_damage", damageMsg.toString());
+	}
 }
 
 void CreatureImplementation::scheduleDespawn() {
@@ -213,7 +241,7 @@ void CreatureImplementation::notifyDespawn(Zone* zone) {
 
 bool CreatureImplementation::canHarvestMe(CreatureObject* player) {
 
-	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 10.0f) || player->isInCombat() || !player->hasSkill("outdoors_scout_novice")
+	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 21.0f) || player->isInCombat() || !player->hasSkill("outdoors_scout_novice")
 			|| player->isDead() || player->isIncapacitated() || isPet())
 		return false;
 
@@ -241,7 +269,7 @@ bool CreatureImplementation::canHarvestMe(CreatureObject* player) {
 bool CreatureImplementation::canDroidHarvestMe(CreatureObject* player,CreatureObject* droid) {
 
 	// droid should be able to harvest if in range, with current AI
-	if(!droid->isInRange(_this.getReferenceUnsafeStaticCast(), (10.0f + droid->getTemplateRadius() + getTemplateRadius())) || droid->isInCombat() || !player->hasSkill("outdoors_scout_novice")
+	if(!droid->isInRange(_this.getReferenceUnsafeStaticCast(), (50.0f + droid->getTemplateRadius() + getTemplateRadius())) || droid->isInCombat() || !player->hasSkill("outdoors_scout_novice")
 			|| droid->isDead() || droid->isIncapacitated() || isPet()) {
 		return false;
 	}
@@ -306,12 +334,16 @@ float CreatureImplementation::getChanceToTame(CreatureObject* player) {
 	int ferocity = getFerocity();
 	float tamingChance = getTame() * 100.0f;
 
-	if (isVicious())
+	if (isVicious()) {
 		skill += player->getSkillMod("tame_aggro");
-	else
+		skill += 15; // Aggro tame bonus
+	}
+	else {
 		skill += player->getSkillMod("tame_non_aggro");
+		skill += 5; // Non-Aggro tame bonus
+	}
 
-	float chanceToTame = tamingChance + skill - (cl + ferocity);
+ 	float chanceToTame = tamingChance + skill - (cl + ferocity);
 
 	return chanceToTame;
 }
@@ -363,7 +395,7 @@ bool CreatureImplementation::canCollectDna(CreatureObject* player) {
 	if (_this.getReferenceUnsafeStaticCast()->isNonPlayerCreatureObject()) {
 		return false;
 	}
-	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 16.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() ){
+	if(!player->isInRange(_this.getReferenceUnsafeStaticCast(), 25.0f) || player->isInCombat() || player->isDead() || player->isIncapacitated() ){
 		return false;
 	}
 
@@ -479,4 +511,92 @@ void CreatureImplementation::sendMessage(BasePacket* msg) {
 #endif
 		delete msg;
 	}
+}
+
+int CreatureImplementation::getPassengerCapacity() {
+	CreatureTemplate* creatureTemplate = npcTemplate.get();
+
+	return creatureTemplate->getPassengerCapacity();
+}
+
+String CreatureImplementation::getPassengerSeatName() {
+	CreatureTemplate* creatureTemplate = npcTemplate.get();
+
+	return creatureTemplate->getPassengerSeatString();
+
+}
+
+bool CreatureImplementation::hasOpenSeat() {
+	int passengerSeats = getPassengerCapacity();
+
+	if (passengerSeats == 0)
+		return false;
+
+	bool openSeat = false;
+
+	for (int i = 1; i <= passengerSeats; ++i){
+		String text = "rider";
+		text += String::valueOf(i);
+		CreatureObject* seat = this->getSlottedObject(text).castTo<CreatureObject*>();
+		if (seat == nullptr) {
+			openSeat = true;
+		}
+	}
+
+	return openSeat;
+}
+
+int CreatureImplementation::getOpenSeat() {
+	int passengerSeats = getPassengerCapacity();
+
+	if (passengerSeats == 0)
+		return 0;
+
+	for (int i = 1; i <= passengerSeats; ++i){
+		String text = "rider";
+		text += String::valueOf(i);
+		CreatureObject* seat = this->getSlottedObject(text).castTo<CreatureObject*>();
+		if (seat == nullptr) {
+			return i;
+		}
+	}
+
+	return 0;
+}
+
+bool CreatureImplementation::slotPassenger(CreatureObject* passenger) {
+	Locker plocker(passenger);
+	auto owner = getLinkedCreature().get();
+	int seatNumber = getOpenSeat();
+	String seat = "passenger_" + getPassengerSeatName() + "_" + String::valueOf(seatNumber);
+	Zone* zone = getZone();
+	float x = owner->getWorldPositionX();
+	float y = owner->getWorldPositionY();
+	float z = owner->getWorldPositionZ();
+	CreatureManager* creatureManager = zone->getCreatureManager();
+	CreatureObject* seatObject = creatureManager->spawnCreature(seat.hashCode(), 0, x, z, y, 0);
+	Locker slocker(seatObject);
+	uint32 crcSaddle = String("saddle").hashCode();
+	ManagedReference<Buff*> saddleBuff = new Buff(seatObject, crcSaddle, 36000, BuffType::OTHER);
+	Locker blocker(saddleBuff);
+	saddleBuff->setSpeedMultiplierMod(0.01f);
+	saddleBuff->setAccelerationMultiplierMod(0.01f);
+	seatObject->addBuff(saddleBuff);
+	seatObject->setOptionBit(0x1000);
+	transferObject(seatObject, 4 + seatNumber, true);
+	seatObject->setPosition(x, z, y);
+	seatObject->transferObject(passenger, 4, true);
+	passenger->setState(CreatureState::RIDINGMOUNT);
+	passenger->teleport(x, z, y, 0);
+	passenger->setPosition(x, z, y);
+	passenger->synchronizeCloseObjects();
+	uint32 crc = String("passenger").hashCode();
+	ManagedReference<Buff*> buff = new Buff(passenger, crc, 36000, BuffType::OTHER);
+	Locker locker(buff);
+	buff->setSpeedMultiplierMod(0.01f);
+	buff->setAccelerationMultiplierMod(0.01f);
+	passenger->addBuff(buff);
+	teleport(x, z, y, 0);
+	synchronizeCloseObjects();
+	return true;
 }

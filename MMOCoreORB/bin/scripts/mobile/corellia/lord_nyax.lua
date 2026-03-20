@@ -18,7 +18,7 @@ lord_nyax = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER + STALKER,
@@ -29,11 +29,11 @@ lord_nyax = Creature:new {
 	lootGroups = {
 		{
 		groups = {
-				{group = "junk", chance = 4000000}, -- 40%
-				{group = "nyax", chance = 3000000}, -- 30%
-				{group = "grenades_looted", chance = 1000000}, -- 10%
-				{group = "armor_attachments", chance = 1000000}, -- 10%
-				{group = "clothing_attachments", chance = 1000000} -- 10%
+				{group = "junk", chance = 4000000},
+				{group = "nyax", chance = 3000000},
+				{group = "grenades_looted", chance = 1000000},
+				{group = "armor_attachments", chance = 1000000},
+				{group = "clothing_attachments", chance = 1000000}
 			}
 		}
 	},

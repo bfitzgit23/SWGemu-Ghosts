@@ -44,16 +44,16 @@
 object_building_player_city_theater_tatooine = object_building_player_city_shared_theater_tatooine:new {
 	lotSize = 3,
 	baseMaintenanceRate = 50,
-	allowedZones = {"dantooine", "lok", "tatooine"},
+	allowedZones = {"chandrila", "corellia", "coruscant", "dantooine", "dathomir", "endor", "geonosis", "hoth", "hutta", "jakku", "kaas", "kashyyyk", "korriban", "lok", "mandalore", "mustafar", "naboo", "rori", "taanab", "talus", "tatooine", "yavin4"},
 	length = 5,
 	width = 6,
 	gameObjectType = 524,
 	planetMapCategory = "theater",
 	abilityRequired = "place_theater",
 	skillMods = {
-		{"private_buff_mind", 120},
-		{"private_med_wound_mind", 20},
-		{"private_med_battle_fatigue", 5},
+		{"private_buff_mind", 125},
+		{"private_medical_rating", 125},
+		{"private_med_battle_fatigue", 125},
 		{"private_safe_logout", 1}
 	},
 	ejectDistance = 1.5,

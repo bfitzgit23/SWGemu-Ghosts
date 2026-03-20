@@ -20,7 +20,7 @@ mokk_clan_leader = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + HERD + KILLER,
@@ -31,13 +31,39 @@ mokk_clan_leader = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 2250000}, -- 22.50%
-                {group = "loot_kit_parts", chance = 2250000}, -- 22.50%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "wearables_all", chance = 2500000}, -- 25.00%
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
-			}
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "loot_kit_parts", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "color_crystals", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "clothing_attachments", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_uncommon", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "armor_attachments", chance = 10000000}
+			},
+			lootChance = 5000000
 		}
 	},
 	weapons = {"primitive_weapons"},

@@ -9,7 +9,7 @@ GeonosisStaticSpawnsScreenPlay = ScreenPlay:new
 registerScreenPlay("GeonosisStaticSpawnsScreenPlay", true)
 
 function GeonosisStaticSpawnsScreenPlay:start()
-	if (isZoneEnabled("lok")) then
+	if (isZoneEnabled("geonosis")) then
 		self:spawnMobiles()
 		self:spawnSceneObjects()    
 	end
@@ -45,6 +45,7 @@ function GeonosisStaticSpawnsScreenPlay:spawnMobiles()
   spawnMobile("geonosis", "rare_force4",7200, getRandomNumber(12000) + -6000, 0, getRandomNumber(12000) + -6000, getRandomNumber(360), 0)
   spawnMobile("geonosis", "rare_force5",7200, getRandomNumber(12000) + -6000, 0, getRandomNumber(12000) + -6000, getRandomNumber(360), 0)
   spawnMobile("geonosis", "rare_force6",7200, getRandomNumber(12000) + -6000, 0, getRandomNumber(12000) + -6000, getRandomNumber(360), 0)
-  spawnMobile("geonosis", "rare_force7",7200, getRandomNumber(12000) + -6000, 0, getRandomNumber(12000) + -6000, getRandomNumber(360), 0)  
+	-- FIX: template "rare_force7" not found on this server; disabled to stop spawn errors.
+	-- spawnMobile("geonosis", "rare_force7",7200, getRandomNumber(12000) + -6000, 0, getRandomNumber(12000) + -6000, getRandomNumber(360), 0)  
 
 end

@@ -50,7 +50,7 @@ object_draft_schematic_space_chassis_blacksun_medium_s04 = object_draft_schemati
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 35,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 15000,

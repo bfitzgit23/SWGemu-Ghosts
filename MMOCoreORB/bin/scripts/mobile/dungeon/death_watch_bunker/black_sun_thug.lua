@@ -32,16 +32,40 @@ black_sun_thug = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 2083333}, -- 20.83%
-                {group = "pistols", chance = 833333}, -- 8.33%
-                {group = "rifles", chance = 833333}, -- 8.33%
-                {group = "carbines", chance = 833333}, -- 8.33%
-                {group = "bounty_hunter_armor", chance = 625000}, -- 6.25%
-                {group = "jetpack_base", chance = 625000}, -- 6.25%
-                {group = "wearables_common", chance = 2083333}, -- 20.83%
-                {group = "wearables_uncommon", chance = 2083333}, -- 20.83%
-			}
-		}
+				{group = "wearables_uncommon", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jetpack_base", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "black_suns", chance = 10000000}
+			},
+			lootChance = 100000
+		},
 	},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "",

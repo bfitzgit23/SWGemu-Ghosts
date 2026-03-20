@@ -7,9 +7,9 @@ require("utils.helpers")
 
 VillageJediManagerTownship = ScreenPlay:new {
 	VILLAGE_TOTAL_NUMBER_OF_PHASES = 4,
-	phaseChangeTimeOfDay = { hour = 0, min = 30 }, -- Hour of day, server military time, to change the phase. Comment out to disable
+	phaseChangeTimeOfDay = { hour = 18, min = 0 }, -- 6pm every 7 days, Hour of day, server military time, to change the phase. Comment out to disable
 
-	VILLAGE_PHASE_DURATION = 24 * 60 * 60 * 1000 -- 24 hrs
+	VILLAGE_PHASE_DURATION = 24 * 60 * 60 * 1000 -- 1 day
 }
 
 -- Set the current Village Phase for the first time.
@@ -206,32 +206,32 @@ function VillageJediManagerTownship:switchToNextPhase(manualSwitch)
 end
 
 function VillageJediManagerTownship:start()
---	if (isZoneEnabled("dathomir")) then
---		Logger:log("Starting the Village Township Screenplay.", LT_INFO)
---
---		local currentPhase = VillageJediManagerTownship.getCurrentPhase()
---		VillageJediManagerTownship.setCurrentPhaseInit()
---		VillageJediManagerTownship:spawnMobiles(currentPhase, true)
---		VillageJediManagerTownship:spawnSceneObjects(currentPhase, true)
---		VillageJediManagerTownship:createVillageMasterObject()
---
---		createNavMesh("dathomir", 5292, -4119, 210, true, "village_township")
---
---		if (currentPhase == 3 or currentPhase == 4) then
---			local pMaster = VillageJediManagerTownship:getMasterObject()
---			createEvent(60 * 1000, "VillageRaids", "doPhaseInit", pMaster, "")
---
---			if (currentPhase == 3) then
---				local campList = FsCounterStrike:getPhaseCampList()
---
---				if (campList == nil) then
---					FsCounterStrike:pickPhaseCamps()
---				else
---					FsCounterStrike:spawnCamps()
---				end
---			end
---		end
---	end
+	if (isZoneEnabled("dathomir")) then
+		Logger:log("Starting the Village Township Screenplay.", LT_INFO)
+
+		local currentPhase = VillageJediManagerTownship.getCurrentPhase()
+		VillageJediManagerTownship.setCurrentPhaseInit()
+		VillageJediManagerTownship:spawnMobiles(currentPhase, true)
+		VillageJediManagerTownship:spawnSceneObjects(currentPhase, true)
+		VillageJediManagerTownship:createVillageMasterObject()
+
+		createNavMesh("dathomir", 5292, -4119, 210, true, "village_township")
+
+		if (currentPhase == 3 or currentPhase == 4) then
+			local pMaster = VillageJediManagerTownship:getMasterObject()
+			createEvent(60 * 1000, "VillageRaids", "doPhaseInit", pMaster, "")
+
+			if (currentPhase == 3) then
+				local campList = FsCounterStrike:getPhaseCampList()
+
+				if (campList == nil) then
+					FsCounterStrike:pickPhaseCamps()
+				else
+					FsCounterStrike:spawnCamps()
+				end
+			end
+		end
+	end
 end
 
 function VillageJediManagerTownship:createVillageMasterObject()

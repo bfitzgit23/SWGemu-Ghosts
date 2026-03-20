@@ -186,6 +186,11 @@ public:
 		// Reaction Fines
 		REACTION_FINE                      = 331,
 
+		//Add Dot
+		ADD_DOT							   = 333,
+		//Deconstruct Weapon
+		DECONSTRUCT_WEAPON				   = 334,
+
 		// Growable Plant
 		GROWABLE_PLANT					   = 341,
 
@@ -273,7 +278,9 @@ public:
 		SHUTTLE_BEACON					   = 1039,
 		FIELD_FACTION_CHANGE			   = 1040,
 		GOTO_LIST						   = 1041,
-		FS_EXP_CONVERT 					   = 1042
+		FS_EXP_CONVERT 					   = 1042,
+		PLAYER_BOUNTY_OFFER 			   = 1043,
+		REPAIR_TOOL_DIALOG					= 1044
 	};
 };
 

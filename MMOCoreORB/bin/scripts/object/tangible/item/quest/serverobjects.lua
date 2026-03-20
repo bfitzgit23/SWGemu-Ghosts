@@ -44,7 +44,7 @@
 
 --Children folder includes
 includeFile("tangible/item/quest/crowd_pleaser/serverobjects.lua")
-includeFile("tangible/item/quest/force_sensitive/serverobjects.lua")
+--includeFile("tangible/item/quest/force_sensitive/serverobjects.lua")
 includeFile("tangible/item/quest/hero_of_tatooine/serverobjects.lua")
 
 -- Server Objects

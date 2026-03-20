@@ -16,7 +16,6 @@
 #include "server/zone/objects/creature/buffs/SquadLeaderBuff.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/ZoneServer.h"
-#include "server/zone/Zone.h"
 #include "server/zone/objects/group/RemovePetsFromGroupTask.h"
 #include "server/zone/objects/group/tasks/UpdateNearestMissionForGroupTask.h"
 #include "server/zone/objects/waypoint/WaypointObject.h"
@@ -408,25 +407,29 @@ float GroupObjectImplementation::getGroupHarvestModifier(CreatureObject* player)
 
 void GroupObjectImplementation::calcGroupLevel() {
 	int highestPlayer = 0;
-	groupLevel = 300;
+	groupLevel = 0;
 
-//	for (int i = 0; i < getGroupSize(); i++) {
-//		Reference<CreatureObject*> member = getGroupMember(i);
-//
-//		if (member->isPet()) {
-//			groupLevel += member->getLevel() * 1;
-//
-//		} else if (member->isPlayerCreature()) {
-//			int memberLevel = member->getLevel() * 2;
-//
-//			if (memberLevel > highestPlayer) {
-//				groupLevel += (memberLevel - highestPlayer + (highestPlayer / 5));
-//				highestPlayer = memberLevel;
-//			} else {
-//				groupLevel += memberLevel / 5;
-//			}
-//		}
-//	}
+	for (int i = 0; i < getGroupSize(); i++) {
+		Reference<CreatureObject*> member = getGroupMember(i);
+
+		if (member->isPet()) {
+			// If there is a level 75+ pet in group, max group combat level
+			if (member->getLevel() >= 75)
+				groupLevel = 300;
+			else
+			groupLevel += member->getLevel() / 5;
+
+		} else if (member->isPlayerCreature()) {
+			int memberLevel = member->getLevel();
+
+			if (memberLevel > highestPlayer) {
+				groupLevel += (memberLevel - highestPlayer + (highestPlayer / 5));
+				highestPlayer = memberLevel;
+			} else {
+				groupLevel += memberLevel / 5;
+			}
+		}
+	}
 
 	GroupObjectDeltaMessage6* msg = new GroupObjectDeltaMessage6(_this.getReferenceUnsafeStaticCast());
 

@@ -20,7 +20,7 @@ force_sensitive_renegade = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -31,16 +31,16 @@ force_sensitive_renegade = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 3331251}, -- 33.31%
-                {group = "power_crystals", chance = 831250}, -- 8.31%
-                {group = "color_crystals", chance = 831250}, -- 8.31%
-                {group = "holocron_dark", chance = 300000}, -- 3.00%
-                {group = "holocron_light", chance = 300000}, -- 3.00%
-                {group = "melee_weapons", chance = 914583}, -- 9.15%
-                {group = "armor_attachments", chance = 831250}, -- 8.31%
-                {group = "clothing_attachments", chance = 831250}, -- 8.31%
-                {group = "wearables_common", chance = 914583}, -- 9.15%
-                {group = "wearables_uncommon", chance = 914583}, -- 9.15%
+				{group = "junk", chance = 3500000},
+				{group = "power_crystals", chance = 500000},
+				{group = "color_crystals", chance = 500000},
+				{group = "holocron_dark", chance = 500000},
+				{group = "holocron_light", chance = 500000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "armor_attachments", chance = 1000000},
+				{group = "clothing_attachments", chance = 1000000},
+				{group = "wearables_common", chance = 750000},
+				{group = "wearables_uncommon", chance = 750000}
 			}
 		}
 	},

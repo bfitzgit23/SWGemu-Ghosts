@@ -86,7 +86,9 @@ namespace sys {
 			ts.tv_nsec = 0;
 		}
 
-		Time(const Time& time) = default;
+		Time(const Time& time) {
+			ts = time.ts;
+		}
 
 		bool toString(String& str) const {
 			StringBuffer msg;
@@ -164,7 +166,15 @@ namespace sys {
 			checkForOverflow();
 		}
 
-		Time& operator=(const Time& t) = default;
+		Time& operator=(const Time& t) {
+			if (this == &t) {
+				return *this;
+			}
+
+			ts = t.ts;
+
+			return *this;
+		}
 
 		Time& operator=(uint32 seconds) {
 			ts.tv_sec = seconds;
@@ -209,13 +219,17 @@ namespace sys {
 #endif
 		}
 
-		String getFormattedTimeFull() const {
+		String getFormattedTimeShort() const {
+			return getFormattedTimeFull(false);
+		}
+
+		String getFormattedTimeFull(bool include_ms = true) const {
 			int ret;
 			struct tm t;
 			String value;
 			char buf[128];
 			int len = sizeof(buf);
-			
+
 #ifndef PLATFORM_WIN
 			if (localtime_r(&(ts.tv_sec), &t) == nullptr)
 				return value;
@@ -228,10 +242,14 @@ namespace sys {
 #endif
 
 			ret = strftime(buf, len, "%Y-%m-%dT%H:%M:%S", &t);
-			if (ret <= 0)
-				return value;
 
-			len -= ret;
+			if (ret <= 0 || !include_ms) {
+				value = buf;
+
+				return value;
+			}
+
+			len -= ret - 1;
 
 			auto ret2 = snprintf(&buf[ret], len, ".%09ld", ts.tv_nsec);
 			if (ret2 < 0 || ret2 >= len)
@@ -250,6 +268,32 @@ namespace sys {
 			return value;
 		}
 
+		String getFormattedTime(const String& format) const {
+			struct tm t;
+			String value;
+			char buf[4096];
+
+#ifndef PLATFORM_WIN
+			if (localtime_r(&(ts.tv_sec), &t) == nullptr)
+				return value;
+#else
+			auto retval = localtime(&(ts.tv_sec));
+			if (retval == nullptr)
+				return value;
+
+			t = *retval;
+#endif
+
+			int ret = strftime(buf, sizeof(buf), format.toCharArray(), &t);
+
+			if (ret <= 0)
+				return value;
+
+			value = buf;
+
+			return value;
+		}
+
 		int compareMiliTo(const Time& t) const {
 			uint64 t1 = getMiliTime();
 			uint64 t2 = t.getMiliTime();
@@ -260,6 +304,37 @@ namespace sys {
 				return -1;
 			else
 				return 0;
+		}
+
+		static Time fromISO8601(const String& isoString) {
+			struct tm tm = {};
+			const char* str = isoString.toCharArray();
+
+			// Parse ISO 8601 basic format: "2025-10-03T10:25:30" (with optional Z or timezone)
+			// Note: This handles the basic format, not all ISO 8601 variations
+			char* result = strptime(str, "%Y-%m-%dT%H:%M:%S", &tm);
+
+			if (result == nullptr) {
+				// Failed to parse, return epoch
+				return Time(0);
+			}
+
+#ifndef PLATFORM_WIN
+			// Use timegm() for UTC conversion (GNU extension, available on Linux/BSD)
+			time_t timestamp = timegm(&tm);
+#else
+			// Windows fallback: use mktime and adjust for timezone
+			time_t timestamp = mktime(&tm);
+			timestamp -= _timezone;
+#endif
+
+			if (timestamp == -1) {
+				// Invalid time
+				return Time(0);
+			}
+
+			// Note: Still limited to 2038 due to uint32 cast in Time constructor
+			return Time((uint32)timestamp);
 		}
 
 		inline static uint64 currentNanoTime(ClockType type = REAL_TIME) {
@@ -368,6 +443,16 @@ namespace sys {
 		}
 
 		SerializableTime(const SerializableTime& time) : Time(time), Variable() {
+		}
+
+		SerializableTime& operator=(const SerializableTime& time) {
+			if (this == &time) {
+				return *this;
+			}
+
+			Time::operator=(time);
+
+			return *this;
 		}
 
 		SerializableTime& operator=(const Time& time) {

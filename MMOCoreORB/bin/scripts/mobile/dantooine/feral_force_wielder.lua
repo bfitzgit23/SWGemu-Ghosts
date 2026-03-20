@@ -20,7 +20,7 @@ feral_force_wielder = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -31,13 +31,13 @@ feral_force_wielder = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 4500000}, -- 45.00%
-                {group = "power_crystals", chance = 750000}, -- 7.50%
-                {group = "color_crystals", chance = 750000}, -- 7.50%
-                {group = "melee_weapons", chance = 1250000}, -- 12.50%
-                {group = "armor_attachments", chance = 750000}, -- 7.50%
-                {group = "clothing_attachments", chance = 750000}, -- 7.50%
-                {group = "wearables_all", chance = 1250000}, -- 12.50%
+				{group = "junk", chance = 4000000},
+				{group = "power_crystals", chance = 500000},
+				{group = "color_crystals", chance = 1500000},
+				{group = "melee_weapons", chance = 1500000},
+				{group = "armor_attachments", chance = 750000},
+				{group = "clothing_attachments", chance = 750000},
+				{group = "wearables_all", chance = 1000000}
 			}
 		}
 	},

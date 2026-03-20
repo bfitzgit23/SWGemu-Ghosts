@@ -20,7 +20,7 @@ frenzied_marauder = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -31,19 +31,19 @@ frenzied_marauder = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "pistols", chance = 277777}, -- 2.78%
-                {group = "carbines", chance = 277777}, -- 2.78%
-                {group = "rifles", chance = 277777}, -- 2.78%
-                {group = "melee_baton", chance = 277777}, -- 2.78%
-                {group = "loot_kit_parts", chance = 4500007}, -- 45.00%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "bone_armor", chance = 277777}, -- 2.78%
-                {group = "chitin_armor", chance = 277777}, -- 2.78%
-                {group = "mabari_armor", chance = 277777}, -- 2.78%
-                {group = "tantel_armor", chance = 277777}, -- 2.78%
-                {group = "ubese_armor", chance = 277777}, -- 2.78%
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
+				{group = "pistols", chance = 750000},
+				{group = "carbines", chance = 750000},
+				{group = "rifles", chance = 750000},
+				{group = "melee_baton", chance = 1000000},
+				{group = "loot_kit_parts", chance = 1000000},
+				{group = "armor_attachments", chance = 500000},
+				{group = "clothing_attachments", chance = 500000},
+				{group = "bone_armor", chance = 800000},
+				{group = "chitin_armor", chance = 800000},
+				{group = "mabari_armor", chance = 800000},
+				{group = "tantel_armor", chance = 800000},
+				{group = "ubese_armor", chance = 800000},
+				{group = "color_crystals", chance = 750000},
 			}
 		}
 	},

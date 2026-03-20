@@ -1,5 +1,5 @@
 tusken_woman = Creature:new {
-	objectName = "@mob/creature_names:tusken_commoner",
+	objectName = "@mob/creature_names:tusken_woman",
 	socialGroup = "tusken_raider",
 	faction = "tusken_raider",
 	level = 16,
@@ -18,7 +18,7 @@ tusken_woman = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK,
@@ -26,6 +26,7 @@ tusken_woman = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/tusken_raider.iff"},
+	scale = .9,
 	lootGroups = {
 		{
 			groups = {

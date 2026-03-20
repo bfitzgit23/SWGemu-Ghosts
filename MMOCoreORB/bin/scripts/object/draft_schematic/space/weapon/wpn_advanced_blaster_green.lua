@@ -50,7 +50,7 @@ object_draft_schematic_space_weapon_wpn_advanced_blaster_green = object_draft_sc
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 32,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 625,

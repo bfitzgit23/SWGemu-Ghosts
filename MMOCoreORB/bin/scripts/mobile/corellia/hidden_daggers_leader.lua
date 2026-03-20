@@ -20,7 +20,7 @@ hidden_daggers_leader = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -36,11 +36,11 @@ hidden_daggers_leader = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "wearables_all", chance = 2500000}, -- 25.00%
-                {group = "junk", chance = 1875000}, -- 18.75%
-                {group = "loot_kit_parts", chance = 1875000}, -- 18.75%
-                {group = "tailor_components", chance = 1875000}, -- 18.75%
-                {group = "hidden_dagger_common", chance = 1875000}, -- 18.75%
+				{group = "junk", chance = 4300000},
+				{group = "loot_kit_parts", chance = 2000000},
+				{group = "tailor_components", chance = 1000000},
+				{group = "hidden_dagger_common", chance = 2700000}
+
 			}
 		}
 	},

@@ -13,6 +13,8 @@
 #define DOBOBJECTMANAGER_CPP_
 
 #include <cstddef>
+#include <sstream>
+#include <iomanip>
 
 #include "system/platform.h"
 
@@ -44,10 +46,9 @@
 
 #include "engine/util/flat_hash_map.hpp"
 
-//#define PRINT_OBJECT_COUNT
-
 int DOBObjectManager::UPDATETODATABASETIME = 300000;
 bool DOBObjectManager::dumpLastModifiedTraces = false;
+AtomicBoolean DOBObjectManager::dumpRunning = false;
 
 namespace DOB {
 	static int MAXOBJECTSTOUPDATEPERTHREAD = 15000;
@@ -114,9 +115,9 @@ DOBObjectManager::DOBObjectManager() : Logger("ObjectManager") {
 	CommitMasterTransactionThread::instance()->start();
 }
 
-void DOBObjectManager::createBackup(bool forceFull) {
+void DOBObjectManager::createBackup(int flags) {
 	if (DistributedObjectBroker::instance()->isRootBroker())
-		ObjectBrokerDirector::instance()->createBackup(forceFull);
+		ObjectBrokerDirector::instance()->createBackup(flags);
 	else
 		warning("remote backup creation not implemented yet");
 }
@@ -346,7 +347,7 @@ UpdateModifiedObjectsThread* DOBObjectManager::createUpdateModifiedObjectsThread
 	return thread;
 }
 
-DOBObjectManager::UpdateCollection DOBObjectManager::collectModifiedObjectsFromThreads(const ArrayList<Pair<Locker*, TaskWorkerThread*>>& lockers) {
+DOBObjectManager::UpdateCollection DOBObjectManager::collectModifiedObjectsFromThreads(const ArrayList<Pair<Locker*, TaskWorkerThread*>>& lockers, int flags) {
 	const static int saveMode = Core::getIntProperty("ObjectManager.saveMode", 0);
 	const static int trackUniqueObjectsSaveDeltas = Core::getIntProperty("ObjectManager.trackUniqueObjectsSaveDeltas", 0);
 
@@ -410,8 +411,15 @@ DOBObjectManager::UpdateCollection DOBObjectManager::collectModifiedObjectsFromT
 	return collection;
 }
 
-void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
-	info("starting saving objects to database", true);
+void DOBObjectManager::updateModifiedObjectsToDatabase(int flags) {
+	info(true) << "starting"
+		<< ((flags & SAVE_DELTA) ? " delta" : "")
+		<< ((flags & SAVE_FULL) ? " full" : "")
+		<< " save of objects to database"
+		<< ((flags & SAVE_DEBUG) ? " with debug" : "")
+		<< ((flags & SAVE_DUMP) ? " with dump" : "")
+		<< ((flags & SAVE_REPORT) ? " with report" : "")
+		<< ((flags & SAVE_JSON) ? " with ram json dump" : "");
 
 	const static int saveMode = Core::getIntProperty("ObjectManager.saveMode", 0);
 	const static uint32 saveDeltas = Core::getIntProperty("ObjectManager.saveDeltas", 0);
@@ -427,6 +435,11 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 		return;
 	}
 
+	if (dumpRunning) {
+		error() << "dumpRAMtoJSON running, please try again later.";
+		return;
+	}
+
 	auto objectsToDeleteFromRAM = new Vector<DistributedObject*>();
 
 	Timer stopWaitTimer;
@@ -434,10 +447,7 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 
 	UniqueReference<Vector<Pair<Locker*, TaskWorkerThread*>>*> lockers(Core::getTaskManager()->blockTaskManager());
 
-	uint64 durationOfBlocking = stopWaitTimer.stop();
-
-	info(true) << "waited task manager to stop for "
-	       << durationOfBlocking << " ns";
+	info(true) << "waited for task manager to stop for " << nsToString(stopWaitTimer.stop());
 
 	Locker _locker(this);
 
@@ -461,17 +471,17 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 	Timer copy;
 	copy.start();
 
-	auto collection = collectModifiedObjectsFromThreads(*lockers);
+	auto collection = collectModifiedObjectsFromThreads(*lockers, flags);
 
-	if (!forceFull && saveMode && (saveDeltaCount++ < saveDeltas)) {
+	if (!(flags & SAVE_FULL) && saveMode && (saveDeltaCount++ < saveDeltas)) {
 		info("running delta update", true);
 
-		executeDeltaUpdateThreads(collection, transaction);
+		executeDeltaUpdateThreads(collection, transaction, flags);
 	} else {
 		info("running full update", true);
 
 		executeUpdateThreads(&objectsToUpdate, &objectsToDelete,
-                                 objectsToDeleteFromRAM, transaction);
+                                 objectsToDeleteFromRAM, transaction, flags);
 
 		saveDeltaCount = 0;
 	}
@@ -486,6 +496,26 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 	info(true) << "copied objects into ram in "
 	       << copyTime << " ms";
 
+	if (flags & SAVE_FULL && flags & (SAVE_DUMP | SAVE_JSON)) {
+		Time startTime;
+		StringBuffer buf;
+		buf << "log/save-dumps";
+
+		File::mkpath(buf.toString());
+
+		buf << "/dump-" << startTime.getTime();
+
+		String baseFilename = buf.toString();
+
+		if (flags & SAVE_DUMP) {
+			dumpSnapshot(baseFilename, startTime, &objectsToUpdate, &objectsToDelete, objectsToDeleteFromRAM, flags);
+		}
+
+		if (flags & SAVE_JSON) {
+			dumpRAMtoJSON(baseFilename, startTime);
+		}
+	}
+
 	CommitMasterTransactionThread::instance()->startWatch(transaction, &updateModifiedObjectsThreads,
 			updateModifiedObjectsThreads.size(), objectsToDeleteFromRAM);
 
@@ -493,7 +523,7 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 	_locker.release();
 #endif
 
-	onUpdateModifiedObjectsToDatabase(); //this might cause some chars to remain dirty in sql until next save, but we dont care
+	onUpdateModifiedObjectsToDatabase(flags); //this might cause some chars to remain dirty in sql until next save, but we dont care
 
 	//cleanup thread objecuts
 	for (auto& entry : collection) {
@@ -516,29 +546,266 @@ void DOBObjectManager::updateModifiedObjectsToDatabase(bool forceFull) {
 			delete objectsToDelete;
 		}
 	}
+}
 
-#ifdef PRINT_OBJECT_COUNT
-	VectorMap<int, String> orderedMap(inRamClassCount.size(), 0);
-	orderedMap.setAllowDuplicateInsertPlan();
+void DOBObjectManager::dumpSnapshot(const String& baseFilename, Time timestamp,
+		ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete,
+		ArrayList<DistributedObject* >* objectsToDeleteFromRAM, int flags) {
 
-	for (int i = 0; i < inRamClassCount.size(); ++i) {
-		const String& name = inRamClassCount.elementAt(i).getKey();
-		int val = inRamClassCount.elementAt(i).getValue();
+	StringBuffer details;
+	details
+		<< " objectsToUpdate = " << commas << objectsToUpdate->size()
+		<< "; objectsToDelete = " << objectsToDelete->size()
+		<< "; objectsToDeleteFromRAM = " << objectsToDeleteFromRAM->size()
+		<< "; flags = " << flags;
 
-		orderedMap.put(val, name);
+	info(true) << "dumpSnapshot:" << details;
+
+	Timer profile;
+	profile.start();
+
+	StringBuffer fileName;
+	fileName << baseFilename << ".log";
+	File dumpFile(fileName.toString());
+	FileWriter dumpWriter(&dumpFile, false);
+
+	StringBuffer header;
+
+	header << "# START v1; uptme = " << Logger::getElapsedTime() << "; time = " << timestamp.getMiliTime() << ";" << details << "\n";
+	header << "oid\toperation\trefs\tclassName\n";
+
+	dumpWriter << header;
+
+	auto fmtRow = [&](String op, DistributedObject* obj) {
+		StringBuffer row;
+		row << obj->_getObjectID() << "\t"
+			<< op << "\t"
+			<< obj->getReferenceCount() << "\t"
+			<< TypeInfo<DistributedObject>::getClassName(obj, false)
+			<< "\n";
+
+		dumpWriter << row;
+	};
+
+	for (auto obj : *objectsToUpdate) {
+		fmtRow("Update", obj);
 	}
 
-	for (int i = 0; i < orderedMap.size(); ++i) {
-		const String& name = orderedMap.elementAt(i).getValue();
-		int val = orderedMap.elementAt(i).getKey();
-
-		printf("%s\t%d\n", name.toCharArray(), val);
+	for (auto obj : *objectsToDelete) {
+		fmtRow("Delete", obj);
 	}
-#endif
+
+	for (auto obj : *objectsToDeleteFromRAM) {
+		fmtRow("DeleteFromRAM", obj);
+	}
+
+	auto elapsedMs = profile.stopMs();
+
+	StringBuffer endLine;
+	endLine << "# END elapsedTime = " << msToString(elapsedMs);
+	dumpWriter << endLine << "\n";
+	dumpWriter.close();
+
+	info(true) << "dumpSnapshot: Dumped to " << fileName << " in " << msToString(elapsedMs);
+}
+
+void DOBObjectManager::dumpRAMtoJSON(const String& baseDirname, Time timestamp) {
+	if (!dumpRunning.compareAndSet(false, true)) {
+		error() << "Previous dump still running, please try again later.";
+		return;
+	}
+
+	static int numThreads = Core::getIntProperty("ObjectManager.maxDumpThreads", Math::max(1, (int) System::getOnlineProcessors() / 4 * 3));
+	int objCount = localObjectDirectory.getObjectHashTable().size();
+	int objsPerTask = objCount / numThreads;
+
+	info(true) << "Dumping " << commas << objCount << " RAM objects to " << baseDirname << "/ using " << numThreads << " threads.";
+
+	static TaskQueue* customQueue = []() { return Core::getTaskManager()->initializeCustomQueue("RAMtoJSON", numThreads); }();
+
+	File::mkpath(baseDirname);
+
+	StringBuffer buf;
+	buf << baseDirname << "/ram-dump-" << timestamp.getTime();
+	String baseFilename = buf.toString();
+
+	auto iterator = localObjectDirectory.getObjectHashTable().iterator();
+	int countQueued = 0;
+	int taskNumber = 0;
+	Vector<uint64> oidsToDump;
+
+	Timer profileQueue;
+	Time now, last_rpt;
+	auto startNanos = now.getNanoTime();
+
+	profileQueue.start();
+
+	while (iterator.hasNext()) {
+		DistributedObjectAdapter* adapter = iterator.getNextValue();
+
+		DistributedObject* dobObject = adapter->getStub();
+
+		ManagedObject* managedObject = static_cast<ManagedObject*>(dobObject);
+
+		if (managedObject != nullptr) {
+			oidsToDump.add(managedObject->_getObjectID());
+			++countQueued;
+		}
+
+		if (oidsToDump.size() >= objsPerTask) {
+			dispatchDumpTask("RAMtoJSON", baseFilename, oidsToDump, ++taskNumber);
+			oidsToDump.removeRange(0, oidsToDump.size());
+		}
+
+		now.updateToCurrentTime();
+		int delta = now.getTime() - last_rpt.getTime();
+
+		if (delta > 5) {
+			last_rpt.updateToCurrentTime();
+			auto elapsedMs = profileQueue.elapsedToNow() / 1000000;
+			auto ps = countQueued / (elapsedMs / 1000.0f);
+			info(true) << "Queued " << commas << countQueued << " objects (" << ps << "/s) for dump.";
+		}
+	}
+
+	if (oidsToDump.size() > 0) {
+		dispatchDumpTask("RAMtoJSON", baseFilename, oidsToDump, ++taskNumber);
+	}
+
+	auto elapsedMs = profileQueue.stopMs();
+	auto ps = elapsedMs > 0 ? countQueued / (elapsedMs / 1000.0f) : countQueued;
+
+	info(true)
+		<< "Queued " << commas << countQueued
+		<< " objects for JSON dump to " << baseFilename << "/"
+		<< " in " << msToString(elapsedMs) << " (" << ps << "/s)";
+
+	Core::getTaskManager()->executeTask([baseFilename, countQueued, startNanos]() {
+		Logger log;
+
+		log.setLoggingName("RAMtoJSON");
+		log.setLogLevel(LogLevel::INFO);
+		log.setLogToConsole(true);
+
+		log.info(true) << "Waiting for RAMtoJSON to finish.";
+		Core::getTaskManager()->waitForQueueToFinish("RAMtoJSON");
+
+		Time now;
+		auto elapsedMs = (now.getNanoTime() - startNanos) / 1000000.0;
+		auto ps = elapsedMs > 0 ? countQueued / (elapsedMs / 1000.0f) : countQueued;
+
+		log.info(true)
+		    << "RAMtoJSON finished dumping " << commas << countQueued
+			<< " objects as JSON to " << baseFilename
+			<< " in " << msToString(elapsedMs) << " (" << ps << "/s)";
+
+		DOBObjectManager::dumpRunning.set(false);
+	}, "WaitRAMtoJSON");
+}
+
+void DOBObjectManager::dispatchDumpTask(const String& queueName, const String& baseFilename, Vector<uint64> oidsToDump, int taskNumber) {
+	Core::getTaskManager()->executeTask([baseFilename, oidsToDump, taskId=taskNumber]() {
+		int jitter = 25 * taskId;
+		Thread::sleep(jitter);
+
+		String taskIdStr = (taskId < 10 ? "0" : "") + String::valueOf(taskId);
+		Logger log;
+		log.setLoggingName("RAMtoJSON-" + taskIdStr);
+		log.setLogLevel(LogLevel::INFO);
+		log.setLogToConsole(true);
+
+		String jsonFileName;
+		StringBuffer buf;
+		buf << baseFilename << "-" << taskIdStr << ".json";
+		jsonFileName = buf.toString();
+
+		File jsonDumpFile(jsonFileName);
+		FileWriter jsonDumpWriter(&jsonDumpFile, false);
+
+		Time last_rpt;
+		int countDumped = 0;
+		int countSkipped = 0;
+		int countException = 0;
+		DOBObjectManager* objectManager = DistributedObjectBroker::instance()->getObjectManager();
+		Timer profileExport;
+
+		log.debug() << "Dumping " << commas << oidsToDump.size() << " objects to " << jsonFileName;
+
+		profileExport.start();
+
+		for (int i = 0; i < oidsToDump.size(); ++i) {
+			try {
+				auto oid = oidsToDump.get(i);
+
+				auto adapter = objectManager->getAdapter(oid);
+
+				if (adapter == nullptr) {
+					++countSkipped;
+					continue;
+				}
+
+				auto dobObject = adapter->getStub();
+
+				if (dobObject == nullptr) {
+					++countSkipped;
+					continue;
+				}
+
+				Reference<ManagedObject*> managedObject = static_cast<ManagedObject*>(dobObject);
+
+				if (managedObject == nullptr) {
+					++countSkipped;
+					continue;
+				}
+
+				ReadLocker lock(managedObject);
+
+				nlohmann::json jsonObject;
+
+				jsonObject["_oid"] = oid;
+				jsonObject["_refCount"] = managedObject->getReferenceCount();
+
+				managedObject->writeJSON(jsonObject);
+
+				jsonDumpWriter << jsonObject.dump() << "\n";
+
+				++countDumped;
+			} catch(...) {
+				++countException;
+			}
+
+			int delta = last_rpt.miliDifference();
+
+			if (delta >= 5000 + jitter) {
+				last_rpt.updateToCurrentTime();
+				auto elapsedMs = profileExport.elapsedToNow() / 1000000;
+				auto ps = countDumped / (elapsedMs / 1000.0f);
+				auto total = oidsToDump.size();
+				int percentComplete = (double)(countDumped) / total * 100;
+				log.info(true) << "Dumped " << commas << countDumped << " of " << total << " (" << percentComplete << ") objects (" << ps << "/s)";
+			}
+		}
+
+		jsonDumpWriter.close();
+
+		auto elapsedMs = profileExport.stopMs();
+		auto ps = elapsedMs > 0 ? countDumped / (elapsedMs / 1000.0f) : countDumped;
+
+		log.info(true)
+			<< "Dumped " << commas << countDumped
+			<< " objects to " << jsonFileName
+			<< " in " << msToString(elapsedMs) << " (" << ps << "/s)"
+			<< "; skipped " << countSkipped;
+
+		if (countException > 0) {
+			log.warning() << "Had " << commas << countException << " exception(s) while dumping objects.";
+		}
+
+	}, "DumpJSON", queueName);
 }
 
 int DOBObjectManager::executeUpdateThreads(ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete,
-		ArrayList<DistributedObject* >* objectsToDeleteFromRAM, engine::db::berkeley::Transaction* transaction) {
+		ArrayList<DistributedObject* >* objectsToDeleteFromRAM, engine::db::berkeley::Transaction* transaction, int flags) {
 	totalUpdatedObjects = 0;
 	totalActuallyChangedObjects = 0;
 	//commitedObjects.removeAll(localObjectDirectory.getSize(), 1000);
@@ -546,14 +813,21 @@ int DOBObjectManager::executeUpdateThreads(ArrayList<DistributedObject*>* object
 
 	int numberOfThreads = 0;
 
-#ifdef PRINT_OBJECT_COUNT
+	const static int reportTopInRam = Core::getIntProperty("ObjectManager.reportTopInRam", 20);
+	const static bool alwaysReportTopInRam = Core::getIntProperty("ObjectManager.AlwaysReportTopInRam", 0);
+
+	if (alwaysReportTopInRam) {
+		flags |= SAVE_REPORT;
+	}
+
 	VectorMap<String, int> inRamClassCount;
 	inRamClassCount.setNullValue(0);
 
-	numberOfThreads = runObjectsMarkedForUpdate(transaction, objectsToUpdate, *objectsToDelete, *objectsToDeleteFromRAM, &inRamClassCount);
-#else
-	numberOfThreads = runObjectsMarkedForUpdate(transaction, objectsToUpdate, *objectsToDelete, *objectsToDeleteFromRAM, nullptr);
-#endif
+	if ((flags & SAVE_REPORT) && reportTopInRam > 0) {
+		numberOfThreads = runObjectsMarkedForUpdate(transaction, objectsToUpdate, *objectsToDelete, *objectsToDeleteFromRAM, &inRamClassCount, flags);
+	} else {
+		numberOfThreads = runObjectsMarkedForUpdate(transaction, objectsToUpdate, *objectsToDelete, *objectsToDeleteFromRAM, nullptr, flags);
+	}
 
 	for (auto thread : updateModifiedObjectsThreads) {
 		thread->signalCopyFinished();
@@ -561,10 +835,63 @@ int DOBObjectManager::executeUpdateThreads(ArrayList<DistributedObject*>* object
 		thread->waitFinishedWork();
 	}
 
+	if (inRamClassCount.size() > 0) {
+		VectorMap<int, String> orderedMap(inRamClassCount.size(), 0);
+		orderedMap.setAllowDuplicateInsertPlan();
+
+		int max = 0;
+		int total = 0;
+		for (int i = 0; i < inRamClassCount.size(); ++i) {
+			const String& name = inRamClassCount.elementAt(i).getKey();
+			int val = inRamClassCount.elementAt(i).getValue();
+
+			if (name.beginsWith("is")) {
+				continue;
+			}
+
+			if (val > max) {
+				max = val;
+			}
+
+			total += val;
+
+			orderedMap.put(val, name);
+		}
+
+		auto TotalIsPersistent = inRamClassCount.get("isPersistent");
+		auto TotalIsNotPersistent = inRamClassCount.get("isNotPersistent");
+		int percentPersistent = (double)(TotalIsPersistent) / total * 100;
+		int percentNotPersistent = (double)TotalIsNotPersistent / total * 100;
+
+		info(true) << "InRamObjects:" << commas
+			<< " total=" << total
+			<< "; isPersistent=" << TotalIsPersistent << " (" << percentPersistent << "%)"
+			<< "; isNotPersistent=" << TotalIsNotPersistent << " (" << percentNotPersistent << "%)"
+			;
+
+		info(true) << "Top " << reportTopInRam << " objects in RAM:";
+
+		auto valWidth = String::withCommas(max).length();
+
+		for (int i = orderedMap.size() - 1, topN = 1;i >= 0 && topN <= reportTopInRam; --i, ++topN) {
+			const String& name = orderedMap.elementAt(i).getValue();
+			String valCommas = String::withCommas(orderedMap.elementAt(i).getKey());
+
+			std::ostringstream row;
+			row << " "
+				<< std::setfill(' ')
+				<< std::setw(2) << topN << ")  "
+				<< std::setw(valWidth) << valCommas.toCharArray() << "  "
+				<< name.toCharArray();
+
+			info(true) << row.str();
+		}
+	}
+
 	return numberOfThreads;
 }
 
-int DOBObjectManager::executeDeltaUpdateThreads(UpdateCollection& updateObjects, engine::db::berkeley::Transaction* transaction) {
+int DOBObjectManager::executeDeltaUpdateThreads(UpdateCollection& updateObjects, engine::db::berkeley::Transaction* transaction, int flags) {
 	totalUpdatedObjects = 0;
 	totalActuallyChangedObjects = 0;
 	commitedObjects.objects.clear();
@@ -581,7 +908,7 @@ int DOBObjectManager::executeDeltaUpdateThreads(UpdateCollection& updateObjects,
 		int objectsToUpdateCount = updateObjects ? updateObjects->size() : 0;
 
 		dispatchUpdateModifiedObjectsThread(currentThread, lastThreadCount,
-				objectsToUpdateCount, transaction, updateObjects, deleteObjects);
+				objectsToUpdateCount, transaction, updateObjects, deleteObjects, flags);
 
 		++count;
 	}
@@ -599,7 +926,7 @@ int DOBObjectManager::executeDeltaUpdateThreads(UpdateCollection& updateObjects,
 
 void DOBObjectManager::dispatchUpdateModifiedObjectsThread(int& currentThread, int& lastThreadCount,
 		int& objectsToUpdateCount, engine::db::berkeley::Transaction* transaction,
-		ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete) {
+		ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>* objectsToDelete, int flags) {
 	int threadIndex = currentThread++;
 
 	UpdateModifiedObjectsThread* thread = nullptr;
@@ -636,7 +963,7 @@ void DOBObjectManager::SynchronizedCommitedObjects::put(DistributedObject* obj) 
 
 int DOBObjectManager::runObjectsMarkedForUpdate(engine::db::berkeley::Transaction* transaction,
 		ArrayList<DistributedObject*>* objectsToUpdate, ArrayList<DistributedObject*>& objectsToDelete,
-		ArrayList<DistributedObject* >& objectsToDeleteFromRAM, VectorMap<String, int>* inRamClassCount) {
+		ArrayList<DistributedObject* >& objectsToDeleteFromRAM, VectorMap<String, int>* inRamClassCount, int flags) {
 
 	objectsToUpdate->removeAll(localObjectDirectory.getSize(), 1); //need to make sure no reallocs happen or threads will read garbage data
 	objectsToDelete.removeAll(100000, 0);
@@ -657,9 +984,30 @@ int DOBObjectManager::runObjectsMarkedForUpdate(engine::db::berkeley::Transactio
 		if (dobObject->getReferenceCount() == 2) // 2 is the lowest count now
 			objectsToDeleteFromRAM.emplace(dobObject);
 		else if (inRamClassCount != nullptr) {
-			String className = TypeInfo<DistributedObject>::getClassName(dobObject, false);
+			StringBuffer buf;
 
-			inRamClassCount->put(className, inRamClassCount->get(className) + 1);
+			if (dobObject->isPersistent()) {
+				inRamClassCount->put("isPersistent", inRamClassCount->get("isPersistent") + 1);
+				buf << "Persistent ";
+			} else {
+				inRamClassCount->put("isNotPersistent", inRamClassCount->get("isNotPersistent") + 1);
+				buf << "Non-persistent ";
+			}
+
+			std::string className = TypeInfo<DistributedObject>::getClassName(dobObject, false);
+
+			int pos = 0;
+			for (int stop = 2; stop > 0 && (pos = className.rfind("::", pos - 1)) != std::string::npos;) {
+				if (className[pos] == ':') {
+					--stop;
+				}
+			}
+
+			buf << className.substr(pos + 2);
+
+			auto reportKey = buf.toString();
+
+			inRamClassCount->put(reportKey, inRamClassCount->get(reportKey) + 1);
 		}
 
 		ManagedObject* managedObject = static_cast<ManagedObject*>(dobObject);
@@ -674,19 +1022,19 @@ int DOBObjectManager::runObjectsMarkedForUpdate(engine::db::berkeley::Transactio
 
 		if (objectsToUpdateCount >= DOB::MAXOBJECTSTOUPDATEPERTHREAD) {
 			dispatchUpdateModifiedObjectsThread(currentThread, lastThreadCount, objectsToUpdateCount, transaction, objectsToUpdate,
-					nullptr);
+					nullptr, flags);
 		}
 	}
 
 	if (objectsToUpdateCount || objectsToDelete.size()) {
 		dispatchUpdateModifiedObjectsThread(currentThread, lastThreadCount, objectsToUpdateCount, transaction, objectsToUpdate,
-				&objectsToDelete);
+				&objectsToDelete, flags);
 	}
 
 	auto elapsed = profile.stopMs();
 
-	info(true) << "launched " << currentThread << " workers and marked " << objectsToUpdate->size() << " objects to update and "
-			<< objectsToDelete.size() << " for deletion in " << elapsed << " ms from " << localObjectDirectory.getObjectHashTable().size() << " total objects";
+	info(true) << "launched " << currentThread << " workers and marked " << commas << objectsToUpdate->size() << " objects to update and "
+			<< objectsToDelete.size() << " for deletion in " << msToString(elapsed) << " from " << localObjectDirectory.getObjectHashTable().size() << " total objects";
 
 	return currentThread;
 }
@@ -738,7 +1086,7 @@ void DOBObjectManager::finishObjectUpdate() {
 
 	updateModifiedObjectsTask->schedule(UPDATETODATABASETIME);
 
-	info(true) << "marked updated objects: " << totalUpdatedObjects
+	info(true) << "marked updated objects: " << commas << totalUpdatedObjects
 			<< " commited objects: " << totalActuallyChangedObjects;
 
 	saveCount++;

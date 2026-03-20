@@ -57,7 +57,7 @@ object_draft_schematic_space_engine_eng_mk5 = object_draft_schematic_space_engin
    assemblySkill = "engine_assembly", 
    experimentingSkill = "engine_experimentation", 
    customizationSkill = "medicine_customization",
-   factoryCrateSize = 1000, 
+   factoryCrateSize = 0, 
 
    customizationOptions = {},
    customizationStringNames = {},

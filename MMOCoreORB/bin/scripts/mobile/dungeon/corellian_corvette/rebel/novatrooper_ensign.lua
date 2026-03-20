@@ -31,16 +31,17 @@ novatrooper_ensign = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "color_crystals", chance = 1000000}, -- 10.00%
-                {group = "junk", chance = 1500000}, -- 15.00%
-                {group = "rifles", chance = 625000}, -- 6.25%
-                {group = "pistols", chance = 625000}, -- 6.25%
-                {group = "melee_weapons", chance = 625000}, -- 6.25%
-                {group = "carbines", chance = 625000}, -- 6.25%
-                {group = "clothing_attachments", chance = 1000000}, -- 10.00%
-                {group = "armor_attachments", chance = 1000000}, -- 10.00%
-                {group = "wearables_common", chance = 1500000}, -- 15.00%
-                {group = "wearables_uncommon", chance = 1500000}, -- 15.00%
+				{group = "color_crystals", chance = 100000},
+				{group = "junk", chance = 6200000},
+				{group = "rifles", chance = 550000},
+				{group = "pistols", chance = 550000},
+				{group = "melee_weapons", chance = 550000},
+				{group = "carbines", chance = 550000},
+				{group = "clothing_attachments", chance = 25000},
+				{group = "armor_attachments", chance = 25000},
+				{group = "imperial_officer_common", chance = 450000},
+				{group = "wearables_common", chance = 500000},
+				{group = "wearables_uncommon", chance = 500000}
 			}
 		}
 	},

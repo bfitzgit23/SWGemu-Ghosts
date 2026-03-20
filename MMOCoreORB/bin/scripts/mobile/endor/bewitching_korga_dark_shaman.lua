@@ -20,7 +20,7 @@ bewitching_korga_dark_shaman = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER + HEALER,
@@ -33,11 +33,9 @@ bewitching_korga_dark_shaman = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "ewok", chance = 3500000}, -- 35.00%
-                {group = "wearables_uncommon", chance = 3500000}, -- 35.00%
-                {group = "armor_attachments", chance = 1500000}, -- 15.00%
-                {group = "clothing_attachments", chance = 1500000}, -- 15.00%
+				{group = "ewok", chance = 10000000}
 			},
+			lootChance = 1760000
 		}
 	},
 	weapons = {},

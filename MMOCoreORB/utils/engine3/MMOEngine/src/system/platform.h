@@ -5,9 +5,7 @@
 
 #pragma once
 
-#ifdef LOCKFREE_BCLIENT_BUFFERS
 #include <boost/lockfree/queue.hpp>
-#endif
 
 #if defined(_WIN32) || defined(_WIN32_WCE) || defined(__WIN32__)
 	#define PLATFORM_WIN
@@ -27,7 +25,7 @@
 	#define PLATFORM_UNIX
 #endif
 
-#ifdef __x86_64__
+#if defined(__x86_64__) || defined(__aarch64__)
 #define PLATFORM_64
 #else
 #define PLATFORM_32

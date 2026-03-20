@@ -151,11 +151,32 @@ class FishingManager extends Observer implements Logger {
 	
 	public void initializeLoot() {
 		//TODO: This should be loaded from a lua config "fishing_manager.lua"
-		miscLoot.add("object/tangible/wearables/shoes/shoes_s07.iff");
-		miscLoot.add("object/tangible/wearables/shoes/shoes_s02.iff");
-		miscLoot.add("object/tangible/food/foraged/foraged_fruit_s1.iff");
-		
-		rareLoot.add("object/weapon/ranged/pistol/pistol_cdef.iff");
+        miscLoot.add("object/tangible/collection/reward/rock_bubbling_reward.iff");
+        miscLoot.add("object/tangible/veteran_reward/frn_plush_tauntaun.iff");
+        miscLoot.add("object/tangible/collection/reward/target_reticule_goggles.iff");
+		miscLoot.add("object/tangible/wearables/goggles/goggles_anniversary.iff");
+		miscLoot.add("object/tangible/dance_prop/generic_must_prop_baton_04_l.iff");
+		miscLoot.add("object/tangible/dance_prop/generic_must_prop_baton_04_r.iff");
+		miscLoot.add("object/tangible/food/spice/spice_thruster_head.iff");
+        miscLoot.add("object/tangible/furniture/all/frn_all_camp_lantern_s3.iff");
+        miscLoot.add("object/tangible/furniture/all/frn_all_meatlump_palette_empty.iff");
+        miscLoot.add("object/tangible/furniture/decorative/cafe_chair.iff");
+        miscLoot.add("object/tangible/furniture/tatooine/frn_tato_cafe_parasol.iff");
+        miscLoot.add("object/tangible/furniture/tatooine/uber_basket_holder.iff");
+        miscLoot.add("object/tangible/loot/misc/loot_skull_human.iff");
+        miscLoot.add("object/tangible/loot/misc/loot_skull_ithorian.iff");
+        miscLoot.add("object/tangible/loot/misc/loot_skull_bith.iff");
+        miscLoot.add("object/tangible/loot/mustafar/stuffed_dewback_doll.iff");
+        miscLoot.add("object/tangible/loot/mustafar/throw_pillow_03.iff");
+        miscLoot.add("object/tangible/loot/mustafar/throw_pillow_01.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_ch9_droid_powerdroid_powerdown.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_ch9_droid_r3_powerdown.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_ch9_droid_r2_powerdown.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_eqp_camping_chair_s1.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_escape_pod_door.iff");
+        miscLoot.add("object/tangible/storyteller/prop/pr_ch9_droid_r4_powerdown.iff");
+
+        rareLoot.add("object/tangible/treasure_map/treasure_map_encoded_disk.iff");
 	}
 	
 	public void initializeColor() {
@@ -170,6 +191,11 @@ class FishingManager extends Observer implements Logger {
 		color.put("talus", 0);
 		color.put("tatooine", 7);
 		color.put("yavin4", 41);
+		color.put("mustafar", 15);
+		color.put("kashyyyk", 47);
+		color.put("taanab", 31);
+		color.put("hoth", 30);
+		color.put("mandalore", 7);
 	}
 	
 	public int notifyObserverEvent(unsigned int eventType, Observable observable, ManagedObject arg1, long arg2) {
@@ -349,7 +375,7 @@ class FishingManager extends Observer implements Logger {
 	/**
 	 * Gets Next Action from Event
 	 * getNextAction gets the Event linked to the Player and returns the next action,
-	 * if the player or the event are NULL the value DONOTHING(=0) is returned
+	 * if the player or the event are nullptr the value DONOTHING(=0) is returned
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to get the fishing event's nextAction member
@@ -370,12 +396,12 @@ class FishingManager extends Observer implements Logger {
 	
 	/**
 	 * Gets Pole from Player
-	 * getPole gets the SceneObject in the Players right hand and, unless it is NULL,
+	 * getPole gets the SceneObject in the Players right hand and, unless it is nullptr,
 	 * checks whether it is a fishing pole and returns it
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to get fishing pole
-	 * @return { FishingPoleObject or NULL }
+	 * @return { FishingPoleObject or nullptr }
 	 */
 	public native FishingPoleObject getPole(CreatureObject player);
 	
@@ -385,7 +411,7 @@ class FishingManager extends Observer implements Logger {
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to get fishing bait
-	 * @return { FishingBaitObject or NULL }
+	 * @return { FishingBaitObject or nullptr }
 	 */
 	public native FishingBaitObject getBait(CreatureObject player);
 	
@@ -424,7 +450,7 @@ class FishingManager extends Observer implements Logger {
 	/**
 	 * Sets fishing state in Event
 	 * setFishingState gets the Event linked to the player
-	 * and sets the FishingState to the argument-given state unless it's NULL
+	 * and sets the FishingState to the argument-given state unless it's nullptr
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to set the fishing event's fishing state
@@ -435,11 +461,11 @@ class FishingManager extends Observer implements Logger {
 	/**
 	 * Gets Fish Marker in Event
 	 * getFishMarker gets the Event linked to the player
-	 * and returns the Marker of the Event, even if it is NULL
+	 * and returns the Marker of the Event, even if it is nullptr
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to get the event's fish marker
-	 * @return { NULL: player is NULL, player: no fishing event, FishMarker otherwise }
+	 * @return { nullptr: player is nullptr, player: no fishing event, FishMarker otherwise }
 	 */
 	public native SceneObject getFishMarker(CreatureObject player);
 	
@@ -447,7 +473,7 @@ class FishingManager extends Observer implements Logger {
 	 * Sets Fish Marker in Event
 	 * setFishMarker gets the Event linked to the player
 	 * and sets it's marker to the argument-given marker
-	 * there is an intended call that sets the marker in the event to NULL
+	 * there is an intended call that sets the marker in the event to nullptr
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 * @param player CreatureObject for which to set the event's fish marker
@@ -575,8 +601,8 @@ class FishingManager extends Observer implements Logger {
 	
 	/**
 	 * Removes the fishing marker
-	 * removeMarker sets the Marker in the Event to NULL and removes the marker from Zone
-	 * it is only called where it is set to a new marker, or the event is stopped, so the NULL won't cause problems
+	 * removeMarker sets the Marker in the Event to nullptr and removes the marker from Zone
+	 * it is only called where it is set to a new marker, or the event is stopped, so the nullptr won't cause problems
 	 * @pre { object is locked }
 	 * @post { object is locked }
 	 * @param player CreatureObject to get Event to remove marker from

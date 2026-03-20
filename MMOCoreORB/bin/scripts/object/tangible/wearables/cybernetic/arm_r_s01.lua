@@ -42,6 +42,7 @@
 
 
 object_tangible_wearables_cyborg_arm_r_s01 = object_tangible_wearables_cyborg_shared_arm_r_s01:new {
+	customName = "Cybernetic Right Arm S1",
 	templateType = ARMOROBJECT,
 
 	objectMenuComponent = "ArmorObjectMenuComponent",

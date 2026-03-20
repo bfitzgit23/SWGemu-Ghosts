@@ -20,7 +20,7 @@ monumenter_marauder = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
@@ -42,12 +42,12 @@ monumenter_marauder = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 4000000}, -- 40%
-				{group = "wearables_common", chance = 2000000}, -- 20%
-				{group = "rifles", chance = 1000000}, -- 10%
-				{group = "pistols", chance = 1000000}, -- 10%
-				{group = "melee_weapons", chance = 1000000}, -- 10%
-				{group = "carbines", chance = 1000000}, -- 10%
+				{group = "junk", chance = 4000000},
+				{group = "wearables_common", chance = 2000000},
+				{group = "rifles", chance = 1000000},
+				{group = "pistols", chance = 1000000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "carbines", chance = 1000000},
 			}
 		}
 	},

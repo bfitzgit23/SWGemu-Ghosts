@@ -4,10 +4,10 @@ spiderclan_elder = Creature:new {
 	randomNameTag = true,
 	socialGroup = "spider_nightsister",
 	faction = "spider_nightsister",
-	level = 277,
+	level = 300,
 	chanceHit = 27.25,
 	damageMin = 1520,
-	damageMax = 2750,
+	damageMax = 3150,
 	baseXp = 26555,
 	baseHAM = 321000,
 	baseHAMmax = 392000,
@@ -20,7 +20,7 @@ spiderclan_elder = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER + HEALER,
@@ -28,25 +28,68 @@ spiderclan_elder = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_dathomir_spider_nightsister_elder.iff"},
-	lootGroups = {
+	lootGroups = {		
 		{
 			groups = {
-                {group = "junk", chance = 2250000}, -- 22.50%
-                {group = "power_crystals", chance = 750000}, -- 7.50%
-                {group = "color_crystals", chance = 750000}, -- 7.50%
-                {group = "armor_attachments", chance = 750000}, -- 7.50%
-                {group = "clothing_attachments", chance = 750000}, -- 7.50%
-                {group = "melee_weapons", chance = 625000}, -- 6.25%
-                {group = "pistols", chance = 625000}, -- 6.25%
-                {group = "rifles", chance = 625000}, -- 6.25%
-                {group = "carbines", chance = 625000}, -- 6.25%
-                {group = "wearables_scarce", chance = 2250000}, -- 22.50%
-			}
-		}
+				{group = "power_crystals", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "nge_all", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "color_crystals", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "nightsister_common", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "armor_attachments", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "clothing_attachments", chance = 10000000},
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_scarce", chance = 10000000},
+			},
+			lootChance = 5000000
+		},	
+		{
+			groups = {
+				{group = "jedi_comp_group", chance = 10000000},
+			},
+			lootChance = 500000
+		},
+		{
+			groups = {
+				{group = "tierone", chance = 1500000},
+				{group = "tiertwo", chance = 3500000},
+				{group = "tierthree", chance = 2500000},
+				{group = "tierdiamond", chance = 2500000},
+			},
+			lootChance = 4000000
+		},
 	},
 	weapons = {"mixed_force_weapons"},
 	conversationTemplate = "",
-	attacks = merge(brawlermaster,pikemanmaster,forcewielder)
+	attacks = merge(brawlermaster,pikemanmaster,forcepowermaster)
 }
 
 CreatureTemplates:addCreatureTemplate(spiderclan_elder, "spiderclan_elder")

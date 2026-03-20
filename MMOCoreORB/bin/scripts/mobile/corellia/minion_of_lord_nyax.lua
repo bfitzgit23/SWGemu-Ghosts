@@ -20,7 +20,7 @@ minion_of_lord_nyax = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK,
@@ -31,10 +31,10 @@ minion_of_lord_nyax = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 7000000}, -- 70%
-				{group = "pistols", chance = 1000000}, -- 10%
-				{group = "rifles", chance = 1000000}, -- 10%
-				{group = "carbines", chance = 1000000} -- 10%
+				{group = "junk", chance = 7000000},
+				{group = "pistols", chance = 1000000},
+				{group = "rifles", chance = 1000000},
+				{group = "carbines", chance = 1000000}
 			}
 		}
 	},

@@ -51,7 +51,7 @@ SaberPolearmSpinAttack3Command = {
 	mindCostMultiplier = 0,
 	forceCostMultiplier = 2.5,
 	areaAction = true,
-	areaRange = 10,
+	areaRange = 16,
 	visMod = 25,
 
 	stateEffects = {
@@ -66,14 +66,14 @@ SaberPolearmSpinAttack3Command = {
 	  )
 	},
 
-	animation = "counter_low_left", 
+	animation = "showoff_1", 
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "saberpolearmspinattack3",
 
 	poolsToDamage = RANDOM_ATTRIBUTE,
 
-	weaponType = POLEARMJEDIWEAPON,
+	weaponType = JEDIWEAPON,
 
 	range = -1
 }

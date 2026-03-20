@@ -1,6 +1,6 @@
 deathsting = Creature:new {
 	customName = "Deathsting",
-	socialGroup = "",
+	socialGroup = "townsperson",
 	faction = "",
 	level = 70,
 	chanceHit = 0.27,
@@ -20,7 +20,7 @@ deathsting = Creature:new {
 	milk = 0,
 	tamingChance = 0,
 	ferocity = 0,
-	pvpBitmask = ATTACKABLE + ENEMY,
+	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + STALKER,
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,

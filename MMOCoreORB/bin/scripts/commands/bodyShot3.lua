@@ -44,7 +44,7 @@
 BodyShot3Command = {
         name = "bodyshot3",
 
-	damageMultiplier = 5,
+	damageMultiplier = 4,
 	speedMultiplier = 1,
 	healthCostMultiplier = 0.75,
 	actionCostMultiplier = 1.25,
@@ -58,19 +58,6 @@ BodyShot3Command = {
 
 	combatSpam = "bodyshot",
 	
-	dotEffects = {
-	  DotEffect( 
-		BLEEDING, 
-		{ "resistance_bleeding", "bleed_resist" },
-		HEALTH,
-		true,
-		0,
-		100,
-		30, 
-		60
-	  )
-	},
-
 	weaponType = PISTOLWEAPON,
 
 	range = -1

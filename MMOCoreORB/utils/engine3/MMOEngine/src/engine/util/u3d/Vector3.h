@@ -95,11 +95,19 @@ namespace engine {
 			return Math::sqrt(values[0] * values[0] + values[1] * values[1] + values[2] * values[2]);
 		}
 
+		inline float length2d() const {
+			return Math::sqrt(values[0] * values[0] + values[1] * values[1]);
+		}
+
 		/**
 		 * Returns the length before being squared. Good for comparing lengths.
 		 */
 		inline float squaredLength() const {
 			return (values[0] * values[0] + values[1] * values[1] + values[2] * values[2]);
+		}
+
+		inline float squaredLength2d() const {
+			return (values[0] * values[0] + values[1] * values[1]);
 		}
 
 		/**
@@ -112,6 +120,10 @@ namespace engine {
 			return (*this - v).length();
 		}
 
+		inline float distanceTo2d(const Vector3& v) const {
+			return (*this - v).length2d();
+		}
+
 		/**
 		 * Good for comparisons of distance. Saves the cpu usage needed for sqrt.
 		 * \param v The vector to get the distance to.
@@ -119,6 +131,10 @@ namespace engine {
 		 */
 		inline float squaredDistanceTo(const Vector3& v) const {
 			return (*this - v).squaredLength();
+		}
+
+		inline float squaredDistanceTo2d(const Vector3& v) const {
+			return (*this - v).squaredLength2d();
 		}
 
 		/**
@@ -162,6 +178,10 @@ namespace engine {
 			return sb.toString();
 		}
 
+		inline String toStringData() const {
+			return toString();
+		}
+
 		inline float operator [] (uint32 index) const {
 #ifdef VECTORS_OUT_OF_BOUNDS_CHECK
 			if (index > 2)
@@ -186,7 +206,7 @@ namespace engine {
 			return values;
 		}
 
-		Vector3& operator = (const Vector3& v) = default;
+		Vector3& operator = (const Vector3& v)  = default;
 
 		inline Vector3& operator = (const float scalar) {
 			values[0] = scalar;
@@ -374,6 +394,16 @@ namespace engine {
 		}
 
 		SerializableVector3(const Vector3& vec) : Vector3(vec) {
+		}
+
+		SerializableVector3& operator=(const SerializableVector3& v) {
+			if (this == &v) {
+				return *this;
+			}
+
+			Vector3::operator=(v);
+
+			return *this;
 		}
 
 		SerializableVector3& operator=(const Vector3& v) {

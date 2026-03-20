@@ -23,10 +23,6 @@ public:
 		if (!checkInvalidLocomotions(creature))
 			return INVALIDLOCOMOTION;
 
-		if (isWearingArmor(creature)) {
-			return NOJEDIARMOR;
-		}
-
 		ManagedReference<SceneObject*> object = server->getZoneServer()->getObject(target);
 
 		// Fail if target is not a player...
@@ -92,6 +88,9 @@ public:
 		creature->doCombatAnimation(targetCreature, animCRC, 0x1, 0xFF);
 		CombatManager::instance()->broadcastCombatSpam(creature, targetCreature, nullptr, forceTransfer, "cbt_spam", combatSpam, 0);
 
+		//Jedi Attackable
+		playerGhost->updateLastJediAttackableTimestamp();
+		
 		VisibilityManager::instance()->increaseVisibility(creature, visMod);
 
 		return SUCCESS;

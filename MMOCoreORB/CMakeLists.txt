@@ -1,7 +1,22 @@
 # Copyright (C) 2007 <SWGEmu>. All rights reserved.
 # Distribution of this file for usage outside of Core3 is prohibited.
 
-cmake_minimum_required(VERSION 3.1.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.7.0 FATAL_ERROR)
+
+find_program(CLANGXX_EXECUTABLE_PATH NAMES clang++)
+
+if (CLANGXX_EXECUTABLE_PATH)
+	find_program(CMAKE_C_COMPILER clang)
+	find_program(CMAKE_CXX_COMPILER clang++)
+	message(STATUS "Found ${CMAKE_CXX_COMPILER} using clang compiler.")
+	set(LINKER_IS_LLD 1 CACHE INTERNAL "use lld linker")
+	find_program(LLD_EXECUTABLE_PATH NAMES ld.lld)
+	if (LLD_EXECUTABLE_PATH)
+		message(STATUS "Using DWARF4 format with linker ${LLD_EXECUTABLE_PATH}")
+		add_link_options(-fuse-ld=lld  -Wl,--gdb-index)
+		set(CMAKE_CXX_FLAGS_DEBUG "-gdwarf-4")
+    endif()
+endif()
 
 project(core3 CXX C)
 
@@ -18,8 +33,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 	message(FATAL_ERROR "GCC version must be at least 5.4!")
     endif()
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 3.4)
-        message(FATAL_ERROR "Clang version must be at least 3.4!")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16)
+        message(FATAL_ERROR "Clang version must be at least 16!")
     endif()
 elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
     if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS 19.10)
@@ -45,15 +60,16 @@ option(ENABLE_TSAN "Enables thread sanitizer compiling" OFF)
 option(ENABLE_UBSAN "Enables undefined behavior sanitizer compiling" OFF)
 option(ENABLE_NATIVE "Enables -march=native compiler option" ON)
 option(ENABLE_OMIT_FRAMEPOINTER "Enables -fno-omit-frame-pointer compiler option" ON)
-option(ENABLE_ERROR_ON_WARNINGS "Enables -Werror compiler option" ON)
+option(ENABLE_ERROR_ON_WARNINGS "Enables compiler option" ON)
 option(ENABLE_REST_SERVER "Enables REST API Server" OFF)
-option(ENABLE_SESSION_API "Enables Session API support" OFF)
+option(ENABLE_SWGREALMS "Enables SWGRealms API support" OFF)
 option(ENABLE_ODB "Enables odb3 compiling" OFF)
 option(ENABLE_ODB_REFERENCES "Sets ODB_REFERENCES define" ON) #needs to match engine3
 option(ENABLE_BUILD_CLIENT "Enables core3client build" ON)
 option(ENABLE_JEMALLOC_LINK "Enables jemalloc linking if found" ON)
-option(ENABLE_MULTITHREADED_LINKER "Enables ld.gold/lld with --threads check and use" ON)
+option(ENABLE_MULTITHREADED_LINKER "Enables ld.gold/lld with --threads check and use" OFF)
 option(ENABLE_LOCKFREE_BCLIENT_BUFFERS "Enables lock free base client buffers, requires boost thread" OFF) #needs to match engine3
+option(DUMP_ALL_CMAKE_VARIABLES "Prints all cmake variables" OFF)
 
 # Set cmake paths
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
@@ -63,7 +79,7 @@ include(UseGold)
 find_package(Git QUIET)
 
 # Add lua includes and libraries
-find_package(Lua "5.3" REQUIRED)
+find_package(Lua "5.3" EXACT REQUIRED)
 include_directories(${LUA_INCLUDE_DIR})
 
 # Find mysql includes and libraries
@@ -86,9 +102,15 @@ include_directories(${OPENSSL_INCLUDE_DIR})
 find_package(ZLIB REQUIRED)
 include_directories(${ZLIB_INCLUDE_DIRS})
 
-if (ENABLE_SESSION_API)
-    message(STATUS "Compiling with session API support")
-    add_definitions(-DWITH_SESSION_API)
+if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+	message(STATUS "Compiling with AI debug enabled")
+	add_definitions(-DDEBUG_AI)
+	add_definitions(-DDEBUG_SHIP_AI)
+endif()
+
+if (ENABLE_SWGREALMS)
+    message(STATUS "Compiling with SWGRealms API support")
+    add_definitions(-DWITH_SWGREALMS_API)
 endif()
 
 if (ENABLE_REST_SERVER)
@@ -110,8 +132,12 @@ if(ENABLE_MULTITHREADED_LINKER)
 
 	if(LLD_LINKER_SUPPORTED)
 		set(LINKER_IS_LLD 1 CACHE INTERNAL "use lld linker")
+		message(STATUS "Using lld linker")
 	elseif(GOLD_LINKER_SUPPORTED)
 		set(LINKER_IS_GOLD 1 CACHE INTERNAL "use gold linker")
+		message(STATUS "Using gold linker")
+	else()
+		message(STATUS "ENABLE_MULTITHREADED_LINKER failed to find linker.")
 	endif()
 
 	if(LINKER_IS_GOLD)
@@ -194,7 +220,7 @@ if(COMPILE_TESTS)
     include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.10.0/googlemock/include)
 
 	enable_testing()
-	
+
     add_definitions(-DCOMPILE_CORE3_TESTS)
 else(COMPILE_TESTS)
     set(IDL_DIRECTIVES ${IDL_DIRECTIVES} -nomocks)
@@ -213,12 +239,10 @@ if (ENABLE_ODB_REFERENCES)
 endif()
 
 if (ENABLE_LOCKFREE_BCLIENT_BUFFERS)
-	find_package(Boost REQUIRED COMPONENTS thread)
-
 	add_definitions(-DLOCKFREE_BCLIENT_BUFFERS)
-else()
-	find_package(Boost QUIET OPTIONAL_COMPONENTS thread)
 endif()
+
+find_package(Boost REQUIRED COMPONENTS thread)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
@@ -226,18 +250,7 @@ endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Define global build gcc compatible flags to check and add if available
-    set(GCCEXTRAFLAGS -Wall
-	-Wextra
-	-Wno-unused
-	-Wno-sign-compare
-	-Wno-multichar
-	-Wno-unused-parameter
-	-Wno-overloaded-virtual
-	-Wno-missing-declarations
-	-Wno-return-std-move
-	-Wno-implicit-fallthrough
-	-Wno-class-memaccess
-	-fcolor-diagnostics)
+    set(GCCEXTRAFLAGS -w)
 
     foreach(flag_comp ${GCCEXTRAFLAGS})
 	CHECK_CXX_COMPILER_FLAG(${flag_comp} CxxFlag${flag_comp})
@@ -248,7 +261,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU
     endforeach(flag_comp)
 
     if (ENABLE_ERROR_ON_WARNINGS)
-	   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+	   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
     endif(ENABLE_ERROR_ON_WARNINGS)
 
     if (ENABLE_ASAN)
@@ -326,7 +339,7 @@ set_property(TARGET core3 PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE
 message(STATUS "Build type: " ${CMAKE_BUILD_TYPE})
 #message(STATUS "Compiler flags:" ${CMAKE_CXX_COMPILE_FLAGS})
 
-if("${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+if (${CMAKE_BUILD_TYPE} STREQUAL "RelWithDebInfo")
 	message(STATUS "Compiler cxx release with debug flags: " ${CMAKE_CXX_FLAGS_RELWITHDEBINFO})
 elseif (${CMAKE_BUILD_TYPE} STREQUAL "Release")
 	message(STATUS "Compiler cxx release flags: " ${CMAKE_CXX_FLAGS_RELEASE})
@@ -336,3 +349,11 @@ endif ()
 #message(STATUS "Compiler cxx min size flags:" ${CMAKE_CXX_FLAGS_MINSIZEREL})
 message(STATUS "Compiler extra cxx flags:" ${CMAKE_CXX_FLAGS})
 message(STATUS "Available targets: tags compdb update-engine3 core3 odb3 idl rebuild-idl")
+
+if (DUMP_ALL_CMAKE_VARIABLES)
+	get_cmake_property(_variableNames VARIABLES)
+
+	foreach (_variableName ${_variableNames})
+	    message(STATUS "${_variableName}=${${_variableName}}")
+	endforeach()
+endif()

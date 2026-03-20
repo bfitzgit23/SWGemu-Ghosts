@@ -16,6 +16,43 @@ registerScreenPlay("worldboss_oneScreenplay", true)
 -----------------------------
 --Start World Boss ScreenPlay
 -----------------------------
+local function _trim(s)
+    if s == nil then return "" end
+    return (s:gsub("^%s+", ""):gsub("%s+$", ""))
+end
+
+-- Safe wrapper: prevents nil/blank template from turning into CRC 0x0 spam,
+-- and prevents Lua stack traces from pcall-safe spawning.
+local function safeSpawnMobile(zone, template, respawn, x, y, z, heading, cell)
+    if template == nil then
+        print("[safeSpawnMobile] nil template zone=" .. tostring(zone))
+        return nil
+    end
+
+    if type(template) == "string" then
+        template = _trim(template)
+    end
+
+    if template == "" then
+        print("[safeSpawnMobile] empty template zone=" .. tostring(zone))
+        return nil
+    end
+
+    local ok, result = pcall(spawnMobile, zone, template, respawn, x, y, z, heading, cell)
+    if not ok then
+        print("[safeSpawnMobile] spawnMobile error zone=" .. tostring(zone) ..
+            " template=" .. tostring(template) .. " err=" .. tostring(result))
+        return nil
+    end
+
+    if result == nil then
+        print("[safeSpawnMobile] spawnMobile failed (nil) zone=" .. tostring(zone) ..
+            " template=" .. tostring(template))
+    end
+
+    return result
+end
+
 function worldboss_oneScreenplay:start()
 	if (isZoneEnabled(self.planet)) then
 		self:spawnMobiles()
@@ -26,7 +63,7 @@ end
 --The Boss Has Spawned
 -----------------------
 function worldboss_oneScreenplay:spawnMobiles()
-		local pBoss = spawnMobile("tatooine", "worldboss_1", -1, 6617.49, 21.3744, 4249.5, 326, 0)--Spawn World Boss
+		local pBoss = safeSpawnMobile("tatooine", "worldboss_1", -1, 6617.49, 21.3744, 4249.5, 326, 0)--Spawn World Boss
 		local creature = CreatureObject(pBoss)
 		print("World Boss One Spawned")
 		createObserver(OBJECTDESTRUCTION, "worldboss_oneScreenplay", "bossDead", pBoss)--World Boss Has Died Trigger Respawn Function
@@ -47,7 +84,7 @@ end
 --Respawn World Boss
 -----------------------
 function worldboss_oneScreenplay:KillSpawn()
-		local pBoss = spawnMobile("tatooine", "worldboss_1", -1, 6617.49, 21.3744, 4249.5, 326, 0)--Spawn WorldBoss After Death 3 Hour Timer
+		local pBoss = safeSpawnMobile("tatooine", "worldboss_1", -1, 6617.49, 21.3744, 4249.5, 326, 0)--Spawn WorldBoss After Death 3 Hour Timer
 		local creature = CreatureObject(pBoss)
 		print("World Boss Spawned 1")
 		createObserver(OBJECTDESTRUCTION, "worldboss_oneScreenplay", "bossDead", pBoss)

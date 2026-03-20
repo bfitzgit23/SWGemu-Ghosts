@@ -20,7 +20,7 @@ twisted_donkuwah_scavenger = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -33,9 +33,10 @@ twisted_donkuwah_scavenger = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "donkuwah_common", chance = 5000000}, -- 50.00%
-                {group = "wearables_uncommon", chance = 5000000}, -- 50.00%
+				{group = "donkuwah_common", chance = 9000000},
+				{group = "wearables_uncommon", chance = 1000000},
 			},
+			lootChance = 1540000
 		}
 	},
 	weapons = {"donkuwah_weapons"},

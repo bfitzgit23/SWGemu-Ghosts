@@ -316,7 +316,7 @@ namespace sys {
 			if (ret <= 0)
 				return value;
 
-			len -= ret;
+			len -= ret - 1;
 
 			ret = snprintf(&buf[strlen(buf)], len, ".%09ld", ts.tv_nsec);
 			if (ret < 0 || ret >= len)

@@ -50,7 +50,6 @@ object_draft_schematic_clothing_clothing_bodysuit_casual_08 = object_draft_schem
    craftingToolTab = 8, -- (See DraftSchematicObjectTemplate.h)
    complexity = 21, 
    size = 3, 
-   factoryCrateSize = 1000,
 
    xpType = "crafting_clothing_general", 
    xp = 240, 

@@ -234,12 +234,6 @@ function trainerConvHandler:handleConfirmLearnScreen(pConvTemplate, pPlayer, pNp
 		pConvScreen = convoTemplate:getScreen("nsf_skill_points")
 		return self:runScreenHandlers(pConvTemplate, pPlayer, pNpc, selectedOption, pConvScreen)
 	end
-	
---	if (skillName == "social_politician_novice") then
---	awardSkill("social_politician_master", creature, notifyClient, awardRequiredSkills, noXpRequired);
---		skillName = "social_politician_master"
---		skillManager:awardSkill(pPlayer, "social_politician_master")
---	end
 
 	local success = skillManager:awardSkill(pPlayer, skillName)
 
@@ -255,9 +249,9 @@ function trainerConvHandler:handleConfirmLearnScreen(pConvTemplate, pPlayer, pNp
 		if (moneyRequired <= cashCredits) then
 			CreatureObject(pPlayer):subtractCashCredits(moneyRequired)
 		else
-			bankRequired = moneyRequired - cashCredits
+			moneyRequired = moneyRequired - cashCredits
 			CreatureObject(pPlayer):subtractCashCredits(cashCredits)
-			CreatureObject(pPlayer):subtractBankCredits(bankRequired)
+			CreatureObject(pPlayer):setBankCredits(bankCredits - moneyRequired)
 		end
 
 		local messageString = LuaStringIdChatParameter(stringTable .. "prose_skill_learned")
@@ -267,17 +261,8 @@ function trainerConvHandler:handleConfirmLearnScreen(pConvTemplate, pPlayer, pNp
 
 		local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
-		if (pGhost ~= nil and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and JediTrials:isEligibleForKnightTrials(pPlayer)) then
---			KnightTrials:resetCompletedTrialsToStart(pPlayer)
-			
+		if (pGhost ~= nil and PlayerObject(pGhost):isJediTrainer(pNpc) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03") and not JediTrials:isOnKnightTrials(pPlayer) and JediTrials:isEligibleForKnightTrials(pPlayer)) then
 			KnightTrials:startKnightTrials(pPlayer)
-			
-			local sui = SuiMessageBox.new("KnightTrials", "startNextKnightTrial")
-			sui.setTitle("Jedi Knight Unlock")
-			sui.setPrompt("Congratulations! You now have enough Jedi skill points to become a Jedi Knight! Here there is no trial you just pick a side. It does not matter what faction you are, and you do not need to join a faction at all. Force Ranking System experience is only earned through random spawning encounters with Jedi NPCs, These Jedi NPC encoutners will happen as long as you are outside. Here FRS gives you innate increases to Armor, Damage, and Force Power Max. Light side gets slightly more armor, Dark side gets slightly more damage. Are you ready to become a Jedi knight?")
-			sui.setOkButtonText("@jedi_trials:button_yes")
-			sui.setCancelButtonText("@jedi_trials:button_no")
-			sui.sendTo(pPlayer)
 		end
 	else
 		local messageString = LuaStringIdChatParameter(stringTable .. "prose_train_failed")

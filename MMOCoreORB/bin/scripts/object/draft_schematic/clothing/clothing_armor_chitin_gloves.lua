@@ -50,7 +50,6 @@ object_draft_schematic_clothing_clothing_armor_chitin_gloves = object_draft_sche
    craftingToolTab = 2, -- (See DraftSchematicObjectTemplate.h)
    complexity = 25, 
    size = 3, 
-   factoryCrateSize = 1000,
 
    xpType = "crafting_clothing_armor", 
    xp = 110, 

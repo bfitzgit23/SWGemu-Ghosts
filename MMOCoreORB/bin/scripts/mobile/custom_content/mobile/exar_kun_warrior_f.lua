@@ -1,15 +1,15 @@
 exar_kun_warrior_f = Creature:new {
-	customName = "The Executioner",
+	customName = "exar_kun_warrior_f",
 	randomNameTag = true,
-	socialGroup = "kun",
-	faction = "kun",
-	level = 300,
+	socialGroup = "townsperson",
+	faction = "townsperson",
+	level = 4,
 	chanceHit = 0.24,
-	damageMin = 2000,
-	damageMax = 2500,
+	damageMin = 40,
+	damageMax = 45,
 	baseXp = 62,
-	baseHAM = 15000,
-	baseHAMmax = 15000,
+	baseHAM = 113,
+	baseHAMmax = 118,
 	armor = 0,
 	resists = {0,0,0,0,0,0,0,-1,-1},
 	meatType = "",
@@ -19,18 +19,19 @@ exar_kun_warrior_f = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
-	pvpBitmask = ATTACKABLE + ENEMY,
-  creatureBitmask = HERD,
-  optionsBitmask = AIENABLED,
-  diet = HERBIVORE,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED,
+	diet = HERBIVORE,
 
 	templates = {"object/mobile/exar_kun_warrior_f.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",
-	attacks = merge(pikemanmaster,brawlermaster)
+	attacks = {
+	}
 }
 
 CreatureTemplates:addCreatureTemplate(exar_kun_warrior_f, "exar_kun_warrior_f")

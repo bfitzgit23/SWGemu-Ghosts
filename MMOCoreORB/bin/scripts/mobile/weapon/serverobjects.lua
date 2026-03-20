@@ -49,7 +49,7 @@ includeFile("weapon/groups/unarmed_weapons.lua")
 includeFile("weapon/groups/novice_weapons.lua")
 includeFile("weapon/groups/corsec_police_weapons.lua")
 includeFile("weapon/groups/geonosian_mercenary_weapons.lua")
-includeFile("weapon/groups/bh_weapons.lua")
+
 
 -- Groups gotten from swgemu
 includeFile("weapon/groups/battle_droid_weapons.lua")
@@ -82,3 +82,7 @@ includeFile("weapon/groups/tusken_weapons.lua")
 
 -- tutorial
 includeFile("weapon/groups/tutorial_bandit.lua")
+
+---Custom groups
+includeFile("weapon/groups/bosstest_weapons.lua")
+includeFile("weapon/groups/mandalorian_weapons.lua")

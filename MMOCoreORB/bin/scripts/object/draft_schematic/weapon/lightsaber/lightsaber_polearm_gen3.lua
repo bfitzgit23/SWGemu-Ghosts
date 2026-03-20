@@ -2,10 +2,6 @@
 
 
 --This File is part of Core3.
---Copyright (C) 2010 <SWGEmu>
-
-
---This File is part of Core3.
 
 --This program is free software; you can redistribute 
 --it and/or modify it under the terms of the GNU Lesser 
@@ -54,15 +50,14 @@ object_draft_schematic_weapon_lightsaber_lightsaber_polearm_gen3 = object_draft_
    craftingToolTab = 2048, -- (See DraftSchematicObjectTemplate.h)
    complexity = 18, 
    size = 1, 
-   factoryCrateType = "object/factory/factory_crate_weapon.iff",
-   
+
    xpType = "jedi_general", 
    xp = 0, 
 
    assemblySkill = "jedi_saber_assembly", 
    experimentingSkill = "jedi_saber_experimentation", 
    customizationSkill = "jedi_customization", 
-   factoryCrateSize = 1000,   
+   factoryCrateSize = 0,   
 
    customizationOptions = {},
    customizationStringNames = {},

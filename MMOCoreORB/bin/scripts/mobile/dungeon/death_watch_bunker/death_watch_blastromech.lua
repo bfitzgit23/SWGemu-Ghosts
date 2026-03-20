@@ -2,13 +2,13 @@ death_watch_blastromech = Creature:new {
 	objectName = "@mob/creature_names:blastromech",
 	socialGroup = "death_watch",
 	faction = "",
-	level = 180,
+	level = 80,
 	chanceHit = 0.75,
 	damageMin = 520,
 	damageMax = 750,
 	baseXp = 7668,
-	baseHAM = 24000,
-	baseHAMmax = 30000,
+	baseHAM = 12000,
+	baseHAMmax = 15000,
 	armor = 1,
 	resists = {145,165,200,160,200,125,140,175,-1},
 	meatType = "",
@@ -26,18 +26,49 @@ death_watch_blastromech = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/blastromech.iff"},
+
 	lootGroups = {
 		{
 			groups = {
-					{group = "death_watch_bunker_commoners", chance = 625000}, -- 6.25%
-					{group = "death_watch_bunker_lieutenants", chance = 625000}, -- 6.25%
-					{group = "pistols", chance = 833333}, -- 8.33%
-					{group = "rifles", chance = 833333}, -- 8.33%
-					{group = "carbines", chance = 833333}, -- 8.33%
-					{group = "wearables_uncommon", chance = 3250001}, -- 32.50%
-					{group = "clothing_attachments", chance = 1500000}, -- 15.00%
-					{group = "armor_attachments", chance = 1500000}, -- 15.00%
-			}
+				{group = "wearables_uncommon", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "wearables_common", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "jetpack_base", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "death_watch_bunker_commoners", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "junk", chance = 10000000}
+			},
+			lootChance = 5000000
+		},
+		{
+			groups = {
+				{group = "black_suns", chance = 10000000}
+			},
+			lootChance = 100000
 		},
 	},
 	conversationTemplate = "",

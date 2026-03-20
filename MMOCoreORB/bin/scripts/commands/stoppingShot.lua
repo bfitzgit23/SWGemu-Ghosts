@@ -44,7 +44,7 @@
 StoppingShotCommand = {
         name = "stoppingshot",
 
-	damageMultiplier = 5.5,
+	damageMultiplier = 5.0,
 	speedMultiplier = 2.5,
 	healthCostMultiplier = 0.5,
 	actionCostMultiplier = 1.25,
@@ -58,18 +58,6 @@ StoppingShotCommand = {
 
 	combatSpam = "stoppingshot",
 	
-	stateEffects = {
-	  StateEffect( 
-		STUN_EFFECT, 
-		{}, 
-		{ "stun_defense" }, 
-		{ "jedi_state_defense", "resistance_states" },
-		100, 
-		0, 
-		30 
-	  )
-	}
-
 	weaponType = PISTOLWEAPON,
 
 	range = -1

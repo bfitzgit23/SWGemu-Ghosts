@@ -10,29 +10,47 @@
 #include "Writer.h"
 
 #include "FileNotFoundException.h"
+#include "IOException.h"
 
 namespace sys {
   namespace io {
 
+	class FileWriterMkDirException : public IOException {
+	public:
+		FileWriterMkDirException(const String& msg) : IOException(msg) {
+		}
+	};
+
+	class FileWriterOpenException : public IOException {
+	public:
+		FileWriterOpenException(const String& msg) : IOException(msg) {
+		}
+	};
+
   	class FileWriter : public Writer {
 	protected:
   		File* file;
+		mutable Mutex validateMutex;
+		mutable AtomicBoolean isOpen = false;
+		bool append = false;
 
   	public:
 		constexpr const static int bufferLength = 64;
 
-  		FileWriter(File* file, bool append = false) {
-  			file->mkdirs();
-
-  			if (append)
-  				file->setAppendable();
-  			else
-  				file->setWriteable();
-
+		FileWriter(File* file, bool append = false, bool delayOpen = false) {
   			FileWriter::file = file;
+			FileWriter::append = append;
+
+			if (!delayOpen) {
+				validateWriteable();
+			}
   		}
 
   		void close() override {
+			if (!isOpen.get()) {
+				return;
+			}
+
   			validateWriteable();
 
   			//file->flush(); close already does flush internally
@@ -41,6 +59,10 @@ namespace sys {
   		}
 
   		void flush() override {
+			if (!isOpen.get()) {
+				return;
+			}
+
   			validateWriteable();
 
   			file->flush();
@@ -208,9 +230,33 @@ namespace sys {
   		}
 
   	protected:
-  		void validateWriteable() const {
-  			if (!file->exists())
-  				throw FileNotFoundException(file);
+		void validateWriteable() {
+			validateMutex.lock();
+
+			try {
+				if (!isOpen.get()) {
+					if (!file->mkdirs()) {
+						throw FileWriterMkDirException(file->getFileName());
+					}
+
+					bool success = append ? file->setAppendable() : file->setWriteable();
+
+					if (!success) {
+						throw FileWriterOpenException(file->getFileName());
+					}
+
+					isOpen.set(true);
+				}
+
+				if (!file->exists()) {
+					throw FileNotFoundException(file);
+				}
+			} catch(...) {
+				validateMutex.unlock();
+				throw;
+			}
+
+			validateMutex.unlock();
   		}
   	};
   } // namespace io

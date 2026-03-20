@@ -20,7 +20,7 @@ forsaken_force_drifter = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0,
+	tamingChance = 0.0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -31,17 +31,17 @@ forsaken_force_drifter = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-                {group = "junk", chance = 3322223}, -- 33.22%
-                {group = "power_crystals", chance = 822223}, -- 8.22%
-                {group = "color_crystals", chance = 822222}, -- 8.22%
-                {group = "holocron_dark", chance = 300000}, -- 3.00%
-                {group = "holocron_light", chance = 300000}, -- 3.00%
-                {group = "melee_weapons", chance = 697222}, -- 6.97%
-                {group = "armor_attachments", chance = 822222}, -- 8.22%
-                {group = "clothing_attachments", chance = 822222}, -- 8.22%
-                {group = "wearables_common", chance = 697222}, -- 6.97%
-                {group = "wearables_uncommon", chance = 697222}, -- 6.97%
-                {group = "force_hunter_rare", chance = 697222}, -- 6.97%
+				{group = "junk", chance = 3000000},
+				{group = "power_crystals", chance = 800000},
+				{group = "color_crystals", chance = 700000},
+				{group = "holocron_dark", chance = 500000},
+				{group = "holocron_light", chance = 500000},
+				{group = "melee_weapons", chance = 1000000},
+				{group = "armor_attachments", chance = 1000000},
+				{group = "clothing_attachments", chance = 1000000},
+				{group = "wearables_common", chance = 700000},
+				{group = "wearables_uncommon", chance = 700000},
+				{group = "force_hunter_rare", chance = 100000}
 			}
 		}
 	},

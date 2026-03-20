@@ -384,6 +384,16 @@ String String::valueOf(float val) {
 	return String(buf, written);
 }
 
+String String::valueOf(float val, int precision) {
+	char buf[40];
+
+	int written = snprintf(buf, 40, "%.*f", precision, val);
+
+	E3_ASSERT(written >= 0 && written < 40);
+
+	return String(buf, written);
+}
+
 String String::valueOf(double val) {
 	char buf[40];
 
@@ -466,6 +476,90 @@ String String::hexvalueOf(uint64 val) {
 	E3_ASSERT(written >= 0 && written < 32);
 
 	return String(buf, written);
+}
+
+String String::withCommas(int val) {
+	return withCommas((int64)val);
+}
+
+String String::withCommas(long val) {
+	return withCommas((int64)val);
+}
+
+String String::withCommas(int64 val) {
+	std::ostringstream buf;
+	buf << ((val < 0) ? -val : val);
+	std::string src = buf.str();
+	std::string out;
+	std::size_t i = 0;
+
+	for (auto pos = src.rbegin(); pos != src.rend(); ++pos) {
+		if (i % 3 == 0 && i != 0) {
+			out.push_back(',');
+		}
+		++i;
+
+		out.push_back(*pos);
+	}
+
+	if (val < 0) {
+		out.push_back('-');
+	}
+
+	std::reverse (out.begin(), out.end());
+
+	return String(out);
+}
+
+String String::withCommas(uint32 val) {
+	return withCommas((uint64)val);
+}
+
+String String::withCommas(uint64 val) {
+	std::ostringstream buf;
+	buf << val;
+	std::string src = buf.str();
+	std::string out;
+	std::size_t i = 0;
+
+	for (auto pos = src.rbegin(); pos != src.rend(); ++pos) {
+		if (i % 3 == 0 && i != 0) {
+			out.push_back(',');
+		}
+		++i;
+
+		out.push_back(*pos);
+	}
+
+	std::reverse (out.begin(), out.end());
+
+	return String(out);
+}
+
+String String::withCommas(float val, int precision) {
+	return withCommas((double)val, precision);
+}
+
+String String::withCommas(double val, int precision) {
+	auto out_int = withCommas((uint64) val);
+	long double dec = val - (uint64)val;
+
+	if (dec == 0.0) {
+		return out_int;
+	}
+
+	std::ostringstream buf;
+	buf.precision(precision < 1 ? std::numeric_limits<double>::max_digits10 - 1 : precision);
+	buf << dec;
+	std::string out_dec = buf.str();
+
+	int ofs = out_dec.find('.');
+
+	if (ofs == -1) {
+		return out_int;
+	}
+
+	return out_int + out_dec.substr(ofs);
 }
 
 String String::replaceFirst(const String& regexString, const String& replacement) const {

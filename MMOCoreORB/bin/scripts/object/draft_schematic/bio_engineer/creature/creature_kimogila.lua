@@ -44,7 +44,7 @@
 object_draft_schematic_bio_engineer_creature_creature_kimogila = object_draft_schematic_bio_engineer_creature_shared_creature_kimogila:new {
 
    templateType = DRAFTSCHEMATIC,
-   factoryCrateSize = 1000,	
+   factoryCrateSize = 0,	
 
    customObjectName = "Kimogila",
 

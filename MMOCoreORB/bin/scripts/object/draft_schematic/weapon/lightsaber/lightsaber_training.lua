@@ -50,15 +50,14 @@ object_draft_schematic_weapon_lightsaber_lightsaber_training = object_draft_sche
    craftingToolTab = 2048, -- (See DraftSchematicObjectTemplate.h)
    complexity = 16, 
    size = 1, 
-   factoryCrateType = "object/factory/factory_crate_weapon.iff",
-   
+
    xpType = "jedi_general", 
    xp = 0, 
 
    assemblySkill = "jedi_saber_assembly", 
    experimentingSkill = "jedi_saber_experimentation", 
    customizationSkill = "jedi_customization", 
-   factoryCrateSize = 1000,   
+   factoryCrateSize = 0,   
 
    customizationOptions = {},
    customizationStringNames = {},

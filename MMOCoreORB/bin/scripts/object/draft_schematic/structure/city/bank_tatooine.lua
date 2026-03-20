@@ -50,7 +50,7 @@ object_draft_schematic_structure_city_bank_tatooine = object_draft_schematic_str
 	craftingToolTab = 1024, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 16,
 	size = 12,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 1,
 
 	xpType = "crafting_structure_general",
 	xp = 4400,

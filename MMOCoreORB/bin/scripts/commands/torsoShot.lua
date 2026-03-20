@@ -44,7 +44,7 @@
 TorsoShotCommand = {
         name = "torsoshot",
 
-	damageMultiplier = 4.0,
+	damageMultiplier = 3.0,
 	speedMultiplier = 2.3,
 	healthCostMultiplier = 1,
 	actionCostMultiplier = 1,
@@ -63,12 +63,12 @@ TorsoShotCommand = {
 		{ "resistance_fire", "fire_resist" },
 		HEALTH,
 		true,
-		30,
+		0,
 		100,
 		30, 
 		30,
-		90,
-		10
+		10,
+		2
 	  )
 	},
 	

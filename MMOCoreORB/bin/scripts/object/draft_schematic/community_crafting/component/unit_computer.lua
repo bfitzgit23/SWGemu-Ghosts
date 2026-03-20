@@ -47,7 +47,7 @@ object_draft_schematic_community_crafting_component_unit_computer = object_draft
 	craftingToolTab = 2148007936, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 15,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "crafting_general",
 	xp = 0,
@@ -64,7 +64,7 @@ object_draft_schematic_community_crafting_component_unit_computer = object_draft
 	ingredientTitleNames = {"raw_materials", "energy", "refactor"},
 	ingredientSlotType = {2, 2, 3},
 	resourceTypes = {"object/tangible/loot/quest/shared_rudic.iff", "object/tangible/loot/quest/shared_ardanium_ii.iff", "object/tangible/component/structure/shared_unit_computer.iff"},
-	resourceQuantities = {4, 6, 1},
+	resourceQuantities = {1, 1, 1},
 	contribution = {100, 100, 20},
 
 

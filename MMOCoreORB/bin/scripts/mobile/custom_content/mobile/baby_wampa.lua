@@ -1,5 +1,6 @@
 baby_wampa = Creature:new {
-	customName = "a baby Wampa",
+--	customName = "a baby Wampa",
+  objectName = "@mob/creature_names:baby_wampa",
 	socialGroup = "wampa",
 	faction = "",
 	level = 25,
@@ -18,7 +19,7 @@ baby_wampa = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 1,
+	tamingChance = 0.25,
 	ferocity = 0,
 	pvpBitmask = BABY,
 	creatureBitmask = NONE,

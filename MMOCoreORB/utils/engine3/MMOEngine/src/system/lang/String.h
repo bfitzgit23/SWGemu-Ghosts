@@ -186,6 +186,7 @@ namespace sys {
 		static String valueOf(int64 val);
 		static String valueOf(uint64 val);
 		static String valueOf(float val);
+		static String valueOf(float val, int precision);
 		static String valueOf(double val);
 		static String valueOf(const void* val);
 		static String valueOf(const char* val);
@@ -199,6 +200,14 @@ namespace sys {
 		static String hexvalueOf(int64 val);
 		static String hexvalueOf(uint32 val);
 		static String hexvalueOf(uint64 val);
+
+		static String withCommas(int val);
+		static String withCommas(long val);
+		static String withCommas(int64 val);
+		static String withCommas(uint32 val);
+		static String withCommas(uint64 val);
+		static String withCommas(float val, int precision = -1);
+		static String withCommas(double val, int precision = -1);
 
 		static const String& valueOf(const String& str) {
 			return str;
@@ -414,7 +423,7 @@ using namespace sys::lang;
 //forces the hash code to be calculated at compile time of a const string
 #define STRING_HASHCODE(a) std::integral_constant<uint32, String::hashCode(a)>::value
 
-constexpr uint32 operator "" _hashCode(char const* str, std::size_t s) {
+constexpr uint32 operator""_hashCode(char const* str, std::size_t s) {
 	return String::hashCode(str);
 }
 

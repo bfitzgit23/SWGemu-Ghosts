@@ -50,7 +50,7 @@ object_draft_schematic_chemistry_medpack_disease_area_willpower_b = object_draft
 	craftingToolTab = 64, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 35,
 	size = 3,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 50,
 
 	xpType = "crafting_medicine_general",
 	xp = 90,

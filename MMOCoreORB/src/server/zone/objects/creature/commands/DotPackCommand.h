@@ -208,7 +208,7 @@ public:
 			creature->sendSystemMessage(stringId);
 		}
 
-		checkForTef(creature, creatureTarget);
+		checkCmTef(creature, creatureTarget);
 	}
 
 	int hasCost(CreatureObject* creature) const {
@@ -309,6 +309,9 @@ public:
 
 		int	range = int(dotPack->getRange() + creature->getSkillMod("healing_range") / 100 * 14);
 
+		if (range > 64)
+			range = 64;
+
 		if(!checkDistance(creature, creatureTarget, range))
 					return TOOFAR;
 		//timer
@@ -391,7 +394,7 @@ public:
 			creatureTarget->sendSystemMessage(stringId2);
 		}
 
-		checkForTef(creature, creatureTarget);
+		checkCmTef(creature, creatureTarget);
 
 		if (dotPack->isArea()) {
 			if (creatureTarget != creature)

@@ -50,7 +50,7 @@ object_draft_schematic_space_weapon_wpn_medium_ioncannon = object_draft_schemati
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 25,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 125,

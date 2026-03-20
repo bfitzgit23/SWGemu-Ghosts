@@ -50,7 +50,7 @@ object_draft_schematic_space_weapon_missile_wpn_launcher_proton_mk3 = object_dra
 	craftingToolTab = 131072, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 21,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "shipwright",
 	xp = 1250,

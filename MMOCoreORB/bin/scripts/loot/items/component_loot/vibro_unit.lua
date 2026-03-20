@@ -6,8 +6,8 @@ vibro_unit = {
 	customObjectName = "",
 	directObjectTemplate = "object/tangible/component/weapon/vibro_unit.iff",
 	craftingValues = {
-		{"mindamage", 8,40,0},
-		{"maxdamage", 10,60,0},
+		{"mindamage", 4,20,0},
+		{"maxdamage", 5,30,0},
 		{"attackspeed",-0.1,-0.5,1},
 		{"woundchance",2,10,1},
 		{"hitpoints",20,100,0},

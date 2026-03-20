@@ -42,9 +42,6 @@
 
 
 -- Server Objects
--- Ensure shared client templates are loaded before server objects
-includeFile("tangible/hair/gungan/objects.lua")
-
 includeFile("tangible/hair/gungan/gungan_s01.lua")
 includeFile("tangible/hair/gungan/gungan_s02.lua")
 includeFile("tangible/hair/gungan/gungan_s03.lua")

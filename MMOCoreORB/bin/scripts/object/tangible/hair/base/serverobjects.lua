@@ -45,7 +45,4 @@
 --Children folder includes
 
 -- Server Objects
--- Ensure shared client templates are loaded before server objects
-includeFile("tangible/hair/base/objects.lua")
-
 includeFile("tangible/hair/base/hair_base.lua")

@@ -50,7 +50,6 @@ object_draft_schematic_clothing_clothing_bandolier_field_03 = object_draft_schem
    craftingToolTab = 8, -- (See DraftSchematicObjectTemplate.h)
    complexity = 20, 
    size = 2, 
-   factoryCrateSize = 1000,
 
    xpType = "crafting_clothing_general", 
    xp = 110, 

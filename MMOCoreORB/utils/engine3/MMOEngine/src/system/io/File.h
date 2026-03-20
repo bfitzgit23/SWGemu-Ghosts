@@ -22,6 +22,7 @@ namespace sys {
 
 		int permissions;
 
+		static const int CLOSED = -1;
 		static const int TEXT_MODE = 1;
 		static const int BINARY_MODE = 2;
 		static const int READONLY_ACCESS = 1;
@@ -44,6 +45,7 @@ namespace sys {
 
 		bool mkdir();
 		bool mkdirs();
+		const String getFileName() const;
 		const String getBaseName() const;
 		const String getDirName() const;
 

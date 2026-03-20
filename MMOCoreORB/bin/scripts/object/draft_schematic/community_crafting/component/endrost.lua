@@ -47,7 +47,7 @@ object_draft_schematic_community_crafting_component_endrost = object_draft_schem
 	craftingToolTab = 2148007936, -- (See DraftSchematicObjectTemplate.h)
 	complexity = 15,
 	size = 1,
-	factoryCrateSize = 1000,
+	factoryCrateSize = 0,
 
 	xpType = "crafting_general",
 	xp = 0,
@@ -64,7 +64,7 @@ object_draft_schematic_community_crafting_component_endrost = object_draft_schem
 	ingredientTitleNames = {"endrine", "ostrine", "wind_crystal"},
 	ingredientSlotType = {2, 2, 2},
 	resourceTypes = {"object/tangible/loot/quest/shared_endrine.iff", "object/tangible/loot/quest/shared_ostrine.iff", "object/tangible/loot/quest/shared_wind_crystal.iff"},
-	resourceQuantities = {8, 1, 1},
+	resourceQuantities = {1, 1, 1},
 	contribution = {100, 100, 100},
 
 
