@@ -22,8 +22,6 @@
 #include "server/zone/ZoneProcessServer.h"
 #include "server/zone/managers/visibility/VisibilityManager.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
-#include "server/zone/objects/player/sui/listbox/SuiListBox.h"
-#include "server/zone/objects/player/sui/callbacks/WeaponDotControlSuiCallback.h"
 
 
 void WeaponObjectImplementation::initializeTransientMembers() {
@@ -952,46 +950,3 @@ void WeaponObjectImplementation::clearDots() {
  * dotType values: 1=Poison, 2=Disease, 3=Fire, 4=Bleeding
  * Plain crystals (no dotType value) pass through the guard harmlessly.
  */
-
-void WeaponObjectImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
-	TangibleObjectImplementation::fillObjectMenuResponse(menuResponse, player);
-
-	PlayerObject* ghost = player->getPlayerObject();
-	if (ghost != nullptr && ghost->isPrivileged()) {
-		menuResponse->addRadialMenuItem(150, 1, "[Staff] DOT Controls");
-		menuResponse->addRadialMenuItemToRadialID(150, 151, 3, "Add DOT");
-		menuResponse->addRadialMenuItemToRadialID(150, 152, 3, "Remove All DOTs");
-	}
-}
-
-int WeaponObjectImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
-	PlayerObject* ghost = player->getPlayerObject();
-
-	if (ghost != nullptr && ghost->isPrivileged()) {
-		if (selectedID == 151) {
-			// Add DOT — step 1: pick type
-			ManagedReference<SuiListBox*> listBox = new SuiListBox(player, SuiWindowType::OBJECT_NAME);
-			listBox->setPromptTitle("[Staff] Add DOT - Pick Type");
-			listBox->setPromptText("Select DOT type:");
-			listBox->addMenuItem("Poison");
-			listBox->addMenuItem("Disease");
-			listBox->addMenuItem("Fire");
-			listBox->addMenuItem("Bleeding");
-			listBox->setUsingObject(_this.getReferenceUnsafeStaticCast());
-			listBox->setCallback(new WeaponDotControlSuiCallback(player->getZoneServer()));
-
-			player->getPlayerObject()->addSuiBox(listBox);
-			player->sendMessage(listBox->generateMessage());
-			return 0;
-		}
-
-		if (selectedID == 152) {
-			// Remove all DOTs immediately
-			clearDots();
-			player->sendSystemMessage("[Staff] All DOTs removed from " + getDisplayedName());
-			return 0;
-		}
-	}
-
-	return TangibleObjectImplementation::handleObjectMenuSelect(player, selectedID);
-}

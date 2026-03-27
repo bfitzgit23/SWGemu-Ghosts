@@ -1,3 +1,4 @@
+-- Coded by BoosterSteel 19-03-2026
 JediTrials = ScreenPlay:new {
 	padawanTrialsEnabled = true,
 	knightTrialsEnabled = true,
@@ -77,6 +78,15 @@ function JediTrials:onPlayerLoggedIn(pPlayer)
 
 	-- Resume Gatekeeper trial if player was mid-trial at logout
 	GatekeeperConversation:onPlayerLoggedIn(pPlayer)
+
+	-- Show knight/master trial reminder popup if threshold reached but trial not done
+	HolocronJedi:onPlayerLoggedIn(pPlayer)
+
+	-- Resume hunter system for Knight/FRS players
+	JediHunters:onPlayerLoggedIn(pPlayer)
+
+	-- Resume visibility/imperial hunter system
+	JediVisibilityHunters:onPlayerLoggedIn(pPlayer)
 end
 
 function JediTrials:droppedSkillDuringTrials(pPlayer, pSkill)
@@ -108,6 +118,12 @@ function JediTrials:droppedSkillDuringTrials(pPlayer, pSkill)
 	return 0
 end
 
+-- ============================================================
+-- PATCHED: stock unlock path made compatible with custom holocron
+-- - uses addSkill instead of awardSkill for rank grants
+-- - forces Village screenPlay state before grant
+-- - writes strings consistently
+-- ============================================================
 function JediTrials:unlockJediPadawan(pPlayer, dontSendSui)
 	if (pPlayer == nil) then
 		return
@@ -120,18 +136,155 @@ function JediTrials:unlockJediPadawan(pPlayer, dontSendSui)
 	end
 
 	if (dontSendSui == nil or dontSendSui == false) then
-		local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+		local sui = SuiMessageBox.new("JediTrials", "emptyCallback")
 		sui.setTitle("@jedi_trials:padawan_trials_title")
 		sui.setPrompt("@jedi_trials:padawan_trials_completed")
 		sui.sendTo(pPlayer)
 	end
 
+	-- Grant village eligibility flags so awardSkill passes isVillageEligible check.
+	-- isVillageEligible requires VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS (4)
+	-- AND QuestManager.quests.FS_VILLAGE_ELDER quest completed.
+	-- We set the screenplay state; the quest flag is set via setScreenPlayState below.
+	CreatureObject(pPlayer):setScreenPlayState(4, "VillageJediProgression")   -- HAS_VILLAGE_ACCESS
+	CreatureObject(pPlayer):setScreenPlayState(8, "VillageJediProgression")   -- COMPLETED_VILLAGE
+	CreatureObject(pPlayer):setScreenPlayState(32, "VillageJediProgression")  -- DEFEATED_MELLIACHAE
+
+	-- Set VillageUnlockScreenPlay states for all 16 FS branches.
+	-- canLearnSkill checks getScreenPlayState("VillageUnlockScreenPlay:<branch>") >= 2
+	local fsBranches = {
+		"force_sensitive_combat_prowess_ranged_accuracy",
+		"force_sensitive_combat_prowess_ranged_speed",
+		"force_sensitive_combat_prowess_melee_accuracy",
+		"force_sensitive_combat_prowess_melee_speed",
+		"force_sensitive_enhanced_reflexes_ranged_defense",
+		"force_sensitive_enhanced_reflexes_melee_defense",
+		"force_sensitive_enhanced_reflexes_vehicle_control",
+		"force_sensitive_enhanced_reflexes_survival",
+		"force_sensitive_crafting_mastery_experimentation",
+		"force_sensitive_crafting_mastery_assembly",
+		"force_sensitive_crafting_mastery_repair",
+		"force_sensitive_crafting_mastery_technique",
+		"force_sensitive_heightened_senses_healing",
+		"force_sensitive_heightened_senses_surveying",
+		"force_sensitive_heightened_senses_persuasion",
+		"force_sensitive_heightened_senses_luck",
+	}
+	for i = 1, #fsBranches do
+		CreatureObject(pPlayer):setScreenPlayState(2, "VillageUnlockScreenPlay:" .. fsBranches[i])
+	end
+
+	-- Step 1: Root skill. No prereqs.
+	if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice")) then
+		awardSkill(pPlayer, "force_title_jedi_novice")
+	end
+
+	-- Step 2: Full FS tree via awardSkill multi-pass.
+	-- Village eligibility is now satisfied above so awardSkill will pass.
+	-- Multiple passes handle the skills.iff prereq chain (novice->01->02->03->04->master).
+	local PADAWAN_FS_SKILLS = {
+		"force_sensitive_combat_prowess_novice",
+		"force_sensitive_combat_prowess_ranged_accuracy_01",
+		"force_sensitive_combat_prowess_ranged_accuracy_02",
+		"force_sensitive_combat_prowess_ranged_accuracy_03",
+		"force_sensitive_combat_prowess_ranged_accuracy_04",
+		"force_sensitive_combat_prowess_ranged_speed_01",
+		"force_sensitive_combat_prowess_ranged_speed_02",
+		"force_sensitive_combat_prowess_ranged_speed_03",
+		"force_sensitive_combat_prowess_ranged_speed_04",
+		"force_sensitive_combat_prowess_melee_accuracy_01",
+		"force_sensitive_combat_prowess_melee_accuracy_02",
+		"force_sensitive_combat_prowess_melee_accuracy_03",
+		"force_sensitive_combat_prowess_melee_accuracy_04",
+		"force_sensitive_combat_prowess_melee_speed_01",
+		"force_sensitive_combat_prowess_melee_speed_02",
+		"force_sensitive_combat_prowess_melee_speed_03",
+		"force_sensitive_combat_prowess_melee_speed_04",
+		"force_sensitive_combat_prowess_master",
+		"force_sensitive_enhanced_reflexes_novice",
+		"force_sensitive_enhanced_reflexes_ranged_defense_01",
+		"force_sensitive_enhanced_reflexes_ranged_defense_02",
+		"force_sensitive_enhanced_reflexes_ranged_defense_03",
+		"force_sensitive_enhanced_reflexes_ranged_defense_04",
+		"force_sensitive_enhanced_reflexes_melee_defense_01",
+		"force_sensitive_enhanced_reflexes_melee_defense_02",
+		"force_sensitive_enhanced_reflexes_melee_defense_03",
+		"force_sensitive_enhanced_reflexes_melee_defense_04",
+		"force_sensitive_enhanced_reflexes_vehicle_control_01",
+		"force_sensitive_enhanced_reflexes_vehicle_control_02",
+		"force_sensitive_enhanced_reflexes_vehicle_control_03",
+		"force_sensitive_enhanced_reflexes_vehicle_control_04",
+		"force_sensitive_enhanced_reflexes_survival_01",
+		"force_sensitive_enhanced_reflexes_survival_02",
+		"force_sensitive_enhanced_reflexes_survival_03",
+		"force_sensitive_enhanced_reflexes_survival_04",
+		"force_sensitive_enhanced_reflexes_master",
+		"force_sensitive_crafting_mastery_novice",
+		"force_sensitive_crafting_mastery_experimentation_01",
+		"force_sensitive_crafting_mastery_experimentation_02",
+		"force_sensitive_crafting_mastery_experimentation_03",
+		"force_sensitive_crafting_mastery_experimentation_04",
+		"force_sensitive_crafting_mastery_assembly_01",
+		"force_sensitive_crafting_mastery_assembly_02",
+		"force_sensitive_crafting_mastery_assembly_03",
+		"force_sensitive_crafting_mastery_assembly_04",
+		"force_sensitive_crafting_mastery_repair_01",
+		"force_sensitive_crafting_mastery_repair_02",
+		"force_sensitive_crafting_mastery_repair_03",
+		"force_sensitive_crafting_mastery_repair_04",
+		"force_sensitive_crafting_mastery_technique_01",
+		"force_sensitive_crafting_mastery_technique_02",
+		"force_sensitive_crafting_mastery_technique_03",
+		"force_sensitive_crafting_mastery_technique_04",
+		"force_sensitive_crafting_mastery_master",
+		"force_sensitive_heightened_senses_novice",
+		"force_sensitive_heightened_senses_healing_01",
+		"force_sensitive_heightened_senses_healing_02",
+		"force_sensitive_heightened_senses_healing_03",
+		"force_sensitive_heightened_senses_healing_04",
+		"force_sensitive_heightened_senses_surveying_01",
+		"force_sensitive_heightened_senses_surveying_02",
+		"force_sensitive_heightened_senses_surveying_03",
+		"force_sensitive_heightened_senses_surveying_04",
+		"force_sensitive_heightened_senses_persuasion_01",
+		"force_sensitive_heightened_senses_persuasion_02",
+		"force_sensitive_heightened_senses_persuasion_03",
+		"force_sensitive_heightened_senses_persuasion_04",
+		"force_sensitive_heightened_senses_luck_01",
+		"force_sensitive_heightened_senses_luck_02",
+		"force_sensitive_heightened_senses_luck_03",
+		"force_sensitive_heightened_senses_luck_04",
+		"force_sensitive_heightened_senses_master",
+	}
+
+	local anyGranted = true
+	while anyGranted do
+		anyGranted = false
+		for i = 1, #PADAWAN_FS_SKILLS do
+			if not CreatureObject(pPlayer):hasSkill(PADAWAN_FS_SKILLS[i]) then
+				awardSkill(pPlayer, PADAWAN_FS_SKILLS[i])
+				if CreatureObject(pPlayer):hasSkill(PADAWAN_FS_SKILLS[i]) then
+					anyGranted = true
+				end
+			end
+		end
+	end
+
+	local fsCount = CreatureObject(pPlayer):getForceSensitiveSkillCount(false)
+	CreatureObject(pPlayer):sendSystemMessage("DEBUG: FS granted fsCount=" .. tostring(fsCount))
+
+	-- Step 3: Jedi title ranks
+	CreatureObject(pPlayer):setScreenPlayState(32, "VillageJediProgression")
+	writeScreenPlayData(pPlayer, "PadawanTrials", "startedTrials", "1")
+
 	if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_01")) then
 		awardSkill(pPlayer, "force_title_jedi_rank_01")
 	end
+	if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02")) then
+		awardSkill(pPlayer, "force_title_jedi_rank_02")
+	end
 
-	awardSkill(pPlayer, "force_title_jedi_rank_02")
-	writeScreenPlayData(pPlayer, "PadawanTrials", "completedTrials", 1)
+	writeScreenPlayData(pPlayer, "PadawanTrials", "completedTrials", "1")
 
 	CreatureObject(pPlayer):playEffect("clienteffect/trap_electric_01.cef", "")
 	CreatureObject(pPlayer):playMusicMessage("sound/music_become_jedi.snd")
@@ -139,16 +292,18 @@ function JediTrials:unlockJediPadawan(pPlayer, dontSendSui)
 	PlayerObject(pGhost):setJediState(2)
 
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
-
 	if (pInventory == nil or SceneObject(pInventory):isContainerFullRecursive()) then
 		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:inventory_full_jedi_robe")
 	else
-		local pInventory = CreatureObject(pPlayer):getSlottedObject("inventory")
-		local pItem = giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
+		giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 	end
 
 	sendMail("system", "@jedi_spam:welcome_subject", "@jedi_spam:welcome_body", CreatureObject(pPlayer):getFirstName())
+
+	CreatureObject(pPlayer):sendSystemMessage("DEBUG: rank_01=" .. tostring(CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_01")) ..
+		" rank_02=" .. tostring(CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02")))
 end
+
 
 function JediTrials:unlockJediKnight(pPlayer)
 	if (pPlayer == nil) then
@@ -185,8 +340,17 @@ function JediTrials:unlockJediKnight(pPlayer)
 		return
 	end
 
-	awardSkill(pPlayer, "force_title_jedi_rank_03")
-	writeScreenPlayData(pPlayer, "KnightTrials", "completedTrials", 1)
+	-- force_title_jedi_rank_03 is granted by C++ grantKnightSkills (checkRequirements=false)
+	-- before this function is called. addSkill() uses checkRequirements=true which fails
+	-- silently for non-admin players. We skip it here — C++ handles it.
+	if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) then
+		-- skill not yet granted — C++ hasn't run yet, bail and let it run first
+		printLuaError("JediTrials:unlockJediKnight called before C++ skill grant - aborting")
+		return
+	end
+
+	writeScreenPlayData(pPlayer, "KnightTrials", "completedTrials", "1")
+	-- updateSkills() not needed - C++ SkillManager handles skill updates internally
 	CreatureObject(pPlayer):playMusicMessage(unlockMusic)
 	playClientEffectLoc(CreatureObject(pPlayer):getObjectID(), "clienteffect/trap_electric_01.cef", CreatureObject(pPlayer):getZoneName(), CreatureObject(pPlayer):getPositionX(), CreatureObject(pPlayer):getPositionZ(), CreatureObject(pPlayer):getPositionY(), CreatureObject(pPlayer):getParentID())
 
@@ -194,10 +358,10 @@ function JediTrials:unlockJediKnight(pPlayer)
 	PlayerObject(pGhost):setJediState(jediState)
 	PlayerObject(pGhost):setFrsCouncil(councilType)
 	PlayerObject(pGhost):setFrsRank(0)
-	CreatureObject(pPlayer):setFactionStatus(2) -- Overt
+	CreatureObject(pPlayer):setFactionStatus(2)
 	CreatureObject(pPlayer):setFaction(setFactionVal)
 
-	local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
+	local sui = SuiMessageBox.new("JediTrials", "emptyCallback")
 	sui.setTitle("@jedi_trials:knight_trials_title")
 	sui.setPrompt(unlockString)
 	sui.sendTo(pPlayer)
@@ -209,7 +373,6 @@ function JediTrials:unlockJediKnight(pPlayer)
 	else
 		giveItem(pInventory, knightRobe, -1)
 	end
-
 end
 
 function JediTrials:emptyCallback(pPlayer)
@@ -304,7 +467,7 @@ function JediTrials:getNearestForceShrine(pPlayer)
 	end
 
 	local pClosestShrine = nil
-	local lastDist = 128000 -- Initialize as anything higher than a SWG zone.
+	local lastDist = 128000
 
 	for i = 1, #self.forceShrineIds[planet], 1 do
 		local shrineID = self.forceShrineIds[planet][i]

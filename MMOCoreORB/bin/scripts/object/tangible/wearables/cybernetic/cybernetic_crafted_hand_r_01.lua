@@ -1,5 +1,4 @@
 object_tangible_wearables_cybernetic_cybernetic_crafted_hand_r_01 = object_tangible_wearables_cybernetic_shared_cybernetic_crafted_hand_r_01:new {
-	customName = "Cybernetic Right Hand Mk1",
 	
 	templateType = ARMOROBJECT,
 

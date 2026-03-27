@@ -8,7 +8,6 @@ import server.zone.objects.tangible.TangibleObject;
 import server.zone.objects.scene.SceneObject;
 import server.zone.objects.creature.CreatureObject;
 import server.zone.packets.scene.AttributeListMessage;
-import server.zone.packets.object.ObjectMenuResponse;
 include server.zone.objects.manufactureschematic.craftingvalues.CraftingValues;
 include server.zone.objects.scene.SceneObjectType;
 include templates.SharedObjectTemplate;
@@ -144,10 +143,6 @@ class WeaponObject extends TangibleObject {
 	@local
 	@dirty
 	public native void fillAttributeList(AttributeListMessage msg, CreatureObject object);
-
-	public native void fillObjectMenuResponse(ObjectMenuResponse menuResponse, CreatureObject player);
-
-	public native int handleObjectMenuSelect(CreatureObject player, byte selectedID);
 
 	@local
 	public native void updateCraftingValues(CraftingValues values, boolean firstUpdate);

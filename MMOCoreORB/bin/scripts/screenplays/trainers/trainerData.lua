@@ -800,7 +800,8 @@ trainerSkills = {
 		"force_sensitive_heightened_senses_luck_04"
 	},
 
-	trainer_jedi = {
+	
+trainer_jedi = {
 		"force_discipline_light_saber_novice",
 		"force_discipline_light_saber_master",
 		"force_discipline_light_saber_one_hand_01",
@@ -888,9 +889,50 @@ trainerSkills = {
 		"force_discipline_defender_force_defense_03",
 		"force_discipline_defender_force_defense_04",
 		"force_discipline_defender_preternatural_defense_01",
-		"force_discipline_defender_preternatural_defense_02",
-		"force_discipline_defender_preternatural_defense_03",
-		"force_discipline_defender_preternatural_defense_04"
+"force_discipline_defender_preternatural_defense_02",
+"force_discipline_defender_preternatural_defense_03",
+"force_discipline_defender_preternatural_defense_04",
+    "force_title_jedi_novice",
+
+    -- ===== GRAND MASTER =====
+    "jedi_grand_master_novice",
+    "jedi_grand_master_lightsaber_01",
+    "jedi_grand_master_lightsaber_02",
+    "jedi_grand_master_lightsaber_03",
+    "jedi_grand_master_lightsaber_04",
+    "jedi_grand_master_force_powers_01",
+    "jedi_grand_master_force_powers_02",
+    "jedi_grand_master_force_powers_03",
+    "jedi_grand_master_force_powers_04",
+    "jedi_grand_master_defence_01",
+    "jedi_grand_master_defence_02",
+    "jedi_grand_master_defence_03",
+    "jedi_grand_master_defence_04",
+    "jedi_grand_master_guardian_01",
+    "jedi_grand_master_guardian_02",
+    "jedi_grand_master_guardian_03",
+    "jedi_grand_master_guardian_04",
+    "jedi_grand_master_master",
+
+    -- ===== DARK LORD =====
+    "jedi_dark_lord_novice",
+    "jedi_dark_lord_lightsaber_01",
+    "jedi_dark_lord_lightsaber_02",
+    "jedi_dark_lord_lightsaber_03",
+    "jedi_dark_lord_lightsaber_04",
+    "jedi_dark_lord_force_powers_01",
+    "jedi_dark_lord_force_powers_02",
+    "jedi_dark_lord_force_powers_03",
+    "jedi_dark_lord_force_powers_04",
+    "jedi_dark_lord_defence_01",
+    "jedi_dark_lord_defence_02",
+    "jedi_dark_lord_defence_03",
+    "jedi_dark_lord_defence_04",
+    "jedi_dark_lord_tyrant_01",
+    "jedi_dark_lord_tyrant_02",
+    "jedi_dark_lord_tyrant_03",
+    "jedi_dark_lord_tyrant_04",
+    "jedi_dark_lord_master"
 	},
 	
 	trainer_meleebountyhunter = {

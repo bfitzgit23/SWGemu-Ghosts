@@ -7,7 +7,7 @@ startingCash = 10000
 startingBank = 250000
 --startingBank = 250000
 --How many skill points a new characters start with
-skillPoints = 350
+skillPoints = 250
 
 professions = {
 	"combat_brawler",
@@ -21,7 +21,7 @@ professions = {
 
 marksmanPistol = "object/weapon/ranged/pistol/pistol_cdef_noob.iff"
 	
-marksmanRifle = "object/weapon/ranged/rifle/rifle_laser_noob.iff"
+marksmanRifle = "object/weapon/ranged/rifle/rifle_cdef.iff"
 
 marksmanCarbine = "object/weapon/ranged/carbine/carbine_cdef.iff"
 
@@ -37,13 +37,13 @@ genericTool = "object/tangible/crafting/station/generic_tool.iff"
 
 foodTool = "object/tangible/crafting/station/food_tool.iff"
 
-mineralTool = "object/tangible/survey_tool/survey_tool_mineral.iff"
+mineralTool = "object/tangible/survey_tool/survey_tool_inorganic.iff"
 
-chemicalTool = "object/tangible/survey_tool/survey_tool_liquid.iff"
+--chemicalTool = "object/tangible/survey_tool/survey_tool_liquid.iff"
 
 slitherhorn = "object/tangible/instrument/slitherhorn.iff"
 
-marojMelon = "object/tangible/food/foraged/foraged_fruit_s1.iff"
+--marojMelon = "object/tangible/food/foraged/foraged_fruit_s1.iff"
 
 x31Speeder = "object/tangible/deed/vehicle_deed/landspeeder_x31_deed.iff"
 
@@ -55,20 +55,21 @@ stim = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff"
 
 robe = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
 
-saber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_s9_training.iff"
+saber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_training.iff"
 
 jediTool = "object/tangible/crafting/station/jedi_tool.iff"
 
 jediCrystal = "object/tangible/component/weapon/lightsaber/lightsaber_module_force_crystal.iff"
 
 professionSpecificItems = {
-	combat_brawler = { brawlerOneHander, brawlerTwoHander, brawlerPolearm },
-	combat_marksman = { marksmanPistol, marksmanCarbine, marksmanRifle },
-	crafting_artisan = { genericTool, mineralTool, chemicalTool },
-	combat_jedi = { genericTool, mineralTool, chemicalTool, gasTool, jediTool, jediCrystal, stim, saber },
-  	outdoors_scout = { genericTool },
-	science_medic = { foodTool, chemicalTool, mineralTool },
+	combat_brawler = { },
+	combat_marksman = { },
+	crafting_artisan = { },
+	combat_jedi = { genericTool, mineralTool, jediTool, jediCrystal, stim, saber },
+	outdoors_scout = { },
+	science_medic = { },
 	social_entertainer = { slitherhorn }
 }
 
-commonStartingItems = { marojMelon, survivalKnife, brawlerTwoHander, brawlerPolearm, marksmanPistol, marksmanCarbine, marksmanRifle, genericTool, mineralTool, chemicalTool, foodTool, slitherhorn, Speeder }
+commonStartingItems = { marojMelon, survivalKnife, brawlerTwoHander, brawlerPolearm, marksmanPistol, marksmanCarbine, marksmanRifle, genericTool, mineralTool, foodTool, Speeder }
+

@@ -1,5 +1,4 @@
 object_tangible_wearables_cybernetic_cybernetic_crafted_s03_forearm_r = object_tangible_wearables_cybernetic_shared_cybernetic_crafted_s03_forearm_r:new {
-	customName = "Cybernetic Right Forearm S3",
 	
 	templateType = ARMOROBJECT,
 

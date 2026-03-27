@@ -43,9 +43,6 @@
 
 
 --Children folder includes
-includeFile("object/tangible/loot/loot_schematic/shared_hk47_deed_schematic.lua")
-includeFile("object/tangible/loot/loot_schematic/hk47_deed_schematic.lua")
-
 
 -- Server Objects
 includeFile("tangible/loot/loot_schematic/agitator_motor_schematic.lua")

@@ -9,9 +9,6 @@
 #include "templates/tangible/ArmorObjectTemplate.h"
 #include "server/zone/objects/player/sessions/SlicingSession.h"
 #include "templates/tangible/SharedWeaponObjectTemplate.h"
-#include "server/zone/objects/player/sui/listbox/SuiListBox.h"
-#include "server/zone/objects/player/sui/inputbox/SuiInputBox.h"
-#include "server/zone/objects/player/sui/callbacks/ArmorSetResistSuiCallback.h"
 
 void ArmorObjectImplementation::initializeTransientMembers() {
 	TangibleObjectImplementation::initializeTransientMembers();
@@ -285,38 +282,7 @@ float ArmorObjectImplementation::getTypeValue(int type, float value) {
 	return newValue;
 }
 
-void ArmorObjectImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
-	WearableObjectImplementation::fillObjectMenuResponse(menuResponse, player);
-
-	PlayerObject* ghost = player->getPlayerObject();
-	if (ghost != nullptr && ghost->isPrivileged()) {
-		menuResponse->addRadialMenuItem(140, 1, "[Staff] Set Resistance");
-	}
-}
-
 int ArmorObjectImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
-	PlayerObject* ghost = player->getPlayerObject();
-	if (ghost != nullptr && ghost->isPrivileged() && selectedID == 140) {
-		ManagedReference<SuiListBox*> listBox = new SuiListBox(player, SuiWindowType::OBJECT_NAME);
-		listBox->setPromptTitle("[Staff] Set Resistance");
-		listBox->setPromptText("Select resistance type to set:");
-		listBox->addMenuItem("Kinetic");
-		listBox->addMenuItem("Energy");
-		listBox->addMenuItem("Electricity");
-		listBox->addMenuItem("Stun");
-		listBox->addMenuItem("Blast");
-		listBox->addMenuItem("Heat");
-		listBox->addMenuItem("Cold");
-		listBox->addMenuItem("Acid");
-		listBox->addMenuItem("Lightsaber");
-		listBox->setUsingObject(_this.getReferenceUnsafeStaticCast());
-		listBox->setCallback(new ArmorSetResistSuiCallback(player->getZoneServer()));
-
-		player->getPlayerObject()->addSuiBox(listBox);
-		player->sendMessage(listBox->generateMessage());
-		return 0;
-	}
-
 	if (selectedID == 69 && player->hasSkill("combat_smuggler_slicing_03")) {
 		if (isSliced()) {
 			player->sendSystemMessage("@slicing/slicing:already_sliced");

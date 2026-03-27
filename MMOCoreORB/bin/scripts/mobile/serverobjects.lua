@@ -18,7 +18,6 @@ includeFile("korriban/serverobjects.lua")
 includeFile("mandalore/serverobjects.lua")
 
 -- Creatures
-includeFile("som/serverobjects.lua")
 includeFile("corellia/serverobjects.lua")
 includeFile("dantooine/serverobjects.lua")
 includeFile("dathomir/serverobjects.lua")

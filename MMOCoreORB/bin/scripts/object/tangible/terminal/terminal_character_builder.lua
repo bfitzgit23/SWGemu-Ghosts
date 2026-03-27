@@ -1,4 +1,3 @@
-
 --Copyright (C) 2010 <SWGEmu>
 
 
@@ -1521,6 +1520,7 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 			"Jedi",
 			{
 				"Unlock Jedi Initiate", "unlock_jedi_initiate",
+				"Unlock Jedi Master", "unlock_jedi_master",
 				"Unlock FRS Light Side", "frs_light_side",
 				"Unlock FRS Dark Side", "frs_dark_side"
 			},
@@ -2091,7 +2091,7 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 					"Rental: Flag of Yavin", "object/tangible/deed/event_perk/yavin_flag_deed.iff",
 					--"Rental: Flags of the Universe", "object/tangible/deed/event_perk/universe_flags_theater.iff",
 					--"Rental: Fruit Stand", "object/tangible/deed/event_perk/fruit_stand.iff",
-					--"", "object/tangible/deed/event_perk/game_flag_deed.iff",
+					"Rental: King of the Hill Flag Game", "object/tangible/deed/event_perk/game_flag_deed.iff",
 					--"Rental: Grave Stone", "object/tangible/deed/event_perk/gravestone.iff",
 					--"Rental: Graveyard", "object/tangible/deed/event_perk/graveyard_deed.iff",
 					--"Rental: Imperial At-AT Landing Party", "object/tangible/deed/event_perk/imperial_landing_party_atat_theater_deed.iff",
@@ -2137,8 +2137,8 @@ object_tangible_terminal_terminal_character_builder = object_tangible_terminal_s
 					--"Rental: Scavenger Hunt Droid", "object/tangible/deed/event_perk/scavenger_droid_deed.iff",
 					--"", "object/tangible/deed/event_perk/shuttle_beacon.iff",
 					"Rental: Shuttle", "object/tangible/deed/event_perk/shuttle_static_deed.iff",
-					--"Rental: Skeleton (Treasure Chest)", "object/tangible/deed/event_perk/skeleton_chest_deed.iff",
-					--"Rental: Sparking Treasure Chest", "object/tangible/deed/event_perk/sparking_treasure_box_chest_deed.iff",
+					"Rental: Skeleton (Treasure Chest)", "object/tangible/deed/event_perk/skeleton_chest_deed.iff",
+					"Rental: Sparking Treasure Chest", "object/tangible/deed/event_perk/sparking_treasure_box_chest_deed.iff",
 					"Rental: Stone Based Banner", "object/tangible/deed/event_perk/stone_base_banner_static_deed.iff",
 					"Rental: Tatooine Banner", "object/tangible/deed/event_perk/tatooine_banner_static_deed.iff",
 					--"Rental: Technical Chest", "object/tangible/deed/event_perk/technical_chest_deed.iff",

@@ -17,8 +17,6 @@
 #include "server/zone/managers/loot/CrystalData.h"
 #include "server/zone/managers/loot/LootManager.h"
 #include "server/zone/ZoneServer.h"
-#include "server/zone/objects/player/sui/listbox/SuiListBox.h"
-#include "server/zone/objects/player/sui/callbacks/WeaponDotControlSuiCallback.h"
 
 void LightsaberCrystalComponentImplementation::initializeTransientMembers() {
 	ComponentImplementation::initializeTransientMembers();
@@ -343,13 +341,6 @@ ManagedReference<PlayerObject*> jedi = player->getPlayerObject();
 	}
 
 	ComponentImplementation::fillObjectMenuResponse(menuResponse, player);
-
-	PlayerObject* ghost = player->getPlayerObject();
-	if (ghost != nullptr && ghost->isPrivileged()) {
-		menuResponse->addRadialMenuItem(160, 1, "[Staff] Crystal DOT");
-		menuResponse->addRadialMenuItemToRadialID(160, 161, 3, "Apply DOT to Weapon");
-		menuResponse->addRadialMenuItemToRadialID(160, 162, 3, "Remove DOT from Weapon");
-	}
 }
 
 int LightsaberCrystalComponentImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
@@ -410,42 +401,6 @@ int LightsaberCrystalComponentImplementation::handleObjectMenuSelect(CreatureObj
 				tuneName = tuneName + " (Legendary)\\#.";
 			else
 				tuneName = tuneName + "\\#.";
-		}
-	}
-
-	if (ghost != nullptr && ghost->isPrivileged()) {
-		if (selectedID == 161) {
-			// Apply DOT to parent weapon — step 1: pick type
-			ManagedReference<WeaponObject*> weapon = cast<WeaponObject*>(getParent().get()->getParent().get().get());
-			if (weapon == nullptr) {
-				player->sendSystemMessage("[Staff] Crystal must be socketed in a weapon first.");
-				return 0;
-			}
-
-			ManagedReference<SuiListBox*> listBox = new SuiListBox(player, SuiWindowType::OBJECT_NAME);
-			listBox->setPromptTitle("[Staff] Crystal DOT - Pick Type");
-			listBox->setPromptText("Select DOT type to apply to the weapon:");
-			listBox->addMenuItem("Poison");
-			listBox->addMenuItem("Disease");
-			listBox->addMenuItem("Fire");
-			listBox->addMenuItem("Bleeding");
-			listBox->setUsingObject(weapon);
-			listBox->setCallback(new WeaponDotControlSuiCallback(player->getZoneServer()));
-
-			player->getPlayerObject()->addSuiBox(listBox);
-			player->sendMessage(listBox->generateMessage());
-			return 0;
-		}
-
-		if (selectedID == 162) {
-			ManagedReference<WeaponObject*> weapon = cast<WeaponObject*>(getParent().get()->getParent().get().get());
-			if (weapon == nullptr) {
-				player->sendSystemMessage("[Staff] Crystal must be socketed in a weapon first.");
-				return 0;
-			}
-			weapon->clearDots();
-			player->sendSystemMessage("[Staff] DOT removed from weapon.");
-			return 0;
 		}
 	}
 
@@ -544,6 +499,29 @@ void LightsaberCrystalComponentImplementation::updateCraftingValues(CraftingValu
 
 	generateCrystalStats();
 
+	// --- DOT Crystal Support ---
+	// Check if this crystal has DOT crafting values and apply them to the parent weapon.
+	// dotAttribute rolls 0/1/2 from Lua, mapped to HAM pools: 0=Health(0), 1=Action(3), 2=Mind(6)
+	float dotTypeVal = values->getCurrentValue("dotType");
+	if (dotTypeVal != ValuesMap::VALUENOTFOUND && (int)dotTypeVal > 0) {
+		ManagedReference<WeaponObject*> weapon = cast<WeaponObject*>(getParent().get()->getParent().get().get());
+
+		if (weapon != nullptr) {
+			weapon->clearDots();
+
+			int hamMap[3] = {0, 3, 6}; // Health, Action, Mind
+			int attrIndex = (int)values->getCurrentValue("dotAttribute");
+			if (attrIndex < 0 || attrIndex > 2) attrIndex = 0;
+
+			weapon->addDotType((int)dotTypeVal);
+			weapon->addDotAttribute(hamMap[attrIndex]);
+			weapon->addDotStrength((int)values->getCurrentValue("dotStrength"));
+			weapon->addDotDuration((int)values->getCurrentValue("dotDuration"));
+			weapon->addDotPotency((int)values->getCurrentValue("dotPotency"));
+			weapon->addDotUses((int)values->getCurrentValue("dotUses"));
+		}
+	}
+
 	ComponentImplementation::updateCraftingValues(values, firstUpdate);
 }
 
@@ -572,6 +550,9 @@ int LightsaberCrystalComponentImplementation::inflictDamage(TangibleObject* atta
 			if (getColor() != 31) {
 				weapon->setBladeColor(31);
 				weapon->setCustomizationVariable("/private/index_color_blade", 31, true);
+
+				// Clear any DOTs this color crystal was contributing
+				weapon->clearDots();
 
 				if (weapon->isEquipped()) {
 					ManagedReference<CreatureObject*> parent = cast<CreatureObject*>(weapon->getParent().get().get());
