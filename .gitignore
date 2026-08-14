@@ -49,3 +49,24 @@ build.out
 build.out.prev
 bin/screenlog*
 compile_commands.json
+# SWGEmu compiled/build output
+Ghosts.zip
+build/
+
+MMOCoreORB/CMakeCache.txt
+MMOCoreORB/CMakeFiles/
+MMOCoreORB/src/CMakeFiles/
+
+# Compiled objects/libraries/binaries
+*.o
+*.a
+*.so
+*.bin
+
+MMOCoreORB/src/core3
+
+# Logs / temporary files
+*.log
+*.tmp
+*.swp
+*~

@@ -1,6 +1,5 @@
 file(REMOVE_RECURSE
   "CMakeFiles/conf3.dir/ConfigManager.cpp.o"
-  "CMakeFiles/conf3.dir/ConfigManager.cpp.o.d"
   "libconf3.a"
   "libconf3.pdb"
 )

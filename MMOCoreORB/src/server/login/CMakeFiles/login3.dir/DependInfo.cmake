@@ -1,20 +1,37 @@
-
-# Consider dependencies only in project.
-set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
-
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
+  "CXX"
+  )
+# The set of files for implicit dependencies of each language:
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/LoginPacketHandler.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/LoginPacketHandler.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/LoginProcessServerImplementation.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/LoginProcessServerImplementation.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/LoginServerImplementation.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/LoginServerImplementation.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/account/AccountImplementation.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/account/AccountImplementation.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/account/AccountManager.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/account/AccountManager.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/account/GalaxyAccountInfo.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfo.cpp.o"
+  "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/account/GalaxyAccountInfoMap.cpp" "/root/Desktop/SWGGhosts/MMOCoreORB/src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfoMap.cpp.o"
+  )
+set(CMAKE_CXX_COMPILER_ID "GNU")
+
+# Preprocessor definitions for this target.
+set(CMAKE_TARGET_DEFINITIONS_CXX
+  "COMPILE_CORE3_TESTS"
+  "DEFAULT_DYNAMIC_CAST"
+  "ODB_REFERENCES"
   )
 
-# The set of dependency files which are needed:
-set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/LoginPacketHandler.cpp" "src/server/login/CMakeFiles/login3.dir/LoginPacketHandler.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/LoginPacketHandler.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/LoginProcessServerImplementation.cpp" "src/server/login/CMakeFiles/login3.dir/LoginProcessServerImplementation.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/LoginProcessServerImplementation.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/LoginServerImplementation.cpp" "src/server/login/CMakeFiles/login3.dir/LoginServerImplementation.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/LoginServerImplementation.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/account/AccountImplementation.cpp" "src/server/login/CMakeFiles/login3.dir/account/AccountImplementation.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/account/AccountImplementation.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/account/AccountManager.cpp" "src/server/login/CMakeFiles/login3.dir/account/AccountManager.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/account/AccountManager.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/account/GalaxyAccountInfo.cpp" "src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfo.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfo.cpp.o.d"
-  "/home/swgadmin/Desktop/SWGFlurry/MMOCoreORB/src/server/login/account/GalaxyAccountInfoMap.cpp" "src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfoMap.cpp.o" "gcc" "src/server/login/CMakeFiles/login3.dir/account/GalaxyAccountInfoMap.cpp.o.d"
+# The include file search paths:
+set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "/usr/include/lua5.3"
+  "/usr/include/mysql"
+  "utils/engine3/MMOEngine/include"
+  "utils/googletest-release-1.10.0/googletest/include"
+  "utils/googletest-release-1.10.0/googlemock/include"
+  "src"
+  "src/autogen"
+  "utils"
+  "src/server/login/../.."
   )
 
 # Targets to which this target links.

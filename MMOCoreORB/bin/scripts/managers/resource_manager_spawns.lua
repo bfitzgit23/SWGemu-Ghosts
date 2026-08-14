@@ -318419,6 +318419,29 @@ resources = {
 	},
 
 	{
+		name = "Villi",
+		type = "meat_wild_rori",
+		classes = {
+			{"Organic", "organic"},
+			{"Creature Resources", "creature_resources"},
+			{"Creature Food", "creature_food"},
+			{"Meat", "meat"},
+			{"Wild Meat", "meat_wild"},
+			{"Rori Wild Meat", "meat_wild_rori"},
+		},
+		attributes = {
+			{"res_decay_resist", 738},
+			{"res_flavor", 593},
+			{"res_potential_energy", 705},
+			{"res_quality", 753},
+		},
+		inSpawn = "1",
+		zoneRestriction = "rori",
+		surveyToolType = -1,
+		containerCRC = 1349101341,
+	},
+
+	{
 		name = "Vilosqo",
 		type = "bone_horn_rori",
 		classes = {

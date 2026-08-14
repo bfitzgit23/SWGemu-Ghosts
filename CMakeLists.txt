@@ -58,6 +58,7 @@ option(ENABLE_LOCKFREE_BCLIENT_BUFFERS "Enables lock free base client buffers, r
 # Set cmake paths
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/MMOCoreORB/cmake/Modules")
 include(UseGold)
 
 find_package(Git QUIET)
@@ -67,7 +68,9 @@ find_package(Lua "5.3" REQUIRED)
 include_directories(${LUA_INCLUDE_DIR})
 
 # Find mysql includes and libraries
-find_package(MySql REQUIRED)
+set(MYSQL_INCLUDE_DIR /usr/include/mysql)
+set(MYSQL_LIBRARY /usr/lib/x86_64-linux-gnu/libmysqlclient.so)
+set(MYSQL_LIBRARIES /usr/lib/x86_64-linux-gnu/libmysqlclient.so)
 #include_directories(${MYSQL_INCLUDE_DIR}) already included in find
 
 # Find berkeley includes and libraries
