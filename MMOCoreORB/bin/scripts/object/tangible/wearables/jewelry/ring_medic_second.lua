@@ -1,0 +1,42 @@
+ring_medic_second = {
+	minimumLevel = 0,
+	maximumLevel = -1,
+	customObjectName = "Medics Power",
+	directObjectTemplate = "object/tangible/wearables/ring/aakuan_ring.iff",
+	craftingValues = {
+	},
+	customizationStringNames = {},
+	customizationValues = {},
+	skillMods = {
+			{"general_assembly", 25},
+		{"general_experimentation", 25},
+    {"armor_repair", 25},
+    {"clothing_repair", 25},
+    {"foraging", 25},
+    {"medical_foraging", 25},
+    {"surveying", 25},
+    {"weapon_repair", 25},
+    {"grenade_assembly", 25},
+    {"grenade_experimentation", 25},
+    {"luck", 25},
+    {"food_assembly", 25},
+    {"food_experimentation", 25},
+    {"armor_assembly", 25},
+    {"armor_experimentation", 25},
+    {"combat_medicine_assembly", 25},
+    {"combat_medicine_experimentation", 25},
+    {"medicine_assembly", 25},
+    {"medicine_experimentation", 25},
+    {"healing_wound_treatment", 25},
+    {"healing_wound_speed", 25},
+    {"healing_range_speed", 25},
+    {"healing_range", 25},
+    {"healing_injury_treatment", 25},
+    {"healing_injury_speed", 25},
+    {"healing_ability", 25},
+    {"combat_healing_ability", 25},
+    {"combat_medic_effectiveness", 25},
+	}
+}
+
+addLootItemTemplate("ring_medic_second", ring_medic_second)
