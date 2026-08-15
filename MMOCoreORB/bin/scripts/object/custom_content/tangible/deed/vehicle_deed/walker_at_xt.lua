@@ -2,4 +2,4 @@ aobject_tangible_deed_vehicle_deed_walker_at_xt = object_tangible_deed_vehicle_d
 
 }
 
-ObjectTemplates:addTemplate(object_tangible_deed_vehicle_deed_walker_at_xt, "object/tangible/deed/vehicle_deed/walker_at_xt.iff")
+-- ObjectTemplates:addTemplate(object_tangible_deed_vehicle_deed_walker_at_xt, "object/tangible/deed/vehicle_deed/walker_at_xt.iff") -- Template .iff not in TRE set

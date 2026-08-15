@@ -170,6 +170,7 @@ includeFile("dungeon/corellian_corvette/ticket_takers/klaatu.lua")
 includeFile("dungeon/corellian_corvette/ticket_takers/lt_lance.lua")
 --Custom exar kun dungeon
 includeFile("dungeon/exar_kun_temple/exar_kun.lua")
+includeFile("dungeon/exar_kun/exarKun.lua")
 --Custom sher kar dungeon
 includeFile("dungeon/sher_kar/sher_kar.lua")
 --Custom geo acklay dungeon
@@ -185,6 +186,11 @@ includeFile("dungeon/avatar_platform/avatar_platform.lua")
 includeFile("dungeon/isd/isd_platform.lua")
 --custom nightsister temple
 includeFile("dungeon/nightsister_temple/nightsister_temple.lua")
+
+-- Axkva Min
+includeFile("dungeon/axkva_min/axkvaMin.lua")
+includeFile("dungeon/axkva_min/axkvaMinEntryWay.lua")
+includeFile("events/axkvaMinEntryMenuComponent.lua")
 --custom ig88 platform
 includeFile("dungeon/ig88/ig88_platform.lua")
 --custom general grievous platform
@@ -782,6 +788,20 @@ includeFile("events/poi/rori_poi_waypoints.lua")
 includeFile("events/poi/talus_poi_waypoints.lua")
 includeFile("events/poi/tatooine_poi_waypoints.lua")
 includeFile("events/poi/yavin4_poi_waypoints.lua")
+-- Dromund Kaas
+
+includeFile("poi/kaas_abandon_separ_facility.lua")
+includeFile("poi/kaas_city_ruins.lua")
+includeFile("poi/kaas_imperial_garrison.lua")
+includeFile("poi/kaas_rebel_cave.lua")
+includeFile("poi/kaas_sith_facility.lua")
+includeFile("poi/kaas_dark_force_shrine.lua")
+includeFile("poi/kaas_smuggler_starport.lua")
+includeFile("poi/kaas_city_ruins_mellichae.lua")
+includeFile("poi/kaas_abandon_separ_facility_necrosis.lua")
+includeFile("poi/kaas_vitiate_tomb.lua")
+
+
 
 -- Server Event Automation
 includeFile("events/ServerEventAutomation.lua")

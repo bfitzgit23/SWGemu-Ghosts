@@ -59,7 +59,6 @@ Core3 = {
 		"hoth",
 		"hutta",
 		"jakku",
-		"kaas",
 		"kashyyyk",
 		"korriban",
 		"lok",

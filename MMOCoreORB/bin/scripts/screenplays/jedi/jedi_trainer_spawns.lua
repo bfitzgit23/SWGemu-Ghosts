@@ -15,7 +15,7 @@ end
 
 function JediTrainerSpawns:doSpawn(pPlayer, params)
     -- Prevent duplicate trainers from spawning every restart / reload.
-    if readScreenPlayData("JediTrainerSpawns", "spawned") == "1" then
+    if readStringSharedMemory("JediTrainerSpawnsSpawned") == "1" then
         return 0
     end
 
@@ -31,6 +31,6 @@ function JediTrainerSpawns:doSpawn(pPlayer, params)
     -- CORELLIA — Dark Jedi Lord Trainer
     spawnMobile("corellia", "jedi_dark_lord_trainer", 0, -171, 0, -4730, 0, 0)
 
-    writeScreenPlayData("JediTrainerSpawns", "spawned", "1")
+    writeStringSharedMemory("JediTrainerSpawnsSpawned", "1")
     return 0
 end

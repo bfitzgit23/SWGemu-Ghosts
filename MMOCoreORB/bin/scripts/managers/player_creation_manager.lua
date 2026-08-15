@@ -19,7 +19,7 @@ professions = {
 	"social_entertainer"
 }
 
-marksmanPistol = "object/weapon/ranged/pistol/pistol_cdef_noob.iff"
+marksmanPistol = "object/weapon/ranged/pistol/pistol_cdef.iff"
 	
 marksmanRifle = "object/weapon/ranged/rifle/rifle_cdef.iff"
 
@@ -37,39 +37,38 @@ genericTool = "object/tangible/crafting/station/generic_tool.iff"
 
 foodTool = "object/tangible/crafting/station/food_tool.iff"
 
-mineralTool = "object/tangible/survey_tool/survey_tool_inorganic.iff"
+mineralTool = "object/tangible/survey_tool/survey_tool_mineral.iff"
 
---chemicalTool = "object/tangible/survey_tool/survey_tool_liquid.iff"
+chemicalTool = "object/tangible/survey_tool/survey_tool_liquid.iff"
 
 slitherhorn = "object/tangible/instrument/slitherhorn.iff"
 
---marojMelon = "object/tangible/food/foraged/foraged_fruit_s1.iff"
+marojMelon = "object/tangible/food/foraged/foraged_fruit_s1.iff"
 
-x31Speeder = "object/tangible/deed/vehicle_deed/landspeeder_x31_deed.iff"
-
-Speeder = "object/tangible/deed/vehicle_deed/speederbike_deed.iff"
-
-gasTool = "object/tangible/survey_tool/survey_tool_gas.iff"
-
-stim = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff"
+SwoopBike = "object/tangible/deed/vehicle_deed/speederbike_swoop_deed.iff"
 
 robe = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
 
-saber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_training.iff"
+saber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_s9_training.iff"
 
 jediTool = "object/tangible/crafting/station/jedi_tool.iff"
 
 jediCrystal = "object/tangible/component/weapon/lightsaber/lightsaber_module_force_crystal.iff"
 
+gasTool = "object/tangible/survey_tool/survey_tool_gas.iff"
+
+stim = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff"
+
+barcSpeeder = "object/tangible/deed/vehicle_deed/barc_speeder_rebel_deed.iff"
+
 professionSpecificItems = {
-	combat_brawler = { },
-	combat_marksman = { },
-	crafting_artisan = { },
-	combat_jedi = { genericTool, mineralTool, jediTool, jediCrystal, stim, saber },
-	outdoors_scout = { },
-	science_medic = { },
+	combat_brawler = { brawlerOneHander, brawlerTwoHander, brawlerPolearm },
+	combat_marksman = { marksmanPistol, marksmanCarbine, marksmanRifle },
+	crafting_artisan = { genericTool, mineralTool, chemicalTool },
+	combat_jedi = { genericTool, mineralTool, chemicalTool, gasTool, jediTool, jediCrystal, stim, saber },
+	outdoors_scout = { genericTool },
+	science_medic = { foodTool, chemicalTool, mineralTool },
 	social_entertainer = { slitherhorn }
 }
 
-commonStartingItems = { marojMelon, survivalKnife, brawlerTwoHander, brawlerPolearm, marksmanPistol, marksmanCarbine, marksmanRifle, genericTool, mineralTool, foodTool, Speeder }
-
+commonStartingItems = { survivalKnife, barcSpeeder, stim, stim, stim }

@@ -616,8 +616,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	JediManager::instance()->onPlayerCreated(playerCreature);
 
-	chatManager->sendMail("system", "@newbie_tutorial/newbie_mail:welcome_subject", "@newbie_tutorial/newbie_mail:welcome_body", playerCreature->getFirstName());
-	chatManager->sendMail("Admin", "Welcome", "The SWG Returns Community welcomes you to the server!\n\nJoin our community voice chat today.\n\nhttps://discord.gg/xY5WuwfcFD", playerCreature->getFirstName());
+	chatManager->sendMail("Admin", "Welcome", "The SWG Ghosts Community welcomes you to the server!\n\nJoin our community voice chat today.\n\nhttps://discord.gg/xY5WuwfcFD", playerCreature->getFirstName());
 
 	//Join auction chat room
 	ghost->addChatRoom(chatManager->getAuctionRoom()->getRoomID());
@@ -627,7 +626,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 	ManagedReference<SuiMessageBox*> box = new SuiMessageBox(playerCreature, SuiWindowType::NONE);
 	int playercount = zoneServer->getConnectionCount();
   	String playerName = playerCreature->getFirstName();
-	box->setPromptTitle("Welcome To SWG Returns");
+	box->setPromptTitle("Welcome To SWG Ghosts");
   	StringBuffer promptText;
   	promptText << "\\#ffffff Welcome to the server: \\#00ff00" << playerName << "\\#ffffff There is currently: \\#00ff00" << playercount << "\\#ffffff players logged in out of\\#00ff00 77.";//Current number of players currently logged in
    	promptText << endl;
@@ -661,7 +660,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
    	promptText << endl;
    	promptText << "\\#ffffffCommunity Info";
    	promptText << endl;
-   	promptText << "\\#00ff00www.swg-returns.github.io";
+   	promptText << "\\#00ff00www.swg-ghosts.github.io";
    	promptText << endl;
    	promptText << endl;
    	promptText << endl;
@@ -673,7 +672,7 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
    	promptText << endl;
    	promptText << "\\#ffffffOpen Source Repository";
    	promptText << endl;
-   	promptText << "\\#00ff00https://github.com/bfitzgit23/SWG-Returns";
+   	promptText << "\\#00ff00https://github.com/bfitzgit23/SWGEmu-Ghosts";
   	box->setPromptText(promptText.toString());
  	box->setCancelButton(true, "@no");
 	box->setOkButton(true, "@yes");
@@ -683,14 +682,14 @@ bool PlayerCreationManager::createCharacter(ClientCreateCharacterCallback* callb
 
 	//Broadcast Server wide message, new player has joined the server
 	StringBuffer zBroadcast;
-	zBroadcast << "\\#00ace6" << playerName << " \\#ffb90f Has Joined The Returns Server!";
+	zBroadcast << "\\#00ace6" << playerName << " \\#ffb90f Has Joined The Ghosts Server!";
 	playerCreature->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
 
 	//Broadcast new player has joined the server forward to discord channel. created by :Bennji
 	// NOTE: handleGeneralChat method does not exist in ChatManager
 	// If you want Discord integration, you'll need to implement a custom Discord webhook system
 	// StringBuffer zGeneral;
-	// zGeneral << "Has Joined The Returns Server!";	
+	// zGeneral << "Has Joined The Ghosts Server!";	
 	// chatManager->handleGeneralChat(playerCreature, zGeneral.toString());
 
 	return true;

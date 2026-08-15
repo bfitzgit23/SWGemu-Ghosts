@@ -74,7 +74,10 @@ RecastNavMeshBuilder::RecastNavMeshBuilder(Zone* zone, const String& name, const
 		running(jobStatus),
 		header() {
 	ProceduralTerrainAppearance* pta = zone->getPlanetManager()->getTerrainManager()->getProceduralTerrainAppearance();
-	if (pta->getUseGlobalWaterTable())
+
+	if (pta == nullptr) {
+		waterTableHeight = -1000.0f;
+	} else if (pta->getUseGlobalWaterTable())
 		waterTableHeight = pta->getGlobalWaterTableHeight();
 	else {
 #ifdef NAVMESH_DEBUG
