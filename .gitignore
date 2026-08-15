@@ -70,3 +70,6 @@ MMOCoreORB/src/core3
 *.tmp
 *.swp
 *~
+
+MMOCoreORB/bin/databases
+
