@@ -819,6 +819,14 @@ private:
 
 	float groupExpMultiplier;
 
+	float jediExpMultiplierSolo;
+
+	float jediExpMultiplierGrouped;
+
+	float frsExpMultiplierSolo;
+
+	float frsExpMultiplierGrouped;
+
 	ReadWriteLock onlineMapMutex;
 
 protected:
@@ -1626,6 +1634,14 @@ public:
 	Optional<float> globalExpMultiplier;
 
 	Optional<float> groupExpMultiplier;
+
+	Optional<float> jediExpMultiplierSolo;
+
+	Optional<float> jediExpMultiplierGrouped;
+
+	Optional<float> frsExpMultiplierSolo;
+
+	Optional<float> frsExpMultiplierGrouped;
 
 	String _className;
 	PlayerManagerPOD();

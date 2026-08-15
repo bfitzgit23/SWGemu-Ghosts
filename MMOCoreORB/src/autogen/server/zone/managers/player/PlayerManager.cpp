@@ -2321,6 +2321,22 @@ bool PlayerManagerImplementation::readObjectMember(ObjectInputStream* stream, co
 		TypeInfo<float >::parseFromBinaryStream(&groupExpMultiplier, stream);
 		return true;
 
+	case 0x24c61817: //PlayerManager.jediExpMultiplierSolo
+		TypeInfo<float >::parseFromBinaryStream(&jediExpMultiplierSolo, stream);
+		return true;
+
+	case 0x98b0080a: //PlayerManager.jediExpMultiplierGrouped
+		TypeInfo<float >::parseFromBinaryStream(&jediExpMultiplierGrouped, stream);
+		return true;
+
+	case 0xdf33d9da: //PlayerManager.frsExpMultiplierSolo
+		TypeInfo<float >::parseFromBinaryStream(&frsExpMultiplierSolo, stream);
+		return true;
+
+	case 0xd8b0d7d1: //PlayerManager.frsExpMultiplierGrouped
+		TypeInfo<float >::parseFromBinaryStream(&frsExpMultiplierGrouped, stream);
+		return true;
+
 	}
 
 	return false;
@@ -2497,6 +2513,42 @@ int PlayerManagerImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<float >::toBinaryStream(&groupExpMultiplier, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x24c61817; //PlayerManager.jediExpMultiplierSolo
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x98b0080a; //PlayerManager.jediExpMultiplierGrouped
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xdf33d9da; //PlayerManager.frsExpMultiplierSolo
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xd8b0d7d1; //PlayerManager.frsExpMultiplierGrouped
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -4340,6 +4392,50 @@ int PlayerManagerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (jediExpMultiplierSolo) {
+	_nameHashCode = 0x24c61817; //PlayerManager.jediExpMultiplierSolo
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (jediExpMultiplierGrouped) {
+	_nameHashCode = 0x98b0080a; //PlayerManager.jediExpMultiplierGrouped
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (frsExpMultiplierSolo) {
+	_nameHashCode = 0xdf33d9da; //PlayerManager.frsExpMultiplierSolo
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (frsExpMultiplierGrouped) {
+	_nameHashCode = 0xd8b0d7d1; //PlayerManager.frsExpMultiplierGrouped
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -4493,6 +4589,38 @@ bool PlayerManagerPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
+	case 0x24c61817: //PlayerManager.jediExpMultiplierSolo
+		{
+			float _mnjediExpMultiplierSolo;
+			TypeInfo<float >::parseFromBinaryStream(&_mnjediExpMultiplierSolo, stream);
+			jediExpMultiplierSolo = std::move(_mnjediExpMultiplierSolo);
+		}
+		return true;
+
+	case 0x98b0080a: //PlayerManager.jediExpMultiplierGrouped
+		{
+			float _mnjediExpMultiplierGrouped;
+			TypeInfo<float >::parseFromBinaryStream(&_mnjediExpMultiplierGrouped, stream);
+			jediExpMultiplierGrouped = std::move(_mnjediExpMultiplierGrouped);
+		}
+		return true;
+
+	case 0xdf33d9da: //PlayerManager.frsExpMultiplierSolo
+		{
+			float _mnfrsExpMultiplierSolo;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfrsExpMultiplierSolo, stream);
+			frsExpMultiplierSolo = std::move(_mnfrsExpMultiplierSolo);
+		}
+		return true;
+
+	case 0xd8b0d7d1: //PlayerManager.frsExpMultiplierGrouped
+		{
+			float _mnfrsExpMultiplierGrouped;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfrsExpMultiplierGrouped, stream);
+			frsExpMultiplierGrouped = std::move(_mnfrsExpMultiplierGrouped);
+		}
+		return true;
+
 	}
 
 	return false;
@@ -4554,6 +4682,14 @@ void PlayerManagerPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<float >::toBinaryStream(&globalExpMultiplier.value(), stream);
 
 	TypeInfo<float >::toBinaryStream(&groupExpMultiplier.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped.value(), stream);
 
 
 }

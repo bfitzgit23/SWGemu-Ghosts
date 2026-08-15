@@ -48,8 +48,8 @@ onlineCharactersPerAccount = 4 --How many characters are allowed online from a s
 allowSameAccountPvpRatingCredit = 0
 
 --Blue frog / GM buff values
-performanceBuff = 15000
-medicalBuff = 15000
+performanceBuff = 3500
+medicalBuff = 3500
 performanceDuration = 10800 -- in seconds
 medicalDuration = 10800 -- in seconds
 
@@ -57,10 +57,18 @@ medicalDuration = 10800 -- in seconds
 groupExpMultiplier = 4.0
 
 --Sets a global experience multiplier
-globalExpMultiplier = 10
+globalExpMultiplier = 10.0
 
 craftExpMultiplier = 8.0
 entExpMultiplier = 8.0
+
+-- Jedi XP multipliers (solo / grouped)
+jediExpMultiplierSolo = 3.5
+jediExpMultiplierGrouped = 2.5
+
+-- FRS (Force Rank) XP multipliers (solo / grouped)
+frsExpMultiplierSolo = 2.5
+frsExpMultiplierGrouped = 1.5
 
 --Sets the base number of control devices of each type that a player can have in their datapad at once
 --For creature pets, A Creature Handler will have the base number + their stored pets skill mod as limit
