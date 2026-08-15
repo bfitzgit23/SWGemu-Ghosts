@@ -74,3 +74,4 @@ MMOCoreORB/src/core3
 MMOCoreORB/bin/databases
 
 MMOCoreORB/navmeshes
+*.obj
