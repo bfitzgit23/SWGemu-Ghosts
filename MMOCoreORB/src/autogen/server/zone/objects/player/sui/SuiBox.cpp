@@ -34,7 +34,7 @@ SuiBox::~SuiBox() {
 
 void SuiBox::initialize() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void SuiBox::initialize() {
 
 void SuiBox::initializeTransientMembers() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void SuiBox::initializeTransientMembers() {
 
 void SuiBox::generateHeader(SuiCreatePageMessage* message) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -72,7 +72,7 @@ void SuiBox::generateHeader(SuiCreatePageMessage* message) {
 
 void SuiBox::generateBody(SuiCreatePageMessage* message) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -82,7 +82,7 @@ void SuiBox::generateBody(SuiCreatePageMessage* message) {
 
 void SuiBox::generateBodySorted(SuiCreatePageMessage* message) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -92,7 +92,7 @@ void SuiBox::generateBodySorted(SuiCreatePageMessage* message) {
 
 void SuiBox::generateFooter(SuiCreatePageMessage* message, int type) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -102,7 +102,7 @@ void SuiBox::generateFooter(SuiCreatePageMessage* message, int type) {
 
 BaseMessage* SuiBox::generateMessage() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -112,7 +112,7 @@ BaseMessage* SuiBox::generateMessage() {
 
 BaseMessage* SuiBox::generateCloseMessage() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -122,7 +122,7 @@ BaseMessage* SuiBox::generateCloseMessage() {
 
 void SuiBox::addSetting(const String& optType, const String& variable, const String& setting, const String& value) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -140,7 +140,7 @@ void SuiBox::addSetting(const String& optType, const String& variable, const Str
 
 void SuiBox::addHeader(const String& variable, const String& type) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -156,7 +156,7 @@ void SuiBox::addHeader(const String& variable, const String& type) {
 
 void SuiBox::clearOptions() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ void SuiBox::clearOptions() {
 
 int SuiBox::compareTo(SuiBox* obj) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -185,7 +185,7 @@ int SuiBox::compareTo(SuiBox* obj) {
 
 bool SuiBox::hasGeneratedMessage() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -199,7 +199,7 @@ bool SuiBox::hasGeneratedMessage() {
 
 void SuiBox::setPromptTitle(const String& name) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -214,7 +214,7 @@ void SuiBox::setPromptTitle(const String& name) {
 
 void SuiBox::setPromptText(const String& name) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -229,7 +229,7 @@ void SuiBox::setPromptText(const String& name) {
 
 String SuiBox::getPromptTitle() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -245,7 +245,7 @@ String SuiBox::getPromptTitle() {
 
 void SuiBox::setHandlerText(const String& text) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,7 +260,7 @@ void SuiBox::setHandlerText(const String& text) {
 
 void SuiBox::setWindowType(unsigned int type) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -275,7 +275,7 @@ void SuiBox::setWindowType(unsigned int type) {
 
 void SuiBox::setBoxType(int type) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -290,7 +290,7 @@ void SuiBox::setBoxType(int type) {
 
 bool SuiBox::isInputBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -304,7 +304,7 @@ bool SuiBox::isInputBox() {
 
 bool SuiBox::isListBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -318,7 +318,7 @@ bool SuiBox::isListBox() {
 
 bool SuiBox::isFireworkDelayBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -332,7 +332,7 @@ bool SuiBox::isFireworkDelayBox() {
 
 bool SuiBox::isMessageBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -346,7 +346,7 @@ bool SuiBox::isMessageBox() {
 
 bool SuiBox::isTransferBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -360,7 +360,7 @@ bool SuiBox::isTransferBox() {
 
 bool SuiBox::isBankTransferBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -374,7 +374,7 @@ bool SuiBox::isBankTransferBox() {
 
 bool SuiBox::isSlicingBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -388,7 +388,7 @@ bool SuiBox::isSlicingBox() {
 
 bool SuiBox::isCharacterBuilderBox() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -402,7 +402,7 @@ bool SuiBox::isCharacterBuilderBox() {
 
 bool SuiBox::isColorPicker() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -416,7 +416,7 @@ bool SuiBox::isColorPicker() {
 
 bool SuiBox::isDeconstructWeapon() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -430,7 +430,7 @@ bool SuiBox::isDeconstructWeapon() {
 
 bool SuiBox::isAddWeaponDot() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -444,7 +444,7 @@ bool SuiBox::isAddWeaponDot() {
 
 void SuiBox::setCancelButton(bool value, const String& cancelText) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -460,7 +460,7 @@ void SuiBox::setCancelButton(bool value, const String& cancelText) {
 
 void SuiBox::setOtherButton(bool value, const String& backText) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -476,7 +476,7 @@ void SuiBox::setOtherButton(bool value, const String& backText) {
 
 void SuiBox::setOkButton(bool value, const String& okText) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -492,7 +492,7 @@ void SuiBox::setOkButton(bool value, const String& okText) {
 
 void SuiBox::setForceCloseDistance(float dist) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -507,7 +507,7 @@ void SuiBox::setForceCloseDistance(float dist) {
 
 void SuiBox::setForceCloseDisabled() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -521,7 +521,7 @@ void SuiBox::setForceCloseDisabled() {
 
 ManagedWeakReference<CreatureObject* > SuiBox::getPlayer() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -535,7 +535,7 @@ ManagedWeakReference<CreatureObject* > SuiBox::getPlayer() {
 
 unsigned int SuiBox::getBoxID() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -549,7 +549,7 @@ unsigned int SuiBox::getBoxID() {
 
 int SuiBox::getWindowType() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -563,7 +563,7 @@ int SuiBox::getWindowType() {
 
 ManagedWeakReference<SceneObject* > SuiBox::getUsingObject() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -577,7 +577,7 @@ ManagedWeakReference<SceneObject* > SuiBox::getUsingObject() {
 
 void SuiBox::setUsingObject(SceneObject* object) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -592,7 +592,7 @@ void SuiBox::setUsingObject(SceneObject* object) {
 
 void SuiBox::setCallback(SuiCallback* callback) {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -602,7 +602,7 @@ void SuiBox::setCallback(SuiCallback* callback) {
 
 SuiCallback* SuiBox::getCallback() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -612,7 +612,7 @@ SuiCallback* SuiBox::getCallback() {
 
 bool SuiBox::isSuiBoxPage() {
 	SuiBoxImplementation* _implementation = static_cast<SuiBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -655,7 +655,7 @@ SuiBoxImplementation::~SuiBoxImplementation() {
 void SuiBoxImplementation::_initializeImplementation() {
 	_setClassHelper(SuiBoxHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1034,11 +1034,11 @@ void SuiBoxImplementation::initialize() {
 	// server/zone/objects/player/sui/SuiBox.idl():  		CreatureObject strongRef = player;
 	ManagedReference<CreatureObject* > strongRef = player;
 	// server/zone/objects/player/sui/SuiBox.idl():  		handlerStr 
-	if (strongRef != nullptr){
+	if (strongRef != NULL){
 	// server/zone/objects/player/sui/SuiBox.idl():  			PlayerObject ghost = strongRef.getPlayerObject();
 	ManagedReference<PlayerObject* > ghost = strongRef->getPlayerObject();
 	// server/zone/objects/player/sui/SuiBox.idl():  		}
-	if (ghost != nullptr){
+	if (ghost != NULL){
 	// server/zone/objects/player/sui/SuiBox.idl():  				boxID = ghost.getNewSuiBoxID(windowType);
 	boxID = ghost->getNewSuiBoxID(windowType);
 }
@@ -1062,7 +1062,7 @@ void SuiBoxImplementation::initialize() {
 	// server/zone/objects/player/sui/SuiBox.idl():  		hasGenerated = false;
 	hasGenerated = false;
 	// server/zone/objects/player/sui/SuiBox.idl():  		suiCallback = null;
-	suiCallback = nullptr;
+	suiCallback = NULL;
 }
 
 void SuiBoxImplementation::finalize() {
@@ -1075,7 +1075,7 @@ void SuiBoxImplementation::initializeTransientMembers() {
 
 BaseMessage* SuiBoxImplementation::generateMessage() {
 	// server/zone/objects/player/sui/SuiBox.idl():  		return null;
-	return nullptr;
+	return NULL;
 }
 
 void SuiBoxImplementation::clearOptions() {
@@ -1480,7 +1480,7 @@ void SuiBoxAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getPlayer().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETBOXID__:
@@ -1501,7 +1501,7 @@ void SuiBoxAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getUsingObject().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SETUSINGOBJECT__SCENEOBJECT_:

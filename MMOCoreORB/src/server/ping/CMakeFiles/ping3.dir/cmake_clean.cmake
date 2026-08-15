@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ping3.dir/PingServer.cpp.o"
+  "CMakeFiles/ping3.dir/PingServer.cpp.o.d"
   "libping3.a"
   "libping3.pdb"
 )

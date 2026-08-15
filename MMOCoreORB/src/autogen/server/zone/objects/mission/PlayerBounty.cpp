@@ -28,7 +28,7 @@ PlayerBounty::~PlayerBounty() {
 
 void PlayerBounty::setReward(int amount) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -43,7 +43,7 @@ void PlayerBounty::setReward(int amount) {
 
 void PlayerBounty::setOnline(bool state) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -58,7 +58,7 @@ void PlayerBounty::setOnline(bool state) {
 
 unsigned long long PlayerBounty::getTargetPlayerID() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -72,7 +72,7 @@ unsigned long long PlayerBounty::getTargetPlayerID() const {
 
 int PlayerBounty::getReward() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -86,7 +86,7 @@ int PlayerBounty::getReward() const {
 
 bool PlayerBounty::isOnline() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -100,7 +100,7 @@ bool PlayerBounty::isOnline() const {
 
 int PlayerBounty::numberOfActiveMissions() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -114,7 +114,7 @@ int PlayerBounty::numberOfActiveMissions() const {
 
 void PlayerBounty::addBountyHunter(unsigned long long id) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -129,7 +129,7 @@ void PlayerBounty::addBountyHunter(unsigned long long id) {
 
 void PlayerBounty::removeBountyHunter(unsigned long long id) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -144,7 +144,7 @@ void PlayerBounty::removeBountyHunter(unsigned long long id) {
 
 bool PlayerBounty::hasBountyHunter(unsigned long long id) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -159,7 +159,7 @@ bool PlayerBounty::hasBountyHunter(unsigned long long id) {
 
 SortedVector<unsigned long long>* PlayerBounty::getBountyHunters() {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -169,7 +169,7 @@ SortedVector<unsigned long long>* PlayerBounty::getBountyHunters() {
 
 unsigned long long PlayerBounty::getLastBountyKill() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -183,7 +183,7 @@ unsigned long long PlayerBounty::getLastBountyKill() const {
 
 void PlayerBounty::setLastBountyKill(unsigned long long newTime) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ void PlayerBounty::setLastBountyKill(unsigned long long newTime) {
 
 unsigned long long PlayerBounty::getLastBountyDebuff() const {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,7 +212,7 @@ unsigned long long PlayerBounty::getLastBountyDebuff() const {
 
 void PlayerBounty::setLastBountyDebuff(unsigned long long newTime) {
 	PlayerBountyImplementation* _implementation = static_cast<PlayerBountyImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -258,7 +258,7 @@ void PlayerBountyImplementation::finalize() {
 void PlayerBountyImplementation::_initializeImplementation() {
 	_setClassHelper(PlayerBountyHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

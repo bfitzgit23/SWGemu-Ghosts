@@ -38,7 +38,7 @@ VehicleObject::~VehicleObject() {
 
 void VehicleObject::loadTemplateData(SharedObjectTemplate* templateData) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -48,7 +48,7 @@ void VehicleObject::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void VehicleObject::sendMessage(BasePacket* msg) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -58,7 +58,7 @@ void VehicleObject::sendMessage(BasePacket* msg) {
 
 void VehicleObject::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -68,7 +68,7 @@ void VehicleObject::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Cre
 
 void VehicleObject::fillAttributeList(AttributeListMessage* alm, CreatureObject* object) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -78,7 +78,7 @@ void VehicleObject::fillAttributeList(AttributeListMessage* alm, CreatureObject*
 
 bool VehicleObject::checkInRangeGarage() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -92,7 +92,7 @@ bool VehicleObject::checkInRangeGarage() {
 
 void VehicleObject::notifyInsertToZone(Zone* zone) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ void VehicleObject::notifyInsertToZone(Zone* zone) {
 
 void VehicleObject::setPosture(int newPosture, bool notifyClient) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -123,7 +123,7 @@ void VehicleObject::setPosture(int newPosture, bool notifyClient) {
 
 int VehicleObject::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, bool notifyClient, bool isCombatAction) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -138,14 +138,14 @@ int VehicleObject::inflictDamage(TangibleObject* attacker, int damageType, float
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->inflictDamage(attacker, damageType, damage, destroy, notifyClient, isCombatAction);
 	}
 }
 
 int VehicleObject::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient, bool isCombatAction) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -161,14 +161,14 @@ int VehicleObject::inflictDamage(TangibleObject* attacker, int damageType, float
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->inflictDamage(attacker, damageType, damage, destroy, xp, notifyClient, isCombatAction);
 	}
 }
 
 int VehicleObject::healDamage(TangibleObject* healer, int damageType, int damageToHeal, bool notifyClient) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -187,7 +187,7 @@ int VehicleObject::healDamage(TangibleObject* healer, int damageType, int damage
 
 int VehicleObject::healWound(TangibleObject* healer, int damageType, int damage, bool notifyClient, bool notifyObservers) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -206,7 +206,7 @@ int VehicleObject::healWound(TangibleObject* healer, int damageType, int damage,
 
 int VehicleObject::addWounds(int type, int value, bool notifyClient, bool doShockWounds) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -224,7 +224,7 @@ int VehicleObject::addWounds(int type, int value, bool notifyClient, bool doShoc
 
 void VehicleObject::setWounds(int type, int value, bool notifyClient) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -241,7 +241,7 @@ void VehicleObject::setWounds(int type, int value, bool notifyClient) {
 
 void VehicleObject::addDefender(SceneObject* defender) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -256,7 +256,7 @@ void VehicleObject::addDefender(SceneObject* defender) {
 
 void VehicleObject::removeDefender(SceneObject* defender) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -271,7 +271,7 @@ void VehicleObject::removeDefender(SceneObject* defender) {
 
 void VehicleObject::setDefender(SceneObject* defender) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -286,7 +286,7 @@ void VehicleObject::setDefender(SceneObject* defender) {
 
 bool VehicleObject::isAttackableBy(CreatureObject* object) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -301,7 +301,7 @@ bool VehicleObject::isAttackableBy(CreatureObject* object) {
 
 int VehicleObject::notifyObjectDestructionObservers(TangibleObject* attacker, int condition, bool isCombatAction) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -313,14 +313,14 @@ int VehicleObject::notifyObjectDestructionObservers(TangibleObject* attacker, in
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->notifyObjectDestructionObservers(attacker, condition, isCombatAction);
 	}
 }
 
 int VehicleObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -331,14 +331,14 @@ int VehicleObject::handleObjectMenuSelect(CreatureObject* player, byte selectedI
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void VehicleObject::repairVehicle(CreatureObject* player) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -348,14 +348,14 @@ void VehicleObject::repairVehicle(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->repairVehicle(player);
 	}
 }
 
 int VehicleObject::calculateRepairCost(CreatureObject* player) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -370,7 +370,7 @@ int VehicleObject::calculateRepairCost(CreatureObject* player) {
 
 void VehicleObject::sendRepairConfirmTo(CreatureObject* player) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -385,7 +385,7 @@ void VehicleObject::sendRepairConfirmTo(CreatureObject* player) {
 
 void VehicleObject::refreshPaint() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -400,7 +400,7 @@ void VehicleObject::refreshPaint() {
 
 int VehicleObject::getPaintCount() const {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -414,7 +414,7 @@ int VehicleObject::getPaintCount() const {
 
 bool VehicleObject::__isVehicleObject() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -424,7 +424,7 @@ bool VehicleObject::__isVehicleObject() {
 
 unsigned int VehicleObject::getArmor() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -438,7 +438,7 @@ unsigned int VehicleObject::getArmor() {
 
 float VehicleObject::getKinetic() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -452,7 +452,7 @@ float VehicleObject::getKinetic() {
 
 float VehicleObject::getEnergy() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -466,7 +466,7 @@ float VehicleObject::getEnergy() {
 
 float VehicleObject::getElectricity() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -480,7 +480,7 @@ float VehicleObject::getElectricity() {
 
 float VehicleObject::getStun() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -494,7 +494,7 @@ float VehicleObject::getStun() {
 
 float VehicleObject::getBlast() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -508,7 +508,7 @@ float VehicleObject::getBlast() {
 
 float VehicleObject::getHeat() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -522,7 +522,7 @@ float VehicleObject::getHeat() {
 
 float VehicleObject::getCold() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -536,7 +536,7 @@ float VehicleObject::getCold() {
 
 float VehicleObject::getAcid() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -550,7 +550,7 @@ float VehicleObject::getAcid() {
 
 float VehicleObject::getLightSaber() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -564,7 +564,7 @@ float VehicleObject::getLightSaber() {
 
 int VehicleObject::getPassengerCapacity() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -578,7 +578,7 @@ int VehicleObject::getPassengerCapacity() {
 
 String VehicleObject::getPassengerSeatName() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -594,7 +594,7 @@ String VehicleObject::getPassengerSeatName() {
 
 bool VehicleObject::hasOpenSeat() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -608,7 +608,7 @@ bool VehicleObject::hasOpenSeat() {
 
 int VehicleObject::getOpenSeat() {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -622,7 +622,7 @@ int VehicleObject::getOpenSeat() {
 
 bool VehicleObject::slotPassenger(CreatureObject* passenger) {
 	VehicleObjectImplementation* _implementation = static_cast<VehicleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -668,7 +668,7 @@ void VehicleObjectImplementation::finalize() {
 void VehicleObjectImplementation::_initializeImplementation() {
 	_setClassHelper(VehicleObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

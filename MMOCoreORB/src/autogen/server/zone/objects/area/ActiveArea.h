@@ -70,8 +70,6 @@ class ZonePOD;
 
 using namespace server::zone;
 
-#include "gmock/gmock.h"
-
 #include "system/util/Vector.h"
 
 #include "server/zone/objects/scene/SceneObject.h"
@@ -94,9 +92,9 @@ public:
 	 */
 	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
 
-	virtual void enqueueEnterEvent(SceneObject* obj);
+	void enqueueEnterEvent(SceneObject* obj);
 
-	virtual void enqueueExitEvent(SceneObject* obj);
+	void enqueueExitEvent(SceneObject* obj);
 
 	void notifyEnter(SceneObject* object);
 
@@ -392,18 +390,6 @@ public:
 	DistributedObjectAdapter* createAdapter(DistributedObjectStub* obj);
 
 	friend class Singleton<ActiveAreaHelper>;
-};
-
-class MockActiveArea : public ActiveArea {
-public:
-
-	MOCK_METHOD1(enqueueEnterEvent,void(SceneObject* obj));
-	MOCK_METHOD1(enqueueExitEvent,void(SceneObject* obj));
-	MOCK_METHOD0(getWorldPositionX,float());
-	MOCK_METHOD0(getWorldPositionY,float());
-	MOCK_METHOD0(getWorldPositionZ,float());
-	MOCK_METHOD0(getWorldPosition,Vector3());
-
 };
 
 } // namespace area

@@ -59,7 +59,7 @@ ChatManager::~ChatManager() {
 
 void ChatManager::stop() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -73,7 +73,7 @@ void ChatManager::stop() {
 
 void ChatManager::initiateRooms() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -87,7 +87,7 @@ void ChatManager::initiateRooms() {
 
 void ChatManager::initiatePlanetRooms() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -101,7 +101,7 @@ void ChatManager::initiatePlanetRooms() {
 
 void ChatManager::loadPersistentRooms() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -115,7 +115,7 @@ void ChatManager::loadPersistentRooms() {
 
 void ChatManager::addPlayer(CreatureObject* player) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -130,7 +130,7 @@ void ChatManager::addPlayer(CreatureObject* player) {
 
 CreatureObject* ChatManager::getPlayer(const String& name) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -145,7 +145,7 @@ CreatureObject* ChatManager::getPlayer(const String& name) {
 
 CreatureObject* ChatManager::removePlayer(const String& name) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -160,7 +160,7 @@ CreatureObject* ChatManager::removePlayer(const String& name) {
 
 String ChatManager::getTaggedName(PlayerObject* ghost, const String& name) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -178,7 +178,7 @@ String ChatManager::getTaggedName(PlayerObject* ghost, const String& name) {
 
 Reference<ChatRoom* > ChatManager::createPersistentRoomByFullPath(CreatureObject* player, const String& path, const String& title, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -197,7 +197,7 @@ Reference<ChatRoom* > ChatManager::createPersistentRoomByFullPath(CreatureObject
 
 void ChatManager::deleteRoom(ChatRoom* room) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,7 +212,7 @@ void ChatManager::deleteRoom(ChatRoom* room) {
 
 void ChatManager::disableRoom(ChatRoom* room) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -227,7 +227,7 @@ void ChatManager::disableRoom(ChatRoom* room) {
 
 Reference<ChatRoom* > ChatManager::createRoom(const String& roomName, ChatRoom* parent) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -243,7 +243,7 @@ Reference<ChatRoom* > ChatManager::createRoom(const String& roomName, ChatRoom* 
 
 Reference<ChatRoom* > ChatManager::createPersistentRoom(const String& roomName, ChatRoom* parent) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -259,7 +259,7 @@ Reference<ChatRoom* > ChatManager::createPersistentRoom(const String& roomName, 
 
 void ChatManager::destroyRoom(ChatRoom* room) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -274,7 +274,7 @@ void ChatManager::destroyRoom(ChatRoom* room) {
 
 void ChatManager::destroyRooms() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -288,7 +288,7 @@ void ChatManager::destroyRooms() {
 
 Reference<ChatRoom* > ChatManager::createGroupRoom(unsigned long long groupID, CreatureObject* creator) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -304,7 +304,7 @@ Reference<ChatRoom* > ChatManager::createGroupRoom(unsigned long long groupID, C
 
 void ChatManager::handleChatCreateRoom(CreatureObject* player, byte permissionFlag, byte moderationFlag, const String& roomPath, const String& roomTitle, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -324,7 +324,7 @@ void ChatManager::handleChatCreateRoom(CreatureObject* player, byte permissionFl
 
 void ChatManager::sendChatOnCreateRoomError(CreatureObject* player, int requestID, int error) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -341,7 +341,7 @@ void ChatManager::sendChatOnCreateRoomError(CreatureObject* player, int requestI
 
 void ChatManager::handleChatDestroyRoom(CreatureObject* player, unsigned int roomID, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -358,7 +358,7 @@ void ChatManager::handleChatDestroyRoom(CreatureObject* player, unsigned int roo
 
 void ChatManager::addRoom(ChatRoom* channel) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -373,7 +373,7 @@ void ChatManager::addRoom(ChatRoom* channel) {
 
 void ChatManager::removeRoom(ChatRoom* channel) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -388,7 +388,7 @@ void ChatManager::removeRoom(ChatRoom* channel) {
 
 Reference<ChatRoom* > ChatManager::getChatRoomByFullPath(const String& path) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -403,7 +403,7 @@ Reference<ChatRoom* > ChatManager::getChatRoomByFullPath(const String& path) {
 
 Reference<ChatRoom* > ChatManager::getChatRoomByGamePath(ChatRoom* game, const String& path) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -419,7 +419,7 @@ Reference<ChatRoom* > ChatManager::getChatRoomByGamePath(ChatRoom* game, const S
 
 String ChatManager::getRoomNameFromPath(const String& path) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -436,7 +436,7 @@ String ChatManager::getRoomNameFromPath(const String& path) {
 
 void ChatManager::handleChatLeaveRoom(CreatureObject* player, const String& roomPath) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -446,14 +446,14 @@ void ChatManager::handleChatLeaveRoom(CreatureObject* player, const String& room
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleChatLeaveRoom(player, roomPath);
 	}
 }
 
 void ChatManager::handleChatEnterRoomById(CreatureObject* player, unsigned int roomID, int requestID, bool bypassSecurity) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -471,7 +471,7 @@ void ChatManager::handleChatEnterRoomById(CreatureObject* player, unsigned int r
 
 void ChatManager::handleChatQueryRoom(CreatureObject* player, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -488,7 +488,7 @@ void ChatManager::handleChatQueryRoom(CreatureObject* player, const String& room
 
 void ChatManager::sendRoomList(CreatureObject* player) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -503,7 +503,7 @@ void ChatManager::sendRoomList(CreatureObject* player) {
 
 void ChatManager::handleChatInvitePlayer(CreatureObject* inviter, const String& inviteeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -521,7 +521,7 @@ void ChatManager::handleChatInvitePlayer(CreatureObject* inviter, const String& 
 
 void ChatManager::handleChatUninvitePlayer(CreatureObject* uninviter, const String& uninviteeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -539,7 +539,7 @@ void ChatManager::handleChatUninvitePlayer(CreatureObject* uninviter, const Stri
 
 void ChatManager::handleChatKickPlayer(CreatureObject* kicker, const String& kickeeName, const String& roomPath) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -556,7 +556,7 @@ void ChatManager::handleChatKickPlayer(CreatureObject* kicker, const String& kic
 
 void ChatManager::handleChatAddModerator(CreatureObject* oper, const String& opeeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -574,7 +574,7 @@ void ChatManager::handleChatAddModerator(CreatureObject* oper, const String& ope
 
 void ChatManager::handleChatRemoveModerator(CreatureObject* deoper, const String& deopeeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -592,7 +592,7 @@ void ChatManager::handleChatRemoveModerator(CreatureObject* deoper, const String
 
 void ChatManager::handleChatBanPlayer(CreatureObject* banner, const String& baneeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -610,7 +610,7 @@ void ChatManager::handleChatBanPlayer(CreatureObject* banner, const String& bane
 
 void ChatManager::handleChatUnbanPlayer(CreatureObject* unbanner, const String& unbaneeName, const String& roomPath, int requestID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -628,7 +628,7 @@ void ChatManager::handleChatUnbanPlayer(CreatureObject* unbanner, const String& 
 
 void ChatManager::handleChatInstantMessageToCharacter(ChatInstantMessageToCharacter* message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -638,7 +638,7 @@ void ChatManager::handleChatInstantMessageToCharacter(ChatInstantMessageToCharac
 
 void ChatManager::broadcastChatMessage(CreatureObject* player, StringIdChatParameter& message, unsigned long long target, unsigned int spatialChatType, unsigned int moodType, unsigned int chatFlags, int languageID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -659,7 +659,7 @@ void ChatManager::broadcastChatMessage(CreatureObject* player, StringIdChatParam
 
 void ChatManager::handleSpatialChatInternalMessage(CreatureObject* player, const UnicodeString& args) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -675,7 +675,7 @@ void ChatManager::handleSpatialChatInternalMessage(CreatureObject* player, const
 
 void ChatManager::handleGroupChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -691,7 +691,7 @@ void ChatManager::handleGroupChat(CreatureObject* player, const UnicodeString& m
 
 void ChatManager::handleGuildChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -707,7 +707,7 @@ void ChatManager::handleGuildChat(CreatureObject* player, const UnicodeString& m
 
 void ChatManager::handlePlanetChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -723,7 +723,7 @@ void ChatManager::handlePlanetChat(CreatureObject* player, const UnicodeString& 
 
 void ChatManager::handleAuctionChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -739,7 +739,7 @@ void ChatManager::handleAuctionChat(CreatureObject* player, const UnicodeString&
 
 void ChatManager::handleGeneralChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -755,7 +755,7 @@ void ChatManager::handleGeneralChat(CreatureObject* player, const UnicodeString&
 
 void ChatManager::handleGeneralResourceChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -771,7 +771,7 @@ void ChatManager::handleGeneralResourceChat(CreatureObject* player, const Unicod
 
 void ChatManager::handleGeneralDiscordChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -787,7 +787,7 @@ void ChatManager::handleGeneralDiscordChat(CreatureObject* player, const Unicode
 
 void ChatManager::handleGeneralDiscordUnlock(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -803,7 +803,7 @@ void ChatManager::handleGeneralDiscordUnlock(CreatureObject* player, const Unico
 
 void ChatManager::handleGeneralDiscordGcw(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -819,7 +819,7 @@ void ChatManager::handleGeneralDiscordGcw(CreatureObject* player, const UnicodeS
 
 void ChatManager::handleGeneralDiscordShutdownChat(CreatureObject* player, const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -835,7 +835,7 @@ void ChatManager::handleGeneralDiscordShutdownChat(CreatureObject* player, const
 
 void ChatManager::handleChatRoomMessage(CreatureObject* sender, const UnicodeString& message, unsigned int roomID, unsigned int counter) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -853,7 +853,7 @@ void ChatManager::handleChatRoomMessage(CreatureObject* sender, const UnicodeStr
 
 void ChatManager::handleSocialInternalMessage(CreatureObject* sender, const UnicodeString& arguments) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -869,7 +869,7 @@ void ChatManager::handleSocialInternalMessage(CreatureObject* sender, const Unic
 
 void ChatManager::broadcastMessage(BaseMessage* message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -879,7 +879,7 @@ void ChatManager::broadcastMessage(BaseMessage* message) {
 
 void ChatManager::broadcastChatMessage(CreatureObject* player, const UnicodeString& message, unsigned long long target, unsigned int spatialChatType, unsigned int moodType, unsigned int chatFlags, int languageID) const {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -900,7 +900,7 @@ void ChatManager::broadcastChatMessage(CreatureObject* player, const UnicodeStri
 
 void ChatManager::broadcastGalaxy(CreatureObject* player, const String& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -916,7 +916,7 @@ void ChatManager::broadcastGalaxy(CreatureObject* player, const String& message)
 
 void ChatManager::broadcastGalaxy(const String& message, const String& faction) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -932,7 +932,7 @@ void ChatManager::broadcastGalaxy(const String& message, const String& faction) 
 
 unsigned int ChatManager::getSpatialChatType(const String& spatialChatType) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -947,7 +947,7 @@ unsigned int ChatManager::getSpatialChatType(const String& spatialChatType) {
 
 unsigned int ChatManager::getMoodID(const String& moodType) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -962,7 +962,7 @@ unsigned int ChatManager::getMoodID(const String& moodType) {
 
 const String ChatManager::getMoodType(unsigned int id) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -979,7 +979,7 @@ const String ChatManager::getMoodType(unsigned int id) {
 
 const String ChatManager::getMoodAnimation(const String& moodType) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -996,7 +996,7 @@ const String ChatManager::getMoodAnimation(const String& moodType) {
 
 unsigned int ChatManager::getRandomMoodID() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1010,7 +1010,7 @@ unsigned int ChatManager::getRandomMoodID() {
 
 void ChatManager::loadMail(CreatureObject* player) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1025,7 +1025,7 @@ void ChatManager::loadMail(CreatureObject* player) {
 
 void ChatManager::sendMail(const String& sendername, const UnicodeString& header, const UnicodeString& body, const String& name) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1043,7 +1043,7 @@ void ChatManager::sendMail(const String& sendername, const UnicodeString& header
 
 void ChatManager::handleRequestPersistentMsg(CreatureObject* player, unsigned int mailID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1059,7 +1059,7 @@ void ChatManager::handleRequestPersistentMsg(CreatureObject* player, unsigned in
 
 void ChatManager::deletePersistentMessage(CreatureObject* player, unsigned int mailID) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1075,7 +1075,7 @@ void ChatManager::deletePersistentMessage(CreatureObject* player, unsigned int m
 
 UnicodeString ChatManager::formatMessage(const UnicodeString& message) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1092,7 +1092,7 @@ UnicodeString ChatManager::formatMessage(const UnicodeString& message) {
 
 int ChatManager::sendMail(const String& sendername, const UnicodeString& subject, StringIdChatParameter& body, const String& recipientName, WaypointObject* waypoint) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1102,7 +1102,7 @@ int ChatManager::sendMail(const String& sendername, const UnicodeString& subject
 
 int ChatManager::sendMail(const String& sendername, const UnicodeString& subject, const UnicodeString& body, const String& recipientName, StringIdChatParameterVector* stringIdParameters, WaypointChatParameterVector* waypointParameters) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1112,7 +1112,7 @@ int ChatManager::sendMail(const String& sendername, const UnicodeString& subject
 
 void ChatManager::setPlayerManager(PlayerManager* manager) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1127,7 +1127,7 @@ void ChatManager::setPlayerManager(PlayerManager* manager) {
 
 Reference<ChatRoom* > ChatManager::getChatRoom(unsigned int id) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1142,7 +1142,7 @@ Reference<ChatRoom* > ChatManager::getChatRoom(unsigned int id) {
 
 Reference<ChatRoom* > ChatManager::getGameRoom(const String& game) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1157,7 +1157,7 @@ Reference<ChatRoom* > ChatManager::getGameRoom(const String& game) {
 
 int ChatManager::getPlayerCount() const {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1171,7 +1171,7 @@ int ChatManager::getPlayerCount() const {
 
 ZoneServer* ChatManager::getZoneServer() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1185,7 +1185,7 @@ ZoneServer* ChatManager::getZoneServer() {
 
 PlayerMap* ChatManager::getPlayerMap() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1195,7 +1195,7 @@ PlayerMap* ChatManager::getPlayerMap() {
 
 ChatRoom* ChatManager::getGuildRoom() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1209,7 +1209,7 @@ ChatRoom* ChatManager::getGuildRoom() {
 
 ChatRoom* ChatManager::getGroupRoom() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1223,7 +1223,7 @@ ChatRoom* ChatManager::getGroupRoom() {
 
 ChatRoom* ChatManager::getAuctionRoom() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1237,7 +1237,7 @@ ChatRoom* ChatManager::getAuctionRoom() {
 
 ChatRoom* ChatManager::getGeneralRoom() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1251,7 +1251,7 @@ ChatRoom* ChatManager::getGeneralRoom() {
 
 ChatRoom* ChatManager::getSystemRoom() {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1265,7 +1265,7 @@ ChatRoom* ChatManager::getSystemRoom() {
 
 String ChatManager::getSocialType(unsigned int id) const {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1282,7 +1282,7 @@ String ChatManager::getSocialType(unsigned int id) const {
 
 Reference<PendingMessageList* > ChatManager::getPendingMessages(unsigned long long oid) {
 	ChatManagerImplementation* _implementation = static_cast<ChatManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1336,7 +1336,7 @@ void ChatManagerImplementation::finalize() {
 void ChatManagerImplementation::_initializeImplementation() {
 	_setClassHelper(ChatManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1708,7 +1708,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String name; inv->getAsciiParameter(name);
 			
 			DistributedObject* _m_res = getPlayer(name);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_REMOVEPLAYER__STRING_:
@@ -1716,7 +1716,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String name; inv->getAsciiParameter(name);
 			
 			DistributedObject* _m_res = removePlayer(name);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETTAGGEDNAME__PLAYEROBJECT_STRING_:
@@ -1736,7 +1736,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int requestID = inv->getSignedIntParameter();
 			
 			DistributedObject* _m_res = createPersistentRoomByFullPath(player, path, title, requestID);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_DELETEROOM__CHATROOM_:
@@ -1761,7 +1761,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			ChatRoom* parent = static_cast<ChatRoom*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = createRoom(roomName, parent);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_CREATEPERSISTENTROOM__STRING_CHATROOM_:
@@ -1770,7 +1770,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			ChatRoom* parent = static_cast<ChatRoom*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = createPersistentRoom(roomName, parent);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_DESTROYROOM__CHATROOM_:
@@ -1794,7 +1794,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			CreatureObject* creator = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = createGroupRoom(groupID, creator);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_HANDLECHATCREATEROOM__CREATUREOBJECT_BYTE_BYTE_STRING_STRING_INT_:
@@ -1851,7 +1851,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String path; inv->getAsciiParameter(path);
 			
 			DistributedObject* _m_res = getChatRoomByFullPath(path);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETCHATROOMBYGAMEPATH__CHATROOM_STRING_:
@@ -1860,7 +1860,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String path; inv->getAsciiParameter(path);
 			
 			DistributedObject* _m_res = getChatRoomByGamePath(game, path);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETROOMNAMEFROMPATH__STRING_:
@@ -2247,7 +2247,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			unsigned int id = inv->getUnsignedIntParameter();
 			
 			DistributedObject* _m_res = getChatRoom(id);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGAMEROOM__STRING_:
@@ -2255,7 +2255,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String game; inv->getAsciiParameter(game);
 			
 			DistributedObject* _m_res = getGameRoom(game);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETPLAYERCOUNT__:
@@ -2269,42 +2269,42 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getZoneServer();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGUILDROOM__:
 		{
 			
 			DistributedObject* _m_res = getGuildRoom();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGROUPROOM__:
 		{
 			
 			DistributedObject* _m_res = getGroupRoom();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETAUCTIONROOM__:
 		{
 			
 			DistributedObject* _m_res = getAuctionRoom();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGENERALROOM__:
 		{
 			
 			DistributedObject* _m_res = getGeneralRoom();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSYSTEMROOM__:
 		{
 			
 			DistributedObject* _m_res = getSystemRoom();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSOCIALTYPE__INT_:
@@ -2320,7 +2320,7 @@ void ChatManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			unsigned long long oid = inv->getUnsignedLongParameter();
 			
 			DistributedObject* _m_res = getPendingMessages(oid);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	default:

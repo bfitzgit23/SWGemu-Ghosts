@@ -31,7 +31,7 @@ ZoneClientSession::~ZoneClientSession() {
 
 void ZoneClientSession::disconnect() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -45,7 +45,7 @@ void ZoneClientSession::disconnect() {
 
 void ZoneClientSession::disconnect(bool doLock) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,7 +60,7 @@ void ZoneClientSession::disconnect(bool doLock) {
 
 void ZoneClientSession::sendMessage(BasePacket* msg) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -70,7 +70,7 @@ void ZoneClientSession::sendMessage(BasePacket* msg) {
 
 void ZoneClientSession::balancePacketCheckupTime() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -84,7 +84,7 @@ void ZoneClientSession::balancePacketCheckupTime() {
 
 void ZoneClientSession::resetPacketCheckupTime() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -98,7 +98,7 @@ void ZoneClientSession::resetPacketCheckupTime() {
 
 void ZoneClientSession::closeConnection(bool lockPlayer, bool doLock) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -114,7 +114,7 @@ void ZoneClientSession::closeConnection(bool lockPlayer, bool doLock) {
 
 void ZoneClientSession::info(const String& msg, bool force) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -130,7 +130,7 @@ void ZoneClientSession::info(const String& msg, bool force) {
 
 void ZoneClientSession::debug(const String& msg) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -145,7 +145,7 @@ void ZoneClientSession::debug(const String& msg) {
 
 void ZoneClientSession::error(const String& msg) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -160,7 +160,7 @@ void ZoneClientSession::error(const String& msg) {
 
 String ZoneClientSession::getAddress() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -176,7 +176,7 @@ String ZoneClientSession::getAddress() {
 
 String ZoneClientSession::getIPAddress() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -192,7 +192,7 @@ String ZoneClientSession::getIPAddress() {
 
 void ZoneClientSession::setPlayer(CreatureObject* playerCreature) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -207,7 +207,7 @@ void ZoneClientSession::setPlayer(CreatureObject* playerCreature) {
 
 void ZoneClientSession::setSessionID(unsigned int id) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -222,7 +222,7 @@ void ZoneClientSession::setSessionID(unsigned int id) {
 
 void ZoneClientSession::setAccountID(unsigned int acc) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -237,7 +237,7 @@ void ZoneClientSession::setAccountID(unsigned int acc) {
 
 int ZoneClientSession::getCommandCount() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -251,7 +251,7 @@ int ZoneClientSession::getCommandCount() {
 
 void ZoneClientSession::increaseCommandCount() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -265,7 +265,7 @@ void ZoneClientSession::increaseCommandCount() {
 
 void ZoneClientSession::resetCommandCount() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -279,7 +279,7 @@ void ZoneClientSession::resetCommandCount() {
 
 Time* ZoneClientSession::getCommandSpamCooldown() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -289,7 +289,7 @@ Time* ZoneClientSession::getCommandSpamCooldown() {
 
 BaseClientProxy* ZoneClientSession::getSession() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -299,7 +299,7 @@ BaseClientProxy* ZoneClientSession::getSession() {
 
 Reference<CreatureObject* > ZoneClientSession::getPlayer() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -313,7 +313,7 @@ Reference<CreatureObject* > ZoneClientSession::getPlayer() {
 
 unsigned int ZoneClientSession::getSessionID() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -327,7 +327,7 @@ unsigned int ZoneClientSession::getSessionID() {
 
 unsigned int ZoneClientSession::getAccountID() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -341,7 +341,7 @@ unsigned int ZoneClientSession::getAccountID() {
 
 bool ZoneClientSession::hasCharacter(unsigned long long cid, unsigned int galaxyId) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -357,7 +357,7 @@ bool ZoneClientSession::hasCharacter(unsigned long long cid, unsigned int galaxy
 
 void ZoneClientSession::addCharacter(unsigned long long cid, unsigned int galaxyId) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -373,7 +373,7 @@ void ZoneClientSession::addCharacter(unsigned long long cid, unsigned int galaxy
 
 void ZoneClientSession::addBannedCharacter(unsigned long long cid, unsigned int galaxyId) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -389,7 +389,7 @@ void ZoneClientSession::addBannedCharacter(unsigned long long cid, unsigned int 
 
 int ZoneClientSession::getCharacterCount() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -403,7 +403,7 @@ int ZoneClientSession::getCharacterCount() {
 
 int ZoneClientSession::getCharacterCount(int galaxyId) {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -418,7 +418,7 @@ int ZoneClientSession::getCharacterCount(int galaxyId) {
 
 void ZoneClientSession::resetCharacters() {
 	ZoneClientSessionImplementation* _implementation = static_cast<ZoneClientSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -463,7 +463,7 @@ void ZoneClientSessionImplementation::finalize() {
 void ZoneClientSessionImplementation::_initializeImplementation() {
 	_setClassHelper(ZoneClientSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -882,7 +882,7 @@ void ZoneClientSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* in
 		{
 			
 			DistributedObject* _m_res = getPlayer();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSESSIONID__:

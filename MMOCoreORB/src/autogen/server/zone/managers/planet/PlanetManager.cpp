@@ -44,7 +44,7 @@ PlanetManager::~PlanetManager() {
 
 void PlanetManager::addNavArea(const String& name, NavArea* area) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,7 +60,7 @@ void PlanetManager::addNavArea(const String& name, NavArea* area) {
 
 NavArea* PlanetManager::getNavArea(const String& name) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -75,7 +75,7 @@ NavArea* PlanetManager::getNavArea(const String& name) {
 
 void PlanetManager::dropNavArea(const String& name) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,7 +90,7 @@ void PlanetManager::dropNavArea(const String& name) {
 
 void PlanetManager::initializeTransientMembers() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ void PlanetManager::initializeTransientMembers() {
 
 void PlanetManager::initialize() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -118,7 +118,7 @@ void PlanetManager::initialize() {
 
 void PlanetManager::loadClientRegions(LuaObject* outposts) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -128,7 +128,7 @@ void PlanetManager::loadClientRegions(LuaObject* outposts) {
 
 void PlanetManager::loadClientPoiData() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -142,7 +142,7 @@ void PlanetManager::loadClientPoiData() {
 
 void PlanetManager::start() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -156,7 +156,7 @@ void PlanetManager::start() {
 
 PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(SceneObject* object, float range) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -166,7 +166,7 @@ PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(SceneObject* objec
 
 PlanetTravelPoint* PlanetManager::getRandomStarport() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -176,7 +176,7 @@ PlanetTravelPoint* PlanetManager::getRandomStarport() {
 
 PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(const Vector3& position, float range) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -186,7 +186,7 @@ PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(const Vector3& pos
 
 bool PlanetManager::isSpawningPermittedAt(float x, float y, float margin) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -203,7 +203,7 @@ bool PlanetManager::isSpawningPermittedAt(float x, float y, float margin) {
 
 bool PlanetManager::isBuildingPermittedAt(float x, float y, SceneObject* objectTryingToBuild, float margin, bool checkFootprint) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -222,7 +222,7 @@ bool PlanetManager::isBuildingPermittedAt(float x, float y, SceneObject* objectT
 
 bool PlanetManager::isCampingPermittedAt(float x, float y, float margin) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -239,7 +239,7 @@ bool PlanetManager::isCampingPermittedAt(float x, float y, float margin) {
 
 Reference<SceneObject* > PlanetManager::findObjectTooCloseToDecoration(float x, float y, float margin) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -256,7 +256,7 @@ Reference<SceneObject* > PlanetManager::findObjectTooCloseToDecoration(float x, 
 
 bool PlanetManager::isInRangeWithPoi(float x, float y, float range) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -273,7 +273,7 @@ bool PlanetManager::isInRangeWithPoi(float x, float y, float range) {
 
 bool PlanetManager::isInObjectsNoBuildZone(float x, float y, float extraMargin, bool checkFootprint) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -291,7 +291,7 @@ bool PlanetManager::isInObjectsNoBuildZone(float x, float y, float extraMargin, 
 
 int PlanetManager::getTravelFare(const String& departurePlanet, const String& arrivalPlanet) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -307,7 +307,7 @@ int PlanetManager::getTravelFare(const String& departurePlanet, const String& ar
 
 void PlanetManager::sendPlanetTravelPointListResponse(CreatureObject* player) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -322,7 +322,7 @@ void PlanetManager::sendPlanetTravelPointListResponse(CreatureObject* player) {
 
 Reference<SceneObject* > PlanetManager::createTicket(const String& departurePoint, const String& arrivalPlanet, const String& arrivalPoint) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -339,7 +339,7 @@ Reference<SceneObject* > PlanetManager::createTicket(const String& departurePoin
 
 bool PlanetManager::validateRegionName(const String& name) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -354,7 +354,7 @@ bool PlanetManager::validateRegionName(const String& name) {
 
 bool PlanetManager::validateClientCityInRange(CreatureObject* creatureObject, float x, float y) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -371,7 +371,7 @@ bool PlanetManager::validateClientCityInRange(CreatureObject* creatureObject, fl
 
 WeatherManager* PlanetManager::getWeatherManager() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -385,7 +385,7 @@ WeatherManager* PlanetManager::getWeatherManager() {
 
 GCWManager* PlanetManager::getGCWManager() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -399,7 +399,7 @@ GCWManager* PlanetManager::getGCWManager() {
 
 TerrainManager* PlanetManager::getTerrainManager() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -409,7 +409,7 @@ TerrainManager* PlanetManager::getTerrainManager() {
 
 int PlanetManager::getRegionCount() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -423,7 +423,7 @@ int PlanetManager::getRegionCount() {
 
 int PlanetManager::getNumberOfCities() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -437,7 +437,7 @@ int PlanetManager::getNumberOfCities() {
 
 void PlanetManager::increaseNumberOfCities() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -451,7 +451,7 @@ void PlanetManager::increaseNumberOfCities() {
 
 CityRegion* PlanetManager::getRegion(int index) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -466,7 +466,7 @@ CityRegion* PlanetManager::getRegion(int index) {
 
 CityRegion* PlanetManager::getRegion(const String& region) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -481,7 +481,7 @@ CityRegion* PlanetManager::getRegion(const String& region) {
 
 CityRegion* PlanetManager::getRegionAt(float x, float y) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -497,7 +497,7 @@ CityRegion* PlanetManager::getRegionAt(float x, float y) {
 
 void PlanetManager::addRegion(CityRegion* region) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -512,7 +512,7 @@ void PlanetManager::addRegion(CityRegion* region) {
 
 void PlanetManager::dropRegion(const String& region) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -527,7 +527,7 @@ void PlanetManager::dropRegion(const String& region) {
 
 bool PlanetManager::hasRegion(const String& name) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -542,7 +542,7 @@ bool PlanetManager::hasRegion(const String& name) {
 
 void PlanetManager::addPerformanceLocation(SceneObject* obj) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -557,7 +557,7 @@ void PlanetManager::addPerformanceLocation(SceneObject* obj) {
 
 void PlanetManager::removePerformanceLocation(SceneObject* obj) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -572,7 +572,7 @@ void PlanetManager::removePerformanceLocation(SceneObject* obj) {
 
 MissionTargetMap* PlanetManager::getPerformanceLocations() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -582,7 +582,7 @@ MissionTargetMap* PlanetManager::getPerformanceLocations() {
 
 bool PlanetManager::isExistingPlanetTravelPoint(const String& pointName) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -597,7 +597,7 @@ bool PlanetManager::isExistingPlanetTravelPoint(const String& pointName) {
 
 bool PlanetManager::isInterplanetaryTravelAllowed(const String& pointName) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -612,7 +612,7 @@ bool PlanetManager::isInterplanetaryTravelAllowed(const String& pointName) {
 
 bool PlanetManager::isIncomingTravelAllowed(const String& pointName) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -627,7 +627,7 @@ bool PlanetManager::isIncomingTravelAllowed(const String& pointName) {
 
 PlanetTravelPoint* PlanetManager::getPlanetTravelPoint(const String& pointName) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -637,7 +637,7 @@ PlanetTravelPoint* PlanetManager::getPlanetTravelPoint(const String& pointName) 
 
 bool PlanetManager::isTravelToLocationPermitted(const String& destinationPoint, const String& arrivalPlanet, const String& arrivalPoint) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -654,7 +654,7 @@ bool PlanetManager::isTravelToLocationPermitted(const String& destinationPoint, 
 
 void PlanetManager::scheduleShuttle(CreatureObject* shuttle, int shuttleType) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -670,7 +670,7 @@ void PlanetManager::scheduleShuttle(CreatureObject* shuttle, int shuttleType) {
 
 void PlanetManager::removeShuttle(CreatureObject* shuttle) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -685,7 +685,7 @@ void PlanetManager::removeShuttle(CreatureObject* shuttle) {
 
 bool PlanetManager::checkShuttleStatus(CreatureObject* creature, CreatureObject* shuttle) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -701,7 +701,7 @@ bool PlanetManager::checkShuttleStatus(CreatureObject* creature, CreatureObject*
 
 bool PlanetManager::isInWater(float x, float y) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -717,7 +717,7 @@ bool PlanetManager::isInWater(float x, float y) {
 
 float PlanetManager::findClosestWorldFloor(float x, float y, float z, float swimHeight, IntersectionResults* intersections, CloseObjectsVector* closeObjects) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -727,7 +727,7 @@ float PlanetManager::findClosestWorldFloor(float x, float y, float z, float swim
 
 void PlanetManager::addPlayerCityTravelPoint(PlanetTravelPoint* ptp) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -737,7 +737,7 @@ void PlanetManager::addPlayerCityTravelPoint(PlanetTravelPoint* ptp) {
 
 void PlanetManager::removePlayerCityTravelPoint(const String& cityName) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -752,7 +752,7 @@ void PlanetManager::removePlayerCityTravelPoint(const String& cityName) {
 
 void PlanetManager::addEventObject(unsigned long long objectID) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -767,7 +767,7 @@ void PlanetManager::addEventObject(unsigned long long objectID) {
 
 void PlanetManager::addEventStructure(unsigned long long objectID) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -782,7 +782,7 @@ void PlanetManager::addEventStructure(unsigned long long objectID) {
 
 int PlanetManager::destroyEventObject(unsigned long long objectID) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -797,7 +797,7 @@ int PlanetManager::destroyEventObject(unsigned long long objectID) {
 
 int PlanetManager::destroyAllEventObjects() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -840,7 +840,7 @@ PlanetManagerImplementation::~PlanetManagerImplementation() {
 void PlanetManagerImplementation::_initializeImplementation() {
 	_setClassHelper(PlanetManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1126,9 +1126,9 @@ PlanetManagerImplementation::PlanetManagerImplementation(Zone* planet, ZoneProce
 	// server/zone/managers/planet/PlanetManager.idl():  		starportLandingTime = 14;
 	starportLandingTime = 14;
 	// server/zone/managers/planet/PlanetManager.idl():  		weatherManager = null;
-	weatherManager = nullptr;
+	weatherManager = NULL;
 	// server/zone/managers/planet/PlanetManager.idl():  		gcwManager = null;
-	gcwManager = nullptr;
+	gcwManager = NULL;
 	// server/zone/managers/planet/PlanetManager.idl():  		travelFares.setNoDuplicateInsertPlan();
 	(&travelFares)->setNoDuplicateInsertPlan();
 	// server/zone/managers/planet/PlanetManager.idl():  		planetTravelPointList = new PlanetTravelPointList();
@@ -1240,7 +1240,7 @@ bool PlanetManagerImplementation::isInterplanetaryTravelAllowed(const String& po
 	// server/zone/managers/planet/PlanetManager.idl():  		PlanetTravelPoint ptp = planetTravelPointList.get(pointName);
 	PlanetTravelPoint* ptp = planetTravelPointList->get(pointName);
 	// server/zone/managers/planet/PlanetManager.idl():  		return 
-	if (ptp == nullptr)	// server/zone/managers/planet/PlanetManager.idl():  			return false;
+	if (ptp == NULL)	// server/zone/managers/planet/PlanetManager.idl():  			return false;
 	return false;
 	// server/zone/managers/planet/PlanetManager.idl():  		return ptp.isInterplanetary();
 	return ptp->isInterplanetary();
@@ -1250,7 +1250,7 @@ bool PlanetManagerImplementation::isIncomingTravelAllowed(const String& pointNam
 	// server/zone/managers/planet/PlanetManager.idl():  		PlanetTravelPoint ptp = planetTravelPointList.get(pointName);
 	PlanetTravelPoint* ptp = planetTravelPointList->get(pointName);
 	// server/zone/managers/planet/PlanetManager.idl():  		return 
-	if (ptp == nullptr)	// server/zone/managers/planet/PlanetManager.idl():  			return false;
+	if (ptp == NULL)	// server/zone/managers/planet/PlanetManager.idl():  			return false;
 	return false;
 	// server/zone/managers/planet/PlanetManager.idl():  		return ptp.isIncomingAllowed();
 	return ptp->isIncomingAllowed();
@@ -1306,7 +1306,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String name; inv->getAsciiParameter(name);
 			
 			DistributedObject* _m_res = getNavArea(name);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_DROPNAVAREA__STRING_:
@@ -1391,7 +1391,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			float margin = inv->getFloatParameter();
 			
 			DistributedObject* _m_res = findObjectTooCloseToDecoration(x, y, margin);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ISINRANGEWITHPOI__FLOAT_FLOAT_FLOAT_:
@@ -1439,7 +1439,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String arrivalPoint; inv->getAsciiParameter(arrivalPoint);
 			
 			DistributedObject* _m_res = createTicket(departurePoint, arrivalPlanet, arrivalPoint);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_VALIDATEREGIONNAME__STRING_:
@@ -1464,14 +1464,14 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getWeatherManager();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGCWMANAGER__:
 		{
 			
 			DistributedObject* _m_res = getGCWManager();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETREGIONCOUNT__:
@@ -1500,7 +1500,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int index = inv->getSignedIntParameter();
 			
 			DistributedObject* _m_res = getRegion(index);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETREGION__STRING_:
@@ -1508,7 +1508,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String region; inv->getAsciiParameter(region);
 			
 			DistributedObject* _m_res = getRegion(region);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETREGIONAT__FLOAT_FLOAT_:
@@ -1517,7 +1517,7 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			float y = inv->getFloatParameter();
 			
 			DistributedObject* _m_res = getRegionAt(x, y);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ADDREGION__CITYREGION_:

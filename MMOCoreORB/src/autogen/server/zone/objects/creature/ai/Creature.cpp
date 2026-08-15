@@ -36,7 +36,7 @@ Creature::~Creature() {
 
 void Creature::initializeTransientMembers() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -50,7 +50,7 @@ void Creature::initializeTransientMembers() {
 
 bool Creature::isCreature() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -64,7 +64,7 @@ bool Creature::isCreature() {
 
 short Creature::getDnaState() const {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -78,7 +78,7 @@ short Creature::getDnaState() const {
 
 short Creature::getDnaSampleCount() const {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -92,7 +92,7 @@ short Creature::getDnaSampleCount() const {
 
 void Creature::incDnaSampleCount() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ void Creature::incDnaSampleCount() {
 
 bool Creature::isCamouflaged(CreatureObject* target) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -122,7 +122,7 @@ bool Creature::isCamouflaged(CreatureObject* target) {
 
 void Creature::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -132,7 +132,7 @@ void Creature::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Creature
 
 int Creature::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -143,14 +143,14 @@ int Creature::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void Creature::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -160,7 +160,7 @@ void Creature::fillAttributeList(AttributeListMessage* msg, CreatureObject* obje
 
 void Creature::loadTemplateDataForBaby(CreatureTemplate* templateData) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -170,7 +170,7 @@ void Creature::loadTemplateDataForBaby(CreatureTemplate* templateData) {
 
 void Creature::scheduleDespawn() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -184,7 +184,7 @@ void Creature::scheduleDespawn() {
 
 bool Creature::hasOrganics() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ bool Creature::hasOrganics() {
 
 bool Creature::hasMilk() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,7 +212,7 @@ bool Creature::hasMilk() {
 
 bool Creature::hasDNA() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -226,7 +226,7 @@ bool Creature::hasDNA() {
 
 bool Creature::canHarvestMe(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -241,7 +241,7 @@ bool Creature::canHarvestMe(CreatureObject* player) {
 
 bool Creature::canDroidHarvestMe(CreatureObject* player, CreatureObject* droid) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -257,7 +257,7 @@ bool Creature::canDroidHarvestMe(CreatureObject* player, CreatureObject* droid) 
 
 bool Creature::hasSkillToHarvestMe(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -272,7 +272,7 @@ bool Creature::hasSkillToHarvestMe(CreatureObject* player) {
 
 bool Creature::canTameMe(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -287,7 +287,7 @@ bool Creature::canTameMe(CreatureObject* player) {
 
 float Creature::getChanceToTame(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -302,7 +302,7 @@ float Creature::getChanceToTame(CreatureObject* player) {
 
 bool Creature::canMilkMe(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -317,7 +317,7 @@ bool Creature::canMilkMe(CreatureObject* player) {
 
 bool Creature::canCollectDna(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -332,7 +332,7 @@ bool Creature::canCollectDna(CreatureObject* player) {
 
 bool Creature::hasSkillToSampleMe(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -347,7 +347,7 @@ bool Creature::hasSkillToSampleMe(CreatureObject* player) {
 
 void Creature::addAlreadyHarvested(CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -363,7 +363,7 @@ void Creature::addAlreadyHarvested(CreatureObject* player) {
 
 void Creature::setMilkState(short milkState) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -379,7 +379,7 @@ void Creature::setMilkState(short milkState) {
 
 void Creature::setDnaState(short dnaState) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -395,7 +395,7 @@ void Creature::setDnaState(short dnaState) {
 
 void Creature::notifyDespawn(Zone* zone) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -411,7 +411,7 @@ void Creature::notifyDespawn(Zone* zone) {
 
 void Creature::setPetLevel(int newLevel) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -427,7 +427,7 @@ void Creature::setPetLevel(int newLevel) {
 
 bool Creature::isVicious() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -441,7 +441,7 @@ bool Creature::isVicious() {
 
 bool Creature::isBaby() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -455,7 +455,7 @@ bool Creature::isBaby() {
 
 void Creature::setBaby(bool bab) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -471,7 +471,7 @@ void Creature::setBaby(bool bab) {
 
 float Creature::getTame() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -485,7 +485,7 @@ float Creature::getTame() {
 
 String Creature::getMeatType() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -501,7 +501,7 @@ String Creature::getMeatType() {
 
 String Creature::getBoneType() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -517,7 +517,7 @@ String Creature::getBoneType() {
 
 String Creature::getHideType() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -533,7 +533,7 @@ String Creature::getHideType() {
 
 String Creature::getMilkType() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -549,7 +549,7 @@ String Creature::getMilkType() {
 
 float Creature::getMilk() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -563,7 +563,7 @@ float Creature::getMilk() {
 
 float Creature::getHideMax() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -577,7 +577,7 @@ float Creature::getHideMax() {
 
 float Creature::getBoneMax() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -591,7 +591,7 @@ float Creature::getBoneMax() {
 
 float Creature::getMeatMax() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -605,7 +605,7 @@ float Creature::getMeatMax() {
 
 int Creature::getBaseXp() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -619,7 +619,7 @@ int Creature::getBaseXp() {
 
 String Creature::getControlDeviceTemplate() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -635,7 +635,7 @@ String Creature::getControlDeviceTemplate() {
 
 bool Creature::isMount() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -649,7 +649,7 @@ bool Creature::isMount() {
 
 void Creature::sendMessage(BasePacket* msg) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -659,7 +659,7 @@ void Creature::sendMessage(BasePacket* msg) {
 
 int Creature::getAdultLevel() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -673,7 +673,7 @@ int Creature::getAdultLevel() {
 
 int Creature::getPassengerCapacity() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -687,7 +687,7 @@ int Creature::getPassengerCapacity() {
 
 String Creature::getPassengerSeatName() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -703,7 +703,7 @@ String Creature::getPassengerSeatName() {
 
 bool Creature::hasOpenSeat() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -717,7 +717,7 @@ bool Creature::hasOpenSeat() {
 
 int Creature::getOpenSeat() {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -731,7 +731,7 @@ int Creature::getOpenSeat() {
 
 bool Creature::slotPassenger(CreatureObject* passenger) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -777,7 +777,7 @@ void CreatureImplementation::finalize() {
 void CreatureImplementation::_initializeImplementation() {
 	_setClassHelper(CreatureHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -992,7 +992,7 @@ void CreatureImplementation::setBaby(bool bab) {
 
 float CreatureImplementation::getTame() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getTame();
 	return AiAgentImplementation::npcTemplate->getTame();
@@ -1000,7 +1000,7 @@ float CreatureImplementation::getTame() {
 
 String CreatureImplementation::getMeatType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMeatType();
 	return AiAgentImplementation::npcTemplate->getMeatType();
@@ -1008,7 +1008,7 @@ String CreatureImplementation::getMeatType() {
 
 String CreatureImplementation::getBoneType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getBoneType();
 	return AiAgentImplementation::npcTemplate->getBoneType();
@@ -1016,7 +1016,7 @@ String CreatureImplementation::getBoneType() {
 
 String CreatureImplementation::getHideType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getHideType();
 	return AiAgentImplementation::npcTemplate->getHideType();
@@ -1024,7 +1024,7 @@ String CreatureImplementation::getHideType() {
 
 String CreatureImplementation::getMilkType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMilkType();
 	return AiAgentImplementation::npcTemplate->getMilkType();
@@ -1032,7 +1032,7 @@ String CreatureImplementation::getMilkType() {
 
 float CreatureImplementation::getMilk() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMilk();
 	return AiAgentImplementation::npcTemplate->getMilk();
@@ -1040,7 +1040,7 @@ float CreatureImplementation::getMilk() {
 
 float CreatureImplementation::getHideMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == nullptr || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getHideMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getHideMax() / 10);
@@ -1052,7 +1052,7 @@ float CreatureImplementation::getHideMax() {
 
 float CreatureImplementation::getBoneMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == nullptr || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getBoneMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getBoneMax() / 10);
@@ -1064,7 +1064,7 @@ float CreatureImplementation::getBoneMax() {
 
 float CreatureImplementation::getMeatMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == nullptr || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getMeatMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getMeatMax() / 10);
@@ -1076,7 +1076,7 @@ float CreatureImplementation::getMeatMax() {
 
 int CreatureImplementation::getBaseXp() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getBaseXp();
 	if (isBaby() || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
@@ -1088,7 +1088,7 @@ int CreatureImplementation::getBaseXp() {
 
 String CreatureImplementation::getControlDeviceTemplate() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getControlDeviceTemplate();
 	return AiAgentImplementation::npcTemplate->getControlDeviceTemplate();
@@ -1096,12 +1096,12 @@ String CreatureImplementation::getControlDeviceTemplate() {
 
 int CreatureImplementation::getAdultLevel() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::petDeed.getForUpdate() != nullptr){
+	if (AiAgentImplementation::petDeed.getForUpdate() != NULL){
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.petDeed.getLevel();
 	return AiAgentImplementation::petDeed.getForUpdate()->getLevel();
 }
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == nullptr)	// server/zone/objects/creature/ai/Creature.idl():  			return super.getLevel();
+	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return super.getLevel();
 	return AiAgentImplementation::getLevel();
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getLevel();
 	return AiAgentImplementation::npcTemplate->getLevel();

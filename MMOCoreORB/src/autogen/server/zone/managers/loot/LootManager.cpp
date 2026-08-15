@@ -40,7 +40,7 @@ LootManager::~LootManager() {
 
 void LootManager::initialize() {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -54,7 +54,7 @@ void LootManager::initialize() {
 
 void LootManager::stop() {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -68,7 +68,7 @@ void LootManager::stop() {
 
 TangibleObject* LootManager::createLootObject(const LootItemTemplate* templateObject, int level, bool maxCondition) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -78,7 +78,7 @@ TangibleObject* LootManager::createLootObject(const LootItemTemplate* templateOb
 
 String LootManager::getRandomLootableMod(unsigned int sceneObjectType) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -88,7 +88,7 @@ String LootManager::getRandomLootableMod(unsigned int sceneObjectType) {
 
 TangibleObject* LootManager::createLootAttachment(LootItemTemplate* templateObject, const String& modName, int value) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -98,7 +98,7 @@ TangibleObject* LootManager::createLootAttachment(LootItemTemplate* templateObje
 
 int LootManager::calculateLootCredits(int level) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -113,7 +113,7 @@ int LootManager::calculateLootCredits(int level) {
 
 bool LootManager::createLoot(SceneObject* container, AiAgent* creature) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -129,7 +129,7 @@ bool LootManager::createLoot(SceneObject* container, AiAgent* creature) {
 
 bool LootManager::createNamedLoot(SceneObject* container, const String& lootGroup, const String& name, int level, bool maxCondition) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,7 +148,7 @@ bool LootManager::createNamedLoot(SceneObject* container, const String& lootGrou
 
 bool LootManager::createLootFromCollection(SceneObject* container, const LootGroupCollection* collection, int level) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -158,7 +158,7 @@ bool LootManager::createLootFromCollection(SceneObject* container, const LootGro
 
 bool LootManager::createLoot(SceneObject* container, const String& lootGroup, int level, bool maxCondition) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -176,7 +176,7 @@ bool LootManager::createLoot(SceneObject* container, const String& lootGroup, in
 
 bool LootManager::createLootSet(SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -195,7 +195,7 @@ bool LootManager::createLootSet(SceneObject* container, const String& lootGroup,
 
 unsigned int LootManager::getYellowLooted() const {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -209,7 +209,7 @@ unsigned int LootManager::getYellowLooted() const {
 
 unsigned int LootManager::getExceptionalLooted() const {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -223,7 +223,7 @@ unsigned int LootManager::getExceptionalLooted() const {
 
 unsigned int LootManager::getLegendaryLooted() const {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -237,7 +237,7 @@ unsigned int LootManager::getLegendaryLooted() const {
 
 const LootGroupMap* LootManager::getLootMap() const {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -247,7 +247,7 @@ const LootGroupMap* LootManager::getLootMap() const {
 
 const CrystalData* LootManager::getCrystalData(const String& name) const {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -288,7 +288,7 @@ void LootManagerImplementation::finalize() {
 void LootManagerImplementation::_initializeImplementation() {
 	_setClassHelper(LootManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -396,7 +396,7 @@ LootManagerImplementation::LootManagerImplementation(CraftingManager* craftman, 
 	// server/zone/managers/loot/LootManager.idl():  		zoneServer = server;
 	zoneServer = server;
 	// server/zone/managers/loot/LootManager.idl():  		lootGroupMap = null;
-	lootGroupMap = nullptr;
+	lootGroupMap = NULL;
 	// server/zone/managers/loot/LootManager.idl():  		lootableArmorAttachmentMods.setNoDuplicateInsertPlan();
 	(&lootableArmorAttachmentMods)->setNoDuplicateInsertPlan();
 	// server/zone/managers/loot/LootManager.idl():  		lootableClothingAttachmentMods.setNoDuplicateInsertPlan();

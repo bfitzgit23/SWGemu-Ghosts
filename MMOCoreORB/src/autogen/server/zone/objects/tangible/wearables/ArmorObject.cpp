@@ -34,7 +34,7 @@ ArmorObject::~ArmorObject() {
 
 void ArmorObject::initializeTransientMembers() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void ArmorObject::initializeTransientMembers() {
 
 void ArmorObject::notifyLoadFromDatabase() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void ArmorObject::notifyLoadFromDatabase() {
 
 void ArmorObject::loadTemplateData(SharedObjectTemplate* templateData) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -72,7 +72,7 @@ void ArmorObject::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void ArmorObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -82,7 +82,7 @@ void ArmorObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* o
 
 int ArmorObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -98,7 +98,7 @@ int ArmorObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID)
 
 void ArmorObject::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -108,7 +108,7 @@ void ArmorObject::updateCraftingValues(CraftingValues* values, bool firstUpdate)
 
 bool ArmorObject::isSpecial(int type) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -123,7 +123,7 @@ bool ArmorObject::isSpecial(int type) {
 
 bool ArmorObject::isVulnerable(int type) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -138,7 +138,7 @@ bool ArmorObject::isVulnerable(int type) {
 
 bool ArmorObject::isArmorObject() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -152,7 +152,7 @@ bool ArmorObject::isArmorObject() {
 
 void ArmorObject::setRating(int rate) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -167,7 +167,7 @@ void ArmorObject::setRating(int rate) {
 
 int ArmorObject::getRating() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ int ArmorObject::getRating() {
 
 float ArmorObject::getKinetic() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -191,7 +191,7 @@ float ArmorObject::getKinetic() {
 
 void ArmorObject::setKinetic(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -206,7 +206,7 @@ void ArmorObject::setKinetic(float value) {
 
 float ArmorObject::getEnergy() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -216,7 +216,7 @@ float ArmorObject::getEnergy() {
 
 void ArmorObject::setEnergy(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -231,7 +231,7 @@ void ArmorObject::setEnergy(float value) {
 
 float ArmorObject::getElectricity() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -241,7 +241,7 @@ float ArmorObject::getElectricity() {
 
 void ArmorObject::setElectricity(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -256,7 +256,7 @@ void ArmorObject::setElectricity(float value) {
 
 float ArmorObject::getStun() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -266,7 +266,7 @@ float ArmorObject::getStun() {
 
 void ArmorObject::setStun(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -281,7 +281,7 @@ void ArmorObject::setStun(float value) {
 
 float ArmorObject::getBlast() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -291,7 +291,7 @@ float ArmorObject::getBlast() {
 
 void ArmorObject::setBlast(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -306,7 +306,7 @@ void ArmorObject::setBlast(float value) {
 
 float ArmorObject::getHeat() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -316,7 +316,7 @@ float ArmorObject::getHeat() {
 
 void ArmorObject::setHeat(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -331,7 +331,7 @@ void ArmorObject::setHeat(float value) {
 
 float ArmorObject::getCold() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -341,7 +341,7 @@ float ArmorObject::getCold() {
 
 void ArmorObject::setCold(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -356,7 +356,7 @@ void ArmorObject::setCold(float value) {
 
 float ArmorObject::getAcid() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -366,7 +366,7 @@ float ArmorObject::getAcid() {
 
 void ArmorObject::setAcid(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -381,7 +381,7 @@ void ArmorObject::setAcid(float value) {
 
 float ArmorObject::getLightSaber() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -391,7 +391,7 @@ float ArmorObject::getLightSaber() {
 
 void ArmorObject::setLightSaber(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -406,7 +406,7 @@ void ArmorObject::setLightSaber(float value) {
 
 int ArmorObject::getHealthEncumbrance() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -420,7 +420,7 @@ int ArmorObject::getHealthEncumbrance() {
 
 void ArmorObject::setHealthEncumbrance(int encumber) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -435,7 +435,7 @@ void ArmorObject::setHealthEncumbrance(int encumber) {
 
 int ArmorObject::getActionEncumbrance() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -449,7 +449,7 @@ int ArmorObject::getActionEncumbrance() {
 
 void ArmorObject::setActionEncumbrance(int encumber) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -464,7 +464,7 @@ void ArmorObject::setActionEncumbrance(int encumber) {
 
 int ArmorObject::getMindEncumbrance() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -478,7 +478,7 @@ int ArmorObject::getMindEncumbrance() {
 
 void ArmorObject::setMindEncumbrance(int encumber) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -493,7 +493,7 @@ void ArmorObject::setMindEncumbrance(int encumber) {
 
 void ArmorObject::setEffectivenessSlice(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -508,7 +508,7 @@ void ArmorObject::setEffectivenessSlice(float value) {
 
 void ArmorObject::setEncumbranceSlice(float value) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -523,7 +523,7 @@ void ArmorObject::setEncumbranceSlice(float value) {
 
 byte ArmorObject::getHitLocation() {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -537,7 +537,7 @@ byte ArmorObject::getHitLocation() {
 
 void ArmorObject::setHitLocation(byte h) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -552,7 +552,7 @@ void ArmorObject::setHitLocation(byte h) {
 
 float ArmorObject::getResist(int type) {
 	ArmorObjectImplementation* _implementation = static_cast<ArmorObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -598,7 +598,7 @@ void ArmorObjectImplementation::finalize() {
 void ArmorObjectImplementation::_initializeImplementation() {
 	_setClassHelper(ArmorObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

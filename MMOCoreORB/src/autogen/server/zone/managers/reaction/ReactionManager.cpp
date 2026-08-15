@@ -34,7 +34,7 @@ ReactionManager::~ReactionManager() {
 
 int ReactionManager::getReactionLevel(const String& emote) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -49,7 +49,7 @@ int ReactionManager::getReactionLevel(const String& emote) {
 
 void ReactionManager::loadLuaConfig() {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -63,7 +63,7 @@ void ReactionManager::loadLuaConfig() {
 
 void ReactionManager::sendChatReaction(AiAgent* npc, int type, int state, bool force) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -75,14 +75,14 @@ void ReactionManager::sendChatReaction(AiAgent* npc, int type, int state, bool f
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((npc == nullptr) || npc->isLockedByCurrentThread());
+		assert((npc == NULL) || npc->isLockedByCurrentThread());
 		_implementation->sendChatReaction(npc, type, state, force);
 	}
 }
 
 EmoteReactionFine* ReactionManager::getEmoteReactionFine(CreatureObject* emoteUser, AiAgent* emoteTarget, int reactionLevel) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -92,7 +92,7 @@ EmoteReactionFine* ReactionManager::getEmoteReactionFine(CreatureObject* emoteUs
 
 ReactionRankData* ReactionManager::getReactionRankData(const String& name) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -102,7 +102,7 @@ ReactionRankData* ReactionManager::getReactionRankData(const String& name) {
 
 String ReactionManager::getReactionQuip(int num) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -119,7 +119,7 @@ String ReactionManager::getReactionQuip(int num) {
 
 void ReactionManager::emoteReaction(CreatureObject* emoteUser, AiAgent* emoteTarget, int emoteid) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -136,7 +136,7 @@ void ReactionManager::emoteReaction(CreatureObject* emoteUser, AiAgent* emoteTar
 
 void ReactionManager::doKnockdown(CreatureObject* victim, AiAgent* attacker) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -152,7 +152,7 @@ void ReactionManager::doKnockdown(CreatureObject* victim, AiAgent* attacker) {
 
 void ReactionManager::doReactionFineMailCheck(CreatureObject* player) {
 	ReactionManagerImplementation* _implementation = static_cast<ReactionManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ void ReactionManagerImplementation::finalize() {
 void ReactionManagerImplementation::_initializeImplementation() {
 	_setClassHelper(ReactionManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

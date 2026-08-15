@@ -34,7 +34,7 @@ Instrument::~Instrument() {
 
 void Instrument::initializeTransientMembers() {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void Instrument::initializeTransientMembers() {
 
 void Instrument::notifyLoadFromDatabase() {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void Instrument::notifyLoadFromDatabase() {
 
 void Instrument::loadTemplateData(SharedObjectTemplate* templateData) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -72,7 +72,7 @@ void Instrument::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void Instrument::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -82,7 +82,7 @@ void Instrument::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Creatu
 
 int Instrument::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -98,7 +98,7 @@ int Instrument::handleObjectMenuSelect(CreatureObject* player, byte selectedID) 
 
 void Instrument::spawnInAdminCell(CreatureObject* spawner) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -113,7 +113,7 @@ void Instrument::spawnInAdminCell(CreatureObject* spawner) {
 
 void Instrument::spawnNonAdmin(CreatureObject* spawner) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -128,7 +128,7 @@ void Instrument::spawnNonAdmin(CreatureObject* spawner) {
 
 bool Instrument::canDropInstrument() {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -142,7 +142,7 @@ bool Instrument::canDropInstrument() {
 
 int Instrument::getInstrumentType() {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -156,7 +156,7 @@ int Instrument::getInstrumentType() {
 
 ManagedWeakReference<CreatureObject* > Instrument::getSpawnerPlayer() {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ ManagedWeakReference<CreatureObject* > Instrument::getSpawnerPlayer() {
 
 void Instrument::setSpawnerPlayer(CreatureObject* pla) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -185,7 +185,7 @@ void Instrument::setSpawnerPlayer(CreatureObject* pla) {
 
 bool Instrument::isBeingUsed() const {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -199,7 +199,7 @@ bool Instrument::isBeingUsed() const {
 
 void Instrument::setBeingUsed(bool val) {
 	InstrumentImplementation* _implementation = static_cast<InstrumentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -245,7 +245,7 @@ void InstrumentImplementation::finalize() {
 void InstrumentImplementation::_initializeImplementation() {
 	_setClassHelper(InstrumentHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -537,7 +537,7 @@ void InstrumentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getSpawnerPlayer().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SETSPAWNERPLAYER__CREATUREOBJECT_:

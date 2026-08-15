@@ -42,7 +42,7 @@ FactoryObject::~FactoryObject() {
 
 void FactoryObject::loadTemplateData(SharedObjectTemplate* templateData) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -52,7 +52,7 @@ void FactoryObject::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void FactoryObject::notifyLoadFromDatabase() {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -66,7 +66,7 @@ void FactoryObject::notifyLoadFromDatabase() {
 
 void FactoryObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -76,7 +76,7 @@ void FactoryObject::fillAttributeList(AttributeListMessage* msg, CreatureObject*
 
 bool FactoryObject::isFactory() {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,7 +90,7 @@ bool FactoryObject::isFactory() {
 
 void FactoryObject::createChildObjects() {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -105,7 +105,7 @@ void FactoryObject::createChildObjects() {
 
 void FactoryObject::sendInsertManuSui(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -120,7 +120,7 @@ void FactoryObject::sendInsertManuSui(CreatureObject* player) {
 
 void FactoryObject::sendIngredientsNeededSui(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -135,7 +135,7 @@ void FactoryObject::sendIngredientsNeededSui(CreatureObject* player) {
 
 void FactoryObject::sendIngredientHopper(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -150,7 +150,7 @@ void FactoryObject::sendIngredientHopper(CreatureObject* player) {
 
 void FactoryObject::sendOutputHopper(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -165,7 +165,7 @@ void FactoryObject::sendOutputHopper(CreatureObject* player) {
 
 void FactoryObject::openHopper(Observable* observable, ManagedObject* arg1) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ void FactoryObject::openHopper(Observable* observable, ManagedObject* arg1) {
 
 void FactoryObject::closeHopper(Observable* observable, ManagedObject* arg1) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -197,7 +197,7 @@ void FactoryObject::closeHopper(Observable* observable, ManagedObject* arg1) {
 
 void FactoryObject::handleInsertFactorySchem(CreatureObject* player, ManufactureSchematic* schematic) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -214,7 +214,7 @@ void FactoryObject::handleInsertFactorySchem(CreatureObject* player, Manufacture
 
 void FactoryObject::handleRemoveFactorySchem(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -230,7 +230,7 @@ void FactoryObject::handleRemoveFactorySchem(CreatureObject* player) {
 
 void FactoryObject::handleOperateToggle(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -246,7 +246,7 @@ void FactoryObject::handleOperateToggle(CreatureObject* player) {
 
 void FactoryObject::createNewObject() {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -261,7 +261,7 @@ void FactoryObject::createNewObject() {
 
 String FactoryObject::getRedeedMessage() {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -308,7 +308,7 @@ void FactoryObjectImplementation::finalize() {
 void FactoryObjectImplementation::_initializeImplementation() {
 	_setClassHelper(FactoryObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -479,7 +479,7 @@ FactoryObjectImplementation::FactoryObjectImplementation() {
 	// server/zone/objects/installation/factory/FactoryObject.idl():  		Logger.setLoggingName("FactoryObject");
 	Logger::setLoggingName("FactoryObject");
 	// server/zone/objects/installation/factory/FactoryObject.idl():  		hopperObserver = null;
-	hopperObserver = nullptr;
+	hopperObserver = NULL;
 }
 
 bool FactoryObjectImplementation::isFactory() {

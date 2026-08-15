@@ -30,7 +30,7 @@ CloakEventObserver::~CloakEventObserver() {
 
 int CloakEventObserver::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	CloakEventObserverImplementation* _implementation = static_cast<CloakEventObserverImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ int CloakEventObserver::notifyObserverEvent(unsigned int eventType, Observable* 
 
 ManagedWeakReference<CreatureObject* > CloakEventObserver::getPlayer() const {
 	CloakEventObserverImplementation* _implementation = static_cast<CloakEventObserverImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -93,7 +93,7 @@ void CloakEventObserverImplementation::finalize() {
 void CloakEventObserverImplementation::_initializeImplementation() {
 	_setClassHelper(CloakEventObserverHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -250,7 +250,7 @@ void CloakEventObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 		{
 			
 			DistributedObject* _m_res = getPlayer().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	default:

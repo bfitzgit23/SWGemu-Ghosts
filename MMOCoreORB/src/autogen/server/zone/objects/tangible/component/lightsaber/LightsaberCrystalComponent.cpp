@@ -32,7 +32,7 @@ LightsaberCrystalComponent::~LightsaberCrystalComponent() {
 
 void LightsaberCrystalComponent::initializeTransientMembers() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -46,7 +46,7 @@ void LightsaberCrystalComponent::initializeTransientMembers() {
 
 void LightsaberCrystalComponent::notifyLoadFromDatabase() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,7 +60,7 @@ void LightsaberCrystalComponent::notifyLoadFromDatabase() {
 
 void LightsaberCrystalComponent::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -70,7 +70,7 @@ void LightsaberCrystalComponent::updateCraftingValues(CraftingValues* values, bo
 
 void LightsaberCrystalComponent::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -80,7 +80,7 @@ void LightsaberCrystalComponent::fillAttributeList(AttributeListMessage* msg, Cr
 
 void LightsaberCrystalComponent::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -90,7 +90,7 @@ void LightsaberCrystalComponent::fillObjectMenuResponse(ObjectMenuResponse* menu
 
 int LightsaberCrystalComponent::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -106,7 +106,7 @@ int LightsaberCrystalComponent::handleObjectMenuSelect(CreatureObject* player, b
 
 bool LightsaberCrystalComponent::hasPlayerAsParent(CreatureObject* player) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -121,7 +121,7 @@ bool LightsaberCrystalComponent::hasPlayerAsParent(CreatureObject* player) {
 
 void LightsaberCrystalComponent::tuneCrystal(CreatureObject* player) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -136,7 +136,7 @@ void LightsaberCrystalComponent::tuneCrystal(CreatureObject* player) {
 
 void LightsaberCrystalComponent::updateCrystal(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -151,7 +151,7 @@ void LightsaberCrystalComponent::updateCrystal(int value) {
 
 int LightsaberCrystalComponent::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, bool notifyClient) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ int LightsaberCrystalComponent::inflictDamage(TangibleObject* attacker, int dama
 
 void LightsaberCrystalComponent::generateCrystalStats() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -184,7 +184,7 @@ void LightsaberCrystalComponent::generateCrystalStats() {
 
 void LightsaberCrystalComponent::validateCrystalStats() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ void LightsaberCrystalComponent::validateCrystalStats() {
 
 int LightsaberCrystalComponent::getRandomizedStat(int min, int max, int itemLevel) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -215,7 +215,7 @@ int LightsaberCrystalComponent::getRandomizedStat(int min, int max, int itemLeve
 
 float LightsaberCrystalComponent::getRandomizedStat(float min, float max, int itemLevel) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -232,7 +232,7 @@ float LightsaberCrystalComponent::getRandomizedStat(float min, float max, int it
 
 int LightsaberCrystalComponent::getCrystalQuality() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -246,7 +246,7 @@ int LightsaberCrystalComponent::getCrystalQuality() {
 
 int LightsaberCrystalComponent::getDamage() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,7 +260,7 @@ int LightsaberCrystalComponent::getDamage() const {
 
 int LightsaberCrystalComponent::getMinimumDamage() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -274,7 +274,7 @@ int LightsaberCrystalComponent::getMinimumDamage() const {
 
 int LightsaberCrystalComponent::getMaximumDamage() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -288,7 +288,7 @@ int LightsaberCrystalComponent::getMaximumDamage() const {
 
 float LightsaberCrystalComponent::getForceCost() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -302,7 +302,7 @@ float LightsaberCrystalComponent::getForceCost() const {
 
 int LightsaberCrystalComponent::getSacHealth() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -316,7 +316,7 @@ int LightsaberCrystalComponent::getSacHealth() const {
 
 float LightsaberCrystalComponent::getAttackSpeed() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -330,7 +330,7 @@ float LightsaberCrystalComponent::getAttackSpeed() const {
 
 int LightsaberCrystalComponent::getSacAction() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -344,7 +344,7 @@ int LightsaberCrystalComponent::getSacAction() const {
 
 int LightsaberCrystalComponent::getSacMind() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -358,7 +358,7 @@ int LightsaberCrystalComponent::getSacMind() const {
 
 int LightsaberCrystalComponent::getWoundChance() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -372,7 +372,7 @@ int LightsaberCrystalComponent::getWoundChance() const {
 
 int LightsaberCrystalComponent::getItemLevel() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -386,7 +386,7 @@ int LightsaberCrystalComponent::getItemLevel() const {
 
 unsigned long long LightsaberCrystalComponent::getOwnerID() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -400,7 +400,7 @@ unsigned long long LightsaberCrystalComponent::getOwnerID() const {
 
 int LightsaberCrystalComponent::getQuality() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -414,7 +414,7 @@ int LightsaberCrystalComponent::getQuality() const {
 
 void LightsaberCrystalComponent::setQuality(int qual) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -429,7 +429,7 @@ void LightsaberCrystalComponent::setQuality(int qual) {
 
 int LightsaberCrystalComponent::getColor() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -443,7 +443,7 @@ int LightsaberCrystalComponent::getColor() const {
 
 void LightsaberCrystalComponent::setColor(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -458,7 +458,7 @@ void LightsaberCrystalComponent::setColor(int value) {
 
 void LightsaberCrystalComponent::setOwnerID(unsigned long long value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -473,7 +473,7 @@ void LightsaberCrystalComponent::setOwnerID(unsigned long long value) {
 
 void LightsaberCrystalComponent::setItemLevel(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -488,7 +488,7 @@ void LightsaberCrystalComponent::setItemLevel(int value) {
 
 void LightsaberCrystalComponent::setMinimumDamage(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -503,7 +503,7 @@ void LightsaberCrystalComponent::setMinimumDamage(int value) {
 
 void LightsaberCrystalComponent::setMaximumDamage(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -518,7 +518,7 @@ void LightsaberCrystalComponent::setMaximumDamage(int value) {
 
 void LightsaberCrystalComponent::setForceCost(float value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -533,7 +533,7 @@ void LightsaberCrystalComponent::setForceCost(float value) {
 
 void LightsaberCrystalComponent::setSacHealth(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -548,7 +548,7 @@ void LightsaberCrystalComponent::setSacHealth(int value) {
 
 void LightsaberCrystalComponent::setSacAction(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -563,7 +563,7 @@ void LightsaberCrystalComponent::setSacAction(int value) {
 
 void LightsaberCrystalComponent::setSacMind(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -578,7 +578,7 @@ void LightsaberCrystalComponent::setSacMind(int value) {
 
 void LightsaberCrystalComponent::setAttackSpeed(float value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -593,7 +593,7 @@ void LightsaberCrystalComponent::setAttackSpeed(float value) {
 
 void LightsaberCrystalComponent::setWoundChance(int value) {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -608,7 +608,7 @@ void LightsaberCrystalComponent::setWoundChance(int value) {
 
 bool LightsaberCrystalComponent::isLightsaberCrystalObject() {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -653,7 +653,7 @@ void LightsaberCrystalComponentImplementation::finalize() {
 void LightsaberCrystalComponentImplementation::_initializeImplementation() {
 	_setClassHelper(LightsaberCrystalComponentHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

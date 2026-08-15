@@ -40,7 +40,7 @@ FishingManager::~FishingManager() {
 
 void FishingManager::initializeBaitStatus() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -54,7 +54,7 @@ void FishingManager::initializeBaitStatus() {
 
 void FishingManager::initializeProperty() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -68,7 +68,7 @@ void FishingManager::initializeProperty() {
 
 void FishingManager::initializeAction() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -82,7 +82,7 @@ void FishingManager::initializeAction() {
 
 void FishingManager::initializeState() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -96,7 +96,7 @@ void FishingManager::initializeState() {
 
 void FishingManager::initializeFishType() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -110,7 +110,7 @@ void FishingManager::initializeFishType() {
 
 void FishingManager::initializeFishLength() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -124,7 +124,7 @@ void FishingManager::initializeFishLength() {
 
 void FishingManager::initializeLoot() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -138,7 +138,7 @@ void FishingManager::initializeLoot() {
 
 void FishingManager::initializeColor() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -152,7 +152,7 @@ void FishingManager::initializeColor() {
 
 int FishingManager::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ int FishingManager::notifyObserverEvent(unsigned int eventType, Observable* obse
 
 void FishingManager::checkFishingOnPositionUpdate(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -185,7 +185,7 @@ void FishingManager::checkFishingOnPositionUpdate(CreatureObject* player) {
 
 int FishingManager::notifyCloseContainer(CreatureObject* player, SceneObject* container) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -201,7 +201,7 @@ int FishingManager::notifyCloseContainer(CreatureObject* player, SceneObject* co
 
 int FishingManager::checkLocation(CreatureObject* player, int quality, float& x, float& y, float& z) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -211,7 +211,7 @@ int FishingManager::checkLocation(CreatureObject* player, int quality, float& x,
 
 int FishingManager::startFishing(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -226,7 +226,7 @@ int FishingManager::startFishing(CreatureObject* player) {
 
 void FishingManager::stopFishing(CreatureObject* player, unsigned int boxID, bool rem) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -243,7 +243,7 @@ void FishingManager::stopFishing(CreatureObject* player, unsigned int boxID, boo
 
 void FishingManager::fishingStep(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -258,7 +258,7 @@ void FishingManager::fishingStep(CreatureObject* player) {
 
 void FishingManager::success(CreatureObject* player, int fish, SceneObject* marker, unsigned int boxID) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -276,7 +276,7 @@ void FishingManager::success(CreatureObject* player, int fish, SceneObject* mark
 
 String FishingManager::getTime() {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -292,7 +292,7 @@ String FishingManager::getTime() {
 
 void FishingManager::sendReward(CreatureObject* player, SceneObject* marker, SceneObject* loot) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -309,7 +309,7 @@ void FishingManager::sendReward(CreatureObject* player, SceneObject* marker, Sce
 
 unsigned int FishingManager::createWindow(CreatureObject* player, unsigned int boxID) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -325,7 +325,7 @@ unsigned int FishingManager::createWindow(CreatureObject* player, unsigned int b
 
 void FishingManager::closeMenu(CreatureObject* player, unsigned int boxID) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -341,7 +341,7 @@ void FishingManager::closeMenu(CreatureObject* player, unsigned int boxID) {
 
 int FishingManager::vegetation(SceneObject* marker) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -356,7 +356,7 @@ int FishingManager::vegetation(SceneObject* marker) {
 
 int FishingManager::density(SceneObject* marker) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -371,7 +371,7 @@ int FishingManager::density(SceneObject* marker) {
 
 int FishingManager::getFish(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -386,7 +386,7 @@ int FishingManager::getFish(CreatureObject* player) {
 
 int FishingManager::getNextAction(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -401,7 +401,7 @@ int FishingManager::getNextAction(CreatureObject* player) {
 
 void FishingManager::setNextAction(CreatureObject* player, int next) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -417,7 +417,7 @@ void FishingManager::setNextAction(CreatureObject* player, int next) {
 
 FishingPoleObject* FishingManager::getPole(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -432,7 +432,7 @@ FishingPoleObject* FishingManager::getPole(CreatureObject* player) {
 
 FishingBaitObject* FishingManager::getBait(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -447,7 +447,7 @@ FishingBaitObject* FishingManager::getBait(CreatureObject* player) {
 
 unsigned int FishingManager::getFishBoxID(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -462,7 +462,7 @@ unsigned int FishingManager::getFishBoxID(CreatureObject* player) {
 
 void FishingManager::setFishBoxID(CreatureObject* player, unsigned int boxID) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -478,7 +478,7 @@ void FishingManager::setFishBoxID(CreatureObject* player, unsigned int boxID) {
 
 int FishingManager::getFishingState(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -493,7 +493,7 @@ int FishingManager::getFishingState(CreatureObject* player) {
 
 void FishingManager::setFishingState(CreatureObject* player, int state) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -509,7 +509,7 @@ void FishingManager::setFishingState(CreatureObject* player, int state) {
 
 SceneObject* FishingManager::getFishMarker(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -524,7 +524,7 @@ SceneObject* FishingManager::getFishMarker(CreatureObject* player) {
 
 void FishingManager::setFishMarker(CreatureObject* player, SceneObject* marker) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -540,7 +540,7 @@ void FishingManager::setFishMarker(CreatureObject* player, SceneObject* marker) 
 
 void FishingManager::freeBait(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -555,7 +555,7 @@ void FishingManager::freeBait(CreatureObject* player) {
 
 void FishingManager::fishingProceed(CreatureObject* player, int nextAction, SceneObject* marker, int fish, unsigned int boxID, int newstate, bool notifyClient, String& moodString) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -577,7 +577,7 @@ void FishingManager::fishingProceed(CreatureObject* player, int nextAction, Scen
 
 void FishingManager::mishapEvent(const String& text, CreatureObject* player, unsigned int boxID, bool losebait, String& moodString) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -596,7 +596,7 @@ void FishingManager::mishapEvent(const String& text, CreatureObject* player, uns
 
 bool FishingManager::loseBait(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -611,7 +611,7 @@ bool FishingManager::loseBait(CreatureObject* player) {
 
 void FishingManager::animate(CreatureObject* player, int nextAction) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -627,7 +627,7 @@ void FishingManager::animate(CreatureObject* player, int nextAction) {
 
 SceneObject* FishingManager::createMarker(float x, float y, float z, Zone* zone) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -645,7 +645,7 @@ SceneObject* FishingManager::createMarker(float x, float y, float z, Zone* zone)
 
 void FishingManager::createSplash(float x, float y, float z, Zone* zone, CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -664,7 +664,7 @@ void FishingManager::createSplash(float x, float y, float z, Zone* zone, Creatur
 
 bool FishingManager::checkUpdateMarker(CreatureObject* player, float& x, float& y, float& z) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -674,7 +674,7 @@ bool FishingManager::checkUpdateMarker(CreatureObject* player, float& x, float& 
 
 bool FishingManager::isPlaying(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -689,7 +689,7 @@ bool FishingManager::isPlaying(CreatureObject* player) {
 
 SceneObject* FishingManager::updateMarker(CreatureObject* player, SceneObject* marker, bool notifyPlayer) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -706,7 +706,7 @@ SceneObject* FishingManager::updateMarker(CreatureObject* player, SceneObject* m
 
 void FishingManager::removeMarker(CreatureObject* player, SceneObject* container) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -722,7 +722,7 @@ void FishingManager::removeMarker(CreatureObject* player, SceneObject* container
 
 void FishingManager::removeSplash(SceneObject* splash) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -737,7 +737,7 @@ void FishingManager::removeSplash(SceneObject* splash) {
 
 void FishingManager::createFishingSplashEvent(CreatureObject* player, SceneObject* splash) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -753,7 +753,7 @@ void FishingManager::createFishingSplashEvent(CreatureObject* player, SceneObjec
 
 void FishingManager::createFishingSession(CreatureObject* player, FishingEvent* event, SceneObject* marker, int nextAction, int fish, unsigned int boxID, int fishingState, String& mood) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -763,7 +763,7 @@ void FishingManager::createFishingSession(CreatureObject* player, FishingEvent* 
 
 FishingEvent* FishingManager::createFishingEvent(CreatureObject* player, int state) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -773,7 +773,7 @@ FishingEvent* FishingManager::createFishingEvent(CreatureObject* player, int sta
 
 void FishingManager::stopFishingEvent(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -788,7 +788,7 @@ void FishingManager::stopFishingEvent(CreatureObject* player) {
 
 FishingEvent* FishingManager::getFishingEvent(CreatureObject* player) {
 	FishingManagerImplementation* _implementation = static_cast<FishingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -829,7 +829,7 @@ void FishingManagerImplementation::finalize() {
 void FishingManagerImplementation::_initializeImplementation() {
 	_setClassHelper(FishingManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1480,7 +1480,7 @@ void FishingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = getPole(player);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETBAIT__CREATUREOBJECT_:
@@ -1488,7 +1488,7 @@ void FishingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = getBait(player);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETFISHBOXID__CREATUREOBJECT_:
@@ -1530,7 +1530,7 @@ void FishingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = getFishMarker(player);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SETFISHMARKER__CREATUREOBJECT_SCENEOBJECT_:
@@ -1602,7 +1602,7 @@ void FishingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			Zone* zone = static_cast<Zone*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = createMarker(x, y, z, zone);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_CREATESPLASH__FLOAT_FLOAT_FLOAT_ZONE_CREATUREOBJECT_:
@@ -1632,7 +1632,7 @@ void FishingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			bool notifyPlayer = inv->getBooleanParameter();
 			
 			DistributedObject* _m_res = updateMarker(player, marker, notifyPlayer);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_REMOVEMARKER__CREATUREOBJECT_SCENEOBJECT_:

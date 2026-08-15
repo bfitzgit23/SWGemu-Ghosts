@@ -32,7 +32,7 @@ DotPack::~DotPack() {
 
 void DotPack::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -42,7 +42,7 @@ void DotPack::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 
 void DotPack::loadTemplateData(SharedObjectTemplate* templateData) {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -52,7 +52,7 @@ void DotPack::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void DotPack::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -62,7 +62,7 @@ void DotPack::fillAttributeList(AttributeListMessage* msg, CreatureObject* objec
 
 int DotPack::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -78,7 +78,7 @@ int DotPack::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 
 void DotPack::notifyLoadFromDatabase() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -92,7 +92,7 @@ void DotPack::notifyLoadFromDatabase() {
 
 int DotPack::calculatePower(CreatureObject* creature) {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ int DotPack::calculatePower(CreatureObject* creature) {
 
 bool DotPack::isPoisonDeliveryUnit() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -121,7 +121,7 @@ bool DotPack::isPoisonDeliveryUnit() {
 
 bool DotPack::isDiseaseDeliveryUnit() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -135,7 +135,7 @@ bool DotPack::isDiseaseDeliveryUnit() {
 
 float DotPack::getEffectiveness() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -149,7 +149,7 @@ float DotPack::getEffectiveness() {
 
 float DotPack::getRange() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -163,7 +163,7 @@ float DotPack::getRange() {
 
 float DotPack::getArea() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -177,7 +177,7 @@ float DotPack::getArea() {
 
 float DotPack::getRangeMod() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -191,7 +191,7 @@ float DotPack::getRangeMod() {
 
 float DotPack::getPotency() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -205,7 +205,7 @@ float DotPack::getPotency() {
 
 unsigned int DotPack::getDuration() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -219,7 +219,7 @@ unsigned int DotPack::getDuration() {
 
 bool DotPack::isArea() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -233,7 +233,7 @@ bool DotPack::isArea() {
 
 unsigned int DotPack::getPool() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -247,7 +247,7 @@ unsigned int DotPack::getPool() {
 
 unsigned int DotPack::getDotType() {
 	DotPackImplementation* _implementation = static_cast<DotPackImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -292,7 +292,7 @@ void DotPackImplementation::finalize() {
 void DotPackImplementation::_initializeImplementation() {
 	_setClassHelper(DotPackHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

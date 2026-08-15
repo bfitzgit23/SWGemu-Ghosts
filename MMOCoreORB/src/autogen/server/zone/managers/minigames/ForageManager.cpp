@@ -30,7 +30,7 @@ ForageManager::~ForageManager() {
 
 void ForageManager::deleteForageAreaCollection(String& playerName) {
 	ForageManagerImplementation* _implementation = static_cast<ForageManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -45,7 +45,7 @@ void ForageManager::deleteForageAreaCollection(String& playerName) {
 
 void ForageManager::startForaging(CreatureObject* player, int forageType) {
 	ForageManagerImplementation* _implementation = static_cast<ForageManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -61,7 +61,7 @@ void ForageManager::startForaging(CreatureObject* player, int forageType) {
 
 void ForageManager::finishForaging(CreatureObject* player, int forageType, float forageX, float forageY, const String& planet) {
 	ForageManagerImplementation* _implementation = static_cast<ForageManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -80,7 +80,7 @@ void ForageManager::finishForaging(CreatureObject* player, int forageType, float
 
 bool ForageManager::forageGiveItems(CreatureObject* player, int forageType, float forageX, float forageY, const String& planet) {
 	ForageManagerImplementation* _implementation = static_cast<ForageManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -99,7 +99,7 @@ bool ForageManager::forageGiveItems(CreatureObject* player, int forageType, floa
 
 bool ForageManager::forageGiveResource(CreatureObject* player, float forageX, float forageY, const String& planet, String& resType) {
 	ForageManagerImplementation* _implementation = static_cast<ForageManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -149,7 +149,7 @@ void ForageManagerImplementation::finalize() {
 void ForageManagerImplementation::_initializeImplementation() {
 	_setClassHelper(ForageManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -268,7 +268,7 @@ ForageManagerImplementation::ForageManagerImplementation() {
 	// server/zone/managers/minigames/ForageManager.idl():  		Logger.setLogging(true);
 	Logger::setLogging(true);
 	// server/zone/managers/minigames/ForageManager.idl():  		forageAreas.setNullValue(null);
-	(&forageAreas)->setNullValue(nullptr);
+	(&forageAreas)->setNullValue(NULL);
 }
 
 void ForageManagerImplementation::deleteForageAreaCollection(String& playerName) {

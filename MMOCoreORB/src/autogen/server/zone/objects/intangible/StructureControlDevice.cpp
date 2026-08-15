@@ -36,7 +36,7 @@ StructureControlDevice::~StructureControlDevice() {
 
 void StructureControlDevice::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -46,7 +46,7 @@ void StructureControlDevice::fillObjectMenuResponse(ObjectMenuResponse* menuResp
 
 int StructureControlDevice::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ int StructureControlDevice::handleObjectMenuSelect(CreatureObject* player, byte 
 
 void StructureControlDevice::placeStructureMode(CreatureObject* player, StructureObject* structure) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -72,7 +72,7 @@ void StructureControlDevice::placeStructureMode(CreatureObject* player, Structur
 
 int StructureControlDevice::placeStructure(CreatureObject* creature, float x, float y, int angle) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,7 +90,7 @@ int StructureControlDevice::placeStructure(CreatureObject* creature, float x, fl
 
 int StructureControlDevice::notifyStructurePlaced(CreatureObject* creature, StructureObject* structure) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -106,7 +106,7 @@ int StructureControlDevice::notifyStructurePlaced(CreatureObject* creature, Stru
 
 void StructureControlDevice::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -116,7 +116,7 @@ void StructureControlDevice::fillAttributeList(AttributeListMessage* msg, Creatu
 
 bool StructureControlDevice::isStructureControlDevice() {
 	StructureControlDeviceImplementation* _implementation = static_cast<StructureControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -161,7 +161,7 @@ void StructureControlDeviceImplementation::finalize() {
 void StructureControlDeviceImplementation::_initializeImplementation() {
 	_setClassHelper(StructureControlDeviceHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

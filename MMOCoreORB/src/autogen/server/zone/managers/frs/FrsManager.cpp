@@ -46,7 +46,7 @@ FrsManager::~FrsManager() {
 
 void FrsManager::initialize() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,7 +60,7 @@ void FrsManager::initialize() {
 
 void FrsManager::loadLuaConfig() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -74,7 +74,7 @@ void FrsManager::loadLuaConfig() {
 
 void FrsManager::loadFrsData() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -88,7 +88,7 @@ void FrsManager::loadFrsData() {
 
 void FrsManager::setupEnclaves() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -102,7 +102,7 @@ void FrsManager::setupEnclaves() {
 
 void FrsManager::setupEnclaveRooms(BuildingObject* enclaveBuilding, const String& groupName) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -118,7 +118,7 @@ void FrsManager::setupEnclaveRooms(BuildingObject* enclaveBuilding, const String
 
 Vector<unsigned long long> FrsManager::getFullPlayerList() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -128,7 +128,7 @@ Vector<unsigned long long> FrsManager::getFullPlayerList() {
 
 Vector<unsigned long long> FrsManager::getPlayerListByCouncil(int councilType) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -138,7 +138,7 @@ Vector<unsigned long long> FrsManager::getPlayerListByCouncil(int councilType) {
 
 void FrsManager::setPlayerRank(CreatureObject* player, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,14 +148,14 @@ void FrsManager::setPlayerRank(CreatureObject* player, int rank) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->setPlayerRank(player, rank);
 	}
 }
 
 void FrsManager::playerLoggedIn(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ void FrsManager::playerLoggedIn(CreatureObject* player) {
 
 void FrsManager::validatePlayerData(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -179,14 +179,14 @@ void FrsManager::validatePlayerData(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->validatePlayerData(player);
 	}
 }
 
 void FrsManager::removeFromFrs(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -195,14 +195,14 @@ void FrsManager::removeFromFrs(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->removeFromFrs(player);
 	}
 }
 
 void FrsManager::handleSkillRevoked(CreatureObject* player, const String& skillName) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,14 +212,14 @@ void FrsManager::handleSkillRevoked(CreatureObject* player, const String& skillN
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleSkillRevoked(player, skillName);
 	}
 }
 
 int FrsManager::getSkillRank(const String& skillName, int councilType) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -235,7 +235,7 @@ int FrsManager::getSkillRank(const String& skillName, int councilType) {
 
 void FrsManager::updatePlayerSkills(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -244,14 +244,14 @@ void FrsManager::updatePlayerSkills(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->updatePlayerSkills(player);
 	}
 }
 
 void FrsManager::demotePlayer(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,14 +260,14 @@ void FrsManager::demotePlayer(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->demotePlayer(player);
 	}
 }
 
 void FrsManager::promotePlayer(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -276,14 +276,14 @@ void FrsManager::promotePlayer(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->promotePlayer(player);
 	}
 }
 
 void FrsManager::adjustFrsExperience(CreatureObject* player, int amount, bool sendSystemMessage) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -294,14 +294,14 @@ void FrsManager::adjustFrsExperience(CreatureObject* player, int amount, bool se
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->adjustFrsExperience(player, amount, sendSystemMessage);
 	}
 }
 
 void FrsManager::deductMaintenanceXp(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -310,14 +310,14 @@ void FrsManager::deductMaintenanceXp(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->deductMaintenanceXp(player);
 	}
 }
 
 void FrsManager::addExperienceDebt(CreatureObject* player, int amount) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -327,14 +327,14 @@ void FrsManager::addExperienceDebt(CreatureObject* player, int amount) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->addExperienceDebt(player, amount);
 	}
 }
 
 void FrsManager::verifyRoomAccess(CreatureObject* player, int playerRank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -350,7 +350,7 @@ void FrsManager::verifyRoomAccess(CreatureObject* player, int playerRank) {
 
 bool FrsManager::isValidFrsBattle(CreatureObject* attacker, CreatureObject* victim) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -360,15 +360,15 @@ bool FrsManager::isValidFrsBattle(CreatureObject* attacker, CreatureObject* vict
 
 		return method.executeWithBooleanReturn();
 	} else {
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
-		assert((victim == nullptr) || victim->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
+		assert((victim == NULL) || victim->isLockedByCurrentThread());
 		return _implementation->isValidFrsBattle(attacker, victim);
 	}
 }
 
 int FrsManager::calculatePvpExperienceChange(CreatureObject* attacker, CreatureObject* victim, float contribution, bool isVictim) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -380,15 +380,15 @@ int FrsManager::calculatePvpExperienceChange(CreatureObject* attacker, CreatureO
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
-		assert((victim == nullptr) || victim->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
+		assert((victim == NULL) || victim->isLockedByCurrentThread());
 		return _implementation->calculatePvpExperienceChange(attacker, victim, contribution, isVictim);
 	}
 }
 
 int FrsManager::getBaseExperienceGain(PlayerObject* playerGhost, PlayerObject* opponentGhost, bool playerWon) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -405,7 +405,7 @@ int FrsManager::getBaseExperienceGain(PlayerObject* playerGhost, PlayerObject* o
 
 int FrsManager::getAvailableRankSlots(FrsRank* rankInfo) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -414,14 +414,14 @@ int FrsManager::getAvailableRankSlots(FrsRank* rankInfo) {
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		assert((rankInfo == nullptr) || rankInfo->isLockedByCurrentThread());
+		assert((rankInfo == NULL) || rankInfo->isLockedByCurrentThread());
 		return _implementation->getAvailableRankSlots(rankInfo);
 	}
 }
 
 void FrsManager::sendVoteSUI(CreatureObject* player, SceneObject* terminal, short suiType, short enclaveType) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -433,14 +433,14 @@ void FrsManager::sendVoteSUI(CreatureObject* player, SceneObject* terminal, shor
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->sendVoteSUI(player, terminal, suiType, enclaveType);
 	}
 }
 
 void FrsManager::handleVoteStatusSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -452,14 +452,14 @@ void FrsManager::handleVoteStatusSui(CreatureObject* player, SceneObject* termin
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleVoteStatusSui(player, terminal, enclaveType, rank);
 	}
 }
 
 void FrsManager::sendVoteRecordSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -471,14 +471,14 @@ void FrsManager::sendVoteRecordSui(CreatureObject* player, SceneObject* terminal
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->sendVoteRecordSui(player, terminal, enclaveType, rank);
 	}
 }
 
 void FrsManager::handleVoteRecordSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank, unsigned long long petitionerID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -491,14 +491,14 @@ void FrsManager::handleVoteRecordSui(CreatureObject* player, SceneObject* termin
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleVoteRecordSui(player, terminal, enclaveType, rank, petitionerID);
 	}
 }
 
 void FrsManager::handleAcceptPromotionSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -510,14 +510,14 @@ void FrsManager::handleAcceptPromotionSui(CreatureObject* player, SceneObject* t
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleAcceptPromotionSui(player, terminal, enclaveType, rank);
 	}
 }
 
 void FrsManager::handleVotePetitionSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -529,14 +529,14 @@ void FrsManager::handleVotePetitionSui(CreatureObject* player, SceneObject* term
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleVotePetitionSui(player, terminal, enclaveType, rank);
 	}
 }
 
 void FrsManager::sendVoteDemoteSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -548,14 +548,14 @@ void FrsManager::sendVoteDemoteSui(CreatureObject* player, SceneObject* terminal
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->sendVoteDemoteSui(player, terminal, enclaveType, rank);
 	}
 }
 
 void FrsManager::handleVoteDemoteSui(CreatureObject* player, SceneObject* terminal, short enclaveType, int rank, unsigned long long playerID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -568,14 +568,14 @@ void FrsManager::handleVoteDemoteSui(CreatureObject* player, SceneObject* termin
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleVoteDemoteSui(player, terminal, enclaveType, rank, playerID);
 	}
 }
 
 void FrsManager::sendChallengeVoteSUI(CreatureObject* player, SceneObject* terminal, short suiType, short enclaveType) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -587,14 +587,14 @@ void FrsManager::sendChallengeVoteSUI(CreatureObject* player, SceneObject* termi
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->sendChallengeVoteSUI(player, terminal, suiType, enclaveType);
 	}
 }
 
 void FrsManager::handleChallengeVoteIssueSui(CreatureObject* player, SceneObject* terminal, unsigned long long challengedID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -605,14 +605,14 @@ void FrsManager::handleChallengeVoteIssueSui(CreatureObject* player, SceneObject
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleChallengeVoteIssueSui(player, terminal, challengedID);
 	}
 }
 
 void FrsManager::handleChallengeVoteStatusSui(CreatureObject* player, SceneObject* terminal, unsigned long long challengedID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -623,14 +623,14 @@ void FrsManager::handleChallengeVoteStatusSui(CreatureObject* player, SceneObjec
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleChallengeVoteStatusSui(player, terminal, challengedID);
 	}
 }
 
 void FrsManager::handleChallengeVoteRecordSui(CreatureObject* player, SceneObject* terminal, unsigned long long challengedID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -641,14 +641,14 @@ void FrsManager::handleChallengeVoteRecordSui(CreatureObject* player, SceneObjec
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleChallengeVoteRecordSui(player, terminal, challengedID);
 	}
 }
 
 void FrsManager::handleChallengeVoteRecordConfirmSui(CreatureObject* player, SceneObject* terminal, int index, unsigned long long challengedID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -660,14 +660,14 @@ void FrsManager::handleChallengeVoteRecordConfirmSui(CreatureObject* player, Sce
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleChallengeVoteRecordConfirmSui(player, terminal, index, challengedID);
 	}
 }
 
 int FrsManager::getVoteWeight(int playerRank, int voteRank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -683,7 +683,7 @@ int FrsManager::getVoteWeight(int playerRank, int voteRank) {
 
 int FrsManager::getChallengeVoteWeight(int playerRank, int challengedRank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -699,7 +699,7 @@ int FrsManager::getChallengeVoteWeight(int playerRank, int challengedRank) {
 
 int FrsManager::getRankTier(int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -714,7 +714,7 @@ int FrsManager::getRankTier(int rank) {
 
 bool FrsManager::hasPlayerVoted(CreatureObject* player, FrsRank* rankData) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -724,15 +724,15 @@ bool FrsManager::hasPlayerVoted(CreatureObject* player, FrsRank* rankData) {
 
 		return method.executeWithBooleanReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
-		assert((rankData == nullptr) || rankData->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
+		assert((rankData == NULL) || rankData->isLockedByCurrentThread());
 		return _implementation->hasPlayerVoted(player, rankData);
 	}
 }
 
 void FrsManager::runVotingUpdate(FrsRank* rankInfo) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -741,14 +741,14 @@ void FrsManager::runVotingUpdate(FrsRank* rankInfo) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((rankInfo == nullptr) || rankInfo->isLockedByCurrentThread());
+		assert((rankInfo == NULL) || rankInfo->isLockedByCurrentThread());
 		_implementation->runVotingUpdate(rankInfo);
 	}
 }
 
 void FrsManager::runChallengeVoteUpdate() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -762,7 +762,7 @@ void FrsManager::runChallengeVoteUpdate() {
 
 void FrsManager::checkForMissedVotes(FrsRank* rankInfo) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -771,14 +771,14 @@ void FrsManager::checkForMissedVotes(FrsRank* rankInfo) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((rankInfo == nullptr) || rankInfo->isLockedByCurrentThread());
+		assert((rankInfo == NULL) || rankInfo->isLockedByCurrentThread());
 		_implementation->checkForMissedVotes(rankInfo);
 	}
 }
 
 short FrsManager::getEnclaveType(BuildingObject* enclave) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -793,7 +793,7 @@ short FrsManager::getEnclaveType(BuildingObject* enclave) {
 
 bool FrsManager::isEligibleForPromotion(CreatureObject* player, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -803,25 +803,25 @@ bool FrsManager::isEligibleForPromotion(CreatureObject* player, int rank) {
 
 		return method.executeWithBooleanReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->isEligibleForPromotion(player, rank);
 	}
 }
 
 void FrsManager::sendMailToVoters(FrsRank* rankData, const String& sub, StringIdChatParameter& body) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		assert((rankData == nullptr) || rankData->isLockedByCurrentThread());
+		assert((rankData == NULL) || rankData->isLockedByCurrentThread());
 		_implementation->sendMailToVoters(rankData, sub, body);
 	}
 }
 
 void FrsManager::sendChallengeVoteMail(int challengedRank, const String& sub, StringIdChatParameter& body) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -831,7 +831,7 @@ void FrsManager::sendChallengeVoteMail(int challengedRank, const String& sub, St
 
 void FrsManager::sendMailToList(Vector<unsigned long long>* playerList, const String& sub, StringIdChatParameter& body) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -841,18 +841,18 @@ void FrsManager::sendMailToList(Vector<unsigned long long>* playerList, const St
 
 Vector<unsigned long long>* FrsManager::getTopVotes(FrsRank* rankInfo, int numWinners) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		assert((rankInfo == nullptr) || rankInfo->isLockedByCurrentThread());
+		assert((rankInfo == NULL) || rankInfo->isLockedByCurrentThread());
 		return _implementation->getTopVotes(rankInfo, numWinners);
 	}
 }
 
 String FrsManager::getTimeString(unsigned long long timestamp) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -869,7 +869,7 @@ String FrsManager::getTimeString(unsigned long long timestamp) {
 
 void FrsManager::deductDebtExperience(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -878,14 +878,14 @@ void FrsManager::deductDebtExperience(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->deductDebtExperience(player);
 	}
 }
 
 int FrsManager::getRoomRequirement(unsigned long long cellID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -900,7 +900,7 @@ int FrsManager::getRoomRequirement(unsigned long long cellID) {
 
 int FrsManager::getMaintenanceInterval() const {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -914,7 +914,7 @@ int FrsManager::getMaintenanceInterval() const {
 
 ZoneServer* FrsManager::getZoneServer() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -928,7 +928,7 @@ ZoneServer* FrsManager::getZoneServer() {
 
 FrsRank* FrsManager::getFrsRank(short councilType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -938,7 +938,7 @@ FrsRank* FrsManager::getFrsRank(short councilType, int rank) {
 
 bool FrsManager::isFrsEnabled() const {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -952,7 +952,7 @@ bool FrsManager::isFrsEnabled() const {
 
 unsigned long long FrsManager::getVotingInterval(short status) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -967,7 +967,7 @@ unsigned long long FrsManager::getVotingInterval(short status) {
 
 void FrsManager::updateLastMaintenance() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -982,7 +982,7 @@ void FrsManager::updateLastMaintenance() {
 
 void FrsManager::updateLastVoteStatus() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -997,7 +997,7 @@ void FrsManager::updateLastVoteStatus() {
 
 int FrsManager::getArenaStatus() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1011,7 +1011,7 @@ int FrsManager::getArenaStatus() {
 
 bool FrsManager::isFightingInArena(unsigned long long playerID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1026,7 +1026,7 @@ bool FrsManager::isFightingInArena(unsigned long long playerID) {
 
 void FrsManager::performArenaMaintenance() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1040,7 +1040,7 @@ void FrsManager::performArenaMaintenance() {
 
 void FrsManager::updateArenaScores() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1054,7 +1054,7 @@ void FrsManager::updateArenaScores() {
 
 void FrsManager::forcePhaseChange(CreatureObject* player, short enclaveType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1071,7 +1071,7 @@ void FrsManager::forcePhaseChange(CreatureObject* player, short enclaveType, int
 
 void FrsManager::recoverJediItems(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1080,14 +1080,14 @@ void FrsManager::recoverJediItems(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->recoverJediItems(player);
 	}
 }
 
 bool FrsManager::isPlayerInEnclave(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1102,7 +1102,7 @@ bool FrsManager::isPlayerInEnclave(CreatureObject* player) {
 
 bool FrsManager::isPlayerInDarkArena(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1117,7 +1117,7 @@ bool FrsManager::isPlayerInDarkArena(CreatureObject* player) {
 
 void FrsManager::teleportPlayerToDarkArena(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1132,7 +1132,7 @@ void FrsManager::teleportPlayerToDarkArena(CreatureObject* player) {
 
 void FrsManager::sendRankPlayerList(CreatureObject* player, int councilType, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1149,7 +1149,7 @@ void FrsManager::sendRankPlayerList(CreatureObject* player, int councilType, int
 
 int FrsManager::getTotalOpenArenaChallenges(int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1164,7 +1164,7 @@ int FrsManager::getTotalOpenArenaChallenges(int rank) {
 
 bool FrsManager::playerAbleToChallenge(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1179,7 +1179,7 @@ bool FrsManager::playerAbleToChallenge(CreatureObject* player) {
 
 bool FrsManager::hasPlayerAcceptedArenaChallenge(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1194,7 +1194,7 @@ bool FrsManager::hasPlayerAcceptedArenaChallenge(CreatureObject* player) {
 
 bool FrsManager::handleDarkCouncilIncap(CreatureObject* killer, CreatureObject* victim) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1210,7 +1210,7 @@ bool FrsManager::handleDarkCouncilIncap(CreatureObject* killer, CreatureObject* 
 
 bool FrsManager::handleDarkCouncilDeath(CreatureObject* killer, CreatureObject* victim, bool forfeit) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1227,7 +1227,7 @@ bool FrsManager::handleDarkCouncilDeath(CreatureObject* killer, CreatureObject* 
 
 void FrsManager::handleLeftArena(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1242,7 +1242,7 @@ void FrsManager::handleLeftArena(CreatureObject* player) {
 
 void FrsManager::sendArenaChallengeSUI(CreatureObject* player, SceneObject* terminal, short suiType, short enclaveType) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1260,7 +1260,7 @@ void FrsManager::sendArenaChallengeSUI(CreatureObject* player, SceneObject* term
 
 void FrsManager::handleArenaChallengeViewSui(CreatureObject* player, SceneObject* terminal, SuiBox* suiBox, int index) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1272,14 +1272,14 @@ void FrsManager::handleArenaChallengeViewSui(CreatureObject* player, SceneObject
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleArenaChallengeViewSui(player, terminal, suiBox, index);
 	}
 }
 
 void FrsManager::handleArenaChallengeIssueSui(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1288,14 +1288,14 @@ void FrsManager::handleArenaChallengeIssueSui(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleArenaChallengeIssueSui(player);
 	}
 }
 
 void FrsManager::issueArenaChallenge(CreatureObject* player, int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1311,7 +1311,7 @@ void FrsManager::issueArenaChallenge(CreatureObject* player, int rank) {
 
 void FrsManager::acceptArenaChallenge(CreatureObject* player, unsigned long long challengerID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1327,7 +1327,7 @@ void FrsManager::acceptArenaChallenge(CreatureObject* player, unsigned long long
 
 bool FrsManager::rankHasOpenChallenges(int rank) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1342,7 +1342,7 @@ bool FrsManager::rankHasOpenChallenges(int rank) {
 
 bool FrsManager::isArenaOpen() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1356,7 +1356,7 @@ bool FrsManager::isArenaOpen() {
 
 void FrsManager::wipeArenaChallenges() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1370,7 +1370,7 @@ void FrsManager::wipeArenaChallenges() {
 
 void FrsManager::forceArenaOpen(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1385,7 +1385,7 @@ void FrsManager::forceArenaOpen(CreatureObject* player) {
 
 bool FrsManager::isPlayerFightingInArena(unsigned long long playerID) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1400,7 +1400,7 @@ bool FrsManager::isPlayerFightingInArena(unsigned long long playerID) {
 
 bool FrsManager::canPlayerAcceptArenaChallenge(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1409,14 +1409,14 @@ bool FrsManager::canPlayerAcceptArenaChallenge(CreatureObject* player) {
 
 		return method.executeWithBooleanReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->canPlayerAcceptArenaChallenge(player);
 	}
 }
 
 bool FrsManager::canPlayerIssueArenaChallenge(CreatureObject* player) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1425,14 +1425,14 @@ bool FrsManager::canPlayerIssueArenaChallenge(CreatureObject* player) {
 
 		return method.executeWithBooleanReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->canPlayerIssueArenaChallenge(player);
 	}
 }
 
 void FrsManager::setupSuddenDeath(FrsRank* rankData, bool endPhase) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1448,7 +1448,7 @@ void FrsManager::setupSuddenDeath(FrsRank* rankData, bool endPhase) {
 
 void FrsManager::modifySuddenDeathFlags(CreatureObject* player, FrsRank* rankData, bool doRemove) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1459,14 +1459,14 @@ void FrsManager::modifySuddenDeathFlags(CreatureObject* player, FrsRank* rankDat
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((rankData == nullptr) || rankData->isLockedByCurrentThread());
+		assert((rankData == NULL) || rankData->isLockedByCurrentThread());
 		_implementation->modifySuddenDeathFlags(player, rankData, doRemove);
 	}
 }
 
 void FrsManager::handleSuddenDeathLoss(CreatureObject* player, ThreatMap* threatMap) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1476,7 +1476,7 @@ void FrsManager::handleSuddenDeathLoss(CreatureObject* player, ThreatMap* threat
 
 void FrsManager::cancelTasks() {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1523,7 +1523,7 @@ void FrsManagerImplementation::finalize() {
 void FrsManagerImplementation::_initializeImplementation() {
 	_setClassHelper(FrsManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1657,13 +1657,13 @@ FrsManagerImplementation::FrsManagerImplementation(ZoneServer* zserv) {
 	// server/zone/managers/frs/FrsManager.idl():  		zoneServer = zserv;
 	zoneServer = zserv;
 	// server/zone/managers/frs/FrsManager.idl():  		rankMaintenanceTask = null;
-	rankMaintenanceTask = nullptr;
+	rankMaintenanceTask = NULL;
 	// server/zone/managers/frs/FrsManager.idl():  		frsEnabled = false;
 	frsEnabled = false;
 	// server/zone/managers/frs/FrsManager.idl():  		lightEnclave = null;
-	lightEnclave = nullptr;
+	lightEnclave = NULL;
 	// server/zone/managers/frs/FrsManager.idl():  		darkEnclave = null;
-	darkEnclave = nullptr;
+	darkEnclave = NULL;
 	// server/zone/managers/frs/FrsManager.idl():  		petitionInterval = 0;
 	petitionInterval = 0;
 	// server/zone/managers/frs/FrsManager.idl():  		votingInterval = 0;
@@ -2192,7 +2192,7 @@ void FrsManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getZoneServer();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ISFRSENABLED__:

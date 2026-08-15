@@ -1,11 +1,10 @@
 # CMake generated Testfile for 
-# Source directory: /root/Desktop/SWGGhosts/MMOCoreORB
-# Build directory: /root/Desktop/SWGGhosts/MMOCoreORB
+# Source directory: /home/bossman/SWGEmu-Ghosts/MMOCoreORB
+# Build directory: /home/bossman/SWGEmu-Ghosts/MMOCoreORB
 # 
 # This file includes the relevant testing commands required for 
 # testing this directory and lists subdirectories to be tested as well.
 subdirs("utils/engine3/MMOEngine")
-subdirs("utils/googletest-release-1.10.0")
 subdirs("src")
 subdirs("src/conf")
 subdirs("src/terrain")

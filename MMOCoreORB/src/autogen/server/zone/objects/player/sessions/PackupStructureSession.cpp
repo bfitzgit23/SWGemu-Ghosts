@@ -32,7 +32,7 @@ PackupStructureSession::~PackupStructureSession() {
 
 bool PackupStructureSession::isPackupCode(unsigned int code) {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -47,7 +47,7 @@ bool PackupStructureSession::isPackupCode(unsigned int code) {
 
 int PackupStructureSession::initializeSession() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -61,7 +61,7 @@ int PackupStructureSession::initializeSession() {
 
 int PackupStructureSession::sendPackupCode() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -75,7 +75,7 @@ int PackupStructureSession::sendPackupCode() {
 
 int PackupStructureSession::packupStructure() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -89,7 +89,7 @@ int PackupStructureSession::packupStructure() {
 
 int PackupStructureSession::cancelSession() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -103,7 +103,7 @@ int PackupStructureSession::cancelSession() {
 
 int PackupStructureSession::clearSession() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -117,7 +117,7 @@ int PackupStructureSession::clearSession() {
 
 StructureObject* PackupStructureSession::getStructureObject() {
 	PackupStructureSessionImplementation* _implementation = static_cast<PackupStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -162,7 +162,7 @@ void PackupStructureSessionImplementation::finalize() {
 void PackupStructureSessionImplementation::_initializeImplementation() {
 	_setClassHelper(PackupStructureSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -398,7 +398,7 @@ void PackupStructureSessionAdapter::invokeMethod(uint32 methid, DistributedMetho
 		{
 			
 			DistributedObject* _m_res = getStructureObject();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	default:

@@ -34,7 +34,7 @@ AntiDecayKit::~AntiDecayKit() {
 
 void AntiDecayKit::initializeTransientMembers() {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void AntiDecayKit::initializeTransientMembers() {
 
 void AntiDecayKit::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -58,7 +58,7 @@ void AntiDecayKit::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Crea
 
 int AntiDecayKit::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -69,14 +69,14 @@ int AntiDecayKit::handleObjectMenuSelect(CreatureObject* player, byte selectedID
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 int AntiDecayKit::canAddObject(SceneObject* object, int containmentType, String& errorDescription) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -93,7 +93,7 @@ int AntiDecayKit::canAddObject(SceneObject* object, int containmentType, String&
 
 void AntiDecayKit::doApplyAntiDecay(CreatureObject* player) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -103,14 +103,14 @@ void AntiDecayKit::doApplyAntiDecay(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->doApplyAntiDecay(player);
 	}
 }
 
 void AntiDecayKit::doRetrieveItem(CreatureObject* player) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -120,14 +120,14 @@ void AntiDecayKit::doRetrieveItem(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->doRetrieveItem(player);
 	}
 }
 
 bool AntiDecayKit::isUsed() const {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -141,7 +141,7 @@ bool AntiDecayKit::isUsed() const {
 
 void AntiDecayKit::setUsed(bool use) {
 	AntiDecayKitImplementation* _implementation = static_cast<AntiDecayKitImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -188,7 +188,7 @@ void AntiDecayKitImplementation::finalize() {
 void AntiDecayKitImplementation::_initializeImplementation() {
 	_setClassHelper(AntiDecayKitHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

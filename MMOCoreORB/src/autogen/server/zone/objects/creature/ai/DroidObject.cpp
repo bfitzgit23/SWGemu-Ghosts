@@ -40,7 +40,7 @@ DroidObject::~DroidObject() {
 
 void DroidObject::initializeTransientMembers() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -54,7 +54,7 @@ void DroidObject::initializeTransientMembers() {
 
 void DroidObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -64,18 +64,18 @@ void DroidObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* o
 
 int DroidObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void DroidObject::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -85,7 +85,7 @@ void DroidObject::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Creat
 
 void DroidObject::notifyInsertToZone(Zone* zone) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -95,7 +95,7 @@ void DroidObject::notifyInsertToZone(Zone* zone) {
 
 bool DroidObject::isDroidObject() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -109,7 +109,7 @@ bool DroidObject::isDroidObject() {
 
 int DroidObject::getMaximumHAM() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -123,7 +123,7 @@ int DroidObject::getMaximumHAM() {
 
 void DroidObject::setMaximumHAM(int idx) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -139,7 +139,7 @@ void DroidObject::setMaximumHAM(int idx) {
 
 void DroidObject::setAttackSpeed(float f) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -154,7 +154,7 @@ void DroidObject::setAttackSpeed(float f) {
 
 bool DroidObject::isCamouflaged(CreatureObject* target) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -169,7 +169,7 @@ bool DroidObject::isCamouflaged(CreatureObject* target) {
 
 bool DroidObject::hasPower() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -183,7 +183,7 @@ bool DroidObject::hasPower() {
 
 void DroidObject::usePower(int amount) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -199,7 +199,7 @@ void DroidObject::usePower(int amount) {
 
 void DroidObject::runModulePowerDrain() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -213,7 +213,7 @@ void DroidObject::runModulePowerDrain() {
 
 void DroidObject::refreshPaint() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -228,7 +228,7 @@ void DroidObject::refreshPaint() {
 
 int DroidObject::rechargeFromBattery(CreatureObject* player) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -238,14 +238,14 @@ int DroidObject::rechargeFromBattery(CreatureObject* player) {
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->rechargeFromBattery(player);
 	}
 }
 
 void DroidObject::rechargeFromDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,7 +260,7 @@ void DroidObject::rechargeFromDroid() {
 
 void DroidObject::rechargeOtherDroid(DroidObject* otherDroid) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -270,14 +270,14 @@ void DroidObject::rechargeOtherDroid(DroidObject* otherDroid) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((otherDroid == nullptr) || otherDroid->isLockedByCurrentThread());
+		assert((otherDroid == NULL) || otherDroid->isLockedByCurrentThread());
 		_implementation->rechargeOtherDroid(otherDroid);
 	}
 }
 
 void DroidObject::handleLowPower() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -292,7 +292,7 @@ void DroidObject::handleLowPower() {
 
 bool DroidObject::isPowerDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -306,7 +306,7 @@ bool DroidObject::isPowerDroid() {
 
 void DroidObject::initDroidModules() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -316,7 +316,7 @@ void DroidObject::initDroidModules() {
 
 void DroidObject::initDroidWeapons() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -327,7 +327,7 @@ void DroidObject::initDroidWeapons() {
 
 CraftingStation* DroidObject::getCraftingStation(int type) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -337,7 +337,7 @@ CraftingStation* DroidObject::getCraftingStation(int type) {
 
 String DroidObject::getPersonalityBase() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -347,7 +347,7 @@ String DroidObject::getPersonalityBase() {
 
 Reference<BaseDroidModuleComponent* > DroidObject::getModule(const String& name) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -357,7 +357,7 @@ Reference<BaseDroidModuleComponent* > DroidObject::getModule(const String& name)
 
 void DroidObject::onStore() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -368,7 +368,7 @@ void DroidObject::onStore() {
 
 void DroidObject::onCall() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -379,7 +379,7 @@ void DroidObject::onCall() {
 
 void DroidObject::loadSkillMods(CreatureObject* player) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -390,7 +390,7 @@ void DroidObject::loadSkillMods(CreatureObject* player) {
 
 void DroidObject::unloadSkillMods(CreatureObject* player) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -401,7 +401,7 @@ void DroidObject::unloadSkillMods(CreatureObject* player) {
 
 void DroidObject::handleChat(CreatureObject* speaker, const String& message) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -411,7 +411,7 @@ void DroidObject::handleChat(CreatureObject* speaker, const String& message) {
 
 void DroidObject::setArmor(unsigned int level) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -422,7 +422,7 @@ void DroidObject::setArmor(unsigned int level) {
 
 void DroidObject::setHitChance(float v) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -433,7 +433,7 @@ void DroidObject::setHitChance(float v) {
 
 void DroidObject::setResists(float res) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -444,7 +444,7 @@ void DroidObject::setResists(float res) {
 
 void DroidObject::setMaxDamage(int i) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -455,7 +455,7 @@ void DroidObject::setMaxDamage(int i) {
 
 void DroidObject::setMinDamage(int i) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -466,7 +466,7 @@ void DroidObject::setMinDamage(int i) {
 
 unsigned int DroidObject::getArmor() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -476,7 +476,7 @@ unsigned int DroidObject::getArmor() {
 
 float DroidObject::getKinetic() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -490,7 +490,7 @@ float DroidObject::getKinetic() {
 
 float DroidObject::getEnergy() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -504,7 +504,7 @@ float DroidObject::getEnergy() {
 
 float DroidObject::getElectricity() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -518,7 +518,7 @@ float DroidObject::getElectricity() {
 
 float DroidObject::getStun() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -532,7 +532,7 @@ float DroidObject::getStun() {
 
 float DroidObject::getBlast() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -546,7 +546,7 @@ float DroidObject::getBlast() {
 
 float DroidObject::getHeat() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -560,7 +560,7 @@ float DroidObject::getHeat() {
 
 float DroidObject::getCold() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -574,7 +574,7 @@ float DroidObject::getCold() {
 
 float DroidObject::getAcid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -588,7 +588,7 @@ float DroidObject::getAcid() {
 
 float DroidObject::getLightSaber() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -602,7 +602,7 @@ float DroidObject::getLightSaber() {
 
 float DroidObject::getChanceHit() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -616,7 +616,7 @@ float DroidObject::getChanceHit() {
 
 bool DroidObject::isMerchantBarker() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -630,7 +630,7 @@ bool DroidObject::isMerchantBarker() {
 
 String DroidObject::getPersonalityStf() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -646,7 +646,7 @@ String DroidObject::getPersonalityStf() {
 
 bool DroidObject::isAdvancedModel() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -660,7 +660,7 @@ bool DroidObject::isAdvancedModel() {
 
 bool DroidObject::isCombatDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -674,7 +674,7 @@ bool DroidObject::isCombatDroid() {
 
 bool DroidObject::isTrapDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -688,7 +688,7 @@ bool DroidObject::isTrapDroid() {
 
 bool DroidObject::hasStorage() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -702,7 +702,7 @@ bool DroidObject::hasStorage() {
 
 bool DroidObject::isMaintenanceDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -716,7 +716,7 @@ bool DroidObject::isMaintenanceDroid() {
 
 bool DroidObject::assignStructure(StructureObject* structure) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -727,7 +727,7 @@ bool DroidObject::assignStructure(StructureObject* structure) {
 
 bool DroidObject::isStructureAssigned(StructureObject* structure) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -737,7 +737,7 @@ bool DroidObject::isStructureAssigned(StructureObject* structure) {
 
 bool DroidObject::sendConversationStartTo(SceneObject* player) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -752,7 +752,7 @@ bool DroidObject::sendConversationStartTo(SceneObject* player) {
 
 bool DroidObject::hasReactionChatMessages() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -766,7 +766,7 @@ bool DroidObject::hasReactionChatMessages() {
 
 String DroidObject::getReactionStf() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -782,7 +782,7 @@ String DroidObject::getReactionStf() {
 
 int DroidObject::getHamMaximum() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -796,7 +796,7 @@ int DroidObject::getHamMaximum() {
 
 int DroidObject::getHamBase() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -810,7 +810,7 @@ int DroidObject::getHamBase() {
 
 int DroidObject::getDamageMin() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -824,7 +824,7 @@ int DroidObject::getDamageMin() {
 
 int DroidObject::getDamageMax() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -838,7 +838,7 @@ int DroidObject::getDamageMax() {
 
 float DroidObject::getAttackSpeed() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -852,7 +852,7 @@ float DroidObject::getAttackSpeed() {
 
 float DroidObject::calculateAttackSpeed(int level) {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -898,7 +898,7 @@ void DroidObjectImplementation::finalize() {
 void DroidObjectImplementation::_initializeImplementation() {
 	_setClassHelper(DroidObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

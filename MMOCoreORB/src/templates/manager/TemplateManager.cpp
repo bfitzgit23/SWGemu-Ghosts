@@ -798,8 +798,10 @@ String TemplateManager::getTemplateFile(uint32 key) const {
 	if (templateData == nullptr) {
 		String ascii = clientTemplateCRCMap->get(key);
 
-		if (ascii.isEmpty())
-			throw Exception("TemplateManager::getTemplateFile exception unknown template key 0x" + String::hexvalueOf((int)key));
+		if (ascii.isEmpty()) {
+			static String unknown = "unknown/0x" + String::hexvalueOf((int)key);
+			return unknown;
+		}
 		else
 			return ascii;
 	}

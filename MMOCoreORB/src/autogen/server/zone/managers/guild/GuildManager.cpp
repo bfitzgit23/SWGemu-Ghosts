@@ -44,7 +44,7 @@ GuildManager::~GuildManager() {
 
 void GuildManager::setChatManager(ChatManager* chatmanager) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -59,7 +59,7 @@ void GuildManager::setChatManager(ChatManager* chatmanager) {
 
 void GuildManager::loadLuaConfig() {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -73,7 +73,7 @@ void GuildManager::loadLuaConfig() {
 
 void GuildManager::stop() {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -87,7 +87,7 @@ void GuildManager::stop() {
 
 void GuildManager::processGuildUpdate(GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -102,7 +102,7 @@ void GuildManager::processGuildUpdate(GuildObject* guild) {
 
 void GuildManager::sendGuildListTo(CreatureObject* player, const String& guildFilter) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -118,7 +118,7 @@ void GuildManager::sendGuildListTo(CreatureObject* player, const String& guildFi
 
 void GuildManager::sendAdminGuildInfoTo(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -134,7 +134,7 @@ void GuildManager::sendAdminGuildInfoTo(CreatureObject* player, GuildObject* gui
 
 void GuildManager::addPendingGuild(unsigned long long playerID, const String& guildName) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -150,7 +150,7 @@ void GuildManager::addPendingGuild(unsigned long long playerID, const String& gu
 
 void GuildManager::removePendingGuild(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -165,7 +165,7 @@ void GuildManager::removePendingGuild(unsigned long long playerID) {
 
 String GuildManager::getPendingGuildName(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -182,7 +182,7 @@ String GuildManager::getPendingGuildName(unsigned long long playerID) {
 
 void GuildManager::addSponsoredPlayer(unsigned long long playerID, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ void GuildManager::addSponsoredPlayer(unsigned long long playerID, GuildObject* 
 
 void GuildManager::removeSponsoredPlayer(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -213,7 +213,7 @@ void GuildManager::removeSponsoredPlayer(unsigned long long playerID) {
 
 bool GuildManager::isCreatingGuild(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -228,7 +228,7 @@ bool GuildManager::isCreatingGuild(unsigned long long playerID) {
 
 bool GuildManager::isSponsoredPlayer(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -243,7 +243,7 @@ bool GuildManager::isSponsoredPlayer(unsigned long long playerID) {
 
 GuildObject* GuildManager::getSponsoredGuild(unsigned long long playerID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -258,7 +258,7 @@ GuildObject* GuildManager::getSponsoredGuild(unsigned long long playerID) {
 
 void GuildManager::sendBaselinesTo(CreatureObject* player) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -273,7 +273,7 @@ void GuildManager::sendBaselinesTo(CreatureObject* player) {
 
 void GuildManager::loadGuilds() {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -287,7 +287,7 @@ void GuildManager::loadGuilds() {
 
 void GuildManager::sendGuildCreateNameTo(CreatureObject* player, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -303,7 +303,7 @@ void GuildManager::sendGuildCreateNameTo(CreatureObject* player, GuildTerminal* 
 
 void GuildManager::sendGuildChangeNameTo(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -319,7 +319,7 @@ void GuildManager::sendGuildChangeNameTo(CreatureObject* player, GuildObject* gu
 
 void GuildManager::sendGuildCreateAbbrevTo(CreatureObject* player, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -335,7 +335,7 @@ void GuildManager::sendGuildCreateAbbrevTo(CreatureObject* player, GuildTerminal
 
 void GuildManager::sendGuildChangeAbbrevTo(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -351,7 +351,7 @@ void GuildManager::sendGuildChangeAbbrevTo(CreatureObject* player, GuildObject* 
 
 void GuildManager::sendGuildInformationTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -368,7 +368,7 @@ void GuildManager::sendGuildInformationTo(CreatureObject* player, GuildObject* g
 
 void GuildManager::sendGuildMemberListTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -385,7 +385,7 @@ void GuildManager::sendGuildMemberListTo(CreatureObject* player, GuildObject* gu
 
 void GuildManager::sendGuildMemberOptionsTo(CreatureObject* player, GuildObject* guild, unsigned long long memberID, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -403,7 +403,7 @@ void GuildManager::sendGuildMemberOptionsTo(CreatureObject* player, GuildObject*
 
 void GuildManager::sendGuildDisbandConfirmTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -420,7 +420,7 @@ void GuildManager::sendGuildDisbandConfirmTo(CreatureObject* player, GuildObject
 
 void GuildManager::sendGuildSponsoredListTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -437,7 +437,7 @@ void GuildManager::sendGuildSponsoredListTo(CreatureObject* player, GuildObject*
 
 void GuildManager::sendGuildSponsoredOptionsTo(CreatureObject* player, GuildObject* guild, unsigned long long playerID, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -455,7 +455,7 @@ void GuildManager::sendGuildSponsoredOptionsTo(CreatureObject* player, GuildObje
 
 void GuildManager::sendGuildSponsorTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -472,7 +472,7 @@ void GuildManager::sendGuildSponsorTo(CreatureObject* player, GuildObject* guild
 
 void GuildManager::sendGuildKickPromptTo(CreatureObject* player, CreatureObject* target) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -488,7 +488,7 @@ void GuildManager::sendGuildKickPromptTo(CreatureObject* player, CreatureObject*
 
 void GuildManager::sendGuildSetTitleTo(CreatureObject* player, CreatureObject* target) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -504,7 +504,7 @@ void GuildManager::sendGuildSetTitleTo(CreatureObject* player, CreatureObject* t
 
 void GuildManager::sendGuildWarStatusTo(CreatureObject* player, GuildObject* guild, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -521,7 +521,7 @@ void GuildManager::sendGuildWarStatusTo(CreatureObject* player, GuildObject* gui
 
 void GuildManager::promptAddNewEnemy(CreatureObject* player, GuildObject* guild, SceneObject* terminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -538,7 +538,7 @@ void GuildManager::promptAddNewEnemy(CreatureObject* player, GuildObject* guild,
 
 void GuildManager::toggleWarStatus(CreatureObject* player, GuildObject* guild, unsigned long long guildoid) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -555,7 +555,7 @@ void GuildManager::toggleWarStatus(CreatureObject* player, GuildObject* guild, u
 
 void GuildManager::declareWarByName(CreatureObject* player, GuildObject* guild, const String& search) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -572,7 +572,7 @@ void GuildManager::declareWarByName(CreatureObject* player, GuildObject* guild, 
 
 void GuildManager::updateWarStatusToWaringGuild(GuildObject* guild, GuildObject* waringGuild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -588,7 +588,7 @@ void GuildManager::updateWarStatusToWaringGuild(GuildObject* guild, GuildObject*
 
 void GuildManager::sendMemberPermissionsTo(CreatureObject* player, unsigned long long targetID, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -605,7 +605,7 @@ void GuildManager::sendMemberPermissionsTo(CreatureObject* player, unsigned long
 
 bool GuildManager::validateGuildName(CreatureObject* player, const String& guildName, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -622,7 +622,7 @@ bool GuildManager::validateGuildName(CreatureObject* player, const String& guild
 
 bool GuildManager::validateGuildAbbrev(CreatureObject* player, const String& guildAbbrev, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -639,7 +639,7 @@ bool GuildManager::validateGuildAbbrev(CreatureObject* player, const String& gui
 
 bool GuildManager::guildNameExists(const String& guildName) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -654,7 +654,7 @@ bool GuildManager::guildNameExists(const String& guildName) {
 
 bool GuildManager::guildAbbrevExists(const String& guildAbbrev) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -669,7 +669,7 @@ bool GuildManager::guildAbbrevExists(const String& guildAbbrev) {
 
 void GuildManager::setupGuildRename(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -685,7 +685,7 @@ void GuildManager::setupGuildRename(CreatureObject* player, GuildObject* guild) 
 
 void GuildManager::renameGuild(GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -700,7 +700,7 @@ void GuildManager::renameGuild(GuildObject* guild) {
 
 GuildObject* GuildManager::createGuild(CreatureObject* player, const String& guildName, const String& guildAbbrev) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -717,7 +717,7 @@ GuildObject* GuildManager::createGuild(CreatureObject* player, const String& gui
 
 bool GuildManager::disbandGuild(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -733,7 +733,7 @@ bool GuildManager::disbandGuild(CreatureObject* player, GuildObject* guild) {
 
 void GuildManager::sponsorPlayer(CreatureObject* player, const String& playerName) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -749,7 +749,7 @@ void GuildManager::sponsorPlayer(CreatureObject* player, const String& playerNam
 
 void GuildManager::acceptSponsorshipRequest(CreatureObject* player, CreatureObject* target) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -765,7 +765,7 @@ void GuildManager::acceptSponsorshipRequest(CreatureObject* player, CreatureObje
 
 void GuildManager::acceptSponsoredPlayer(CreatureObject* player, unsigned long long targetID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -781,7 +781,7 @@ void GuildManager::acceptSponsoredPlayer(CreatureObject* player, unsigned long l
 
 void GuildManager::declineSponsoredPlayer(CreatureObject* player, unsigned long long targetID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -797,7 +797,7 @@ void GuildManager::declineSponsoredPlayer(CreatureObject* player, unsigned long 
 
 void GuildManager::kickMember(CreatureObject* player, CreatureObject* target) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -813,7 +813,7 @@ void GuildManager::kickMember(CreatureObject* player, CreatureObject* target) {
 
 void GuildManager::leaveGuild(CreatureObject* player, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -829,7 +829,7 @@ void GuildManager::leaveGuild(CreatureObject* player, GuildObject* guild) {
 
 void GuildManager::setMemberTitle(CreatureObject* player, CreatureObject* target, const String& title) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -846,7 +846,7 @@ void GuildManager::setMemberTitle(CreatureObject* player, CreatureObject* target
 
 void GuildManager::toggleGuildPermission(CreatureObject* player, unsigned long long targetID, int permissionIndex, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -864,7 +864,7 @@ void GuildManager::toggleGuildPermission(CreatureObject* player, unsigned long l
 
 ChatRoom* GuildManager::createGuildChannels(GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -879,7 +879,7 @@ ChatRoom* GuildManager::createGuildChannels(GuildObject* guild) {
 
 void GuildManager::sendGuildTransferTo(CreatureObject* player, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -895,7 +895,7 @@ void GuildManager::sendGuildTransferTo(CreatureObject* player, GuildTerminal* gu
 
 void GuildManager::sendTransferAckTo(CreatureObject* player, const String& newOwnerName, SceneObject* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -912,7 +912,7 @@ void GuildManager::sendTransferAckTo(CreatureObject* player, const String& newOw
 
 void GuildManager::transferLeadership(CreatureObject* newOwner, CreatureObject* oldOwner, bool election) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -929,7 +929,7 @@ void GuildManager::transferLeadership(CreatureObject* newOwner, CreatureObject* 
 
 void GuildManager::sendAcceptLotsTo(CreatureObject* newOwner, GuildTerminal* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -945,7 +945,7 @@ void GuildManager::sendAcceptLotsTo(CreatureObject* newOwner, GuildTerminal* gui
 
 bool GuildManager::transferGuildHall(CreatureObject* newOwner, SceneObject* guildTerminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -961,7 +961,7 @@ bool GuildManager::transferGuildHall(CreatureObject* newOwner, SceneObject* guil
 
 void GuildManager::sendGuildMail(const String& subject, StringIdChatParameter& body, GuildObject* guild) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -971,7 +971,7 @@ void GuildManager::sendGuildMail(const String& subject, StringIdChatParameter& b
 
 GuildObject* GuildManager::getGuildFromAbbrev(const String& guildAbbrev) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -986,7 +986,7 @@ GuildObject* GuildManager::getGuildFromAbbrev(const String& guildAbbrev) {
 
 void GuildManager::toggleElection(GuildObject* guild, CreatureObject* player) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1002,7 +1002,7 @@ void GuildManager::toggleElection(GuildObject* guild, CreatureObject* player) {
 
 void GuildManager::resetElection(GuildObject* guild, CreatureObject* player) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1018,7 +1018,7 @@ void GuildManager::resetElection(GuildObject* guild, CreatureObject* player) {
 
 void GuildManager::registerForElection(GuildObject* guild, CreatureObject* player) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1034,7 +1034,7 @@ void GuildManager::registerForElection(GuildObject* guild, CreatureObject* playe
 
 void GuildManager::unregisterFromElection(GuildObject* guild, CreatureObject* player) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1050,7 +1050,7 @@ void GuildManager::unregisterFromElection(GuildObject* guild, CreatureObject* pl
 
 void GuildManager::promptCastVote(GuildObject* guild, CreatureObject* player, GuildTerminal* terminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1067,7 +1067,7 @@ void GuildManager::promptCastVote(GuildObject* guild, CreatureObject* player, Gu
 
 void GuildManager::castVote(GuildObject* guild, CreatureObject* player, unsigned long long candidateID) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1084,7 +1084,7 @@ void GuildManager::castVote(GuildObject* guild, CreatureObject* player, unsigned
 
 void GuildManager::viewElectionStandings(GuildObject* guild, CreatureObject* player, GuildTerminal* terminal) {
 	GuildManagerImplementation* _implementation = static_cast<GuildManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1132,7 +1132,7 @@ void GuildManagerImplementation::finalize() {
 void GuildManagerImplementation::_initializeImplementation() {
 	_setClassHelper(GuildManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1296,7 +1296,7 @@ GuildManagerImplementation::GuildManagerImplementation(ZoneServer* serv, ZonePro
 	// server/zone/managers/guild/GuildManager.idl():  		sponsoredPlayers.setNoDuplicateInsertPlan();
 	(&sponsoredPlayers)->setNoDuplicateInsertPlan();
 	// server/zone/managers/guild/GuildManager.idl():  		sponsoredPlayers.setNullValue(null);
-	(&sponsoredPlayers)->setNullValue(nullptr);
+	(&sponsoredPlayers)->setNullValue(NULL);
 	// server/zone/managers/guild/GuildManager.idl():  		server = serv;
 	server = serv;
 	// server/zone/managers/guild/GuildManager.idl():  		processor = proc;
@@ -1488,7 +1488,7 @@ void GuildManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			unsigned long long playerID = inv->getUnsignedLongParameter();
 			
 			DistributedObject* _m_res = getSponsoredGuild(playerID);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SENDBASELINESTO__CREATUREOBJECT_:
@@ -1751,7 +1751,7 @@ void GuildManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String guildAbbrev; inv->getAsciiParameter(guildAbbrev);
 			
 			DistributedObject* _m_res = createGuild(player, guildName, guildAbbrev);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_DISBANDGUILD__CREATUREOBJECT_GUILDOBJECT_:
@@ -1843,7 +1843,7 @@ void GuildManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			GuildObject* guild = static_cast<GuildObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = createGuildChannels(guild);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SENDGUILDTRANSFERTO__CREATUREOBJECT_GUILDTERMINAL_:
@@ -1898,7 +1898,7 @@ void GuildManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			 String guildAbbrev; inv->getAsciiParameter(guildAbbrev);
 			
 			DistributedObject* _m_res = getGuildFromAbbrev(guildAbbrev);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_TOGGLEELECTION__GUILDOBJECT_CREATUREOBJECT_:

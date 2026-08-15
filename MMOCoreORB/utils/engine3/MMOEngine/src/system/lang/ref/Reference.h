@@ -136,6 +136,22 @@ namespace sys {
 			return object.get() != nullptr;
 		}
 
+		bool operator==(const int val) const {
+			return object.get() == (O)val;
+		}
+
+		bool operator!=(const int val) const {
+			return object.get() != (O)val;
+		}
+
+		bool operator==(const long val) const {
+			return object.get() == (O)val;
+		}
+
+		bool operator!=(const long val) const {
+			return object.get() != (O)val;
+		}
+
 		/*
 		friend bool operator==(const O obj2, const Reference<O>& obj) {
 			return obj.object.get() == obj2;

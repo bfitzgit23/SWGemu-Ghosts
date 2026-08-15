@@ -3,20 +3,9 @@
 
 cmake_minimum_required(VERSION 3.7.0 FATAL_ERROR)
 
-find_program(CLANGXX_EXECUTABLE_PATH NAMES clang++)
-
-if (CLANGXX_EXECUTABLE_PATH)
-	find_program(CMAKE_C_COMPILER clang)
-	find_program(CMAKE_CXX_COMPILER clang++)
-	message(STATUS "Found ${CMAKE_CXX_COMPILER} using clang compiler.")
-	set(LINKER_IS_LLD 1 CACHE INTERNAL "use lld linker")
-	find_program(LLD_EXECUTABLE_PATH NAMES ld.lld)
-	if (LLD_EXECUTABLE_PATH)
-		message(STATUS "Using DWARF4 format with linker ${LLD_EXECUTABLE_PATH}")
-		add_link_options(-fuse-ld=lld  -Wl,--gdb-index)
-		set(CMAKE_CXX_FLAGS_DEBUG "-gdwarf-4")
-    endif()
-endif()
+# Using g++ instead of clang due to linker compatibility issues
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_CXX_COMPILER g++)
 
 project(core3 CXX C)
 
@@ -53,7 +42,7 @@ option(BUILD_IDL "Generate idl c++ sources with cmake" ON)
 option(IDL_NOPRELOCKS "Disables all prelock annotations" OFF)
 option(ENABLE_CCACHE "Enables ccache search and usage" ON)
 option(RUN_GIT "Runs git log to dump last commit messages into rev.txt" OFF)
-option(COMPILE_TESTS "Enables mock generation in idlc and test compiling" ON)
+option(COMPILE_TESTS "Enables mock generation in idlc and test compiling" OFF)
 option(LOGIN_SERVER_EXTRA_PORTS "Enables login server with extra ports config" OFF)
 option(ENABLE_ASAN "Enables address sanitizer compiling" OFF)
 option(ENABLE_TSAN "Enables thread sanitizer compiling" OFF)
@@ -214,7 +203,7 @@ endif(IDL_NOPRELOCKS)
 if(COMPILE_TESTS)
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    add_subdirectory(utils/googletest-release-1.10.0)
+    # add_subdirectory(utils/googletest-release-1.10.0)  # DISABLED: directory does not exist
 
     include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.10.0/googletest/include)
     include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.10.0/googlemock/include)

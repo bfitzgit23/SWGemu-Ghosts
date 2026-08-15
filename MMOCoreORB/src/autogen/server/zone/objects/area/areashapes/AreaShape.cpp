@@ -28,7 +28,7 @@ AreaShape::~AreaShape() {
 
 void AreaShape::setAreaCenter(float x, float y) {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -45,7 +45,7 @@ void AreaShape::setAreaCenter(float x, float y) {
 
 Vector3 AreaShape::getAreaCenter() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -55,7 +55,7 @@ Vector3 AreaShape::getAreaCenter() {
 
 bool AreaShape::containsPoint(float x, float y) {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -71,7 +71,7 @@ bool AreaShape::containsPoint(float x, float y) {
 
 bool AreaShape::containsPoint(const Vector3& point) {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -81,7 +81,7 @@ bool AreaShape::containsPoint(const Vector3& point) {
 
 float AreaShape::getRadius() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -95,7 +95,7 @@ float AreaShape::getRadius() {
 
 Vector3 AreaShape::getRandomPosition() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -105,7 +105,7 @@ Vector3 AreaShape::getRandomPosition() {
 
 Vector3 AreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -115,7 +115,7 @@ Vector3 AreaShape::getRandomPosition(const Vector3& origin, float minDistance, f
 
 bool AreaShape::isCircularAreaShape() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -129,7 +129,7 @@ bool AreaShape::isCircularAreaShape() {
 
 bool AreaShape::isRectangularAreaShape() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -143,7 +143,7 @@ bool AreaShape::isRectangularAreaShape() {
 
 bool AreaShape::isRingAreaShape() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -157,7 +157,7 @@ bool AreaShape::isRingAreaShape() {
 
 bool AreaShape::intersectsWith(AreaShape* areaShape) {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -172,7 +172,7 @@ bool AreaShape::intersectsWith(AreaShape* areaShape) {
 
 float AreaShape::getArea() {
 	AreaShapeImplementation* _implementation = static_cast<AreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -217,7 +217,7 @@ void AreaShapeImplementation::finalize() {
 void AreaShapeImplementation::_initializeImplementation() {
 	_setClassHelper(AreaShapeHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

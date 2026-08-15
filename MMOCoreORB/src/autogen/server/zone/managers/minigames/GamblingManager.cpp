@@ -34,7 +34,7 @@ GamblingManager::~GamblingManager() {
 
 Vector<String>* GamblingManager::getRoulette() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -44,7 +44,7 @@ Vector<String>* GamblingManager::getRoulette() {
 
 void GamblingManager::initializeSlotTimer() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -58,7 +58,7 @@ void GamblingManager::initializeSlotTimer() {
 
 void GamblingManager::initializeRouletteTimer() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -72,7 +72,7 @@ void GamblingManager::initializeRouletteTimer() {
 
 void GamblingManager::initializeSlots() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -86,7 +86,7 @@ void GamblingManager::initializeSlots() {
 
 void GamblingManager::initializeRouletteRed() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -100,7 +100,7 @@ void GamblingManager::initializeRouletteRed() {
 
 void GamblingManager::initializeRoulette() {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -114,7 +114,7 @@ void GamblingManager::initializeRoulette() {
 
 int GamblingManager::notify(SceneObject* sceneObject) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -129,7 +129,7 @@ int GamblingManager::notify(SceneObject* sceneObject) {
 
 bool GamblingManager::isHigh(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -144,7 +144,7 @@ bool GamblingManager::isHigh(int value) {
 
 bool GamblingManager::isLow(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -159,7 +159,7 @@ bool GamblingManager::isLow(int value) {
 
 bool GamblingManager::isEven(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -174,7 +174,7 @@ bool GamblingManager::isEven(int value) {
 
 bool GamblingManager::isOdd(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -189,7 +189,7 @@ bool GamblingManager::isOdd(int value) {
 
 bool GamblingManager::isBlack(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -204,7 +204,7 @@ bool GamblingManager::isBlack(int value) {
 
 bool GamblingManager::isRed(int value) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -219,7 +219,7 @@ bool GamblingManager::isRed(int value) {
 
 void GamblingManager::handleSlot(CreatureObject* player, bool cancel, bool other) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -236,7 +236,7 @@ void GamblingManager::handleSlot(CreatureObject* player, bool cancel, bool other
 
 void GamblingManager::bet(CreatureObject* player, int amount, int target, int machineType) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -254,7 +254,7 @@ void GamblingManager::bet(CreatureObject* player, int amount, int target, int ma
 
 void GamblingManager::bet(GamblingTerminal* terminal, CreatureObject* player, int amount, int target) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -272,7 +272,7 @@ void GamblingManager::bet(GamblingTerminal* terminal, CreatureObject* player, in
 
 void GamblingManager::startGame(CreatureObject* player, int machineType) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -288,7 +288,7 @@ void GamblingManager::startGame(CreatureObject* player, int machineType) {
 
 void GamblingManager::startGame(GamblingTerminal* terminal) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -303,7 +303,7 @@ void GamblingManager::startGame(GamblingTerminal* terminal) {
 
 void GamblingManager::leaveTerminal(CreatureObject* player, int machineType) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -319,7 +319,7 @@ void GamblingManager::leaveTerminal(CreatureObject* player, int machineType) {
 
 void GamblingManager::registerPlayer(GamblingTerminal* terminal, CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -335,7 +335,7 @@ void GamblingManager::registerPlayer(GamblingTerminal* terminal, CreatureObject*
 
 void GamblingManager::refreshRouletteMenu(CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -350,7 +350,7 @@ void GamblingManager::refreshRouletteMenu(CreatureObject* player) {
 
 void GamblingManager::continueGame(GamblingTerminal* terminal) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -365,7 +365,7 @@ void GamblingManager::continueGame(GamblingTerminal* terminal) {
 
 void GamblingManager::stopGame(GamblingTerminal* terminal, bool cancel) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -381,7 +381,7 @@ void GamblingManager::stopGame(GamblingTerminal* terminal, bool cancel) {
 
 void GamblingManager::calculateOutcome(GamblingTerminal* terminal) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -396,7 +396,7 @@ void GamblingManager::calculateOutcome(GamblingTerminal* terminal) {
 
 unsigned int GamblingManager::createWindow(GamblingTerminal* terminal, CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -412,7 +412,7 @@ unsigned int GamblingManager::createWindow(GamblingTerminal* terminal, CreatureO
 
 unsigned int GamblingManager::createPayoutWindow(CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -427,7 +427,7 @@ unsigned int GamblingManager::createPayoutWindow(CreatureObject* player) {
 
 unsigned int GamblingManager::createSlotWindow(CreatureObject* player, unsigned int payoutBoxID) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -443,7 +443,7 @@ unsigned int GamblingManager::createSlotWindow(CreatureObject* player, unsigned 
 
 unsigned int GamblingManager::createRouletteWindow(CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -458,7 +458,7 @@ unsigned int GamblingManager::createRouletteWindow(CreatureObject* player) {
 
 void GamblingManager::createEvent(GamblingTerminal* terminal, int time) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -474,7 +474,7 @@ void GamblingManager::createEvent(GamblingTerminal* terminal, int time) {
 
 bool GamblingManager::isPlaying(CreatureObject* player) {
 	GamblingManagerImplementation* _implementation = static_cast<GamblingManagerImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -520,7 +520,7 @@ void GamblingManagerImplementation::finalize() {
 void GamblingManagerImplementation::_initializeImplementation() {
 	_setClassHelper(GamblingManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

@@ -32,7 +32,7 @@ Buff::~Buff() {
 
 void Buff::initializeTransientMembers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -46,7 +46,7 @@ void Buff::initializeTransientMembers() {
 
 void Buff::notifyLoadFromDatabase() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,7 +60,7 @@ void Buff::notifyLoadFromDatabase() {
 
 void Buff::loadBuffDurationEvent(CreatureObject* creo) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -75,7 +75,7 @@ void Buff::loadBuffDurationEvent(CreatureObject* creo) {
 
 void Buff::init() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -89,7 +89,7 @@ void Buff::init() {
 
 void Buff::sendTo(CreatureObject* player) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ void Buff::sendTo(CreatureObject* player) {
 
 void Buff::sendDestroyTo(CreatureObject* player) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -119,7 +119,7 @@ void Buff::sendDestroyTo(CreatureObject* player) {
 
 void Buff::activate(bool applyModifiers) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -135,7 +135,7 @@ void Buff::activate(bool applyModifiers) {
 
 void Buff::deactivate(bool removeModifiers) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -151,7 +151,7 @@ void Buff::deactivate(bool removeModifiers) {
 
 void Buff::activate() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -165,7 +165,7 @@ void Buff::activate() {
 
 void Buff::deactivate() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -179,7 +179,7 @@ void Buff::deactivate() {
 
 bool Buff::checkRenew() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -193,7 +193,7 @@ bool Buff::checkRenew() {
 
 VectorMap<String, int>* Buff::getSkillModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -203,7 +203,7 @@ VectorMap<String, int>* Buff::getSkillModifiers() {
 
 void Buff::applyAttributeModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -217,7 +217,7 @@ void Buff::applyAttributeModifiers() {
 
 void Buff::applySkillModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -231,7 +231,7 @@ void Buff::applySkillModifiers() {
 
 void Buff::applyStates() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -245,7 +245,7 @@ void Buff::applyStates() {
 
 void Buff::applyAllModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,7 +260,7 @@ void Buff::applyAllModifiers() {
 
 void Buff::removeAttributeModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -274,7 +274,7 @@ void Buff::removeAttributeModifiers() {
 
 void Buff::removeSkillModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -288,7 +288,7 @@ void Buff::removeSkillModifiers() {
 
 void Buff::removeStates() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -302,7 +302,7 @@ void Buff::removeStates() {
 
 void Buff::removeAllModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -317,7 +317,7 @@ void Buff::removeAllModifiers() {
 
 void Buff::clearBuffEvent() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -332,7 +332,7 @@ void Buff::clearBuffEvent() {
 
 void Buff::setBuffEventNull() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -347,7 +347,7 @@ void Buff::setBuffEventNull() {
 
 void Buff::scheduleBuffEvent() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -362,7 +362,7 @@ void Buff::scheduleBuffEvent() {
 
 void Buff::renew(float newDuration) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -378,7 +378,7 @@ void Buff::renew(float newDuration) {
 
 void Buff::parseAttributeModifierString(const String& modifierstring) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -394,7 +394,7 @@ void Buff::parseAttributeModifierString(const String& modifierstring) {
 
 void Buff::parseSkillModifierString(const String& modifierstring) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -410,7 +410,7 @@ void Buff::parseSkillModifierString(const String& modifierstring) {
 
 String Buff::getAttributeModifierString() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -426,7 +426,7 @@ String Buff::getAttributeModifierString() {
 
 String Buff::getSkillModifierString() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -442,7 +442,7 @@ String Buff::getSkillModifierString() {
 
 float Buff::getTimeLeft() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -456,7 +456,7 @@ float Buff::getTimeLeft() {
 
 void Buff::setAttributeModifier(byte attribute, int value) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -473,7 +473,7 @@ void Buff::setAttributeModifier(byte attribute, int value) {
 
 void Buff::setSkillModifier(const String& modname, int value) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -490,7 +490,7 @@ void Buff::setSkillModifier(const String& modname, int value) {
 
 void Buff::addState(unsigned long long option) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -506,7 +506,7 @@ void Buff::addState(unsigned long long option) {
 
 void Buff::setSpeedMultiplierMod(float multiplier) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -522,7 +522,7 @@ void Buff::setSpeedMultiplierMod(float multiplier) {
 
 void Buff::setAccelerationMultiplierMod(float multiplier) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -538,7 +538,7 @@ void Buff::setAccelerationMultiplierMod(float multiplier) {
 
 float Buff::getSpeedMultiplierMod() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -552,7 +552,7 @@ float Buff::getSpeedMultiplierMod() {
 
 float Buff::getAccelerationMultiplierMod() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -566,7 +566,7 @@ float Buff::getAccelerationMultiplierMod() {
 
 void Buff::setFillAttributesOnBuff(bool val) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -582,7 +582,7 @@ void Buff::setFillAttributesOnBuff(bool val) {
 
 String Buff::getBuffName() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -598,7 +598,7 @@ String Buff::getBuffName() const {
 
 unsigned int Buff::getBuffCRC() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -612,7 +612,7 @@ unsigned int Buff::getBuffCRC() const {
 
 float Buff::getBuffDuration() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -626,7 +626,7 @@ float Buff::getBuffDuration() const {
 
 int Buff::getBuffType() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -640,7 +640,7 @@ int Buff::getBuffType() const {
 
 VectorMap<byte, int>* Buff::getAttributeModifiers() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -650,7 +650,7 @@ VectorMap<byte, int>* Buff::getAttributeModifiers() {
 
 int Buff::getAttributeModifierValue(byte attribute) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -665,7 +665,7 @@ int Buff::getAttributeModifierValue(byte attribute) {
 
 int Buff::getSkillModifierValue(const String& modname) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -680,7 +680,7 @@ int Buff::getSkillModifierValue(const String& modname) {
 
 bool Buff::isActive() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -694,7 +694,7 @@ bool Buff::isActive() {
 
 bool Buff::isSpiceBuff() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -708,7 +708,7 @@ bool Buff::isSpiceBuff() const {
 
 bool Buff::isAttributeBuff() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -722,7 +722,7 @@ bool Buff::isAttributeBuff() const {
 
 void Buff::setStartMessage(StringIdChatParameter& start) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -733,7 +733,7 @@ void Buff::setStartMessage(StringIdChatParameter& start) {
 
 void Buff::setEndMessage(StringIdChatParameter& end) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -744,7 +744,7 @@ void Buff::setEndMessage(StringIdChatParameter& end) {
 
 void Buff::setStartSpam(StringIdChatParameter& start) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -755,7 +755,7 @@ void Buff::setStartSpam(StringIdChatParameter& start) {
 
 void Buff::setEndSpam(StringIdChatParameter& end) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -766,7 +766,7 @@ void Buff::setEndSpam(StringIdChatParameter& end) {
 
 void Buff::setSpamColor(byte color) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -782,7 +782,7 @@ void Buff::setSpamColor(byte color) {
 
 void Buff::setBroadcastSpam(bool value) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -798,7 +798,7 @@ void Buff::setBroadcastSpam(bool value) {
 
 void Buff::setStartFlyText(const String& file, const String& aux, byte red, byte green, byte blue) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -818,7 +818,7 @@ void Buff::setStartFlyText(const String& file, const String& aux, byte red, byte
 
 void Buff::setEndFlyText(const String& file, const String& aux, byte red, byte green, byte blue) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -838,7 +838,7 @@ void Buff::setEndFlyText(const String& file, const String& aux, byte red, byte g
 
 void Buff::addSecondaryBuffCRC(unsigned long long secondaryCRC) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -854,7 +854,7 @@ void Buff::addSecondaryBuffCRC(unsigned long long secondaryCRC) {
 
 Time Buff::getTimeApplied() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -864,7 +864,7 @@ Time Buff::getTimeApplied() {
 
 int Buff::compareTo(Buff* obj) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -879,7 +879,7 @@ int Buff::compareTo(Buff* obj) {
 
 Vector<unsigned long long>* Buff::getSecondaryBuffCRCs() {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -889,7 +889,7 @@ Vector<unsigned long long>* Buff::getSecondaryBuffCRCs() {
 
 bool Buff::hasMods() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -903,7 +903,7 @@ bool Buff::hasMods() const {
 
 void Buff::setModsApplied(bool applied) {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -919,7 +919,7 @@ void Buff::setModsApplied(bool applied) {
 
 bool Buff::removeOnClearBuffs() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -964,7 +964,7 @@ void BuffImplementation::finalize() {
 void BuffImplementation::_initializeImplementation() {
 	_setClassHelper(BuffHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

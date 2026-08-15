@@ -30,7 +30,7 @@ CreditObject::~CreditObject() {
 
 void CreditObject::notifyLoadFromDatabase() {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -45,7 +45,7 @@ void CreditObject::notifyLoadFromDatabase() {
 
 void CreditObject::setBankCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void CreditObject::setBankCredits(int credits, bool notifyClient) {
 
 void CreditObject::setCashCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -79,7 +79,7 @@ void CreditObject::setCashCredits(int credits, bool notifyClient) {
 
 int CreditObject::getBankCredits() const {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -93,7 +93,7 @@ int CreditObject::getBankCredits() const {
 
 int CreditObject::getCashCredits() const {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ int CreditObject::getCashCredits() const {
 
 void CreditObject::subtractBankCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -124,7 +124,7 @@ void CreditObject::subtractBankCredits(int credits, bool notifyClient) {
 
 void CreditObject::subtractCashCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -141,7 +141,7 @@ void CreditObject::subtractCashCredits(int credits, bool notifyClient) {
 
 void CreditObject::addBankCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -158,7 +158,7 @@ void CreditObject::addBankCredits(int credits, bool notifyClient) {
 
 void CreditObject::addCashCredits(int credits, bool notifyClient) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -175,7 +175,7 @@ void CreditObject::addCashCredits(int credits, bool notifyClient) {
 
 bool CreditObject::verifyCashCredits(int credits) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -190,7 +190,7 @@ bool CreditObject::verifyCashCredits(int credits) {
 
 bool CreditObject::verifyBankCredits(int credits) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -205,7 +205,7 @@ bool CreditObject::verifyBankCredits(int credits) {
 
 WeakReference<CreatureObject* > CreditObject::getOwner() {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -215,7 +215,7 @@ WeakReference<CreatureObject* > CreditObject::getOwner() {
 
 void CreditObject::setOwner(CreatureObject* obj) {
 	CreditObjectImplementation* _implementation = static_cast<CreditObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -261,7 +261,7 @@ void CreditObjectImplementation::finalize() {
 void CreditObjectImplementation::_initializeImplementation() {
 	_setClassHelper(CreditObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

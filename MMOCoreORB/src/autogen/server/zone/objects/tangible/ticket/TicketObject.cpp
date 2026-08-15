@@ -34,7 +34,7 @@ TicketObject::~TicketObject() {
 
 void TicketObject::initializeTransientMembers() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void TicketObject::initializeTransientMembers() {
 
 void TicketObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -58,7 +58,7 @@ void TicketObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* 
 
 int TicketObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -74,7 +74,7 @@ int TicketObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID
 
 void TicketObject::setDeparturePlanet(const String& departureplanet) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -89,7 +89,7 @@ void TicketObject::setDeparturePlanet(const String& departureplanet) {
 
 void TicketObject::setDeparturePoint(const String& departurepoint) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ void TicketObject::setDeparturePoint(const String& departurepoint) {
 
 void TicketObject::setArrivalPlanet(const String& arrival) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -119,7 +119,7 @@ void TicketObject::setArrivalPlanet(const String& arrival) {
 
 void TicketObject::setArrivalPoint(const String& arrival) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -134,7 +134,7 @@ void TicketObject::setArrivalPoint(const String& arrival) {
 
 void TicketObject::setOwnerID(unsigned long long id) {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -149,7 +149,7 @@ void TicketObject::setOwnerID(unsigned long long id) {
 
 String TicketObject::getDeparturePlanet() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -165,7 +165,7 @@ String TicketObject::getDeparturePlanet() {
 
 String TicketObject::getDeparturePoint() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ String TicketObject::getDeparturePoint() {
 
 String TicketObject::getArrivalPlanet() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -197,7 +197,7 @@ String TicketObject::getArrivalPlanet() {
 
 String TicketObject::getArrivalPoint() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -213,7 +213,7 @@ String TicketObject::getArrivalPoint() {
 
 unsigned long long TicketObject::getOwnerID() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -227,7 +227,7 @@ unsigned long long TicketObject::getOwnerID() {
 
 bool TicketObject::isTicketObject() {
 	TicketObjectImplementation* _implementation = static_cast<TicketObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -272,7 +272,7 @@ void TicketObjectImplementation::finalize() {
 void TicketObjectImplementation::_initializeImplementation() {
 	_setClassHelper(TicketObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

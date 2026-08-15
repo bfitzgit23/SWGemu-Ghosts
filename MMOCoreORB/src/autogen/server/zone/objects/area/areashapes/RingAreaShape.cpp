@@ -30,7 +30,7 @@ RingAreaShape::~RingAreaShape() {
 
 void RingAreaShape::setInnerRadius(float r) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -46,7 +46,7 @@ void RingAreaShape::setInnerRadius(float r) {
 
 void RingAreaShape::setOuterRadius(float r) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void RingAreaShape::setOuterRadius(float r) {
 
 float RingAreaShape::getInnerRadius() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -76,7 +76,7 @@ float RingAreaShape::getInnerRadius() {
 
 float RingAreaShape::getInnerRadius2() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,7 +90,7 @@ float RingAreaShape::getInnerRadius2() {
 
 float RingAreaShape::getOuterRadius() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ float RingAreaShape::getOuterRadius() {
 
 float RingAreaShape::getOuterRadius2() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -118,7 +118,7 @@ float RingAreaShape::getOuterRadius2() {
 
 float RingAreaShape::getRadius() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -132,7 +132,7 @@ float RingAreaShape::getRadius() {
 
 bool RingAreaShape::containsPoint(float x, float y) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,7 +148,7 @@ bool RingAreaShape::containsPoint(float x, float y) {
 
 bool RingAreaShape::containsPoint(const Vector3& point) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -158,7 +158,7 @@ bool RingAreaShape::containsPoint(const Vector3& point) {
 
 Vector3 RingAreaShape::getRandomPosition() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -168,7 +168,7 @@ Vector3 RingAreaShape::getRandomPosition() {
 
 Vector3 RingAreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -178,7 +178,7 @@ Vector3 RingAreaShape::getRandomPosition(const Vector3& origin, float minDistanc
 
 bool RingAreaShape::isRingAreaShape() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -192,7 +192,7 @@ bool RingAreaShape::isRingAreaShape() {
 
 bool RingAreaShape::intersectsWith(AreaShape* areaShape) {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -207,7 +207,7 @@ bool RingAreaShape::intersectsWith(AreaShape* areaShape) {
 
 float RingAreaShape::getArea() {
 	RingAreaShapeImplementation* _implementation = static_cast<RingAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -252,7 +252,7 @@ void RingAreaShapeImplementation::finalize() {
 void RingAreaShapeImplementation::_initializeImplementation() {
 	_setClassHelper(RingAreaShapeHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

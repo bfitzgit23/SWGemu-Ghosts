@@ -32,7 +32,7 @@ ShipControlDevice::~ShipControlDevice() {
 
 void ShipControlDevice::storeObject(CreatureObject* player, bool force) {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -43,14 +43,14 @@ void ShipControlDevice::storeObject(CreatureObject* player, bool force) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->storeObject(player, force);
 	}
 }
 
 void ShipControlDevice::generateObject(CreatureObject* player) {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -60,14 +60,14 @@ void ShipControlDevice::generateObject(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->generateObject(player);
 	}
 }
 
 int ShipControlDevice::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -78,14 +78,14 @@ int ShipControlDevice::handleObjectMenuSelect(CreatureObject* player, byte selec
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void ShipControlDevice::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -95,7 +95,7 @@ void ShipControlDevice::fillObjectMenuResponse(ObjectMenuResponse* menuResponse,
 
 bool ShipControlDevice::canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade) {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -112,7 +112,7 @@ bool ShipControlDevice::canBeTradedTo(CreatureObject* player, CreatureObject* re
 
 bool ShipControlDevice::isShipControlDevice() {
 	ShipControlDeviceImplementation* _implementation = static_cast<ShipControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -157,7 +157,7 @@ void ShipControlDeviceImplementation::finalize() {
 void ShipControlDeviceImplementation::_initializeImplementation() {
 	_setClassHelper(ShipControlDeviceHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -274,7 +274,7 @@ int ShipControlDeviceImplementation::handleObjectMenuSelect(CreatureObject* play
 	// server/zone/objects/intangible/ShipControlDevice.idl():  		return 
 	if (selectedID == RadialOptions::VEHICLE_GENERATE){
 	// server/zone/objects/intangible/ShipControlDevice.idl():  		}
-	if (ControlDeviceImplementation::controlledObject.getForUpdate() == nullptr){
+	if (ControlDeviceImplementation::controlledObject.getForUpdate() == NULL){
 	// server/zone/objects/intangible/ShipControlDevice.idl():  				Logger.error("null controlled object in vehicle control device");
 	Logger::error("null controlled object in vehicle control device");
 	// server/zone/objects/intangible/ShipControlDevice.idl():  				return 1;
@@ -282,7 +282,7 @@ int ShipControlDeviceImplementation::handleObjectMenuSelect(CreatureObject* play
 }
 
 	else 	// server/zone/objects/intangible/ShipControlDevice.idl():  		}
-	if (player->getParent() == nullptr){
+	if (player->getParent() == NULL){
 	// server/zone/objects/intangible/ShipControlDevice.idl():  				this.generateObject(player);
 	_this.getReferenceUnsafeStaticCast()->generateObject(player);
 }
@@ -291,7 +291,7 @@ int ShipControlDeviceImplementation::handleObjectMenuSelect(CreatureObject* play
 	else 	// server/zone/objects/intangible/ShipControlDevice.idl():  		return 
 	if (selectedID == RadialOptions::VEHICLE_STORE){
 	// server/zone/objects/intangible/ShipControlDevice.idl():  			}
-	if (ControlDeviceImplementation::controlledObject.getForUpdate() == nullptr){
+	if (ControlDeviceImplementation::controlledObject.getForUpdate() == NULL){
 	// server/zone/objects/intangible/ShipControlDevice.idl():  				Logger.error("null controlled object in vehicle control device");
 	Logger::error("null controlled object in vehicle control device");
 	// server/zone/objects/intangible/ShipControlDevice.idl():  				return 1;

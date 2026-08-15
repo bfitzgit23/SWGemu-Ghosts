@@ -38,7 +38,7 @@ ResourceManager::~ResourceManager() {
 
 void ResourceManager::stop() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -52,7 +52,7 @@ void ResourceManager::stop() {
 
 void ResourceManager::initialize() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -66,7 +66,7 @@ void ResourceManager::initialize() {
 
 void ResourceManager::shiftResources() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -80,7 +80,7 @@ void ResourceManager::shiftResources() {
 
 int ResourceManager::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -98,7 +98,7 @@ int ResourceManager::notifyObserverEvent(unsigned int eventType, Observable* obs
 
 int ResourceManager::getResourceRecycleType(ResourceSpawn* resource) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -113,7 +113,7 @@ int ResourceManager::getResourceRecycleType(ResourceSpawn* resource) {
 
 void ResourceManager::sendResourceListForSurvey(CreatureObject* playerCreature, const int toolType, const String& surveyType) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -130,7 +130,7 @@ void ResourceManager::sendResourceListForSurvey(CreatureObject* playerCreature, 
 
 void ResourceManager::sendSurvey(CreatureObject* playerCreature, const String& resname) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -146,7 +146,7 @@ void ResourceManager::sendSurvey(CreatureObject* playerCreature, const String& r
 
 void ResourceManager::sendSample(CreatureObject* playerCreature, const String& resname, const String& sampleAnimation) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -163,7 +163,7 @@ void ResourceManager::sendSample(CreatureObject* playerCreature, const String& r
 
 ResourceContainer* ResourceManager::harvestResource(CreatureObject* player, const String& type, const int quantity) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -180,7 +180,7 @@ ResourceContainer* ResourceManager::harvestResource(CreatureObject* player, cons
 
 bool ResourceManager::harvestResourceToPlayer(CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -197,7 +197,7 @@ bool ResourceManager::harvestResourceToPlayer(CreatureObject* player, ResourceSp
 
 unsigned int ResourceManager::getAvailablePowerFromPlayer(CreatureObject* player) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,7 +212,7 @@ unsigned int ResourceManager::getAvailablePowerFromPlayer(CreatureObject* player
 
 void ResourceManager::removePowerFromPlayer(CreatureObject* player, unsigned int power) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -228,7 +228,7 @@ void ResourceManager::removePowerFromPlayer(CreatureObject* player, unsigned int
 
 void ResourceManager::getResourceListByType(Vector<ManagedReference<ResourceSpawn* > >& list, int type, const String& zoneName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -238,7 +238,7 @@ void ResourceManager::getResourceListByType(Vector<ManagedReference<ResourceSpaw
 
 void ResourceManager::createResourceSpawn(CreatureObject* playerCreature, const UnicodeString& args) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -254,7 +254,7 @@ void ResourceManager::createResourceSpawn(CreatureObject* playerCreature, const 
 
 void ResourceManager::givePlayerResource(CreatureObject* playerCreature, const String& restype, const int quantity) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -271,7 +271,7 @@ void ResourceManager::givePlayerResource(CreatureObject* playerCreature, const S
 
 ResourceSpawn* ResourceManager::getCurrentSpawn(const String& restype, const String& zoneName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -287,7 +287,7 @@ ResourceSpawn* ResourceManager::getCurrentSpawn(const String& restype, const Str
 
 ResourceSpawn* ResourceManager::getResourceSpawn(const String& spawnName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -302,7 +302,7 @@ ResourceSpawn* ResourceManager::getResourceSpawn(const String& spawnName) {
 
 bool ResourceManager::isRecycledResource(ResourceSpawn* resource) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -317,7 +317,7 @@ bool ResourceManager::isRecycledResource(ResourceSpawn* resource) {
 
 ResourceSpawn* ResourceManager::getRecycledVersion(ResourceSpawn* resource) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -332,7 +332,7 @@ ResourceSpawn* ResourceManager::getRecycledVersion(ResourceSpawn* resource) {
 
 ResourceSpawn* ResourceManager::getRecycledVersionByType(const String& resourceType) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -347,7 +347,7 @@ ResourceSpawn* ResourceManager::getRecycledVersionByType(const String& resourceT
 
 void ResourceManager::addNodeToListBox(SuiListBox* sui, const String& nodeName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -363,7 +363,7 @@ void ResourceManager::addNodeToListBox(SuiListBox* sui, const String& nodeName) 
 
 String ResourceManager::addParentNodeToListBox(SuiListBox* sui, const String& currentNode) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -381,7 +381,7 @@ String ResourceManager::addParentNodeToListBox(SuiListBox* sui, const String& cu
 
 void ResourceManager::addNodeToListBoxCR(SuiListBox* sui, const String& nodeName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -397,7 +397,7 @@ void ResourceManager::addNodeToListBoxCR(SuiListBox* sui, const String& nodeName
 
 String ResourceManager::addParentNodeToListBoxCR(SuiListBox* sui, const String& currentNode) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -415,7 +415,7 @@ String ResourceManager::addParentNodeToListBoxCR(SuiListBox* sui, const String& 
 
 void ResourceManager::listResourcesForPlanetOnScreen(CreatureObject* creature, const String& planet) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -431,7 +431,7 @@ void ResourceManager::listResourcesForPlanetOnScreen(CreatureObject* creature, c
 
 String ResourceManager::healthCheck() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -447,7 +447,7 @@ String ResourceManager::healthCheck() {
 
 String ResourceManager::dumpResources() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -463,7 +463,7 @@ String ResourceManager::dumpResources() {
 
 String ResourceManager::despawnResource(String& resourceName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -480,7 +480,7 @@ String ResourceManager::despawnResource(String& resourceName) {
 
 void ResourceManager::addPlanetsToListBox(SuiListBox* sui) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -495,7 +495,7 @@ void ResourceManager::addPlanetsToListBox(SuiListBox* sui) {
 
 String ResourceManager::getPlanetByIndex(int idx) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -512,7 +512,7 @@ String ResourceManager::getPlanetByIndex(int idx) {
 
 ResourceSpawner* ResourceManager::getResourceSpawner() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -522,7 +522,7 @@ ResourceSpawner* ResourceManager::getResourceSpawner() {
 
 ZoneServer* ResourceManager::getZoneServer() {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -567,7 +567,7 @@ void ResourceManagerImplementation::finalize() {
 void ResourceManagerImplementation::_initializeImplementation() {
 	_setClassHelper(ResourceManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -786,7 +786,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			 int quantity = inv->getSignedIntParameter();
 			
 			DistributedObject* _m_res = harvestResource(player, type, quantity);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_HARVESTRESOURCETOPLAYER__CREATUREOBJECT_RESOURCESPAWN_INT_:
@@ -841,7 +841,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			 String zoneName; inv->getAsciiParameter(zoneName);
 			
 			DistributedObject* _m_res = getCurrentSpawn(restype, zoneName);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETRESOURCESPAWN__STRING_:
@@ -849,7 +849,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			 String spawnName; inv->getAsciiParameter(spawnName);
 			
 			DistributedObject* _m_res = getResourceSpawn(spawnName);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ISRECYCLEDRESOURCE__RESOURCESPAWN_:
@@ -865,7 +865,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			ResourceSpawn* resource = static_cast<ResourceSpawn*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = getRecycledVersion(resource);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETRECYCLEDVERSIONBYTYPE__STRING_:
@@ -873,7 +873,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			 String resourceType; inv->getAsciiParameter(resourceType);
 			
 			DistributedObject* _m_res = getRecycledVersionByType(resourceType);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ADDNODETOLISTBOX__SUILISTBOX_STRING_:
@@ -963,7 +963,7 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 		{
 			
 			DistributedObject* _m_res = getZoneServer();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	default:

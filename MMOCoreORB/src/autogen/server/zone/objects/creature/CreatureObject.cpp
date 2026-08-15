@@ -54,7 +54,7 @@ CreatureObject::~CreatureObject() {
 
 void CreatureObject::initializeMembers() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -68,7 +68,7 @@ void CreatureObject::initializeMembers() {
 
 void CreatureObject::createChildObjects() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -83,7 +83,7 @@ void CreatureObject::createChildObjects() {
 
 void CreatureObject::loadTemplateData(SharedObjectTemplate* templateData) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -93,7 +93,7 @@ void CreatureObject::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void CreatureObject::initializeTransientMembers() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ void CreatureObject::initializeTransientMembers() {
 
 void CreatureObject::setCountdownTimer(unsigned int newCount, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -124,7 +124,7 @@ void CreatureObject::setCountdownTimer(unsigned int newCount, bool notifyClient)
 
 void CreatureObject::clearQueueAction(unsigned int actioncntr, float timer, unsigned int tab1, unsigned int tab2) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -143,7 +143,7 @@ void CreatureObject::clearQueueAction(unsigned int actioncntr, float timer, unsi
 
 void CreatureObject::clearQueueActions(bool combatOnly) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -159,7 +159,7 @@ void CreatureObject::clearQueueActions(bool combatOnly) {
 
 void CreatureObject::sendBaselinesTo(SceneObject* player) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -174,7 +174,7 @@ void CreatureObject::sendBaselinesTo(SceneObject* player) {
 
 void CreatureObject::sendToOwner(bool doClose) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -189,7 +189,7 @@ void CreatureObject::sendToOwner(bool doClose) {
 
 void CreatureObject::sendSystemMessage(const String& message) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -204,7 +204,7 @@ void CreatureObject::sendSystemMessage(const String& message) {
 
 void CreatureObject::playMusicMessage(const String& file) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -219,7 +219,7 @@ void CreatureObject::playMusicMessage(const String& file) {
 
 void CreatureObject::sendNewbieTutorialRequest(const String& request) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -234,7 +234,7 @@ void CreatureObject::sendNewbieTutorialRequest(const String& request) {
 
 void CreatureObject::sendNewbieTutorialEnableHudElement(const String& ui, bool enable, float blinkCount) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -251,7 +251,7 @@ void CreatureObject::sendNewbieTutorialEnableHudElement(const String& ui, bool e
 
 void CreatureObject::sendOpenHolocronToPageMessage() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -265,7 +265,7 @@ void CreatureObject::sendOpenHolocronToPageMessage() {
 
 void CreatureObject::sendSystemMessage(UnicodeString& message) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -280,7 +280,7 @@ void CreatureObject::sendSystemMessage(UnicodeString& message) {
 
 void CreatureObject::sendSystemMessage(StringIdChatParameter& stringid) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -290,7 +290,7 @@ void CreatureObject::sendSystemMessage(StringIdChatParameter& stringid) {
 
 void CreatureObject::sendSlottedObjectsTo(SceneObject* player) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -305,7 +305,7 @@ void CreatureObject::sendSlottedObjectsTo(SceneObject* player) {
 
 void CreatureObject::setCombatState() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -320,7 +320,7 @@ void CreatureObject::setCombatState() {
 
 void CreatureObject::clearCombatState(bool clearDefenders) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -336,7 +336,7 @@ void CreatureObject::clearCombatState(bool clearDefenders) {
 
 void CreatureObject::addMountedCombatSlow() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -350,7 +350,7 @@ void CreatureObject::addMountedCombatSlow() {
 
 void CreatureObject::removeMountedCombatSlow(bool showEndMessage) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -365,7 +365,7 @@ void CreatureObject::removeMountedCombatSlow(bool showEndMessage) {
 
 void CreatureObject::setPosture(int newPosture, bool immediate, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -383,7 +383,7 @@ void CreatureObject::setPosture(int newPosture, bool immediate, bool notifyClien
 
 void CreatureObject::updatePostures(bool immediate) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -399,7 +399,7 @@ void CreatureObject::updatePostures(bool immediate) {
 
 float CreatureObject::calculateSpeed() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -413,7 +413,7 @@ float CreatureObject::calculateSpeed() {
 
 void CreatureObject::updateLocomotion() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -428,7 +428,7 @@ void CreatureObject::updateLocomotion() {
 
 void CreatureObject::setHeight(float heigh, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -445,7 +445,7 @@ void CreatureObject::setHeight(float heigh, bool notifyClient) {
 
 void CreatureObject::setAccelerationMultiplierBase(float newMultiplierBase, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -462,7 +462,7 @@ void CreatureObject::setAccelerationMultiplierBase(float newMultiplierBase, bool
 
 void CreatureObject::setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -479,7 +479,7 @@ void CreatureObject::setAccelerationMultiplierMod(float newMultiplierMod, bool n
 
 void CreatureObject::setSpeedMultiplierBase(float newMultiplierBase, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -496,7 +496,7 @@ void CreatureObject::setSpeedMultiplierBase(float newMultiplierBase, bool notify
 
 void CreatureObject::setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -513,7 +513,7 @@ void CreatureObject::setSpeedMultiplierMod(float newMultiplierMod, bool notifyCl
 
 void CreatureObject::setTurnScale(float newMultiplierMod, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -530,7 +530,7 @@ void CreatureObject::setTurnScale(float newMultiplierMod, bool notifyClient) {
 
 void CreatureObject::setRunSpeed(float newSpeed, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -547,7 +547,7 @@ void CreatureObject::setRunSpeed(float newSpeed, bool notifyClient) {
 
 void CreatureObject::setCurrentSpeed(float newSpeed) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -562,7 +562,7 @@ void CreatureObject::setCurrentSpeed(float newSpeed) {
 
 void CreatureObject::setHAM(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -579,7 +579,7 @@ void CreatureObject::setHAM(int type, int value, bool notifyClient) {
 
 int CreatureObject::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, bool notifyClient, bool isCombatAction) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -594,14 +594,14 @@ int CreatureObject::inflictDamage(TangibleObject* attacker, int damageType, floa
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->inflictDamage(attacker, damageType, damage, destroy, notifyClient, isCombatAction);
 	}
 }
 
 int CreatureObject::inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient, bool isCombatAction) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -617,14 +617,14 @@ int CreatureObject::inflictDamage(TangibleObject* attacker, int damageType, floa
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->inflictDamage(attacker, damageType, damage, destroy, xp, notifyClient, isCombatAction);
 	}
 }
 
 bool CreatureObject::hasDamage(int attribute) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -639,7 +639,7 @@ bool CreatureObject::hasDamage(int attribute) {
 
 int CreatureObject::healDamage(TangibleObject* healer, int damageType, int damage, bool notifyClient, bool notifyObservers) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -659,7 +659,7 @@ int CreatureObject::healDamage(TangibleObject* healer, int damageType, int damag
 
 int CreatureObject::healWound(TangibleObject* healer, int damageType, int damage, bool notifyClient, bool notifyObservers) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -679,7 +679,7 @@ int CreatureObject::healWound(TangibleObject* healer, int damageType, int damage
 
 void CreatureObject::setBaseHAM(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -696,7 +696,7 @@ void CreatureObject::setBaseHAM(int type, int value, bool notifyClient) {
 
 void CreatureObject::setWounds(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -713,7 +713,7 @@ void CreatureObject::setWounds(int type, int value, bool notifyClient) {
 
 int CreatureObject::addWounds(int type, int value, bool notifyClient, bool doShockWounds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -732,7 +732,7 @@ int CreatureObject::addWounds(int type, int value, bool notifyClient, bool doSho
 
 void CreatureObject::setMaxHAM(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -750,7 +750,7 @@ void CreatureObject::setMaxHAM(int type, int value, bool notifyClient) {
 
 void CreatureObject::addMaxHAM(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -768,7 +768,7 @@ void CreatureObject::addMaxHAM(int type, int value, bool notifyClient) {
 
 void CreatureObject::setEncumbrance(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -785,7 +785,7 @@ void CreatureObject::setEncumbrance(int type, int value, bool notifyClient) {
 
 void CreatureObject::addEncumbrance(int type, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -802,7 +802,7 @@ void CreatureObject::addEncumbrance(int type, int value, bool notifyClient) {
 
 void CreatureObject::setWeapon(WeaponObject* weao, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -819,7 +819,7 @@ void CreatureObject::setWeapon(WeaponObject* weao, bool notifyClient) {
 
 int CreatureObject::notifyObjectInserted(SceneObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -834,7 +834,7 @@ int CreatureObject::notifyObjectInserted(SceneObject* object) {
 
 int CreatureObject::notifyObjectRemoved(SceneObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -849,7 +849,7 @@ int CreatureObject::notifyObjectRemoved(SceneObject* object) {
 
 void CreatureObject::setInstrumentID(int instrumentid, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -866,7 +866,7 @@ void CreatureObject::setInstrumentID(int instrumentid, bool notifyClient) {
 
 void CreatureObject::setListenToID(unsigned long long id, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -883,7 +883,7 @@ void CreatureObject::setListenToID(unsigned long long id, bool notifyClient) {
 
 void CreatureObject::setPerformanceCounter(int counter, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -900,7 +900,7 @@ void CreatureObject::setPerformanceCounter(int counter, bool notifyClient) {
 
 void CreatureObject::setPerformanceAnimation(const String& animation, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -917,7 +917,7 @@ void CreatureObject::setPerformanceAnimation(const String& animation, bool notif
 
 void CreatureObject::setShockWounds(int newShock, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -934,7 +934,7 @@ void CreatureObject::setShockWounds(int newShock, bool notifyClient) {
 
 void CreatureObject::addShockWounds(int shockToAdd, bool notiyClient, bool sendSpam) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -952,7 +952,7 @@ void CreatureObject::addShockWounds(int shockToAdd, bool notiyClient, bool sendS
 
 void CreatureObject::setTargetID(unsigned long long targetID, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -969,7 +969,7 @@ void CreatureObject::setTargetID(unsigned long long targetID, bool notifyClient)
 
 void CreatureObject::setBankCredits(int credits, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -986,7 +986,7 @@ void CreatureObject::setBankCredits(int credits, bool notifyClient) {
 
 void CreatureObject::addBuff(Buff* buff) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -996,14 +996,14 @@ void CreatureObject::addBuff(Buff* buff) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((buff == nullptr) || buff->isLockedByCurrentThread());
+		assert((buff == NULL) || buff->isLockedByCurrentThread());
 		_implementation->addBuff(buff);
 	}
 }
 
 bool CreatureObject::removeBuff(unsigned int buffcrc) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1019,7 +1019,7 @@ bool CreatureObject::removeBuff(unsigned int buffcrc) {
 
 void CreatureObject::removeBuff(Buff* buff) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1029,14 +1029,14 @@ void CreatureObject::removeBuff(Buff* buff) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((buff == nullptr) || buff->isLockedByCurrentThread());
+		assert((buff == NULL) || buff->isLockedByCurrentThread());
 		_implementation->removeBuff(buff);
 	}
 }
 
 bool CreatureObject::removeStateBuff(unsigned long long state) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1052,7 +1052,7 @@ bool CreatureObject::removeStateBuff(unsigned long long state) {
 
 void CreatureObject::clearBuffs(bool updateclient, bool removeAll) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1069,7 +1069,7 @@ void CreatureObject::clearBuffs(bool updateclient, bool removeAll) {
 
 void CreatureObject::renewBuff(unsigned int buffCRC, int duration, bool sendToClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1087,7 +1087,7 @@ void CreatureObject::renewBuff(unsigned int buffCRC, int duration, bool sendToCl
 
 void CreatureObject::updateVehiclePosition(bool sendPackets) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1102,7 +1102,7 @@ void CreatureObject::updateVehiclePosition(bool sendPackets) {
 
 void CreatureObject::addWearableObject(TangibleObject* object, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1119,7 +1119,7 @@ void CreatureObject::addWearableObject(TangibleObject* object, bool notifyClient
 
 void CreatureObject::removeWearableObject(TangibleObject* object, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1136,7 +1136,7 @@ void CreatureObject::removeWearableObject(TangibleObject* object, bool notifyCli
 
 const WearablesDeltaVector* CreatureObject::getWearablesDeltaVector() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1146,7 +1146,7 @@ const WearablesDeltaVector* CreatureObject::getWearablesDeltaVector() const {
 
 void CreatureObject::sendBuffsTo(CreatureObject* creature) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1161,7 +1161,7 @@ void CreatureObject::sendBuffsTo(CreatureObject* creature) {
 
 BuffList* CreatureObject::getBuffList() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1171,7 +1171,7 @@ BuffList* CreatureObject::getBuffList() {
 
 Buff* CreatureObject::getBuff(unsigned int buffcrc) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1186,7 +1186,7 @@ Buff* CreatureObject::getBuff(unsigned int buffcrc) {
 
 long long CreatureObject::getSkillModFromBuffs(const String& skillMod) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1201,7 +1201,7 @@ long long CreatureObject::getSkillModFromBuffs(const String& skillMod) {
 
 int CreatureObject::addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1225,7 +1225,7 @@ int CreatureObject::addDotState(CreatureObject* attacker, unsigned long long dot
 
 bool CreatureObject::healDot(unsigned long long dotType, int reduction, bool sendMsg) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1243,7 +1243,7 @@ bool CreatureObject::healDot(unsigned long long dotType, int reduction, bool sen
 
 void CreatureObject::clearDots() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1258,7 +1258,7 @@ void CreatureObject::clearDots() {
 
 DamageOverTimeList* CreatureObject::getDamageOverTimeList() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1268,7 +1268,7 @@ DamageOverTimeList* CreatureObject::getDamageOverTimeList() {
 
 bool CreatureObject::hasBuff(unsigned int buffcrc) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1283,7 +1283,7 @@ bool CreatureObject::hasBuff(unsigned int buffcrc) {
 
 void CreatureObject::notifySelfPositionUpdate() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1298,7 +1298,7 @@ void CreatureObject::notifySelfPositionUpdate() {
 
 void CreatureObject::notifyPostureChange(int newPosture) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1314,7 +1314,7 @@ void CreatureObject::notifyPostureChange(int newPosture) {
 
 void CreatureObject::setLevel(int level, bool randomHam) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1331,7 +1331,7 @@ void CreatureObject::setLevel(int level, bool randomHam) {
 
 void CreatureObject::updateToDatabaseAllObjects(bool startTask) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1346,7 +1346,7 @@ void CreatureObject::updateToDatabaseAllObjects(bool startTask) {
 
 bool CreatureObject::isResuscitable() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1360,7 +1360,7 @@ bool CreatureObject::isResuscitable() {
 
 void CreatureObject::addBankCredits(int credits, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1377,7 +1377,7 @@ void CreatureObject::addBankCredits(int credits, bool notifyClient) {
 
 void CreatureObject::addCashCredits(int credits, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1394,7 +1394,7 @@ void CreatureObject::addCashCredits(int credits, bool notifyClient) {
 
 CreditObject* CreatureObject::getCreditObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1409,7 +1409,7 @@ CreditObject* CreatureObject::getCreditObject() {
 
 void CreatureObject::subtractBankCredits(int credits) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1425,7 +1425,7 @@ void CreatureObject::subtractBankCredits(int credits) {
 
 void CreatureObject::subtractCashCredits(int credits) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1441,7 +1441,7 @@ void CreatureObject::subtractCashCredits(int credits) {
 
 bool CreatureObject::verifyCashCredits(int credits) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1456,7 +1456,7 @@ bool CreatureObject::verifyCashCredits(int credits) {
 
 bool CreatureObject::verifyBankCredits(int credits) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1471,7 +1471,7 @@ bool CreatureObject::verifyBankCredits(int credits) {
 
 bool CreatureObject::isDancing() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1485,7 +1485,7 @@ bool CreatureObject::isDancing() {
 
 bool CreatureObject::isPlayingMusic() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1499,7 +1499,7 @@ bool CreatureObject::isPlayingMusic() {
 
 void CreatureObject::stopEntertaining() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1514,7 +1514,7 @@ void CreatureObject::stopEntertaining() {
 
 bool CreatureObject::isEntertaining() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1528,7 +1528,7 @@ bool CreatureObject::isEntertaining() {
 
 void CreatureObject::setCashCredits(int credits, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1545,7 +1545,7 @@ void CreatureObject::setCashCredits(int credits, bool notifyClient) {
 
 void CreatureObject::setTerrainNegotiation(float value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1562,7 +1562,7 @@ void CreatureObject::setTerrainNegotiation(float value, bool notifyClient) {
 
 void CreatureObject::updateTerrainNegotiation() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1576,7 +1576,7 @@ void CreatureObject::updateTerrainNegotiation() {
 
 void CreatureObject::addSkill(Skill* skill, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1587,7 +1587,7 @@ void CreatureObject::addSkill(Skill* skill, bool notifyClient) {
 
 void CreatureObject::addSkill(const String& skill, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1604,7 +1604,7 @@ void CreatureObject::addSkill(const String& skill, bool notifyClient) {
 
 void CreatureObject::removeSkill(Skill* skill, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -1615,7 +1615,7 @@ void CreatureObject::removeSkill(Skill* skill, bool notifyClient) {
 
 void CreatureObject::removeSkill(const String& skill, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1632,7 +1632,7 @@ void CreatureObject::removeSkill(const String& skill, bool notifyClient) {
 
 void CreatureObject::addSkillMod(const int modType, const String& skillMod, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1651,7 +1651,7 @@ void CreatureObject::addSkillMod(const int modType, const String& skillMod, int 
 
 void CreatureObject::removeSkillMod(const int modType, const String& skillMod, int value, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1670,7 +1670,7 @@ void CreatureObject::removeSkillMod(const int modType, const String& skillMod, i
 
 void CreatureObject::removeAllSkillModsOfType(const int modType, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1687,7 +1687,7 @@ void CreatureObject::removeAllSkillModsOfType(const int modType, bool notifyClie
 
 void CreatureObject::updateGroupInviterID(unsigned long long id, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1704,7 +1704,7 @@ void CreatureObject::updateGroupInviterID(unsigned long long id, bool notifyClie
 
 void CreatureObject::updateGroup(GroupObject* group, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1721,7 +1721,7 @@ void CreatureObject::updateGroup(GroupObject* group, bool notifyClient) {
 
 void CreatureObject::enqueueCommand(unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments, int priority, int compareCount) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1742,7 +1742,7 @@ void CreatureObject::enqueueCommand(unsigned int actionCRC, unsigned int actionC
 
 void CreatureObject::sendCommand(unsigned int crc, const UnicodeString& args, unsigned long long targetID, int priority) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1761,7 +1761,7 @@ void CreatureObject::sendCommand(unsigned int crc, const UnicodeString& args, un
 
 void CreatureObject::sendCommand(const String& action, const UnicodeString& args, unsigned long long targetID, int priority) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1780,7 +1780,7 @@ void CreatureObject::sendCommand(const String& action, const UnicodeString& args
 
 void CreatureObject::setMood(byte moodID, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1797,7 +1797,7 @@ void CreatureObject::setMood(byte moodID, bool notifyClient) {
 
 void CreatureObject::setMoodString(const String& animation, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1814,7 +1814,7 @@ void CreatureObject::setMoodString(const String& animation, bool notifyClient) {
 
 void CreatureObject::deleteQueueAction(unsigned int actionCount) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1830,7 +1830,7 @@ void CreatureObject::deleteQueueAction(unsigned int actionCount) {
 
 bool CreatureObject::setState(unsigned long long state, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1847,7 +1847,7 @@ bool CreatureObject::setState(unsigned long long state, bool notifyClient) {
 
 void CreatureObject::setAlternateAppearance(const String& appearanceTeamplate, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1864,7 +1864,7 @@ void CreatureObject::setAlternateAppearance(const String& appearanceTeamplate, b
 
 bool CreatureObject::clearState(unsigned long long state, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1881,7 +1881,7 @@ bool CreatureObject::clearState(unsigned long long state, bool notifyClient) {
 
 void CreatureObject::setControlDevice(ControlDevice* device) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1897,7 +1897,7 @@ void CreatureObject::setControlDevice(ControlDevice* device) {
 
 void CreatureObject::setCreatureLink(CreatureObject* object, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1914,7 +1914,7 @@ void CreatureObject::setCreatureLink(CreatureObject* object, bool notifyClient) 
 
 void CreatureObject::executeObjectControllerAction(unsigned int actionCRC) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1930,7 +1930,7 @@ void CreatureObject::executeObjectControllerAction(unsigned int actionCRC) {
 
 void CreatureObject::executeObjectControllerAction(unsigned int actionCRC, unsigned long long targetID, const UnicodeString& args) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1948,7 +1948,7 @@ void CreatureObject::executeObjectControllerAction(unsigned int actionCRC, unsig
 
 bool CreatureObject::isAttackableBy(CreatureObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1963,7 +1963,7 @@ bool CreatureObject::isAttackableBy(CreatureObject* object) {
 
 bool CreatureObject::isAttackableBy(CreatureObject* object, bool bypassDeadCheck) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1979,7 +1979,7 @@ bool CreatureObject::isAttackableBy(CreatureObject* object, bool bypassDeadCheck
 
 bool CreatureObject::isAttackableBy(TangibleObject* attacker) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -1994,7 +1994,7 @@ bool CreatureObject::isAttackableBy(TangibleObject* attacker) {
 
 bool CreatureObject::isAttackableBy(TangibleObject* object, bool bypassDeadCheck) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2010,7 +2010,7 @@ bool CreatureObject::isAttackableBy(TangibleObject* object, bool bypassDeadCheck
 
 bool CreatureObject::isHealableBy(CreatureObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2025,7 +2025,7 @@ bool CreatureObject::isHealableBy(CreatureObject* object) {
 
 bool CreatureObject::hasBountyMissionFor(CreatureObject* target) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2040,7 +2040,7 @@ bool CreatureObject::hasBountyMissionFor(CreatureObject* target) {
 
 bool CreatureObject::sendConversationStartTo(SceneObject* player) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2055,7 +2055,7 @@ bool CreatureObject::sendConversationStartTo(SceneObject* player) {
 
 void CreatureObject::selectConversationOption(int option, SceneObject* obj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2071,7 +2071,7 @@ void CreatureObject::selectConversationOption(int option, SceneObject* obj) {
 
 void CreatureObject::sendMessage(BasePacket* msg) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -2081,7 +2081,7 @@ void CreatureObject::sendMessage(BasePacket* msg) {
 
 void CreatureObject::sendStateCombatSpam(const String& fileName, const String& stringName, byte color, int damage, bool broadcast) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2100,7 +2100,7 @@ void CreatureObject::sendStateCombatSpam(const String& fileName, const String& s
 
 void CreatureObject::sendCustomCombatSpam(const UnicodeString& customString, byte color) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2116,7 +2116,7 @@ void CreatureObject::sendCustomCombatSpam(const UnicodeString& customString, byt
 
 void CreatureObject::sendExecuteConsoleCommand(const String& command) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2131,7 +2131,7 @@ void CreatureObject::sendExecuteConsoleCommand(const String& command) {
 
 bool CreatureObject::isAggressiveTo(CreatureObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2146,7 +2146,7 @@ bool CreatureObject::isAggressiveTo(CreatureObject* object) {
 
 int CreatureObject::notifyObjectDestructionObservers(TangibleObject* attacker, int condition, bool isCombatAction) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2158,14 +2158,14 @@ int CreatureObject::notifyObjectDestructionObservers(TangibleObject* attacker, i
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((attacker == nullptr) || attacker->isLockedByCurrentThread());
+		assert((attacker == NULL) || attacker->isLockedByCurrentThread());
 		return _implementation->notifyObjectDestructionObservers(attacker, condition, isCombatAction);
 	}
 }
 
 int CreatureObject::notifyObjectKillObservers(TangibleObject* killer) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2175,14 +2175,14 @@ int CreatureObject::notifyObjectKillObservers(TangibleObject* killer) {
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((killer == nullptr) || killer->isLockedByCurrentThread());
+		assert((killer == NULL) || killer->isLockedByCurrentThread());
 		return _implementation->notifyObjectKillObservers(killer);
 	}
 }
 
 void CreatureObject::notifyLoadFromDatabase() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2197,7 +2197,7 @@ void CreatureObject::notifyLoadFromDatabase() {
 
 void CreatureObject::notifyInsert(QuadTreeEntry* obj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -2207,7 +2207,7 @@ void CreatureObject::notifyInsert(QuadTreeEntry* obj) {
 
 void CreatureObject::notifyDissapear(QuadTreeEntry* obj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -2217,7 +2217,7 @@ void CreatureObject::notifyDissapear(QuadTreeEntry* obj) {
 
 void CreatureObject::notifyPositionUpdate(QuadTreeEntry* entry) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -2227,7 +2227,7 @@ void CreatureObject::notifyPositionUpdate(QuadTreeEntry* entry) {
 
 void CreatureObject::destroyObjectFromDatabase(bool destroyContainedObjects) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2243,7 +2243,7 @@ void CreatureObject::destroyObjectFromDatabase(bool destroyContainedObjects) {
 
 void CreatureObject::setFactionRank(int rank, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2260,7 +2260,7 @@ void CreatureObject::setFactionRank(int rank, bool notifyClient) {
 
 String CreatureObject::getFirstName() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2276,7 +2276,7 @@ String CreatureObject::getFirstName() {
 
 String CreatureObject::setFirstName(const String& newFirstName) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2293,7 +2293,7 @@ String CreatureObject::setFirstName(const String& newFirstName) {
 
 String CreatureObject::getLastName() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2309,7 +2309,7 @@ String CreatureObject::getLastName() {
 
 String CreatureObject::setLastName(const String& newLastName, bool skipVerify) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2327,7 +2327,7 @@ String CreatureObject::setLastName(const String& newLastName, bool skipVerify) {
 
 String CreatureObject::setLastName(const String& newLastName) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2344,7 +2344,7 @@ String CreatureObject::setLastName(const String& newLastName) {
 
 bool CreatureObject::isOnline() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2358,7 +2358,7 @@ bool CreatureObject::isOnline() {
 
 bool CreatureObject::canTreatInjuries() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2372,7 +2372,7 @@ bool CreatureObject::canTreatInjuries() {
 
 bool CreatureObject::canTreatStates() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2386,7 +2386,7 @@ bool CreatureObject::canTreatStates() {
 
 bool CreatureObject::canTreatWounds() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2400,7 +2400,7 @@ bool CreatureObject::canTreatWounds() {
 
 bool CreatureObject::canTreatConditions() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2414,7 +2414,7 @@ bool CreatureObject::canTreatConditions() {
 
 Reference<PlayerObject* > CreatureObject::getPlayerObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2428,7 +2428,7 @@ Reference<PlayerObject* > CreatureObject::getPlayerObject() {
 
 bool CreatureObject::isListening() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2442,7 +2442,7 @@ bool CreatureObject::isListening() const {
 
 bool CreatureObject::isWatching() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2456,7 +2456,7 @@ bool CreatureObject::isWatching() const {
 
 void CreatureObject::setClient(ZoneClientSession* cli) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2472,7 +2472,7 @@ void CreatureObject::setClient(ZoneClientSession* cli) {
 
 void CreatureObject::dismount() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2487,7 +2487,7 @@ void CreatureObject::dismount() {
 
 float CreatureObject::calculateBFRatio() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2501,7 +2501,7 @@ float CreatureObject::calculateBFRatio() {
 
 void CreatureObject::removeFeignedDeath() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2516,7 +2516,7 @@ void CreatureObject::removeFeignedDeath() {
 
 bool CreatureObject::canFeignDeath() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2531,7 +2531,7 @@ bool CreatureObject::canFeignDeath() {
 
 void CreatureObject::feignDeath() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2546,7 +2546,7 @@ void CreatureObject::feignDeath() {
 
 void CreatureObject::setFeignedDeathState() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2561,7 +2561,7 @@ void CreatureObject::setFeignedDeathState() {
 
 void CreatureObject::setDizziedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2577,7 +2577,7 @@ void CreatureObject::setDizziedState(int durationSeconds) {
 
 void CreatureObject::setRalliedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2593,7 +2593,7 @@ void CreatureObject::setRalliedState(int durationSeconds) {
 
 void CreatureObject::setAimingState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2609,7 +2609,7 @@ void CreatureObject::setAimingState(int durationSeconds) {
 
 void CreatureObject::setCoverState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2625,7 +2625,7 @@ void CreatureObject::setCoverState(int durationSeconds) {
 
 void CreatureObject::setBerserkedState(unsigned int duration) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2641,7 +2641,7 @@ void CreatureObject::setBerserkedState(unsigned int duration) {
 
 void CreatureObject::setStunnedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2657,7 +2657,7 @@ void CreatureObject::setStunnedState(int durationSeconds) {
 
 void CreatureObject::setBlindedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2673,7 +2673,7 @@ void CreatureObject::setBlindedState(int durationSeconds) {
 
 void CreatureObject::setIntimidatedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2689,7 +2689,7 @@ void CreatureObject::setIntimidatedState(int durationSeconds) {
 
 void CreatureObject::setSnaredState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2705,7 +2705,7 @@ void CreatureObject::setSnaredState(int durationSeconds) {
 
 void CreatureObject::setRootedState(int durationSeconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2721,7 +2721,7 @@ void CreatureObject::setRootedState(int durationSeconds) {
 
 bool CreatureObject::setNextAttackDelay(unsigned int mod, int del) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2737,7 +2737,7 @@ bool CreatureObject::setNextAttackDelay(unsigned int mod, int del) {
 
 void CreatureObject::setMeditateState() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2752,7 +2752,7 @@ void CreatureObject::setMeditateState() {
 
 void CreatureObject::activateHAMRegeneration(int latency) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2768,7 +2768,7 @@ void CreatureObject::activateHAMRegeneration(int latency) {
 
 void CreatureObject::activatePassiveWoundRegeneration() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2783,7 +2783,7 @@ void CreatureObject::activatePassiveWoundRegeneration() {
 
 void CreatureObject::activateStateRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2798,7 +2798,7 @@ void CreatureObject::activateStateRecovery() {
 
 void CreatureObject::updateTimeOfDeath() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2813,7 +2813,7 @@ void CreatureObject::updateTimeOfDeath() {
 
 bool CreatureObject::hasAttackDelay() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2827,7 +2827,7 @@ bool CreatureObject::hasAttackDelay() {
 
 void CreatureObject::removeAttackDelay() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2841,7 +2841,7 @@ void CreatureObject::removeAttackDelay() {
 
 bool CreatureObject::hasIncapTimer() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2855,7 +2855,7 @@ bool CreatureObject::hasIncapTimer() {
 
 CooldownTimerMap* CreatureObject::getCooldownTimerMap() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -2865,7 +2865,7 @@ CooldownTimerMap* CreatureObject::getCooldownTimerMap() {
 
 bool CreatureObject::hasSpice() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2879,7 +2879,7 @@ bool CreatureObject::hasSpice() {
 
 void CreatureObject::updateLastSuccessfulCombatAction() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2893,7 +2893,7 @@ void CreatureObject::updateLastSuccessfulCombatAction() {
 
 void CreatureObject::updatePostureChangeDelay(unsigned long long delay) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2908,7 +2908,7 @@ void CreatureObject::updatePostureChangeDelay(unsigned long long delay) {
 
 bool CreatureObject::checkPostureChangeDelay() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2922,7 +2922,7 @@ bool CreatureObject::checkPostureChangeDelay() {
 
 void CreatureObject::updatePostureDownRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2936,7 +2936,7 @@ void CreatureObject::updatePostureDownRecovery() {
 
 bool CreatureObject::checkPostureDownRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2950,7 +2950,7 @@ bool CreatureObject::checkPostureDownRecovery() {
 
 void CreatureObject::updatePostureUpRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2964,7 +2964,7 @@ void CreatureObject::updatePostureUpRecovery() {
 
 bool CreatureObject::checkPostureUpRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2978,7 +2978,7 @@ bool CreatureObject::checkPostureUpRecovery() {
 
 void CreatureObject::updateKnockdownRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -2992,7 +2992,7 @@ void CreatureObject::updateKnockdownRecovery() {
 
 bool CreatureObject::checkKnockdownRecovery() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3006,7 +3006,7 @@ bool CreatureObject::checkKnockdownRecovery() {
 
 void CreatureObject::updateGroupMFDPositions() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3020,7 +3020,7 @@ void CreatureObject::updateGroupMFDPositions() {
 
 void CreatureObject::queueDizzyFallEvent() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3035,7 +3035,7 @@ void CreatureObject::queueDizzyFallEvent() {
 
 bool CreatureObject::hasDizzyEvent() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3049,7 +3049,7 @@ bool CreatureObject::hasDizzyEvent() {
 
 void CreatureObject::clearDizzyEvent() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3064,7 +3064,7 @@ void CreatureObject::clearDizzyEvent() {
 
 unsigned long long CreatureObject::getScreenPlayState(const String& screenPlay) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3079,7 +3079,7 @@ unsigned long long CreatureObject::getScreenPlayState(const String& screenPlay) 
 
 void CreatureObject::setScreenPlayState(const String& screenPlay, unsigned long long state) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3095,7 +3095,7 @@ void CreatureObject::setScreenPlayState(const String& screenPlay, unsigned long 
 
 void CreatureObject::updateCooldownTimer(const String& coooldownTimer, unsigned long long miliSecondsToAdd) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3111,7 +3111,7 @@ void CreatureObject::updateCooldownTimer(const String& coooldownTimer, unsigned 
 
 bool CreatureObject::checkCooldownRecovery(const String& cooldown) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3126,7 +3126,7 @@ bool CreatureObject::checkCooldownRecovery(const String& cooldown) {
 
 Time* CreatureObject::getCooldownTime(const String& cooldown) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3136,7 +3136,7 @@ Time* CreatureObject::getCooldownTime(const String& cooldown) {
 
 void CreatureObject::addCooldown(const String& name, unsigned long long miliseconds) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3152,7 +3152,7 @@ void CreatureObject::addCooldown(const String& name, unsigned long long miliseco
 
 void CreatureObject::doAnimation(const String& animation) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3167,7 +3167,7 @@ void CreatureObject::doAnimation(const String& animation) {
 
 void CreatureObject::doCombatAnimation(TangibleObject* defender, unsigned int animationCRC, byte hit, byte trails, unsigned long long weaponID) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3186,7 +3186,7 @@ void CreatureObject::doCombatAnimation(TangibleObject* defender, unsigned int an
 
 void CreatureObject::doCombatAnimation(unsigned int animationCRC) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3201,7 +3201,7 @@ void CreatureObject::doCombatAnimation(unsigned int animationCRC) {
 
 void CreatureObject::activateQueueAction() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3216,7 +3216,7 @@ void CreatureObject::activateQueueAction() {
 
 void CreatureObject::activateImmediateAction() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3231,7 +3231,7 @@ void CreatureObject::activateImmediateAction() {
 
 UnicodeString CreatureObject::getCreatureName() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3247,7 +3247,7 @@ UnicodeString CreatureObject::getCreatureName() {
 
 bool CreatureObject::isGrouped() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3261,7 +3261,7 @@ bool CreatureObject::isGrouped() const {
 
 int CreatureObject::getBankCredits() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3275,7 +3275,7 @@ int CreatureObject::getBankCredits() const {
 
 int CreatureObject::getCashCredits() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3289,7 +3289,7 @@ int CreatureObject::getCashCredits() const {
 
 int CreatureObject::getBaseHAM(int idx) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3304,7 +3304,7 @@ int CreatureObject::getBaseHAM(int idx) const {
 
 int CreatureObject::getWounds(int idx) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3319,7 +3319,7 @@ int CreatureObject::getWounds(int idx) const {
 
 const DeltaVector<int>* CreatureObject::getWounds() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3329,7 +3329,7 @@ const DeltaVector<int>* CreatureObject::getWounds() const {
 
 int CreatureObject::getHAM(int idx) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3344,7 +3344,7 @@ int CreatureObject::getHAM(int idx) const {
 
 const DeltaVector<int>* CreatureObject::getHAM() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3354,7 +3354,7 @@ const DeltaVector<int>* CreatureObject::getHAM() const {
 
 int CreatureObject::getMaxHAM(int idx) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3369,7 +3369,7 @@ int CreatureObject::getMaxHAM(int idx) const {
 
 const DeltaVector<int>* CreatureObject::getMaxHAM() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3379,7 +3379,7 @@ const DeltaVector<int>* CreatureObject::getMaxHAM() const {
 
 int CreatureObject::getEncumbrance(int idx) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3394,7 +3394,7 @@ int CreatureObject::getEncumbrance(int idx) const {
 
 const DeltaVector<int>* CreatureObject::getEncumbrances() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3404,7 +3404,7 @@ const DeltaVector<int>* CreatureObject::getEncumbrances() const {
 
 byte CreatureObject::getPosture() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3418,7 +3418,7 @@ byte CreatureObject::getPosture() const {
 
 byte CreatureObject::getLocomotion() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3432,7 +3432,7 @@ byte CreatureObject::getLocomotion() const {
 
 byte CreatureObject::getFactionRank() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3446,7 +3446,7 @@ byte CreatureObject::getFactionRank() const {
 
 ManagedWeakReference<CreatureObject* > CreatureObject::getLinkedCreature() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3460,7 +3460,7 @@ ManagedWeakReference<CreatureObject* > CreatureObject::getLinkedCreature() const
 
 unsigned long long CreatureObject::getCreatureLinkID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3474,7 +3474,7 @@ unsigned long long CreatureObject::getCreatureLinkID() const {
 
 float CreatureObject::getShockWounds() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3488,7 +3488,7 @@ float CreatureObject::getShockWounds() const {
 
 unsigned long long CreatureObject::getWatchToID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3502,7 +3502,7 @@ unsigned long long CreatureObject::getWatchToID() const {
 
 unsigned long long CreatureObject::getStateBitmask() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3516,7 +3516,7 @@ unsigned long long CreatureObject::getStateBitmask() const {
 
 bool CreatureObject::hasState(unsigned long long state) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3531,7 +3531,7 @@ bool CreatureObject::hasState(unsigned long long state) const {
 
 bool CreatureObject::hasStates() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3545,7 +3545,7 @@ bool CreatureObject::hasStates() const {
 
 unsigned long long CreatureObject::getListenID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3559,7 +3559,7 @@ unsigned long long CreatureObject::getListenID() const {
 
 float CreatureObject::getAccelerationMultiplierBase() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3573,7 +3573,7 @@ float CreatureObject::getAccelerationMultiplierBase() const {
 
 float CreatureObject::getAccelerationMultiplierMod() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3587,7 +3587,7 @@ float CreatureObject::getAccelerationMultiplierMod() const {
 
 float CreatureObject::getSpeedMultiplierBase() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3601,7 +3601,7 @@ float CreatureObject::getSpeedMultiplierBase() const {
 
 float CreatureObject::getSpeedMultiplierMod() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3615,7 +3615,7 @@ float CreatureObject::getSpeedMultiplierMod() const {
 
 float CreatureObject::getCurrentSpeed() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3629,7 +3629,7 @@ float CreatureObject::getCurrentSpeed() const {
 
 SpeedMultiplierModChanges* CreatureObject::getSpeedMultiplierModChanges() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3639,7 +3639,7 @@ SpeedMultiplierModChanges* CreatureObject::getSpeedMultiplierModChanges() {
 
 CommandQueueActionVector* CreatureObject::getCommandQueue() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -3649,7 +3649,7 @@ CommandQueueActionVector* CreatureObject::getCommandQueue() {
 
 int CreatureObject::getCommandQueueSize() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3663,7 +3663,7 @@ int CreatureObject::getCommandQueueSize() const {
 
 void CreatureObject::setLastActionCounter(unsigned int ctr) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3679,7 +3679,7 @@ void CreatureObject::setLastActionCounter(unsigned int ctr) {
 
 unsigned int CreatureObject::incrementLastActionCounter() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3694,7 +3694,7 @@ unsigned int CreatureObject::incrementLastActionCounter() {
 
 unsigned int CreatureObject::getLastActionCounter() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3708,7 +3708,7 @@ unsigned int CreatureObject::getLastActionCounter() {
 
 float CreatureObject::getRunSpeed() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3722,7 +3722,7 @@ float CreatureObject::getRunSpeed() const {
 
 float CreatureObject::getWalkSpeed() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3736,7 +3736,7 @@ float CreatureObject::getWalkSpeed() const {
 
 float CreatureObject::getTurnScale() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3750,7 +3750,7 @@ float CreatureObject::getTurnScale() const {
 
 float CreatureObject::getTerrainNegotiation() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3764,7 +3764,7 @@ float CreatureObject::getTerrainNegotiation() const {
 
 float CreatureObject::getRunAcceleration() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3778,7 +3778,7 @@ float CreatureObject::getRunAcceleration() const {
 
 float CreatureObject::getWalkAcceleration() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3792,7 +3792,7 @@ float CreatureObject::getWalkAcceleration() const {
 
 String CreatureObject::getPerformanceAnimation() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3808,7 +3808,7 @@ String CreatureObject::getPerformanceAnimation() const {
 
 String CreatureObject::getMoodString() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3824,7 +3824,7 @@ String CreatureObject::getMoodString() const {
 
 unsigned long long CreatureObject::getWeaponID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3838,7 +3838,7 @@ unsigned long long CreatureObject::getWeaponID() const {
 
 Reference<WeaponObject* > CreatureObject::getWeapon() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3852,7 +3852,7 @@ Reference<WeaponObject* > CreatureObject::getWeapon() {
 
 ManagedWeakReference<GuildObject* > CreatureObject::getGuildObject() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3866,7 +3866,7 @@ ManagedWeakReference<GuildObject* > CreatureObject::getGuildObject() const {
 
 int CreatureObject::getGuildID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3880,7 +3880,7 @@ int CreatureObject::getGuildID() const {
 
 bool CreatureObject::isInGuild() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3894,7 +3894,7 @@ bool CreatureObject::isInGuild() const {
 
 void CreatureObject::setGuildObject(GuildObject* guildobj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3910,7 +3910,7 @@ void CreatureObject::setGuildObject(GuildObject* guildobj) {
 
 unsigned long long CreatureObject::getGroupID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3924,7 +3924,7 @@ unsigned long long CreatureObject::getGroupID() const {
 
 unsigned long long CreatureObject::getGroupInviterID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3938,7 +3938,7 @@ unsigned long long CreatureObject::getGroupInviterID() const {
 
 Reference<GroupObject* > CreatureObject::getGroup() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3952,7 +3952,7 @@ Reference<GroupObject* > CreatureObject::getGroup() const {
 
 unsigned long long CreatureObject::getGroupInviteCounter() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3966,7 +3966,7 @@ unsigned long long CreatureObject::getGroupInviteCounter() const {
 
 unsigned long long CreatureObject::getTargetID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3980,7 +3980,7 @@ unsigned long long CreatureObject::getTargetID() const {
 
 byte CreatureObject::getMoodID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -3994,7 +3994,7 @@ byte CreatureObject::getMoodID() const {
 
 float CreatureObject::getSlopeModPercent() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4008,7 +4008,7 @@ float CreatureObject::getSlopeModPercent() const {
 
 int CreatureObject::getPerformanceCounter() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4022,7 +4022,7 @@ int CreatureObject::getPerformanceCounter() const {
 
 int CreatureObject::getInstrumentID() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4036,7 +4036,7 @@ int CreatureObject::getInstrumentID() const {
 
 byte CreatureObject::getFrozen() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4050,7 +4050,7 @@ byte CreatureObject::getFrozen() const {
 
 float CreatureObject::getHeight() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4064,7 +4064,7 @@ float CreatureObject::getHeight() const {
 
 bool CreatureObject::isDroidSpecies() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4078,7 +4078,7 @@ bool CreatureObject::isDroidSpecies() {
 
 bool CreatureObject::isWalkerSpecies() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4092,7 +4092,7 @@ bool CreatureObject::isWalkerSpecies() {
 
 bool CreatureObject::isProbotSpecies() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4106,7 +4106,7 @@ bool CreatureObject::isProbotSpecies() {
 
 bool CreatureObject::hasEffectImmunity(byte effectType) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4121,7 +4121,7 @@ bool CreatureObject::hasEffectImmunity(byte effectType) {
 
 bool CreatureObject::hasDotImmunity(unsigned int dotType) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4136,7 +4136,7 @@ bool CreatureObject::hasDotImmunity(unsigned int dotType) {
 
 int CreatureObject::getSpecies() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4150,7 +4150,7 @@ int CreatureObject::getSpecies() const {
 
 String CreatureObject::getSpeciesName() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4166,7 +4166,7 @@ String CreatureObject::getSpeciesName() const {
 
 int CreatureObject::getGender() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4180,7 +4180,7 @@ int CreatureObject::getGender() const {
 
 const DeltaVector<int>* CreatureObject::getBaseHAM() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4190,7 +4190,7 @@ const DeltaVector<int>* CreatureObject::getBaseHAM() const {
 
 const SkillList* CreatureObject::getSkillList() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4200,7 +4200,7 @@ const SkillList* CreatureObject::getSkillList() const {
 
 int CreatureObject::getSkillMod(const String& skillmod) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4216,7 +4216,7 @@ int CreatureObject::getSkillMod(const String& skillmod) const {
 
 int CreatureObject::getSkillModOfType(const String& skillmod, unsigned const int modType) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4232,7 +4232,7 @@ int CreatureObject::getSkillModOfType(const String& skillmod, unsigned const int
 
 bool CreatureObject::hasSkill(const String& skill) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4247,7 +4247,7 @@ bool CreatureObject::hasSkill(const String& skill) const {
 
 SkillModList* CreatureObject::getSkillModList() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4257,7 +4257,7 @@ SkillModList* CreatureObject::getSkillModList() {
 
 const SkillModList* CreatureObject::getSkillModList() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4267,7 +4267,7 @@ const SkillModList* CreatureObject::getSkillModList() const {
 
 void CreatureObject::setWatchToID(unsigned long long id) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4283,7 +4283,7 @@ void CreatureObject::setWatchToID(unsigned long long id) {
 
 bool CreatureObject::isCreatureObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4297,7 +4297,7 @@ bool CreatureObject::isCreatureObject() {
 
 CreatureObject* CreatureObject::__asCreatureObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4307,7 +4307,7 @@ CreatureObject* CreatureObject::__asCreatureObject() {
 
 bool CreatureObject::isNextActionPast() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4321,7 +4321,7 @@ bool CreatureObject::isNextActionPast() {
 
 bool CreatureObject::isSwimming() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4335,7 +4335,7 @@ bool CreatureObject::isSwimming() const {
 
 Reference<ZoneClientSession* > CreatureObject::getClient() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4349,7 +4349,7 @@ Reference<ZoneClientSession* > CreatureObject::getClient() {
 
 ManagedWeakReference<ControlDevice* > CreatureObject::getControlDevice() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4363,7 +4363,7 @@ ManagedWeakReference<ControlDevice* > CreatureObject::getControlDevice() const {
 
 float CreatureObject::getSwimHeight() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4377,7 +4377,7 @@ float CreatureObject::getSwimHeight() const {
 
 bool CreatureObject::isIncapacitated() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4391,7 +4391,7 @@ bool CreatureObject::isIncapacitated() const {
 
 bool CreatureObject::isDead() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4405,7 +4405,7 @@ bool CreatureObject::isDead() const {
 
 bool CreatureObject::isKnockedDown() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4419,7 +4419,7 @@ bool CreatureObject::isKnockedDown() const {
 
 bool CreatureObject::isKneeling() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4433,7 +4433,7 @@ bool CreatureObject::isKneeling() const {
 
 bool CreatureObject::isProne() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4447,7 +4447,7 @@ bool CreatureObject::isProne() const {
 
 bool CreatureObject::isStanding() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4461,7 +4461,7 @@ bool CreatureObject::isStanding() const {
 
 bool CreatureObject::isSitting() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4475,7 +4475,7 @@ bool CreatureObject::isSitting() const {
 
 bool CreatureObject::isSkillAnimating() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4489,7 +4489,7 @@ bool CreatureObject::isSkillAnimating() const {
 
 bool CreatureObject::isRallied() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4503,7 +4503,7 @@ bool CreatureObject::isRallied() const {
 
 bool CreatureObject::isInCombat() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4517,7 +4517,7 @@ bool CreatureObject::isInCombat() const {
 
 bool CreatureObject::isDizzied() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4531,7 +4531,7 @@ bool CreatureObject::isDizzied() const {
 
 bool CreatureObject::isBerserked() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4545,7 +4545,7 @@ bool CreatureObject::isBerserked() const {
 
 bool CreatureObject::isStunned() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4559,7 +4559,7 @@ bool CreatureObject::isStunned() const {
 
 bool CreatureObject::isBlinded() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4573,7 +4573,7 @@ bool CreatureObject::isBlinded() const {
 
 bool CreatureObject::isIntimidated() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4587,7 +4587,7 @@ bool CreatureObject::isIntimidated() const {
 
 bool CreatureObject::isSnared() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4601,7 +4601,7 @@ bool CreatureObject::isSnared() const {
 
 bool CreatureObject::isImmobilized() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4615,7 +4615,7 @@ bool CreatureObject::isImmobilized() const {
 
 bool CreatureObject::isRooted() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4629,7 +4629,7 @@ bool CreatureObject::isRooted() const {
 
 bool CreatureObject::isFrozen() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4643,7 +4643,7 @@ bool CreatureObject::isFrozen() const {
 
 bool CreatureObject::isDiseased() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4657,7 +4657,7 @@ bool CreatureObject::isDiseased() const {
 
 bool CreatureObject::isPoisoned() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4671,7 +4671,7 @@ bool CreatureObject::isPoisoned() const {
 
 bool CreatureObject::isBleeding() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4685,7 +4685,7 @@ bool CreatureObject::isBleeding() const {
 
 bool CreatureObject::isOnFire() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4699,7 +4699,7 @@ bool CreatureObject::isOnFire() const {
 
 bool CreatureObject::isFeigningDeath() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4713,7 +4713,7 @@ bool CreatureObject::isFeigningDeath() const {
 
 bool CreatureObject::isRidingMount() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4727,7 +4727,7 @@ bool CreatureObject::isRidingMount() const {
 
 bool CreatureObject::hasRidingCreature() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4741,7 +4741,7 @@ bool CreatureObject::hasRidingCreature() const {
 
 bool CreatureObject::isPeaced() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4755,7 +4755,7 @@ bool CreatureObject::isPeaced() const {
 
 bool CreatureObject::isMeditating() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4769,7 +4769,7 @@ bool CreatureObject::isMeditating() const {
 
 bool CreatureObject::isAiming() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4783,7 +4783,7 @@ bool CreatureObject::isAiming() const {
 
 bool CreatureObject::isInCover() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4797,7 +4797,7 @@ bool CreatureObject::isInCover() const {
 
 bool CreatureObject::isRunning() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4811,7 +4811,7 @@ bool CreatureObject::isRunning() const {
 
 bool CreatureObject::isNonPlayerCreatureObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4825,7 +4825,7 @@ bool CreatureObject::isNonPlayerCreatureObject() {
 
 bool CreatureObject::isDroidObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4839,7 +4839,7 @@ bool CreatureObject::isDroidObject() {
 
 bool CreatureObject::isPlayerCreature() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4853,7 +4853,7 @@ bool CreatureObject::isPlayerCreature() {
 
 int CreatureObject::getReceiverFlags() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4867,7 +4867,7 @@ int CreatureObject::getReceiverFlags() {
 
 bool CreatureObject::isInformantCreature() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4881,7 +4881,7 @@ bool CreatureObject::isInformantCreature() {
 
 CampSiteActiveArea* CreatureObject::getCurrentCamp() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4895,7 +4895,7 @@ CampSiteActiveArea* CreatureObject::getCurrentCamp() {
 
 byte CreatureObject::getCurrentWeather() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4909,7 +4909,7 @@ byte CreatureObject::getCurrentWeather() const {
 
 void CreatureObject::setCurrentWeather(byte value) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4925,7 +4925,7 @@ void CreatureObject::setCurrentWeather(byte value) {
 
 byte CreatureObject::getCurrentWind() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4939,7 +4939,7 @@ byte CreatureObject::getCurrentWind() const {
 
 void CreatureObject::setCurrentWind(byte value) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4955,7 +4955,7 @@ void CreatureObject::setCurrentWind(byte value) {
 
 int CreatureObject::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4966,14 +4966,14 @@ int CreatureObject::handleObjectMenuSelect(CreatureObject* player, byte selected
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 String CreatureObject::getAlternateAppearance() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -4989,7 +4989,7 @@ String CreatureObject::getAlternateAppearance() const {
 
 ReadWriteLock* CreatureObject::getSkillModMutex() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -4999,7 +4999,7 @@ ReadWriteLock* CreatureObject::getSkillModMutex() {
 
 float CreatureObject::calculateCostAdjustment(byte stat, float baseCost) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5015,7 +5015,7 @@ float CreatureObject::calculateCostAdjustment(byte stat, float baseCost) {
 
 void CreatureObject::updateSpeedAndAccelerationMods() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5030,7 +5030,7 @@ void CreatureObject::updateSpeedAndAccelerationMods() {
 
 void CreatureObject::setFaction(unsigned int crc) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5046,7 +5046,7 @@ void CreatureObject::setFaction(unsigned int crc) {
 
 void CreatureObject::destroyPlayerCreatureFromDatabase(bool destroyContainedObjects) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5062,7 +5062,7 @@ void CreatureObject::destroyPlayerCreatureFromDatabase(bool destroyContainedObje
 
 float CreatureObject::getTemplateRadius() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5076,7 +5076,7 @@ float CreatureObject::getTemplateRadius() {
 
 void CreatureObject::reloadTemplate() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5091,7 +5091,7 @@ void CreatureObject::reloadTemplate() {
 
 void CreatureObject::removeOutOfRangeObjects() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5106,7 +5106,7 @@ void CreatureObject::removeOutOfRangeObjects() {
 
 void CreatureObject::synchronizeCloseObjects() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5121,7 +5121,7 @@ void CreatureObject::synchronizeCloseObjects() {
 
 void CreatureObject::addPersonalEnemyFlag(CreatureObject* enemy, unsigned long long duration) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5138,7 +5138,7 @@ void CreatureObject::addPersonalEnemyFlag(CreatureObject* enemy, unsigned long l
 
 unsigned long long CreatureObject::getPersonalEnemyFlagTime(unsigned long long enemyID) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5153,7 +5153,7 @@ unsigned long long CreatureObject::getPersonalEnemyFlagTime(unsigned long long e
 
 void CreatureObject::removePersonalEnemyFlag(CreatureObject* enemy) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5169,7 +5169,7 @@ void CreatureObject::removePersonalEnemyFlag(CreatureObject* enemy) {
 
 void CreatureObject::removePersonalEnemyFlag(unsigned long long enemyID) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5185,7 +5185,7 @@ void CreatureObject::removePersonalEnemyFlag(unsigned long long enemyID) {
 
 bool CreatureObject::hasPersonalEnemyFlag(CreatureObject* enemy) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5200,7 +5200,7 @@ bool CreatureObject::hasPersonalEnemyFlag(CreatureObject* enemy) const {
 
 void CreatureObject::schedulePersonalEnemyFlagTasks() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5215,7 +5215,7 @@ void CreatureObject::schedulePersonalEnemyFlagTasks() {
 
 void CreatureObject::setHue(int hueIndex) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5231,7 +5231,7 @@ void CreatureObject::setHue(int hueIndex) {
 
 int CreatureObject::getHueValue() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5245,7 +5245,7 @@ int CreatureObject::getHueValue() const {
 
 WeakReference<AuctionSearchTask* > CreatureObject::getAuctionSearchTask() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -5255,7 +5255,7 @@ WeakReference<AuctionSearchTask* > CreatureObject::getAuctionSearchTask() const 
 
 void CreatureObject::setAuctionSearchTask(AuctionSearchTask* task) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -5265,7 +5265,7 @@ void CreatureObject::setAuctionSearchTask(AuctionSearchTask* task) {
 
 int CreatureObject::getPassengerCapacity() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -5310,7 +5310,7 @@ CreatureObjectImplementation::~CreatureObjectImplementation() {
 void CreatureObjectImplementation::_initializeImplementation() {
 	_setClassHelper(CreatureObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -6316,7 +6316,7 @@ Buff* CreatureObjectImplementation::getBuff(unsigned int buffcrc) {
 	if ((&creatureBuffs)->hasBuff(buffcrc))	// server/zone/objects/creature/CreatureObject.idl():  			return creatureBuffs.getBuffByCRC(buffcrc);
 	return (&creatureBuffs)->getBuffByCRC(buffcrc);
 	// server/zone/objects/creature/CreatureObject.idl():  		return null;
-	return nullptr;
+	return NULL;
 }
 
 long long CreatureObjectImplementation::getSkillModFromBuffs(const String& skillMod) {
@@ -6414,7 +6414,7 @@ bool CreatureObjectImplementation::isOnline() {
 	// server/zone/objects/creature/CreatureObject.idl():  		PlayerObject ghost = getPlayerObject();
 	ManagedReference<PlayerObject* > ghost = getPlayerObject();
 	// server/zone/objects/creature/CreatureObject.idl():  		return 
-	if (ghost == nullptr)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
+	if (ghost == NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
 	return false;
 	// server/zone/objects/creature/CreatureObject.idl():  		return ghost.isOnline();
 	return ghost->isOnline();
@@ -6422,22 +6422,22 @@ bool CreatureObjectImplementation::isOnline() {
 
 bool CreatureObjectImplementation::canTreatInjuries() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("injuryTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("injuryTreatment") == nullptr;
+	return TangibleObjectImplementation::getPendingTask("injuryTreatment") == NULL;
 }
 
 bool CreatureObjectImplementation::canTreatStates() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("stateTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("stateTreatment") == nullptr;
+	return TangibleObjectImplementation::getPendingTask("stateTreatment") == NULL;
 }
 
 bool CreatureObjectImplementation::canTreatWounds() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("woundTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("woundTreatment") == nullptr;
+	return TangibleObjectImplementation::getPendingTask("woundTreatment") == NULL;
 }
 
 bool CreatureObjectImplementation::canTreatConditions() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("conditionTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("conditionTreatment") == nullptr;
+	return TangibleObjectImplementation::getPendingTask("conditionTreatment") == NULL;
 }
 
 bool CreatureObjectImplementation::isListening() const{
@@ -6532,7 +6532,7 @@ bool CreatureObjectImplementation::checkKnockdownRecovery() {
 
 bool CreatureObjectImplementation::hasDizzyEvent() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return dizzyFallDownEvent != null;
-	return dizzyFallDownEvent != nullptr;
+	return dizzyFallDownEvent != NULL;
 }
 
 void CreatureObjectImplementation::clearDizzyEvent() {
@@ -6541,7 +6541,7 @@ void CreatureObjectImplementation::clearDizzyEvent() {
 	// server/zone/objects/creature/CreatureObject.idl():  			dizzyFallDownEvent.cancel();
 	dizzyFallDownEvent->cancel();
 	// server/zone/objects/creature/CreatureObject.idl():  			dizzyFallDownEvent = null;
-	dizzyFallDownEvent = nullptr;
+	dizzyFallDownEvent = NULL;
 }
 }
 
@@ -6593,7 +6593,7 @@ void CreatureObjectImplementation::addCooldown(const String& name, unsigned long
 
 bool CreatureObjectImplementation::isGrouped() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return group != null;
-	return group != nullptr;
+	return group != NULL;
 }
 
 int CreatureObjectImplementation::getBankCredits() const{
@@ -6675,7 +6675,7 @@ unsigned long long CreatureObjectImplementation::getCreatureLinkID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		CreatureObject strongRef = linkedCreature;
 	ManagedReference<CreatureObject* > strongRef = linkedCreature;
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (strongRef != nullptr)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getObjectID();
+	if (strongRef != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getObjectID();
 	return strongRef->getObjectID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -6809,7 +6809,7 @@ String CreatureObjectImplementation::getMoodString() const{
 
 unsigned long long CreatureObjectImplementation::getWeaponID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  			return weapon.getObjectID();
-	if (weapon == nullptr)	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
+	if (weapon == NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
 	return 0;
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return weapon.getObjectID();
@@ -6825,7 +6825,7 @@ int CreatureObjectImplementation::getGuildID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		GuildObject strongRef = guild;
 	ManagedReference<GuildObject* > strongRef = guild;
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (strongRef != nullptr)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getGuildID();
+	if (strongRef != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getGuildID();
 	return strongRef->getGuildID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -6836,7 +6836,7 @@ bool CreatureObjectImplementation::isInGuild() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		GuildObject strongRef = guild;
 	ManagedReference<GuildObject* > strongRef = guild;
 	// server/zone/objects/creature/CreatureObject.idl():  		return strongRef != null;
-	return strongRef != nullptr;
+	return strongRef != NULL;
 }
 
 void CreatureObjectImplementation::setGuildObject(GuildObject* guildobj) {
@@ -6846,7 +6846,7 @@ void CreatureObjectImplementation::setGuildObject(GuildObject* guildobj) {
 
 unsigned long long CreatureObjectImplementation::getGroupID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (group != nullptr)	// server/zone/objects/creature/CreatureObject.idl():  			return group.getObjectID();
+	if (group != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return group.getObjectID();
 	return group->getObjectID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -7950,7 +7950,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			unsigned int buffcrc = inv->getUnsignedIntParameter();
 			
 			DistributedObject* _m_res = getBuff(buffcrc);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSKILLMODFROMBUFFS__STRING_:
@@ -8063,7 +8063,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getCreditObject();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SUBTRACTBANKCREDITS__INT_:
@@ -8565,7 +8565,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getPlayerObject();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ISLISTENING__:
@@ -9055,7 +9055,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getLinkedCreature().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETCREATURELINKID__:
@@ -9239,14 +9239,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getWeapon();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGUILDOBJECT__:
 		{
 			
 			DistributedObject* _m_res = getGuildObject().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGUILDID__:
@@ -9289,7 +9289,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getGroup();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETGROUPINVITECOUNTER__:
@@ -9464,14 +9464,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getClient();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETCONTROLDEVICE__:
 		{
 			
 			DistributedObject* _m_res = getControlDevice().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSWIMHEIGHT__:
@@ -9737,7 +9737,7 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getCurrentCamp();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETCURRENTWEATHER__:

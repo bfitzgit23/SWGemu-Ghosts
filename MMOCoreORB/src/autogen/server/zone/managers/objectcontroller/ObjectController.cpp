@@ -40,7 +40,7 @@ ObjectController::~ObjectController() {
 
 void ObjectController::loadCommands() {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -54,7 +54,7 @@ void ObjectController::loadCommands() {
 
 bool ObjectController::transferObject(SceneObject* objectToTransfer, SceneObject* destinationObject, int containmentType, bool notifyClient, bool allowOverflow) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -73,7 +73,7 @@ bool ObjectController::transferObject(SceneObject* objectToTransfer, SceneObject
 
 float ObjectController::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -92,7 +92,7 @@ float ObjectController::activateCommand(CreatureObject* object, unsigned int act
 
 void ObjectController::addQueueCommand(QueueCommand* command) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -102,7 +102,7 @@ void ObjectController::addQueueCommand(QueueCommand* command) {
 
 QueueCommand* ObjectController::getQueueCommand(const String& name) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -112,7 +112,7 @@ QueueCommand* ObjectController::getQueueCommand(const String& name) {
 
 QueueCommand* ObjectController::getQueueCommand(unsigned int crc) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -122,7 +122,7 @@ QueueCommand* ObjectController::getQueueCommand(unsigned int crc) {
 
 void ObjectController::logAdminCommand(SceneObject* object, const QueueCommand* command, unsigned long long targetID, const UnicodeString& argumets) {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -161,7 +161,7 @@ ObjectControllerImplementation::~ObjectControllerImplementation() {
 void ObjectControllerImplementation::_initializeImplementation() {
 	_setClassHelper(ObjectControllerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

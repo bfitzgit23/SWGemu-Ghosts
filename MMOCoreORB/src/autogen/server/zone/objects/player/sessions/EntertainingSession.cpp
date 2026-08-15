@@ -36,7 +36,7 @@ EntertainingSession::~EntertainingSession() {
 
 void EntertainingSession::doEntertainerPatronEffects() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -50,7 +50,7 @@ void EntertainingSession::doEntertainerPatronEffects() {
 
 void EntertainingSession::doPerformanceAction() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -64,7 +64,7 @@ void EntertainingSession::doPerformanceAction() {
 
 void EntertainingSession::addEntertainerFlourishBuff() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -78,7 +78,7 @@ void EntertainingSession::addEntertainerFlourishBuff() {
 
 void EntertainingSession::startDancing(const String& dance, const String& animation) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -94,7 +94,7 @@ void EntertainingSession::startDancing(const String& dance, const String& animat
 
 void EntertainingSession::startPlayingMusic(const String& song, const String& instrumentAnimation, int instrid) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -111,7 +111,7 @@ void EntertainingSession::startPlayingMusic(const String& song, const String& in
 
 void EntertainingSession::startEntertaining() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -125,7 +125,7 @@ void EntertainingSession::startEntertaining() {
 
 void EntertainingSession::healWounds(CreatureObject* creature, float woundHeal, float shockHeal) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -142,7 +142,7 @@ void EntertainingSession::healWounds(CreatureObject* creature, float woundHeal, 
 
 bool EntertainingSession::isInEntertainingBuilding(CreatureObject* creature) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -157,7 +157,7 @@ bool EntertainingSession::isInEntertainingBuilding(CreatureObject* creature) {
 
 void EntertainingSession::doFlourish(int flourishNumber, bool grantXp) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -173,7 +173,7 @@ void EntertainingSession::doFlourish(int flourishNumber, bool grantXp) {
 
 bool EntertainingSession::canHealBattleFatigue() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -187,7 +187,7 @@ bool EntertainingSession::canHealBattleFatigue() {
 
 bool EntertainingSession::canGiveEntertainBuff() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -201,7 +201,7 @@ bool EntertainingSession::canGiveEntertainBuff() {
 
 void EntertainingSession::addFlourishXp(int xp) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -216,7 +216,7 @@ void EntertainingSession::addFlourishXp(int xp) {
 
 void EntertainingSession::addHealingXp(int xp) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -231,7 +231,7 @@ void EntertainingSession::addHealingXp(int xp) {
 
 void EntertainingSession::addHealingXpGroup(int xp) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -246,7 +246,7 @@ void EntertainingSession::addHealingXpGroup(int xp) {
 
 int EntertainingSession::initializeSession() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -260,7 +260,7 @@ int EntertainingSession::initializeSession() {
 
 int EntertainingSession::cancelSession() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -274,7 +274,7 @@ int EntertainingSession::cancelSession() {
 
 int EntertainingSession::clearSession() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -288,7 +288,7 @@ int EntertainingSession::clearSession() {
 
 void EntertainingSession::stopPlayingMusic() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -302,7 +302,7 @@ void EntertainingSession::stopPlayingMusic() {
 
 void EntertainingSession::stopDancing() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -316,7 +316,7 @@ void EntertainingSession::stopDancing() {
 
 void EntertainingSession::activateAction() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -330,7 +330,7 @@ void EntertainingSession::activateAction() {
 
 void EntertainingSession::startTickTask() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -344,7 +344,7 @@ void EntertainingSession::startTickTask() {
 
 void EntertainingSession::addEntertainerBuffDuration(CreatureObject* creature, int performanceType, float duration) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -354,7 +354,7 @@ void EntertainingSession::addEntertainerBuffDuration(CreatureObject* creature, i
 
 void EntertainingSession::addEntertainerBuffStrength(CreatureObject* creature, int performanceType, float strength) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -364,7 +364,7 @@ void EntertainingSession::addEntertainerBuffStrength(CreatureObject* creature, i
 
 void EntertainingSession::setEntertainerBuffDuration(CreatureObject* creature, int performanceType, float duration) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -374,7 +374,7 @@ void EntertainingSession::setEntertainerBuffDuration(CreatureObject* creature, i
 
 void EntertainingSession::setEntertainerBuffStrength(CreatureObject* creature, int performanceType, float strength) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -384,7 +384,7 @@ void EntertainingSession::setEntertainerBuffStrength(CreatureObject* creature, i
 
 int EntertainingSession::getEntertainerBuffStrength(CreatureObject* creature, int performanceType) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -400,7 +400,7 @@ int EntertainingSession::getEntertainerBuffStrength(CreatureObject* creature, in
 
 int EntertainingSession::getEntertainerBuffDuration(CreatureObject* creature, int performanceType) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -416,7 +416,7 @@ int EntertainingSession::getEntertainerBuffDuration(CreatureObject* creature, in
 
 int EntertainingSession::getEntertainerBuffStartTime(CreatureObject* creature, int performanceType) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -432,7 +432,7 @@ int EntertainingSession::getEntertainerBuffStartTime(CreatureObject* creature, i
 
 void EntertainingSession::sendEntertainingUpdate(CreatureObject* creature, float entval, const String& performance, unsigned int perfcntr, int instrid) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -451,7 +451,7 @@ void EntertainingSession::sendEntertainingUpdate(CreatureObject* creature, float
 
 void EntertainingSession::sendEntertainmentUpdate(CreatureObject* creature, unsigned long long entid, const String& mood, bool updateEntValue) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -469,7 +469,7 @@ void EntertainingSession::sendEntertainmentUpdate(CreatureObject* creature, unsi
 
 void EntertainingSession::activateEntertainerBuff(CreatureObject* creature, int performanceType) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -485,7 +485,7 @@ void EntertainingSession::activateEntertainerBuff(CreatureObject* creature, int 
 
 Instrument* EntertainingSession::getInstrument(CreatureObject* creature) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -500,7 +500,7 @@ Instrument* EntertainingSession::getInstrument(CreatureObject* creature) {
 
 String EntertainingSession::getPerformanceName() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -516,7 +516,7 @@ String EntertainingSession::getPerformanceName() {
 
 void EntertainingSession::addWatcher(CreatureObject* creature) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -531,7 +531,7 @@ void EntertainingSession::addWatcher(CreatureObject* creature) {
 
 void EntertainingSession::addListener(CreatureObject* listener) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -546,7 +546,7 @@ void EntertainingSession::addListener(CreatureObject* listener) {
 
 bool EntertainingSession::isDancing() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -560,7 +560,7 @@ bool EntertainingSession::isDancing() {
 
 bool EntertainingSession::isPlayingMusic() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -574,7 +574,7 @@ bool EntertainingSession::isPlayingMusic() {
 
 bool EntertainingSession::isAcceptingBandFlourishes() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -588,7 +588,7 @@ bool EntertainingSession::isAcceptingBandFlourishes() {
 
 void EntertainingSession::setAcceptingBandFlourishes(bool val) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -603,7 +603,7 @@ void EntertainingSession::setAcceptingBandFlourishes(bool val) {
 
 void EntertainingSession::removeWatcher(CreatureObject* creature) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -618,7 +618,7 @@ void EntertainingSession::removeWatcher(CreatureObject* creature) {
 
 void EntertainingSession::removeListener(CreatureObject* creature) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -633,7 +633,7 @@ void EntertainingSession::removeListener(CreatureObject* creature) {
 
 void EntertainingSession::setPerformanceName(const String& name) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -648,7 +648,7 @@ void EntertainingSession::setPerformanceName(const String& name) {
 
 void EntertainingSession::setDancing(bool val) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -663,7 +663,7 @@ void EntertainingSession::setDancing(bool val) {
 
 void EntertainingSession::setTargetInstrument(bool var) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -678,7 +678,7 @@ void EntertainingSession::setTargetInstrument(bool var) {
 
 void EntertainingSession::updateEntertainerMissionStatus(bool entertaining, const int missionType) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -694,7 +694,7 @@ void EntertainingSession::updateEntertainerMissionStatus(bool entertaining, cons
 
 bool EntertainingSession::isInDenyServiceList(CreatureObject* target) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -709,7 +709,7 @@ bool EntertainingSession::isInDenyServiceList(CreatureObject* target) {
 
 void EntertainingSession::addToDenyServiceList(CreatureObject* target) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -724,7 +724,7 @@ void EntertainingSession::addToDenyServiceList(CreatureObject* target) {
 
 void EntertainingSession::removeFromDenyServiceList(CreatureObject* target) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -739,7 +739,7 @@ void EntertainingSession::removeFromDenyServiceList(CreatureObject* target) {
 
 void EntertainingSession::increaseEntertainerBuff(CreatureObject* patron) {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -754,7 +754,7 @@ void EntertainingSession::increaseEntertainerBuff(CreatureObject* patron) {
 
 void EntertainingSession::awardEntertainerExperience() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -768,7 +768,7 @@ void EntertainingSession::awardEntertainerExperience() {
 
 Vector<unsigned long long> EntertainingSession::getAudience() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -778,7 +778,7 @@ Vector<unsigned long long> EntertainingSession::getAudience() {
 
 int EntertainingSession::getBandAudienceSize() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -792,7 +792,7 @@ int EntertainingSession::getBandAudienceSize() {
 
 void EntertainingSession::incrementApplauseCount() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -806,7 +806,7 @@ void EntertainingSession::incrementApplauseCount() {
 
 int EntertainingSession::getApplauseCount() {
 	EntertainingSessionImplementation* _implementation = static_cast<EntertainingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -849,7 +849,7 @@ EntertainingSessionImplementation::~EntertainingSessionImplementation() {
 void EntertainingSessionImplementation::_initializeImplementation() {
 	_setClassHelper(EntertainingSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1184,7 +1184,7 @@ EntertainingSessionImplementation::EntertainingSessionImplementation(CreatureObj
 	// server/zone/objects/player/sessions/EntertainingSession.idl():  		applauseCount = 0;
 	applauseCount = 0;
 	// server/zone/objects/player/sessions/EntertainingSession.idl():  		observer = null;
-	observer = nullptr;
+	observer = NULL;
 	// server/zone/objects/player/sessions/EntertainingSession.idl():  		dancing = false;
 	dancing = false;
 	// server/zone/objects/player/sessions/EntertainingSession.idl():  		playingMusic = false;
@@ -1557,7 +1557,7 @@ void EntertainingSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* 
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			DistributedObject* _m_res = getInstrument(creature);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETPERFORMANCENAME__:

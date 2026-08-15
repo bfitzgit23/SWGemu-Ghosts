@@ -30,7 +30,7 @@ InstrumentObserver::~InstrumentObserver() {
 
 int InstrumentObserver::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	InstrumentObserverImplementation* _implementation = static_cast<InstrumentObserverImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ int InstrumentObserver::notifyObserverEvent(unsigned int eventType, Observable* 
 
 ManagedWeakReference<Instrument* > InstrumentObserver::getInstrument() const {
 	InstrumentObserverImplementation* _implementation = static_cast<InstrumentObserverImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -93,7 +93,7 @@ void InstrumentObserverImplementation::finalize() {
 void InstrumentObserverImplementation::_initializeImplementation() {
 	_setClassHelper(InstrumentObserverHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -255,7 +255,7 @@ void InstrumentObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 		{
 			
 			DistributedObject* _m_res = getInstrument().get();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	default:

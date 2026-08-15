@@ -28,7 +28,7 @@ CircularAreaShape::~CircularAreaShape() {
 
 void CircularAreaShape::setRadius(float r) {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -44,7 +44,7 @@ void CircularAreaShape::setRadius(float r) {
 
 float CircularAreaShape::getRadius() {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -58,7 +58,7 @@ float CircularAreaShape::getRadius() {
 
 float CircularAreaShape::getRadius2() {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -72,7 +72,7 @@ float CircularAreaShape::getRadius2() {
 
 bool CircularAreaShape::containsPoint(float x, float y) {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -88,7 +88,7 @@ bool CircularAreaShape::containsPoint(float x, float y) {
 
 bool CircularAreaShape::containsPoint(const Vector3& point) {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -98,7 +98,7 @@ bool CircularAreaShape::containsPoint(const Vector3& point) {
 
 Vector3 CircularAreaShape::getRandomPosition() {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -108,7 +108,7 @@ Vector3 CircularAreaShape::getRandomPosition() {
 
 Vector3 CircularAreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -118,7 +118,7 @@ Vector3 CircularAreaShape::getRandomPosition(const Vector3& origin, float minDis
 
 bool CircularAreaShape::isCircularAreaShape() {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -132,7 +132,7 @@ bool CircularAreaShape::isCircularAreaShape() {
 
 bool CircularAreaShape::intersectsWith(AreaShape* areaShape) {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -147,7 +147,7 @@ bool CircularAreaShape::intersectsWith(AreaShape* areaShape) {
 
 float CircularAreaShape::getArea() {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -192,7 +192,7 @@ void CircularAreaShapeImplementation::finalize() {
 void CircularAreaShapeImplementation::_initializeImplementation() {
 	_setClassHelper(CircularAreaShapeHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

@@ -38,7 +38,7 @@ UnpackStructureSession::~UnpackStructureSession() {
 
 int UnpackStructureSession::initializeSession() {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -52,7 +52,7 @@ int UnpackStructureSession::initializeSession() {
 
 void UnpackStructureSession::placeTemporaryNoBuildZone(const SharedStructureObjectTemplate* serverTemplate) {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -62,7 +62,7 @@ void UnpackStructureSession::placeTemporaryNoBuildZone(const SharedStructureObje
 
 void UnpackStructureSession::removeTemporaryNoBuildZone() {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -76,7 +76,7 @@ void UnpackStructureSession::removeTemporaryNoBuildZone() {
 
 int UnpackStructureSession::constructStructure(float x, float y, int angle) {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -93,7 +93,7 @@ int UnpackStructureSession::constructStructure(float x, float y, int angle) {
 
 int UnpackStructureSession::completeSession() {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -107,7 +107,7 @@ int UnpackStructureSession::completeSession() {
 
 int UnpackStructureSession::cancelSession() {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -121,7 +121,7 @@ int UnpackStructureSession::cancelSession() {
 
 int UnpackStructureSession::clearSession() {
 	UnpackStructureSessionImplementation* _implementation = static_cast<UnpackStructureSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -166,7 +166,7 @@ void UnpackStructureSessionImplementation::finalize() {
 void UnpackStructureSessionImplementation::_initializeImplementation() {
 	_setClassHelper(UnpackStructureSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -411,9 +411,9 @@ UnpackStructureSessionImplementation::UnpackStructureSessionImplementation(Creat
 	// server/zone/objects/player/sessions/UnpackStructureSession.idl():  		directionAngle = 0;
 	directionAngle = 0;
 	// server/zone/objects/player/sessions/UnpackStructureSession.idl():  		constructionBarricade = null;
-	constructionBarricade = nullptr;
+	constructionBarricade = NULL;
 	// server/zone/objects/player/sessions/UnpackStructureSession.idl():  		temporaryNoBuildZone = null;
-	temporaryNoBuildZone = nullptr;
+	temporaryNoBuildZone = NULL;
 }
 
 int UnpackStructureSessionImplementation::initializeSession() {

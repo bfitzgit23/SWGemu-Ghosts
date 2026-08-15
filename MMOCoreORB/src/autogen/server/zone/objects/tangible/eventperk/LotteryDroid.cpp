@@ -34,7 +34,7 @@ LotteryDroid::~LotteryDroid() {
 
 void LotteryDroid::initializeTransientMembers() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -48,7 +48,7 @@ void LotteryDroid::initializeTransientMembers() {
 
 void LotteryDroid::notifyLoadFromDatabase() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ void LotteryDroid::notifyLoadFromDatabase() {
 
 int LotteryDroid::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -73,14 +73,14 @@ int LotteryDroid::handleObjectMenuSelect(CreatureObject* player, byte selectedID
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void LotteryDroid::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -90,7 +90,7 @@ void LotteryDroid::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, Crea
 
 void LotteryDroid::endGame() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -105,7 +105,7 @@ void LotteryDroid::endGame() {
 
 void LotteryDroid::startLottery(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -121,7 +121,7 @@ void LotteryDroid::startLottery(CreatureObject* player) {
 
 void LotteryDroid::sendDurationSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -136,7 +136,7 @@ void LotteryDroid::sendDurationSUI(CreatureObject* player) {
 
 void LotteryDroid::sendPayoutSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -151,7 +151,7 @@ void LotteryDroid::sendPayoutSUI(CreatureObject* player) {
 
 void LotteryDroid::sendTicketCostSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -166,7 +166,7 @@ void LotteryDroid::sendTicketCostSUI(CreatureObject* player) {
 
 void LotteryDroid::sendAddCreditsSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ void LotteryDroid::sendAddCreditsSUI(CreatureObject* player) {
 
 void LotteryDroid::sendLotteryInstructionsSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -196,7 +196,7 @@ void LotteryDroid::sendLotteryInstructionsSUI(CreatureObject* player) {
 
 void LotteryDroid::sendRegistrationSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -211,7 +211,7 @@ void LotteryDroid::sendRegistrationSUI(CreatureObject* player) {
 
 void LotteryDroid::sendLotteryInfoSUI(CreatureObject* player) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -226,7 +226,7 @@ void LotteryDroid::sendLotteryInfoSUI(CreatureObject* player) {
 
 String LotteryDroid::getTimeLeft(unsigned long long timeLeft) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -243,7 +243,7 @@ String LotteryDroid::getTimeLeft(unsigned long long timeLeft) {
 
 CreatureObject* LotteryDroid::getDeedOwner() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -257,7 +257,7 @@ CreatureObject* LotteryDroid::getDeedOwner() {
 
 void LotteryDroid::activateGamePulse() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -272,7 +272,7 @@ void LotteryDroid::activateGamePulse() {
 
 bool LotteryDroid::isEventPerkItem() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -286,7 +286,7 @@ bool LotteryDroid::isEventPerkItem() {
 
 Time* LotteryDroid::getPurchaseTime() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -296,7 +296,7 @@ Time* LotteryDroid::getPurchaseTime() {
 
 int LotteryDroid::getGameStatus() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -310,7 +310,7 @@ int LotteryDroid::getGameStatus() const {
 
 int LotteryDroid::getGameDuration() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -324,7 +324,7 @@ int LotteryDroid::getGameDuration() const {
 
 int LotteryDroid::getTicketPrice() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -338,7 +338,7 @@ int LotteryDroid::getTicketPrice() const {
 
 float LotteryDroid::getPayoutPercent() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -352,7 +352,7 @@ float LotteryDroid::getPayoutPercent() const {
 
 Time* LotteryDroid::getGameStartTime() {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -362,7 +362,7 @@ Time* LotteryDroid::getGameStartTime() {
 
 void LotteryDroid::setGameDuration(int i) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -378,7 +378,7 @@ void LotteryDroid::setGameDuration(int i) {
 
 void LotteryDroid::setPayoutPercent(int i) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -394,7 +394,7 @@ void LotteryDroid::setPayoutPercent(int i) {
 
 void LotteryDroid::setTicketPrice(int price) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -410,7 +410,7 @@ void LotteryDroid::setTicketPrice(int price) {
 
 void LotteryDroid::addToCreditPool(int amount) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -426,7 +426,7 @@ void LotteryDroid::addToCreditPool(int amount) {
 
 int LotteryDroid::getNumPlayers() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -440,7 +440,7 @@ int LotteryDroid::getNumPlayers() const {
 
 void LotteryDroid::addNewPlayer(unsigned long long playerID) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -456,7 +456,7 @@ void LotteryDroid::addNewPlayer(unsigned long long playerID) {
 
 bool LotteryDroid::isCurrentPlayer(unsigned long long playerID) {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -502,7 +502,7 @@ void LotteryDroidImplementation::finalize() {
 void LotteryDroidImplementation::_initializeImplementation() {
 	_setClassHelper(LotteryDroidHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -964,7 +964,7 @@ void LotteryDroidAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			DistributedObject* _m_res = getDeedOwner();
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ACTIVATEGAMEPULSE__:

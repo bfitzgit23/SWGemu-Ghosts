@@ -30,7 +30,7 @@ NonPlayerCreatureObject::~NonPlayerCreatureObject() {
 
 void NonPlayerCreatureObject::initializeTransientMembers() {
 	NonPlayerCreatureObjectImplementation* _implementation = static_cast<NonPlayerCreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -44,7 +44,7 @@ void NonPlayerCreatureObject::initializeTransientMembers() {
 
 bool NonPlayerCreatureObject::isNonPlayerCreatureObject() {
 	NonPlayerCreatureObjectImplementation* _implementation = static_cast<NonPlayerCreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -58,7 +58,7 @@ bool NonPlayerCreatureObject::isNonPlayerCreatureObject() {
 
 bool NonPlayerCreatureObject::isCamouflaged(CreatureObject* target) {
 	NonPlayerCreatureObjectImplementation* _implementation = static_cast<NonPlayerCreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ void NonPlayerCreatureObjectImplementation::finalize() {
 void NonPlayerCreatureObjectImplementation::_initializeImplementation() {
 	_setClassHelper(NonPlayerCreatureObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

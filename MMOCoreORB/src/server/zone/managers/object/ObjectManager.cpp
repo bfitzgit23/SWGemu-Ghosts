@@ -485,7 +485,7 @@ SceneObject* ObjectManager::loadObjectFromTemplate(uint32 objectCRC) {
 	} catch (...) {
 		error("unreported exception caught in SceneObject* ObjectManager::loadObjectFromTemplate(uint32 objectCRC)");
 
-		throw;
+		return nullptr;
 	}
 
 	return object;
@@ -828,10 +828,14 @@ SceneObject* ObjectManager::createObject(uint32 objectCRC, int persistenceLevel,
 		oid = getNextObjectID(database);
 	}
 
+	debug() << "DEBUG CREATE OBJECT: oid=" << oid
+        << " crc=0x" << hex << objectCRC
+        << " database=" << database;
+
 	object = instantiateSceneObject(objectCRC, oid, true);
 
 	if (object == nullptr) {
-		error() << "could not create object CRC = 0x" << hex << objectCRC << " template:" << templateManager->getTemplateFile(objectCRC);
+		debug() << "could not create object CRC = 0x" << hex << objectCRC << " template:" << templateManager->getTemplateFile(objectCRC);
 		return nullptr;
 	}
 

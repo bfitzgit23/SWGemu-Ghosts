@@ -28,7 +28,7 @@ RectangularAreaShape::~RectangularAreaShape() {
 
 void RectangularAreaShape::setDimensions(float x1, float y1, float x2, float y2) {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -47,7 +47,7 @@ void RectangularAreaShape::setDimensions(float x1, float y1, float x2, float y2)
 
 float RectangularAreaShape::getHeight() {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -61,7 +61,7 @@ float RectangularAreaShape::getHeight() {
 
 float RectangularAreaShape::getWidth() {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -75,7 +75,7 @@ float RectangularAreaShape::getWidth() {
 
 bool RectangularAreaShape::containsPoint(float x, float y) {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -91,7 +91,7 @@ bool RectangularAreaShape::containsPoint(float x, float y) {
 
 bool RectangularAreaShape::containsPoint(const Vector3& point) {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -101,7 +101,7 @@ bool RectangularAreaShape::containsPoint(const Vector3& point) {
 
 Vector3 RectangularAreaShape::getRandomPosition() {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -111,7 +111,7 @@ Vector3 RectangularAreaShape::getRandomPosition() {
 
 Vector3 RectangularAreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -121,7 +121,7 @@ Vector3 RectangularAreaShape::getRandomPosition(const Vector3& origin, float min
 
 bool RectangularAreaShape::isRectangularAreaShape() {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -135,7 +135,7 @@ bool RectangularAreaShape::isRectangularAreaShape() {
 
 bool RectangularAreaShape::intersectsWith(AreaShape* areaShape) {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -150,7 +150,7 @@ bool RectangularAreaShape::intersectsWith(AreaShape* areaShape) {
 
 float RectangularAreaShape::getArea() {
 	RectangularAreaShapeImplementation* _implementation = static_cast<RectangularAreaShapeImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -195,7 +195,7 @@ void RectangularAreaShapeImplementation::finalize() {
 void RectangularAreaShapeImplementation::_initializeImplementation() {
 	_setClassHelper(RectangularAreaShapeHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

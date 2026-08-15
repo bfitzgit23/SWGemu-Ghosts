@@ -28,7 +28,7 @@ RobeObject::~RobeObject() {
 
 void RobeObject::initializeTransientMembers() {
 	RobeObjectImplementation* _implementation = static_cast<RobeObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -42,7 +42,7 @@ void RobeObject::initializeTransientMembers() {
 
 String RobeObject::getSkillRequired() {
 	RobeObjectImplementation* _implementation = static_cast<RobeObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -58,7 +58,7 @@ String RobeObject::getSkillRequired() {
 
 bool RobeObject::isRobeObject() {
 	RobeObjectImplementation* _implementation = static_cast<RobeObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -103,7 +103,7 @@ void RobeObjectImplementation::finalize() {
 void RobeObjectImplementation::_initializeImplementation() {
 	_setClassHelper(RobeObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

@@ -50,9 +50,7 @@ function CorellianCorvette:initialize()
 		local building = self.buildings[i]
 		for j = 1, #building.buildingIds, 1 do
 			local pCorvette = getSceneObject(building.buildingIds[j])
-			if pCorvette == nil or not SceneObject(pCorvette):isBuildingObject() then
-				printLuaError("CorellianCorvette:initialize tried using a corvette id that was nil or not a building: " .. building.buildingIds[j])
-			else
+			if pCorvette ~= nil and SceneObject(pCorvette):isBuildingObject() then
 				local corvetteID = SceneObject(pCorvette):getObjectID()
 				deleteData("corvetteActive:" .. corvetteID)
 				self:ejectAllPlayers(pCorvette)

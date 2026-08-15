@@ -28,7 +28,7 @@ ShipObject::~ShipObject() {
 
 unsigned short ShipObject::getUniqueID() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -42,7 +42,7 @@ unsigned short ShipObject::getUniqueID() {
 
 void ShipObject::initializeTransientMembers() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -56,7 +56,7 @@ void ShipObject::initializeTransientMembers() {
 
 void ShipObject::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -73,7 +73,7 @@ void ShipObject::sendTo(SceneObject* player, bool doClose, bool forceLoadContain
 
 void ShipObject::sendBaselinesTo(SceneObject* player) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -88,7 +88,7 @@ void ShipObject::sendBaselinesTo(SceneObject* player) {
 
 void ShipObject::setMaxYawAcceleration(float radians, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -104,7 +104,7 @@ void ShipObject::setMaxYawAcceleration(float radians, bool notifyClient) {
 
 void ShipObject::setCurrentYawAcceleration(float scale, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -120,7 +120,7 @@ void ShipObject::setCurrentYawAcceleration(float scale, bool notifyClient) {
 
 void ShipObject::setMaxPitchAcceleration(float radians, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -136,7 +136,7 @@ void ShipObject::setMaxPitchAcceleration(float radians, bool notifyClient) {
 
 void ShipObject::setCurrentPitchAcceleration(float scale, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -152,7 +152,7 @@ void ShipObject::setCurrentPitchAcceleration(float scale, bool notifyClient) {
 
 void ShipObject::setMaxRollAcceleration(float radians, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -168,7 +168,7 @@ void ShipObject::setMaxRollAcceleration(float radians, bool notifyClient) {
 
 void ShipObject::setCurrentRollAcceleration(float scale, bool notifyClient) {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -184,7 +184,7 @@ void ShipObject::setCurrentRollAcceleration(float scale, bool notifyClient) {
 
 float ShipObject::getMaxYawAcceleration() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -198,7 +198,7 @@ float ShipObject::getMaxYawAcceleration() {
 
 float ShipObject::getMaxRollAcceleration() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -212,7 +212,7 @@ float ShipObject::getMaxRollAcceleration() {
 
 float ShipObject::getMaxPitchAcceleration() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -226,7 +226,7 @@ float ShipObject::getMaxPitchAcceleration() {
 
 float ShipObject::getTotalMass() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -240,7 +240,7 @@ float ShipObject::getTotalMass() {
 
 float ShipObject::getMaxSpeed() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -254,7 +254,7 @@ float ShipObject::getMaxSpeed() {
 
 bool ShipObject::isShipObject() {
 	ShipObjectImplementation* _implementation = static_cast<ShipObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -299,7 +299,7 @@ void ShipObjectImplementation::finalize() {
 void ShipObjectImplementation::_initializeImplementation() {
 	_setClassHelper(ShipObjectHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

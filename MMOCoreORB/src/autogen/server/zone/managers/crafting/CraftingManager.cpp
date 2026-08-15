@@ -40,7 +40,7 @@ CraftingManager::~CraftingManager() {
 
 void CraftingManager::initialize() {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -50,7 +50,7 @@ void CraftingManager::initialize() {
 
 void CraftingManager::stop() {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -64,7 +64,7 @@ void CraftingManager::stop() {
 
 void CraftingManager::awardSchematicGroup(PlayerObject* playerObject, Vector<String>& schematicgroups, bool updateClient) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -74,7 +74,7 @@ void CraftingManager::awardSchematicGroup(PlayerObject* playerObject, Vector<Str
 
 void CraftingManager::removeSchematicGroup(PlayerObject* playerObject, Vector<String>& schematicgroups, bool updateClient) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -84,7 +84,7 @@ void CraftingManager::removeSchematicGroup(PlayerObject* playerObject, Vector<St
 
 DraftSchematic* CraftingManager::getSchematic(unsigned int schematicID) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -99,7 +99,7 @@ DraftSchematic* CraftingManager::getSchematic(unsigned int schematicID) {
 
 void CraftingManager::sendDraftSlotsTo(CreatureObject* player, unsigned int schematicID) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -115,7 +115,7 @@ void CraftingManager::sendDraftSlotsTo(CreatureObject* player, unsigned int sche
 
 void CraftingManager::sendResourceWeightsTo(CreatureObject* player, unsigned int schematicID) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -131,7 +131,7 @@ void CraftingManager::sendResourceWeightsTo(CreatureObject* player, unsigned int
 
 int CraftingManager::calculateAssemblySuccess(CreatureObject* player, DraftSchematic* draftSchematic, float effectiveness) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,7 +148,7 @@ int CraftingManager::calculateAssemblySuccess(CreatureObject* player, DraftSchem
 
 void CraftingManager::experimentRow(ManufactureSchematic* schematic, CraftingValues* craftingValues, int rowEffected, int pointsAttempted, float failure, int experimentationResult) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -158,7 +158,7 @@ void CraftingManager::experimentRow(ManufactureSchematic* schematic, CraftingVal
 
 int CraftingManager::calculateExperimentationFailureRate(CreatureObject* player, ManufactureSchematic* manufactureSchematic, int pointsUsed) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -175,7 +175,7 @@ int CraftingManager::calculateExperimentationFailureRate(CreatureObject* player,
 
 int CraftingManager::calculateExperimentationSuccess(CreatureObject* player, DraftSchematic* draftSchematic, float effectiveness) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -192,7 +192,7 @@ int CraftingManager::calculateExperimentationSuccess(CreatureObject* player, Dra
 
 String CraftingManager::generateSerial() {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -208,7 +208,7 @@ String CraftingManager::generateSerial() {
 
 void CraftingManager::setInitialCraftingValues(TangibleObject* prototype, ManufactureSchematic* manufactureSchematic, int assemblySuccess) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -225,7 +225,7 @@ void CraftingManager::setInitialCraftingValues(TangibleObject* prototype, Manufa
 
 int CraftingManager::getCreationCount(ManufactureSchematic* manufactureSchematic) {
 	CraftingManagerImplementation* _implementation = static_cast<CraftingManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -271,7 +271,7 @@ void CraftingManagerImplementation::finalize() {
 void CraftingManagerImplementation::_initializeImplementation() {
 	_setClassHelper(CraftingManagerHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -406,7 +406,7 @@ void CraftingManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			unsigned int schematicID = inv->getUnsignedIntParameter();
 			
 			DistributedObject* _m_res = getSchematic(schematicID);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_SENDDRAFTSLOTSTO__CREATUREOBJECT_INT_:

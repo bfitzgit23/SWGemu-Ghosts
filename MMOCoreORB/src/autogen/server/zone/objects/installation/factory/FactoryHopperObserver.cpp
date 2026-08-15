@@ -30,7 +30,7 @@ FactoryHopperObserver::~FactoryHopperObserver() {
 
 int FactoryHopperObserver::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	FactoryHopperObserverImplementation* _implementation = static_cast<FactoryHopperObserverImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -79,7 +79,7 @@ void FactoryHopperObserverImplementation::finalize() {
 void FactoryHopperObserverImplementation::_initializeImplementation() {
 	_setClassHelper(FactoryHopperObserverHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -210,7 +210,7 @@ int FactoryHopperObserverImplementation::notifyObserverEvent(unsigned int eventT
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		FactoryObject strongRef = factory;
 	ManagedReference<FactoryObject* > strongRef = factory;
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		if 
-	if (strongRef == nullptr)	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  			return 0;
+	if (strongRef == NULL)	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  			return 0;
 	return 0;
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		return 
 	if (eventType == ObserverEventType::OPENCONTAINER){

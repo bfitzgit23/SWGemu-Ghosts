@@ -28,7 +28,7 @@ ChatMessage::~ChatMessage() {
 
 void ChatMessage::setString(const String& msg) {
 	ChatMessageImplementation* _implementation = static_cast<ChatMessageImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -43,7 +43,7 @@ void ChatMessage::setString(const String& msg) {
 
 String ChatMessage::toString() {
 	ChatMessageImplementation* _implementation = static_cast<ChatMessageImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,7 +90,7 @@ void ChatMessageImplementation::finalize() {
 void ChatMessageImplementation::_initializeImplementation() {
 	_setClassHelper(ChatMessageHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

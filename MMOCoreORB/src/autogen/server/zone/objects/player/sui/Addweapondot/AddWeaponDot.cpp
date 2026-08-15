@@ -32,7 +32,7 @@ AddWeaponDot::~AddWeaponDot() {
 
 void AddWeaponDot::addExperience(int exp) {
 	AddWeaponDotImplementation* _implementation = static_cast<AddWeaponDotImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -47,7 +47,7 @@ void AddWeaponDot::addExperience(int exp) {
 
 BaseMessage* AddWeaponDot::generateMessage() {
 	AddWeaponDotImplementation* _implementation = static_cast<AddWeaponDotImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -57,7 +57,7 @@ BaseMessage* AddWeaponDot::generateMessage() {
 
 bool AddWeaponDot::isAddWeaponDot() {
 	AddWeaponDotImplementation* _implementation = static_cast<AddWeaponDotImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -102,7 +102,7 @@ void AddWeaponDotImplementation::finalize() {
 void AddWeaponDotImplementation::_initializeImplementation() {
 	_setClassHelper(AddWeaponDotHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

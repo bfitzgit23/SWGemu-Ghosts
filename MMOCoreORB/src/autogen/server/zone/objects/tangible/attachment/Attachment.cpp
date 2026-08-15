@@ -32,7 +32,7 @@ Attachment::~Attachment() {
 
 void Attachment::initializeTransientMembers() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -46,7 +46,7 @@ void Attachment::initializeTransientMembers() {
 
 void Attachment::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -56,7 +56,7 @@ void Attachment::updateCraftingValues(CraftingValues* values, bool firstUpdate) 
 
 void Attachment::updateAttachmentValues(const String& modName, int value) {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -72,7 +72,7 @@ void Attachment::updateAttachmentValues(const String& modName, int value) {
 
 void Attachment::initializeMembers() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -86,7 +86,7 @@ void Attachment::initializeMembers() {
 
 void Attachment::loadTemplateData(SharedObjectTemplate* templateData) {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -96,7 +96,7 @@ void Attachment::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void Attachment::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -106,7 +106,7 @@ void Attachment::fillAttributeList(AttributeListMessage* msg, CreatureObject* ob
 
 bool Attachment::isAttachment() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -120,7 +120,7 @@ bool Attachment::isAttachment() {
 
 bool Attachment::isArmorAttachment() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -134,7 +134,7 @@ bool Attachment::isArmorAttachment() {
 
 bool Attachment::isClothingAttachment() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,7 +148,7 @@ bool Attachment::isClothingAttachment() {
 
 HashTable<String, int>* Attachment::getSkillMods() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -189,7 +189,7 @@ void AttachmentImplementation::finalize() {
 void AttachmentImplementation::_initializeImplementation() {
 	_setClassHelper(AttachmentHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

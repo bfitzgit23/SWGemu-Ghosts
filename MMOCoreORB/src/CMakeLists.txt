@@ -78,9 +78,9 @@ if(COMPILE_TESTS)
 	# Define tests
 	enable_testing()
 
-	add_library(core3tests ${tests_headers} ${tests_sources})
+#	add_library(core3tests ${tests_headers} ${tests_sources})  # DISABLED: tests directory not found
 
-	add_dependencies(core3tests gmock idlobjects)
+#	add_dependencies(core3tests gmock idlobjects)  # DISABLED: tests target disabled
 
 	set(core3tests_libs core3tests)
 	set(gmock_libs gmock)

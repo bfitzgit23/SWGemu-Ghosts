@@ -38,7 +38,7 @@ PetControlDevice::~PetControlDevice() {
 
 void PetControlDevice::storeObject(CreatureObject* player, bool force) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -49,14 +49,14 @@ void PetControlDevice::storeObject(CreatureObject* player, bool force) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->storeObject(player, force);
 	}
 }
 
 void PetControlDevice::callObject(CreatureObject* player) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -66,14 +66,14 @@ void PetControlDevice::callObject(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->callObject(player);
 	}
 }
 
 void PetControlDevice::spawnObject(CreatureObject* player) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -83,14 +83,14 @@ void PetControlDevice::spawnObject(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->spawnObject(player);
 	}
 }
 
 void PetControlDevice::cancelSpawnObject(CreatureObject* player) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -99,14 +99,14 @@ void PetControlDevice::cancelSpawnObject(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->cancelSpawnObject(player);
 	}
 }
 
 bool PetControlDevice::growPet(CreatureObject* player, bool force, bool adult) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -118,14 +118,14 @@ bool PetControlDevice::growPet(CreatureObject* player, bool force, bool adult) {
 		return method.executeWithBooleanReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->growPet(player, force, adult);
 	}
 }
 
 void PetControlDevice::arrestGrowth() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -140,7 +140,7 @@ void PetControlDevice::arrestGrowth() {
 
 void PetControlDevice::trainAsMount(CreatureObject* player) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -156,7 +156,7 @@ void PetControlDevice::trainAsMount(CreatureObject* player) {
 
 bool PetControlDevice::isTrainedAsMount() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -170,7 +170,7 @@ bool PetControlDevice::isTrainedAsMount() const {
 
 int PetControlDevice::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,14 +181,14 @@ int PetControlDevice::handleObjectMenuSelect(CreatureObject* player, byte select
 		return method.executeWithSignedIntReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == nullptr) || player->isLockedByCurrentThread());
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		return _implementation->handleObjectMenuSelect(player, selectedID);
 	}
 }
 
 void PetControlDevice::destroyObjectFromDatabase(bool destroyContainedObjects) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -204,7 +204,7 @@ void PetControlDevice::destroyObjectFromDatabase(bool destroyContainedObjects) {
 
 void PetControlDevice::destroyObjectFromWorld(bool sendSelfDestroy) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -219,7 +219,7 @@ void PetControlDevice::destroyObjectFromWorld(bool sendSelfDestroy) {
 
 int PetControlDevice::canBeDestroyed(CreatureObject* player) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -234,7 +234,7 @@ int PetControlDevice::canBeDestroyed(CreatureObject* player) {
 
 bool PetControlDevice::canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -251,7 +251,7 @@ bool PetControlDevice::canBeTradedTo(CreatureObject* player, CreatureObject* rec
 
 void PetControlDevice::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -261,7 +261,7 @@ void PetControlDevice::fillAttributeList(AttributeListMessage* msg, CreatureObje
 
 void PetControlDevice::setDefaultCommands() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -272,7 +272,7 @@ void PetControlDevice::setDefaultCommands() {
 
 void PetControlDevice::setTrainingCommand(unsigned int commandID) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -283,7 +283,7 @@ void PetControlDevice::setTrainingCommand(unsigned int commandID) {
 
 unsigned int PetControlDevice::getTrainingCommand() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -297,7 +297,7 @@ unsigned int PetControlDevice::getTrainingCommand() const {
 
 bool PetControlDevice::hasTrainedCommand(unsigned int command) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -312,7 +312,7 @@ bool PetControlDevice::hasTrainedCommand(unsigned int command) {
 
 bool PetControlDevice::hasTrainedCommandString(const String& message) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -327,7 +327,7 @@ bool PetControlDevice::hasTrainedCommandString(const String& message) {
 
 bool PetControlDevice::hasUsedNamingCommand(unsigned int command) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -342,7 +342,7 @@ bool PetControlDevice::hasUsedNamingCommand(unsigned int command) {
 
 String PetControlDevice::getTrainedCommand(unsigned int command) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -359,7 +359,7 @@ String PetControlDevice::getTrainedCommand(unsigned int command) {
 
 void PetControlDevice::addTrainedCommand(unsigned int command, const String& message) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -376,7 +376,7 @@ void PetControlDevice::addTrainedCommand(unsigned int command, const String& mes
 
 void PetControlDevice::setLastCommand(unsigned int c) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -392,7 +392,7 @@ void PetControlDevice::setLastCommand(unsigned int c) {
 
 unsigned int PetControlDevice::getLastCommand() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -406,7 +406,7 @@ unsigned int PetControlDevice::getLastCommand() const {
 
 void PetControlDevice::setLastCommandTarget(SceneObject* target) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -417,7 +417,7 @@ void PetControlDevice::setLastCommandTarget(SceneObject* target) {
 
 ManagedWeakReference<SceneObject* > PetControlDevice::getLastCommandTarget() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -427,7 +427,7 @@ ManagedWeakReference<SceneObject* > PetControlDevice::getLastCommandTarget() {
 
 String PetControlDevice::getFutureName() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -443,7 +443,7 @@ String PetControlDevice::getFutureName() const {
 
 void PetControlDevice::setFutureName(String& name) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -459,7 +459,7 @@ void PetControlDevice::setFutureName(String& name) {
 
 unsigned int PetControlDevice::getNamingProgress() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -473,7 +473,7 @@ unsigned int PetControlDevice::getNamingProgress() const {
 
 void PetControlDevice::incrementNamingProgress(unsigned int command) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -489,7 +489,7 @@ void PetControlDevice::incrementNamingProgress(unsigned int command) {
 
 void PetControlDevice::resetNamingProgress() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -504,7 +504,7 @@ void PetControlDevice::resetNamingProgress() {
 
 void PetControlDevice::resetNamingCommands() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -519,7 +519,7 @@ void PetControlDevice::resetNamingCommands() {
 
 bool PetControlDevice::isPetControlDevice() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -533,7 +533,7 @@ bool PetControlDevice::isPetControlDevice() {
 
 int PetControlDevice::getVitality() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -547,7 +547,7 @@ int PetControlDevice::getVitality() const {
 
 int PetControlDevice::getMaxVitality() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -561,7 +561,7 @@ int PetControlDevice::getMaxVitality() const {
 
 void PetControlDevice::setVitality(int vit) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -577,7 +577,7 @@ void PetControlDevice::setVitality(int vit) {
 
 void PetControlDevice::setMaxVitality(int vit) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -593,7 +593,7 @@ void PetControlDevice::setMaxVitality(int vit) {
 
 int PetControlDevice::getPetType() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -607,7 +607,7 @@ int PetControlDevice::getPetType() const {
 
 void PetControlDevice::setPetType(int type) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -623,7 +623,7 @@ void PetControlDevice::setPetType(int type) {
 
 void PetControlDevice::setGrowthStage(int stage) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -639,7 +639,7 @@ void PetControlDevice::setGrowthStage(int stage) {
 
 void PetControlDevice::clearPatrolPoints() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -654,7 +654,7 @@ void PetControlDevice::clearPatrolPoints() {
 
 void PetControlDevice::addPatrolPoint(PatrolPoint& point) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -665,7 +665,7 @@ void PetControlDevice::addPatrolPoint(PatrolPoint& point) {
 
 int PetControlDevice::getPatrolPointSize() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -675,7 +675,7 @@ int PetControlDevice::getPatrolPointSize() {
 
 PatrolPoint PetControlDevice::getPatrolPoint(int idx) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -685,7 +685,7 @@ PatrolPoint PetControlDevice::getPatrolPoint(int idx) {
 
 bool PetControlDevice::isValidPet(AiAgent* pet) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -695,7 +695,7 @@ bool PetControlDevice::isValidPet(AiAgent* pet) {
 
 void PetControlDevice::toggleUseRanged() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -710,7 +710,7 @@ void PetControlDevice::toggleUseRanged() {
 
 void PetControlDevice::setVitalityHealthPenalty(float value) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -725,7 +725,7 @@ void PetControlDevice::setVitalityHealthPenalty(float value) {
 
 void PetControlDevice::setVitalityActionPenalty(float value) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -740,7 +740,7 @@ void PetControlDevice::setVitalityActionPenalty(float value) {
 
 void PetControlDevice::setVitalityMindPenalty(float value) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -755,7 +755,7 @@ void PetControlDevice::setVitalityMindPenalty(float value) {
 
 bool PetControlDevice::getUseRanged() const {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -769,7 +769,7 @@ bool PetControlDevice::getUseRanged() const {
 
 bool PetControlDevice::isFriend(unsigned long long playerID) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -784,7 +784,7 @@ bool PetControlDevice::isFriend(unsigned long long playerID) {
 
 void PetControlDevice::toggleFriend(unsigned long long playerID) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -830,7 +830,7 @@ void PetControlDeviceImplementation::finalize() {
 void PetControlDeviceImplementation::_initializeImplementation() {
 	_setClassHelper(PetControlDeviceHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1246,7 +1246,7 @@ PetControlDeviceImplementation::PetControlDeviceImplementation() {
 	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommand = 0;
 	lastCommand = 0;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommandTarget = null;
-	lastCommandTarget = nullptr;
+	lastCommandTarget = NULL;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		namingProgress = 0;
 	namingProgress = 0;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		futureName = "";

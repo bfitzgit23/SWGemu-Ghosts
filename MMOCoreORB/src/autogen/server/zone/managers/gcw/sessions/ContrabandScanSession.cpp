@@ -36,7 +36,7 @@ ContrabandScanSession::~ContrabandScanSession() {
 
 int ContrabandScanSession::initializeSession() {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -50,7 +50,7 @@ int ContrabandScanSession::initializeSession() {
 
 int ContrabandScanSession::cancelSession() {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -64,7 +64,7 @@ int ContrabandScanSession::cancelSession() {
 
 int ContrabandScanSession::clearSession() {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -78,7 +78,7 @@ int ContrabandScanSession::clearSession() {
 
 void ContrabandScanSession::runContrabandScan() {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -92,7 +92,7 @@ void ContrabandScanSession::runContrabandScan() {
 
 bool ContrabandScanSession::scanPrerequisitesMet(AiAgent* scanner, CreatureObject* player) {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -108,7 +108,7 @@ bool ContrabandScanSession::scanPrerequisitesMet(AiAgent* scanner, CreatureObjec
 
 void ContrabandScanSession::setAcceptFineAnswer(bool acceptFine) {
 	ContrabandScanSessionImplementation* _implementation = static_cast<ContrabandScanSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -154,7 +154,7 @@ void ContrabandScanSessionImplementation::finalize() {
 void ContrabandScanSessionImplementation::_initializeImplementation() {
 	_setClassHelper(ContrabandScanSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

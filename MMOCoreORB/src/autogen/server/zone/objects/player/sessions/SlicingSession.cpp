@@ -32,7 +32,7 @@ SlicingSession::~SlicingSession() {
 
 void SlicingSession::initalizeSlicingMenu(CreatureObject* pl, TangibleObject* obj) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -42,7 +42,7 @@ void SlicingSession::initalizeSlicingMenu(CreatureObject* pl, TangibleObject* ob
 
 void SlicingSession::handleMenuSelect(CreatureObject* pl, byte menuID, SuiListBox* suiBox) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -52,7 +52,7 @@ void SlicingSession::handleMenuSelect(CreatureObject* pl, byte menuID, SuiListBo
 
 int SlicingSession::initializeSession() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -66,7 +66,7 @@ int SlicingSession::initializeSession() {
 
 int SlicingSession::cancelSession() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -80,7 +80,7 @@ int SlicingSession::cancelSession() {
 
 int SlicingSession::clearSession() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -94,7 +94,7 @@ int SlicingSession::clearSession() {
 
 void SlicingSession::endSlicing() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -108,7 +108,7 @@ void SlicingSession::endSlicing() {
 
 bool SlicingSession::isBaseSlice() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -122,7 +122,7 @@ bool SlicingSession::isBaseSlice() {
 
 bool SlicingSession::isKeypadSlice() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -136,7 +136,7 @@ bool SlicingSession::isKeypadSlice() {
 
 void SlicingSession::setKeypadSlice(bool val) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -151,7 +151,7 @@ void SlicingSession::setKeypadSlice(bool val) {
 
 void SlicingSession::setBaseSlice(bool val) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -166,7 +166,7 @@ void SlicingSession::setBaseSlice(bool val) {
 
 int SlicingSession::getSlicingSkill(CreatureObject* slicer) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ int SlicingSession::getSlicingSkill(CreatureObject* slicer) {
 
 bool SlicingSession::hasPrecisionLaserKnife(bool removeItem) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -196,7 +196,7 @@ bool SlicingSession::hasPrecisionLaserKnife(bool removeItem) {
 
 bool SlicingSession::hasWeaponUpgradeKit() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -210,7 +210,7 @@ bool SlicingSession::hasWeaponUpgradeKit() {
 
 bool SlicingSession::hasArmorUpgradeKit() {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -224,7 +224,7 @@ bool SlicingSession::hasArmorUpgradeKit() {
 
 void SlicingSession::useClampFromInventory(SlicingTool* clamp) {
 	SlicingSessionImplementation* _implementation = static_cast<SlicingSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -270,7 +270,7 @@ void SlicingSessionImplementation::finalize() {
 void SlicingSessionImplementation::_initializeImplementation() {
 	_setClassHelper(SlicingSessionHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -583,9 +583,9 @@ SlicingSessionImplementation::SlicingSessionImplementation(CreatureObject* paren
 
 int SlicingSessionImplementation::clearSession() {
 	// server/zone/objects/player/sessions/SlicingSession.idl():  		player = null;
-	player = nullptr;
+	player = NULL;
 	// server/zone/objects/player/sessions/SlicingSession.idl():  		tangibleObject = null;
-	tangibleObject = nullptr;
+	tangibleObject = NULL;
 	// server/zone/objects/player/sessions/SlicingSession.idl():  		return 0;
 	return 0;
 }

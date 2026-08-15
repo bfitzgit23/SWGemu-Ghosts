@@ -9,6 +9,7 @@
 #include "Long.h"
 
 #include <regex>
+#include <sstream>
 
 constexpr uint32 StringHashCodeTable::crctable[];
 
@@ -288,11 +289,23 @@ bool String::beginsWith(const String& str) const {
 }
 
 bool String::endsWith(const char* str) const {
-	return lastIndexOf(str) == count - (int) strlen(str);
+	int len = strlen(str);
+
+	if (len > count) {
+		return false;
+	}
+
+	return lastIndexOf(str) == count - len;
 }
 
 bool String::endsWith(const String& str) const {
-	return lastIndexOf(str) == count - str.count;
+	int len = str.count;
+
+	if (len > count) {
+		return false;
+	}
+
+	return lastIndexOf(str) == count - len;
 }
 
 uint32 String::hashCode() const {

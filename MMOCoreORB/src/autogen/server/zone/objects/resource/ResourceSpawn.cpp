@@ -32,7 +32,7 @@ ResourceSpawn::~ResourceSpawn() {
 
 void ResourceSpawn::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -42,7 +42,7 @@ void ResourceSpawn::fillAttributeList(AttributeListMessage* msg, CreatureObject*
 
 void ResourceSpawn::decreaseContainerReferenceCount() {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -56,7 +56,7 @@ void ResourceSpawn::decreaseContainerReferenceCount() {
 
 bool ResourceSpawn::isResourceSpawn() {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -70,7 +70,7 @@ bool ResourceSpawn::isResourceSpawn() {
 
 void ResourceSpawn::setName(const String& name) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -86,7 +86,7 @@ void ResourceSpawn::setName(const String& name) {
 
 void ResourceSpawn::setType(const String& type) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -102,7 +102,7 @@ void ResourceSpawn::setType(const String& type) {
 
 void ResourceSpawn::setSpawnPool(int pool, const String& slot) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -119,7 +119,7 @@ void ResourceSpawn::setSpawnPool(int pool, const String& slot) {
 
 void ResourceSpawn::setZoneRestriction(const String& zoneName) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -135,7 +135,7 @@ void ResourceSpawn::setZoneRestriction(const String& zoneName) {
 
 void ResourceSpawn::addClass(const String& newclass) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -151,7 +151,7 @@ void ResourceSpawn::addClass(const String& newclass) {
 
 void ResourceSpawn::addStfClass(const String& newclass) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -167,7 +167,7 @@ void ResourceSpawn::addStfClass(const String& newclass) {
 
 void ResourceSpawn::addAttribute(const String& attribute, int value) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -184,7 +184,7 @@ void ResourceSpawn::addAttribute(const String& attribute, int value) {
 
 bool ResourceSpawn::isType(const String& type) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -199,7 +199,7 @@ bool ResourceSpawn::isType(const String& type) const {
 
 void ResourceSpawn::setSurveyToolType(int type) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -215,7 +215,7 @@ void ResourceSpawn::setSurveyToolType(int type) {
 
 void ResourceSpawn::setIsEnergy(bool val) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -231,7 +231,7 @@ void ResourceSpawn::setIsEnergy(bool val) {
 
 void ResourceSpawn::setIsPerfectSpawn(bool val) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -247,7 +247,7 @@ void ResourceSpawn::setIsPerfectSpawn(bool val) {
 
 String ResourceSpawn::getName() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -263,7 +263,7 @@ String ResourceSpawn::getName() const {
 
 String ResourceSpawn::getType() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -279,7 +279,7 @@ String ResourceSpawn::getType() const {
 
 String ResourceSpawn::getClass(int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -296,7 +296,7 @@ String ResourceSpawn::getClass(int index) const {
 
 String ResourceSpawn::getStfClass(int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -313,7 +313,7 @@ String ResourceSpawn::getStfClass(int index) const {
 
 String ResourceSpawn::getFinalClass() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -329,7 +329,7 @@ String ResourceSpawn::getFinalClass() const {
 
 String ResourceSpawn::getFamilyName() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -345,7 +345,7 @@ String ResourceSpawn::getFamilyName() const {
 
 String ResourceSpawn::getSurveyMissionSpawnFamilyName() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -361,7 +361,7 @@ String ResourceSpawn::getSurveyMissionSpawnFamilyName() const {
 
 void ResourceSpawn::setSpawned(unsigned long long t) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -377,7 +377,7 @@ void ResourceSpawn::setSpawned(unsigned long long t) {
 
 void ResourceSpawn::setDespawned(unsigned long long t) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -393,7 +393,7 @@ void ResourceSpawn::setDespawned(unsigned long long t) {
 
 unsigned long long ResourceSpawn::getDespawned() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -407,7 +407,7 @@ unsigned long long ResourceSpawn::getDespawned() const {
 
 void ResourceSpawn::setContainerCRC(unsigned int crc) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -423,7 +423,7 @@ void ResourceSpawn::setContainerCRC(unsigned int crc) {
 
 unsigned int ResourceSpawn::getContainerCRC() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -437,7 +437,7 @@ unsigned int ResourceSpawn::getContainerCRC() const {
 
 int ResourceSpawn::getSpawnPool() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -451,7 +451,7 @@ int ResourceSpawn::getSpawnPool() const {
 
 String ResourceSpawn::getPoolSlot() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -467,7 +467,7 @@ String ResourceSpawn::getPoolSlot() const {
 
 bool ResourceSpawn::isEnergy() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -481,7 +481,7 @@ bool ResourceSpawn::isEnergy() const {
 
 bool ResourceSpawn::isPerfectSpawn() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -495,7 +495,7 @@ bool ResourceSpawn::isPerfectSpawn() const {
 
 String ResourceSpawn::getZoneRestriction() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -511,7 +511,7 @@ String ResourceSpawn::getZoneRestriction() const {
 
 int ResourceSpawn::getSurveyToolType() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -525,7 +525,7 @@ int ResourceSpawn::getSurveyToolType() const {
 
 int ResourceSpawn::getSpawnMapSize() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -539,7 +539,7 @@ int ResourceSpawn::getSpawnMapSize() const {
 
 void ResourceSpawn::extractResource(const String& zoneName, int units) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -556,7 +556,7 @@ void ResourceSpawn::extractResource(const String& zoneName, int units) {
 
 Reference<ResourceContainer* > ResourceSpawn::createResource(int units) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -572,7 +572,7 @@ Reference<ResourceContainer* > ResourceSpawn::createResource(int units) {
 
 String ResourceSpawn::getSpawnMapZone(int i) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -589,7 +589,7 @@ String ResourceSpawn::getSpawnMapZone(int i) const {
 
 bool ResourceSpawn::isUnknownType() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -603,7 +603,7 @@ bool ResourceSpawn::isUnknownType() const {
 
 void ResourceSpawn::createSpawnMaps(bool jtl, int minpool, int maxpool, const String& zonerestriction, Vector<String>& activeZones) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -614,7 +614,7 @@ void ResourceSpawn::createSpawnMaps(bool jtl, int minpool, int maxpool, const St
 
 unsigned int ResourceSpawn::getPlanetCRC() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -628,7 +628,7 @@ unsigned int ResourceSpawn::getPlanetCRC() const {
 
 float ResourceSpawn::getDensityAt(const String& zoneName, float x, float y) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -645,7 +645,7 @@ float ResourceSpawn::getDensityAt(const String& zoneName, float x, float y) cons
 
 bool ResourceSpawn::inShift() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -659,7 +659,7 @@ bool ResourceSpawn::inShift() const {
 
 int ResourceSpawn::getAttributeAndValue(String& attribute, int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -675,7 +675,7 @@ int ResourceSpawn::getAttributeAndValue(String& attribute, int index) const {
 
 int ResourceSpawn::getAttributeValue(int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -690,7 +690,7 @@ int ResourceSpawn::getAttributeValue(int index) const {
 
 int ResourceSpawn::getValueOf(int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -705,7 +705,7 @@ int ResourceSpawn::getValueOf(int index) const {
 
 int ResourceSpawn::getValueOf(const String& attribute) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -720,7 +720,7 @@ int ResourceSpawn::getValueOf(const String& attribute) const {
 
 void ResourceSpawn::addStatsToDeedListBox(SuiListBox* suil) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -735,7 +735,7 @@ void ResourceSpawn::addStatsToDeedListBox(SuiListBox* suil) {
 
 void ResourceSpawn::addStatsToDeedListBoxCR(SuiListBox* suil) {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -750,7 +750,7 @@ void ResourceSpawn::addStatsToDeedListBoxCR(SuiListBox* suil) {
 
 void ResourceSpawn::print() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -793,7 +793,7 @@ ResourceSpawnImplementation::~ResourceSpawnImplementation() {
 void ResourceSpawnImplementation::_initializeImplementation() {
 	_setClassHelper(ResourceSpawnHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -1697,7 +1697,7 @@ void ResourceSpawnAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int units = inv->getSignedIntParameter();
 			
 			DistributedObject* _m_res = createResource(units);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETSPAWNMAPZONE__INT_:
@@ -2728,7 +2728,7 @@ int LuaResourceSpawn::createResource(lua_State *L) {
 
 			ResourceContainer* result = realObject->createResource(units);
 
-			if (result != nullptr)
+			if (result != NULL)
 				lua_pushlightuserdata(L, result);
 			else
 				lua_pushnil(L);

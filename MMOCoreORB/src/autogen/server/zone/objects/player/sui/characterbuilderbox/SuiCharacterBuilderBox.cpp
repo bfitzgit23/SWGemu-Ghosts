@@ -30,7 +30,7 @@ SuiCharacterBuilderBox::~SuiCharacterBuilderBox() {
 
 BaseMessage* SuiCharacterBuilderBox::generateMessage() {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -40,7 +40,7 @@ BaseMessage* SuiCharacterBuilderBox::generateMessage() {
 
 CharacterBuilderMenuNode* SuiCharacterBuilderBox::getCurrentNode() {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -50,7 +50,7 @@ CharacterBuilderMenuNode* SuiCharacterBuilderBox::getCurrentNode() {
 
 void SuiCharacterBuilderBox::setCurrentNode(CharacterBuilderMenuNode* node) {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -60,7 +60,7 @@ void SuiCharacterBuilderBox::setCurrentNode(CharacterBuilderMenuNode* node) {
 
 bool SuiCharacterBuilderBox::isCharacterBuilderBox() {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -105,7 +105,7 @@ void SuiCharacterBuilderBoxImplementation::finalize() {
 void SuiCharacterBuilderBoxImplementation::_initializeImplementation() {
 	_setClassHelper(SuiCharacterBuilderBoxHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }

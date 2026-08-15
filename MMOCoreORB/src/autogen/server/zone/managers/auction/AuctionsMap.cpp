@@ -34,7 +34,7 @@ AuctionsMap::~AuctionsMap() {
 
 int AuctionsMap::addItem(CreatureObject* player, SceneObject* vendor, AuctionItem* item) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -51,7 +51,7 @@ int AuctionsMap::addItem(CreatureObject* player, SceneObject* vendor, AuctionIte
 
 void AuctionsMap::deleteItem(SceneObject* vendor, AuctionItem* item) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -67,7 +67,7 @@ void AuctionsMap::deleteItem(SceneObject* vendor, AuctionItem* item) {
 
 AuctionItem* AuctionsMap::getItem(unsigned long long id) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -82,7 +82,7 @@ AuctionItem* AuctionsMap::getItem(unsigned long long id) {
 
 bool AuctionsMap::containsItem(unsigned long long id) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -97,7 +97,7 @@ bool AuctionsMap::containsItem(unsigned long long id) {
 
 TerminalListVector AuctionsMap::getVendorTerminalData(const String& planet, const String& region, SceneObject* vendor) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -107,7 +107,7 @@ TerminalListVector AuctionsMap::getVendorTerminalData(const String& planet, cons
 
 TerminalListVector AuctionsMap::getBazaarTerminalData(const String& planet, const String& region, SceneObject* vendor) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -117,7 +117,7 @@ TerminalListVector AuctionsMap::getBazaarTerminalData(const String& planet, cons
 
 int AuctionsMap::getPlayerItemCount(CreatureObject* player) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -132,7 +132,7 @@ int AuctionsMap::getPlayerItemCount(CreatureObject* player) {
 
 int AuctionsMap::getVendorExpiredOffersCount(SceneObject* vendor, CreatureObject* player) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -148,7 +148,7 @@ int AuctionsMap::getVendorExpiredOffersCount(SceneObject* vendor, CreatureObject
 
 int AuctionsMap::getVendorExpiredItemCount(SceneObject* vendor) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -163,7 +163,7 @@ int AuctionsMap::getVendorExpiredItemCount(SceneObject* vendor) {
 
 int AuctionsMap::getVendorItemCount(SceneObject* vendor, bool forSaleOnly) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -179,7 +179,7 @@ int AuctionsMap::getVendorItemCount(SceneObject* vendor, bool forSaleOnly) {
 
 void AuctionsMap::deleteTerminalItems(SceneObject* vendor) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -194,7 +194,7 @@ void AuctionsMap::deleteTerminalItems(SceneObject* vendor) {
 
 int AuctionsMap::getCommodityCount(CreatureObject* player) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -209,7 +209,7 @@ int AuctionsMap::getCommodityCount(CreatureObject* player) {
 
 void AuctionsMap::updateUID(SceneObject* vendor, const String& oldUID, const String& newUID) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -226,7 +226,7 @@ void AuctionsMap::updateUID(SceneObject* vendor, const String& oldUID, const Str
 
 void AuctionsMap::updateVendorSearch(SceneObject* vendor, bool enabled) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -242,7 +242,7 @@ void AuctionsMap::updateVendorSearch(SceneObject* vendor, bool enabled) {
 
 void AuctionsMap::addToCommodityLimit(AuctionItem* item) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -257,7 +257,7 @@ void AuctionsMap::addToCommodityLimit(AuctionItem* item) {
 
 void AuctionsMap::removeFromCommodityLimit(AuctionItem* item) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -272,7 +272,7 @@ void AuctionsMap::removeFromCommodityLimit(AuctionItem* item) {
 
 int AuctionsMap::getBazaarCount() {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -286,7 +286,7 @@ int AuctionsMap::getBazaarCount() {
 
 int AuctionsMap::getVendorCount() const {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -300,7 +300,7 @@ int AuctionsMap::getVendorCount() const {
 
 int AuctionsMap::getTotalItemCount() const {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -345,7 +345,7 @@ void AuctionsMapImplementation::finalize() {
 void AuctionsMapImplementation::_initializeImplementation() {
 	_setClassHelper(AuctionsMapHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -469,7 +469,7 @@ void AuctionsMapImplementation::writeJSON(nlohmann::json& j) {
 AuctionsMapImplementation::AuctionsMapImplementation() {
 	_initializeImplementation();
 	// server/zone/managers/auction/AuctionsMap.idl():  		allItems.setNullValue(null);
-	(&allItems)->setNullValue(nullptr);
+	(&allItems)->setNullValue(NULL);
 	// server/zone/managers/auction/AuctionsMap.idl():  		allItems.setNoDuplicateInsertPlan();
 	(&allItems)->setNoDuplicateInsertPlan();
 	// server/zone/managers/auction/AuctionsMap.idl():  		commoditiesLimit.setNoDuplicateInsertPlan();
@@ -549,7 +549,7 @@ void AuctionsMapAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			unsigned long long id = inv->getUnsignedLongParameter();
 			
 			DistributedObject* _m_res = getItem(id);
-			resp->insertLong(_m_res == nullptr ? 0 : _m_res->_getObjectID());
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_CONTAINSITEM__LONG_:

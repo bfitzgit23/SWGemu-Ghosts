@@ -34,7 +34,7 @@ SpawnArea::~SpawnArea() {
 
 Vector3 SpawnArea::getRandomPosition(SceneObject* player) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -44,7 +44,7 @@ Vector3 SpawnArea::getRandomPosition(SceneObject* player) {
 
 int SpawnArea::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -62,7 +62,7 @@ int SpawnArea::notifyObserverEvent(unsigned int eventType, Observable* observabl
 
 void SpawnArea::buildSpawnList(Vector<unsigned int>* groupCRCs) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -73,7 +73,7 @@ void SpawnArea::buildSpawnList(Vector<unsigned int>* groupCRCs) {
 
 Vector<Reference<LairSpawn*> >* SpawnArea::getSpawnList() {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -83,7 +83,7 @@ Vector<Reference<LairSpawn*> >* SpawnArea::getSpawnList() {
 
 void SpawnArea::setTier(int n) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -99,7 +99,7 @@ void SpawnArea::setTier(int n) {
 
 int SpawnArea::getTier() const {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -113,7 +113,7 @@ int SpawnArea::getTier() const {
 
 int SpawnArea::getTotalWeighting() const {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -127,7 +127,7 @@ int SpawnArea::getTotalWeighting() const {
 
 void SpawnArea::setMaxSpawnLimit(int n) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -143,7 +143,7 @@ void SpawnArea::setMaxSpawnLimit(int n) {
 
 void SpawnArea::addNoSpawnArea(SpawnArea* area) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -159,7 +159,7 @@ void SpawnArea::addNoSpawnArea(SpawnArea* area) {
 
 void SpawnArea::tryToSpawn(SceneObject* object) {
 	SpawnAreaImplementation* _implementation = static_cast<SpawnAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -205,7 +205,7 @@ void SpawnAreaImplementation::finalize() {
 void SpawnAreaImplementation::_initializeImplementation() {
 	_setClassHelper(SpawnAreaHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
@@ -457,7 +457,7 @@ SpawnAreaImplementation::SpawnAreaImplementation() {
 	// server/zone/objects/area/SpawnArea.idl():  		spawnTypes.setNullValue(0);
 	(&spawnTypes)->setNullValue(0);
 	// server/zone/objects/area/SpawnArea.idl():  		exitObserver = null;
-	exitObserver = nullptr;
+	exitObserver = NULL;
 	// server/zone/objects/area/SpawnArea.idl():  		Logger.setLoggingName("SpawnArea");
 	Logger::setLoggingName("SpawnArea");
 }

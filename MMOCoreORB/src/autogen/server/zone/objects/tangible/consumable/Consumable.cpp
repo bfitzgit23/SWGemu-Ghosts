@@ -34,7 +34,7 @@ Consumable::~Consumable() {
 
 int Consumable::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -50,7 +50,7 @@ int Consumable::handleObjectMenuSelect(CreatureObject* player, byte selectedID) 
 
 void Consumable::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -60,7 +60,7 @@ void Consumable::updateCraftingValues(CraftingValues* values, bool firstUpdate) 
 
 void Consumable::loadTemplateData(SharedObjectTemplate* templateData) {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -70,7 +70,7 @@ void Consumable::loadTemplateData(SharedObjectTemplate* templateData) {
 
 void Consumable::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
@@ -80,7 +80,7 @@ void Consumable::fillAttributeList(AttributeListMessage* msg, CreatureObject* ob
 
 void Consumable::setModifiers(Buff* buff, bool skillModifiers) {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementation());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -90,14 +90,14 @@ void Consumable::setModifiers(Buff* buff, bool skillModifiers) {
 
 		method.executeWithVoidReturn();
 	} else {
-		assert((buff == nullptr) || buff->isLockedByCurrentThread());
+		assert((buff == NULL) || buff->isLockedByCurrentThread());
 		_implementation->setModifiers(buff, skillModifiers);
 	}
 }
 
 bool Consumable::isSpiceEffect() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -111,7 +111,7 @@ bool Consumable::isSpiceEffect() const {
 
 bool Consumable::isAttributeEffect() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -125,7 +125,7 @@ bool Consumable::isAttributeEffect() const {
 
 bool Consumable::isDrink() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -139,7 +139,7 @@ bool Consumable::isDrink() {
 
 bool Consumable::isFood() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -153,7 +153,7 @@ bool Consumable::isFood() {
 
 bool Consumable::isForagedFood() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -167,7 +167,7 @@ bool Consumable::isForagedFood() {
 
 bool Consumable::isSpice() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -181,7 +181,7 @@ bool Consumable::isSpice() {
 
 bool Consumable::isConsumable() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -195,7 +195,7 @@ bool Consumable::isConsumable() {
 
 int Consumable::getDuration() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -209,7 +209,7 @@ int Consumable::getDuration() {
 
 String Consumable::getSpeciesRestriction() {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == nullptr)) {
+	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
@@ -256,7 +256,7 @@ void ConsumableImplementation::finalize() {
 void ConsumableImplementation::_initializeImplementation() {
 	_setClassHelper(ConsumableHelper::instance());
 
-	_this = nullptr;
+	_this = NULL;
 
 	_serializationHelperMethod();
 }
