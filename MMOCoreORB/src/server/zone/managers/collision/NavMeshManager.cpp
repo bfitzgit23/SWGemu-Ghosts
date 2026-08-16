@@ -187,7 +187,12 @@ void NavMeshManager::startJob(Reference<NavMeshJob*> job) {
     float poleDist = job->getRecastConfig().distanceBetweenPoles;
 
     if (poleDist < 1.0f) {
-        poleDist = zone->getPlanetManager()->getTerrainManager()->getProceduralTerrainAppearance()->getDistanceBetweenPoles();
+        ProceduralTerrainAppearance* pta = zone->getPlanetManager()->getTerrainManager()->getProceduralTerrainAppearance();
+        if (pta != nullptr) {
+            poleDist = pta->getDistanceBetweenPoles();
+        } else {
+            poleDist = 10.0f; // Default fallback
+        }
     }
 
     builder->initialize(meshData, bBox, poleDist);

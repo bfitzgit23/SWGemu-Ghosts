@@ -58,7 +58,7 @@ void CharacterBuilderTerminalImplementation::sendInitialChoices(CreatureObject* 
 	player->getPlayerObject()->addSuiBox(sui);
 }
 
-void CharacterBuilderTerminalImplementation::enhanceCharacter(CreatureObject* player, int type) {
+void CharacterBuilderTerminalImplementation::enhanceCharacter(CreatureObject* player) {
 	PlayerManager* pm = player->getZoneServer()->getPlayerManager();
 
 	pm->enhanceCharacter(player);
@@ -152,7 +152,7 @@ void CharacterBuilderTerminalImplementation::grantJediInitiate(CreatureObject* p
 
 	luaVillageGmCmd->callFunction();
 
-	const auto& branches = terminalTemplate->getVillageBranchUnlocks();
+	Vector<String> branches = terminalTemplate->getVillageBranchUnlocks();
 
 	for (int i = 0; i < branches.size(); i++) {
 		String branch = branches.get(i);

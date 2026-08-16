@@ -507,7 +507,7 @@ void SuiManager::handleCharacterBuilderSelectItem(CreatureObject* player, SuiBox
 				player->sendSystemMessage(stringId);
 
 			} else if (templatePath == "enhance_character") {
-				bluefrog->enhanceCharacter(player, 0);
+				bluefrog->enhanceCharacter(player);
 
 			} else if (templatePath == "credits") {
 				player->addCashCredits(50000, true);

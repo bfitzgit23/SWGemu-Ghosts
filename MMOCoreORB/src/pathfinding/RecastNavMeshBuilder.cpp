@@ -496,7 +496,10 @@ RecastNavMeshBuilder::initialize(Vector<Reference<MeshData*> >& meshData, const 
 	info("Building region navmesh for: " + name, true);
 #endif
 	Vector<const Boundary*> water;
-	terrainManager->getProceduralTerrainAppearance()->getWaterBoundariesInAABB(bounds, &water);
+	ProceduralTerrainAppearance* pta = terrainManager->getProceduralTerrainAppearance();
+	if (pta != nullptr) {
+		pta->getWaterBoundariesInAABB(bounds, &water);
+	}
 	// Render water as polygons
 	for (const Boundary* boundary : water) {
 		const BoundaryPolygon* bPoly = dynamic_cast<const BoundaryPolygon*>(boundary);
@@ -656,11 +659,13 @@ RecastNavMeshBuilder::getTerrainMesh(Vector3& position, float terrainSize, Terra
 	Vector <Vector3>* verts = mesh->getVerts();
 	Vector <MeshTriangle>* tris = mesh->getTriangles();
 	int numCells = terrainSize / distanceBetweenHeights;
+	ProceduralTerrainAppearance* pta = terrainManager->getProceduralTerrainAppearance();
 	for (int x = 0; x < numCells; x++) {
 		for (int y = 0; y < numCells; y++) {
 			float xPos = originX + x * distanceBetweenHeights;
 			float yPos = originY + y * distanceBetweenHeights;
-			verts->add(Vector3(xPos, terrainManager->getProceduralTerrainAppearance()->getHeight(xPos, yPos), -yPos));
+			float height = (pta != nullptr) ? pta->getHeight(xPos, yPos) : 0.0f;
+			verts->add(Vector3(xPos, height, -yPos));
 		}
 		//info("Building terrain verts Row #" + String::valueOf(x*numCells));
 	}

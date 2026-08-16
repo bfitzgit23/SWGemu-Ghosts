@@ -109,10 +109,22 @@ public:
 			return INVALIDPARAMETERS;
 		}
 
+		Reference<PlanetTravelPoint*> depPoint = pmDeparture->getPlanetTravelPoint(departurePoint);
+		if (depPoint == nullptr || depPoint->getPointZone().isEmpty() || depPoint->getPointName().isEmpty()) {
+			creature->sendSystemMessage("@travel:terminal_error");
+			return GENERALERROR;
+		}
+
 		Reference<PlanetTravelPoint*>  destPoint = pmArrival->getPlanetTravelPoint(arrivalPoint);
 
 		if (destPoint == nullptr)
 			return GENERALERROR;
+
+		// Validate dest point has valid zone/name
+		if (destPoint->getPointZone().isEmpty() || destPoint->getPointName().isEmpty()) {
+			creature->sendSystemMessage("@travel:terminal_error");
+			return GENERALERROR;
+		}
 
 		ManagedReference<CreatureObject*> arrivalShuttle = destPoint->getShuttle();
 

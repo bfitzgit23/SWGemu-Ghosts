@@ -18,7 +18,18 @@ int TravelTerminalImplementation::handleObjectMenuSelect(CreatureObject* player,
 
 	// Complain loudly if we failed to find a travel point for this terminal
 	if(ptp == nullptr) {
-		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + " Could not determine related PlanetTravelPoint");
+		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + ") Could not determine related PlanetTravelPoint");
+		player->sendSystemMessage("@travel:terminal_error"); // Terminal is not properly configured.
+		return 0;
+	}
+
+	// Validate that the travel point has valid zone and name
+	String pointZone = ptp->getPointZone();
+	String pointName = ptp->getPointName();
+
+	if (pointZone.isEmpty() || pointName.isEmpty()) {
+		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + ") PlanetTravelPoint has empty zone or name: zone='" + pointZone + "' name='" + pointName + "'");
+		player->sendSystemMessage("@travel:terminal_error"); // Terminal is not properly configured.
 		return 0;
 	}
 
