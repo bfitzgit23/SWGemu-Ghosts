@@ -191,7 +191,7 @@ int LambdaObserverImplementation::writeObjectMembers(ObjectOutputStream* stream)
 
 int LambdaObserverImplementation::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	// server/utils/LambdaObserver.idl():   	return 1;
-	if (function != NULL)	// server/utils/LambdaObserver.idl():  			return function.notifyObserverEvent(eventType, observable, arg1, arg2);
+	if (function)	// server/utils/LambdaObserver.idl():  			return function.notifyObserverEvent(eventType, observable, arg1, arg2);
 	return function->notifyObserverEvent(eventType, observable, arg1, arg2);
 
 	else 	// server/utils/LambdaObserver.idl():   	return 1;

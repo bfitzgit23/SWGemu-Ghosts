@@ -1,0 +1,36 @@
+chand_gubbur = Creature:new {
+	customName = "a Gubbur",
+	socialGroup = "gubbur",
+	faction = "",
+	level = 20,
+	chanceHit = 0.35,
+	damageMin = 120,
+	damageMax = 280,
+	baseXp = 220,
+	baseHAM = 6000,
+	baseHAMmax = 7000,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_herbivore",
+	meatAmount = 250,
+	hideType = "hide_leathery",
+	hideAmount = 225,
+	boneType = "bone_mammal",
+	boneAmount = 200,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = HERBIVORE,
+	scale = 1.3,
+
+	templates = {"object/mobile/gubbur.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_gubbur, "chand_gubbur")

@@ -41,6 +41,22 @@ class CreatureObjectPOD;
 using namespace server::zone::objects::creature;
 
 namespace server {
+namespace zone {
+namespace objects {
+namespace ship {
+
+class ShipObject;
+
+class ShipObjectPOD;
+
+} // namespace ship
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::ship;
+
+namespace server {
 namespace chat {
 namespace room {
 
@@ -54,31 +70,19 @@ class ChatRoomPOD;
 
 using namespace server::chat::room;
 
-namespace server {
-namespace zone {
-namespace objects {
-namespace group {
-namespace tasks {
-
-class UpdateNearestMissionForGroupTask;
-
-} // namespace tasks
-} // namespace group
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::group::tasks;
-
 #include "server/zone/objects/group/GroupList.h"
 
 #include "server/zone/managers/group/GroupManager.h"
+
+#include "server/zone/objects/group/tasks/UpdateNearestMissionForGroupTask.h"
 
 #include "server/chat/StringIdChatParameter.h"
 
 #include "system/lang/ref/Reference.h"
 
 #include "system/util/VectorMap.h"
+
+#include "server/zone/objects/scene/variables/DeltaVectorMap.h"
 
 #include "server/zone/objects/scene/SceneObject.h"
 
@@ -107,9 +111,11 @@ public:
 
 	void sendSystemMessage(StringIdChatParameter& param, CreatureObject* excluded);
 
-	void addMember(CreatureObject* newMember);
+	void addMember(CreatureObject* newMember, bool notify = true);
 
 	void removeMember(CreatureObject* member);
+
+	void updateMemberShip(CreatureObject* member, ShipObject* ship);
 
 	void disband();
 
@@ -125,9 +131,11 @@ public:
 
 	float getGroupHarvestModifier(CreatureObject* player);
 
-	void calcGroupLevel();
+	void calculateGroupLevel();
 
-	int getGroupLevel() const;
+	int getGroupLevel(bool includeFactionPets = true) const;
+
+	int getFactionPetLevel() const;
 
 	ChatRoom* getChatRoom() const;
 
@@ -137,11 +145,15 @@ public:
 
 	Reference<CreatureObject* > getGroupMember(int index);
 
-	void initializeLeader(CreatureObject* player);
-
 	Reference<CreatureObject* > getLeader();
 
+	bool initializeLeader(CreatureObject* leader, CreatureObject* member);
+
+	unsigned long long getLeaderID();
+
 	GroupList* getGroupList();
+
+	const DeltaVectorMap<unsigned long long, unsigned long long>* getGroupShips();
 
 	bool isGroupObject();
 
@@ -153,9 +165,9 @@ public:
 
 	bool isOtherMemberPlayingMusic(CreatureObject* player);
 
-	String getBandSong() const;
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
-	void setBandSong(const String& song);
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
 	int getLootRule() const;
 
@@ -199,16 +211,18 @@ namespace group {
 class GroupObjectImplementation : public SceneObjectImplementation {
 	GroupList groupMembers;
 
+protected:
+	DeltaVectorMap<unsigned long long, unsigned long long> groupMemberShips;
+
+private:
 	VectorMap<unsigned int, Reference<UpdateNearestMissionForGroupTask*> > updateNearestMissionForGroupTasks;
 
 	ManagedReference<ChatRoom* > chatRoom;
 
 	int groupLevel;
 
-protected:
-	String bandSong;
+	int factionPetLevel;
 
-private:
 	int lootRule;
 
 	unsigned long long masterLooterID;
@@ -232,9 +246,11 @@ public:
 
 	void sendSystemMessage(StringIdChatParameter& param, CreatureObject* excluded);
 
-	void addMember(CreatureObject* newMember);
+	void addMember(CreatureObject* newMember, bool notify = true);
 
 	void removeMember(CreatureObject* member);
+
+	void updateMemberShip(CreatureObject* member, ShipObject* ship);
 
 	void disband();
 
@@ -250,9 +266,11 @@ public:
 
 	float getGroupHarvestModifier(CreatureObject* player);
 
-	void calcGroupLevel();
+	void calculateGroupLevel();
 
-	int getGroupLevel() const;
+	int getGroupLevel(bool includeFactionPets = true) const;
+
+	int getFactionPetLevel() const;
 
 	ChatRoom* getChatRoom() const;
 
@@ -262,11 +280,15 @@ public:
 
 	Reference<CreatureObject* > getGroupMember(int index);
 
-	void initializeLeader(CreatureObject* player);
-
 	Reference<CreatureObject* > getLeader();
 
+	bool initializeLeader(CreatureObject* leader, CreatureObject* member);
+
+	unsigned long long getLeaderID();
+
 	GroupList* getGroupList();
+
+	const DeltaVectorMap<unsigned long long, unsigned long long>* getGroupShips();
 
 	bool isGroupObject();
 
@@ -279,14 +301,14 @@ public:
 private:
 	void addGroupModifiers(CreatureObject* player);
 
-	void removeGroupModifiers(CreatureObject* player);
+	void removeGroupModifiers(CreatureObject* player, bool isLeader);
 
 public:
 	bool isOtherMemberPlayingMusic(CreatureObject* player);
 
-	String getBandSong() const;
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
-	void setBandSong(const String& song);
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
 	int getLootRule() const;
 
@@ -352,9 +374,11 @@ public:
 
 	void sendSystemMessage(const String& fullPath, bool sendLeader);
 
-	void addMember(CreatureObject* newMember);
+	void addMember(CreatureObject* newMember, bool notify);
 
 	void removeMember(CreatureObject* member);
+
+	void updateMemberShip(CreatureObject* member, ShipObject* ship);
 
 	void disband();
 
@@ -370,9 +394,11 @@ public:
 
 	float getGroupHarvestModifier(CreatureObject* player);
 
-	void calcGroupLevel();
+	void calculateGroupLevel();
 
-	int getGroupLevel() const;
+	int getGroupLevel(bool includeFactionPets) const;
+
+	int getFactionPetLevel() const;
 
 	ChatRoom* getChatRoom() const;
 
@@ -382,9 +408,9 @@ public:
 
 	Reference<CreatureObject* > getGroupMember(int index);
 
-	void initializeLeader(CreatureObject* player);
-
 	Reference<CreatureObject* > getLeader();
+
+	bool initializeLeader(CreatureObject* leader, CreatureObject* member);
 
 	bool isGroupObject();
 
@@ -396,9 +422,9 @@ public:
 
 	bool isOtherMemberPlayingMusic(CreatureObject* player);
 
-	String getBandSong() const;
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
-	void setBandSong(const String& song);
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient);
 
 	int getLootRule() const;
 
@@ -451,11 +477,13 @@ class GroupObjectPOD : public SceneObjectPOD {
 public:
 	Optional<GroupList> groupMembers;
 
+	Optional<DeltaVectorMap<unsigned long long, unsigned long long>> groupMemberShips;
+
 	Optional<ManagedReference<ChatRoomPOD* >> chatRoom;
 
 	Optional<int> groupLevel;
 
-	Optional<String> bandSong;
+	Optional<int> factionPetLevel;
 
 	Optional<int> lootRule;
 

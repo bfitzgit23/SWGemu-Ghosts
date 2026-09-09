@@ -14,7 +14,7 @@
  *	DraftSchematicStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 237642605,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDDRAFTSLOTSTO__CREATUREOBJECT_,RPC_SENDRESOURCEWEIGHTSTO__CREATUREOBJECT_,RPC_CREATEMANUFACTURESCHEMATIC__SCENEOBJECT_,RPC_SETGROUPNAME__STRING_,RPC_GETGROUPNAME__,RPC_GETDRAFTSLOTCOUNT__,RPC_ISVALIDDRAFTSCHEMATIC__,RPC_GETRESOURCEWEIGHTCOUNT__,RPC_GETCOMPLEXITY__,RPC_GETTOOLTAB__,RPC_GETSIZE__,RPC_GETXPTYPE__,RPC_GETXPAMOUNT__,RPC_GETISMAGIC__,RPC_GETASSEMBLYSKILL__,RPC_GETEXPERIMENTATIONSKILL__,RPC_GETCUSTOMIZATIONSKILL__,RPC_GETCUSTOMNAME__,RPC_GETTANOCRC__,RPC_GETTEMPLATELISTSIZE__,RPC_GETTEMPLATE__INT_,RPC_GETAPPEARANCE__INT_,RPC_GETLABRATORY__,RPC_GETFACTORYCRATESIZE__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 237642605,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDDRAFTSLOTSTO__CREATUREOBJECT_,RPC_SENDRESOURCEWEIGHTSTO__CREATUREOBJECT_,RPC_CREATEMANUFACTURESCHEMATIC__SCENEOBJECT_,RPC_SETGROUPNAME__STRING_,RPC_GETGROUPNAME__,RPC_GETDRAFTSLOTCOUNT__,RPC_ISVALIDDRAFTSCHEMATIC__,RPC_GETRESOURCEWEIGHTCOUNT__,RPC_GETCOMPLEXITY__,RPC_GETTOOLTAB__,RPC_GETSIZE__,RPC_GETXPTYPE__,RPC_GETXPAMOUNT__,RPC_GETISMAGIC__,RPC_GETASSEMBLYSKILL__,RPC_GETEXPERIMENTATIONSKILL__,RPC_GETCUSTOMIZATIONSKILL__,RPC_GETCUSTOMNAME__,RPC_GETTANOCRC__,RPC_GETTEMPLATELISTSIZE__,RPC_GETTEMPLATE__INT_,RPC_GETAPPEARANCE__INT_,RPC_GETLABRATORY__,RPC_GETFACTORYCRATESIZE__,RPC_GETFACTORYCRATETYPE__};
 
 DraftSchematic::DraftSchematic() : IntangibleObject(DummyConstructorParameter::instance()) {
 	DraftSchematicImplementation* _implementation = new DraftSchematicImplementation();
@@ -471,6 +471,22 @@ int DraftSchematic::getFactoryCrateSize() {
 	}
 }
 
+String DraftSchematic::getFactoryCrateType() {
+	DraftSchematicImplementation* _implementation = static_cast<DraftSchematicImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETFACTORYCRATETYPE__);
+
+		String _return_getFactoryCrateType;
+		method.executeWithAsciiReturn(_return_getFactoryCrateType);
+		return _return_getFactoryCrateType;
+	} else {
+		return _implementation->getFactoryCrateType();
+	}
+}
+
 DistributedObjectServant* DraftSchematic::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -631,8 +647,8 @@ String DraftSchematicImplementation::getGroupName() {
 }
 
 bool DraftSchematicImplementation::isValidDraftSchematic() {
-	// server/zone/objects/draftschematic/DraftSchematic.idl():  		return schematicTemplate != null;
-	return schematicTemplate != NULL;
+	// server/zone/objects/draftschematic/DraftSchematic.idl():  		return schematicTemplate;
+	return schematicTemplate;
 }
 
 int DraftSchematicImplementation::getTemplateListSize() {
@@ -859,6 +875,13 @@ void DraftSchematicAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETFACTORYCRATETYPE__:
+		{
+			
+			String _m_res = getFactoryCrateType();
+			resp->insertAscii(_m_res);
+		}
+		break;
 	default:
 		IntangibleObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -966,6 +989,10 @@ int DraftSchematicAdapter::getLabratory() {
 
 int DraftSchematicAdapter::getFactoryCrateSize() {
 	return (static_cast<DraftSchematic*>(stub))->getFactoryCrateSize();
+}
+
+String DraftSchematicAdapter::getFactoryCrateType() {
+	return (static_cast<DraftSchematic*>(stub))->getFactoryCrateType();
 }
 
 /*

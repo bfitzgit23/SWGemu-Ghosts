@@ -14,7 +14,7 @@
  *	LotteryDroidStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1062444868,RPC_NOTIFYLOADFROMDATABASE__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ENDGAME__,RPC_STARTLOTTERY__CREATUREOBJECT_,RPC_SENDDURATIONSUI__CREATUREOBJECT_,RPC_SENDPAYOUTSUI__CREATUREOBJECT_,RPC_SENDTICKETCOSTSUI__CREATUREOBJECT_,RPC_SENDADDCREDITSSUI__CREATUREOBJECT_,RPC_SENDLOTTERYINSTRUCTIONSSUI__CREATUREOBJECT_,RPC_SENDREGISTRATIONSUI__CREATUREOBJECT_,RPC_SENDLOTTERYINFOSUI__CREATUREOBJECT_,RPC_GETTIMELEFT__LONG_,RPC_GETDEEDOWNER__,RPC_ACTIVATEGAMEPULSE__,RPC_ISEVENTPERKITEM__,RPC_GETGAMESTATUS__,RPC_GETGAMEDURATION__,RPC_GETTICKETPRICE__,RPC_GETPAYOUTPERCENT__,RPC_SETGAMEDURATION__INT_,RPC_SETPAYOUTPERCENT__INT_,RPC_SETTICKETPRICE__INT_,RPC_ADDTOCREDITPOOL__INT_,RPC_GETNUMPLAYERS__,RPC_ADDNEWPLAYER__LONG_,RPC_ISCURRENTPLAYER__LONG_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1062444868,RPC_NOTIFYLOADFROMDATABASE__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ENDGAME__,RPC_STARTLOTTERY__CREATUREOBJECT_,RPC_SENDDURATIONSUI__CREATUREOBJECT_,RPC_SENDPAYOUTSUI__CREATUREOBJECT_,RPC_SENDTICKETCOSTSUI__CREATUREOBJECT_,RPC_SENDADDCREDITSSUI__CREATUREOBJECT_,RPC_SENDLOTTERYINSTRUCTIONSSUI__CREATUREOBJECT_,RPC_SENDREGISTRATIONSUI__CREATUREOBJECT_,RPC_SENDLOTTERYINFOSUI__CREATUREOBJECT_,RPC_GETTIMELEFT__LONG_,RPC_GETDEEDOWNER__,RPC_ACTIVATEGAMEPULSE__,RPC_ISEVENTPERKITEM__,RPC_GETGAMESTATUS__,RPC_GETGAMEDURATION__,RPC_GETTICKETPRICE__,RPC_GETPAYOUTPERCENT__,RPC_SETGAMEDURATION__INT_,RPC_SETPAYOUTPERCENT__INT_,RPC_SETTICKETPRICE__INT_,RPC_ADDTOCREDITPOOL__INT_,RPC_GETCREDITPOOL__,RPC_GETNUMPLAYERS__,RPC_ADDNEWPLAYER__LONG_,RPC_ISCURRENTPLAYER__LONG_};
 
 LotteryDroid::LotteryDroid() : CreatureObject(DummyConstructorParameter::instance()) {
 	LotteryDroidImplementation* _implementation = new LotteryDroidImplementation();
@@ -424,6 +424,20 @@ void LotteryDroid::addToCreditPool(int amount) {
 	}
 }
 
+int LotteryDroid::getCreditPool() const {
+	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCREDITPOOL__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getCreditPool();
+	}
+}
+
 int LotteryDroid::getNumPlayers() const {
 	LotteryDroidImplementation* _implementation = static_cast<LotteryDroidImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -828,6 +842,11 @@ void LotteryDroidImplementation::addToCreditPool(int amount) {
 	creditPool = creditPool + amount;
 }
 
+int LotteryDroidImplementation::getCreditPool() const{
+	// server/zone/objects/tangible/eventperk/LotteryDroid.idl():  		return creditPool;
+	return creditPool;
+}
+
 int LotteryDroidImplementation::getNumPlayers() const{
 	// server/zone/objects/tangible/eventperk/LotteryDroid.idl():  		return playerList.size();
 	return (&playerList)->size();
@@ -1041,6 +1060,13 @@ void LotteryDroidAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_GETCREDITPOOL__:
+		{
+			
+			int _m_res = getCreditPool();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	case RPC_GETNUMPLAYERS__:
 		{
 			
@@ -1163,6 +1189,10 @@ void LotteryDroidAdapter::setTicketPrice(int price) {
 
 void LotteryDroidAdapter::addToCreditPool(int amount) {
 	(static_cast<LotteryDroid*>(stub))->addToCreditPool(amount);
+}
+
+int LotteryDroidAdapter::getCreditPool() const {
+	return (static_cast<LotteryDroid*>(stub))->getCreditPool();
 }
 
 int LotteryDroidAdapter::getNumPlayers() const {

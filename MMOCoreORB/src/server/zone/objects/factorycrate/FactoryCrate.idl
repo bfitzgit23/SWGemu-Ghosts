@@ -20,7 +20,7 @@ class FactoryCrate extends TangibleObject {
 	public FactoryCrate() {
 		Logger.setLoggingName("FactoryCrate");
 
-		maxCapacity = 1000;
+		maxCapacity = 10000;
 
 		super.setContainerInheritPermissionsFromParent(false);
 		super.setContainerDefaultDenyPermission(ContainerPermissions.OPEN);
@@ -74,6 +74,8 @@ class FactoryCrate extends TangibleObject {
 		return true;
 	}
 
+	public native boolean isValidFactoryCrate();
+
 	@read
 	public int getMaxCapacity() {
 		return maxCapacity;
@@ -81,7 +83,6 @@ class FactoryCrate extends TangibleObject {
 
 	@preLocked
 	public void setMaxCapacity(int value) {
-		value = 1000;
 		maxCapacity = value;
 	}
 
@@ -98,10 +99,13 @@ class FactoryCrate extends TangibleObject {
 	@dirty
 	public native string getSerialNumber();
 
+	@dirty
+	public native int getPrototypeUseCount();
+
 	public native boolean extractObjectToInventory(CreatureObject player);
 
 	@reference
-	public native TangibleObject extractObject(int count = 1);
+	public native TangibleObject extractObject();
 
 	@preLocked
 	public native void split(int newStackSize);

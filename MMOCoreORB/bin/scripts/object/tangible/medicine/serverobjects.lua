@@ -48,7 +48,9 @@ includeFile("tangible/medicine/crafted/serverobjects.lua")
 includeFile("tangible/medicine/pet/serverobjects.lua")
 
 -- Server Objects
-includeFile("tangible/medicine/buff_pack_jedi_mental.lua")
+-- Disabled: legacy template uses an incompatible ConsumableTemplate modifier
+-- layout and crashes TemplateManager while reading the object.
+-- includeFile("tangible/medicine/buff_pack_jedi_mental.lua")
 includeFile("tangible/medicine/antidote_sm_s1.lua")
 includeFile("tangible/medicine/grenade_area_disease.lua")
 includeFile("tangible/medicine/grenade_area_poison.lua")

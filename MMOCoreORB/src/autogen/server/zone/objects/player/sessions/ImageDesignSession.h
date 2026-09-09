@@ -114,6 +114,8 @@ using namespace server::zone::objects::player::sessions;
 
 #include "system/thread/ReadWriteLock.h"
 
+#include "system/lang/Time.h"
+
 namespace server {
 namespace zone {
 namespace objects {
@@ -150,7 +152,7 @@ public:
 
 	int initializeSession();
 
-	int doPayment();
+	bool doPayment();
 
 	int cancelSession();
 
@@ -195,6 +197,8 @@ namespace sessions {
 
 class ImageDesignSessionImplementation : public FacadeImplementation {
 protected:
+	Time sessionStartTime;
+
 	ManagedWeakReference<CreatureObject* > designerCreature;
 
 	ManagedWeakReference<CreatureObject* > targetCreature;
@@ -240,7 +244,7 @@ public:
 
 	int initializeSession();
 
-	int doPayment();
+	bool doPayment();
 
 	int cancelSession();
 
@@ -303,7 +307,7 @@ public:
 
 	int initializeSession();
 
-	int doPayment();
+	bool doPayment();
 
 	int cancelSession();
 

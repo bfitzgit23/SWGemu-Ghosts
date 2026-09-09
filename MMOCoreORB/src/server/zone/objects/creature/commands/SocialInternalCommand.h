@@ -66,22 +66,61 @@ public:
 			return SUCCESS;
 		}
 
-		// If target is a pet, enqueue command to handle it
 		Reference<AiAgent*> aiAgent = creo->asAiAgent();
 
-		if(aiAgent == nullptr)
-			return SUCCESS;
+		if (aiAgent == nullptr || aiAgent->isDead() || aiAgent->isIncapacitated())
+			return GENERALERROR;
 
 		Locker crossLocker(aiAgent, creature);
 
-		if (aiAgent->isPet()) {
+		if (aiAgent->isMonster()) {
+			// If target is a pet, enqueue command to handle it
+			if (aiAgent->isPet()) {
+				PetManager* petManager = aiAgent->getZoneServer()->getPetManager();
+				if (petManager == nullptr)
+					return GENERALERROR;
 
-			PetManager* petManager = aiAgent->getZoneServer()->getPetManager();
-			if (petManager == nullptr)
-				return GENERALERROR;
+				petManager->enqueueOwnerOnlyPetCommand(creature, aiAgent, STRING_HASHCODE("petemote"), arguments.toString() );
+			} else {
+				int chance = 40; // % chance out of 100 they creature will rest
 
-			petManager->enqueueOwnerOnlyPetCommand(creature, aiAgent, STRING_HASHCODE("petemote"), arguments.toString() );
+				if (!aiAgent->isResting() && !aiAgent->isInCombat() && chance > System::random(100)) {
+					Time* restDelay = aiAgent->getRestDelay();
 
+					if (restDelay != nullptr) {
+						int delay = 300 * 1000;
+
+						restDelay->updateToCurrentTime();
+						restDelay->addMiliTime(delay);
+
+						aiAgent->setMovementState(AiAgent::RESTING);
+
+						int speciesID = aiAgent->getSpecies();
+						bool canSitDown = false;
+
+						Zone* zone = aiAgent->getZone();
+
+						if (zone == nullptr)
+							return SUCCESS;
+
+						ManagedReference<CreatureManager*> creoManager = zone->getCreatureManager();
+
+						if (creoManager != nullptr) {
+							AiSpeciesData* speciesData = creoManager->getAiSpeciesData(speciesID);
+
+							if (speciesData != nullptr) {
+								canSitDown = speciesData->canSitDown();
+							}
+						}
+
+						if (canSitDown && System::random(100) > 50) {
+							aiAgent->setPosture(CreaturePosture::SITTING, true);
+						} else {
+							aiAgent->setPosture(CreaturePosture::LYINGDOWN, true);
+						}
+					}
+				}
+			}
 		} else {
 
 			ReactionManager* reactionManager = creature->getZoneServer()->getReactionManager();

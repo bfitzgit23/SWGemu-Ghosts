@@ -8,6 +8,8 @@
 
 #include "server/zone/ZoneProcessServer.h"
 
+#include "server/zone/objects/region/Region.h"
+
 #include "server/zone/objects/region/CityRegion.h"
 
 #include "server/zone/managers/weather/WeatherManager.h"
@@ -24,7 +26,7 @@
  *	PlanetManagerStub
  */
 
-enum {RPC_ADDNAVAREA__STRING_NAVAREA_,RPC_GETNAVAREA__STRING_,RPC_DROPNAVAREA__STRING_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_FINALIZE__,RPC_INITIALIZE__,RPC_LOADCLIENTPOIDATA__,RPC_START__,RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_,RPC_ISBUILDINGPERMITTEDAT__FLOAT_FLOAT_SCENEOBJECT_FLOAT_BOOL_,RPC_ISCAMPINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_,RPC_FINDOBJECTTOOCLOSETODECORATION__FLOAT_FLOAT_FLOAT_,RPC_ISINRANGEWITHPOI__FLOAT_FLOAT_FLOAT_,RPC_ISINOBJECTSNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_,RPC_GETTRAVELFARE__STRING_STRING_,RPC_SENDPLANETTRAVELPOINTLISTRESPONSE__CREATUREOBJECT_,RPC_CREATETICKET__STRING_STRING_STRING_,RPC_VALIDATEREGIONNAME__STRING_,RPC_VALIDATECLIENTCITYINRANGE__CREATUREOBJECT_FLOAT_FLOAT_,RPC_GETWEATHERMANAGER__,RPC_GETGCWMANAGER__,RPC_GETREGIONCOUNT__,RPC_GETNUMBEROFCITIES__,RPC_INCREASENUMBEROFCITIES__,RPC_GETREGION__INT_,RPC_GETREGION__STRING_,RPC_GETREGIONAT__FLOAT_FLOAT_,RPC_ADDREGION__CITYREGION_,RPC_DROPREGION__STRING_,RPC_HASREGION__STRING_,RPC_ADDPERFORMANCELOCATION__SCENEOBJECT_,RPC_REMOVEPERFORMANCELOCATION__SCENEOBJECT_,RPC_ISEXISTINGPLANETTRAVELPOINT__STRING_,RPC_ISINTERPLANETARYTRAVELALLOWED__STRING_,RPC_ISINCOMINGTRAVELALLOWED__STRING_,RPC_ISTRAVELTOLOCATIONPERMITTED__STRING_STRING_STRING_,RPC_SCHEDULESHUTTLE__CREATUREOBJECT_INT_,RPC_REMOVESHUTTLE__CREATUREOBJECT_,RPC_CHECKSHUTTLESTATUS__CREATUREOBJECT_CREATUREOBJECT_,RPC_ISINWATER__FLOAT_FLOAT_,RPC_REMOVEPLAYERCITYTRAVELPOINT__STRING_,RPC_ADDEVENTOBJECT__LONG_,RPC_ADDEVENTSTRUCTURE__LONG_,RPC_DESTROYEVENTOBJECT__LONG_,RPC_DESTROYALLEVENTOBJECTS__};
+enum {RPC_ADDNAVAREA__STRING_NAVAREA_,RPC_GETNAVAREA__STRING_,RPC_DROPNAVAREA__STRING_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_FINALIZE__,RPC_INITIALIZE__,RPC_LOADCLIENTPOIDATA__,RPC_START__,RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_BOOL_,RPC_ISBUILDINGPERMITTEDAT__FLOAT_FLOAT_SCENEOBJECT_FLOAT_BOOL_,RPC_ISCAMPINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_,RPC_FINDOBJECTTOOCLOSETODECORATION__FLOAT_FLOAT_FLOAT_,RPC_ISINRANGEWITHPOI__FLOAT_FLOAT_FLOAT_,RPC_FINDOBJECTINNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_,RPC_ISINOBJECTSNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_,RPC_GETTRAVELFARE__STRING_STRING_,RPC_SENDPLANETTRAVELPOINTLISTRESPONSE__CREATUREOBJECT_,RPC_CREATETICKET__STRING_STRING_STRING_,RPC_VALIDATEREGIONNAME__STRING_,RPC_VALIDATECLIENTCITYINRANGE__CREATUREOBJECT_FLOAT_FLOAT_,RPC_GETWEATHERMANAGER__,RPC_GETGCWMANAGER__,RPC_GETCITYREGIONCOUNT__,RPC_GETNUMBEROFCITIES__,RPC_INCREASENUMBEROFCITIES__,RPC_GETCITYREGION__INT_,RPC_GETCITYREGION__STRING_,RPC_GETCITYREGIONAT__FLOAT_FLOAT_,RPC_GETREGION__INT_,RPC_GETREGION__STRING_,RPC_GETREGIONAT__FLOAT_FLOAT_,RPC_ADDCITYREGION__CITYREGION_,RPC_ADDREGION__REGION_,RPC_DROPCITYREGION__STRING_,RPC_DROPREGION__STRING_,RPC_HASCITYREGION__STRING_,RPC_HASREGION__STRING_,RPC_ADDPERFORMANCELOCATION__SCENEOBJECT_,RPC_REMOVEPERFORMANCELOCATION__SCENEOBJECT_,RPC_GETJTLZONENAME__,RPC_ISEXISTINGPLANETTRAVELPOINT__STRING_,RPC_ISINTERPLANETARYTRAVELALLOWED__STRING_,RPC_ISINCOMINGTRAVELALLOWED__STRING_,RPC_ISTRAVELTOLOCATIONPERMITTED__STRING_STRING_STRING_,RPC_SCHEDULESHUTTLE__CREATUREOBJECT_INT_,RPC_REMOVESHUTTLE__CREATUREOBJECT_,RPC_CHECKSHUTTLESTATUS__CREATUREOBJECT_CREATUREOBJECT_,RPC_ISINWATER__FLOAT_FLOAT_,RPC_REMOVEPLAYERCITYTRAVELPOINT__STRING_,RPC_ADDEVENTOBJECT__LONG_,RPC_ADDEVENTSTRUCTURE__LONG_,RPC_DESTROYEVENTOBJECT__LONG_,RPC_DESTROYALLEVENTOBJECTS__,RPC_GETSKIPPEDTUTORIALBUILDING__};
 
 PlanetManager::PlanetManager(Zone* planet, ZoneProcessServer* srv) : ManagedService(DummyConstructorParameter::instance()) {
 	PlanetManagerImplementation* _implementation = new PlanetManagerImplementation(planet, srv);
@@ -41,6 +43,36 @@ PlanetManager::~PlanetManager() {
 }
 
 
+
+Vector3 PlanetManager::getJtlLaunchLocations() {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getJtlLaunchLocations();
+	}
+}
+
+void PlanetManager::loadRegions() {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->loadRegions();
+	}
+}
+
+void PlanetManager::readRegionObject(LuaObject& luaObject) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->readRegionObject(luaObject);
+	}
+}
 
 void PlanetManager::addNavArea(const String& name, NavArea* area) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
@@ -116,13 +148,13 @@ void PlanetManager::initialize() {
 	}
 }
 
-void PlanetManager::loadClientRegions(LuaObject* outposts) {
+void PlanetManager::buildCityNavMeshes() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		_implementation->loadClientRegions(outposts);
+		_implementation->buildCityNavMeshes();
 	}
 }
 
@@ -154,13 +186,13 @@ void PlanetManager::start() {
 	}
 }
 
-PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(SceneObject* object, float range) {
+PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(SceneObject* object, float range, bool interplanetaryOnly) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->getNearestPlanetTravelPoint(object, range);
+		return _implementation->getNearestPlanetTravelPoint(object, range, interplanetaryOnly);
 	}
 }
 
@@ -174,30 +206,51 @@ PlanetTravelPoint* PlanetManager::getRandomStarport() {
 	}
 }
 
-PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(const Vector3& position, float range) {
+PlanetTravelPoint* PlanetManager::getNearestPlanetTravelPoint(const Vector3& position, float range, bool interplanetaryOnly) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->getNearestPlanetTravelPoint(position, range);
+		return _implementation->getNearestPlanetTravelPoint(position, range, interplanetaryOnly);
 	}
 }
 
-bool PlanetManager::isSpawningPermittedAt(float x, float y, float margin) {
+Vector3 PlanetManager::getRandomSpawnPoint() {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getRandomSpawnPoint();
+	}
+}
+
+Vector3 PlanetManager::getInSightSpawnPoint(CreatureObject* creature, float minDistance, float maxDistance, float angle) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInSightSpawnPoint(creature, minDistance, maxDistance, angle);
+	}
+}
+
+bool PlanetManager::isSpawningPermittedAt(float x, float y, float margin, bool isWorldSpawnArea) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_);
+		DistributedMethod method(this, RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_BOOL_);
 		method.addFloatParameter(x);
 		method.addFloatParameter(y);
 		method.addFloatParameter(margin);
+		method.addBooleanParameter(isWorldSpawnArea);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->isSpawningPermittedAt(x, y, margin);
+		return _implementation->isSpawningPermittedAt(x, y, margin, isWorldSpawnArea);
 	}
 }
 
@@ -268,6 +321,24 @@ bool PlanetManager::isInRangeWithPoi(float x, float y, float range) {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isInRangeWithPoi(x, y, range);
+	}
+}
+
+Reference<SceneObject* > PlanetManager::findObjectInNoBuildZone(float x, float y, float extraMargin, bool checkFootprint) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_FINDOBJECTINNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(y);
+		method.addFloatParameter(extraMargin);
+		method.addBooleanParameter(checkFootprint);
+
+		return static_cast<SceneObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->findObjectInNoBuildZone(x, y, extraMargin, checkFootprint);
 	}
 }
 
@@ -407,17 +478,17 @@ TerrainManager* PlanetManager::getTerrainManager() {
 	}
 }
 
-int PlanetManager::getRegionCount() {
+int PlanetManager::getCityRegionCount() {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETREGIONCOUNT__);
+		DistributedMethod method(this, RPC_GETCITYREGIONCOUNT__);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getRegionCount();
+		return _implementation->getCityRegionCount();
 	}
 }
 
@@ -449,7 +520,53 @@ void PlanetManager::increaseNumberOfCities() {
 	}
 }
 
-CityRegion* PlanetManager::getRegion(int index) {
+CityRegion* PlanetManager::getCityRegion(int index) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCITYREGION__INT_);
+		method.addSignedIntParameter(index);
+
+		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCityRegion(index);
+	}
+}
+
+CityRegion* PlanetManager::getCityRegion(const String& region) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCITYREGION__STRING_);
+		method.addAsciiParameter(region);
+
+		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCityRegion(region);
+	}
+}
+
+CityRegion* PlanetManager::getCityRegionAt(float x, float y) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCITYREGIONAT__FLOAT_FLOAT_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(y);
+
+		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCityRegionAt(x, y);
+	}
+}
+
+Region* PlanetManager::getRegion(int index) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -458,13 +575,13 @@ CityRegion* PlanetManager::getRegion(int index) {
 		DistributedMethod method(this, RPC_GETREGION__INT_);
 		method.addSignedIntParameter(index);
 
-		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+		return static_cast<Region*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getRegion(index);
 	}
 }
 
-CityRegion* PlanetManager::getRegion(const String& region) {
+Region* PlanetManager::getRegion(const String& region) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -473,13 +590,13 @@ CityRegion* PlanetManager::getRegion(const String& region) {
 		DistributedMethod method(this, RPC_GETREGION__STRING_);
 		method.addAsciiParameter(region);
 
-		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+		return static_cast<Region*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getRegion(region);
 	}
 }
 
-CityRegion* PlanetManager::getRegionAt(float x, float y) {
+Region* PlanetManager::getRegionAt(float x, float y) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -489,24 +606,54 @@ CityRegion* PlanetManager::getRegionAt(float x, float y) {
 		method.addFloatParameter(x);
 		method.addFloatParameter(y);
 
-		return static_cast<CityRegion*>(method.executeWithObjectReturn());
+		return static_cast<Region*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getRegionAt(x, y);
 	}
 }
 
-void PlanetManager::addRegion(CityRegion* region) {
+void PlanetManager::addCityRegion(CityRegion* region) {
 	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ADDREGION__CITYREGION_);
+		DistributedMethod method(this, RPC_ADDCITYREGION__CITYREGION_);
+		method.addObjectParameter(region);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addCityRegion(region);
+	}
+}
+
+void PlanetManager::addRegion(Region* region) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDREGION__REGION_);
 		method.addObjectParameter(region);
 
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->addRegion(region);
+	}
+}
+
+void PlanetManager::dropCityRegion(const String& region) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DROPCITYREGION__STRING_);
+		method.addAsciiParameter(region);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->dropCityRegion(region);
 	}
 }
 
@@ -522,6 +669,21 @@ void PlanetManager::dropRegion(const String& region) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->dropRegion(region);
+	}
+}
+
+bool PlanetManager::hasCityRegion(const String& name) {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASCITYREGION__STRING_);
+		method.addAsciiParameter(name);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasCityRegion(name);
 	}
 }
 
@@ -577,6 +739,22 @@ MissionTargetMap* PlanetManager::getPerformanceLocations() {
 
 	} else {
 		return _implementation->getPerformanceLocations();
+	}
+}
+
+String PlanetManager::getJtlZoneName() {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETJTLZONENAME__);
+
+		String _return_getJtlZoneName;
+		method.executeWithAsciiReturn(_return_getJtlZoneName);
+		return _return_getJtlZoneName;
+	} else {
+		return _implementation->getJtlZoneName();
 	}
 }
 
@@ -806,6 +984,20 @@ int PlanetManager::destroyAllEventObjects() {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->destroyAllEventObjects();
+	}
+}
+
+BuildingObject* PlanetManager::getSkippedTutorialBuilding() const {
+	PlanetManagerImplementation* _implementation = static_cast<PlanetManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSKIPPEDTUTORIALBUILDING__);
+
+		return static_cast<BuildingObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getSkippedTutorialBuilding();
 	}
 }
 
@@ -1169,9 +1361,9 @@ TerrainManager* PlanetManagerImplementation::getTerrainManager() {
 	return terrainManager;
 }
 
-int PlanetManagerImplementation::getRegionCount() {
-	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getTotalRegions();
-	return (&regionMap)->getTotalRegions();
+int PlanetManagerImplementation::getCityRegionCount() {
+	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getTotalCityRegions();
+	return (&regionMap)->getTotalCityRegions();
 }
 
 int PlanetManagerImplementation::getNumberOfCities() {
@@ -1184,31 +1376,63 @@ void PlanetManagerImplementation::increaseNumberOfCities() {
 	numberOfCities = numberOfCities + 1;
 }
 
-CityRegion* PlanetManagerImplementation::getRegion(int index) {
+CityRegion* PlanetManagerImplementation::getCityRegion(int index) {
+	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getCityRegion(index);
+	return (&regionMap)->getCityRegion(index);
+}
+
+CityRegion* PlanetManagerImplementation::getCityRegion(const String& region) {
+	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getCityRegion(region);
+	return (&regionMap)->getCityRegion(region);
+}
+
+CityRegion* PlanetManagerImplementation::getCityRegionAt(float x, float y) {
+	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getCityRegionAt(x, y);
+	return (&regionMap)->getCityRegionAt(x, y);
+}
+
+Region* PlanetManagerImplementation::getRegion(int index) {
 	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getRegion(index);
 	return (&regionMap)->getRegion(index);
 }
 
-CityRegion* PlanetManagerImplementation::getRegion(const String& region) {
+Region* PlanetManagerImplementation::getRegion(const String& region) {
 	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getRegion(region);
 	return (&regionMap)->getRegion(region);
 }
 
-CityRegion* PlanetManagerImplementation::getRegionAt(float x, float y) {
+Region* PlanetManagerImplementation::getRegionAt(float x, float y) {
 	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.getRegionAt(x, y);
 	return (&regionMap)->getRegionAt(x, y);
 }
 
-void PlanetManagerImplementation::addRegion(CityRegion* region) {
+void PlanetManagerImplementation::addCityRegion(CityRegion* region) {
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
+	// server/zone/managers/planet/PlanetManager.idl():  		regionMap.addCityRegion(region);
+	(&regionMap)->addCityRegion(region);
+}
+
+void PlanetManagerImplementation::addRegion(Region* region) {
 	Locker _locker(_this.getReferenceUnsafeStaticCast());
 	// server/zone/managers/planet/PlanetManager.idl():  		regionMap.addRegion(region);
 	(&regionMap)->addRegion(region);
+}
+
+void PlanetManagerImplementation::dropCityRegion(const String& region) {
+	Locker _locker(_this.getReferenceUnsafeStaticCast());
+	// server/zone/managers/planet/PlanetManager.idl():  		regionMap.dropCityRegion(region);
+	(&regionMap)->dropCityRegion(region);
 }
 
 void PlanetManagerImplementation::dropRegion(const String& region) {
 	Locker _locker(_this.getReferenceUnsafeStaticCast());
 	// server/zone/managers/planet/PlanetManager.idl():  		regionMap.dropRegion(region);
 	(&regionMap)->dropRegion(region);
+}
+
+bool PlanetManagerImplementation::hasCityRegion(const String& name) {
+	// server/zone/managers/planet/PlanetManager.idl():  		return regionMap.containsCityRegion(name);
+	return (&regionMap)->containsCityRegion(name);
 }
 
 bool PlanetManagerImplementation::hasRegion(const String& name) {
@@ -1229,6 +1453,11 @@ void PlanetManagerImplementation::removePerformanceLocation(SceneObject* obj) {
 MissionTargetMap* PlanetManagerImplementation::getPerformanceLocations() {
 	// server/zone/managers/planet/PlanetManager.idl():  		return performanceLocations;
 	return performanceLocations;
+}
+
+String PlanetManagerImplementation::getJtlZoneName() {
+	// server/zone/managers/planet/PlanetManager.idl():  		return jtlZoneName;
+	return jtlZoneName;
 }
 
 bool PlanetManagerImplementation::isExistingPlanetTravelPoint(const String& pointName) {
@@ -1275,6 +1504,11 @@ void PlanetManagerImplementation::addEventObject(unsigned long long objectID) {
 void PlanetManagerImplementation::addEventStructure(unsigned long long objectID) {
 	// server/zone/managers/planet/PlanetManager.idl():  		spawnedEventStructures.put(objectID);
 	(&spawnedEventStructures)->put(objectID);
+}
+
+BuildingObject* PlanetManagerImplementation::getSkippedTutorialBuilding() const{
+	// server/zone/managers/planet/PlanetManager.idl():  		return skippedTutorial;
+	return skippedTutorial;
 }
 
 /*
@@ -1352,13 +1586,14 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_:
+	case RPC_ISSPAWNINGPERMITTEDAT__FLOAT_FLOAT_FLOAT_BOOL_:
 		{
 			float x = inv->getFloatParameter();
 			float y = inv->getFloatParameter();
 			float margin = inv->getFloatParameter();
+			bool isWorldSpawnArea = inv->getBooleanParameter();
 			
-			bool _m_res = isSpawningPermittedAt(x, y, margin);
+			bool _m_res = isSpawningPermittedAt(x, y, margin, isWorldSpawnArea);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -1402,6 +1637,17 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			bool _m_res = isInRangeWithPoi(x, y, range);
 			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_FINDOBJECTINNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_:
+		{
+			float x = inv->getFloatParameter();
+			float y = inv->getFloatParameter();
+			float extraMargin = inv->getFloatParameter();
+			bool checkFootprint = inv->getBooleanParameter();
+			
+			DistributedObject* _m_res = findObjectInNoBuildZone(x, y, extraMargin, checkFootprint);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_ISINOBJECTSNOBUILDZONE__FLOAT_FLOAT_FLOAT_BOOL_:
@@ -1474,10 +1720,10 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_GETREGIONCOUNT__:
+	case RPC_GETCITYREGIONCOUNT__:
 		{
 			
-			int _m_res = getRegionCount();
+			int _m_res = getCityRegionCount();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -1493,6 +1739,31 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			increaseNumberOfCities();
 			
+		}
+		break;
+	case RPC_GETCITYREGION__INT_:
+		{
+			int index = inv->getSignedIntParameter();
+			
+			DistributedObject* _m_res = getCityRegion(index);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETCITYREGION__STRING_:
+		{
+			 String region; inv->getAsciiParameter(region);
+			
+			DistributedObject* _m_res = getCityRegion(region);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETCITYREGIONAT__FLOAT_FLOAT_:
+		{
+			float x = inv->getFloatParameter();
+			float y = inv->getFloatParameter();
+			
+			DistributedObject* _m_res = getCityRegionAt(x, y);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
 	case RPC_GETREGION__INT_:
@@ -1520,11 +1791,27 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_ADDREGION__CITYREGION_:
+	case RPC_ADDCITYREGION__CITYREGION_:
 		{
 			CityRegion* region = static_cast<CityRegion*>(inv->getObjectParameter());
 			
+			addCityRegion(region);
+			
+		}
+		break;
+	case RPC_ADDREGION__REGION_:
+		{
+			Region* region = static_cast<Region*>(inv->getObjectParameter());
+			
 			addRegion(region);
+			
+		}
+		break;
+	case RPC_DROPCITYREGION__STRING_:
+		{
+			 String region; inv->getAsciiParameter(region);
+			
+			dropCityRegion(region);
 			
 		}
 		break;
@@ -1534,6 +1821,14 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			dropRegion(region);
 			
+		}
+		break;
+	case RPC_HASCITYREGION__STRING_:
+		{
+			 String name; inv->getAsciiParameter(name);
+			
+			bool _m_res = hasCityRegion(name);
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_HASREGION__STRING_:
@@ -1558,6 +1853,13 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			removePerformanceLocation(obj);
 			
+		}
+		break;
+	case RPC_GETJTLZONENAME__:
+		{
+			
+			String _m_res = getJtlZoneName();
+			resp->insertAscii(_m_res);
 		}
 		break;
 	case RPC_ISEXISTINGPLANETTRAVELPOINT__STRING_:
@@ -1668,6 +1970,13 @@ void PlanetManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETSKIPPEDTUTORIALBUILDING__:
+		{
+			
+			DistributedObject* _m_res = getSkippedTutorialBuilding();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
 	default:
 		ManagedServiceAdapter::invokeMethod(methid, inv);
 	}
@@ -1705,8 +2014,8 @@ void PlanetManagerAdapter::start() {
 	(static_cast<PlanetManager*>(stub))->start();
 }
 
-bool PlanetManagerAdapter::isSpawningPermittedAt(float x, float y, float margin) {
-	return (static_cast<PlanetManager*>(stub))->isSpawningPermittedAt(x, y, margin);
+bool PlanetManagerAdapter::isSpawningPermittedAt(float x, float y, float margin, bool isWorldSpawnArea) {
+	return (static_cast<PlanetManager*>(stub))->isSpawningPermittedAt(x, y, margin, isWorldSpawnArea);
 }
 
 bool PlanetManagerAdapter::isBuildingPermittedAt(float x, float y, SceneObject* objectTryingToBuild, float margin, bool checkFootprint) {
@@ -1723,6 +2032,10 @@ Reference<SceneObject* > PlanetManagerAdapter::findObjectTooCloseToDecoration(fl
 
 bool PlanetManagerAdapter::isInRangeWithPoi(float x, float y, float range) {
 	return (static_cast<PlanetManager*>(stub))->isInRangeWithPoi(x, y, range);
+}
+
+Reference<SceneObject* > PlanetManagerAdapter::findObjectInNoBuildZone(float x, float y, float extraMargin, bool checkFootprint) {
+	return (static_cast<PlanetManager*>(stub))->findObjectInNoBuildZone(x, y, extraMargin, checkFootprint);
 }
 
 bool PlanetManagerAdapter::isInObjectsNoBuildZone(float x, float y, float extraMargin, bool checkFootprint) {
@@ -1757,8 +2070,8 @@ GCWManager* PlanetManagerAdapter::getGCWManager() {
 	return (static_cast<PlanetManager*>(stub))->getGCWManager();
 }
 
-int PlanetManagerAdapter::getRegionCount() {
-	return (static_cast<PlanetManager*>(stub))->getRegionCount();
+int PlanetManagerAdapter::getCityRegionCount() {
+	return (static_cast<PlanetManager*>(stub))->getCityRegionCount();
 }
 
 int PlanetManagerAdapter::getNumberOfCities() {
@@ -1769,24 +2082,48 @@ void PlanetManagerAdapter::increaseNumberOfCities() {
 	(static_cast<PlanetManager*>(stub))->increaseNumberOfCities();
 }
 
-CityRegion* PlanetManagerAdapter::getRegion(int index) {
+CityRegion* PlanetManagerAdapter::getCityRegion(int index) {
+	return (static_cast<PlanetManager*>(stub))->getCityRegion(index);
+}
+
+CityRegion* PlanetManagerAdapter::getCityRegion(const String& region) {
+	return (static_cast<PlanetManager*>(stub))->getCityRegion(region);
+}
+
+CityRegion* PlanetManagerAdapter::getCityRegionAt(float x, float y) {
+	return (static_cast<PlanetManager*>(stub))->getCityRegionAt(x, y);
+}
+
+Region* PlanetManagerAdapter::getRegion(int index) {
 	return (static_cast<PlanetManager*>(stub))->getRegion(index);
 }
 
-CityRegion* PlanetManagerAdapter::getRegion(const String& region) {
+Region* PlanetManagerAdapter::getRegion(const String& region) {
 	return (static_cast<PlanetManager*>(stub))->getRegion(region);
 }
 
-CityRegion* PlanetManagerAdapter::getRegionAt(float x, float y) {
+Region* PlanetManagerAdapter::getRegionAt(float x, float y) {
 	return (static_cast<PlanetManager*>(stub))->getRegionAt(x, y);
 }
 
-void PlanetManagerAdapter::addRegion(CityRegion* region) {
+void PlanetManagerAdapter::addCityRegion(CityRegion* region) {
+	(static_cast<PlanetManager*>(stub))->addCityRegion(region);
+}
+
+void PlanetManagerAdapter::addRegion(Region* region) {
 	(static_cast<PlanetManager*>(stub))->addRegion(region);
+}
+
+void PlanetManagerAdapter::dropCityRegion(const String& region) {
+	(static_cast<PlanetManager*>(stub))->dropCityRegion(region);
 }
 
 void PlanetManagerAdapter::dropRegion(const String& region) {
 	(static_cast<PlanetManager*>(stub))->dropRegion(region);
+}
+
+bool PlanetManagerAdapter::hasCityRegion(const String& name) {
+	return (static_cast<PlanetManager*>(stub))->hasCityRegion(name);
 }
 
 bool PlanetManagerAdapter::hasRegion(const String& name) {
@@ -1799,6 +2136,10 @@ void PlanetManagerAdapter::addPerformanceLocation(SceneObject* obj) {
 
 void PlanetManagerAdapter::removePerformanceLocation(SceneObject* obj) {
 	(static_cast<PlanetManager*>(stub))->removePerformanceLocation(obj);
+}
+
+String PlanetManagerAdapter::getJtlZoneName() {
+	return (static_cast<PlanetManager*>(stub))->getJtlZoneName();
 }
 
 bool PlanetManagerAdapter::isExistingPlanetTravelPoint(const String& pointName) {
@@ -1851,6 +2192,10 @@ int PlanetManagerAdapter::destroyEventObject(unsigned long long objectID) {
 
 int PlanetManagerAdapter::destroyAllEventObjects() {
 	return (static_cast<PlanetManager*>(stub))->destroyAllEventObjects();
+}
+
+BuildingObject* PlanetManagerAdapter::getSkippedTutorialBuilding() const {
+	return (static_cast<PlanetManager*>(stub))->getSkippedTutorialBuilding();
 }
 
 /*

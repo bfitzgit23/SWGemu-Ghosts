@@ -70,7 +70,10 @@ FlurryBuffTerminal = ScreenPlay:new {
 	}
 }
 
-registerScreenPlay("FlurryBuffTerminal", true)
+-- Keep the legacy implementation available for reference, but never
+-- auto-start it.  Normal travel terminals must not be replaced or decorated
+-- by this screenplay.
+registerScreenPlay("FlurryBuffTerminal", false)
 
 function FlurryBuffTerminal:start()
 	-- Spawn terminals
@@ -201,7 +204,7 @@ function FlurryBuffTerminal:healWounds(pPlayer)
 		else
 			local diff = price - playerCash
 			CreatureObject(pPlayer):subtractCashCredits(playerCash)
-			CreatureObject(pPlayer):setBankCredits(playerBank-diff)
+			CreatureObject(pPlayer):subtractBankCredits(diff)
 		end		
 	end
 
@@ -222,7 +225,7 @@ function FlurryBuffTerminal:applyBuff(pPlayer, buffSelected)
 		local playerBank = CreatureObject(pPlayer):getBankCredits()
 
 		if (playerCash + playerBank < price) then
-			CreatureObject(pPlayer):sendSystemMessage("Insufficient Funds: You require " .. tostring(self.healingFee) .. " credits in cash to use the healing service.")
+			CreatureObject(pPlayer):sendSystemMessage("Insufficient Funds: You require " .. tostring(price) .. " credits to use this service.")
 			return
 		end
 		
@@ -231,22 +234,17 @@ function FlurryBuffTerminal:applyBuff(pPlayer, buffSelected)
 		else
 			local diff = price - playerCash
 			CreatureObject(pPlayer):subtractCashCredits(playerCash)
-			CreatureObject(pPlayer):setBankCredits(playerBank-diff)
+			CreatureObject(pPlayer):subtractBankCredits(diff)
 		end	
 	end
 	
 	CreatureObject(pPlayer):removeBuffs()
 	CreatureObject(pPlayer):emptyStomach()
 	
-	CreatureObject(pPlayer):buffSingleStat("health", self.buffs[buffSelected][4], duration)
-	CreatureObject(pPlayer):buffSingleStat("strength", self.buffs[buffSelected][5], duration)
-	CreatureObject(pPlayer):buffSingleStat("constitution", self.buffs[buffSelected][6], duration)
-	CreatureObject(pPlayer):buffSingleStat("action", self.buffs[buffSelected][7], duration)
-	CreatureObject(pPlayer):buffSingleStat("quickness", self.buffs[buffSelected][8], duration)
-	CreatureObject(pPlayer):buffSingleStat("stamina", self.buffs[buffSelected][9], duration)
-	CreatureObject(pPlayer):buffSingleStat("mind", self.buffs[buffSelected][10], duration)
-	CreatureObject(pPlayer):buffSingleStat("focus", self.buffs[buffSelected][11], duration)
-	CreatureObject(pPlayer):buffSingleStat("willpower", self.buffs[buffSelected][12], duration)
+	CreatureObject(pPlayer):applyMedicalServiceBuff(duration,
+		self.buffs[buffSelected][4], self.buffs[buffSelected][5], self.buffs[buffSelected][6],
+		self.buffs[buffSelected][7], self.buffs[buffSelected][8], self.buffs[buffSelected][9],
+		self.buffs[buffSelected][10], self.buffs[buffSelected][11], self.buffs[buffSelected][12])
 	
 	CreatureObject(pPlayer):sendSystemMessage("Your buffs have been applied. They will last for " .. tostring(self.buffs[buffSelected][3]) .. " hours.")
 	
@@ -259,18 +257,26 @@ function FlurryBuffTerminal:applyBuff(pPlayer, buffSelected)
 				
 				CreatureObject(pPet):removeBuffs()
 		
-				CreatureObject(pPet):buffSingleStat("health", self.buffs[buffSelected][4], duration)
-				CreatureObject(pPet):buffSingleStat("action", self.buffs[buffSelected][7], duration)
-				CreatureObject(pPet):buffSingleStat("mind", self.buffs[buffSelected][10], duration)
-				
+				local strength = 0
+				local constitution = 0
+				local quickness = 0
+				local stamina = 0
+				local focus = 0
+				local willpower = 0
+
 				if (self.buffPetSecondaryStats == 1) then
-					CreatureObject(pPet):buffSingleStat("strength", self.buffs[buffSelected][5], duration)
-					CreatureObject(pPet):buffSingleStat("constitution", self.buffs[buffSelected][6], duration)
-					CreatureObject(pPet):buffSingleStat("quickness", self.buffs[buffSelected][8], duration)
-					CreatureObject(pPet):buffSingleStat("stamina", self.buffs[buffSelected][9], duration)
-					CreatureObject(pPet):buffSingleStat("focus", self.buffs[buffSelected][11], duration)
-					CreatureObject(pPet):buffSingleStat("willpower", self.buffs[buffSelected][12], duration)
+					strength = self.buffs[buffSelected][5]
+					constitution = self.buffs[buffSelected][6]
+					quickness = self.buffs[buffSelected][8]
+					stamina = self.buffs[buffSelected][9]
+					focus = self.buffs[buffSelected][11]
+					willpower = self.buffs[buffSelected][12]
 				end
+
+				CreatureObject(pPet):applyMedicalServiceBuff(duration,
+					self.buffs[buffSelected][4], strength, constitution,
+					self.buffs[buffSelected][7], quickness, stamina,
+					self.buffs[buffSelected][10], focus, willpower)
 			end
 			
 			CreatureObject(pPlayer):sendSystemMessage("Your active pets have also been buffed.")

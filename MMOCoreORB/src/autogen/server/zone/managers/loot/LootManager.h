@@ -60,6 +60,24 @@ using namespace server::zone::objects::creature::ai;
 
 namespace server {
 namespace zone {
+namespace objects {
+namespace ship {
+namespace ai {
+
+class ShipAiAgent;
+
+class ShipAiAgentPOD;
+
+} // namespace ai
+} // namespace ship
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::ship::ai;
+
+namespace server {
+namespace zone {
 namespace managers {
 namespace crafting {
 
@@ -122,8 +140,6 @@ using namespace server::zone::objects::tangible;
 
 #include "templates/LootItemTemplate.h"
 
-#include "server/zone/objects/manufactureschematic/craftingvalues/CraftingValues.h"
-
 #include "server/zone/managers/loot/CrystalData.h"
 
 #include "system/lang/ref/Reference.h"
@@ -131,6 +147,8 @@ using namespace server::zone::objects::tangible;
 #include "engine/log/Logger.h"
 
 #include "system/util/VectorMap.h"
+
+#include "server/zone/objects/transaction/TransactionLog.h"
 
 #include "system/util/SortedVector.h"
 
@@ -147,29 +165,47 @@ namespace loot {
 
 class LootManager : public ManagedService {
 public:
+	static const int LEVELMAX = 350;
+
+	static const int LEVELMIN = 1;
+
+	static const int DOT_POISON = 1;
+
+	static const int DOT_DISEASE = 2;
+
+	static const int DOT_FIRE = 3;
+
+	static const int DOT_BLEEDING = 4;
+
+	static const int DOTROLLCHANCE = 1000;
+
 	LootManager(CraftingManager* craftman, ObjectManager* objMan, ZoneServer* server);
 
 	void initialize();
 
 	void stop();
 
-	TangibleObject* createLootObject(const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+	void setRandomLootValues(TransactionLog& trx, TangibleObject* prototype, const LootItemTemplate* templateObject, int level, float excMod);
+
+	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+
+	TangibleObject* createShipComponent(TransactionLog& trx, const LootItemTemplate* templateObject);
+
+	TangibleObject* createLootResource(const String& resourceTypeName, const String& resourceZoneName);
 
 	String getRandomLootableMod(unsigned int sceneObjectType);
 
-	TangibleObject* createLootAttachment(LootItemTemplate* templateObject, const String& modName, int value);
-
 	int calculateLootCredits(int level);
 
-	bool createLoot(SceneObject* container, AiAgent* creature);
+	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature);
 
-	bool createNamedLoot(SceneObject* container, const String& lootGroup, const String& name, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, ShipAiAgent* shipAgent);
 
-	bool createLootFromCollection(SceneObject* container, const LootGroupCollection* collection, int level);
+	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level);
 
-	bool createLoot(SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
 
-	bool createLootSet(SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
+	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
 
 	unsigned int getYellowLooted() const;
 
@@ -215,6 +251,12 @@ class LootManagerImplementation : public ManagedServiceImplementation, public Lo
 
 	Reference<LootGroupMap* > lootGroupMap;
 
+	float levelChance;
+
+	float baseChance;
+
+	float baseModifier;
+
 	float yellowChance;
 
 	float yellowModifier;
@@ -226,6 +268,18 @@ class LootManagerImplementation : public ManagedServiceImplementation, public Lo
 	float legendaryChance;
 
 	float legendaryModifier;
+
+	float fireDotChance;
+
+	float diseaseDotChance;
+
+	float poisonDotChance;
+
+	float healthDotChance;
+
+	float actionDotChance;
+
+	float mindDotChance;
 
 	AtomicInteger yellowLooted;
 
@@ -274,6 +328,20 @@ class LootManagerImplementation : public ManagedServiceImplementation, public Lo
 	VectorMap<String, Reference<CrystalData*> > crystalData;
 
 public:
+	static const int LEVELMAX = 350;
+
+	static const int LEVELMIN = 1;
+
+	static const int DOT_POISON = 1;
+
+	static const int DOT_DISEASE = 2;
+
+	static const int DOT_FIRE = 3;
+
+	static const int DOT_BLEEDING = 4;
+
+	static const int DOTROLLCHANCE = 1000;
+
 	LootManagerImplementation(CraftingManager* craftman, ObjectManager* objMan, ZoneServer* server);
 
 	LootManagerImplementation(DummyConstructorParameter* param);
@@ -287,42 +355,44 @@ private:
 
 	void loadDefaultConfig();
 
-	void setInitialObjectStats(const LootItemTemplate* templateObject, CraftingValues* craftingValues, TangibleObject* prototype);
+	void setCustomizationData(const LootItemTemplate* templateObject, TangibleObject* prototype);
 
 	void setSkillMods(TangibleObject* object, const LootItemTemplate* templateObject, int level, float excMod);
 
-	void setCustomObjectName(TangibleObject* object, const LootItemTemplate* templateObject);
+	void setCustomObjectName(TangibleObject* object, const LootItemTemplate* templateObject, float excMod);
 
-	void setSockets(TangibleObject* object, CraftingValues* craftingValues);
+	void setJunkValue(TangibleObject* object, const LootItemTemplate* templateObject, int level, float excMod);
 
 	void addRandomDots(TangibleObject* object, const LootItemTemplate* templateObject, int level, float excMod);
 
 	void addStaticDots(TangibleObject* object, const LootItemTemplate* templateObject, int level);
 
-	float calculateDotValue(float min, float max, float level);
-
-	void addConditionDamage(TangibleObject* loot, CraftingValues* craftingValues);
+	void addConditionDamage(TangibleObject* loot);
 
 	void loadLootableMods(LuaObject* modTable, SortedVector<String>* mods);
 
 public:
-	TangibleObject* createLootObject(const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+	void setRandomLootValues(TransactionLog& trx, TangibleObject* prototype, const LootItemTemplate* templateObject, int level, float excMod);
+
+	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+
+	TangibleObject* createShipComponent(TransactionLog& trx, const LootItemTemplate* templateObject);
+
+	TangibleObject* createLootResource(const String& resourceTypeName, const String& resourceZoneName);
 
 	String getRandomLootableMod(unsigned int sceneObjectType);
 
-	TangibleObject* createLootAttachment(LootItemTemplate* templateObject, const String& modName, int value);
-
 	int calculateLootCredits(int level);
 
-	bool createLoot(SceneObject* container, AiAgent* creature);
+	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature);
 
-	bool createNamedLoot(SceneObject* container, const String& lootGroup, const String& name, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, ShipAiAgent* shipAgent);
 
-	bool createLootFromCollection(SceneObject* container, const LootGroupCollection* collection, int level);
+	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level);
 
-	bool createLoot(SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
 
-	bool createLootSet(SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
+	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
 
 	unsigned int getYellowLooted() const;
 
@@ -334,6 +404,10 @@ public:
 
 	const CrystalData* getCrystalData(const String& name) const;
 
+private:
+	float getRandomModifier(const LootItemTemplate* templateObject, int level, float excMod);
+
+public:
 	WeakReference<LootManager*> _this;
 
 	operator const LootManager*();
@@ -382,14 +456,6 @@ public:
 	void stop();
 
 	int calculateLootCredits(int level);
-
-	bool createLoot(SceneObject* container, AiAgent* creature);
-
-	bool createNamedLoot(SceneObject* container, const String& lootGroup, const String& name, int level, bool maxCondition);
-
-	bool createLoot(SceneObject* container, const String& lootGroup, int level, bool maxCondition);
-
-	bool createLootSet(SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
 
 	unsigned int getYellowLooted() const;
 

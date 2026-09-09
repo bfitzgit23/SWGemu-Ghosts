@@ -12,7 +12,7 @@
  *	DnaComponentStub
  */
 
-enum {RPC_SETSTATS__INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_ = 3823629738,RPC_SETSPECIALRESIST__INT_,RPC_ISSPECIALRESIST__INT_,RPC_SETCLEVERNESS__INT_,RPC_GETCLEVERNESS__,RPC_SETLEVEL__INT_,RPC_GETLEVEL__,RPC_SETENDURANCE__INT_,RPC_GETENDURANCE__,RPC_SETFIERCENESS__INT_,RPC_GETFIERCENESS__,RPC_SETPOWER__INT_,RPC_GETPOWER__,RPC_SETINTELLECT__INT_,RPC_GETINTELLECT__,RPC_SETCOURAGE__INT_,RPC_GETCOURAGE__,RPC_SETDEPENDENCY__INT_,RPC_GETDEPENDENCY__,RPC_SETDEXTERITY__INT_,RPC_GETDEXTERITY__,RPC_SETFORTITUDE__INT_,RPC_GETFORITITUDE__,RPC_SETHARDINESS__INT_,RPC_GETHARDINESS__,RPC_SETENERGY__FLOAT_,RPC_GETENERGY__,RPC_SETBLAST__FLOAT_,RPC_GETBLAST__,RPC_SETCOLD__FLOAT_,RPC_GETCOLD__,RPC_SETHEAT__FLOAT_,RPC_GETHEAT__,RPC_SETELECTRIC__FLOAT_,RPC_GETELECTRIC__,RPC_SETACID__FLOAT_,RPC_GETACID__,RPC_SETSTUN__FLOAT_,RPC_GETSTUN__,RPC_SETSABER__FLOAT_,RPC_GETSABER__,RPC_SETARMORRATING__INT_,RPC_SETKINETIC__FLOAT_,RPC_GETKINETIC__,RPC_SETSOURCE__STRING_,RPC_SETSPECIALATTACKONE__STRING_,RPC_GETSPECIALATTACKONE__,RPC_SETSPECIALATTACKTWO__STRING_,RPC_GETSPECIALATTACKTWO__,RPC_SETRANGED__BOOL_,RPC_ISRANGED__,RPC_SETQUALITY__INT_,RPC_GETQUALITY__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CONVERTSPECIALATTACK__STRING_,RPC_RESISTVALUE__FLOAT_};
+enum {RPC_SETSTATS__FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_ = 3823629738,RPC_SETSPECIALRESIST__INT_,RPC_ISSPECIALRESIST__INT_,RPC_SETCLEVERNESS__FLOAT_,RPC_GETCLEVERNESS__,RPC_SETLEVEL__INT_,RPC_GETLEVEL__,RPC_SETENDURANCE__FLOAT_,RPC_GETENDURANCE__,RPC_SETFIERCENESS__FLOAT_,RPC_GETFIERCENESS__,RPC_SETPOWER__FLOAT_,RPC_GETPOWER__,RPC_SETINTELLECT__FLOAT_,RPC_GETINTELLECT__,RPC_SETCOURAGE__FLOAT_,RPC_GETCOURAGE__,RPC_SETDEPENDABILITY__FLOAT_,RPC_GETDEPENDABILITY__,RPC_SETDEXTERITY__FLOAT_,RPC_GETDEXTERITY__,RPC_SETFORTITUDE__FLOAT_,RPC_GETFORTITUDE__,RPC_SETHARDINESS__FLOAT_,RPC_GETHARDINESS__,RPC_SETENERGY__FLOAT_,RPC_GETENERGY__,RPC_SETBLAST__FLOAT_,RPC_GETBLAST__,RPC_SETCOLD__FLOAT_,RPC_GETCOLD__,RPC_SETHEAT__FLOAT_,RPC_GETHEAT__,RPC_SETELECTRIC__FLOAT_,RPC_GETELECTRIC__,RPC_SETACID__FLOAT_,RPC_GETACID__,RPC_SETSTUN__FLOAT_,RPC_GETSTUN__,RPC_SETSABER__FLOAT_,RPC_GETSABER__,RPC_SETARMORRATING__INT_,RPC_SETKINETIC__FLOAT_,RPC_GETKINETIC__,RPC_SETSOURCE__STRING_,RPC_SETSPECIALATTACKONE__STRING_,RPC_GETSPECIALATTACKONE__,RPC_SETSPECIALATTACKTWO__STRING_,RPC_GETSPECIALATTACKTWO__,RPC_SETRANGED__BOOL_,RPC_ISRANGED__,RPC_SETQUALITY__INT_,RPC_GETQUALITY__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CONVERTSPECIALATTACK__STRING_,RPC_RESISTVALUE__FLOAT_};
 
 DnaComponent::DnaComponent() : Component(DummyConstructorParameter::instance()) {
 	DnaComponentImplementation* _implementation = new DnaComponentImplementation();
@@ -30,38 +30,38 @@ DnaComponent::~DnaComponent() {
 
 
 
-void DnaComponent::setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har) {
+void DnaComponent::setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETSTATS__INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_);
-		method.addSignedIntParameter(cle);
-		method.addSignedIntParameter(end);
-		method.addSignedIntParameter(fie);
-		method.addSignedIntParameter(pow);
-		method.addSignedIntParameter(ite);
-		method.addSignedIntParameter(cou);
-		method.addSignedIntParameter(dep);
-		method.addSignedIntParameter(dex);
-		method.addSignedIntParameter(frt);
-		method.addSignedIntParameter(har);
+		DistributedMethod method(this, RPC_SETSTATS__FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_);
+		method.addFloatParameter(clever);
+		method.addFloatParameter(endur);
+		method.addFloatParameter(fierc);
+		method.addFloatParameter(pow);
+		method.addFloatParameter(intel);
+		method.addFloatParameter(cour);
+		method.addFloatParameter(depend);
+		method.addFloatParameter(dext);
+		method.addFloatParameter(fort);
+		method.addFloatParameter(hardi);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->setStats(cle, end, fie, pow, ite, cou, dep, dex, frt, har);
+		_implementation->setStats(clever, endur, fierc, pow, intel, cour, depend, dext, fort, hardi);
 	}
 }
 
-void DnaComponent::setSpecialResist(int type) {
+void DnaComponent::setSpecialResist(unsigned int type) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_SETSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -69,14 +69,14 @@ void DnaComponent::setSpecialResist(int type) {
 	}
 }
 
-bool DnaComponent::isSpecialResist(int type) {
+bool DnaComponent::isSpecialResist(unsigned int type) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_ISSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		return method.executeWithBooleanReturn();
 	} else {
@@ -84,14 +84,14 @@ bool DnaComponent::isSpecialResist(int type) {
 	}
 }
 
-void DnaComponent::setCleverness(int value) {
+void DnaComponent::setCleverness(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCLEVERNESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETCLEVERNESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -99,7 +99,7 @@ void DnaComponent::setCleverness(int value) {
 	}
 }
 
-int DnaComponent::getCleverness() {
+float DnaComponent::getCleverness() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -107,7 +107,7 @@ int DnaComponent::getCleverness() {
 
 		DistributedMethod method(this, RPC_GETCLEVERNESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getCleverness();
 	}
@@ -142,14 +142,14 @@ int DnaComponent::getLevel() {
 	}
 }
 
-void DnaComponent::setEndurance(int value) {
+void DnaComponent::setEndurance(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETENDURANCE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETENDURANCE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -157,7 +157,7 @@ void DnaComponent::setEndurance(int value) {
 	}
 }
 
-int DnaComponent::getEndurance() {
+float DnaComponent::getEndurance() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -165,20 +165,20 @@ int DnaComponent::getEndurance() {
 
 		DistributedMethod method(this, RPC_GETENDURANCE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getEndurance();
 	}
 }
 
-void DnaComponent::setFierceness(int value) {
+void DnaComponent::setFierceness(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETFIERCENESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETFIERCENESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -186,7 +186,7 @@ void DnaComponent::setFierceness(int value) {
 	}
 }
 
-int DnaComponent::getFierceness() {
+float DnaComponent::getFierceness() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -194,20 +194,20 @@ int DnaComponent::getFierceness() {
 
 		DistributedMethod method(this, RPC_GETFIERCENESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getFierceness();
 	}
 }
 
-void DnaComponent::setPower(int value) {
+void DnaComponent::setPower(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETPOWER__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETPOWER__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -215,7 +215,7 @@ void DnaComponent::setPower(int value) {
 	}
 }
 
-int DnaComponent::getPower() {
+float DnaComponent::getPower() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -223,20 +223,20 @@ int DnaComponent::getPower() {
 
 		DistributedMethod method(this, RPC_GETPOWER__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getPower();
 	}
 }
 
-void DnaComponent::setIntellect(int value) {
+void DnaComponent::setIntellect(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETINTELLECT__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETINTELLECT__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -244,7 +244,7 @@ void DnaComponent::setIntellect(int value) {
 	}
 }
 
-int DnaComponent::getIntellect() {
+float DnaComponent::getIntellect() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -252,20 +252,20 @@ int DnaComponent::getIntellect() {
 
 		DistributedMethod method(this, RPC_GETINTELLECT__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getIntellect();
 	}
 }
 
-void DnaComponent::setCourage(int value) {
+void DnaComponent::setCourage(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCOURAGE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETCOURAGE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -273,7 +273,7 @@ void DnaComponent::setCourage(int value) {
 	}
 }
 
-int DnaComponent::getCourage() {
+float DnaComponent::getCourage() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -281,49 +281,49 @@ int DnaComponent::getCourage() {
 
 		DistributedMethod method(this, RPC_GETCOURAGE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getCourage();
 	}
 }
 
-void DnaComponent::setDependency(int value) {
+void DnaComponent::setDependability(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETDEPENDENCY__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETDEPENDABILITY__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->setDependency(value);
+		_implementation->setDependability(value);
 	}
 }
 
-int DnaComponent::getDependency() {
-	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
+float DnaComponent::getDependability() {
+	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETDEPENDENCY__);
+		DistributedMethod method(this, RPC_GETDEPENDABILITY__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getDependency();
+		return _implementation->getDependability();
 	}
 }
 
-void DnaComponent::setDexterity(int value) {
+void DnaComponent::setDexterity(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETDEXTERITY__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETDEXTERITY__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -331,7 +331,7 @@ void DnaComponent::setDexterity(int value) {
 	}
 }
 
-int DnaComponent::getDexterity() {
+float DnaComponent::getDexterity() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -339,20 +339,20 @@ int DnaComponent::getDexterity() {
 
 		DistributedMethod method(this, RPC_GETDEXTERITY__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getDexterity();
 	}
 }
 
-void DnaComponent::setFortitude(int value) {
+void DnaComponent::setFortitude(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETFORTITUDE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETFORTITUDE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -360,28 +360,28 @@ void DnaComponent::setFortitude(int value) {
 	}
 }
 
-int DnaComponent::getForititude() {
+float DnaComponent::getFortitude() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETFORITITUDE__);
+		DistributedMethod method(this, RPC_GETFORTITUDE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getForititude();
+		return _implementation->getFortitude();
 	}
 }
 
-void DnaComponent::setHardiness(int value) {
+void DnaComponent::setHardiness(float value) {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETHARDINESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETHARDINESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -389,7 +389,7 @@ void DnaComponent::setHardiness(int value) {
 	}
 }
 
-int DnaComponent::getHardiness() {
+float DnaComponent::getHardiness() {
 	DnaComponentImplementation* _implementation = static_cast<DnaComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -397,7 +397,7 @@ int DnaComponent::getHardiness() {
 
 		DistributedMethod method(this, RPC_GETHARDINESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getHardiness();
 	}
@@ -1012,12 +1012,20 @@ bool DnaComponentImplementation::readObjectMember(ObjectInputStream* stream, con
 		TypeInfo<int >::parseFromBinaryStream(&intelligence, stream);
 		return true;
 
+	case 0x8244927c: //DnaComponent.intellect
+		TypeInfo<int >::parseFromBinaryStream(&intellect, stream);
+		return true;
+
 	case 0xbf786897: //DnaComponent.courage
 		TypeInfo<int >::parseFromBinaryStream(&courage, stream);
 		return true;
 
 	case 0x65db69d9: //DnaComponent.dependency
 		TypeInfo<int >::parseFromBinaryStream(&dependency, stream);
+		return true;
+
+	case 0xc3868ce3: //DnaComponent.dependability
+		TypeInfo<int >::parseFromBinaryStream(&dependability, stream);
 		return true;
 
 	case 0x3de40934: //DnaComponent.dexterity
@@ -1163,6 +1171,15 @@ int DnaComponentImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x8244927c; //DnaComponent.intellect
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&intellect, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0xbf786897; //DnaComponent.courage
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -1177,6 +1194,15 @@ int DnaComponentImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&dependency, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xc3868ce3; //DnaComponent.dependability
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&dependability, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1379,9 +1405,13 @@ void DnaComponentImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["intelligence"] = intelligence;
 
+	thisObject["intellect"] = intellect;
+
 	thisObject["courage"] = courage;
 
 	thisObject["dependency"] = dependency;
+
+	thisObject["dependability"] = dependability;
 
 	thisObject["dexterity"] = dexterity;
 
@@ -1430,26 +1460,30 @@ DnaComponentImplementation::DnaComponentImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		Logger.setLoggingName("DnaComponent");
 	Logger::setLoggingName("DnaComponent");
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		cleverness = 0;
-	cleverness = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		endurance = 0;
-	endurance = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fierceness = 0;
-	fierceness = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		power = 0;
-	power = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intelligence = 0;
-	intelligence = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		courage = 0;
-	courage = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependency = 0;
-	dependency = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dexterity = 0;
-	dexterity = 0;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fortitude = 0;
 	fortitude = 0;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		hardiness = 0;
 	hardiness = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dexterity = 0;
+	dexterity = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		endurance = 0;
+	endurance = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intelligence = 0;
+	intelligence = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intellect = 0;
+	intellect = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		cleverness = 0;
+	cleverness = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependency = 0;
+	dependency = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependability = 0;
+	dependability = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		courage = 0;
+	courage = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fierceness = 0;
+	fierceness = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		power = 0;
+	power = 0;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		source = "unknown";
 	source = "unknown";
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		special1 = "none";
@@ -1462,22 +1496,22 @@ DnaComponentImplementation::DnaComponentImplementation() {
 	quality = 7;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		armorRating = 0;
 	armorRating = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		kinResist = 0;
-	kinResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		energyResist = 0;
-	energyResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		blastResist = 0;
-	blastResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		coldResist = 0;
-	coldResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		heatResist = 0;
-	heatResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		elecResist = 0;
-	elecResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		acidResist = 0;
-	acidResist = 0;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		stunResist = 0;
-	stunResist = 0;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		kinResist = 0.f;
+	kinResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		energyResist = 0.f;
+	energyResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		blastResist = 0.f;
+	blastResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		coldResist = 0.f;
+	coldResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		heatResist = 0.f;
+	heatResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		elecResist = 0.f;
+	elecResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		acidResist = 0.f;
+	acidResist = 0.f;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		stunResist = 0.f;
+	stunResist = 0.f;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		saberResist = -1;
 	saberResist = -1;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		sourceLevel = 1;
@@ -1486,35 +1520,35 @@ DnaComponentImplementation::DnaComponentImplementation() {
 	specialResists = 0;
 }
 
-void DnaComponentImplementation::setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har) {
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		cleverness = cle;
-	cleverness = cle;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		endurance = end;
-	endurance = end;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fierceness = fie;
-	fierceness = fie;
+void DnaComponentImplementation::setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi) {
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		cleverness = clever;
+	cleverness = clever;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		endurance = endur;
+	endurance = endur;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fierceness = fierc;
+	fierceness = fierc;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		power = pow;
 	power = pow;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intelligence = ite;
-	intelligence = ite;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		courage = cou;
-	courage = cou;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependency = dep;
-	dependency = dep;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fortitude = frt;
-	fortitude = frt;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		hardiness = har;
-	hardiness = har;
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dexterity = dex;
-	dexterity = dex;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intellect = intel;
+	intellect = intel;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		courage = cour;
+	courage = cour;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependability = depend;
+	dependability = depend;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dexterity = dext;
+	dexterity = dext;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fortitude = fort;
+	fortitude = fort;
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		hardiness = hardi;
+	hardiness = hardi;
 }
 
-void DnaComponentImplementation::setCleverness(int value) {
+void DnaComponentImplementation::setCleverness(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		cleverness = value;
 	cleverness = value;
 }
 
-int DnaComponentImplementation::getCleverness() {
+float DnaComponentImplementation::getCleverness() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return cleverness;
 	return cleverness;
 }
@@ -1529,92 +1563,98 @@ int DnaComponentImplementation::getLevel() {
 	return sourceLevel;
 }
 
-void DnaComponentImplementation::setEndurance(int value) {
+void DnaComponentImplementation::setEndurance(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		endurance = value;
 	endurance = value;
 }
 
-int DnaComponentImplementation::getEndurance() {
+float DnaComponentImplementation::getEndurance() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return endurance;
 	return endurance;
 }
 
-void DnaComponentImplementation::setFierceness(int value) {
+void DnaComponentImplementation::setFierceness(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fierceness = value;
 	fierceness = value;
 }
 
-int DnaComponentImplementation::getFierceness() {
+float DnaComponentImplementation::getFierceness() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return fierceness;
 	return fierceness;
 }
 
-void DnaComponentImplementation::setPower(int value) {
+void DnaComponentImplementation::setPower(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		power = value;
 	power = value;
 }
 
-int DnaComponentImplementation::getPower() {
+float DnaComponentImplementation::getPower() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return power;
 	return power;
 }
 
-void DnaComponentImplementation::setIntellect(int value) {
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intelligence = value;
-	intelligence = value;
+void DnaComponentImplementation::setIntellect(float value) {
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		intellect = value;
+	intellect = value;
 }
 
-int DnaComponentImplementation::getIntellect() {
+float DnaComponentImplementation::getIntellect() {
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return 
+	if (intellect > 0)	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  			return intellect;
+	return intellect;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return intelligence;
 	return intelligence;
 }
 
-void DnaComponentImplementation::setCourage(int value) {
+void DnaComponentImplementation::setCourage(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		courage = value;
 	courage = value;
 }
 
-int DnaComponentImplementation::getCourage() {
+float DnaComponentImplementation::getCourage() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return courage;
 	return courage;
 }
 
-void DnaComponentImplementation::setDependency(int value) {
-	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependency = value;
-	dependency = value;
+void DnaComponentImplementation::setDependability(float value) {
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dependability = value;
+	dependability = value;
 }
 
-int DnaComponentImplementation::getDependency() {
+float DnaComponentImplementation::getDependability() {
+	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return 
+	if (dependability > 0)	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  			return dependability;
+	return dependability;
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return dependency;
 	return dependency;
 }
 
-void DnaComponentImplementation::setDexterity(int value) {
+void DnaComponentImplementation::setDexterity(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		dexterity = value;
 	dexterity = value;
 }
 
-int DnaComponentImplementation::getDexterity() {
+float DnaComponentImplementation::getDexterity() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return dexterity;
 	return dexterity;
 }
 
-void DnaComponentImplementation::setFortitude(int value) {
+void DnaComponentImplementation::setFortitude(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		fortitude = value;
 	fortitude = value;
 }
 
-int DnaComponentImplementation::getForititude() {
+float DnaComponentImplementation::getFortitude() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return fortitude;
 	return fortitude;
 }
 
-void DnaComponentImplementation::setHardiness(int value) {
+void DnaComponentImplementation::setHardiness(float value) {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		hardiness = value;
 	hardiness = value;
 }
 
-int DnaComponentImplementation::getHardiness() {
+float DnaComponentImplementation::getHardiness() {
 	// server/zone/objects/tangible/component/dna/DnaComponent.idl():  		return hardiness;
 	return hardiness;
 }
@@ -1774,26 +1814,26 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	DOBMessage* resp = inv->getInvocationMessage();
 
 	switch (methid) {
-	case RPC_SETSTATS__INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_:
+	case RPC_SETSTATS__FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_FLOAT_:
 		{
-			int cle = inv->getSignedIntParameter();
-			int end = inv->getSignedIntParameter();
-			int fie = inv->getSignedIntParameter();
-			int pow = inv->getSignedIntParameter();
-			int ite = inv->getSignedIntParameter();
-			int cou = inv->getSignedIntParameter();
-			int dep = inv->getSignedIntParameter();
-			int dex = inv->getSignedIntParameter();
-			int frt = inv->getSignedIntParameter();
-			int har = inv->getSignedIntParameter();
+			float clever = inv->getFloatParameter();
+			float endur = inv->getFloatParameter();
+			float fierc = inv->getFloatParameter();
+			float pow = inv->getFloatParameter();
+			float intel = inv->getFloatParameter();
+			float cour = inv->getFloatParameter();
+			float depend = inv->getFloatParameter();
+			float dext = inv->getFloatParameter();
+			float fort = inv->getFloatParameter();
+			float hardi = inv->getFloatParameter();
 			
-			setStats(cle, end, fie, pow, ite, cou, dep, dex, frt, har);
+			setStats(clever, endur, fierc, pow, intel, cour, depend, dext, fort, hardi);
 			
 		}
 		break;
 	case RPC_SETSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			setSpecialResist(type);
 			
@@ -1801,15 +1841,15 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		break;
 	case RPC_ISSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			bool _m_res = isSpecialResist(type);
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETCLEVERNESS__INT_:
+	case RPC_SETCLEVERNESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setCleverness(value);
 			
@@ -1818,8 +1858,8 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETCLEVERNESS__:
 		{
 			
-			int _m_res = getCleverness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getCleverness();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_SETLEVEL__INT_:
@@ -1837,9 +1877,9 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_SETENDURANCE__INT_:
+	case RPC_SETENDURANCE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setEndurance(value);
 			
@@ -1848,13 +1888,13 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETENDURANCE__:
 		{
 			
-			int _m_res = getEndurance();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getEndurance();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETFIERCENESS__INT_:
+	case RPC_SETFIERCENESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setFierceness(value);
 			
@@ -1863,13 +1903,13 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETFIERCENESS__:
 		{
 			
-			int _m_res = getFierceness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getFierceness();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETPOWER__INT_:
+	case RPC_SETPOWER__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setPower(value);
 			
@@ -1878,13 +1918,13 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETPOWER__:
 		{
 			
-			int _m_res = getPower();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getPower();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETINTELLECT__INT_:
+	case RPC_SETINTELLECT__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setIntellect(value);
 			
@@ -1893,13 +1933,13 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETINTELLECT__:
 		{
 			
-			int _m_res = getIntellect();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getIntellect();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETCOURAGE__INT_:
+	case RPC_SETCOURAGE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setCourage(value);
 			
@@ -1908,28 +1948,28 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETCOURAGE__:
 		{
 			
-			int _m_res = getCourage();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getCourage();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETDEPENDENCY__INT_:
+	case RPC_SETDEPENDABILITY__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
-			setDependency(value);
+			setDependability(value);
 			
 		}
 		break;
-	case RPC_GETDEPENDENCY__:
+	case RPC_GETDEPENDABILITY__:
 		{
 			
-			int _m_res = getDependency();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getDependability();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETDEXTERITY__INT_:
+	case RPC_SETDEXTERITY__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setDexterity(value);
 			
@@ -1938,28 +1978,28 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETDEXTERITY__:
 		{
 			
-			int _m_res = getDexterity();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getDexterity();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETFORTITUDE__INT_:
+	case RPC_SETFORTITUDE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setFortitude(value);
 			
 		}
 		break;
-	case RPC_GETFORITITUDE__:
+	case RPC_GETFORTITUDE__:
 		{
 			
-			int _m_res = getForititude();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getFortitude();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_SETHARDINESS__INT_:
+	case RPC_SETHARDINESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setHardiness(value);
 			
@@ -1968,8 +2008,8 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETHARDINESS__:
 		{
 			
-			int _m_res = getHardiness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getHardiness();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_SETENERGY__FLOAT_:
@@ -2211,23 +2251,23 @@ void DnaComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	}
 }
 
-void DnaComponentAdapter::setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har) {
-	(static_cast<DnaComponent*>(stub))->setStats(cle, end, fie, pow, ite, cou, dep, dex, frt, har);
+void DnaComponentAdapter::setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi) {
+	(static_cast<DnaComponent*>(stub))->setStats(clever, endur, fierc, pow, intel, cour, depend, dext, fort, hardi);
 }
 
-void DnaComponentAdapter::setSpecialResist(int type) {
+void DnaComponentAdapter::setSpecialResist(unsigned int type) {
 	(static_cast<DnaComponent*>(stub))->setSpecialResist(type);
 }
 
-bool DnaComponentAdapter::isSpecialResist(int type) {
+bool DnaComponentAdapter::isSpecialResist(unsigned int type) {
 	return (static_cast<DnaComponent*>(stub))->isSpecialResist(type);
 }
 
-void DnaComponentAdapter::setCleverness(int value) {
+void DnaComponentAdapter::setCleverness(float value) {
 	(static_cast<DnaComponent*>(stub))->setCleverness(value);
 }
 
-int DnaComponentAdapter::getCleverness() {
+float DnaComponentAdapter::getCleverness() {
 	return (static_cast<DnaComponent*>(stub))->getCleverness();
 }
 
@@ -2239,75 +2279,75 @@ int DnaComponentAdapter::getLevel() {
 	return (static_cast<DnaComponent*>(stub))->getLevel();
 }
 
-void DnaComponentAdapter::setEndurance(int value) {
+void DnaComponentAdapter::setEndurance(float value) {
 	(static_cast<DnaComponent*>(stub))->setEndurance(value);
 }
 
-int DnaComponentAdapter::getEndurance() {
+float DnaComponentAdapter::getEndurance() {
 	return (static_cast<DnaComponent*>(stub))->getEndurance();
 }
 
-void DnaComponentAdapter::setFierceness(int value) {
+void DnaComponentAdapter::setFierceness(float value) {
 	(static_cast<DnaComponent*>(stub))->setFierceness(value);
 }
 
-int DnaComponentAdapter::getFierceness() {
+float DnaComponentAdapter::getFierceness() {
 	return (static_cast<DnaComponent*>(stub))->getFierceness();
 }
 
-void DnaComponentAdapter::setPower(int value) {
+void DnaComponentAdapter::setPower(float value) {
 	(static_cast<DnaComponent*>(stub))->setPower(value);
 }
 
-int DnaComponentAdapter::getPower() {
+float DnaComponentAdapter::getPower() {
 	return (static_cast<DnaComponent*>(stub))->getPower();
 }
 
-void DnaComponentAdapter::setIntellect(int value) {
+void DnaComponentAdapter::setIntellect(float value) {
 	(static_cast<DnaComponent*>(stub))->setIntellect(value);
 }
 
-int DnaComponentAdapter::getIntellect() {
+float DnaComponentAdapter::getIntellect() {
 	return (static_cast<DnaComponent*>(stub))->getIntellect();
 }
 
-void DnaComponentAdapter::setCourage(int value) {
+void DnaComponentAdapter::setCourage(float value) {
 	(static_cast<DnaComponent*>(stub))->setCourage(value);
 }
 
-int DnaComponentAdapter::getCourage() {
+float DnaComponentAdapter::getCourage() {
 	return (static_cast<DnaComponent*>(stub))->getCourage();
 }
 
-void DnaComponentAdapter::setDependency(int value) {
-	(static_cast<DnaComponent*>(stub))->setDependency(value);
+void DnaComponentAdapter::setDependability(float value) {
+	(static_cast<DnaComponent*>(stub))->setDependability(value);
 }
 
-int DnaComponentAdapter::getDependency() {
-	return (static_cast<DnaComponent*>(stub))->getDependency();
+float DnaComponentAdapter::getDependability() {
+	return (static_cast<DnaComponent*>(stub))->getDependability();
 }
 
-void DnaComponentAdapter::setDexterity(int value) {
+void DnaComponentAdapter::setDexterity(float value) {
 	(static_cast<DnaComponent*>(stub))->setDexterity(value);
 }
 
-int DnaComponentAdapter::getDexterity() {
+float DnaComponentAdapter::getDexterity() {
 	return (static_cast<DnaComponent*>(stub))->getDexterity();
 }
 
-void DnaComponentAdapter::setFortitude(int value) {
+void DnaComponentAdapter::setFortitude(float value) {
 	(static_cast<DnaComponent*>(stub))->setFortitude(value);
 }
 
-int DnaComponentAdapter::getForititude() {
-	return (static_cast<DnaComponent*>(stub))->getForititude();
+float DnaComponentAdapter::getFortitude() {
+	return (static_cast<DnaComponent*>(stub))->getFortitude();
 }
 
-void DnaComponentAdapter::setHardiness(int value) {
+void DnaComponentAdapter::setHardiness(float value) {
 	(static_cast<DnaComponent*>(stub))->setHardiness(value);
 }
 
-int DnaComponentAdapter::getHardiness() {
+float DnaComponentAdapter::getHardiness() {
 	return (static_cast<DnaComponent*>(stub))->getHardiness();
 }
 
@@ -2506,11 +2546,17 @@ void DnaComponentPOD::writeJSON(nlohmann::json& j) {
 	if (intelligence)
 		thisObject["intelligence"] = intelligence.value();
 
+	if (intellect)
+		thisObject["intellect"] = intellect.value();
+
 	if (courage)
 		thisObject["courage"] = courage.value();
 
 	if (dependency)
 		thisObject["dependency"] = dependency.value();
+
+	if (dependability)
+		thisObject["dependability"] = dependability.value();
 
 	if (dexterity)
 		thisObject["dexterity"] = dexterity.value();
@@ -2644,6 +2690,17 @@ int DnaComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (intellect) {
+	_nameHashCode = 0x8244927c; //DnaComponent.intellect
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&intellect.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (courage) {
 	_nameHashCode = 0xbf786897; //DnaComponent.courage
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -2661,6 +2718,17 @@ int DnaComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (dependability) {
+	_nameHashCode = 0xc3868ce3; //DnaComponent.dependability
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&dependability.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2935,6 +3003,14 @@ bool DnaComponentPOD::readObjectMember(ObjectInputStream* stream, const uint32& 
 		}
 		return true;
 
+	case 0x8244927c: //DnaComponent.intellect
+		{
+			int _mnintellect;
+			TypeInfo<int >::parseFromBinaryStream(&_mnintellect, stream);
+			intellect = std::move(_mnintellect);
+		}
+		return true;
+
 	case 0xbf786897: //DnaComponent.courage
 		{
 			int _mncourage;
@@ -2948,6 +3024,14 @@ bool DnaComponentPOD::readObjectMember(ObjectInputStream* stream, const uint32& 
 			int _mndependency;
 			TypeInfo<int >::parseFromBinaryStream(&_mndependency, stream);
 			dependency = std::move(_mndependency);
+		}
+		return true;
+
+	case 0xc3868ce3: //DnaComponent.dependability
+		{
+			int _mndependability;
+			TypeInfo<int >::parseFromBinaryStream(&_mndependability, stream);
+			dependability = std::move(_mndependability);
 		}
 		return true;
 
@@ -3147,9 +3231,13 @@ void DnaComponentPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<int >::toBinaryStream(&intelligence.value(), stream);
 
+	TypeInfo<int >::toBinaryStream(&intellect.value(), stream);
+
 	TypeInfo<int >::toBinaryStream(&courage.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+
+	TypeInfo<int >::toBinaryStream(&dependability.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&dexterity.value(), stream);
 

@@ -1,0 +1,10 @@
+#!/bin/bash
+# SWG Ghosts watchdog (Desktop source tree) — restarts core3 if it has crashed.
+# Runs every 2 minutes via cron.
+if pgrep -f "SCREEN -dmS swg-ghosts" >/dev/null || pgrep -x core3 >/dev/null; then
+    exit 0
+fi
+# Dead or dying — restart
+LOG=/home/bossman/Desktop/SWGemu-Ghosts/MMOCoreORB/bin/log/watchdog.log
+echo "$(date): core3 not running — restarting" >> "$LOG"
+/home/bossman/Desktop/SWGemu-Ghosts/MMOCoreORB/bin/start_core3.sh >> "$LOG" 2>&1

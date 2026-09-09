@@ -12,7 +12,7 @@
  *	HuntingMissionObjectiveStub
  */
 
-enum {RPC_FINALIZE__ = 2185561123,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__,RPC_NOTIFYOBSERVEREVENT__MISSIONOBSERVER_INT_OBSERVABLE_MANAGEDOBJECT_LONG_,};
+enum {RPC_FINALIZE__ = 2185561123,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__,RPC_NOTIFYOBSERVEREVENT__MISSIONOBSERVER_INT_OBSERVABLE_MANAGEDOBJECT_LONG_};
 
 HuntingMissionObjective::HuntingMissionObjective(MissionObject* mission) : MissionObjective(DummyConstructorParameter::instance()) {
 	HuntingMissionObjectiveImplementation* _implementation = new HuntingMissionObjectiveImplementation(mission);
@@ -104,16 +104,6 @@ int HuntingMissionObjective::notifyObserverEvent(MissionObserver* observer, unsi
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->notifyObserverEvent(observer, eventType, observable, arg1, arg2);
-	}
-}
-
-Vector3 HuntingMissionObjective::getEndPosition() {
-	HuntingMissionObjectiveImplementation* _implementation = static_cast<HuntingMissionObjectiveImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getEndPosition();
 	}
 }
 

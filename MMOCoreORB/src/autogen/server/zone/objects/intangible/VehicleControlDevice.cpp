@@ -364,7 +364,7 @@ int VehicleControlDeviceImplementation::handleObjectMenuSelect(CreatureObject* p
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  		return 
 	if (selectedID == RadialOptions::VEHICLE_GENERATE){
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  			}
-	if (controlledObject == NULL){
+	if (!controlledObject){
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  				Logger.error("null controlled object in vehicle control device");
 	Logger::error("null controlled object in vehicle control device");
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  				return 1;
@@ -380,7 +380,7 @@ int VehicleControlDeviceImplementation::handleObjectMenuSelect(CreatureObject* p
 	else 	// server/zone/objects/intangible/VehicleControlDevice.idl():  		return 
 	if (selectedID == RadialOptions::VEHICLE_STORE){
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  			}
-	if (controlledObject == NULL){
+	if (!controlledObject){
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  				Logger.error("null controlled object in vehicle control device");
 	Logger::error("null controlled object in vehicle control device");
 	// server/zone/objects/intangible/VehicleControlDevice.idl():  				return 1;

@@ -29,7 +29,7 @@ revan_reborn = Creature:new {
 	creatureBitmask = KILLER + STALKER,
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
-	templates = {"object/mobile/som/blackguard_wilder.iff"},
+	templates = {"object/mobile/dressed_dark_jedi_human_male_01.iff"},
 	lootGroups = {
 		{
 			groups = {

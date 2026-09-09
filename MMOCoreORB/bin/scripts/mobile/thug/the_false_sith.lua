@@ -46,6 +46,12 @@ the_false_sith = Creature:new {
 				{group = "wearables_common",     chance = 750000},
 				{group = "wearables_uncommon",   chance = 750000},
 			}
+		},
+		{
+			groups = {
+				{group = "color_crystals", chance = 10000000},
+			},
+			lootChance = 10000000,
 		}
 	},
 	weapons = {"mixed_force_weapons"},

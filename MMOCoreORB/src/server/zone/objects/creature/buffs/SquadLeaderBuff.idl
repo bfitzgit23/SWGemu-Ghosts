@@ -16,8 +16,8 @@ include server.zone.objects.scene.SceneObjectType;
 
 @json
 class SquadLeaderBuff extends Buff {
-	protected SquadLeaderBuffObserver playerObserver;
-	protected SquadLeaderBuffObserver leaderObserver;
+	protected transient SquadLeaderBuffObserver playerObserver;
+	protected transient SquadLeaderBuffObserver leaderObserver;
 	protected CreatureObject player;
 	protected CreatureObject leader;
 
@@ -50,10 +50,10 @@ class SquadLeaderBuff extends Buff {
 
 	@preLocked
 	public void activate() {
-		if (player == null)
+		if (!player)
 			return;
 
-		if (leader == null || player.getGroupID() != leader.getGroupID()) {
+		if (!leader || player.getGroupID() != leader.getGroupID()) {
 			player.removeBuff(super.buffCRC);
 			return;
 		}
@@ -71,15 +71,15 @@ class SquadLeaderBuff extends Buff {
 
 	@dirty
 	public boolean qualifiesForActivation() {
-		if (player == null || leader == null || leader.isDead() || leader.isIncapacitated())
+		if (!player|| !leader || leader.isDead() || leader.isIncapacitated())
 			return false;
 
 		return SquadLeaderCommand.isValidGroupAbilityTarget(leader, player, false);
 	}
 
-	@dirty
+	@read
 	public boolean checkRenew() {
-		if (leader == null || player == null || player.getGroupID() != leader.getGroupID()) {
+		if (!leader || !player || player.getGroupID() != leader.getGroupID()) {
 			return false;
 		}
 
@@ -89,11 +89,9 @@ class SquadLeaderBuff extends Buff {
 	@preLocked
 	public void addObservers() {
 		SquadLeaderBuffObserver playObserver = new SquadLeaderBuffObserver(this);
-		ObjectManager.instance().persistObject(playObserver, 1, "buffs");
 		playerObserver = playObserver;
 
 		SquadLeaderBuffObserver leadObserver = new SquadLeaderBuffObserver(this);
-		ObjectManager.instance().persistObject(leadObserver, 1, "buffs");
 		leaderObserver = leadObserver;
 
 		player.registerObserver(ObserverEventType.PARENTCHANGED, playerObserver);

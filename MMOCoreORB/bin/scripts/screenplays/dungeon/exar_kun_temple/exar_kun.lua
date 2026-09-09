@@ -26,8 +26,10 @@ end
 --Exar Spawn Scene Objects
 ---------------------------
 function exar_kunScreenplay:spawnSceneObjects()
-spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -50.6893, 0.796959, 31.8267, 14200816, 0.707107, 0, 0.707107, 0)
-spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -45.9135, 0.796806, 38.3853, 14200816, 0.258819, 0, 0.965926, 0)
+-- DISABLED: missing TRE template
+--spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -50.6893, 0.796959, 31.8267, 14200816, 0.707107, 0, 0.707107, 0)
+-- DISABLED: missing TRE template
+--spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -45.9135, 0.796806, 38.3853, 14200816, 0.258819, 0, 0.965926, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_quad_screen.iff", -40.4491, 0.61331, 29.3437, 14200816, 1, 0, 0, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_quad_screen.iff", 15.5419, 4.71103, 106.975, 14200878, 1, 0, 0, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_quad_screen.iff", -40.4448, 0.61331, 29.3521, 14200890, 1, 0, 0, 0)
@@ -41,8 +43,10 @@ spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_quad_screen.iff"
 spawnSceneObject("mustafar", "object/tangible/terminal/terminal_quad_screen.iff", -4.9798, -0.528749, 4.48454, 12116005, 0.48481, 0, 0.87462, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_gcw_publish_gift.iff", 88.3474, 0.799999, -41.7449, 14200887, 1, 0, 0, 0)
 
-spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -15.0555, 29.507, 0.114941, 14200833, 0.707107, 0, -0.707107, 0)
-spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -8.82052, 29.507, 0.122692, 14200833, -0.707107, 0, -0.707107, 0)
+-- DISABLED: missing TRE template
+--spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -15.0555, 29.507, 0.114941, 14200833, 0.707107, 0, -0.707107, 0)
+-- DISABLED: missing TRE template
+--spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -8.82052, 29.507, 0.122692, 14200833, -0.707107, 0, -0.707107, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_elevator_down.iff", 40.7997, 29.0075, -0.825626, 14200832, -0.707107, 0, 0.707107, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_elevator_down.iff", 40.7724, -0.992546, 0.9119, 14200832, 0.694658, 0, -0.71934, 0)
 spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_elevator_up.iff", 40.7967, -30.9925, 1.1636, 14200832, 0.71934, 0, -0.694658, 0)

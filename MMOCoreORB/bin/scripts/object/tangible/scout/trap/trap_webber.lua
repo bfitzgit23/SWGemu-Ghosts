@@ -46,23 +46,23 @@ object_tangible_scout_trap_trap_webber = object_tangible_scout_trap_shared_trap_
 	templateType = TRAP,
 	objectMenuComponent = "TrapMenuComponent",
 
-	useCount = 1,
+	useCount = 5,
+	skillRequired = 30,
 
-	skillRequired = 25,
-
-	skillMods = {{"ranged_defense", -60}, {"melee_defense", -60}},
+	skillMods = {},
 
 	healthCost = 17,
-	actionCost = 30, 
+	actionCost = 30,
 	mindCost = 17,
 
 	maxRange = 32,
+	areaOfEffect = false,
 
-	poolToDamage = HEALTH,
-	minDamage = 200,
-	maxDamage = 300,
+	poolToDamage = ACTION,
+	minDamage = 120,
+	maxDamage = 200,
 
-	duration = 15,
+	duration = 10,
 	state = FROZEN,
 	defenseMod = "",
 

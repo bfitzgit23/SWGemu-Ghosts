@@ -432,3 +432,20 @@ object_intangible_vehicle_shared_vehicle_pcd_base = SharedIntangibleObjectTempla
 }
 
 ObjectTemplates:addClientTemplate(object_intangible_vehicle_shared_vehicle_pcd_base, "object/intangible/vehicle/shared_vehicle_pcd_base.iff")
+
+local customVehicleControlTemplates = {
+	"grievous_wheel_bike",
+	"air2_swoop_speeder_pcd", "fg_8t8_podracer_pcd", "geonosian_speeder_pcd",
+	"koro2_speeder_pcd", "landspeeder_organa_pcd", "mechno_chair_pcd",
+	"pod_racer_balta_podracer_pcd", "pod_racer_ipg_longtail_pcd",
+	"senate_pod_pcd", "tcg_hk47_jetpack_pcd", "tcg_merr_sonn_jt12_jetpack_pcd",
+	"tcg_republic_gunship_pcd", "xj6_air_speeder_pcd"
+}
+
+for _, templateName in ipairs(customVehicleControlTemplates) do
+	local template = SharedIntangibleObjectTemplate:new {
+		clientTemplateFileName = "object/intangible/vehicle/shared_" .. templateName .. ".iff"
+	}
+	_G["object_intangible_vehicle_shared_" .. templateName] = template
+	ObjectTemplates:addClientTemplate(template, template.clientTemplateFileName)
+end

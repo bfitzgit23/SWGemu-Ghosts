@@ -3,6 +3,7 @@
 
 #include "server/zone/objects/player/sui/SuiCallback.h"
 #include "server/zone/objects/player/FactionStatus.h"
+#include "server/zone/objects/creature/CreatureObject.h"
 
 class FieldFactionChangeSuiCallback : public SuiCallback {
 private:
@@ -18,14 +19,14 @@ public:
 	void run(CreatureObject* player, SuiBox* suiBox, uint32 eventIndex, Vector<UnicodeString>* args) {
 		bool cancelPressed = (eventIndex == 1);
 
-		if (cancelPressed || args->size() < 1) {
+		StringTokenizer tokenizer(args->get(0).toString());
+
+		if (cancelPressed || args->size() < 1 || !tokenizer.hasMoreTokens()) {
 			player->sendSystemMessage("@gcw:abort_field_change"); // You cancel your factional change.
 			return;
 		}
 
-		String arg1 = args->get(0).toString();
-
-		if (arg1.toLowerCase() != "yes") {
+		if (tokenizer.getStringToken().toLowerCase() != "yes") {
 			player->sendSystemMessage("@gcw:abort_field_change"); // You cancel your factional change.
 			return;
 		}
@@ -55,9 +56,9 @@ public:
 
 					creo->setFactionStatus(FactionStatus::COVERT);
 				}
-			}, "UpdateFactionStatusTask", 30);
+			}, "UpdateFactionStatusTask", 30000);
 		} else if (newStatus == FactionStatus::OVERT) {
-			player->sendSystemMessage("You will be flagged as Special Forces in 30 seconds."); // No string available for overt.
+			player->sendSystemMessage("You will be flagged as Special Forces in 5 minutes."); // No string available for overt.
 			player->setFutureFactionStatus(FactionStatus::OVERT);
 
 			ManagedReference<CreatureObject*> creo = player->asCreatureObject();
@@ -68,7 +69,7 @@ public:
 
 					creo->setFactionStatus(FactionStatus::OVERT);
 				}
-			}, "UpdateFactionStatusTask", 30);
+			}, "UpdateFactionStatusTask", 300000);
 		}
 	}
 };

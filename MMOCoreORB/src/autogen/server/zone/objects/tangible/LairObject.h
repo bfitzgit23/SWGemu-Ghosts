@@ -73,9 +73,9 @@ using namespace server::zone::objects::scene;
 namespace server {
 namespace zone {
 
-class QuadTreeEntry;
+class TreeEntry;
 
-class QuadTreeEntryPOD;
+class TreeEntryPOD;
 
 } // namespace zone
 } // namespace server
@@ -103,11 +103,15 @@ public:
 
 	bool getDespawnOnNoPlayersInRange() const;
 
+	bool isRepopulated() const;
+
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void setLairRepopulated(bool repop);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
+
+	void notifyDissapear(TreeEntry* entry);
 
 	void activateDespawnEvent();
 
@@ -148,6 +152,8 @@ protected:
 
 	Reference<DespawnLairOnPlayerDisappear* > despawnEvent;
 
+	bool repopulated;
+
 public:
 	LairObjectImplementation();
 
@@ -157,11 +163,15 @@ public:
 
 	bool getDespawnOnNoPlayersInRange() const;
 
+	bool isRepopulated() const;
+
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void setLairRepopulated(bool repop);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
+
+	virtual void notifyDissapear(TreeEntry* entry);
 
 	void activateDespawnEvent();
 
@@ -217,11 +227,13 @@ public:
 
 	bool getDespawnOnNoPlayersInRange() const;
 
+	bool isRepopulated() const;
+
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void setLairRepopulated(bool repop);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
 
 	void activateDespawnEvent();
 
@@ -265,6 +277,8 @@ namespace tangible {
 class LairObjectPOD : public TangibleObjectPOD {
 public:
 	Optional<bool> despawnOnNoPlayersInRange;
+
+	Optional<bool> repopulated;
 
 	String _className;
 	LairObjectPOD();

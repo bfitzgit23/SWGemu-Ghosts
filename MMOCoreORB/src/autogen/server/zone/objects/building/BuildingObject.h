@@ -86,7 +86,7 @@ class ZonePOD;
 
 using namespace server::zone;
 
-#include "server/zone/QuadTreeEntry.h"
+#include "server/zone/TreeEntry.h"
 
 #include "templates/SharedObjectTemplate.h"
 
@@ -104,6 +104,8 @@ using namespace server::zone;
 
 #include "system/util/VectorMap.h"
 
+#include "server/zone/objects/creature/variables/CooldownTimerMap.h"
+
 #include "server/zone/objects/structure/StructureObject.h"
 
 #include "system/util/SortedVector.h"
@@ -120,6 +122,8 @@ using namespace server::zone;
 
 #include "engine/util/u3d/Matrix4.h"
 
+#include "system/lang/Time.h"
+
 namespace server {
 namespace zone {
 namespace objects {
@@ -127,7 +131,7 @@ namespace building {
 
 class BuildingObject : public StructureObject {
 public:
-	static const int MAXPLAYERITEMS = 1500;
+	static const int MAXPLAYERITEMS = 400;
 
 	BuildingObject();
 
@@ -211,23 +215,23 @@ public:
 
 	void notifyRemoveFromZone();
 
-	void notifyInsert(QuadTreeEntry* obj);
+	void notifyInsert(TreeEntry* obj);
 
 	void notifyInsertToZone(Zone* zone);
 
-	void notifyDissapear(QuadTreeEntry* obj);
+	void notifyDissapear(TreeEntry* obj);
 
-	void notifyPositionUpdate(QuadTreeEntry* entry);
+	void notifyPositionUpdate(TreeEntry* entry);
 
 	void notifyObjectInsertedToZone(SceneObject* object);
 
-	void insert(QuadTreeEntry* obj);
+	void insert(TreeEntry* obj);
 
-	void remove(QuadTreeEntry* obj);
+	void remove(TreeEntry* obj);
 
-	void update(QuadTreeEntry* obj);
+	void update(TreeEntry* obj);
 
-	void inRange(QuadTreeEntry* obj, float range);
+	void inRange(TreeEntry* obj, float range);
 
 	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
 
@@ -254,8 +258,6 @@ public:
 	int notifyObjectRemovedFromChild(SceneObject* object, SceneObject* child);
 
 	int getCurrentNumberOfPlayerItems();
-
-	int getCurrentNumberOfPlayerVendors();
 
 	/**
 	 * Loops through all the cells, destroying items from the database that aren't contained in the child objects vector.
@@ -311,8 +313,6 @@ public:
 	unsigned int getMaximumNumberOfPlayerItems();
 
 	String getRedeedMessage();
-
-	String getPackupMessage();
 
 	bool hasAccessFee() const;
 
@@ -372,9 +372,17 @@ public:
 
 	const BaseBoundingVolume* getBoundingVolume();
 
-	float getOutOfRangeDistance() const;
+	float getOutOfRangeDistance(unsigned long long specialRangeObjectID = 0);
 
 	String getCellName(unsigned long long cellID) const;
+
+	void addChildCreatureObject(CreatureObject* creature);
+
+	bool checkCooldownRecovery(const String& cooldown) const;
+
+	const Time* getCooldownTime(const String& cooldown) const;
+
+	void addCooldown(const String& name, unsigned long long miliseconds);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -429,10 +437,12 @@ protected:
 
 	SynchronizedSortedVector<unsigned long long> registeredPlayerIdList;
 
+	Reference<CooldownTimerMap* > cooldownTimerMap;
+
 public:
 	bool publicStructure;
 
-	static const int MAXPLAYERITEMS = 1500;
+	static const int MAXPLAYERITEMS = 400;
 
 protected:
 	UnicodeString signName;
@@ -526,23 +536,23 @@ public:
 
 	void notifyRemoveFromZone();
 
-	void notifyInsert(QuadTreeEntry* obj);
+	void notifyInsert(TreeEntry* obj);
 
 	void notifyInsertToZone(Zone* zone);
 
-	void notifyDissapear(QuadTreeEntry* obj);
+	virtual void notifyDissapear(TreeEntry* obj);
 
-	void notifyPositionUpdate(QuadTreeEntry* entry);
+	void notifyPositionUpdate(TreeEntry* entry);
 
 	void notifyObjectInsertedToZone(SceneObject* object);
 
-	void insert(QuadTreeEntry* obj);
+	void insert(TreeEntry* obj);
 
-	void remove(QuadTreeEntry* obj);
+	void remove(TreeEntry* obj);
 
-	void update(QuadTreeEntry* obj);
+	void update(TreeEntry* obj);
 
-	void inRange(QuadTreeEntry* obj, float range);
+	void inRange(TreeEntry* obj, float range);
 
 	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
 
@@ -569,8 +579,6 @@ public:
 	int notifyObjectRemovedFromChild(SceneObject* object, SceneObject* child);
 
 	int getCurrentNumberOfPlayerItems();
-
-	int getCurrentNumberOfPlayerVendors();
 
 	/**
 	 * Loops through all the cells, destroying items from the database that aren't contained in the child objects vector.
@@ -626,8 +634,6 @@ public:
 	virtual unsigned int getMaximumNumberOfPlayerItems();
 
 	String getRedeedMessage();
-
-	String getPackupMessage();
 
 	bool hasAccessFee() const;
 
@@ -691,9 +697,17 @@ public:
 
 	virtual const BaseBoundingVolume* getBoundingVolume();
 
-	virtual float getOutOfRangeDistance() const;
+	virtual float getOutOfRangeDistance(unsigned long long specialRangeObjectID = 0);
 
 	String getCellName(unsigned long long cellID) const;
+
+	void addChildCreatureObject(CreatureObject* creature);
+
+	bool checkCooldownRecovery(const String& cooldown) const;
+
+	const Time* getCooldownTime(const String& cooldown) const;
+
+	void addCooldown(const String& name, unsigned long long miliseconds);
 
 	WeakReference<BuildingObject*> _this;
 
@@ -797,8 +811,6 @@ public:
 
 	int getCurrentNumberOfPlayerItems();
 
-	int getCurrentNumberOfPlayerVendors();
-
 	void destroyAllPlayerItems();
 
 	void onEnter(CreatureObject* player);
@@ -824,8 +836,6 @@ public:
 	unsigned int getMaximumNumberOfPlayerItems();
 
 	String getRedeedMessage();
-
-	String getPackupMessage();
 
 	bool hasAccessFee() const;
 
@@ -867,9 +877,15 @@ public:
 
 	int getFactionBaseType() const;
 
-	float getOutOfRangeDistance() const;
+	float getOutOfRangeDistance(unsigned long long specialRangeObjectID);
 
 	String getCellName(unsigned long long cellID) const;
+
+	void addChildCreatureObject(CreatureObject* creature);
+
+	bool checkCooldownRecovery(const String& cooldown) const;
+
+	void addCooldown(const String& name, unsigned long long miliseconds);
 
 };
 

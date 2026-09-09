@@ -17,7 +17,7 @@ hoth_world = {
 		{"hoth_mynock", 300, -1, -1, -1, 100, 20},
 		
 		-- Imperial/Rebel troops
-		{"snow_trooper", 300, -1, -1, -1, 100, 20},
+		{"snowtrooper", 300, -1, -1, -1, 100, 20},
 		{"rebel_snow_trooper", 300, -1, -1, -1, 100, 20},
 		{"rebel_echo_officer", 300, -1, -1, -1, 100, 15},
 		{"rebel_echo_pilot", 300, -1, -1, -1, 100, 15},

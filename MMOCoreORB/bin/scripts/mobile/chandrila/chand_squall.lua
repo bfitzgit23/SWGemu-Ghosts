@@ -1,0 +1,36 @@
+chand_squall = Creature:new {
+	customName = "a Squall",
+	socialGroup = "squall",
+	faction = "",
+	level = 30,
+	chanceHit = 0.45,
+	damageMin = 200,
+	damageMax = 450,
+	baseXp = 480,
+	baseHAM = 11000,
+	baseHAMmax = 12500,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_carnivore",
+	meatAmount = 450,
+	hideType = "hide_leathery",
+	hideAmount = 400,
+	boneType = "bone_mammal",
+	boneAmount = 350,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 1.5,
+
+	templates = {"object/mobile/squall.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_squall, "chand_squall")

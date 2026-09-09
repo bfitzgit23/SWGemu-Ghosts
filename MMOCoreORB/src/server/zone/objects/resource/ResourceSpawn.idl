@@ -52,7 +52,6 @@ class ResourceSpawn extends SceneObject {
 	protected int containerReferenceCount;
 	protected boolean dbDestroyed;
 	protected boolean energy;
-	protected boolean perfect;
 
 	public ResourceSpawn() {
 		spawnType = "";
@@ -71,7 +70,6 @@ class ResourceSpawn extends SceneObject {
 		spawnPool = 0;
 		dbDestroyed = false;
 		energy = false;
-		perfect = false;
 
 		setLoggingName("ResourceSpawn");
 	}
@@ -174,11 +172,6 @@ class ResourceSpawn extends SceneObject {
 		energy = val;
 	}
 
-	@preLocked
-	public void setIsPerfectSpawn(boolean val) {
-		perfect = val;
-	}
-
 	// getters
 	@read
 	public string getName() {
@@ -263,11 +256,6 @@ class ResourceSpawn extends SceneObject {
 	}
 
 	@read
-	public boolean isPerfectSpawn() {
-		return perfect;
-	}
-
-	@read
 	public string getZoneRestriction() {
 		return zoneRestriction;
 	}
@@ -307,7 +295,7 @@ class ResourceSpawn extends SceneObject {
 
 	@local
 	@dereferenced
-	@dirty
+	@read
 	private native Vector<string> getSpawnZones(int minpool, int maxpool, final string zonerestriction, @dereferenced Vector<string> activeZones);
 
 	@read
@@ -318,6 +306,12 @@ class ResourceSpawn extends SceneObject {
 
 	@read
 	public native int getAttributeAndValue(string attribute, int index);
+
+	@preLocked
+	public native void clampAttributeRange(int minimum, int maximum);
+
+	@preLocked
+	public native void quantizeAttributeRange(int minimum, int maximum, int increment);
 
 	@read
 	public int getAttributeValue(int index) {
@@ -331,8 +325,6 @@ class ResourceSpawn extends SceneObject {
 	public native int getValueOf(final string attribute);
 
 	public native void addStatsToDeedListBox(SuiListBox suil);
-
-	public native void addStatsToDeedListBoxCR(SuiListBox suil);
 
 	@read
 	public native void print();

@@ -20,6 +20,8 @@ class PatrolPoint : public Serializable {
 
 	SerializableTime estimatedTimeOfArrival;
 
+	float direction;
+
 public:
 	PatrolPoint() {
 		reached = true;
@@ -63,6 +65,8 @@ public:
 
 		reached = p.reached;
 
+		direction = p.direction;
+
 		estimatedTimeOfArrival = p.estimatedTimeOfArrival;
 
 		return *this;
@@ -77,6 +81,8 @@ public:
 
 		reached = p.reached;
 
+		direction = p.direction;
+
 		estimatedTimeOfArrival = p.estimatedTimeOfArrival;
 
 		return *this;
@@ -86,12 +92,14 @@ public:
 	inline void addSerializableVariables() {
 		addSerializableVariable("position", &position);
 		addSerializableVariable("reached", &reached);
+		addSerializableVariable("direction", &direction);
 		addSerializableVariable("estimatedTimeOfArrival", &estimatedTimeOfArrival);
 	}
 
 	friend void to_json(nlohmann::json& j, const PatrolPoint& p) {
 		j["position"] = p.position;
 		j["reached"] = p.reached;
+		j["direction"] = p.direction;
 		j["estimatedTimeOfArrival"] = p.estimatedTimeOfArrival;
 	}
 
@@ -99,11 +107,11 @@ public:
 		return position.getWorldPosition();
 	}
 
-	bool isInRange(SceneObject* obj, float range) {
+	virtual bool isInRange(SceneObject* obj, float range) {
 		Vector3 thisWorldPos = getWorldPosition();
 		Vector3 objWorldPos = obj->getWorldPosition();
 
-		return thisWorldPos.squaredDistanceTo(objWorldPos) <= (range * range);
+		return thisWorldPos.squaredDistanceTo(objWorldPos) < (range * range);
 	}
 
 	bool isInRange(PatrolPoint* obj, float range) {
@@ -132,6 +140,10 @@ public:
 
 	inline CellObject* getCell() const {
 		return position.getCell();
+	}
+
+	inline float getDirection() const {
+		return direction;
 	}
 
 	inline Time* getEstimatedTimeOfArrival() {
@@ -165,6 +177,10 @@ public:
 
 	inline void setCell(CellObject* cell) {
 		position.setCell(cell);
+	}
+
+	inline void setDirection(float dir) {
+		direction = dir;
 	}
 
 	inline void setReached(bool value) {

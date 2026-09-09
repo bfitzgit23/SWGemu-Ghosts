@@ -212,13 +212,13 @@ void PetManager::enqueueOwnerOnlyPetCommand(CreatureObject* player, AiAgent* pet
 	}
 }
 
-bool PetManager::isTrainedCommand(PetControlDevice* petControlDevice, unsigned int command, const String& msg) {
+int PetManager::getTrainedCommandNum(PetControlDevice* petControlDevice, const String& msg) {
 	PetManagerImplementation* _implementation = static_cast<PetManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->isTrainedCommand(petControlDevice, command, msg);
+		return _implementation->getTrainedCommandNum(petControlDevice, msg);
 	}
 }
 

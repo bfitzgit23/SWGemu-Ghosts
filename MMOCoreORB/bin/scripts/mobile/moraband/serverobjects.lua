@@ -1,2 +1,2 @@
-includeFile("moraband/creatures/serverobjects.lua")
-includeFile("moraband/npcs/serverobjects.lua")
+includeFile("korriban/creatures/serverobjects.lua")
+includeFile("korriban/npcs/serverobjects.lua")

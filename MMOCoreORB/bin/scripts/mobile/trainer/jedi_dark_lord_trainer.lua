@@ -1,7 +1,8 @@
 jedi_dark_lord_trainer = Creature:new {
-	objectName = "@mob/creature_names:trainer_jedi",
+	objectName = "",
+	customName = "Dark Jedi Lord Trainer",
 	randomNameType = NAME_GENERIC,
-	randomNameTag = true,
+	randomNameTag = false,
 	planetMapCategory = "trainer_jedi",
 	faction = "",
 	level = 100,
@@ -31,8 +32,8 @@ jedi_dark_lord_trainer = Creature:new {
 	},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "trainer_grand_jedi_master_convotemplate",
-	trainerType = "trainer_jedi_dark_full",
+	conversationTemplate = "darkJediLordTrainerConvoTemplate",
+	trainerType = "trainer_jedi_dark_lord",
 	attacks = {}
 }
 

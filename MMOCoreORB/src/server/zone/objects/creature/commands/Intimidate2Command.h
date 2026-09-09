@@ -27,20 +27,6 @@ public:
 
 		if (targetObject == nullptr || !targetObject->isCreatureObject())
 			return INVALIDTARGET;
-			
-		ManagedReference<WeaponObject*> weapon = nullptr;
-
-		if(creature->getWeapon() == nullptr) {
-						return GENERALERROR;
-		}				
-		else{
-		weapon = creature->getWeapon();
-		}
-
-		if (weapon->isJediWeapon()){
-			return INVALIDWEAPON;
-		}
-
 
 		int res = doCombatAction(creature, target);
 
@@ -48,7 +34,7 @@ public:
 			CombatSpam* msg = new CombatSpam(creature, targetObject, creature, nullptr, 0, "cbt_spam", "intim_out_of_range", 0);
 			creature->sendMessage(msg);
 		}
-
+		
 		if (res == SUCCESS && creature->isPlayerCreature()) {
 			ManagedReference<PlayerObject*> ghost = creature->getPlayerObject();
 

@@ -12,7 +12,7 @@
 
 enum {RPC_ISCHARACTERBUILDERBOX__};
 
-SuiCharacterBuilderBox::SuiCharacterBuilderBox(CreatureObject* player, CharacterBuilderMenuNode* root) : SuiListBox(DummyConstructorParameter::instance()) {
+SuiCharacterBuilderBox::SuiCharacterBuilderBox(CreatureObject* player, const CharacterBuilderMenuNode* root) : SuiListBox(DummyConstructorParameter::instance()) {
 	SuiCharacterBuilderBoxImplementation* _implementation = new SuiCharacterBuilderBoxImplementation(player, root);
 	_impl = _implementation;
 	_impl->_setStub(this);
@@ -38,7 +38,7 @@ BaseMessage* SuiCharacterBuilderBox::generateMessage() {
 	}
 }
 
-CharacterBuilderMenuNode* SuiCharacterBuilderBox::getCurrentNode() {
+const CharacterBuilderMenuNode* SuiCharacterBuilderBox::getCurrentNode() {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -48,7 +48,7 @@ CharacterBuilderMenuNode* SuiCharacterBuilderBox::getCurrentNode() {
 	}
 }
 
-void SuiCharacterBuilderBox::setCurrentNode(CharacterBuilderMenuNode* node) {
+void SuiCharacterBuilderBox::setCurrentNode(const CharacterBuilderMenuNode* node) {
 	SuiCharacterBuilderBoxImplementation* _implementation = static_cast<SuiCharacterBuilderBoxImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -204,14 +204,14 @@ int SuiCharacterBuilderBoxImplementation::writeObjectMembers(ObjectOutputStream*
 	return _count;
 }
 
-SuiCharacterBuilderBoxImplementation::SuiCharacterBuilderBoxImplementation(CreatureObject* player, CharacterBuilderMenuNode* root) : SuiListBoxImplementation(player, SuiWindowType::CHARACTER_BUILDER_LIST, SuiListBox::HANDLETHREEBUTTON) {
+SuiCharacterBuilderBoxImplementation::SuiCharacterBuilderBoxImplementation(CreatureObject* player, const CharacterBuilderMenuNode* root) : SuiListBoxImplementation(player, SuiWindowType::CHARACTER_BUILDER_LIST, SuiListBox::HANDLETHREEBUTTON) {
 	_initializeImplementation();
 	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		Logger.setLoggingName("SuiCharacterBuilderBox");
 	Logger::setLoggingName("SuiCharacterBuilderBox");
 	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		setPromptTitle("Character Builder");
 	setPromptTitle("Character Builder");
-	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		setPromptText("Welome To Flurry.");
-	setPromptText("Welome To Flurry.");
+	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		setPromptText("Provided below are items which the developers feel are necessary to complete the current testing objectives. Please select only the items which you require.");
+	setPromptText("Provided below are items which the developers feel are necessary to complete the current testing objectives. Please select only the items which you require.");
 	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		rootNode = root;
 	rootNode = root;
 	// server/zone/objects/player/sui/characterbuilderbox/SuiCharacterBuilderBox.idl():  		currentNode = root;

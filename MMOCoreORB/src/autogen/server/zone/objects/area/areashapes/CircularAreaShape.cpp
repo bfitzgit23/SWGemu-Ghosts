@@ -42,7 +42,7 @@ void CircularAreaShape::setRadius(float r) {
 	}
 }
 
-float CircularAreaShape::getRadius() {
+float CircularAreaShape::getRadius() const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -56,7 +56,7 @@ float CircularAreaShape::getRadius() {
 	}
 }
 
-float CircularAreaShape::getRadius2() {
+float CircularAreaShape::getRadius2() const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -70,7 +70,7 @@ float CircularAreaShape::getRadius2() {
 	}
 }
 
-bool CircularAreaShape::containsPoint(float x, float y) {
+bool CircularAreaShape::containsPoint(float x, float y) const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -86,7 +86,7 @@ bool CircularAreaShape::containsPoint(float x, float y) {
 	}
 }
 
-bool CircularAreaShape::containsPoint(const Vector3& point) {
+bool CircularAreaShape::containsPoint(const Vector3& point) const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -96,7 +96,7 @@ bool CircularAreaShape::containsPoint(const Vector3& point) {
 	}
 }
 
-Vector3 CircularAreaShape::getRandomPosition() {
+Vector3 CircularAreaShape::getRandomPosition() const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -106,7 +106,7 @@ Vector3 CircularAreaShape::getRandomPosition() {
 	}
 }
 
-Vector3 CircularAreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) {
+Vector3 CircularAreaShape::getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -116,7 +116,7 @@ Vector3 CircularAreaShape::getRandomPosition(const Vector3& origin, float minDis
 	}
 }
 
-bool CircularAreaShape::isCircularAreaShape() {
+bool CircularAreaShape::isCircularAreaShape() const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -130,7 +130,7 @@ bool CircularAreaShape::isCircularAreaShape() {
 	}
 }
 
-bool CircularAreaShape::intersectsWith(AreaShape* areaShape) {
+bool CircularAreaShape::intersectsWith(AreaShape* areaShape) const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -145,7 +145,7 @@ bool CircularAreaShape::intersectsWith(AreaShape* areaShape) {
 	}
 }
 
-float CircularAreaShape::getArea() {
+float CircularAreaShape::getArea() const {
 	CircularAreaShapeImplementation* _implementation = static_cast<CircularAreaShapeImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -323,6 +323,8 @@ CircularAreaShapeImplementation::CircularAreaShapeImplementation() : AreaShapeIm
 	radius = 0;
 	// server/zone/objects/area/areashapes/CircularAreaShape.idl():  		radius2 = 0;
 	radius2 = 0;
+	// server/zone/objects/area/areashapes/CircularAreaShape.idl():  		Logger.setLoggingName("CircularAreaShape");
+	Logger::setLoggingName("CircularAreaShape");
 }
 
 void CircularAreaShapeImplementation::setRadius(float r) {
@@ -332,17 +334,17 @@ void CircularAreaShapeImplementation::setRadius(float r) {
 	radius2 = r * r;
 }
 
-float CircularAreaShapeImplementation::getRadius() {
+float CircularAreaShapeImplementation::getRadius() const{
 	// server/zone/objects/area/areashapes/CircularAreaShape.idl():  		return radius;
 	return radius;
 }
 
-float CircularAreaShapeImplementation::getRadius2() {
+float CircularAreaShapeImplementation::getRadius2() const{
 	// server/zone/objects/area/areashapes/CircularAreaShape.idl():  		return radius2;
 	return radius2;
 }
 
-bool CircularAreaShapeImplementation::isCircularAreaShape() {
+bool CircularAreaShapeImplementation::isCircularAreaShape() const{
 	// server/zone/objects/area/areashapes/CircularAreaShape.idl():  		return true;
 	return true;
 }
@@ -424,27 +426,27 @@ void CircularAreaShapeAdapter::setRadius(float r) {
 	(static_cast<CircularAreaShape*>(stub))->setRadius(r);
 }
 
-float CircularAreaShapeAdapter::getRadius() {
+float CircularAreaShapeAdapter::getRadius() const {
 	return (static_cast<CircularAreaShape*>(stub))->getRadius();
 }
 
-float CircularAreaShapeAdapter::getRadius2() {
+float CircularAreaShapeAdapter::getRadius2() const {
 	return (static_cast<CircularAreaShape*>(stub))->getRadius2();
 }
 
-bool CircularAreaShapeAdapter::containsPoint(float x, float y) {
+bool CircularAreaShapeAdapter::containsPoint(float x, float y) const {
 	return (static_cast<CircularAreaShape*>(stub))->containsPoint(x, y);
 }
 
-bool CircularAreaShapeAdapter::isCircularAreaShape() {
+bool CircularAreaShapeAdapter::isCircularAreaShape() const {
 	return (static_cast<CircularAreaShape*>(stub))->isCircularAreaShape();
 }
 
-bool CircularAreaShapeAdapter::intersectsWith(AreaShape* areaShape) {
+bool CircularAreaShapeAdapter::intersectsWith(AreaShape* areaShape) const {
 	return (static_cast<CircularAreaShape*>(stub))->intersectsWith(areaShape);
 }
 
-float CircularAreaShapeAdapter::getArea() {
+float CircularAreaShapeAdapter::getArea() const {
 	return (static_cast<CircularAreaShape*>(stub))->getArea();
 }
 

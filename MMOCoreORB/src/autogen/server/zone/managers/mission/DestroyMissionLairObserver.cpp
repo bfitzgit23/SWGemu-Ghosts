@@ -4,13 +4,13 @@
 
 #include "DestroyMissionLairObserver.h"
 
-#include "server/zone/objects/tangible/TangibleObject.h"
+#include "server/zone/objects/tangible/LairObject.h"
 
 /*
  *	DestroyMissionLairObserverStub
  */
 
-enum {RPC_CHECKFORHEAL__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_ = 3181248478,RPC_CHECKFORNEWSPAWNS__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_ISDESTROYMISSIONLAIROBSERVER__};
+enum {RPC_CHECKFORHEAL__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_ = 3181248478,RPC_CHECKFORNEWSPAWNS__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_,RPC_ISDESTROYMISSIONLAIROBSERVER__};
 
 DestroyMissionLairObserver::DestroyMissionLairObserver() : LairObserver(DummyConstructorParameter::instance()) {
 	DestroyMissionLairObserverImplementation* _implementation = new DestroyMissionLairObserverImplementation();
@@ -58,7 +58,27 @@ bool DestroyMissionLairObserver::checkForNewSpawns(TangibleObject* lair, Tangibl
 
 		return method.executeWithBooleanReturn();
 	} else {
+		assert((lair == NULL) || lair->isLockedByCurrentThread());
 		return _implementation->checkForNewSpawns(lair, attacker, forceSpawn);
+	}
+}
+
+void DestroyMissionLairObserver::spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive) {
+	DestroyMissionLairObserverImplementation* _implementation = static_cast<DestroyMissionLairObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_);
+		method.addObjectParameter(lair);
+		method.addSignedIntParameter(spawnNumber);
+		method.addAsciiParameter(templateToSpawn);
+		method.addBooleanParameter(spawnPassive);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert((lair == NULL) || lair->isLockedByCurrentThread());
+		_implementation->spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
 	}
 }
 
@@ -254,6 +274,17 @@ void DestroyMissionLairObserverAdapter::invokeMethod(uint32 methid, DistributedM
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_:
+		{
+			LairObject* lair = static_cast<LairObject*>(inv->getObjectParameter());
+			int spawnNumber = inv->getSignedIntParameter();
+			 String templateToSpawn; inv->getAsciiParameter(templateToSpawn);
+			bool spawnPassive = inv->getBooleanParameter();
+			
+			spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
+			
+		}
+		break;
 	case RPC_ISDESTROYMISSIONLAIROBSERVER__:
 		{
 			
@@ -272,6 +303,10 @@ void DestroyMissionLairObserverAdapter::checkForHeal(TangibleObject* lair, Tangi
 
 bool DestroyMissionLairObserverAdapter::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
 	return (static_cast<DestroyMissionLairObserver*>(stub))->checkForNewSpawns(lair, attacker, forceSpawn);
+}
+
+void DestroyMissionLairObserverAdapter::spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive) {
+	(static_cast<DestroyMissionLairObserver*>(stub))->spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
 }
 
 bool DestroyMissionLairObserverAdapter::isDestroyMissionLairObserver() {

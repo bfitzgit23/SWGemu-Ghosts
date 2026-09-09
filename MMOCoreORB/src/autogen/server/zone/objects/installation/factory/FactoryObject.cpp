@@ -22,7 +22,7 @@
  *	FactoryObjectStub
  */
 
-enum {RPC_NOTIFYLOADFROMDATABASE__,RPC_ISFACTORY__,RPC_CREATECHILDOBJECTS__,RPC_SENDINSERTMANUSUI__CREATUREOBJECT_,RPC_SENDINGREDIENTSNEEDEDSUI__CREATUREOBJECT_,RPC_SENDINGREDIENTHOPPER__CREATUREOBJECT_,RPC_SENDOUTPUTHOPPER__CREATUREOBJECT_,RPC_OPENHOPPER__OBSERVABLE_MANAGEDOBJECT_,RPC_CLOSEHOPPER__OBSERVABLE_MANAGEDOBJECT_,RPC_HANDLEINSERTFACTORYSCHEM__CREATUREOBJECT_MANUFACTURESCHEMATIC_,RPC_HANDLEREMOVEFACTORYSCHEM__CREATUREOBJECT_,RPC_HANDLEOPERATETOGGLE__CREATUREOBJECT_,RPC_CREATENEWOBJECT__,RPC_GETREDEEDMESSAGE__};
+enum {RPC_NOTIFYLOADFROMDATABASE__,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_ISFACTORY__,RPC_CREATECHILDOBJECTS__,RPC_SENDINSERTMANUSUI__CREATUREOBJECT_,RPC_SENDINGREDIENTSNEEDEDSUI__CREATUREOBJECT_,RPC_SENDINGREDIENTHOPPER__CREATUREOBJECT_,RPC_SENDOUTPUTHOPPER__CREATUREOBJECT_,RPC_OPENHOPPER__OBSERVABLE_MANAGEDOBJECT_,RPC_CLOSEHOPPER__OBSERVABLE_MANAGEDOBJECT_,RPC_HANDLEINSERTFACTORYSCHEM__CREATUREOBJECT_MANUFACTURESCHEMATIC_,RPC_HANDLEREMOVEFACTORYSCHEM__CREATUREOBJECT_,RPC_HANDLEOPERATETOGGLE__CREATUREOBJECT_,RPC_STARTFACTORY__,RPC_CREATENEWOBJECT__,RPC_GETREDEEDMESSAGE__,RPC_SENDREMOVEFAILUREMESSAGE__CREATUREOBJECT_MANUFACTURESCHEMATIC_};
 
 FactoryObject::FactoryObject() : InstallationObject(DummyConstructorParameter::instance()) {
 	FactoryObjectImplementation* _implementation = new FactoryObjectImplementation();
@@ -71,6 +71,23 @@ void FactoryObject::fillAttributeList(AttributeListMessage* msg, CreatureObject*
 
 	} else {
 		_implementation->fillAttributeList(msg, object);
+	}
+}
+
+void FactoryObject::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
+	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_);
+		method.addObjectParameter(player);
+		method.addBooleanParameter(doClose);
+		method.addBooleanParameter(forceLoadContainer);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendTo(player, doClose, forceLoadContainer);
 	}
 }
 
@@ -212,7 +229,7 @@ void FactoryObject::handleInsertFactorySchem(CreatureObject* player, Manufacture
 	}
 }
 
-void FactoryObject::handleRemoveFactorySchem(CreatureObject* player) {
+bool FactoryObject::handleRemoveFactorySchem(CreatureObject* player) {
 	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -221,10 +238,10 @@ void FactoryObject::handleRemoveFactorySchem(CreatureObject* player) {
 		DistributedMethod method(this, RPC_HANDLEREMOVEFACTORYSCHEM__CREATUREOBJECT_);
 		method.addObjectParameter(player);
 
-		method.executeWithVoidReturn();
+		return method.executeWithBooleanReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->handleRemoveFactorySchem(player);
+		return _implementation->handleRemoveFactorySchem(player);
 	}
 }
 
@@ -241,6 +258,21 @@ void FactoryObject::handleOperateToggle(CreatureObject* player) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->handleOperateToggle(player);
+	}
+}
+
+bool FactoryObject::startFactory() {
+	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_STARTFACTORY__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		return _implementation->startFactory();
 	}
 }
 
@@ -272,6 +304,22 @@ String FactoryObject::getRedeedMessage() {
 		return _return_getRedeedMessage;
 	} else {
 		return _implementation->getRedeedMessage();
+	}
+}
+
+void FactoryObject::sendRemoveFailureMessage(CreatureObject* player, ManufactureSchematic* schematic) {
+	FactoryObjectImplementation* _implementation = static_cast<FactoryObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDREMOVEFAILUREMESSAGE__CREATUREOBJECT_MANUFACTURESCHEMATIC_);
+		method.addObjectParameter(player);
+		method.addObjectParameter(schematic);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendRemoveFailureMessage(player, schematic);
 	}
 }
 
@@ -509,6 +557,16 @@ void FactoryObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_:
+		{
+			SceneObject* player = static_cast<SceneObject*>(inv->getObjectParameter());
+			bool doClose = inv->getBooleanParameter();
+			bool forceLoadContainer = inv->getBooleanParameter();
+			
+			sendTo(player, doClose, forceLoadContainer);
+			
+		}
+		break;
 	case RPC_ISFACTORY__:
 		{
 			
@@ -586,8 +644,8 @@ void FactoryObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
-			handleRemoveFactorySchem(player);
-			
+			bool _m_res = handleRemoveFactorySchem(player);
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_HANDLEOPERATETOGGLE__CREATUREOBJECT_:
@@ -596,6 +654,13 @@ void FactoryObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			handleOperateToggle(player);
 			
+		}
+		break;
+	case RPC_STARTFACTORY__:
+		{
+			
+			bool _m_res = startFactory();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_CREATENEWOBJECT__:
@@ -612,6 +677,15 @@ void FactoryObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertAscii(_m_res);
 		}
 		break;
+	case RPC_SENDREMOVEFAILUREMESSAGE__CREATUREOBJECT_MANUFACTURESCHEMATIC_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			ManufactureSchematic* schematic = static_cast<ManufactureSchematic*>(inv->getObjectParameter());
+			
+			sendRemoveFailureMessage(player, schematic);
+			
+		}
+		break;
 	default:
 		InstallationObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -619,6 +693,10 @@ void FactoryObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 
 void FactoryObjectAdapter::notifyLoadFromDatabase() {
 	(static_cast<FactoryObject*>(stub))->notifyLoadFromDatabase();
+}
+
+void FactoryObjectAdapter::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
+	(static_cast<FactoryObject*>(stub))->sendTo(player, doClose, forceLoadContainer);
 }
 
 bool FactoryObjectAdapter::isFactory() {
@@ -657,12 +735,16 @@ void FactoryObjectAdapter::handleInsertFactorySchem(CreatureObject* player, Manu
 	(static_cast<FactoryObject*>(stub))->handleInsertFactorySchem(player, schematic);
 }
 
-void FactoryObjectAdapter::handleRemoveFactorySchem(CreatureObject* player) {
-	(static_cast<FactoryObject*>(stub))->handleRemoveFactorySchem(player);
+bool FactoryObjectAdapter::handleRemoveFactorySchem(CreatureObject* player) {
+	return (static_cast<FactoryObject*>(stub))->handleRemoveFactorySchem(player);
 }
 
 void FactoryObjectAdapter::handleOperateToggle(CreatureObject* player) {
 	(static_cast<FactoryObject*>(stub))->handleOperateToggle(player);
+}
+
+bool FactoryObjectAdapter::startFactory() {
+	return (static_cast<FactoryObject*>(stub))->startFactory();
 }
 
 void FactoryObjectAdapter::createNewObject() {
@@ -671,6 +753,10 @@ void FactoryObjectAdapter::createNewObject() {
 
 String FactoryObjectAdapter::getRedeedMessage() {
 	return (static_cast<FactoryObject*>(stub))->getRedeedMessage();
+}
+
+void FactoryObjectAdapter::sendRemoveFailureMessage(CreatureObject* player, ManufactureSchematic* schematic) {
+	(static_cast<FactoryObject*>(stub))->sendRemoveFailureMessage(player, schematic);
 }
 
 /*

@@ -255,13 +255,13 @@ void MissionReconActiveAreaImplementation::notifyEnter(SceneObject* player) {
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			ReconMissionObjective strongReference = missionObjective;
 	ManagedReference<ReconMissionObjective* > strongReference = missionObjective;
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			}
-	if (strongReference != NULL){
+	if (strongReference){
 	// server/zone/objects/area/MissionReconActiveArea.idl():  				CreatureObject missionOwner = strongReference.getPlayerOwner();
 	ManagedReference<CreatureObject* > missionOwner = strongReference->getPlayerOwner();
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			}
 	if (dynamic_cast<CreatureObject*>(player) == missionOwner){
 	// server/zone/objects/area/MissionReconActiveArea.idl():  					if 
-	if (completeTask == NULL){
+	if (!completeTask){
 	Reference<CompleteMissionAfterCertainTimeTask*> _ref0;
 	// server/zone/objects/area/MissionReconActiveArea.idl():  						completeTask = new CompleteMissionAfterCertainTimeTask(strongReference);
 	completeTask = _ref0 = new CompleteMissionAfterCertainTimeTask(strongReference);
@@ -301,13 +301,13 @@ void MissionReconActiveAreaImplementation::notifyExit(SceneObject* player) {
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			ReconMissionObjective strongReference = missionObjective;
 	ManagedReference<ReconMissionObjective* > strongReference = missionObjective;
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			}
-	if (strongReference != NULL){
+	if (strongReference){
 	// server/zone/objects/area/MissionReconActiveArea.idl():  				CreatureObject missionOwner = strongReference.getPlayerOwner();
 	ManagedReference<CreatureObject* > missionOwner = strongReference->getPlayerOwner();
 	// server/zone/objects/area/MissionReconActiveArea.idl():  			}
 	if (dynamic_cast<CreatureObject*>(player) == missionOwner){
 	// server/zone/objects/area/MissionReconActiveArea.idl():  				}
-	if (completeTask != NULL){
+	if (completeTask){
 	// server/zone/objects/area/MissionReconActiveArea.idl():  						missionOwner.sendSystemMessage("Reconnaissance aborted.");
 	missionOwner->sendSystemMessage("Reconnaissance aborted.");
 	// server/zone/objects/area/MissionReconActiveArea.idl():  						completeTask.cancel();

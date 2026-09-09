@@ -11,8 +11,8 @@
       6. If player kills Revan → granted jedi_grand_master_novice or jedi_dark_lord_novice
       7. Player trains boxes at enclave terminal (intermediate boxes only)
       8. Once at final box, player speaks to Gatekeeper again
-      9. "Revan Reborn" spawns (75% stronger, double crystal loot)
-      10. If player kills Revan Reborn → granted master box
+      9. Light faces Revan Reborn; Dark faces Luke Skywalker
+      10. Defeating the path-specific champion grants the master box
       11. 5 minute despawn timer if player runs / dies
       12. 1 hour retry cooldown on failure
 
@@ -30,7 +30,8 @@ MasterTrial = ScreenPlay:new {
     screenPlayName = "MasterTrial",
 }
 
-registerScreenPlay("MasterTrial", true)
+-- Invoked by the Gatekeeper and trial events; it has no startup work.
+registerScreenPlay("MasterTrial", false)
 
 -- ============================================================
 -- CONSTANTS
@@ -61,7 +62,7 @@ end
 
 local function gkSay(pCreature, msg)
     if pCreature == nil then return end
-    CreatureObject(pCreature):sendSystemMessage("\\#AADDFF[The Gatekeeper] \\#FFFFFF" .. msg)
+    gatekeeperSpatialSay(pCreature, msg)
 end
 
 local function forceMsg(pCreature, msg)
@@ -71,7 +72,7 @@ end
 
 local function darkMsg(pCreature, msg)
     if pCreature == nil then return end
-    CreatureObject(pCreature):sendSystemMessage("\\#FF4444[The Gatekeeper] \\#FFFFFF" .. msg)
+    gatekeeperSpatialSay(pCreature, msg)
 end
 
 local function getFrsRank(pCreature, alignment)
@@ -97,6 +98,45 @@ local function getAlignment(pCreature)
 
     -- Fall back to stored alignment
     return rsd(pCreature, "jedi_alignment")
+end
+
+local GEN6_SCHEMATICS = {
+	"object/draft_schematic/weapon/lightsaber/lightsaber_two_hand_gen6.iff",
+}
+
+local GEN7_SCHEMATICS = {
+	"object/draft_schematic/weapon/lightsaber/lightsaber_one_hand_gen7.iff",
+	"object/draft_schematic/weapon/lightsaber/lightsaber_two_hand_gen7.iff",
+	"object/draft_schematic/weapon/lightsaber/lightsaber_polearm_gen7.iff",
+}
+
+local function awardPermanentSchematics(pCreature, schematics)
+	local pGhost = CreatureObject(pCreature):getPlayerObject()
+	if pGhost == nil then return false end
+
+	local awarded = false
+	for i = 1, #schematics do
+		if PlayerObject(pGhost):addRewardedSchematic(schematics[i], 2, -1, true) then
+			awarded = true
+		end
+	end
+
+	return awarded
+end
+
+function MasterTrial:grantRankLightsaberSchematics(pCreature)
+	if pCreature == nil then return end
+
+	local hasNovice = CreatureObject(pCreature):hasSkill("jedi_dark_lord_novice") or CreatureObject(pCreature):hasSkill("jedi_grand_master_novice")
+	local hasMaster = CreatureObject(pCreature):hasSkill("jedi_dark_lord_master") or CreatureObject(pCreature):hasSkill("jedi_grand_master_master")
+
+	if hasNovice and awardPermanentSchematics(pCreature, GEN6_SCHEMATICS) then
+		CreatureObject(pCreature):sendSystemMessage("You have learned the schematic for the Sixth Generation Lightsaber.")
+	end
+
+	if hasMaster and awardPermanentSchematics(pCreature, GEN7_SCHEMATICS) then
+		CreatureObject(pCreature):sendSystemMessage("You have learned the one-handed, two-handed, and polearm Seventh Generation Lightsaber schematics.")
+	end
 end
 
 -- ============================================================
@@ -223,6 +263,10 @@ function MasterTrial:onSeekFinalTrial(pCreature, pNPC)
     -- Gate checks
     if status ~= "knight" then
         gkSay(pCreature, "You are not yet a Knight. There is nothing for you here.")
+        return
+    end
+
+    if not holocron_progression_timer_ready(pCreature, "knight_unlocked_at", "The Grand Master or Dark Lord trials") then
         return
     end
 
@@ -512,7 +556,7 @@ function MasterTrial:doSpawnRevan(pCreature, alignment)
 
     local pGhost = CreatureObject(pCreature):getPlayerObject()
     if pGhost ~= nil then
-        PlayerObject(pGhost):addWaypoint(zoneName, "Revan (Clone)", "", spawnX, spawnY, WAYPOINTRED, true, true, WAYPOINTQUESTTASK)
+        PlayerObject(pGhost):addWaypoint(zoneName, "Revan (Clone)", "", spawnX, 0, spawnY, WAYPOINTRED, true, true, WAYPOINTQUESTTASK)
     end
 
     -- Make Revan attack the player
@@ -695,14 +739,19 @@ function MasterTrial:doGrantNoviceMaster(pCreature, alignment)
     wsd(pCreature, "jedi_status", "master_novice")
     wsd(pCreature, "master_trial_phase1_done", "1")
     wsd(pCreature, "master_trial_notified", "0")  -- reset so phase 2 notification can fire
+    wsd(pCreature, "master_novice_unlocked_at", os.time())
+    wsd(pCreature, "master_holocrons_used", "0")
+    wsd(pCreature, "holocron_studies_total", "")
 
     if alignment == "dark" then
-        awardSkill(pCreature, "jedi_dark_lord_novice")
+        awardSkill(pCreature, "jedi_dark_lord_novice", true)
         CreatureObject(pCreature):sendSystemMessage("\\#FF4444 The dark side acknowledges your power. You are Dark Lord Novice. Train the enclave boxes. Return to me when you are ready for the final confrontation.")
     else
-        awardSkill(pCreature, "jedi_grand_master_novice")
+        awardSkill(pCreature, "jedi_grand_master_novice", true)
         CreatureObject(pCreature):sendSystemMessage("\\#AADDFF The Force acknowledges your dedication. You are Grand Master Novice. Train the enclave boxes. Return to me when you are ready for the final confrontation.")
     end
+
+	self:grantRankLightsaberSchematics(pCreature)
 
     -- Send mail about next steps
     createEvent(3000, "MasterTrial", "sendPhaseOneCompleteMail", pCreature, alignment)
@@ -719,10 +768,11 @@ function MasterTrial:sendPhaseOneCompleteMail(pCreature, alignment)
             firstName .. ",\n\n" ..
             "You destroyed the clone. The dark side has taken note.\n\n" ..
             "You now hold the rank of Dark Lord Novice. But a novice is still a beginning.\n\n" ..
+            "You must complete a final seven-day training period before you may undertake the trial for the Dark Jedi Lord Master box.\n\n" ..
             "Seek the Dark Enclave on Yavin 4 at coordinates: 5079, 306.\n" ..
             "The terminal within will allow you to train the intermediate Dark Lord disciplines.\n\n" ..
             "Train every box. Leave nothing unlearned. When you stand at the threshold of the final rank...\n\n" ..
-            "Return to me. Revan Reborn will be waiting. He will be stronger than the clone you faced today.\n\n" ..
+            "Return to me. Luke Skywalker will be waiting. Extinguish the light's champion to claim your final title.\n\n" ..
             "Prepare accordingly.\n\n" ..
             "- The Gatekeeper",
             firstName
@@ -734,6 +784,7 @@ function MasterTrial:sendPhaseOneCompleteMail(pCreature, alignment)
             firstName .. ",\n\n" ..
             "You stood before the clone and did not fall. The Force is pleased.\n\n" ..
             "You now hold the rank of Grand Master Novice. The path continues.\n\n" ..
+            "You must complete a final seven-day training period before you may undertake the trial for the Grand Jedi Master box.\n\n" ..
             "Seek the Jedi Enclave on Yavin 4 at coordinates: -5575, 4910.\n" ..
             "The terminal within will allow you to train the intermediate Grand Master disciplines.\n\n" ..
             "Train every box. Leave no teaching unstudied. When you stand at the threshold of the final rank...\n\n" ..
@@ -762,6 +813,10 @@ function MasterTrial:onSeekFinalConfrontation(pCreature, pNPC)
         return
     end
 
+    if not holocron_progression_timer_ready(pCreature, "master_novice_unlocked_at", "The final Grand Master or Dark Lord trial") then
+        return
+    end
+
     -- Check player has trained to the final intermediate box
     -- Light: jedi_grand_master_10 | Dark: jedi_dark_lord_10
     local finalBoxSkill = (alignment == "dark") and "jedi_dark_lord_10" or "jedi_grand_master_10"
@@ -784,7 +839,7 @@ function MasterTrial:onSeekFinalConfrontation(pCreature, pNPC)
             local remaining = RETRY_COOLDOWN_SECS - elapsed
             local mins = math.ceil(remaining / 60)
             if alignment == "dark" then
-                darkMsg(pCreature, "Revan Reborn is not yet ready to face you again. " .. mins .. " minutes remain.")
+                darkMsg(pCreature, "Luke Skywalker cannot be challenged again yet. " .. mins .. " minutes remain.")
             else
                 gkSay(pCreature, "The Force is not yet settled. " .. mins .. " minutes remain before you may try again.")
             end
@@ -882,7 +937,7 @@ end
 
 function MasterTrial:finalDialogueDark4(pCreature, params)
     if pCreature == nil then return end
-    darkMsg(pCreature, "Revan Reborn has been enhanced. Your victory only taught it how to kill you better.")
+    darkMsg(pCreature, "Luke Skywalker stands as the light's greatest champion. To claim absolute darkness, you must extinguish that light.")
     createEvent(4000, "MasterTrial", "finalDialogueDark5", pCreature, "")
 end
 
@@ -937,7 +992,8 @@ function MasterTrial:doSpawnRevanReborn(pCreature, alignment)
     local spawnX = px + SPAWN_OFFSET_X
     local spawnY = py + SPAWN_OFFSET_Y
 
-    local pRevan = spawnMobile(zoneName, "revan_reborn", 0, spawnX, pz, spawnY, 180, 0)
+    local trialTemplate = alignment == "dark" and "luke_skywalker_dark_trial" or "revan_reborn"
+    local pRevan = spawnMobile(zoneName, trialTemplate, 0, spawnX, pz, spawnY, 180, 0)
 
     if pRevan == nil then
         if alignment == "dark" then
@@ -957,7 +1013,8 @@ function MasterTrial:doSpawnRevanReborn(pCreature, alignment)
 
     local pGhost = CreatureObject(pCreature):getPlayerObject()
     if pGhost ~= nil then
-        PlayerObject(pGhost):addWaypoint(zoneName, "Revan (Reborn)", "", spawnX, spawnY, WAYPOINTRED, true, true, WAYPOINTQUESTTASK)
+        PlayerObject(pGhost):removeWaypointBySpecialType(WAYPOINTQUESTTASK)
+        PlayerObject(pGhost):addWaypoint(zoneName, alignment == "dark" and "Luke Skywalker" or "Revan (Reborn)", "", spawnX, 0, spawnY, WAYPOINTRED, true, true, WAYPOINTQUESTTASK)
     end
 
     createEvent(1000, "MasterTrial", "revanAttackPlayer", pRevan,
@@ -968,7 +1025,7 @@ function MasterTrial:doSpawnRevanReborn(pCreature, alignment)
     createEvent(REVAN_DESPAWN_MS, "MasterTrial", "checkRevanDespawn", pCreature, "2")
 
     if alignment == "dark" then
-        darkMsg(pCreature, "Revan Reborn is here. Prove your absolute dominance.")
+        darkMsg(pCreature, "Luke Skywalker is here. Extinguish the light and prove your absolute dominance.")
     else
         gkSay(pCreature, "Revan Reborn is here. Call upon everything the Force has given you.")
     end
@@ -1058,7 +1115,7 @@ end
 
 function MasterTrial:finalSuccessDark2(pCreature, params)
     if pCreature == nil then return end
-    darkMsg(pCreature, "Revan Reborn lies at your feet.")
+    darkMsg(pCreature, "Luke Skywalker lies defeated at your feet.")
     createEvent(3000, "MasterTrial", "finalSuccessDark3", pCreature, "")
 end
 
@@ -1106,12 +1163,14 @@ function MasterTrial:doGrantMasterBox(pCreature, alignment)
     if pCreature == nil then return end
 
     if alignment == "dark" then
-        awardSkill(pCreature, "jedi_dark_lord_master")
+        awardSkill(pCreature, "jedi_dark_lord_master", true)
         CreatureObject(pCreature):sendSystemMessage("\\#FF4444 You are Dark Lord Master. The galaxy will know your name.")
     else
-        awardSkill(pCreature, "jedi_grand_master_master")
+        awardSkill(pCreature, "jedi_grand_master_master", true)
         CreatureObject(pCreature):sendSystemMessage("\\#AADDFF You are Grand Master. The Force is with you. It has always been with you.")
     end
+
+	self:grantRankLightsaberSchematics(pCreature)
 
     -- Send completion mail
     createEvent(3000, "MasterTrial", "sendMasterCompleteMail", pCreature, alignment)
@@ -1127,7 +1186,7 @@ function MasterTrial:sendMasterCompleteMail(pCreature, alignment)
             "Dark Lord Master - The Path is Complete",
             firstName .. ",\n\n" ..
             "It is done.\n\n" ..
-            "You destroyed Revan Reborn. You have claimed what no one could take from you.\n\n" ..
+            "You defeated Luke Skywalker. You have claimed what no one could take from you.\n\n" ..
             "The title of Dark Lord Master belongs to you. Not because it was given. Because you seized it.\n\n" ..
             "There are no more trials. No more gates. No more tests.\n\n" ..
             "The galaxy is yours to dominate.\n\n" ..

@@ -104,6 +104,8 @@ public:
 
 	static const int EFFECT_HEALING = 0x06;
 
+	static const int EFFECT_BARTENDER_DRINK = 0x07;
+
 	static const int FOOD = 0x01;
 
 	static const int DRINK = 0x10;
@@ -145,19 +147,19 @@ public:
 
 	bool isAttributeEffect() const;
 
-	bool isDrink();
+	bool isDrink() const;
 
-	bool isFood();
+	bool isFood() const;
 
-	bool isForagedFood();
+	bool isForagedFood() const;
 
-	bool isSpice();
+	bool isSpice() const;
 
 	bool isConsumable();
 
-	int getDuration();
+	int getDuration() const;
 
-	String getSpeciesRestriction();
+	String getSpeciesRestriction() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -194,6 +196,12 @@ protected:
 
 	int nutrition;
 
+	float newNutrition;
+
+	float nutritionMin;
+
+	float nutritionMax;
+
 	int effectType;
 
 	Vector<int> eventTypes;
@@ -205,10 +213,6 @@ protected:
 	int flavorMin;
 
 	int flavorMax;
-
-	int nutritionMin;
-
-	int nutritionMax;
 
 	int quantityMin;
 
@@ -240,6 +244,8 @@ public:
 	static const int EFFECT_SPICE = 0x05;
 
 	static const int EFFECT_HEALING = 0x06;
+
+	static const int EFFECT_BARTENDER_DRINK = 0x07;
 
 	static const int FOOD = 0x01;
 
@@ -284,19 +290,19 @@ public:
 
 	bool isAttributeEffect() const;
 
-	bool isDrink();
+	bool isDrink() const;
 
-	bool isFood();
+	bool isFood() const;
 
-	bool isForagedFood();
+	bool isForagedFood() const;
 
-	bool isSpice();
+	bool isSpice() const;
 
 	bool isConsumable();
 
-	int getDuration();
+	int getDuration() const;
 
-	String getSpeciesRestriction();
+	String getSpeciesRestriction() const;
 
 	WeakReference<Consumable*> _this;
 
@@ -350,19 +356,19 @@ public:
 
 	bool isAttributeEffect() const;
 
-	bool isDrink();
+	bool isDrink() const;
 
-	bool isFood();
+	bool isFood() const;
 
-	bool isForagedFood();
+	bool isForagedFood() const;
 
-	bool isSpice();
+	bool isSpice() const;
 
 	bool isConsumable();
 
-	int getDuration();
+	int getDuration() const;
 
-	String getSpeciesRestriction();
+	String getSpeciesRestriction() const;
 
 };
 
@@ -407,6 +413,12 @@ public:
 
 	Optional<int> nutrition;
 
+	Optional<float> newNutrition;
+
+	Optional<float> nutritionMin;
+
+	Optional<float> nutritionMax;
+
 	Optional<int> effectType;
 
 	Optional<Vector<int>> eventTypes;
@@ -418,10 +430,6 @@ public:
 	Optional<int> flavorMin;
 
 	Optional<int> flavorMax;
-
-	Optional<int> nutritionMin;
-
-	Optional<int> nutritionMax;
 
 	Optional<int> quantityMin;
 

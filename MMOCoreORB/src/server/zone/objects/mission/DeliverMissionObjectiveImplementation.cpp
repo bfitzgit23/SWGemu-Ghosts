@@ -101,7 +101,7 @@ bool DeliverMissionObjectiveImplementation::activateWithResult() {
 	if (targetSpawnPoint == nullptr) {
 		return false;
 	}
-	Vector3* targetPosition = targetSpawnPoint->getPosition();
+	const Vector3* targetPosition = targetSpawnPoint->getPosition();
 	if (targetPosition == nullptr) {
 		return false;
 	}
@@ -118,7 +118,7 @@ bool DeliverMissionObjectiveImplementation::activateWithResult() {
 		return false;
 	}
 
-	missionManager->allocateMissionNpcs(targetSpawnPoint, destinationSpawnPoint, terrainManager, creatureManager);
+	missionManager->allocateMissionNpcs(targetSpawnPoint, destinationSpawnPoint, zone, creatureManager);
 
 	targetSpawn = targetSpawnPoint->getNpc();
 	destinationSpawn = destinationSpawnPoint->getNpc();

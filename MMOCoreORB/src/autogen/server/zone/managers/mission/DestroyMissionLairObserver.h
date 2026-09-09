@@ -29,9 +29,9 @@ namespace zone {
 namespace objects {
 namespace tangible {
 
-class TangibleObject;
+class LairObject;
 
-class TangibleObjectPOD;
+class LairObjectPOD;
 
 } // namespace tangible
 } // namespace objects
@@ -39,6 +39,8 @@ class TangibleObjectPOD;
 } // namespace server
 
 using namespace server::zone::objects::tangible;
+
+#include "server/zone/objects/tangible/TangibleObject.h"
 
 #include "server/zone/managers/creature/LairObserver.h"
 
@@ -51,11 +53,15 @@ namespace mission {
 
 class DestroyMissionLairObserver : public LairObserver {
 public:
+	static const int BABY_SPAWN_CHANCE = 1000;
+
 	DestroyMissionLairObserver();
 
 	void checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate = false);
 
 	bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn = false);
+
+	void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive = true);
 
 	bool isDestroyMissionLairObserver();
 
@@ -85,8 +91,9 @@ namespace objects {
 namespace mission {
 
 class DestroyMissionLairObserverImplementation : public LairObserverImplementation {
-
 public:
+	static const int BABY_SPAWN_CHANCE = 1000;
+
 	DestroyMissionLairObserverImplementation();
 
 	DestroyMissionLairObserverImplementation(DummyConstructorParameter* param);
@@ -94,6 +101,8 @@ public:
 	void checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate = false);
 
 	bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn = false);
+
+	virtual void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive = true);
 
 	bool isDestroyMissionLairObserver();
 
@@ -144,6 +153,8 @@ public:
 
 	bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn);
 
+	void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive);
+
 	bool isDestroyMissionLairObserver();
 
 };
@@ -181,7 +192,7 @@ namespace mission {
 
 class DestroyMissionLairObserverPOD : public LairObserverPOD {
 public:
-
+	String _className;
 	DestroyMissionLairObserverPOD();
 	virtual void readObject(ObjectInputStream* stream);
 	virtual void writeObject(ObjectOutputStream* stream);

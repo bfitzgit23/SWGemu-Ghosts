@@ -16,6 +16,10 @@
  *	JukeboxStub
  */
 
+const float Jukebox::INDOOR_RADIUS = 32;
+
+const float Jukebox::OUTDOOR_RADIUS = 128;
+
 enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 780721685,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_CREATECHILDOBJECTS__,RPC_SETRADIUS__FLOAT_,RPC_NOTIFYINSERTTOZONE__ZONE_,RPC_DOMUSICSELECTION__CREATUREOBJECT_,RPC_PLAYMUSICTOPLAYER__CREATUREOBJECT_STRING_,RPC_CHANGEMUSIC__STRING_,RPC_STARTPLAYING__STRING_,RPC_STOPPLAYING__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_ACTIVATEREMOVEEVENT__BOOL_,RPC_ISSONGPLAYING__,RPC_GETCURSONG__,RPC_ISEVENTPERKITEM__,RPC_SETOWNER__CREATUREOBJECT_,};
 
 Jukebox::Jukebox() : Terminal(DummyConstructorParameter::instance()) {
@@ -119,6 +123,26 @@ void Jukebox::notifyInsertToZone(Zone* zone) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->notifyInsertToZone(zone);
+	}
+}
+
+void Jukebox::notifyInsert(TreeEntry* obj) {
+	JukeboxImplementation* _implementation = static_cast<JukeboxImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->notifyInsert(obj);
+	}
+}
+
+void Jukebox::notifyDissapear(TreeEntry* obj) {
+	JukeboxImplementation* _implementation = static_cast<JukeboxImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->notifyDissapear(obj);
 	}
 }
 
@@ -321,6 +345,10 @@ void Jukebox::_setImplementation(DistributedObjectServant* servant) {
 /*
  *	JukeboxImplementation
  */
+
+const float JukeboxImplementation::INDOOR_RADIUS = 32;
+
+const float JukeboxImplementation::OUTDOOR_RADIUS = 128;
 
 JukeboxImplementation::JukeboxImplementation(DummyConstructorParameter* param) : TerminalImplementation(param) {
 	_initializeImplementation();

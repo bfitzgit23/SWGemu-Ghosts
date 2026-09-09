@@ -230,8 +230,8 @@ TravelTerminalImplementation::TravelTerminalImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		Logger.setLoggingName("TravelTerminal");
 	Logger::setLoggingName("TravelTerminal");
-	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		planetTravelPoint == null;
-	planetTravelPoint == NULL;
+	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		planetTravelPoint = null;
+	planetTravelPoint = NULL;
 }
 
 void TravelTerminalImplementation::initializeTransientMembers() {
@@ -243,12 +243,12 @@ void TravelTerminalImplementation::initializeTransientMembers() {
 
 PlanetTravelPoint* TravelTerminalImplementation::getPlanetTravelPoint() {
 	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		Zone 
-	if (planetTravelPoint != NULL)	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		 return planetTravelPoint;
+	if (planetTravelPoint)	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		 return planetTravelPoint;
 	return planetTravelPoint;
 	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		Zone zone = getZone();
 	ManagedReference<Zone* > zone = getZone();
 	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  		return 
-	if (zone != NULL){
+	if (zone){
 	// server/zone/objects/tangible/terminal/travel/TravelTerminal.idl():  			planetTravelPoint = zone.getPlanetManager().getNearestPlanetTravelPoint(this);
 	planetTravelPoint = zone->getPlanetManager()->getNearestPlanetTravelPoint(_this.getReferenceUnsafeStaticCast());
 }

@@ -12,7 +12,7 @@
  *	ResourceSpawnStub
  */
 
-enum {RPC_FINALIZE__ = 889586298,RPC_DECREASECONTAINERREFERENCECOUNT__,RPC_ISRESOURCESPAWN__,RPC_SETNAME__STRING_,RPC_SETTYPE__STRING_,RPC_SETSPAWNPOOL__INT_STRING_,RPC_SETZONERESTRICTION__STRING_,RPC_ADDCLASS__STRING_,RPC_ADDSTFCLASS__STRING_,RPC_ADDATTRIBUTE__STRING_INT_,RPC_ISTYPE__STRING_,RPC_SETSURVEYTOOLTYPE__INT_,RPC_SETISENERGY__BOOL_,RPC_SETISPERFECTSPAWN__BOOL_,RPC_GETNAME__,RPC_GETTYPE__,RPC_GETCLASS__INT_,RPC_GETSTFCLASS__INT_,RPC_GETFINALCLASS__,RPC_GETFAMILYNAME__,RPC_GETSURVEYMISSIONSPAWNFAMILYNAME__,RPC_SETSPAWNED__LONG_,RPC_SETDESPAWNED__LONG_,RPC_GETDESPAWNED__,RPC_SETCONTAINERCRC__INT_,RPC_GETCONTAINERCRC__,RPC_GETSPAWNPOOL__,RPC_GETPOOLSLOT__,RPC_ISENERGY__,RPC_ISPERFECTSPAWN__,RPC_GETZONERESTRICTION__,RPC_GETSURVEYTOOLTYPE__,RPC_GETSPAWNMAPSIZE__,RPC_EXTRACTRESOURCE__STRING_INT_,RPC_CREATERESOURCE__INT_,RPC_GETSPAWNMAPZONE__INT_,RPC_ISUNKNOWNTYPE__,RPC_GETPLANETCRC__,RPC_GETDENSITYAT__STRING_FLOAT_FLOAT_,RPC_INSHIFT__,RPC_GETATTRIBUTEANDVALUE__STRING_INT_,RPC_GETATTRIBUTEVALUE__INT_,RPC_GETVALUEOF__INT_,RPC_GETVALUEOF__STRING_,RPC_ADDSTATSTODEEDLISTBOX__SUILISTBOX_,RPC_ADDSTATSTODEEDLISTBOXCR__SUILISTBOX_,RPC_PRINT__};
+enum {RPC_FINALIZE__ = 889586298,RPC_DECREASECONTAINERREFERENCECOUNT__,RPC_ISRESOURCESPAWN__,RPC_SETNAME__STRING_,RPC_SETTYPE__STRING_,RPC_SETSPAWNPOOL__INT_STRING_,RPC_SETZONERESTRICTION__STRING_,RPC_ADDCLASS__STRING_,RPC_ADDSTFCLASS__STRING_,RPC_ADDATTRIBUTE__STRING_INT_,RPC_ISTYPE__STRING_,RPC_SETSURVEYTOOLTYPE__INT_,RPC_SETISENERGY__BOOL_,RPC_GETNAME__,RPC_GETTYPE__,RPC_GETCLASS__INT_,RPC_GETSTFCLASS__INT_,RPC_GETFINALCLASS__,RPC_GETFAMILYNAME__,RPC_GETSURVEYMISSIONSPAWNFAMILYNAME__,RPC_SETSPAWNED__LONG_,RPC_SETDESPAWNED__LONG_,RPC_GETDESPAWNED__,RPC_SETCONTAINERCRC__INT_,RPC_GETCONTAINERCRC__,RPC_GETSPAWNPOOL__,RPC_GETPOOLSLOT__,RPC_ISENERGY__,RPC_GETZONERESTRICTION__,RPC_GETSURVEYTOOLTYPE__,RPC_GETSPAWNMAPSIZE__,RPC_EXTRACTRESOURCE__STRING_INT_,RPC_CREATERESOURCE__INT_,RPC_GETSPAWNMAPZONE__INT_,RPC_ISUNKNOWNTYPE__,RPC_GETPLANETCRC__,RPC_GETDENSITYAT__STRING_FLOAT_FLOAT_,RPC_INSHIFT__,RPC_GETATTRIBUTEANDVALUE__STRING_INT_,RPC_CLAMPATTRIBUTERANGE__INT_INT_,RPC_QUANTIZEATTRIBUTERANGE__INT_INT_INT_,RPC_GETATTRIBUTEVALUE__INT_,RPC_GETVALUEOF__INT_,RPC_GETVALUEOF__STRING_,RPC_ADDSTATSTODEEDLISTBOX__SUILISTBOX_,RPC_PRINT__};
 
 ResourceSpawn::ResourceSpawn() : SceneObject(DummyConstructorParameter::instance()) {
 	ResourceSpawnImplementation* _implementation = new ResourceSpawnImplementation();
@@ -226,22 +226,6 @@ void ResourceSpawn::setIsEnergy(bool val) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setIsEnergy(val);
-	}
-}
-
-void ResourceSpawn::setIsPerfectSpawn(bool val) {
-	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETISPERFECTSPAWN__BOOL_);
-		method.addBooleanParameter(val);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setIsPerfectSpawn(val);
 	}
 }
 
@@ -479,20 +463,6 @@ bool ResourceSpawn::isEnergy() const {
 	}
 }
 
-bool ResourceSpawn::isPerfectSpawn() const {
-	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISPERFECTSPAWN__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isPerfectSpawn();
-	}
-}
-
 String ResourceSpawn::getZoneRestriction() const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -673,6 +643,41 @@ int ResourceSpawn::getAttributeAndValue(String& attribute, int index) const {
 	}
 }
 
+void ResourceSpawn::clampAttributeRange(int minimum, int maximum) {
+	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CLAMPATTRIBUTERANGE__INT_INT_);
+		method.addSignedIntParameter(minimum);
+		method.addSignedIntParameter(maximum);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->clampAttributeRange(minimum, maximum);
+	}
+}
+
+void ResourceSpawn::quantizeAttributeRange(int minimum, int maximum, int increment) {
+	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_QUANTIZEATTRIBUTERANGE__INT_INT_INT_);
+		method.addSignedIntParameter(minimum);
+		method.addSignedIntParameter(maximum);
+		method.addSignedIntParameter(increment);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->quantizeAttributeRange(minimum, maximum, increment);
+	}
+}
+
 int ResourceSpawn::getAttributeValue(int index) const {
 	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -730,21 +735,6 @@ void ResourceSpawn::addStatsToDeedListBox(SuiListBox* suil) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->addStatsToDeedListBox(suil);
-	}
-}
-
-void ResourceSpawn::addStatsToDeedListBoxCR(SuiListBox* suil) {
-	ResourceSpawnImplementation* _implementation = static_cast<ResourceSpawnImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ADDSTATSTODEEDLISTBOXCR__SUILISTBOX_);
-		method.addObjectParameter(suil);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->addStatsToDeedListBoxCR(suil);
 	}
 }
 
@@ -942,10 +932,6 @@ bool ResourceSpawnImplementation::readObjectMember(ObjectInputStream* stream, co
 		TypeInfo<bool >::parseFromBinaryStream(&energy, stream);
 		return true;
 
-	case 0xf6780692: //ResourceSpawn.perfect
-		TypeInfo<bool >::parseFromBinaryStream(&perfect, stream);
-		return true;
-
 	}
 
 	return false;
@@ -1126,15 +1112,6 @@ int ResourceSpawnImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xf6780692; //ResourceSpawn.perfect
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&perfect, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 
 	return _count;
 }
@@ -1179,8 +1156,6 @@ void ResourceSpawnImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["energy"] = energy;
 
-	thisObject["perfect"] = perfect;
-
 	j["ResourceSpawn"] = thisObject;
 }
 
@@ -1216,8 +1191,6 @@ ResourceSpawnImplementation::ResourceSpawnImplementation() {
 	dbDestroyed = false;
 	// server/zone/objects/resource/ResourceSpawn.idl():  		energy = false;
 	energy = false;
-	// server/zone/objects/resource/ResourceSpawn.idl():  		perfect = false;
-	perfect = false;
 	// server/zone/objects/resource/ResourceSpawn.idl():  		setLoggingName("ResourceSpawn");
 	setLoggingName("ResourceSpawn");
 }
@@ -1304,11 +1277,6 @@ void ResourceSpawnImplementation::setIsEnergy(bool val) {
 	energy = val;
 }
 
-void ResourceSpawnImplementation::setIsPerfectSpawn(bool val) {
-	// server/zone/objects/resource/ResourceSpawn.idl():  		perfect = val;
-	perfect = val;
-}
-
 String ResourceSpawnImplementation::getName() const{
 	// server/zone/objects/resource/ResourceSpawn.idl():  		return spawnName;
 	return spawnName;
@@ -1392,11 +1360,6 @@ String ResourceSpawnImplementation::getPoolSlot() const{
 bool ResourceSpawnImplementation::isEnergy() const{
 	// server/zone/objects/resource/ResourceSpawn.idl():  		return energy;
 	return energy;
-}
-
-bool ResourceSpawnImplementation::isPerfectSpawn() const{
-	// server/zone/objects/resource/ResourceSpawn.idl():  		return perfect;
-	return perfect;
 }
 
 String ResourceSpawnImplementation::getZoneRestriction() const{
@@ -1537,14 +1500,6 @@ void ResourceSpawnAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_SETISPERFECTSPAWN__BOOL_:
-		{
-			bool val = inv->getBooleanParameter();
-			
-			setIsPerfectSpawn(val);
-			
-		}
-		break;
 	case RPC_GETNAME__:
 		{
 			
@@ -1655,13 +1610,6 @@ void ResourceSpawnAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_ISPERFECTSPAWN__:
-		{
-			
-			bool _m_res = isPerfectSpawn();
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_GETZONERESTRICTION__:
 		{
 			
@@ -1748,6 +1696,25 @@ void ResourceSpawnAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_CLAMPATTRIBUTERANGE__INT_INT_:
+		{
+			int minimum = inv->getSignedIntParameter();
+			int maximum = inv->getSignedIntParameter();
+			
+			clampAttributeRange(minimum, maximum);
+			
+		}
+		break;
+	case RPC_QUANTIZEATTRIBUTERANGE__INT_INT_INT_:
+		{
+			int minimum = inv->getSignedIntParameter();
+			int maximum = inv->getSignedIntParameter();
+			int increment = inv->getSignedIntParameter();
+			
+			quantizeAttributeRange(minimum, maximum, increment);
+			
+		}
+		break;
 	case RPC_GETATTRIBUTEVALUE__INT_:
 		{
 			int index = inv->getSignedIntParameter();
@@ -1777,14 +1744,6 @@ void ResourceSpawnAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			SuiListBox* suil = static_cast<SuiListBox*>(inv->getObjectParameter());
 			
 			addStatsToDeedListBox(suil);
-			
-		}
-		break;
-	case RPC_ADDSTATSTODEEDLISTBOXCR__SUILISTBOX_:
-		{
-			SuiListBox* suil = static_cast<SuiListBox*>(inv->getObjectParameter());
-			
-			addStatsToDeedListBoxCR(suil);
 			
 		}
 		break;
@@ -1852,10 +1811,6 @@ void ResourceSpawnAdapter::setIsEnergy(bool val) {
 	(static_cast<ResourceSpawn*>(stub))->setIsEnergy(val);
 }
 
-void ResourceSpawnAdapter::setIsPerfectSpawn(bool val) {
-	(static_cast<ResourceSpawn*>(stub))->setIsPerfectSpawn(val);
-}
-
 String ResourceSpawnAdapter::getName() const {
 	return (static_cast<ResourceSpawn*>(stub))->getName();
 }
@@ -1916,10 +1871,6 @@ bool ResourceSpawnAdapter::isEnergy() const {
 	return (static_cast<ResourceSpawn*>(stub))->isEnergy();
 }
 
-bool ResourceSpawnAdapter::isPerfectSpawn() const {
-	return (static_cast<ResourceSpawn*>(stub))->isPerfectSpawn();
-}
-
 String ResourceSpawnAdapter::getZoneRestriction() const {
 	return (static_cast<ResourceSpawn*>(stub))->getZoneRestriction();
 }
@@ -1964,6 +1915,14 @@ int ResourceSpawnAdapter::getAttributeAndValue(String& attribute, int index) con
 	return (static_cast<ResourceSpawn*>(stub))->getAttributeAndValue(attribute, index);
 }
 
+void ResourceSpawnAdapter::clampAttributeRange(int minimum, int maximum) {
+	(static_cast<ResourceSpawn*>(stub))->clampAttributeRange(minimum, maximum);
+}
+
+void ResourceSpawnAdapter::quantizeAttributeRange(int minimum, int maximum, int increment) {
+	(static_cast<ResourceSpawn*>(stub))->quantizeAttributeRange(minimum, maximum, increment);
+}
+
 int ResourceSpawnAdapter::getAttributeValue(int index) const {
 	return (static_cast<ResourceSpawn*>(stub))->getAttributeValue(index);
 }
@@ -1978,10 +1937,6 @@ int ResourceSpawnAdapter::getValueOf(const String& attribute) const {
 
 void ResourceSpawnAdapter::addStatsToDeedListBox(SuiListBox* suil) {
 	(static_cast<ResourceSpawn*>(stub))->addStatsToDeedListBox(suil);
-}
-
-void ResourceSpawnAdapter::addStatsToDeedListBoxCR(SuiListBox* suil) {
-	(static_cast<ResourceSpawn*>(stub))->addStatsToDeedListBoxCR(suil);
 }
 
 void ResourceSpawnAdapter::print() const {
@@ -2045,7 +2000,6 @@ Luna<LuaResourceSpawn>::RegType LuaResourceSpawn::Register[] = {
 	{ "isType", &LuaResourceSpawn::isType },
 	{ "setSurveyToolType", &LuaResourceSpawn::setSurveyToolType },
 	{ "setIsEnergy", &LuaResourceSpawn::setIsEnergy },
-	{ "setIsPerfectSpawn", &LuaResourceSpawn::setIsPerfectSpawn },
 	{ "getName", &LuaResourceSpawn::getName },
 	{ "getType", &LuaResourceSpawn::getType },
 	{ "getClass", &LuaResourceSpawn::getClass },
@@ -2061,7 +2015,6 @@ Luna<LuaResourceSpawn>::RegType LuaResourceSpawn::Register[] = {
 	{ "getSpawnPool", &LuaResourceSpawn::getSpawnPool },
 	{ "getPoolSlot", &LuaResourceSpawn::getPoolSlot },
 	{ "isEnergy", &LuaResourceSpawn::isEnergy },
-	{ "isPerfectSpawn", &LuaResourceSpawn::isPerfectSpawn },
 	{ "getZoneRestriction", &LuaResourceSpawn::getZoneRestriction },
 	{ "getSurveyToolType", &LuaResourceSpawn::getSurveyToolType },
 	{ "getSpawnMapSize", &LuaResourceSpawn::getSpawnMapSize },
@@ -2074,10 +2027,11 @@ Luna<LuaResourceSpawn>::RegType LuaResourceSpawn::Register[] = {
 	{ "getDensityAt", &LuaResourceSpawn::getDensityAt },
 	{ "inShift", &LuaResourceSpawn::inShift },
 	{ "getAttributeAndValue", &LuaResourceSpawn::getAttributeAndValue },
+	{ "clampAttributeRange", &LuaResourceSpawn::clampAttributeRange },
+	{ "quantizeAttributeRange", &LuaResourceSpawn::quantizeAttributeRange },
 	{ "getAttributeValue", &LuaResourceSpawn::getAttributeValue },
 	{ "getValueOf", &LuaResourceSpawn::getValueOf },
 	{ "addStatsToDeedListBox", &LuaResourceSpawn::addStatsToDeedListBox },
-	{ "addStatsToDeedListBoxCR", &LuaResourceSpawn::addStatsToDeedListBoxCR },
 	{ "print", &LuaResourceSpawn::print },
 	{ 0, 0 }
 };
@@ -2371,27 +2325,6 @@ int LuaResourceSpawn::setIsEnergy(lua_State *L) {
 	return 0;
 }
 
-int LuaResourceSpawn::setIsPerfectSpawn(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (lua_isboolean(L, -1)) {
-		if (parameterCount == 1) {
-			bool val = lua_toboolean(L, -1);
-
-			Locker _guard(realObject);
-
-			realObject->setIsPerfectSpawn(val);
-
-			return 0;
-		} else {
-			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ResourceSpawn:setIsPerfectSpawn(boolean)'");
-		}
-	} else {
-		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ResourceSpawn:setIsPerfectSpawn(boolean)'");
-	}
-	return 0;
-}
-
 int LuaResourceSpawn::getName(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
@@ -2635,20 +2568,6 @@ int LuaResourceSpawn::isEnergy(lua_State *L) {
 	return 0;
 }
 
-int LuaResourceSpawn::isPerfectSpawn(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (parameterCount == 0) {
-		bool result = realObject->isPerfectSpawn();
-
-		lua_pushboolean(L, result);
-		return 1;
-	} else {
-		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ResourceSpawn:isPerfectSpawn()'");
-	}
-	return 0;
-}
-
 int LuaResourceSpawn::getZoneRestriction(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
@@ -2865,6 +2784,63 @@ int LuaResourceSpawn::getAttributeAndValue(lua_State *L) {
 	return 0;
 }
 
+int LuaResourceSpawn::clampAttributeRange(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (lua_isnumber(L, -2)) {
+			if (parameterCount == 2) {
+				int minimum = lua_tointeger(L, -2);
+				int maximum = lua_tointeger(L, -1);
+
+				Locker _guard(realObject);
+
+				realObject->clampAttributeRange(minimum, maximum);
+
+				return 0;
+			} else {
+				throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ResourceSpawn:clampAttributeRange(integer, integer)'");
+			}
+		} else {
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'ResourceSpawn:clampAttributeRange(integer, integer)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ResourceSpawn:clampAttributeRange(integer, integer)'");
+	}
+	return 0;
+}
+
+int LuaResourceSpawn::quantizeAttributeRange(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (lua_isnumber(L, -2)) {
+			if (lua_isnumber(L, -3)) {
+				if (parameterCount == 3) {
+					int minimum = lua_tointeger(L, -3);
+					int maximum = lua_tointeger(L, -2);
+					int increment = lua_tointeger(L, -1);
+
+					Locker _guard(realObject);
+
+					realObject->quantizeAttributeRange(minimum, maximum, increment);
+
+					return 0;
+				} else {
+					throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ResourceSpawn:quantizeAttributeRange(integer, integer, integer)'");
+				}
+			} else {
+				throw LuaCallbackException(L, "invalid argument at 2 for lua method 'ResourceSpawn:quantizeAttributeRange(integer, integer, integer)'");
+			}
+		} else {
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'ResourceSpawn:quantizeAttributeRange(integer, integer, integer)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ResourceSpawn:quantizeAttributeRange(integer, integer, integer)'");
+	}
+	return 0;
+}
+
 int LuaResourceSpawn::getAttributeValue(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
@@ -2927,25 +2903,6 @@ int LuaResourceSpawn::addStatsToDeedListBox(lua_State *L) {
 		}
 	} else {
 		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ResourceSpawn:addStatsToDeedListBox(userdata)'");
-	}
-	return 0;
-}
-
-int LuaResourceSpawn::addStatsToDeedListBoxCR(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (lua_isuserdata(L, -1)) {
-		if (parameterCount == 1) {
-			SuiListBox* suil = static_cast<SuiListBox*>(lua_touserdata(L, -1));
-
-			realObject->addStatsToDeedListBoxCR(suil);
-
-			return 0;
-		} else {
-			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ResourceSpawn:addStatsToDeedListBoxCR(userdata)'");
-		}
-	} else {
-		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ResourceSpawn:addStatsToDeedListBoxCR(userdata)'");
 	}
 	return 0;
 }
@@ -3033,9 +2990,6 @@ void ResourceSpawnPOD::writeJSON(nlohmann::json& j) {
 
 	if (energy)
 		thisObject["energy"] = energy.value();
-
-	if (perfect)
-		thisObject["perfect"] = perfect.value();
 
 	j["ResourceSpawn"] = thisObject;
 }
@@ -3252,17 +3206,6 @@ int ResourceSpawnPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (perfect) {
-	_nameHashCode = 0xf6780692; //ResourceSpawn.perfect
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&perfect.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 
 	return _count;
 }
@@ -3416,14 +3359,6 @@ bool ResourceSpawnPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
-	case 0xf6780692: //ResourceSpawn.perfect
-		{
-			bool _mnperfect;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnperfect, stream);
-			perfect = std::move(_mnperfect);
-		}
-		return true;
-
 	}
 
 	return false;
@@ -3485,8 +3420,6 @@ void ResourceSpawnPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<bool >::toBinaryStream(&dbDestroyed.value(), stream);
 
 	TypeInfo<bool >::toBinaryStream(&energy.value(), stream);
-
-	TypeInfo<bool >::toBinaryStream(&perfect.value(), stream);
 
 
 }

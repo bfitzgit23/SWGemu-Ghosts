@@ -24,6 +24,7 @@ StructurePermissionList::StructurePermissionList() {
 	addList("HOPPER");
 	addList("BAN");
 	addList("VENDOR");
+	addList("QUEST");
 }
 
 StructurePermissionList::StructurePermissionList(const StructurePermissionList& spl) : Object(), permissionLists(spl.permissionLists),
@@ -37,6 +38,19 @@ bool StructurePermissionList::toBinaryStream(ObjectOutputStream* stream) {
 	stream->writeShort(_currentOffset, _varCount);
 
 	return true;
+}
+
+StructurePermissionList& StructurePermissionList::operator=(const StructurePermissionList& list) {
+	if (this == &list) {
+		return *this;
+	}
+
+	permissionLists = list.permissionLists;
+	idPermissionLists = list.idPermissionLists;
+	ownerName = list.ownerName;
+	ownerID = list.ownerID;
+
+	return *this;
 }
 
 void to_json(nlohmann::json& j, const StructurePermissionList& p) {
@@ -341,8 +355,9 @@ bool StructurePermissionList::isOnPermissionList(const String& listName, const u
 
 	int pos = idPermissionLists.find(listName);
 
-	if (pos == -1)
+	if (pos == -1) {
 		return false;
+	}
 
 	const SortedVector<uint64>& list = idPermissionLists.get(pos);
 

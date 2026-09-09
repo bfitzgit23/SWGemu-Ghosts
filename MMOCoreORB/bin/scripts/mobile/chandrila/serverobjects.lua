@@ -1,0 +1,12 @@
+-- Chandrila mobile definitions
+includeFile("chandrila/chand_fynock.lua")
+includeFile("chandrila/chand_vynock.lua")
+includeFile("chandrila/chand_paralope.lua")
+includeFile("chandrila/chand_gubbur.lua")
+includeFile("chandrila/chand_squall.lua")
+includeFile("chandrila/chand_leviasquall.lua")
+includeFile("chandrila/chand_rasp.lua")
+includeFile("chandrila/chand_decay_mite.lua")
+includeFile("chandrila/at_xt.lua")
+includeFile("chandrila/senator.lua")
+includeFile("chandrila/chandrila_park_ranger.lua")

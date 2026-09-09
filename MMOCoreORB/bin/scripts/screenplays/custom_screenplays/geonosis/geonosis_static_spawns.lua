@@ -20,7 +20,6 @@ function GeonosisStaticSpawnsScreenPlay:spawnSceneObjects()
   --- Outside Starport
   spawnSceneObject("geonosis", "object/tangible/terminal/terminal_gcw_publish_gift.iff", 84.7, 5, -20.6, 88,0,0,0,0)
   spawnSceneObject("geonosis", "object/tangible/terminal/terminal_mission.iff", 83.7, 5, -4.8, 88,0,0,0,0)
-  spawnSceneObject("geonosis", "object/tangible/beta/beta_terminal_wound.iff", 83.1, 5, -26.4, 88,0,0,0,0)  
 end
 
 function GeonosisStaticSpawnsScreenPlay:spawnMobiles()

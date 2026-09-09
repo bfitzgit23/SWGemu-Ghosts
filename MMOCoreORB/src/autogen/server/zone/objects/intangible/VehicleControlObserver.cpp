@@ -208,7 +208,7 @@ int VehicleControlObserverImplementation::notifyObserverEvent(unsigned int event
 	// server/zone/objects/intangible/VehicleControlObserver.idl():  		VehicleControlDevice dev = vehicleControlDevice;
 	ManagedReference<VehicleControlDevice* > dev = vehicleControlDevice;
 	// server/zone/objects/intangible/VehicleControlObserver.idl():  		return 
-	if (dev != NULL){
+	if (dev){
 	// server/zone/objects/intangible/VehicleControlObserver.idl():  			CreatureObject creature = (CreatureObject) observable;
 	ManagedReference<CreatureObject* > creature = dynamic_cast<CreatureObject*>(observable);
 	// server/zone/objects/intangible/VehicleControlObserver.idl():  			dev.cancelSpawnObject(creature);

@@ -98,7 +98,7 @@ namespace sessions {
 
 class ContrabandScanSession : public Facade {
 public:
-	ContrabandScanSession(AiAgent* scanner, CreatureObject* player);
+	ContrabandScanSession(AiAgent* scanner, CreatureObject* player, int winningFaction, int winningFactionDifficultyScaling, bool enforced);
 
 	int initializeSession();
 
@@ -109,6 +109,8 @@ public:
 	void runContrabandScan();
 
 	bool scanPrerequisitesMet(AiAgent* scanner, CreatureObject* player);
+
+	void adjustReinforcementStrength(AiAgent* scanner);
 
 	void setAcceptFineAnswer(bool acceptFine);
 
@@ -140,33 +142,31 @@ namespace gcw {
 namespace sessions {
 
 class ContrabandScanSessionImplementation : public FacadeImplementation {
-	static const int CONTRABANDSCANCOOLDOWN = 90000;
+	static const int SCANINITIATECHANCE = 12;
 
-	static const int SCANINITIATECHANCE = 8;
+	static const int TASKDELAY = 2000;
 
-	static const int TASKDELAY = 1000;
-
-	static const int PLAYERSCANCOOLDOWN = 90000;
+	static const int IMMEDIATELY = 1;
 
 	static const int SCANTIME = 10;
 
 	static const int TIMETORETURNFORSCAN = 10;
 
-	static const int RANAWAYFACTIONFINE = 100;
-
-	static const int RECOGNIZEDFACTIONRANK = 7;
+	static const int RECOGNIZEDFACTIONRANK = 9;
 
 	static const int BASEFACTIONDETECTIONCHANCE = 10;
 
-	static const int RANKDETECTIONCHANCEMODIFIER = 1;
+	static const int RANKDETECTIONCHANCEMODIFIER = 3;
 
 	static const int JEDIMINDTRICKSUCCESSCHANCEBASE = 80;
-
-	static const int CONTRABANDFINEPERITEM = 10000;
 
 	static const int WAITFORPAYFINEANSWERTIMEOUT = 60;
 
 	static const int SMUGGLERAVOIDSCANCHANCE = 80;
+
+	static const int JEDIAVOIDDETECTIONBASECHANCE = 80;
+
+	static const int JEDIREINFORCEMENTDIFFICULTY = 2;
 
 	static const int SCANCHANCE = 0;
 
@@ -174,19 +174,21 @@ class ContrabandScanSessionImplementation : public FacadeImplementation {
 
 	static const int AVOIDINGSCAN = 2;
 
-	static const int FACTIONRANKCHECK = 3;
+	static const int JEDIMINDTRICKPLAYERCHAT = 3;
 
-	static const int JEDIMINDTRICKPLAYERCHAT = 4;
+	static const int JEDIMINDTRICKSCANNERTHINK = 4;
 
-	static const int JEDIMINDTRICKSCANNERTHINK = 5;
+	static const int JEDIMINDTRICKSCANNERCHAT = 5;
 
-	static const int JEDIMINDTRICKSCANNERCHAT = 6;
+	static const int JEDIDETECT = 6;
 
-	static const int SCANDELAY = 7;
+	static const int FACTIONRANKCHECK = 7;
 
-	static const int WAITFORPAYFINEANSWER = 8;
+	static const int SCANDELAY = 8;
 
-	static const int FINISHED = 9;
+	static const int WAITFORPAYFINEANSWER = 9;
+
+	static const int FINISHED = 10;
 
 	int scanState;
 
@@ -195,6 +197,14 @@ class ContrabandScanSessionImplementation : public FacadeImplementation {
 	int timeLeft;
 
 	int previousTimeLeft;
+
+	int currentWinningFaction;
+
+	int currentWinningFactionDifficultyScaling;
+
+	bool enforcedScan;
+
+	int scannerFaction;
 
 	bool alreadyTriedToAvoidScan;
 
@@ -214,7 +224,7 @@ protected:
 	Reference<Task* > contrabandScanTask;
 
 public:
-	ContrabandScanSessionImplementation(AiAgent* scanner, CreatureObject* player);
+	ContrabandScanSessionImplementation(AiAgent* scanner, CreatureObject* player, int winningFaction, int winningFactionDifficultyScaling, bool enforced);
 
 	ContrabandScanSessionImplementation(DummyConstructorParameter* param);
 
@@ -228,12 +238,20 @@ public:
 
 	bool scanPrerequisitesMet(AiAgent* scanner, CreatureObject* player);
 
+	void adjustReinforcementStrength(AiAgent* scanner);
+
 	void setAcceptFineAnswer(bool acceptFine);
 
 private:
-	String getFactionStringId(AiAgent* scanner, const String& imperial, const String& rebel);
+	String getFactionStringId(CreatureObject* player, const String& imperial, const String& rebel);
 
 	void sendScannerChatMessage(Zone* zone, AiAgent* scanner, CreatureObject* player, const String& imperial, const String& rebel);
+
+	void sendBarkChatMessage(AiAgent* scanner, CreatureObject* player);
+
+	void sendStormtrooperMessage(AiAgent* scanner, const String& message);
+
+	void sendPersonalizedScannerChatMessage(Zone* zone, AiAgent* scanner, CreatureObject* player, const String& imperial, const String& rebel);
 
 	void sendSystemMessage(AiAgent* scanner, CreatureObject* player, const String& imperial, const String& rebel);
 
@@ -243,7 +261,7 @@ private:
 
 	void scannerRequestsPlayerToReturn(Zone* zone, AiAgent* scanner, CreatureObject* player);
 
-	void checkIfPlayerShouldBeScanned(CreatureObject* player);
+	void checkIfPlayerShouldBeScanned(CreatureObject* player, AiAgent* scanner);
 
 	void initiateScan(Zone* zone, AiAgent* scanner, CreatureObject* player);
 
@@ -255,17 +273,19 @@ private:
 
 	void jediMindTrickResult(Zone* zone, AiAgent* scanner, CreatureObject* player);
 
+	void jediDetect(Zone* zone, AiAgent* scanner, CreatureObject* player);
+
 	void performScan(Zone* zone, AiAgent* scanner, CreatureObject* player);
 
 	void checkIfPlayerHasReturned(Zone* zone, AiAgent* scanner, CreatureObject* player);
 
-	bool isContraband(SceneObject* item);
-
-	int countContrabandItemsInContainer(SceneObject* container);
-
-	int countContrabandItems(CreatureObject* player);
+	bool isDarkJedi(CreatureObject* player);
 
 	unsigned int jediMindTrickSuccessChance(CreatureObject* player);
+
+	unsigned int jediAvoidDetectionSuccessChance(CreatureObject* player);
+
+	void addCrackdownTef(CreatureObject* player);
 
 	void sendContrabandFineSuiWindow(Zone* zone, AiAgent* scanner, CreatureObject* player, int numberOfContrabandItems);
 
@@ -273,7 +293,13 @@ private:
 
 	void removeFineSuiWindow(CreatureObject* player);
 
-	void checkIfPlayerIsSmuggler(CreatureObject* player);
+	void calculateSmugglingSuccess(CreatureObject* player);
+
+	int getSmugglerAvoidanceChance(CreatureObject* creature);
+
+	void callInLambdaShuttle(AiAgent* scanner, CreatureObject* player, int difficulty, const String& landingMessage);
+
+	void moveAlongMessage(AiAgent* scanner);
 
 public:
 	WeakReference<ContrabandScanSession*> _this;
@@ -329,6 +355,8 @@ public:
 
 	bool scanPrerequisitesMet(AiAgent* scanner, CreatureObject* player);
 
+	void adjustReinforcementStrength(AiAgent* scanner);
+
 	void setAcceptFineAnswer(bool acceptFine);
 
 };
@@ -375,6 +403,8 @@ public:
 	Optional<int> timeLeft;
 
 	Optional<int> previousTimeLeft;
+
+	Optional<bool> enforcedScan;
 
 	Optional<bool> alreadyTriedToAvoidScan;
 

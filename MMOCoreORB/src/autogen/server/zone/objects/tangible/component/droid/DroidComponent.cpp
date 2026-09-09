@@ -192,8 +192,60 @@ bool DroidComponentImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<float >::parseFromBinaryStream(&durability, stream);
 		return true;
 
+	case 0x385b0a10: //DroidComponent.autoRepairPower
+		TypeInfo<float >::parseFromBinaryStream(&autoRepairPower, stream);
+		return true;
+
+	case 0xcb7bba47: //DroidComponent.combatRating
+		TypeInfo<float >::parseFromBinaryStream(&combatRating, stream);
+		return true;
+
+	case 0x17bafae1: //DroidComponent.detonationRating
+		TypeInfo<float >::parseFromBinaryStream(&detonationRating, stream);
+		return true;
+
+	case 0xec2c809c: //DroidComponent.harvestBonus
+		TypeInfo<float >::parseFromBinaryStream(&harvestBonus, stream);
+		return true;
+
+	case 0xf1c4986d: //DroidComponent.stimpackSpeed
+		TypeInfo<float >::parseFromBinaryStream(&stimpackSpeed, stream);
+		return true;
+
+	case 0x50d69405: //DroidComponent.stimpackCapacity
+		TypeInfo<float >::parseFromBinaryStream(&stimpackCapacity, stream);
+		return true;
+
+	case 0xaae50d2e: //DroidComponent.trapBonus
+		TypeInfo<float >::parseFromBinaryStream(&trapBonus, stream);
+		return true;
+
 	case 0x86b6725b: //DroidComponent.surveyDroid
 		TypeInfo<bool >::parseFromBinaryStream(&surveyDroid, stream);
+		return true;
+
+	case 0xbfafbcf5: //DroidComponent.autoRepairDroid
+		TypeInfo<bool >::parseFromBinaryStream(&autoRepairDroid, stream);
+		return true;
+
+	case 0x81e2118: //DroidComponent.combatDroid
+		TypeInfo<bool >::parseFromBinaryStream(&combatDroid, stream);
+		return true;
+
+	case 0x12a17b55: //DroidComponent.detonationDroid
+		TypeInfo<bool >::parseFromBinaryStream(&detonationDroid, stream);
+		return true;
+
+	case 0x7c177104: //DroidComponent.harvestDroid
+		TypeInfo<bool >::parseFromBinaryStream(&harvestDroid, stream);
+		return true;
+
+	case 0xf7f7ca61: //DroidComponent.stimpackDroid
+		TypeInfo<bool >::parseFromBinaryStream(&stimpackDroid, stream);
+		return true;
+
+	case 0x3adefcb6: //DroidComponent.trapDroid
+		TypeInfo<bool >::parseFromBinaryStream(&trapDroid, stream);
 		return true;
 
 	}
@@ -232,11 +284,128 @@ int DroidComponentImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x385b0a10; //DroidComponent.autoRepairPower
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&autoRepairPower, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xcb7bba47; //DroidComponent.combatRating
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&combatRating, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x17bafae1; //DroidComponent.detonationRating
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&detonationRating, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xec2c809c; //DroidComponent.harvestBonus
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&harvestBonus, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xf1c4986d; //DroidComponent.stimpackSpeed
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&stimpackSpeed, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x50d69405; //DroidComponent.stimpackCapacity
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&stimpackCapacity, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xaae50d2e; //DroidComponent.trapBonus
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&trapBonus, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x86b6725b; //DroidComponent.surveyDroid
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<bool >::toBinaryStream(&surveyDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xbfafbcf5; //DroidComponent.autoRepairDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&autoRepairDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x81e2118; //DroidComponent.combatDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&combatDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x12a17b55; //DroidComponent.detonationDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&detonationDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x7c177104; //DroidComponent.harvestDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&harvestDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xf7f7ca61; //DroidComponent.stimpackDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&stimpackDroid, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x3adefcb6; //DroidComponent.trapDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&trapDroid, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -253,7 +422,33 @@ void DroidComponentImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["durability"] = durability;
 
+	thisObject["autoRepairPower"] = autoRepairPower;
+
+	thisObject["combatRating"] = combatRating;
+
+	thisObject["detonationRating"] = detonationRating;
+
+	thisObject["harvestBonus"] = harvestBonus;
+
+	thisObject["stimpackSpeed"] = stimpackSpeed;
+
+	thisObject["stimpackCapacity"] = stimpackCapacity;
+
+	thisObject["trapBonus"] = trapBonus;
+
 	thisObject["surveyDroid"] = surveyDroid;
+
+	thisObject["autoRepairDroid"] = autoRepairDroid;
+
+	thisObject["combatDroid"] = combatDroid;
+
+	thisObject["detonationDroid"] = detonationDroid;
+
+	thisObject["harvestDroid"] = harvestDroid;
+
+	thisObject["stimpackDroid"] = stimpackDroid;
+
+	thisObject["trapDroid"] = trapDroid;
 
 	j["DroidComponent"] = thisObject;
 }
@@ -268,6 +463,18 @@ DroidComponentImplementation::DroidComponentImplementation() {
 	durability = 0;
 	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		surveyDroid = false;
 	surveyDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		autoRepairDroid = false;
+	autoRepairDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		combatDroid = false;
+	combatDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		detonationDroid = false;
+	detonationDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		harvestDroid = false;
+	harvestDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		stimpackDroid = false;
+	stimpackDroid = false;
+	// server/zone/objects/tangible/component/droid/DroidComponent.idl():  		trapDroid = false;
+	trapDroid = false;
 }
 
 /*
@@ -363,8 +570,47 @@ void DroidComponentPOD::writeJSON(nlohmann::json& j) {
 	if (durability)
 		thisObject["durability"] = durability.value();
 
+	if (autoRepairPower)
+		thisObject["autoRepairPower"] = autoRepairPower.value();
+
+	if (combatRating)
+		thisObject["combatRating"] = combatRating.value();
+
+	if (detonationRating)
+		thisObject["detonationRating"] = detonationRating.value();
+
+	if (harvestBonus)
+		thisObject["harvestBonus"] = harvestBonus.value();
+
+	if (stimpackSpeed)
+		thisObject["stimpackSpeed"] = stimpackSpeed.value();
+
+	if (stimpackCapacity)
+		thisObject["stimpackCapacity"] = stimpackCapacity.value();
+
+	if (trapBonus)
+		thisObject["trapBonus"] = trapBonus.value();
+
 	if (surveyDroid)
 		thisObject["surveyDroid"] = surveyDroid.value();
+
+	if (autoRepairDroid)
+		thisObject["autoRepairDroid"] = autoRepairDroid.value();
+
+	if (combatDroid)
+		thisObject["combatDroid"] = combatDroid.value();
+
+	if (detonationDroid)
+		thisObject["detonationDroid"] = detonationDroid.value();
+
+	if (harvestDroid)
+		thisObject["harvestDroid"] = harvestDroid.value();
+
+	if (stimpackDroid)
+		thisObject["stimpackDroid"] = stimpackDroid.value();
+
+	if (trapDroid)
+		thisObject["trapDroid"] = trapDroid.value();
 
 	j["DroidComponent"] = thisObject;
 }
@@ -405,12 +651,155 @@ int DroidComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (autoRepairPower) {
+	_nameHashCode = 0x385b0a10; //DroidComponent.autoRepairPower
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&autoRepairPower.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (combatRating) {
+	_nameHashCode = 0xcb7bba47; //DroidComponent.combatRating
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&combatRating.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (detonationRating) {
+	_nameHashCode = 0x17bafae1; //DroidComponent.detonationRating
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&detonationRating.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (harvestBonus) {
+	_nameHashCode = 0xec2c809c; //DroidComponent.harvestBonus
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&harvestBonus.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (stimpackSpeed) {
+	_nameHashCode = 0xf1c4986d; //DroidComponent.stimpackSpeed
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&stimpackSpeed.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (stimpackCapacity) {
+	_nameHashCode = 0x50d69405; //DroidComponent.stimpackCapacity
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&stimpackCapacity.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (trapBonus) {
+	_nameHashCode = 0xaae50d2e; //DroidComponent.trapBonus
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&trapBonus.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (surveyDroid) {
 	_nameHashCode = 0x86b6725b; //DroidComponent.surveyDroid
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<bool >::toBinaryStream(&surveyDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (autoRepairDroid) {
+	_nameHashCode = 0xbfafbcf5; //DroidComponent.autoRepairDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&autoRepairDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (combatDroid) {
+	_nameHashCode = 0x81e2118; //DroidComponent.combatDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&combatDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (detonationDroid) {
+	_nameHashCode = 0x12a17b55; //DroidComponent.detonationDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&detonationDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (harvestDroid) {
+	_nameHashCode = 0x7c177104; //DroidComponent.harvestDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&harvestDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (stimpackDroid) {
+	_nameHashCode = 0xf7f7ca61; //DroidComponent.stimpackDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&stimpackDroid.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (trapDroid) {
+	_nameHashCode = 0x3adefcb6; //DroidComponent.trapDroid
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&trapDroid.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -441,11 +830,115 @@ bool DroidComponentPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
+	case 0x385b0a10: //DroidComponent.autoRepairPower
+		{
+			float _mnautoRepairPower;
+			TypeInfo<float >::parseFromBinaryStream(&_mnautoRepairPower, stream);
+			autoRepairPower = std::move(_mnautoRepairPower);
+		}
+		return true;
+
+	case 0xcb7bba47: //DroidComponent.combatRating
+		{
+			float _mncombatRating;
+			TypeInfo<float >::parseFromBinaryStream(&_mncombatRating, stream);
+			combatRating = std::move(_mncombatRating);
+		}
+		return true;
+
+	case 0x17bafae1: //DroidComponent.detonationRating
+		{
+			float _mndetonationRating;
+			TypeInfo<float >::parseFromBinaryStream(&_mndetonationRating, stream);
+			detonationRating = std::move(_mndetonationRating);
+		}
+		return true;
+
+	case 0xec2c809c: //DroidComponent.harvestBonus
+		{
+			float _mnharvestBonus;
+			TypeInfo<float >::parseFromBinaryStream(&_mnharvestBonus, stream);
+			harvestBonus = std::move(_mnharvestBonus);
+		}
+		return true;
+
+	case 0xf1c4986d: //DroidComponent.stimpackSpeed
+		{
+			float _mnstimpackSpeed;
+			TypeInfo<float >::parseFromBinaryStream(&_mnstimpackSpeed, stream);
+			stimpackSpeed = std::move(_mnstimpackSpeed);
+		}
+		return true;
+
+	case 0x50d69405: //DroidComponent.stimpackCapacity
+		{
+			float _mnstimpackCapacity;
+			TypeInfo<float >::parseFromBinaryStream(&_mnstimpackCapacity, stream);
+			stimpackCapacity = std::move(_mnstimpackCapacity);
+		}
+		return true;
+
+	case 0xaae50d2e: //DroidComponent.trapBonus
+		{
+			float _mntrapBonus;
+			TypeInfo<float >::parseFromBinaryStream(&_mntrapBonus, stream);
+			trapBonus = std::move(_mntrapBonus);
+		}
+		return true;
+
 	case 0x86b6725b: //DroidComponent.surveyDroid
 		{
 			bool _mnsurveyDroid;
 			TypeInfo<bool >::parseFromBinaryStream(&_mnsurveyDroid, stream);
 			surveyDroid = std::move(_mnsurveyDroid);
+		}
+		return true;
+
+	case 0xbfafbcf5: //DroidComponent.autoRepairDroid
+		{
+			bool _mnautoRepairDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnautoRepairDroid, stream);
+			autoRepairDroid = std::move(_mnautoRepairDroid);
+		}
+		return true;
+
+	case 0x81e2118: //DroidComponent.combatDroid
+		{
+			bool _mncombatDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mncombatDroid, stream);
+			combatDroid = std::move(_mncombatDroid);
+		}
+		return true;
+
+	case 0x12a17b55: //DroidComponent.detonationDroid
+		{
+			bool _mndetonationDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mndetonationDroid, stream);
+			detonationDroid = std::move(_mndetonationDroid);
+		}
+		return true;
+
+	case 0x7c177104: //DroidComponent.harvestDroid
+		{
+			bool _mnharvestDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnharvestDroid, stream);
+			harvestDroid = std::move(_mnharvestDroid);
+		}
+		return true;
+
+	case 0xf7f7ca61: //DroidComponent.stimpackDroid
+		{
+			bool _mnstimpackDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnstimpackDroid, stream);
+			stimpackDroid = std::move(_mnstimpackDroid);
+		}
+		return true;
+
+	case 0x3adefcb6: //DroidComponent.trapDroid
+		{
+			bool _mntrapDroid;
+			TypeInfo<bool >::parseFromBinaryStream(&_mntrapDroid, stream);
+			trapDroid = std::move(_mntrapDroid);
 		}
 		return true;
 
@@ -479,7 +972,33 @@ void DroidComponentPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<float >::toBinaryStream(&durability.value(), stream);
 
+	TypeInfo<float >::toBinaryStream(&autoRepairPower.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&combatRating.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&detonationRating.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&harvestBonus.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&stimpackSpeed.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&stimpackCapacity.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&trapBonus.value(), stream);
+
 	TypeInfo<bool >::toBinaryStream(&surveyDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&autoRepairDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&combatDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&detonationDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&harvestDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&stimpackDroid.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&trapDroid.value(), stream);
 
 
 }

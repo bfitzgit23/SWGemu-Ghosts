@@ -1,0 +1,36 @@
+chand_fynock = Creature:new {
+	customName = "a Fynock",
+	socialGroup = "fynock",
+	faction = "",
+	level = 15,
+	chanceHit = 0.3,
+	damageMin = 80,
+	damageMax = 200,
+	baseXp = 120,
+	baseHAM = 4800,
+	baseHAMmax = 5500,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_carnivore",
+	meatAmount = 200,
+	hideType = "hide_leathery",
+	hideAmount = 175,
+	boneType = "bone_mammal",
+	boneAmount = 150,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 1.2,
+
+	templates = {"object/mobile/fynock.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_fynock, "chand_fynock")

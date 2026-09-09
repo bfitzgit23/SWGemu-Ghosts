@@ -27,38 +27,6 @@
 namespace server {
 namespace zone {
 namespace objects {
-namespace creature {
-
-class CreatureObject;
-
-class CreatureObjectPOD;
-
-} // namespace creature
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::creature;
-
-namespace server {
-namespace zone {
-namespace objects {
-namespace region {
-
-class Region;
-
-class RegionPOD;
-
-} // namespace region
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::region;
-
-namespace server {
-namespace zone {
-namespace objects {
 namespace scene {
 
 class SceneObject;
@@ -90,22 +58,6 @@ using namespace server::zone::objects::tangible;
 
 namespace server {
 namespace zone {
-namespace objects {
-namespace structure {
-
-class StructureObject;
-
-class StructureObjectPOD;
-
-} // namespace structure
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::structure;
-
-namespace server {
-namespace zone {
 
 class Zone;
 
@@ -134,6 +86,8 @@ using namespace server::zone::objects::pathfinding;
 
 #include "server/zone/ZoneReference.h"
 
+#include "server/zone/objects/region/Region.h"
+
 #include "server/zone/objects/scene/variables/StringId.h"
 
 #include "system/lang/Time.h"
@@ -148,6 +102,8 @@ using namespace server::zone::objects::pathfinding;
 
 #include "pathfinding/RecastNavMesh.h"
 
+#include "server/zone/objects/structure/StructureObject.h"
+
 #include "engine/core/ManagedObject.h"
 
 #include "system/util/Vector.h"
@@ -157,6 +113,8 @@ using namespace server::zone::objects::pathfinding;
 #include "system/util/VectorMap.h"
 
 #include "engine/log/Logger.h"
+
+#include "server/zone/objects/creature/CreatureObject.h"
 
 #include "system/thread/Mutex.h"
 
@@ -210,7 +168,9 @@ public:
 
 	void notifyExit(SceneObject* object);
 
-	Region* addRegion(float x, float y, float radius, bool persistent);
+	Region* createNewRegion(float x, float y, float radius, bool persistent);
+
+	void addRegion(Region* region);
 
 	void rescheduleUpdateEvent(unsigned int seconds);
 
@@ -232,7 +192,7 @@ public:
 
 	bool hasZoningRights(unsigned long long objectid);
 
-	bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
 
 	void cleanupCitizens();
 
@@ -272,7 +232,7 @@ public:
 
 	Zone* getZone();
 
-	String getRegionName();
+	String getCityRegionName();
 
 	String getRegionDisplayedName();
 
@@ -638,7 +598,9 @@ public:
 
 	void notifyExit(SceneObject* object);
 
-	Region* addRegion(float x, float y, float radius, bool persistent);
+	Region* createNewRegion(float x, float y, float radius, bool persistent);
+
+	void addRegion(Region* region);
 
 	void rescheduleUpdateEvent(unsigned int seconds);
 
@@ -660,7 +622,7 @@ public:
 
 	bool hasZoningRights(unsigned long long objectid);
 
-	bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
 
 	void cleanupCitizens();
 
@@ -700,7 +662,7 @@ public:
 
 	Zone* getZone();
 
-	String getRegionName();
+	String getCityRegionName();
 
 	String getRegionDisplayedName();
 
@@ -973,7 +935,9 @@ public:
 
 	void notifyExit(SceneObject* object);
 
-	Region* addRegion(float x, float y, float radius, bool persistent);
+	Region* createNewRegion(float x, float y, float radius, bool persistent);
+
+	void addRegion(Region* region);
 
 	void rescheduleUpdateEvent(unsigned int seconds);
 
@@ -995,7 +959,7 @@ public:
 
 	bool hasZoningRights(unsigned long long objectid);
 
-	bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
 
 	void cleanupCitizens();
 
@@ -1027,7 +991,7 @@ public:
 
 	Zone* getZone();
 
-	String getRegionName();
+	String getCityRegionName();
 
 	String getRegionDisplayedName();
 

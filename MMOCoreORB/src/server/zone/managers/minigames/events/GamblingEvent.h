@@ -6,8 +6,20 @@
 #define GAMBLINGEVENT_H_
 
 #include "server/zone/ZoneProcessServer.h"
-#include "server/zone/managers/minigames/GamblingManager.h"
-#include "server/zone/objects/tangible/terminal/gambling/GamblingTerminal.h"
+
+namespace server {
+namespace zone {
+namespace objects {
+namespace tangible {
+namespace terminal {
+namespace gambling {
+class GamblingTerminal;
+}
+} // namespace terminal
+} // namespace tangible
+} // namespace objects
+} // namespace zone
+} // namespace server
 
 namespace server {
 namespace zone {
@@ -16,46 +28,21 @@ namespace minigames {
 namespace events {
 
 class GamblingEvent : public Task {
-	ManagedReference<GamblingTerminal*> gamblingTerminal;
+	ManagedWeakReference<server::zone::objects::tangible::terminal::gambling::GamblingTerminal*> gamblingTerm;
 	int gameCount;
 
 public:
-	GamblingEvent(GamblingTerminal* gamblingTerm, int counter) : Task() {
-		gamblingTerminal = gamblingTerm;
-		gameCount = counter;
-	}
+	GamblingEvent(server::zone::objects::tangible::terminal::gambling::GamblingTerminal* terminal, int counter);
 
-	void run() {
-		try {
-			//Locker _locker(player);
-
-			//player->info("activating command queue action");
-
-			ManagedReference<GamblingManager*> manager = gamblingTerminal->getZoneProcessServer()->getGamblingManager();
-			//gamblingTerminal->setState(state+1);
-			if ((gamblingTerminal->getState() != GamblingTerminal::NOGAMERUNNING) && (gamblingTerminal->getGameCount() == gameCount)) {
-				manager->continueGame(gamblingTerminal);
-			}
-
-			//player->info("command queue action activated");
-
-
-		} catch (...) {
-			throw;
-		}
-
-		//gamblingTerminal = nullptr; <- ?
-
-	}
-
+	void run();
 };
 
-}
-}
-}
-}
-}
+} // namespace events
+} // namespace minigames
+} // namespace managers
+} // namespace zone
+} // namespace server
 
 using namespace server::zone::managers::minigames::events;
 
-#endif /* GAMBLINGSLOTEVENT_H_ */
+#endif /* GAMBLINGEVENT_H_ */

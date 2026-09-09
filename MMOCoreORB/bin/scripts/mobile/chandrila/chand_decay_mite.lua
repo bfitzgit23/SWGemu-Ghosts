@@ -1,0 +1,36 @@
+chand_decay_mite = Creature:new {
+	customName = "a Decay Mite",
+	socialGroup = "mite",
+	faction = "",
+	level = 10,
+	chanceHit = 0.2,
+	damageMin = 40,
+	damageMax = 100,
+	baseXp = 60,
+	baseHAM = 2400,
+	baseHAMmax = 3000,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 0.8,
+
+	templates = {"object/mobile/dung_mite.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_decay_mite, "chand_decay_mite")

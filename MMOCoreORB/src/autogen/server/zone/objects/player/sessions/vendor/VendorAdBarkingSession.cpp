@@ -4,7 +4,7 @@
 
 #include "VendorAdBarkingSession.h"
 
-#include "server/zone/objects/scene/SceneObject.h"
+#include "server/zone/objects/tangible/TangibleObject.h"
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
@@ -14,8 +14,8 @@
 
 enum {RPC_INITIALIZESESSION__ = 491494868,RPC_CANCELSESSION__,RPC_CLEARSESSION__,RPC_SETMESSAGE__STRING_,RPC_SETMOOD__STRING_,RPC_SETANIMATION__STRING_,RPC_SENDPHRASEOPTIONS__,RPC_SENDCUSTOMMESSAGEINPUT__,RPC_SENDMOODSELECT__,RPC_SENDANIMATIONSELECT__,};
 
-VendorAdBarkingSession::VendorAdBarkingSession(CreatureObject* play, SceneObject* vend) : Facade(DummyConstructorParameter::instance()) {
-	VendorAdBarkingSessionImplementation* _implementation = new VendorAdBarkingSessionImplementation(play, vend);
+VendorAdBarkingSession::VendorAdBarkingSession(CreatureObject* player, TangibleObject* vendor) : Facade(DummyConstructorParameter::instance()) {
+	VendorAdBarkingSessionImplementation* _implementation = new VendorAdBarkingSessionImplementation(player, vendor);
 	_impl = _implementation;
 	_impl->_setStub(this);
 	_setClassName("VendorAdBarkingSession");
@@ -287,8 +287,8 @@ bool VendorAdBarkingSessionImplementation::readObjectMember(ObjectInputStream* s
 		TypeInfo<ManagedWeakReference<CreatureObject* > >::parseFromBinaryStream(&owner, stream);
 		return true;
 
-	case 0xba7c32f3: //VendorAdBarkingSession.vendor
-		TypeInfo<ManagedWeakReference<SceneObject* > >::parseFromBinaryStream(&vendor, stream);
+	case 0xdbb1e3f3: //VendorAdBarkingSession.weakVendor
+		TypeInfo<ManagedWeakReference<TangibleObject* > >::parseFromBinaryStream(&weakVendor, stream);
 		return true;
 
 	case 0xfdc5b7b0: //VendorAdBarkingSession.advertisingMod
@@ -322,11 +322,11 @@ int VendorAdBarkingSessionImplementation::writeObjectMembers(ObjectOutputStream*
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xba7c32f3; //VendorAdBarkingSession.vendor
+	_nameHashCode = 0xdbb1e3f3; //VendorAdBarkingSession.weakVendor
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<SceneObject* > >::toBinaryStream(&vendor, stream);
+	TypeInfo<ManagedWeakReference<TangibleObject* > >::toBinaryStream(&weakVendor, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -344,16 +344,16 @@ int VendorAdBarkingSessionImplementation::writeObjectMembers(ObjectOutputStream*
 	return _count;
 }
 
-VendorAdBarkingSessionImplementation::VendorAdBarkingSessionImplementation(CreatureObject* play, SceneObject* vend) {
+VendorAdBarkingSessionImplementation::VendorAdBarkingSessionImplementation(CreatureObject* player, TangibleObject* vendor) {
 	_initializeImplementation();
 	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		Logger.setLoggingName("VendorAdBarkingSession");
 	Logger::setLoggingName("VendorAdBarkingSession");
 	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		Logger.setLogging(true);
 	Logger::setLogging(true);
-	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		owner = play;
-	owner = play;
-	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		vendor = vend;
-	vendor = vend;
+	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		owner = player;
+	owner = player;
+	// server/zone/objects/player/sessions/vendor/VendorAdBarkingSession.idl():  		weakVendor = vendor;
+	weakVendor = vendor;
 }
 
 int VendorAdBarkingSessionImplementation::cancelSession() {
@@ -604,12 +604,12 @@ int VendorAdBarkingSessionPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (vendor) {
-	_nameHashCode = 0xba7c32f3; //VendorAdBarkingSession.vendor
+	if (weakVendor) {
+	_nameHashCode = 0xdbb1e3f3; //VendorAdBarkingSession.weakVendor
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&vendor.value(), stream);
+	TypeInfo<ManagedWeakReference<TangibleObjectPOD* > >::toBinaryStream(&weakVendor.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -643,11 +643,11 @@ bool VendorAdBarkingSessionPOD::readObjectMember(ObjectInputStream* stream, cons
 		}
 		return true;
 
-	case 0xba7c32f3: //VendorAdBarkingSession.vendor
+	case 0xdbb1e3f3: //VendorAdBarkingSession.weakVendor
 		{
-			ManagedWeakReference<SceneObjectPOD* > _mnvendor;
-			TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::parseFromBinaryStream(&_mnvendor, stream);
-			vendor = std::move(_mnvendor);
+			ManagedWeakReference<TangibleObjectPOD* > _mnweakVendor;
+			TypeInfo<ManagedWeakReference<TangibleObjectPOD* > >::parseFromBinaryStream(&_mnweakVendor, stream);
+			weakVendor = std::move(_mnweakVendor);
 		}
 		return true;
 
@@ -687,7 +687,7 @@ void VendorAdBarkingSessionPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::toBinaryStream(&owner.value(), stream);
 
-	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&vendor.value(), stream);
+	TypeInfo<ManagedWeakReference<TangibleObjectPOD* > >::toBinaryStream(&weakVendor.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&advertisingMod.value(), stream);
 

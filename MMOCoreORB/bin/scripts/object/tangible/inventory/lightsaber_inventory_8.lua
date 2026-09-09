@@ -1,0 +1,3 @@
+object_tangible_inventory_lightsaber_inventory_8 = object_tangible_inventory_shared_lightsaber_inventory_8:new {}
+
+ObjectTemplates:addTemplate(object_tangible_inventory_lightsaber_inventory_8, "object/tangible/inventory/lightsaber_inventory_8.iff")

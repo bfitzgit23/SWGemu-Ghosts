@@ -12,7 +12,7 @@
  *	SingleUseBuffStub
  */
 
-enum {RPC_GETCOMMANDCRC__,RPC_GETPLAYER__,RPC_ACTIVATE__,RPC_DEACTIVATE__,};
+enum {RPC_GETCOMMANDCRC__,RPC_GETPLAYER__,RPC_ACTIVATE__,RPC_DEACTIVATE__,RPC_INITIALIZEBUFFOBSERVERS__,};
 
 SingleUseBuff::SingleUseBuff(CreatureObject* creo, unsigned int buffcrc, float duration, int bufftype, unsigned int comCRC) : Buff(DummyConstructorParameter::instance()) {
 	SingleUseBuffImplementation* _implementation = new SingleUseBuffImplementation(creo, buffcrc, duration, bufftype, comCRC);
@@ -96,6 +96,21 @@ void SingleUseBuff::deactivate() {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->deactivate();
+	}
+}
+
+void SingleUseBuff::initializeBuffObservers() {
+	SingleUseBuffImplementation* _implementation = static_cast<SingleUseBuffImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INITIALIZEBUFFOBSERVERS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->initializeBuffObservers();
 	}
 }
 
@@ -209,10 +224,6 @@ bool SingleUseBuffImplementation::readObjectMember(ObjectInputStream* stream, co
 		return true;
 
 	switch(nameHashCode) {
-	case 0xb1c25ac4: //SingleUseBuff.observer
-		TypeInfo<ManagedReference<SingleUseBuffObserver* > >::parseFromBinaryStream(&observer, stream);
-		return true;
-
 	case 0xcd5f6ad2: //SingleUseBuff.player
 		TypeInfo<ManagedReference<CreatureObject* > >::parseFromBinaryStream(&player, stream);
 		return true;
@@ -243,15 +254,6 @@ int SingleUseBuffImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	_nameHashCode = 0xb1c25ac4; //SingleUseBuff.observer
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SingleUseBuffObserver* > >::toBinaryStream(&observer, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0xcd5f6ad2; //SingleUseBuff.player
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -287,8 +289,6 @@ void SingleUseBuffImplementation::writeJSON(nlohmann::json& j) {
 	BuffImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	thisObject["observer"] = observer;
-
 	thisObject["player"] = player;
 
 	thisObject["commandCRC"] = commandCRC;
@@ -310,8 +310,6 @@ void SingleUseBuffImplementation::init(Vector<unsigned int>* events) {
 	ManagedReference<SingleUseBuffObserver*> _ref0;
 	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		observer = new SingleUseBuffObserver(this);
 	observer = _ref0 = new SingleUseBuffObserver(_this.getReferenceUnsafeStaticCast());
-	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		ObjectManager.instance().persistObject(observer, 1, "buffs");
-	ObjectManager::instance()->persistObject(observer, 1, "buffs");
 	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -346,7 +344,23 @@ void SingleUseBuffImplementation::deactivate() {
 	dropObservers();
 }
 
+void SingleUseBuffImplementation::initializeBuffObservers() {
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		addObservers();
+	addObservers();
+}
+
 void SingleUseBuffImplementation::addObservers() {
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		if 
+	if (!player){
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  			return;
+	return;
+}
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		for(
+	if (!observer){
+	ManagedReference<SingleUseBuffObserver*> _ref0;
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  			observer = new SingleUseBuffObserver(this);
+	observer = _ref0 = new SingleUseBuffObserver(_this.getReferenceUnsafeStaticCast());
+}
 	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -358,6 +372,11 @@ void SingleUseBuffImplementation::addObservers() {
 }
 
 void SingleUseBuffImplementation::dropObservers() {
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		for(
+	if (!player || !observer){
+	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  			return;
+	return;
+}
 	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/SingleUseBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -411,6 +430,13 @@ void SingleUseBuffAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_INITIALIZEBUFFOBSERVERS__:
+		{
+			
+			initializeBuffObservers();
+			
+		}
+		break;
 	default:
 		BuffAdapter::invokeMethod(methid, inv);
 	}
@@ -430,6 +456,10 @@ void SingleUseBuffAdapter::activate() {
 
 void SingleUseBuffAdapter::deactivate() {
 	(static_cast<SingleUseBuff*>(stub))->deactivate();
+}
+
+void SingleUseBuffAdapter::initializeBuffObservers() {
+	(static_cast<SingleUseBuff*>(stub))->initializeBuffObservers();
 }
 
 /*
@@ -487,9 +517,6 @@ void SingleUseBuffPOD::writeJSON(nlohmann::json& j) {
 	BuffPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	if (observer)
-		thisObject["observer"] = observer.value();
-
 	if (player)
 		thisObject["player"] = player.value();
 
@@ -516,17 +543,6 @@ int SingleUseBuffPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	if (observer) {
-	_nameHashCode = 0xb1c25ac4; //SingleUseBuff.observer
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SingleUseBuffObserverPOD* > >::toBinaryStream(&observer.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (player) {
 	_nameHashCode = 0xcd5f6ad2; //SingleUseBuff.player
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -569,14 +585,6 @@ bool SingleUseBuffPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		return true;
 
 	switch(nameHashCode) {
-	case 0xb1c25ac4: //SingleUseBuff.observer
-		{
-			ManagedReference<SingleUseBuffObserverPOD* > _mnobserver;
-			TypeInfo<ManagedReference<SingleUseBuffObserverPOD* > >::parseFromBinaryStream(&_mnobserver, stream);
-			observer = std::move(_mnobserver);
-		}
-		return true;
-
 	case 0xcd5f6ad2: //SingleUseBuff.player
 		{
 			ManagedReference<CreatureObjectPOD* > _mnplayer;
@@ -626,8 +634,6 @@ void SingleUseBuffPOD::readObject(ObjectInputStream* stream) {
 
 void SingleUseBuffPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	BuffPOD::writeObjectCompact(stream);
-
-	TypeInfo<ManagedReference<SingleUseBuffObserverPOD* > >::toBinaryStream(&observer.value(), stream);
 
 	TypeInfo<ManagedReference<CreatureObjectPOD* > >::toBinaryStream(&player.value(), stream);
 

@@ -6,8 +6,6 @@
 
 #include "server/chat/StringIdChatParameter.h"
 
-#include "server/zone/objects/group/GroupObject.h"
-
 #include "server/zone/objects/guild/GuildObject.h"
 
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
@@ -28,13 +26,15 @@
 
 #include "server/zone/managers/auction/AuctionSearchTask.h"
 
+#include "server/zone/objects/tangible/Instrument.h"
+
 /*
  *	CreatureObjectStub
  */
 
 unsigned const long long CreatureObject::DEAD_TOO_LONG = 1800000;
 
-enum {RPC_INITIALIZEMEMBERS__ = 29990564,RPC_FINALIZE__,RPC_CREATECHILDOBJECTS__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SETCOUNTDOWNTIMER__INT_BOOL_,RPC_CLEARQUEUEACTION__INT_FLOAT_INT_INT_,RPC_CLEARQUEUEACTIONS__BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDTOOWNER__BOOL_,RPC_SENDSYSTEMMESSAGE__STRING_,RPC_PLAYMUSICMESSAGE__STRING_,RPC_SENDNEWBIETUTORIALREQUEST__STRING_,RPC_SENDNEWBIETUTORIALENABLEHUDELEMENT__STRING_BOOL_FLOAT_,RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__,RPC_SENDSYSTEMMESSAGE__UNICODESTRING_,RPC_SENDSLOTTEDOBJECTSTO__SCENEOBJECT_,RPC_SETCOMBATSTATE__,RPC_CLEARCOMBATSTATE__BOOL_,RPC_ADDMOUNTEDCOMBATSLOW__,RPC_REMOVEMOUNTEDCOMBATSLOW__BOOL_,RPC_SETPOSTURE__INT_BOOL_BOOL_,RPC_UPDATEPOSTURES__BOOL_,RPC_CALCULATESPEED__,RPC_UPDATELOCOMOTION__,RPC_SETHEIGHT__FLOAT_BOOL_,RPC_SETACCELERATIONMULTIPLIERBASE__FLOAT_BOOL_,RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_,RPC_SETSPEEDMULTIPLIERBASE__FLOAT_BOOL_,RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_,RPC_SETTURNSCALE__FLOAT_BOOL_,RPC_SETRUNSPEED__FLOAT_BOOL_,RPC_SETCURRENTSPEED__FLOAT_,RPC_SETHAM__INT_INT_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_STRING_BOOL_BOOL_,RPC_HASDAMAGE__INT_,RPC_HEALDAMAGE__TANGIBLEOBJECT_INT_INT_BOOL_BOOL_,RPC_HEALWOUND__TANGIBLEOBJECT_INT_INT_BOOL_BOOL_,RPC_SETBASEHAM__INT_INT_BOOL_,RPC_SETWOUNDS__INT_INT_BOOL_,RPC_ADDWOUNDS__INT_INT_BOOL_BOOL_,RPC_SETMAXHAM__INT_INT_BOOL_,RPC_ADDMAXHAM__INT_INT_BOOL_,RPC_SETENCUMBRANCE__INT_INT_BOOL_,RPC_ADDENCUMBRANCE__INT_INT_BOOL_,RPC_SETWEAPON__WEAPONOBJECT_BOOL_,RPC_NOTIFYOBJECTINSERTED__SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVED__SCENEOBJECT_,RPC_SETINSTRUMENTID__INT_BOOL_,RPC_SETLISTENTOID__LONG_BOOL_,RPC_SETPERFORMANCECOUNTER__INT_BOOL_,RPC_SETPERFORMANCEANIMATION__STRING_BOOL_,RPC_SETSHOCKWOUNDS__INT_BOOL_,RPC_ADDSHOCKWOUNDS__INT_BOOL_BOOL_,RPC_SETTARGETID__LONG_BOOL_,RPC_SETBANKCREDITS__INT_BOOL_,RPC_ADDBUFF__BUFF_,RPC_REMOVEBUFF__INT_,RPC_REMOVEBUFF__BUFF_,RPC_REMOVESTATEBUFF__LONG_,RPC_CLEARBUFFS__BOOL_BOOL_,RPC_RENEWBUFF__INT_INT_BOOL_,RPC_UPDATEVEHICLEPOSITION__BOOL_,RPC_ADDWEARABLEOBJECT__TANGIBLEOBJECT_BOOL_,RPC_REMOVEWEARABLEOBJECT__TANGIBLEOBJECT_BOOL_,RPC_SENDBUFFSTO__CREATUREOBJECT_,RPC_GETBUFF__INT_,RPC_GETSKILLMODFROMBUFFS__STRING_,RPC_ADDDOTSTATE__CREATUREOBJECT_LONG_LONG_INT_BYTE_INT_FLOAT_INT_INT_,RPC_HEALDOT__LONG_INT_BOOL_,RPC_CLEARDOTS__,RPC_HASBUFF__INT_,RPC_NOTIFYSELFPOSITIONUPDATE__,RPC_NOTIFYPOSTURECHANGE__INT_,RPC_SETLEVEL__INT_BOOL_,RPC_UPDATETODATABASEALLOBJECTS__BOOL_,RPC_ISRESUSCITABLE__,RPC_ADDBANKCREDITS__INT_BOOL_,RPC_ADDCASHCREDITS__INT_BOOL_,RPC_GETCREDITOBJECT__,RPC_SUBTRACTBANKCREDITS__INT_,RPC_SUBTRACTCASHCREDITS__INT_,RPC_VERIFYCASHCREDITS__INT_,RPC_VERIFYBANKCREDITS__INT_,RPC_ISDANCING__,RPC_ISPLAYINGMUSIC__,RPC_STOPENTERTAINING__,RPC_ISENTERTAINING__,RPC_SETCASHCREDITS__INT_BOOL_,RPC_SETTERRAINNEGOTIATION__FLOAT_BOOL_,RPC_UPDATETERRAINNEGOTIATION__,RPC_ADDSKILL__STRING_BOOL_,RPC_REMOVESKILL__STRING_BOOL_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVESKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVEALLSKILLMODSOFTYPE__INT_BOOL_,RPC_UPDATEGROUPINVITERID__LONG_BOOL_,RPC_UPDATEGROUP__GROUPOBJECT_BOOL_,RPC_ENQUEUECOMMAND__INT_INT_LONG_UNICODESTRING_INT_INT_,RPC_SENDCOMMAND__INT_UNICODESTRING_LONG_INT_,RPC_SENDCOMMAND__STRING_UNICODESTRING_LONG_INT_,RPC_SETMOOD__BYTE_BOOL_,RPC_SETMOODSTRING__STRING_BOOL_,RPC_DELETEQUEUEACTION__INT_,RPC_SETSTATE__LONG_BOOL_,RPC_SETALTERNATEAPPEARANCE__STRING_BOOL_,RPC_CLEARSTATE__LONG_BOOL_,RPC_SETCONTROLDEVICE__CONTROLDEVICE_,RPC_SETCREATURELINK__CREATUREOBJECT_BOOL_,RPC_EXECUTEOBJECTCONTROLLERACTION__INT_,RPC_EXECUTEOBJECTCONTROLLERACTION__INT_LONG_UNICODESTRING_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_ISATTACKABLEBY__CREATUREOBJECT_BOOL_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_BOOL_,RPC_ISHEALABLEBY__CREATUREOBJECT_,RPC_HASBOUNTYMISSIONFOR__CREATUREOBJECT_,RPC_SENDCONVERSATIONSTARTTO__SCENEOBJECT_,RPC_SELECTCONVERSATIONOPTION__INT_SCENEOBJECT_,RPC_SENDSTATECOMBATSPAM__STRING_STRING_BYTE_INT_BOOL_,RPC_SENDCUSTOMCOMBATSPAM__UNICODESTRING_BYTE_,RPC_SENDEXECUTECONSOLECOMMAND__STRING_,RPC_ISAGGRESSIVETO__CREATUREOBJECT_,RPC_NOTIFYOBJECTDESTRUCTIONOBSERVERS__TANGIBLEOBJECT_INT_BOOL_,RPC_NOTIFYOBJECTKILLOBSERVERS__TANGIBLEOBJECT_,RPC_NOTIFYLOADFROMDATABASE__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_SETFACTIONRANK__INT_BOOL_,RPC_GETFIRSTNAME__,RPC_SETFIRSTNAME__STRING_,RPC_GETLASTNAME__,RPC_SETLASTNAME__STRING_BOOL_,RPC_SETLASTNAME__STRING_,RPC_ISONLINE__,RPC_CANTREATINJURIES__,RPC_CANTREATSTATES__,RPC_CANTREATWOUNDS__,RPC_CANTREATCONDITIONS__,RPC_GETPLAYEROBJECT__,RPC_ISLISTENING__,RPC_ISWATCHING__,RPC_SETCLIENT__ZONECLIENTSESSION_,RPC_DISMOUNT__,RPC_CALCULATEBFRATIO__,RPC_REMOVEFEIGNEDDEATH__,RPC_CANFEIGNDEATH__,RPC_FEIGNDEATH__,RPC_SETFEIGNEDDEATHSTATE__,RPC_SETDIZZIEDSTATE__INT_,RPC_SETRALLIEDSTATE__INT_,RPC_SETAIMINGSTATE__INT_,RPC_SETCOVERSTATE__INT_,RPC_SETBERSERKEDSTATE__INT_,RPC_SETSTUNNEDSTATE__INT_,RPC_SETBLINDEDSTATE__INT_,RPC_SETINTIMIDATEDSTATE__INT_,RPC_SETSNAREDSTATE__INT_,RPC_SETROOTEDSTATE__INT_,RPC_SETNEXTATTACKDELAY__INT_INT_,RPC_SETMEDITATESTATE__,RPC_ACTIVATEHAMREGENERATION__INT_,RPC_ACTIVATEPASSIVEWOUNDREGENERATION__,RPC_ACTIVATESTATERECOVERY__,RPC_UPDATETIMEOFDEATH__,RPC_HASATTACKDELAY__,RPC_REMOVEATTACKDELAY__,RPC_HASINCAPTIMER__,RPC_HASSPICE__,RPC_UPDATELASTSUCCESSFULCOMBATACTION__,RPC_UPDATEPOSTURECHANGEDELAY__LONG_,RPC_CHECKPOSTURECHANGEDELAY__,RPC_UPDATEPOSTUREDOWNRECOVERY__,RPC_CHECKPOSTUREDOWNRECOVERY__,RPC_UPDATEPOSTUREUPRECOVERY__,RPC_CHECKPOSTUREUPRECOVERY__,RPC_UPDATEKNOCKDOWNRECOVERY__,RPC_CHECKKNOCKDOWNRECOVERY__,RPC_UPDATEGROUPMFDPOSITIONS__,RPC_QUEUEDIZZYFALLEVENT__,RPC_HASDIZZYEVENT__,RPC_CLEARDIZZYEVENT__,RPC_GETSCREENPLAYSTATE__STRING_,RPC_SETSCREENPLAYSTATE__STRING_LONG_,RPC_UPDATECOOLDOWNTIMER__STRING_LONG_,RPC_CHECKCOOLDOWNRECOVERY__STRING_,RPC_ADDCOOLDOWN__STRING_LONG_,RPC_DOANIMATION__STRING_,RPC_DOCOMBATANIMATION__TANGIBLEOBJECT_INT_BYTE_BYTE_LONG_,RPC_DOCOMBATANIMATION__INT_,RPC_ACTIVATEQUEUEACTION__,RPC_ACTIVATEIMMEDIATEACTION__,RPC_GETCREATURENAME__,RPC_ISGROUPED__,RPC_GETBANKCREDITS__,RPC_GETCASHCREDITS__,RPC_GETBASEHAM__INT_,RPC_GETWOUNDS__INT_,RPC_GETHAM__INT_,RPC_GETMAXHAM__INT_,RPC_GETENCUMBRANCE__INT_,RPC_GETPOSTURE__,RPC_GETLOCOMOTION__,RPC_GETFACTIONRANK__,RPC_GETLINKEDCREATURE__,RPC_GETCREATURELINKID__,RPC_GETSHOCKWOUNDS__,RPC_GETWATCHTOID__,RPC_GETSTATEBITMASK__,RPC_HASSTATE__LONG_,RPC_HASSTATES__,RPC_GETLISTENID__,RPC_GETACCELERATIONMULTIPLIERBASE__,RPC_GETACCELERATIONMULTIPLIERMOD__,RPC_GETSPEEDMULTIPLIERBASE__,RPC_GETSPEEDMULTIPLIERMOD__,RPC_GETCURRENTSPEED__,RPC_GETCOMMANDQUEUESIZE__,RPC_SETLASTACTIONCOUNTER__INT_,RPC_INCREMENTLASTACTIONCOUNTER__,RPC_GETLASTACTIONCOUNTER__,RPC_GETRUNSPEED__,RPC_GETWALKSPEED__,RPC_GETTURNSCALE__,RPC_GETTERRAINNEGOTIATION__,RPC_GETRUNACCELERATION__,RPC_GETWALKACCELERATION__,RPC_GETPERFORMANCEANIMATION__,RPC_GETMOODSTRING__,RPC_GETWEAPONID__,RPC_GETWEAPON__,RPC_GETGUILDOBJECT__,RPC_GETGUILDID__,RPC_ISINGUILD__,RPC_SETGUILDOBJECT__GUILDOBJECT_,RPC_GETGROUPID__,RPC_GETGROUPINVITERID__,RPC_GETGROUP__,RPC_GETGROUPINVITECOUNTER__,RPC_GETTARGETID__,RPC_GETMOODID__,RPC_GETSLOPEMODPERCENT__,RPC_GETPERFORMANCECOUNTER__,RPC_GETINSTRUMENTID__,RPC_GETFROZEN__,RPC_GETHEIGHT__,RPC_ISDROIDSPECIES__,RPC_ISWALKERSPECIES__,RPC_ISPROBOTSPECIES__,RPC_HASEFFECTIMMUNITY__BYTE_,RPC_HASDOTIMMUNITY__INT_,RPC_GETSPECIES__,RPC_GETSPECIESNAME__,RPC_GETGENDER__,RPC_GETSKILLMOD__STRING_,RPC_GETSKILLMODOFTYPE__STRING_INT_,RPC_HASSKILL__STRING_,RPC_SETWATCHTOID__LONG_,RPC_ISCREATUREOBJECT__,RPC_ISNEXTACTIONPAST__,RPC_ISSWIMMING__,RPC_GETCLIENT__,RPC_GETCONTROLDEVICE__,RPC_GETSWIMHEIGHT__,RPC_ISINCAPACITATED__,RPC_ISDEAD__,RPC_ISKNOCKEDDOWN__,RPC_ISKNEELING__,RPC_ISPRONE__,RPC_ISSTANDING__,RPC_ISSITTING__,RPC_ISSKILLANIMATING__,RPC_ISRALLIED__,RPC_ISINCOMBAT__,RPC_ISDIZZIED__,RPC_ISBERSERKED__,RPC_ISSTUNNED__,RPC_ISBLINDED__,RPC_ISINTIMIDATED__,RPC_ISSNARED__,RPC_ISIMMOBILIZED__,RPC_ISROOTED__,RPC_ISFROZEN__,RPC_ISDISEASED__,RPC_ISPOISONED__,RPC_ISBLEEDING__,RPC_ISONFIRE__,RPC_ISFEIGNINGDEATH__,RPC_ISRIDINGMOUNT__,RPC_HASRIDINGCREATURE__,RPC_ISPEACED__,RPC_ISMEDITATING__,RPC_ISAIMING__,RPC_ISINCOVER__,RPC_ISRUNNING__,RPC_ISNONPLAYERCREATUREOBJECT__,RPC_ISDROIDOBJECT__,RPC_ISPLAYERCREATURE__,RPC_GETRECEIVERFLAGS__,RPC_ISINFORMANTCREATURE__,RPC_GETCURRENTCAMP__,RPC_GETCURRENTWEATHER__,RPC_SETCURRENTWEATHER__BYTE_,RPC_GETCURRENTWIND__,RPC_SETCURRENTWIND__BYTE_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_GETALTERNATEAPPEARANCE__,RPC_CALCULATECOSTADJUSTMENT__BYTE_FLOAT_,RPC_UPDATESPEEDANDACCELERATIONMODS__,RPC_SETFACTION__INT_,RPC_DESTROYPLAYERCREATUREFROMDATABASE__BOOL_,RPC_GETTEMPLATERADIUS__,RPC_RELOADTEMPLATE__,RPC_REMOVEOUTOFRANGEOBJECTS__,RPC_SYNCHRONIZECLOSEOBJECTS__,RPC_ADDPERSONALENEMYFLAG__CREATUREOBJECT_LONG_,RPC_GETPERSONALENEMYFLAGTIME__LONG_,RPC_REMOVEPERSONALENEMYFLAG__CREATUREOBJECT_,RPC_REMOVEPERSONALENEMYFLAG__LONG_,RPC_HASPERSONALENEMYFLAG__CREATUREOBJECT_,RPC_SCHEDULEPERSONALENEMYFLAGTASKS__,RPC_SETHUE__INT_,RPC_GETHUEVALUE__,RPC_GETPASSENGERCAPACITY__};
+enum {RPC_INITIALIZEMEMBERS__ = 29990564,RPC_FINALIZE__,RPC_CREATECHILDOBJECTS__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SETINCAPACITATIONTIMER__INT_BOOL_,RPC_CLEARQUEUEACTION__INT_FLOAT_INT_INT_,RPC_CLEARQUEUEACTIONS__BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDTOOWNER__BOOL_,RPC_SENDSCENERESETTOOWNER__,RPC_SENDOBJECTSTOOWNER__BOOL_,RPC_SENDSYSTEMMESSAGE__STRING_,RPC_PLAYMUSICMESSAGE__STRING_,RPC_SENDNEWBIETUTORIALREQUEST__STRING_,RPC_SENDNEWBIETUTORIALENABLEHUDELEMENT__STRING_BOOL_FLOAT_,RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__STRING_,RPC_SENDSYSTEMMESSAGE__UNICODESTRING_,RPC_SENDSLOTTEDOBJECTSTO__SCENEOBJECT_,RPC_SETCOMBATSTATE__,RPC_CLEARCOMBATSTATE__BOOL_,RPC_ADDMOUNTEDCOMBATSLOW__,RPC_REMOVEMOUNTEDCOMBATSLOW__BOOL_,RPC_SETPOSTURE__INT_BOOL_BOOL_,RPC_UPDATEPOSTURES__BOOL_,RPC_CALCULATESPEED__,RPC_UPDATELOCOMOTION__,RPC_SETHEIGHT__FLOAT_BOOL_,RPC_SETACCELERATIONMULTIPLIERBASE__FLOAT_BOOL_,RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_BOOL_,RPC_SETSPEEDMULTIPLIERBASE__FLOAT_BOOL_,RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_BOOL_,RPC_SETTURNSCALE__FLOAT_BOOL_,RPC_SETWALKSPEED__FLOAT_BOOL_,RPC_SETWATERMODPERCENT__FLOAT_BOOL_,RPC_SETRUNSPEED__FLOAT_BOOL_,RPC_UPDATERUNSPEED__,RPC_SETCURRENTSPEED__FLOAT_,RPC_SETHAM__INT_INT_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_STRING_BOOL_BOOL_,RPC_HASDAMAGE__INT_,RPC_HEALDAMAGE__TANGIBLEOBJECT_INT_INT_BOOL_BOOL_,RPC_HEALWOUND__TANGIBLEOBJECT_INT_INT_BOOL_BOOL_,RPC_SETBASEHAM__INT_INT_BOOL_,RPC_SETWOUNDS__INT_INT_BOOL_,RPC_ADDWOUNDS__INT_INT_BOOL_BOOL_,RPC_SETMAXHAM__INT_INT_BOOL_,RPC_ADDMAXHAM__INT_INT_BOOL_,RPC_SETENCUMBRANCE__INT_INT_BOOL_,RPC_ADDENCUMBRANCE__INT_INT_BOOL_,RPC_SETWEAPON__WEAPONOBJECT_BOOL_,RPC_NOTIFYOBJECTINSERTED__SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVED__SCENEOBJECT_,RPC_SETPERFORMANCETYPE__INT_BOOL_,RPC_SETLISTENTOID__LONG_BOOL_,RPC_SETPERFORMANCESTARTTIME__INT_BOOL_,RPC_SETPERFORMANCEANIMATION__STRING_BOOL_,RPC_SETSHOCKWOUNDS__INT_BOOL_,RPC_ADDSHOCKWOUNDS__INT_BOOL_BOOL_,RPC_SETTARGETID__LONG_BOOL_,RPC_ADDBUFF__BUFF_,RPC_REMOVEBUFF__INT_,RPC_REMOVEBUFF__BUFF_,RPC_REMOVESTATEBUFF__LONG_,RPC_CLEARBUFFS__BOOL_BOOL_,RPC_RENEWBUFF__INT_INT_BOOL_,RPC_UPDATEVEHICLEPOSITION__BOOL_,RPC_ADDWEARABLEOBJECT__TANGIBLEOBJECT_BOOL_,RPC_REMOVEWEARABLEOBJECT__TANGIBLEOBJECT_BOOL_,RPC_SENDBUFFSTO__CREATUREOBJECT_,RPC_GETBUFF__INT_,RPC_GETSKILLMODFROMBUFFS__STRING_,RPC_HASBUFF__INT_,RPC_HASSPICE__,RPC_HASTRAPBUFF__,RPC_ADDDOTSTATE__CREATUREOBJECT_LONG_LONG_INT_BYTE_INT_FLOAT_INT_INT_,RPC_HEALDOT__LONG_INT_BOOL_,RPC_CLEARDOTS__,RPC_NOTIFYSELFPOSITIONUPDATE__,RPC_NOTIFYPOSTURECHANGE__INT_,RPC_SETLEVEL__INT_BOOL_,RPC_UPDATETODATABASEALLOBJECTS__BOOL_,RPC_ISRESUSCITABLE__,RPC_ADDBANKCREDITS__INT_BOOL_,RPC_ADDCASHCREDITS__INT_BOOL_,RPC_CLEARBANKCREDITS__BOOL_,RPC_CLEARCASHCREDITS__BOOL_,RPC_TRANSFERCREDITS__INT_INT_BOOL_,RPC_GETCREDITOBJECT__,RPC_SUBTRACTBANKCREDITS__INT_,RPC_SUBTRACTCASHCREDITS__INT_,RPC_SUBTRACTCREDITS__INT_,RPC_VERIFYCASHCREDITS__INT_,RPC_VERIFYBANKCREDITS__INT_,RPC_VERIFYCREDITS__INT_,RPC_ISDANCING__,RPC_ISPLAYINGMUSIC__,RPC_STOPENTERTAINING__,RPC_ISENTERTAINING__,RPC_UPDATESLOPEMODS__BOOL_,RPC_UPDATEWATERMOD__BOOL_,RPC_ADDSKILL__STRING_BOOL_,RPC_REMOVESKILL__STRING_BOOL_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVESKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVEALLSKILLMODSOFTYPE__INT_BOOL_,RPC_UPDATEGROUPINVITERID__LONG_BOOL_,RPC_UPDATEGROUP__GROUPOBJECT_BOOL_,RPC_ENQUEUECOMMAND__INT_INT_LONG_UNICODESTRING_INT_INT_,RPC_SENDCOMMAND__INT_UNICODESTRING_LONG_INT_,RPC_SENDCOMMAND__STRING_UNICODESTRING_LONG_INT_,RPC_SETMOOD__BYTE_BOOL_,RPC_SETMOODSTRING__STRING_BOOL_,RPC_DELETEQUEUEACTION__INT_,RPC_SETSTATE__LONG_BOOL_,RPC_SETALTERNATEAPPEARANCE__STRING_BOOL_,RPC_SETSPAWNERID__LONG_,RPC_CLEARSTATE__LONG_BOOL_,RPC_CLEARSPACESTATES__,RPC_SETCONTROLDEVICE__CONTROLDEVICE_,RPC_SETCREATURELINK__CREATUREOBJECT_BOOL_,RPC_EXECUTEOBJECTCONTROLLERACTION__INT_,RPC_EXECUTEOBJECTCONTROLLERACTION__INT_LONG_UNICODESTRING_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_ISATTACKABLEBY__CREATUREOBJECT_BOOL_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_BOOL_,RPC_ISHEALABLEBY__CREATUREOBJECT_,RPC_HEALFACTIONCHECKS__CREATUREOBJECT_BOOL_,RPC_ISINVULNERABLE__,RPC_HASBOUNTYMISSIONFOR__CREATUREOBJECT_,RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_,RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_,RPC_REMOVEALLSPACEMISSIONOBJECTS__BOOL_,RPC_SENDCONVERSATIONSTARTTO__SCENEOBJECT_,RPC_STOPCONVERSATION__,RPC_SELECTCONVERSATIONOPTION__INT_SCENEOBJECT_,RPC_SENDSTATECOMBATSPAM__STRING_STRING_BYTE_INT_BOOL_,RPC_SENDCUSTOMCOMBATSPAM__UNICODESTRING_BYTE_,RPC_SENDEXECUTECONSOLECOMMAND__STRING_,RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_,RPC_NOTIFYOBJECTDESTRUCTIONOBSERVERS__TANGIBLEOBJECT_INT_BOOL_,RPC_NOTIFYOBJECTKILLOBSERVERS__TANGIBLEOBJECT_,RPC_NOTIFYLOADFROMDATABASE__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_SETFACTIONRANK__INT_BOOL_,RPC_GETFIRSTNAME__,RPC_SETFIRSTNAME__STRING_BOOL_,RPC_SETFIRSTNAME__STRING_,RPC_GETLASTNAME__,RPC_SETLASTNAME__STRING_BOOL_,RPC_SETLASTNAME__STRING_,RPC_ISONLINE__,RPC_CANTREATINJURIES__,RPC_CANTREATSTATES__,RPC_CANTREATWOUNDS__,RPC_CANTREATCONDITIONS__,RPC_GETPLAYEROBJECT__,RPC_ISLISTENING__,RPC_ISWATCHING__,RPC_SETCLIENT__ZONECLIENTSESSION_,RPC_DISMOUNT__,RPC_CALCULATEBFRATIO__,RPC_REMOVEFEIGNEDDEATH__,RPC_CANFEIGNDEATH__,RPC_FEIGNDEATH__,RPC_SETFEIGNEDDEATHSTATE__,RPC_SETDIZZIEDSTATE__INT_,RPC_SETRALLIEDSTATE__INT_,RPC_SETAIMINGSTATE__INT_,RPC_SETCOVERSTATE__INT_,RPC_SETBERSERKEDSTATE__INT_,RPC_SETSTUNNEDSTATE__INT_,RPC_SETBLINDEDSTATE__INT_,RPC_SETINTIMIDATEDSTATE__INT_,RPC_SETSNAREDSTATE__INT_,RPC_SETROOTEDSTATE__INT_,RPC_SETNEXTATTACKDELAY__CREATUREOBJECT_STRING_INT_INT_,RPC_SETMEDITATESTATE__,RPC_ACTIVATEHAMREGENERATION__INT_,RPC_ACTIVATEPASSIVEWOUNDREGENERATION__,RPC_ACTIVATESTATERECOVERY__,RPC_UPDATETIMEOFDEATH__,RPC_HASATTACKDELAY__,RPC_REMOVEATTACKDELAY__,RPC_HASINCAPTIMER__,RPC_UPDATELASTSUCCESSFULCOMBATACTION__,RPC_SETPOSTURECHANGEDELAY__LONG_,RPC_HASPOSTURECHANGEDELAY__,RPC_REMOVEPOSTURECHANGEDELAY__,RPC_UPDATEPOSTUREDOWNRECOVERY__,RPC_CHECKPOSTUREDOWNRECOVERY__,RPC_UPDATEPOSTUREUPRECOVERY__,RPC_CHECKPOSTUREUPRECOVERY__,RPC_UPDATEKNOCKDOWNRECOVERY__,RPC_CHECKKNOCKDOWNRECOVERY__,RPC_SETNEXTALLOWEDMOVETIME__LONG_,RPC_ISMOVEMENTALLOWED__,RPC_UPDATEGROUPMFDPOSITIONS__,RPC_QUEUEDIZZYFALLEVENT__,RPC_HASDIZZYEVENT__,RPC_CLEARDIZZYEVENT__,RPC_GETSCREENPLAYSTATE__STRING_,RPC_SETSCREENPLAYSTATE__STRING_LONG_,RPC_UPDATECOOLDOWNTIMER__STRING_LONG_,RPC_CHECKCOOLDOWNRECOVERY__STRING_,RPC_ADDCOOLDOWN__STRING_LONG_,RPC_DOANIMATION__STRING_,RPC_DOCOMBATANIMATION__TANGIBLEOBJECT_INT_BYTE_BYTE_LONG_,RPC_DOCOMBATANIMATION__INT_,RPC_GETCREATURENAME__,RPC_ISGROUPED__,RPC_GETBANKCREDITS__,RPC_GETCASHCREDITS__,RPC_GETBASEHAM__INT_,RPC_GETWOUNDS__INT_,RPC_GETHAM__INT_,RPC_GETMAXHAM__INT_,RPC_GETENCUMBRANCE__INT_,RPC_GETPOSTURE__,RPC_GETLOCOMOTION__,RPC_GETFACTIONRANK__,RPC_GETLINKEDCREATURE__,RPC_GETCREATURELINKID__,RPC_GETSHOCKWOUNDS__,RPC_GETWATCHTOID__,RPC_GETSTATEBITMASK__,RPC_HASSTATE__LONG_,RPC_HASSTATES__,RPC_GETLISTENID__,RPC_GETACCELERATIONMULTIPLIERBASE__,RPC_GETACCELERATIONMULTIPLIERMOD__,RPC_GETSPEEDMULTIPLIERBASE__,RPC_GETSPEEDMULTIPLIERMOD__,RPC_GETCURRENTSPEED__,RPC_GETCOMMANDQUEUESIZE__,RPC_SETLASTACTIONCOUNTER__INT_,RPC_INCREMENTLASTACTIONCOUNTER__,RPC_GETLASTACTIONCOUNTER__,RPC_GETSLOPEMODANGLE__,RPC_GETSLOPEMODPERCENT__,RPC_GETWATERMODPERCENT__,RPC_GETWALKSPEED__,RPC_GETTURNSCALE__,RPC_GETRUNACCELERATION__,RPC_GETWALKACCELERATION__,RPC_GETPERFORMANCEANIMATION__,RPC_GETMOODSTRING__,RPC_GETWEAPONID__,RPC_GETWEAPON__,RPC_GETDEFAULTWEAPON__,RPC_GETGUILDOBJECT__,RPC_GETGUILDID__,RPC_ISINGUILD__,RPC_SETGUILDOBJECT__GUILDOBJECT_,RPC_GETGROUPID__,RPC_GETGROUPINVITERID__,RPC_GETGROUP__,RPC_GETGROUPINVITECOUNTER__,RPC_GETTARGETID__,RPC_GETMOODID__,RPC_GETPERFORMANCESTARTTIME__,RPC_GETPERFORMANCETYPE__,RPC_GETFROZEN__,RPC_ISDROIDSPECIES__,RPC_ISWALKERSPECIES__,RPC_ISPROBOTSPECIES__,RPC_HASEFFECTIMMUNITY__BYTE_,RPC_HASDOTIMMUNITY__INT_,RPC_GETSPECIES__,RPC_GETSPECIESNAME__,RPC_GETGENDER__,RPC_GETSKILLMOD__STRING_,RPC_GETSKILLMODOFTYPE__STRING_INT_,RPC_HASSKILL__STRING_,RPC_SETWATCHTOID__LONG_,RPC_ISCREATUREOBJECT__,RPC_ISNEXTACTIONPAST__,RPC_ISSWIMMING__,RPC_GETCLIENT__,RPC_GETCONTROLDEVICE__,RPC_GETSWIMHEIGHT__,RPC_GETSPAWNERID__,RPC_ISINCAPACITATED__,RPC_ISDEAD__,RPC_ISKNOCKEDDOWN__,RPC_ISKNEELING__,RPC_ISPRONE__,RPC_ISSTANDING__,RPC_ISSITTING__,RPC_ISLYINGDOWN__,RPC_ISSKILLANIMATING__,RPC_ISRALLIED__,RPC_ISINCOMBAT__,RPC_ISDIZZIED__,RPC_ISBERSERKED__,RPC_ISSTUNNED__,RPC_ISBLINDED__,RPC_ISINTIMIDATED__,RPC_ISSNARED__,RPC_ISIMMOBILIZED__,RPC_ISROOTED__,RPC_ISFROZEN__,RPC_ISDISEASED__,RPC_ISPOISONED__,RPC_ISBLEEDING__,RPC_ISONFIRE__,RPC_ISFEIGNINGDEATH__,RPC_ISRIDINGMOUNT__,RPC_HASRIDINGCREATURE__,RPC_ISPEACED__,RPC_ISMEDITATING__,RPC_ISAIMING__,RPC_ISINCOVER__,RPC_ISPILOTINGSHIP__,RPC_ISONBOARDPOBSHIP__,RPC_ISINSHIPSTATION__,RPC_ISPOBSHIPOPERATOR__,RPC_ISSHIPGUNNER__,RPC_ISWALKING__,RPC_ISRUNNING__,RPC_ISNONPLAYERCREATUREOBJECT__,RPC_ISDROIDOBJECT__,RPC_ISHELPERDROIDOBJECT__,RPC_ISPLAYERCREATURE__,RPC_GETRECEIVERFLAGS__,RPC_ISINFORMANTCREATURE__,RPC_GETCURRENTCAMP__,RPC_GETCURRENTWEATHER__,RPC_SETCURRENTWEATHER__BYTE_,RPC_GETCURRENTWIND__,RPC_SETCURRENTWIND__BYTE_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_GETALTERNATEAPPEARANCE__,RPC_CALCULATECOSTADJUSTMENT__BYTE_FLOAT_,RPC_GETSPEEDMODIFIER__,RPC_GETACCELERATIONMODIFIER__,RPC_GETHEIGHT__BOOL_,RPC_UPDATESPEEDANDACCELERATIONMODS__,RPC_SETFACTION__INT_,RPC_DESTROYPLAYERCREATUREFROMDATABASE__BOOL_,RPC_GETTEMPLATERADIUS__,RPC_RELOADTEMPLATE__,RPC_REMOVEOUTOFRANGEOBJECTS__,RPC_SYNCHRONIZECLOSEOBJECTS__,RPC_ADDPERSONALENEMYFLAG__CREATUREOBJECT_LONG_,RPC_GETPERSONALENEMYFLAGTIME__LONG_,RPC_REMOVEPERSONALENEMYFLAG__CREATUREOBJECT_,RPC_REMOVEPERSONALENEMYFLAG__LONG_,RPC_HASPERSONALENEMYFLAG__CREATUREOBJECT_,RPC_SCHEDULEPERSONALENEMYFLAGTASKS__,RPC_SETHUE__INT_,RPC_GETHUEVALUE__,RPC_SETTRADETARGETID__LONG_,RPC_GETTRADETARGETID__,RPC_SETQUEUECOMMANDDELTATIME__STRING_STRING_,RPC_GETQUEUECOMMANDDELTATIME__STRING_,RPC_GETOUTOFRANGEDISTANCE__LONG_,RPC_ISMISSIONRANGEOBJECT__LONG_};
 
 CreatureObject::CreatureObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	CreatureObjectImplementation* _implementation = new CreatureObjectImplementation();
@@ -105,20 +105,20 @@ void CreatureObject::initializeTransientMembers() {
 	}
 }
 
-void CreatureObject::setCountdownTimer(unsigned int newCount, bool notifyClient) {
+void CreatureObject::setIncapacitationTimer(unsigned int newCount, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCOUNTDOWNTIMER__INT_BOOL_);
+		DistributedMethod method(this, RPC_SETINCAPACITATIONTIMER__INT_BOOL_);
 		method.addUnsignedIntParameter(newCount);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setCountdownTimer(newCount, notifyClient);
+		_implementation->setIncapacitationTimer(newCount, notifyClient);
 	}
 }
 
@@ -187,6 +187,35 @@ void CreatureObject::sendToOwner(bool doClose) {
 	}
 }
 
+void CreatureObject::sendSceneResetToOwner() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDSCENERESETTOOWNER__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendSceneResetToOwner();
+	}
+}
+
+void CreatureObject::sendObjectsToOwner(bool doClose) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDOBJECTSTOOWNER__BOOL_);
+		method.addBooleanParameter(doClose);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendObjectsToOwner(doClose);
+	}
+}
+
 void CreatureObject::sendSystemMessage(const String& message) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -249,17 +278,18 @@ void CreatureObject::sendNewbieTutorialEnableHudElement(const String& ui, bool e
 	}
 }
 
-void CreatureObject::sendOpenHolocronToPageMessage() {
+void CreatureObject::sendOpenHolocronToPageMessage(const String& page) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__);
+		DistributedMethod method(this, RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__STRING_);
+		method.addAsciiParameter(page);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->sendOpenHolocronToPageMessage();
+		_implementation->sendOpenHolocronToPageMessage(page);
 	}
 }
 
@@ -398,7 +428,7 @@ void CreatureObject::updatePostures(bool immediate) {
 }
 
 float CreatureObject::calculateSpeed() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -460,20 +490,21 @@ void CreatureObject::setAccelerationMultiplierBase(float newMultiplierBase, bool
 	}
 }
 
-void CreatureObject::setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient) {
+void CreatureObject::setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_);
+		DistributedMethod method(this, RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_BOOL_);
 		method.addFloatParameter(newMultiplierMod);
 		method.addBooleanParameter(notifyClient);
+		method.addBooleanParameter(recalculateBuffs);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setAccelerationMultiplierMod(newMultiplierMod, notifyClient);
+		_implementation->setAccelerationMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 	}
 }
 
@@ -494,20 +525,21 @@ void CreatureObject::setSpeedMultiplierBase(float newMultiplierBase, bool notify
 	}
 }
 
-void CreatureObject::setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient) {
+void CreatureObject::setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_);
+		DistributedMethod method(this, RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_BOOL_);
 		method.addFloatParameter(newMultiplierMod);
 		method.addBooleanParameter(notifyClient);
+		method.addBooleanParameter(recalculateBuffs);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setSpeedMultiplierMod(newMultiplierMod, notifyClient);
+		_implementation->setSpeedMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 	}
 }
 
@@ -528,6 +560,40 @@ void CreatureObject::setTurnScale(float newMultiplierMod, bool notifyClient) {
 	}
 }
 
+void CreatureObject::setWalkSpeed(float value, bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETWALKSPEED__FLOAT_BOOL_);
+		method.addFloatParameter(value);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setWalkSpeed(value, notifyClient);
+	}
+}
+
+void CreatureObject::setWaterModPercent(float value, bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETWATERMODPERCENT__FLOAT_BOOL_);
+		method.addFloatParameter(value);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setWaterModPercent(value, notifyClient);
+	}
+}
+
 void CreatureObject::setRunSpeed(float newSpeed, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -542,6 +608,20 @@ void CreatureObject::setRunSpeed(float newSpeed, bool notifyClient) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setRunSpeed(newSpeed, notifyClient);
+	}
+}
+
+void CreatureObject::updateRunSpeed() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_UPDATERUNSPEED__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->updateRunSpeed();
 	}
 }
 
@@ -622,7 +702,7 @@ int CreatureObject::inflictDamage(TangibleObject* attacker, int damageType, floa
 	}
 }
 
-bool CreatureObject::hasDamage(int attribute) {
+bool CreatureObject::hasDamage(int attribute) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -847,20 +927,20 @@ int CreatureObject::notifyObjectRemoved(SceneObject* object) {
 	}
 }
 
-void CreatureObject::setInstrumentID(int instrumentid, bool notifyClient) {
+void CreatureObject::setPerformanceType(int type, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETINSTRUMENTID__INT_BOOL_);
-		method.addSignedIntParameter(instrumentid);
+		DistributedMethod method(this, RPC_SETPERFORMANCETYPE__INT_BOOL_);
+		method.addSignedIntParameter(type);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setInstrumentID(instrumentid, notifyClient);
+		_implementation->setPerformanceType(type, notifyClient);
 	}
 }
 
@@ -881,20 +961,20 @@ void CreatureObject::setListenToID(unsigned long long id, bool notifyClient) {
 	}
 }
 
-void CreatureObject::setPerformanceCounter(int counter, bool notifyClient) {
+void CreatureObject::setPerformanceStartTime(int counter, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETPERFORMANCECOUNTER__INT_BOOL_);
+		DistributedMethod method(this, RPC_SETPERFORMANCESTARTTIME__INT_BOOL_);
 		method.addSignedIntParameter(counter);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setPerformanceCounter(counter, notifyClient);
+		_implementation->setPerformanceStartTime(counter, notifyClient);
 	}
 }
 
@@ -964,23 +1044,6 @@ void CreatureObject::setTargetID(unsigned long long targetID, bool notifyClient)
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setTargetID(targetID, notifyClient);
-	}
-}
-
-void CreatureObject::setBankCredits(int credits, bool notifyClient) {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETBANKCREDITS__INT_BOOL_);
-		method.addSignedIntParameter(credits);
-		method.addBooleanParameter(notifyClient);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setBankCredits(credits, notifyClient);
 	}
 }
 
@@ -1144,7 +1207,7 @@ const WearablesDeltaVector* CreatureObject::getWearablesDeltaVector() const {
 	}
 }
 
-void CreatureObject::sendBuffsTo(CreatureObject* creature) {
+void CreatureObject::sendBuffsTo(CreatureObject* creature) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1159,7 +1222,7 @@ void CreatureObject::sendBuffsTo(CreatureObject* creature) {
 	}
 }
 
-BuffList* CreatureObject::getBuffList() {
+const BuffList* CreatureObject::getBuffList() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -1169,7 +1232,7 @@ BuffList* CreatureObject::getBuffList() {
 	}
 }
 
-Buff* CreatureObject::getBuff(unsigned int buffcrc) {
+Buff* CreatureObject::getBuff(unsigned int buffcrc) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1184,7 +1247,7 @@ Buff* CreatureObject::getBuff(unsigned int buffcrc) {
 	}
 }
 
-long long CreatureObject::getSkillModFromBuffs(const String& skillMod) {
+long long CreatureObject::getSkillModFromBuffs(const String& skillMod) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1196,6 +1259,49 @@ long long CreatureObject::getSkillModFromBuffs(const String& skillMod) {
 		return method.executeWithSignedLongReturn();
 	} else {
 		return _implementation->getSkillModFromBuffs(skillMod);
+	}
+}
+
+bool CreatureObject::hasBuff(unsigned int buffcrc) const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASBUFF__INT_);
+		method.addUnsignedIntParameter(buffcrc);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasBuff(buffcrc);
+	}
+}
+
+bool CreatureObject::hasSpice() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASSPICE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasSpice();
+	}
+}
+
+bool CreatureObject::hasTrapBuff() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASTRAPBUFF__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasTrapBuff();
 	}
 }
 
@@ -1263,21 +1369,6 @@ DamageOverTimeList* CreatureObject::getDamageOverTimeList() {
 
 	} else {
 		return _implementation->getDamageOverTimeList();
-	}
-}
-
-bool CreatureObject::hasBuff(unsigned int buffcrc) {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_HASBUFF__INT_);
-		method.addUnsignedIntParameter(buffcrc);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->hasBuff(buffcrc);
 	}
 }
 
@@ -1392,6 +1483,56 @@ void CreatureObject::addCashCredits(int credits, bool notifyClient) {
 	}
 }
 
+void CreatureObject::clearBankCredits(bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CLEARBANKCREDITS__BOOL_);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->clearBankCredits(notifyClient);
+	}
+}
+
+void CreatureObject::clearCashCredits(bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CLEARCASHCREDITS__BOOL_);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->clearCashCredits(notifyClient);
+	}
+}
+
+void CreatureObject::transferCredits(int cash, int bank, bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_TRANSFERCREDITS__INT_INT_BOOL_);
+		method.addSignedIntParameter(cash);
+		method.addSignedIntParameter(bank);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->transferCredits(cash, bank, notifyClient);
+	}
+}
+
 CreditObject* CreatureObject::getCreditObject() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -1439,6 +1580,22 @@ void CreatureObject::subtractCashCredits(int credits) {
 	}
 }
 
+bool CreatureObject::subtractCredits(int credits) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SUBTRACTCREDITS__INT_);
+		method.addSignedIntParameter(credits);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		return _implementation->subtractCredits(credits);
+	}
+}
+
 bool CreatureObject::verifyCashCredits(int credits) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1466,6 +1623,21 @@ bool CreatureObject::verifyBankCredits(int credits) {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->verifyBankCredits(credits);
+	}
+}
+
+bool CreatureObject::verifyCredits(int credits) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_VERIFYCREDITS__INT_);
+		method.addSignedIntParameter(credits);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->verifyCredits(credits);
 	}
 }
 
@@ -1526,51 +1698,35 @@ bool CreatureObject::isEntertaining() {
 	}
 }
 
-void CreatureObject::setCashCredits(int credits, bool notifyClient) {
+void CreatureObject::updateSlopeMods(bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCASHCREDITS__INT_BOOL_);
-		method.addSignedIntParameter(credits);
+		DistributedMethod method(this, RPC_UPDATESLOPEMODS__BOOL_);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setCashCredits(credits, notifyClient);
+		_implementation->updateSlopeMods(notifyClient);
 	}
 }
 
-void CreatureObject::setTerrainNegotiation(float value, bool notifyClient) {
+void CreatureObject::updateWaterMod(bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETTERRAINNEGOTIATION__FLOAT_BOOL_);
-		method.addFloatParameter(value);
+		DistributedMethod method(this, RPC_UPDATEWATERMOD__BOOL_);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setTerrainNegotiation(value, notifyClient);
-	}
-}
-
-void CreatureObject::updateTerrainNegotiation() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_UPDATETERRAINNEGOTIATION__);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->updateTerrainNegotiation();
+		_implementation->updateWaterMod(notifyClient);
 	}
 }
 
@@ -1862,6 +2018,22 @@ void CreatureObject::setAlternateAppearance(const String& appearanceTeamplate, b
 	}
 }
 
+void CreatureObject::setSpawnerID(unsigned long long spawnID) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETSPAWNERID__LONG_);
+		method.addUnsignedLongParameter(spawnID);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setSpawnerID(spawnID);
+	}
+}
+
 bool CreatureObject::clearState(unsigned long long state, bool notifyClient) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -1876,6 +2048,21 @@ bool CreatureObject::clearState(unsigned long long state, bool notifyClient) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		return _implementation->clearState(state, notifyClient);
+	}
+}
+
+void CreatureObject::clearSpaceStates() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CLEARSPACESTATES__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->clearSpaceStates();
 	}
 }
 
@@ -2023,6 +2210,36 @@ bool CreatureObject::isHealableBy(CreatureObject* object) {
 	}
 }
 
+bool CreatureObject::healFactionChecks(CreatureObject* object, bool isPlayer) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HEALFACTIONCHECKS__CREATUREOBJECT_BOOL_);
+		method.addObjectParameter(object);
+		method.addBooleanParameter(isPlayer);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->healFactionChecks(object, isPlayer);
+	}
+}
+
+bool CreatureObject::isInvulnerable() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINVULNERABLE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isInvulnerable();
+	}
+}
+
 bool CreatureObject::hasBountyMissionFor(CreatureObject* target) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -2038,6 +2255,70 @@ bool CreatureObject::hasBountyMissionFor(CreatureObject* target) {
 	}
 }
 
+void CreatureObject::addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_);
+		method.addUnsignedLongParameter(missionOwnerID);
+		method.addUnsignedLongParameter(objectID);
+		method.addBooleanParameter(notifyClient);
+		method.addBooleanParameter(notifyGroup);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->addSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+	}
+}
+
+void CreatureObject::removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_);
+		method.addUnsignedLongParameter(missionOwnerID);
+		method.addUnsignedLongParameter(objectID);
+		method.addBooleanParameter(notifyClient);
+		method.addBooleanParameter(notifyGroup);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->removeSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+	}
+}
+
+void CreatureObject::removeAllSpaceMissionObjects(bool notifyClient) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEALLSPACEMISSIONOBJECTS__BOOL_);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->removeAllSpaceMissionObjects(notifyClient);
+	}
+}
+
+const DeltaSet<unsigned long long, unsigned long long>* CreatureObject::getSpaceMissionObjects() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getSpaceMissionObjects();
+	}
+}
+
 bool CreatureObject::sendConversationStartTo(SceneObject* player) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -2050,6 +2331,20 @@ bool CreatureObject::sendConversationStartTo(SceneObject* player) {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->sendConversationStartTo(player);
+	}
+}
+
+bool CreatureObject::stopConversation() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_STOPCONVERSATION__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->stopConversation();
 	}
 }
 
@@ -2129,13 +2424,13 @@ void CreatureObject::sendExecuteConsoleCommand(const String& command) {
 	}
 }
 
-bool CreatureObject::isAggressiveTo(CreatureObject* object) {
+bool CreatureObject::isAggressiveTo(TangibleObject* object) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISAGGRESSIVETO__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_);
 		method.addObjectParameter(object);
 
 		return method.executeWithBooleanReturn();
@@ -2195,7 +2490,7 @@ void CreatureObject::notifyLoadFromDatabase() {
 	}
 }
 
-void CreatureObject::notifyInsert(QuadTreeEntry* obj) {
+void CreatureObject::notifyInsert(TreeEntry* obj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -2205,7 +2500,7 @@ void CreatureObject::notifyInsert(QuadTreeEntry* obj) {
 	}
 }
 
-void CreatureObject::notifyDissapear(QuadTreeEntry* obj) {
+void CreatureObject::notifyDissapear(TreeEntry* obj) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -2215,7 +2510,7 @@ void CreatureObject::notifyDissapear(QuadTreeEntry* obj) {
 	}
 }
 
-void CreatureObject::notifyPositionUpdate(QuadTreeEntry* entry) {
+void CreatureObject::notifyPositionUpdate(TreeEntry* entry) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -2258,7 +2553,7 @@ void CreatureObject::setFactionRank(int rank, bool notifyClient) {
 	}
 }
 
-String CreatureObject::getFirstName() {
+String CreatureObject::getFirstName() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2271,6 +2566,24 @@ String CreatureObject::getFirstName() {
 		return _return_getFirstName;
 	} else {
 		return _implementation->getFirstName();
+	}
+}
+
+String CreatureObject::setFirstName(const String& newFirstName, bool skipVerify) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETFIRSTNAME__STRING_BOOL_);
+		method.addAsciiParameter(newFirstName);
+		method.addBooleanParameter(skipVerify);
+
+		String _return_setFirstName;
+		method.executeWithAsciiReturn(_return_setFirstName);
+		return _return_setFirstName;
+	} else {
+		return _implementation->setFirstName(newFirstName, skipVerify);
 	}
 }
 
@@ -2291,7 +2604,7 @@ String CreatureObject::setFirstName(const String& newFirstName) {
 	}
 }
 
-String CreatureObject::getLastName() {
+String CreatureObject::getLastName() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2485,7 +2798,7 @@ void CreatureObject::dismount() {
 	}
 }
 
-float CreatureObject::calculateBFRatio() {
+float CreatureObject::calculateBFRatio() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2719,19 +3032,21 @@ void CreatureObject::setRootedState(int durationSeconds) {
 	}
 }
 
-bool CreatureObject::setNextAttackDelay(unsigned int mod, int del) {
+bool CreatureObject::setNextAttackDelay(CreatureObject* attacker, const String& command, unsigned int mod, int del) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETNEXTATTACKDELAY__INT_INT_);
+		DistributedMethod method(this, RPC_SETNEXTATTACKDELAY__CREATUREOBJECT_STRING_INT_INT_);
+		method.addObjectParameter(attacker);
+		method.addAsciiParameter(command);
 		method.addUnsignedIntParameter(mod);
 		method.addSignedIntParameter(del);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->setNextAttackDelay(mod, del);
+		return _implementation->setNextAttackDelay(attacker, command, mod, del);
 	}
 }
 
@@ -2811,7 +3126,7 @@ void CreatureObject::updateTimeOfDeath() {
 	}
 }
 
-bool CreatureObject::hasAttackDelay() {
+bool CreatureObject::hasAttackDelay() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2839,7 +3154,7 @@ void CreatureObject::removeAttackDelay() {
 	}
 }
 
-bool CreatureObject::hasIncapTimer() {
+bool CreatureObject::hasIncapTimer() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2863,20 +3178,6 @@ CooldownTimerMap* CreatureObject::getCooldownTimerMap() {
 	}
 }
 
-bool CreatureObject::hasSpice() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_HASSPICE__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->hasSpice();
-	}
-}
-
 void CreatureObject::updateLastSuccessfulCombatAction() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -2891,32 +3192,46 @@ void CreatureObject::updateLastSuccessfulCombatAction() {
 	}
 }
 
-void CreatureObject::updatePostureChangeDelay(unsigned long long delay) {
+void CreatureObject::setPostureChangeDelay(unsigned long long delay) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_UPDATEPOSTURECHANGEDELAY__LONG_);
+		DistributedMethod method(this, RPC_SETPOSTURECHANGEDELAY__LONG_);
 		method.addUnsignedLongParameter(delay);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->updatePostureChangeDelay(delay);
+		_implementation->setPostureChangeDelay(delay);
 	}
 }
 
-bool CreatureObject::checkPostureChangeDelay() {
+bool CreatureObject::hasPostureChangeDelay() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CHECKPOSTURECHANGEDELAY__);
+		DistributedMethod method(this, RPC_HASPOSTURECHANGEDELAY__);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->checkPostureChangeDelay();
+		return _implementation->hasPostureChangeDelay();
+	}
+}
+
+void CreatureObject::removePostureChangeDelay() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEPOSTURECHANGEDELAY__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->removePostureChangeDelay();
 	}
 }
 
@@ -2934,7 +3249,7 @@ void CreatureObject::updatePostureDownRecovery() {
 	}
 }
 
-bool CreatureObject::checkPostureDownRecovery() {
+bool CreatureObject::checkPostureDownRecovery() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2962,7 +3277,7 @@ void CreatureObject::updatePostureUpRecovery() {
 	}
 }
 
-bool CreatureObject::checkPostureUpRecovery() {
+bool CreatureObject::checkPostureUpRecovery() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -2990,7 +3305,7 @@ void CreatureObject::updateKnockdownRecovery() {
 	}
 }
 
-bool CreatureObject::checkKnockdownRecovery() {
+bool CreatureObject::checkKnockdownRecovery() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -3001,6 +3316,36 @@ bool CreatureObject::checkKnockdownRecovery() {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->checkKnockdownRecovery();
+	}
+}
+
+void CreatureObject::setNextAllowedMoveTime(unsigned long long time) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETNEXTALLOWEDMOVETIME__LONG_);
+		method.addUnsignedLongParameter(time);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setNextAllowedMoveTime(time);
+	}
+}
+
+bool CreatureObject::isMovementAllowed() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISMOVEMENTALLOWED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isMovementAllowed();
 	}
 }
 
@@ -3033,8 +3378,8 @@ void CreatureObject::queueDizzyFallEvent() {
 	}
 }
 
-bool CreatureObject::hasDizzyEvent() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+bool CreatureObject::hasDizzyEvent() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -3063,7 +3408,7 @@ void CreatureObject::clearDizzyEvent() {
 }
 
 unsigned long long CreatureObject::getScreenPlayState(const String& screenPlay) {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -3109,7 +3454,7 @@ void CreatureObject::updateCooldownTimer(const String& coooldownTimer, unsigned 
 	}
 }
 
-bool CreatureObject::checkCooldownRecovery(const String& cooldown) {
+bool CreatureObject::checkCooldownRecovery(const String& cooldown) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -3124,8 +3469,8 @@ bool CreatureObject::checkCooldownRecovery(const String& cooldown) {
 	}
 }
 
-Time* CreatureObject::getCooldownTime(const String& cooldown) {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+const Time* CreatureObject::getCooldownTime(const String& cooldown) const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -3199,37 +3544,7 @@ void CreatureObject::doCombatAnimation(unsigned int animationCRC) {
 	}
 }
 
-void CreatureObject::activateQueueAction() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ACTIVATEQUEUEACTION__);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->activateQueueAction();
-	}
-}
-
-void CreatureObject::activateImmediateAction() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ACTIVATEIMMEDIATEACTION__);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->activateImmediateAction();
-	}
-}
-
-UnicodeString CreatureObject::getCreatureName() {
+UnicodeString CreatureObject::getCreatureName() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -3637,16 +3952,6 @@ SpeedMultiplierModChanges* CreatureObject::getSpeedMultiplierModChanges() {
 	}
 }
 
-CommandQueueActionVector* CreatureObject::getCommandQueue() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getCommandQueue();
-	}
-}
-
 int CreatureObject::getCommandQueueSize() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -3692,8 +3997,8 @@ unsigned int CreatureObject::incrementLastActionCounter() {
 	}
 }
 
-unsigned int CreatureObject::getLastActionCounter() {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+unsigned int CreatureObject::getLastActionCounter() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -3706,17 +4011,55 @@ unsigned int CreatureObject::getLastActionCounter() {
 	}
 }
 
-float CreatureObject::getRunSpeed() const {
+float CreatureObject::getSlopeModAngle() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETRUNSPEED__);
+		DistributedMethod method(this, RPC_GETSLOPEMODANGLE__);
 
 		return method.executeWithFloatReturn();
 	} else {
+		return _implementation->getSlopeModAngle();
+	}
+}
+
+float CreatureObject::getSlopeModPercent() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSLOPEMODPERCENT__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getSlopeModPercent();
+	}
+}
+
+float CreatureObject::getRunSpeed() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
 		return _implementation->getRunSpeed();
+	}
+}
+
+float CreatureObject::getWaterModPercent() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETWATERMODPERCENT__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getWaterModPercent();
 	}
 }
 
@@ -3745,20 +4088,6 @@ float CreatureObject::getTurnScale() const {
 		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getTurnScale();
-	}
-}
-
-float CreatureObject::getTerrainNegotiation() const {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETTERRAINNEGOTIATION__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getTerrainNegotiation();
 	}
 }
 
@@ -3847,6 +4176,20 @@ Reference<WeaponObject* > CreatureObject::getWeapon() {
 		return static_cast<WeaponObject*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getWeapon();
+	}
+}
+
+WeaponObject* CreatureObject::getDefaultWeapon() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETDEFAULTWEAPON__);
+
+		return static_cast<WeaponObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getDefaultWeapon();
 	}
 }
 
@@ -3992,45 +4335,31 @@ byte CreatureObject::getMoodID() const {
 	}
 }
 
-float CreatureObject::getSlopeModPercent() const {
+int CreatureObject::getPerformanceStartTime() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETSLOPEMODPERCENT__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getSlopeModPercent();
-	}
-}
-
-int CreatureObject::getPerformanceCounter() const {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETPERFORMANCECOUNTER__);
+		DistributedMethod method(this, RPC_GETPERFORMANCESTARTTIME__);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getPerformanceCounter();
+		return _implementation->getPerformanceStartTime();
 	}
 }
 
-int CreatureObject::getInstrumentID() const {
+int CreatureObject::getPerformanceType() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETINSTRUMENTID__);
+		DistributedMethod method(this, RPC_GETPERFORMANCETYPE__);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getInstrumentID();
+		return _implementation->getPerformanceType();
 	}
 }
 
@@ -4048,21 +4377,7 @@ byte CreatureObject::getFrozen() const {
 	}
 }
 
-float CreatureObject::getHeight() const {
-	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETHEIGHT__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getHeight();
-	}
-}
-
-bool CreatureObject::isDroidSpecies() {
+bool CreatureObject::isDroidSpecies() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4076,7 +4391,7 @@ bool CreatureObject::isDroidSpecies() {
 	}
 }
 
-bool CreatureObject::isWalkerSpecies() {
+bool CreatureObject::isWalkerSpecies() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4090,7 +4405,7 @@ bool CreatureObject::isWalkerSpecies() {
 	}
 }
 
-bool CreatureObject::isProbotSpecies() {
+bool CreatureObject::isProbotSpecies() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4104,7 +4419,7 @@ bool CreatureObject::isProbotSpecies() {
 	}
 }
 
-bool CreatureObject::hasEffectImmunity(byte effectType) {
+bool CreatureObject::hasEffectImmunity(byte effectType) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4119,7 +4434,7 @@ bool CreatureObject::hasEffectImmunity(byte effectType) {
 	}
 }
 
-bool CreatureObject::hasDotImmunity(unsigned int dotType) {
+bool CreatureObject::hasDotImmunity(unsigned int dotType) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4209,7 +4524,6 @@ int CreatureObject::getSkillMod(const String& skillmod) const {
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		assert(this->isLockedByCurrentThread());
 		return _implementation->getSkillMod(skillmod);
 	}
 }
@@ -4305,7 +4619,17 @@ CreatureObject* CreatureObject::__asCreatureObject() {
 	}
 }
 
-bool CreatureObject::isNextActionPast() {
+Time* CreatureObject::getNextActionTime() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getNextActionTime();
+	}
+}
+
+bool CreatureObject::isNextActionPast() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4372,6 +4696,20 @@ float CreatureObject::getSwimHeight() const {
 		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getSwimHeight();
+	}
+}
+
+unsigned long long CreatureObject::getSpawnerID() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPAWNERID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getSpawnerID();
 	}
 }
 
@@ -4470,6 +4808,20 @@ bool CreatureObject::isSitting() const {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isSitting();
+	}
+}
+
+bool CreatureObject::isLyingDown() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISLYINGDOWN__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isLyingDown();
 	}
 }
 
@@ -4795,6 +5147,90 @@ bool CreatureObject::isInCover() const {
 	}
 }
 
+bool CreatureObject::isPilotingShip() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPILOTINGSHIP__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isPilotingShip();
+	}
+}
+
+bool CreatureObject::isOnboardPobShip() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISONBOARDPOBSHIP__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isOnboardPobShip();
+	}
+}
+
+bool CreatureObject::isInShipStation() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINSHIPSTATION__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isInShipStation();
+	}
+}
+
+bool CreatureObject::isPobShipOperator() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPOBSHIPOPERATOR__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isPobShipOperator();
+	}
+}
+
+bool CreatureObject::isShipGunner() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSHIPGUNNER__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isShipGunner();
+	}
+}
+
+bool CreatureObject::isWalking() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISWALKING__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isWalking();
+	}
+}
+
 bool CreatureObject::isRunning() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -4837,6 +5273,20 @@ bool CreatureObject::isDroidObject() {
 	}
 }
 
+bool CreatureObject::isHelperDroidObject() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISHELPERDROIDOBJECT__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isHelperDroidObject();
+	}
+}
+
 bool CreatureObject::isPlayerCreature() {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -4851,7 +5301,7 @@ bool CreatureObject::isPlayerCreature() {
 	}
 }
 
-int CreatureObject::getReceiverFlags() {
+int CreatureObject::getReceiverFlags() const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -4997,7 +5447,7 @@ ReadWriteLock* CreatureObject::getSkillModMutex() {
 	}
 }
 
-float CreatureObject::calculateCostAdjustment(byte stat, float baseCost) {
+float CreatureObject::calculateCostAdjustment(byte stat, float baseCost) const {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -5010,6 +5460,69 @@ float CreatureObject::calculateCostAdjustment(byte stat, float baseCost) {
 		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->calculateCostAdjustment(stat, baseCost);
+	}
+}
+
+float CreatureObject::getSpeedModifier() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPEEDMODIFIER__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getSpeedModifier();
+	}
+}
+
+float CreatureObject::getAccelerationModifier() const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETACCELERATIONMODIFIER__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getAccelerationModifier();
+	}
+}
+
+float CreatureObject::getHeight(bool postureMod) const {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETHEIGHT__BOOL_);
+		method.addBooleanParameter(postureMod);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getHeight(postureMod);
+	}
+}
+
+void CreatureObject::sendSpeedAndAccelerationMods(SceneObject* player) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->sendSpeedAndAccelerationMods(player);
+	}
+}
+
+void CreatureObject::broadcastSpeedAndAccelerationMods(bool sendSelf) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->broadcastSpeedAndAccelerationMods(sendSelf);
 	}
 }
 
@@ -5263,17 +5776,115 @@ void CreatureObject::setAuctionSearchTask(AuctionSearchTask* task) {
 	}
 }
 
-int CreatureObject::getPassengerCapacity() {
+Instrument* CreatureObject::getPlayableInstrument() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getPlayableInstrument();
+	}
+}
+
+void CreatureObject::setTradeTargetID(unsigned long long playerID) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETTRADETARGETID__LONG_);
+		method.addUnsignedLongParameter(playerID);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setTradeTargetID(playerID);
+	}
+}
+
+unsigned long long CreatureObject::getTradeTargetID() {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETTRADETARGETID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getTradeTargetID();
+	}
+}
+
+bool CreatureObject::checkInConversationRange(SceneObject* object) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->checkInConversationRange(object);
+	}
+}
+
+void CreatureObject::setQueueCommandDeltaTime(const String& commandName, const String& commandGroup) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETQUEUECOMMANDDELTATIME__STRING_STRING_);
+		method.addDereferencedSerializableParameter(commandName);
+		method.addDereferencedSerializableParameter(commandGroup);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setQueueCommandDeltaTime(commandName, commandGroup);
+	}
+}
+
+unsigned long long CreatureObject::getQueueCommandDeltaTime(const String& commandName) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETQUEUECOMMANDDELTATIME__STRING_);
+		method.addDereferencedSerializableParameter(commandName);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getQueueCommandDeltaTime(commandName);
+	}
+}
+
+float CreatureObject::getOutOfRangeDistance(unsigned long long specialRangeObjectID) {
 	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETPASSENGERCAPACITY__);
+		DistributedMethod method(this, RPC_GETOUTOFRANGEDISTANCE__LONG_);
+		method.addUnsignedLongParameter(specialRangeObjectID);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getPassengerCapacity();
+		return _implementation->getOutOfRangeDistance(specialRangeObjectID);
+	}
+}
+
+bool CreatureObject::isMissionRangeObject(unsigned const long long& objectID) {
+	CreatureObjectImplementation* _implementation = static_cast<CreatureObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISMISSIONRANGEOBJECT__LONG_);
+		method.addUnsignedLongParameter(objectID);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isMissionRangeObject(objectID);
 	}
 }
 
@@ -5483,8 +6094,8 @@ bool CreatureObjectImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<float >::parseFromBinaryStream(&currentSpeed, stream);
 		return true;
 
-	case 0xe5a6e8cb: //CreatureObject.terrainNegotiation
-		TypeInfo<float >::parseFromBinaryStream(&terrainNegotiation, stream);
+	case 0xd9e0e9be: //CreatureObject.waterModPercent
+		TypeInfo<float >::parseFromBinaryStream(&waterModPercent, stream);
 		return true;
 
 	case 0xd126abdf: //CreatureObject.runAcceleration
@@ -5555,12 +6166,12 @@ bool CreatureObjectImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<byte >::parseFromBinaryStream(&moodID, stream);
 		return true;
 
-	case 0x83a587da: //CreatureObject.performanceCounter
-		TypeInfo<int >::parseFromBinaryStream(&performanceCounter, stream);
+	case 0x28e50767: //CreatureObject.performanceStartTime
+		TypeInfo<int >::parseFromBinaryStream(&performanceStartTime, stream);
 		return true;
 
-	case 0x41617b95: //CreatureObject.instrumentID
-		TypeInfo<int >::parseFromBinaryStream(&instrumentID, stream);
+	case 0xa2a6c0f: //CreatureObject.performanceType
+		TypeInfo<int >::parseFromBinaryStream(&performanceType, stream);
 		return true;
 
 	case 0xe7af3a39: //CreatureObject.hamList
@@ -5849,11 +6460,11 @@ int CreatureObjectImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xe5a6e8cb; //CreatureObject.terrainNegotiation
+	_nameHashCode = 0xd9e0e9be; //CreatureObject.waterModPercent
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&terrainNegotiation, stream);
+	TypeInfo<float >::toBinaryStream(&waterModPercent, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -6011,20 +6622,20 @@ int CreatureObjectImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x83a587da; //CreatureObject.performanceCounter
+	_nameHashCode = 0x28e50767; //CreatureObject.performanceStartTime
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&performanceCounter, stream);
+	TypeInfo<int >::toBinaryStream(&performanceStartTime, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x41617b95; //CreatureObject.instrumentID
+	_nameHashCode = 0xa2a6c0f; //CreatureObject.performanceType
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&instrumentID, stream);
+	TypeInfo<int >::toBinaryStream(&performanceType, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -6202,7 +6813,7 @@ void CreatureObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["currentSpeed"] = currentSpeed;
 
-	thisObject["terrainNegotiation"] = terrainNegotiation;
+	thisObject["waterModPercent"] = waterModPercent;
 
 	thisObject["runAcceleration"] = runAcceleration;
 
@@ -6238,9 +6849,9 @@ void CreatureObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["moodID"] = moodID;
 
-	thisObject["performanceCounter"] = performanceCounter;
+	thisObject["performanceStartTime"] = performanceStartTime;
 
-	thisObject["instrumentID"] = instrumentID;
+	thisObject["performanceType"] = performanceType;
 
 	thisObject["hamList"] = hamList;
 
@@ -6279,19 +6890,12 @@ CreatureObjectImplementation::CreatureObjectImplementation() {
 	initializeMembers();
 }
 
-void CreatureObjectImplementation::setCountdownTimer(unsigned int newCount, bool notifyClient) {
-	// server/zone/objects/creature/CreatureObject.idl():  		super.setCountdownTimer(newCount, notifyClient);
-	TangibleObjectImplementation::setCountdownTimer(newCount, notifyClient);
-	// server/zone/objects/creature/CreatureObject.idl():  		cooldownTimerMap.updateToCurrentAndAddMili("incapTimer", getUseCount()*1000);
-	cooldownTimerMap->updateToCurrentAndAddMili("incapTimer", getUseCount() * 1000);
-}
-
 void CreatureObjectImplementation::setCurrentSpeed(float newSpeed) {
 	// server/zone/objects/creature/CreatureObject.idl():  		currentSpeed = newSpeed;
 	currentSpeed = newSpeed;
 }
 
-bool CreatureObjectImplementation::hasDamage(int attribute) {
+bool CreatureObjectImplementation::hasDamage(int attribute) const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return hamList.get(attribute) + wounds.get(attribute) < maxHamList.get(attribute);
 	return (&hamList)->get(attribute) + (&wounds)->get(attribute) < (&maxHamList)->get(attribute);
 }
@@ -6301,31 +6905,43 @@ const WearablesDeltaVector* CreatureObjectImplementation::getWearablesDeltaVecto
 	return (&wearablesVector);
 }
 
-void CreatureObjectImplementation::sendBuffsTo(CreatureObject* creature) {
+void CreatureObjectImplementation::sendBuffsTo(CreatureObject* creature) const{
 	// server/zone/objects/creature/CreatureObject.idl():  		creatureBuffs.sendTo(creature);
 	(&creatureBuffs)->sendTo(creature);
 }
 
-BuffList* CreatureObjectImplementation::getBuffList() {
+const BuffList* CreatureObjectImplementation::getBuffList() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs;
 	return (&creatureBuffs);
 }
 
-Buff* CreatureObjectImplementation::getBuff(unsigned int buffcrc) {
-	// server/zone/objects/creature/CreatureObject.idl():  		return 
-	if ((&creatureBuffs)->hasBuff(buffcrc))	// server/zone/objects/creature/CreatureObject.idl():  			return creatureBuffs.getBuffByCRC(buffcrc);
+Buff* CreatureObjectImplementation::getBuff(unsigned int buffcrc) const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.getBuffByCRC(buffcrc);
 	return (&creatureBuffs)->getBuffByCRC(buffcrc);
-	// server/zone/objects/creature/CreatureObject.idl():  		return null;
-	return NULL;
 }
 
-long long CreatureObjectImplementation::getSkillModFromBuffs(const String& skillMod) {
+long long CreatureObjectImplementation::getSkillModFromBuffs(const String& skillMod) const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.getModifierByName(skillMod);
 	return (&creatureBuffs)->getModifierByName(skillMod);
 }
 
+bool CreatureObjectImplementation::hasBuff(unsigned int buffcrc) const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.hasBuff(buffcrc);
+	return (&creatureBuffs)->hasBuff(buffcrc);
+}
+
+bool CreatureObjectImplementation::hasSpice() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.hasSpice();
+	return (&creatureBuffs)->hasSpice();
+}
+
+bool CreatureObjectImplementation::hasTrapBuff() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.hasTrapBuff();
+	return (&creatureBuffs)->hasTrapBuff();
+}
+
 int CreatureObjectImplementation::addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength) {
-	// server/zone/objects/creature/CreatureObject.idl():  										 secondaryStrength);
+	// server/zone/objects/creature/CreatureObject.idl():  				secondaryStrength);
 	return (&damageOverTimeList)->addDot(_this.getReferenceUnsafeStaticCast(), attacker, objectID, duration, dotType, type, strength, potency, defense, secondaryStrength);
 }
 
@@ -6344,50 +6960,14 @@ DamageOverTimeList* CreatureObjectImplementation::getDamageOverTimeList() {
 	return (&damageOverTimeList);
 }
 
-bool CreatureObjectImplementation::hasBuff(unsigned int buffcrc) {
-	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.hasBuff(buffcrc);
-	return (&creatureBuffs)->hasBuff(buffcrc);
-}
-
-void CreatureObjectImplementation::addBankCredits(int credits, bool notifyClient) {
-	// server/zone/objects/creature/CreatureObject.idl():  		int newCredits = getBankCredits() + credits;
-	int newCredits = getBankCredits() + credits;
-	// server/zone/objects/creature/CreatureObject.idl():  		setBankCredits(newCredits);
-	setBankCredits(newCredits);
-}
-
-void CreatureObjectImplementation::addCashCredits(int credits, bool notifyClient) {
-	// server/zone/objects/creature/CreatureObject.idl():  		int newCredits = getCashCredits() + credits;
-	int newCredits = getCashCredits() + credits;
-	// server/zone/objects/creature/CreatureObject.idl():  		setCashCredits(newCredits);
-	setCashCredits(newCredits);
-}
-
-bool CreatureObjectImplementation::verifyCashCredits(int credits) {
-	// server/zone/objects/creature/CreatureObject.idl():  		if 
-	if (credits < 0)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
-	return false;
-	// server/zone/objects/creature/CreatureObject.idl():  		return 
-	if (getCashCredits() < credits)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
-	return false;
-	// server/zone/objects/creature/CreatureObject.idl():  		return true;
-	return true;
-}
-
-bool CreatureObjectImplementation::verifyBankCredits(int credits) {
-	// server/zone/objects/creature/CreatureObject.idl():  		if 
-	if (credits < 0)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
-	return false;
-	// server/zone/objects/creature/CreatureObject.idl():  		return 
-	if (getBankCredits() < credits)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
-	return false;
-	// server/zone/objects/creature/CreatureObject.idl():  		return true;
-	return true;
-}
-
 bool CreatureObjectImplementation::isEntertaining() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return isDancing() || isPlayingMusic();
 	return isDancing() || isPlayingMusic();
+}
+
+void CreatureObjectImplementation::setSpawnerID(unsigned long long spawnID) {
+	// server/zone/objects/creature/CreatureObject.idl():  		spawnerID = spawnID;
+	spawnerID = spawnID;
 }
 
 void CreatureObjectImplementation::setControlDevice(ControlDevice* device) {
@@ -6395,7 +6975,17 @@ void CreatureObjectImplementation::setControlDevice(ControlDevice* device) {
 	controlDevice = device;
 }
 
+const DeltaSet<unsigned long long, unsigned long long>* CreatureObjectImplementation::getSpaceMissionObjects() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return spaceMissionObjects;
+	return (&spaceMissionObjects);
+}
+
 bool CreatureObjectImplementation::sendConversationStartTo(SceneObject* player) {
+	// server/zone/objects/creature/CreatureObject.idl():  		return false;
+	return false;
+}
+
+bool CreatureObjectImplementation::stopConversation() {
 	// server/zone/objects/creature/CreatureObject.idl():  		return false;
 	return false;
 }
@@ -6414,30 +7004,30 @@ bool CreatureObjectImplementation::isOnline() {
 	// server/zone/objects/creature/CreatureObject.idl():  		PlayerObject ghost = getPlayerObject();
 	ManagedReference<PlayerObject* > ghost = getPlayerObject();
 	// server/zone/objects/creature/CreatureObject.idl():  		return 
-	if (ghost == NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
+	if (!ghost)	// server/zone/objects/creature/CreatureObject.idl():  			return false;
 	return false;
 	// server/zone/objects/creature/CreatureObject.idl():  		return ghost.isOnline();
 	return ghost->isOnline();
 }
 
 bool CreatureObjectImplementation::canTreatInjuries() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("injuryTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("injuryTreatment") == NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return !super.getPendingTask("injuryTreatment");
+	return !TangibleObjectImplementation::getPendingTask("injuryTreatment");
 }
 
 bool CreatureObjectImplementation::canTreatStates() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("stateTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("stateTreatment") == NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return !super.getPendingTask("stateTreatment");
+	return !TangibleObjectImplementation::getPendingTask("stateTreatment");
 }
 
 bool CreatureObjectImplementation::canTreatWounds() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("woundTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("woundTreatment") == NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return !super.getPendingTask("woundTreatment");
+	return !TangibleObjectImplementation::getPendingTask("woundTreatment");
 }
 
 bool CreatureObjectImplementation::canTreatConditions() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return super.getPendingTask("conditionTreatment") == null;
-	return TangibleObjectImplementation::getPendingTask("conditionTreatment") == NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return !super.getPendingTask("conditionTreatment");
+	return !TangibleObjectImplementation::getPendingTask("conditionTreatment");
 }
 
 bool CreatureObjectImplementation::isListening() const{
@@ -6450,27 +7040,17 @@ bool CreatureObjectImplementation::isWatching() const{
 	return watchToID != 0;
 }
 
-void CreatureObjectImplementation::setClient(ZoneClientSession* cli) {
-	// server/zone/objects/creature/CreatureObject.idl():  		owner = cli;
-	owner = cli;
-}
-
 void CreatureObjectImplementation::updateTimeOfDeath() {
 	// server/zone/objects/creature/CreatureObject.idl():  		timeOfDeath.updateToCurrentTime();
 	(&timeOfDeath)->updateToCurrentTime();
 }
 
-bool CreatureObjectImplementation::hasAttackDelay() {
+bool CreatureObjectImplementation::hasAttackDelay() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return !cooldownTimerMap.isPast("nextAttackDelay");
 	return !cooldownTimerMap->isPast("nextAttackDelay");
 }
 
-void CreatureObjectImplementation::removeAttackDelay() {
-	// server/zone/objects/creature/CreatureObject.idl():  		cooldownTimerMap.updateToCurrentTime("nextAttackDelay");
-	cooldownTimerMap->updateToCurrentTime("nextAttackDelay");
-}
-
-bool CreatureObjectImplementation::hasIncapTimer() {
+bool CreatureObjectImplementation::hasIncapTimer() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return !cooldownTimerMap.isPast("incapTimer");
 	return !cooldownTimerMap->isPast("incapTimer");
 }
@@ -6480,24 +7060,19 @@ CooldownTimerMap* CreatureObjectImplementation::getCooldownTimerMap() {
 	return cooldownTimerMap;
 }
 
-bool CreatureObjectImplementation::hasSpice() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return creatureBuffs.hasSpice();
-	return (&creatureBuffs)->hasSpice();
-}
-
 void CreatureObjectImplementation::updateLastSuccessfulCombatAction() {
 	// server/zone/objects/creature/CreatureObject.idl():  		lastSuccessfulCombatAction.updateToCurrentTime();
 	(&lastSuccessfulCombatAction)->updateToCurrentTime();
 }
 
-void CreatureObjectImplementation::updatePostureChangeDelay(unsigned long long delay) {
-	// server/zone/objects/creature/CreatureObject.idl():  		cooldownTimerMap.updateToCurrentAndAddMili("postureChangeDelay", delay);
-	cooldownTimerMap->updateToCurrentAndAddMili("postureChangeDelay", delay);
+bool CreatureObjectImplementation::hasPostureChangeDelay() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return !cooldownTimerMap.isPast("postureChangeDelay");
+	return !cooldownTimerMap->isPast("postureChangeDelay");
 }
 
-bool CreatureObjectImplementation::checkPostureChangeDelay() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.isPast("postureChangeDelay");
-	return cooldownTimerMap->isPast("postureChangeDelay");
+void CreatureObjectImplementation::removePostureChangeDelay() {
+	// server/zone/objects/creature/CreatureObject.idl():  		cooldownTimerMap.updateToCurrentTime("postureChangeDelay");
+	cooldownTimerMap->updateToCurrentTime("postureChangeDelay");
 }
 
 void CreatureObjectImplementation::updatePostureDownRecovery() {
@@ -6505,7 +7080,7 @@ void CreatureObjectImplementation::updatePostureDownRecovery() {
 	cooldownTimerMap->updateToCurrentAndAddMili("postureDownRecovery", 30000);
 }
 
-bool CreatureObjectImplementation::checkPostureDownRecovery() {
+bool CreatureObjectImplementation::checkPostureDownRecovery() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.isPast("postureDownRecovery");
 	return cooldownTimerMap->isPast("postureDownRecovery");
 }
@@ -6515,7 +7090,7 @@ void CreatureObjectImplementation::updatePostureUpRecovery() {
 	cooldownTimerMap->updateToCurrentAndAddMili("postureUpRecovery", 30000);
 }
 
-bool CreatureObjectImplementation::checkPostureUpRecovery() {
+bool CreatureObjectImplementation::checkPostureUpRecovery() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.isPast("postureUpRecovery");
 	return cooldownTimerMap->isPast("postureUpRecovery");
 }
@@ -6525,14 +7100,26 @@ void CreatureObjectImplementation::updateKnockdownRecovery() {
 	cooldownTimerMap->updateToCurrentAndAddMili("knockdownRecovery", 30000);
 }
 
-bool CreatureObjectImplementation::checkKnockdownRecovery() {
+bool CreatureObjectImplementation::checkKnockdownRecovery() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.isPast("knockdownRecovery");
 	return cooldownTimerMap->isPast("knockdownRecovery");
 }
 
-bool CreatureObjectImplementation::hasDizzyEvent() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return dizzyFallDownEvent != null;
-	return dizzyFallDownEvent != NULL;
+void CreatureObjectImplementation::setNextAllowedMoveTime(unsigned long long time) {
+	// server/zone/objects/creature/CreatureObject.idl():  		nextAllowedMoveTime.updateToCurrentTime();
+	(&nextAllowedMoveTime)->updateToCurrentTime();
+	// server/zone/objects/creature/CreatureObject.idl():  		nextAllowedMoveTime.addMiliTime(time);
+	(&nextAllowedMoveTime)->addMiliTime(time);
+}
+
+bool CreatureObjectImplementation::isMovementAllowed() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return nextAllowedMoveTime.isPast();
+	return (&nextAllowedMoveTime)->isPast();
+}
+
+bool CreatureObjectImplementation::hasDizzyEvent() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return dizzyFallDownEvent;
+	return dizzyFallDownEvent;
 }
 
 void CreatureObjectImplementation::clearDizzyEvent() {
@@ -6576,12 +7163,12 @@ void CreatureObjectImplementation::updateCooldownTimer(const String& coooldownTi
 }
 }
 
-bool CreatureObjectImplementation::checkCooldownRecovery(const String& cooldown) {
+bool CreatureObjectImplementation::checkCooldownRecovery(const String& cooldown) const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.isPast(cooldown);
 	return cooldownTimerMap->isPast(cooldown);
 }
 
-Time* CreatureObjectImplementation::getCooldownTime(const String& cooldown) {
+const Time* CreatureObjectImplementation::getCooldownTime(const String& cooldown) const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return cooldownTimerMap.getTime(cooldown);
 	return cooldownTimerMap->getTime(cooldown);
 }
@@ -6592,8 +7179,8 @@ void CreatureObjectImplementation::addCooldown(const String& name, unsigned long
 }
 
 bool CreatureObjectImplementation::isGrouped() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return group != null;
-	return group != NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return group;
+	return group;
 }
 
 int CreatureObjectImplementation::getBankCredits() const{
@@ -6675,7 +7262,7 @@ unsigned long long CreatureObjectImplementation::getCreatureLinkID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		CreatureObject strongRef = linkedCreature;
 	ManagedReference<CreatureObject* > strongRef = linkedCreature;
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (strongRef != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getObjectID();
+	if (strongRef)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getObjectID();
 	return strongRef->getObjectID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -6728,8 +7315,8 @@ float CreatureObjectImplementation::getSpeedMultiplierBase() const{
 }
 
 float CreatureObjectImplementation::getSpeedMultiplierMod() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return speedMultiplierMod * 1.25;
-	return speedMultiplierMod * 1.25;
+	// server/zone/objects/creature/CreatureObject.idl():  		return speedMultiplierMod;
+	return speedMultiplierMod;
 }
 
 float CreatureObjectImplementation::getCurrentSpeed() const{
@@ -6742,14 +7329,9 @@ SpeedMultiplierModChanges* CreatureObjectImplementation::getSpeedMultiplierModCh
 	return (&speedMultiplierModChanges);
 }
 
-CommandQueueActionVector* CreatureObjectImplementation::getCommandQueue() {
-	// server/zone/objects/creature/CreatureObject.idl():  		return commandQueue;
-	return commandQueue;
-}
-
 int CreatureObjectImplementation::getCommandQueueSize() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return commandQueue.size();
-	return commandQueue->size();
+	// server/zone/objects/creature/CreatureObject.idl():  		return commandQueue.getQueueSize();
+	return commandQueue->getQueueSize();
 }
 
 void CreatureObjectImplementation::setLastActionCounter(unsigned int ctr) {
@@ -6767,14 +7349,19 @@ unsigned int CreatureObjectImplementation::incrementLastActionCounter() {
 	return lastActionCounter;
 }
 
-unsigned int CreatureObjectImplementation::getLastActionCounter() {
+unsigned int CreatureObjectImplementation::getLastActionCounter() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return lastActionCounter;
 	return lastActionCounter;
 }
 
-float CreatureObjectImplementation::getRunSpeed() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return runSpeed * 1.25;
-	return runSpeed * 1.25;
+float CreatureObjectImplementation::getSlopeModAngle() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return slopeModAngle;
+	return slopeModAngle;
+}
+
+float CreatureObjectImplementation::getWaterModPercent() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return waterModPercent;
+	return waterModPercent;
 }
 
 float CreatureObjectImplementation::getWalkSpeed() const{
@@ -6809,7 +7396,7 @@ String CreatureObjectImplementation::getMoodString() const{
 
 unsigned long long CreatureObjectImplementation::getWeaponID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  			return weapon.getObjectID();
-	if (weapon == NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
+	if (!weapon)	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
 	return 0;
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return weapon.getObjectID();
@@ -6825,7 +7412,7 @@ int CreatureObjectImplementation::getGuildID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		GuildObject strongRef = guild;
 	ManagedReference<GuildObject* > strongRef = guild;
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (strongRef != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getGuildID();
+	if (strongRef)	// server/zone/objects/creature/CreatureObject.idl():  			return strongRef.getGuildID();
 	return strongRef->getGuildID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -6835,8 +7422,8 @@ int CreatureObjectImplementation::getGuildID() const{
 bool CreatureObjectImplementation::isInGuild() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		GuildObject strongRef = guild;
 	ManagedReference<GuildObject* > strongRef = guild;
-	// server/zone/objects/creature/CreatureObject.idl():  		return strongRef != null;
-	return strongRef != NULL;
+	// server/zone/objects/creature/CreatureObject.idl():  		return strongRef;
+	return strongRef;
 }
 
 void CreatureObjectImplementation::setGuildObject(GuildObject* guildobj) {
@@ -6846,7 +7433,7 @@ void CreatureObjectImplementation::setGuildObject(GuildObject* guildobj) {
 
 unsigned long long CreatureObjectImplementation::getGroupID() const{
 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
-	if (group != NULL)	// server/zone/objects/creature/CreatureObject.idl():  			return group.getObjectID();
+	if (group)	// server/zone/objects/creature/CreatureObject.idl():  			return group.getObjectID();
 	return group->getObjectID();
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return 0;
@@ -6878,19 +7465,14 @@ byte CreatureObjectImplementation::getMoodID() const{
 	return moodID;
 }
 
-float CreatureObjectImplementation::getSlopeModPercent() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return slopeModPercent;
-	return slopeModPercent;
+int CreatureObjectImplementation::getPerformanceStartTime() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return performanceStartTime;
+	return performanceStartTime;
 }
 
-int CreatureObjectImplementation::getPerformanceCounter() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return performanceCounter;
-	return performanceCounter;
-}
-
-int CreatureObjectImplementation::getInstrumentID() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return instrumentID;
-	return instrumentID;
+int CreatureObjectImplementation::getPerformanceType() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return performanceType;
+	return performanceType;
 }
 
 byte CreatureObjectImplementation::getFrozen() const{
@@ -6898,22 +7480,17 @@ byte CreatureObjectImplementation::getFrozen() const{
 	return frozen;
 }
 
-float CreatureObjectImplementation::getHeight() const{
-	// server/zone/objects/creature/CreatureObject.idl():  		return height;
-	return height;
-}
-
-bool CreatureObjectImplementation::isDroidSpecies() {
+bool CreatureObjectImplementation::isDroidSpecies() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return getSpecies() >= 203 && getSpecies() <= 225 && getSpecies() != 207;
 	return getSpecies() >= 203 && getSpecies() <= 225 && getSpecies() != 207;
 }
 
-bool CreatureObjectImplementation::isWalkerSpecies() {
+bool CreatureObjectImplementation::isWalkerSpecies() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return getSpecies() == 226;
 	return getSpecies() == 226;
 }
 
-bool CreatureObjectImplementation::isProbotSpecies() {
+bool CreatureObjectImplementation::isProbotSpecies() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return getSpecies() == 216;
 	return getSpecies() == 216;
 }
@@ -6962,98 +7539,6 @@ String CreatureObjectImplementation::getSpeciesName() const{
 	return "sullustan";
 
 	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 8)	// server/zone/objects/creature/CreatureObject.idl():  			return "abyssin";
-	return "abyssin";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 9)	// server/zone/objects/creature/CreatureObject.idl():  			return "aqualish";
-	return "aqualish";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x0a)	// server/zone/objects/creature/CreatureObject.idl():  			return "arcona";
-	return "arcona";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x0c)	// server/zone/objects/creature/CreatureObject.idl():  			return "bith";
-	return "bith";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x0e)	// server/zone/objects/creature/CreatureObject.idl():  			return "chadra_fan";
-	return "chadra_fan";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x11)	// server/zone/objects/creature/CreatureObject.idl():  			return "devaronian";
-	return "devaronian";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x13)	// server/zone/objects/creature/CreatureObject.idl():  			return "dug";
-	return "dug";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x14)	// server/zone/objects/creature/CreatureObject.idl():  			return "duros";
-	return "duros";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x16)	// server/zone/objects/creature/CreatureObject.idl():  			return "ewok";
-	return "ewok";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x17)	// server/zone/objects/creature/CreatureObject.idl():  			return "feeorin";
-	return "feeorin";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x1b)	// server/zone/objects/creature/CreatureObject.idl():  			return "gotal";
-	return "gotal";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x1c)	// server/zone/objects/creature/CreatureObject.idl():  			return "gran";
-	return "gran";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x1d)	// server/zone/objects/creature/CreatureObject.idl():  			return "gungan";
-	return "gungan";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x1f)	// server/zone/objects/creature/CreatureObject.idl():  			return "hutt";
-	return "hutt";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x20)	// server/zone/objects/creature/CreatureObject.idl():  			return "ishi_tib";
-	return "ishi_tib";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x27)	// server/zone/objects/creature/CreatureObject.idl():  			return "kubaz";
-	return "kubaz";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x28)	// server/zone/objects/creature/CreatureObject.idl():  			return "sanyassan";
-	return "sanyassan";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x2a)	// server/zone/objects/creature/CreatureObject.idl():  			return "nikto";
-	return "nikto";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x2b)	// server/zone/objects/creature/CreatureObject.idl():  			return "ortolan";
-	return "ortolan";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x2e)	// server/zone/objects/creature/CreatureObject.idl():  			return "quarren";
-	return "quarren";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x32)	// server/zone/objects/creature/CreatureObject.idl():  			return "talz";
-	return "talz";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x35)	// server/zone/objects/creature/CreatureObject.idl():  			return "toydarian";
-	return "toydarian";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
-	if (species == 0x37)	// server/zone/objects/creature/CreatureObject.idl():  			return "weequay";
-	return "weequay";
-
-	else 	// server/zone/objects/creature/CreatureObject.idl():  			return "";
 	return "";
 }
 
@@ -7092,7 +7577,12 @@ bool CreatureObjectImplementation::isCreatureObject() {
 	return true;
 }
 
-bool CreatureObjectImplementation::isNextActionPast() {
+Time* CreatureObjectImplementation::getNextActionTime() {
+	// server/zone/objects/creature/CreatureObject.idl():  		return nextAction;
+	return (&nextAction);
+}
+
+bool CreatureObjectImplementation::isNextActionPast() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return nextAction.isPast();
 	return (&nextAction)->isPast();
 }
@@ -7110,6 +7600,11 @@ ManagedWeakReference<ControlDevice* > CreatureObjectImplementation::getControlDe
 float CreatureObjectImplementation::getSwimHeight() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return swimHeight;
 	return swimHeight;
+}
+
+unsigned long long CreatureObjectImplementation::getSpawnerID() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return spawnerID;
+	return spawnerID;
 }
 
 bool CreatureObjectImplementation::isIncapacitated() const{
@@ -7145,6 +7640,11 @@ bool CreatureObjectImplementation::isStanding() const{
 bool CreatureObjectImplementation::isSitting() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return posture == CreaturePosture.SITTING;
 	return posture == CreaturePosture::SITTING;
+}
+
+bool CreatureObjectImplementation::isLyingDown() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return posture == CreaturePosture.LYINGDOWN;
+	return posture == CreaturePosture::LYINGDOWN;
 }
 
 bool CreatureObjectImplementation::isSkillAnimating() const{
@@ -7262,6 +7762,36 @@ bool CreatureObjectImplementation::isInCover() const{
 	return stateBitmask & CreatureState::COVER;
 }
 
+bool CreatureObjectImplementation::isPilotingShip() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return (stateBitmask & CreatureState.PILOTINGSHIP) || (stateBitmask & CreatureState.PILOTINGPOBSHIP);
+	return (stateBitmask & CreatureState::PILOTINGSHIP) || (stateBitmask & CreatureState::PILOTINGPOBSHIP);
+}
+
+bool CreatureObjectImplementation::isOnboardPobShip() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return (stateBitmask & CreatureState.SHIPINTERIOR) || (stateBitmask & CreatureState.SHIPOPERATIONS) || (stateBitmask & CreatureState.SHIPGUNNER);
+	return (stateBitmask & CreatureState::SHIPINTERIOR) || (stateBitmask & CreatureState::SHIPOPERATIONS) || (stateBitmask & CreatureState::SHIPGUNNER);
+}
+
+bool CreatureObjectImplementation::isInShipStation() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return (stateBitmask & CreatureState.PILOTINGPOBSHIP) || (stateBitmask & CreatureState.SHIPOPERATIONS) || (stateBitmask & CreatureState.SHIPGUNNER);
+	return (stateBitmask & CreatureState::PILOTINGPOBSHIP) || (stateBitmask & CreatureState::SHIPOPERATIONS) || (stateBitmask & CreatureState::SHIPGUNNER);
+}
+
+bool CreatureObjectImplementation::isPobShipOperator() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return stateBitmask & CreatureState.SHIPOPERATIONS;
+	return stateBitmask & CreatureState::SHIPOPERATIONS;
+}
+
+bool CreatureObjectImplementation::isShipGunner() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return stateBitmask & CreatureState.SHIPGUNNER;
+	return stateBitmask & CreatureState::SHIPGUNNER;
+}
+
+bool CreatureObjectImplementation::isWalking() const{
+	// server/zone/objects/creature/CreatureObject.idl():  		return currentSpeed <= walkSpeed;
+	return currentSpeed <= walkSpeed;
+}
+
 bool CreatureObjectImplementation::isRunning() const{
 	// server/zone/objects/creature/CreatureObject.idl():  		return currentSpeed >= runSpeed;
 	return currentSpeed >= runSpeed;
@@ -7277,14 +7807,9 @@ bool CreatureObjectImplementation::isDroidObject() {
 	return false;
 }
 
-int CreatureObjectImplementation::getReceiverFlags() {
-	// server/zone/objects/creature/CreatureObject.idl():  	 int type = CloseObjectsVector.CREOTYPE;
-	int type = CloseObjectsVector::CREOTYPE;
-	// server/zone/objects/creature/CreatureObject.idl():  	 return 
-	if (isPlayerCreature())	// server/zone/objects/creature/CreatureObject.idl():  	 type = type | CloseObjectsVector.PLAYERTYPE;
-	type = type | CloseObjectsVector::PLAYERTYPE;
-	// server/zone/objects/creature/CreatureObject.idl():  	 return type | super.getReceiverFlags();
-	return type | TangibleObjectImplementation::getReceiverFlags();
+bool CreatureObjectImplementation::isHelperDroidObject() {
+	// server/zone/objects/creature/CreatureObject.idl():  		return false;
+	return false;
 }
 
 bool CreatureObjectImplementation::isInformantCreature() {
@@ -7345,6 +7870,16 @@ void CreatureObjectImplementation::setAuctionSearchTask(AuctionSearchTask* task)
 	auctionSearch = task;
 }
 
+void CreatureObjectImplementation::setTradeTargetID(unsigned long long playerID) {
+	// server/zone/objects/creature/CreatureObject.idl():  		tradeTargetID = playerID;
+	tradeTargetID = playerID;
+}
+
+unsigned long long CreatureObjectImplementation::getTradeTargetID() {
+	// server/zone/objects/creature/CreatureObject.idl():  		return tradeTargetID;
+	return tradeTargetID;
+}
+
 /*
  *	CreatureObjectAdapter
  */
@@ -7388,12 +7923,12 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SETCOUNTDOWNTIMER__INT_BOOL_:
+	case RPC_SETINCAPACITATIONTIMER__INT_BOOL_:
 		{
 			unsigned int newCount = inv->getUnsignedIntParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setCountdownTimer(newCount, notifyClient);
+			setIncapacitationTimer(newCount, notifyClient);
 			
 		}
 		break;
@@ -7432,6 +7967,21 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_SENDSCENERESETTOOWNER__:
+		{
+			
+			sendSceneResetToOwner();
+			
+		}
+		break;
+	case RPC_SENDOBJECTSTOOWNER__BOOL_:
+		{
+			bool doClose = inv->getBooleanParameter();
+			
+			sendObjectsToOwner(doClose);
+			
+		}
+		break;
 	case RPC_SENDSYSTEMMESSAGE__STRING_:
 		{
 			 String message; inv->getAsciiParameter(message);
@@ -7466,10 +8016,11 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__:
+	case RPC_SENDOPENHOLOCRONTOPAGEMESSAGE__STRING_:
 		{
+			 String page; inv->getAsciiParameter(page);
 			
-			sendOpenHolocronToPageMessage();
+			sendOpenHolocronToPageMessage(page);
 			
 		}
 		break;
@@ -7569,12 +8120,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_:
+	case RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_BOOL_BOOL_:
 		{
 			float newMultiplierMod = inv->getFloatParameter();
 			bool notifyClient = inv->getBooleanParameter();
+			bool recalculateBuffs = inv->getBooleanParameter();
 			
-			setAccelerationMultiplierMod(newMultiplierMod, notifyClient);
+			setAccelerationMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 			
 		}
 		break;
@@ -7587,12 +8139,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_:
+	case RPC_SETSPEEDMULTIPLIERMOD__FLOAT_BOOL_BOOL_:
 		{
 			float newMultiplierMod = inv->getFloatParameter();
 			bool notifyClient = inv->getBooleanParameter();
+			bool recalculateBuffs = inv->getBooleanParameter();
 			
-			setSpeedMultiplierMod(newMultiplierMod, notifyClient);
+			setSpeedMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 			
 		}
 		break;
@@ -7605,12 +8158,37 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_SETWALKSPEED__FLOAT_BOOL_:
+		{
+			float value = inv->getFloatParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setWalkSpeed(value, notifyClient);
+			
+		}
+		break;
+	case RPC_SETWATERMODPERCENT__FLOAT_BOOL_:
+		{
+			float value = inv->getFloatParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setWaterModPercent(value, notifyClient);
+			
+		}
+		break;
 	case RPC_SETRUNSPEED__FLOAT_BOOL_:
 		{
 			float newSpeed = inv->getFloatParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
 			setRunSpeed(newSpeed, notifyClient);
+			
+		}
+		break;
+	case RPC_UPDATERUNSPEED__:
+		{
+			
+			updateRunSpeed();
 			
 		}
 		break;
@@ -7787,12 +8365,12 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_SETINSTRUMENTID__INT_BOOL_:
+	case RPC_SETPERFORMANCETYPE__INT_BOOL_:
 		{
-			int instrumentid = inv->getSignedIntParameter();
+			int type = inv->getSignedIntParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setInstrumentID(instrumentid, notifyClient);
+			setPerformanceType(type, notifyClient);
 			
 		}
 		break;
@@ -7805,12 +8383,12 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SETPERFORMANCECOUNTER__INT_BOOL_:
+	case RPC_SETPERFORMANCESTARTTIME__INT_BOOL_:
 		{
 			int counter = inv->getSignedIntParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setPerformanceCounter(counter, notifyClient);
+			setPerformanceStartTime(counter, notifyClient);
 			
 		}
 		break;
@@ -7848,15 +8426,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			bool notifyClient = inv->getBooleanParameter();
 			
 			setTargetID(targetID, notifyClient);
-			
-		}
-		break;
-	case RPC_SETBANKCREDITS__INT_BOOL_:
-		{
-			int credits = inv->getSignedIntParameter();
-			bool notifyClient = inv->getBooleanParameter();
-			
-			setBankCredits(credits, notifyClient);
 			
 		}
 		break;
@@ -7961,6 +8530,28 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedLong(_m_res);
 		}
 		break;
+	case RPC_HASBUFF__INT_:
+		{
+			unsigned int buffcrc = inv->getUnsignedIntParameter();
+			
+			bool _m_res = hasBuff(buffcrc);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_HASSPICE__:
+		{
+			
+			bool _m_res = hasSpice();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_HASTRAPBUFF__:
+		{
+			
+			bool _m_res = hasTrapBuff();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_ADDDOTSTATE__CREATUREOBJECT_LONG_LONG_INT_BYTE_INT_FLOAT_INT_INT_:
 		{
 			CreatureObject* attacker = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -7992,14 +8583,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			clearDots();
 			
-		}
-		break;
-	case RPC_HASBUFF__INT_:
-		{
-			unsigned int buffcrc = inv->getUnsignedIntParameter();
-			
-			bool _m_res = hasBuff(buffcrc);
-			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_NOTIFYSELFPOSITIONUPDATE__:
@@ -8059,6 +8642,32 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_CLEARBANKCREDITS__BOOL_:
+		{
+			bool notifyClient = inv->getBooleanParameter();
+			
+			clearBankCredits(notifyClient);
+			
+		}
+		break;
+	case RPC_CLEARCASHCREDITS__BOOL_:
+		{
+			bool notifyClient = inv->getBooleanParameter();
+			
+			clearCashCredits(notifyClient);
+			
+		}
+		break;
+	case RPC_TRANSFERCREDITS__INT_INT_BOOL_:
+		{
+			int cash = inv->getSignedIntParameter();
+			int bank = inv->getSignedIntParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			
+			transferCredits(cash, bank, notifyClient);
+			
+		}
+		break;
 	case RPC_GETCREDITOBJECT__:
 		{
 			
@@ -8082,6 +8691,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_SUBTRACTCREDITS__INT_:
+		{
+			int credits = inv->getSignedIntParameter();
+			
+			bool _m_res = subtractCredits(credits);
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_VERIFYCASHCREDITS__INT_:
 		{
 			int credits = inv->getSignedIntParameter();
@@ -8095,6 +8712,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			int credits = inv->getSignedIntParameter();
 			
 			bool _m_res = verifyBankCredits(credits);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_VERIFYCREDITS__INT_:
+		{
+			int credits = inv->getSignedIntParameter();
+			
+			bool _m_res = verifyCredits(credits);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -8126,28 +8751,19 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETCASHCREDITS__INT_BOOL_:
+	case RPC_UPDATESLOPEMODS__BOOL_:
 		{
-			int credits = inv->getSignedIntParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setCashCredits(credits, notifyClient);
+			updateSlopeMods(notifyClient);
 			
 		}
 		break;
-	case RPC_SETTERRAINNEGOTIATION__FLOAT_BOOL_:
+	case RPC_UPDATEWATERMOD__BOOL_:
 		{
-			float value = inv->getFloatParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setTerrainNegotiation(value, notifyClient);
-			
-		}
-		break;
-	case RPC_UPDATETERRAINNEGOTIATION__:
-		{
-			
-			updateTerrainNegotiation();
+			updateWaterMod(notifyClient);
 			
 		}
 		break;
@@ -8297,6 +8913,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_SETSPAWNERID__LONG_:
+		{
+			unsigned long long spawnID = inv->getUnsignedLongParameter();
+			
+			setSpawnerID(spawnID);
+			
+		}
+		break;
 	case RPC_CLEARSTATE__LONG_BOOL_:
 		{
 			unsigned long long state = inv->getUnsignedLongParameter();
@@ -8304,6 +8928,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			bool _m_res = clearState(state, notifyClient);
 			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_CLEARSPACESTATES__:
+		{
+			
+			clearSpaceStates();
+			
 		}
 		break;
 	case RPC_SETCONTROLDEVICE__CONTROLDEVICE_:
@@ -8383,6 +9014,22 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_HEALFACTIONCHECKS__CREATUREOBJECT_BOOL_:
+		{
+			CreatureObject* object = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool isPlayer = inv->getBooleanParameter();
+			
+			bool _m_res = healFactionChecks(object, isPlayer);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISINVULNERABLE__:
+		{
+			
+			bool _m_res = isInvulnerable();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_HASBOUNTYMISSIONFOR__CREATUREOBJECT_:
 		{
 			CreatureObject* target = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -8391,11 +9038,48 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_:
+		{
+			unsigned long long missionOwnerID = inv->getUnsignedLongParameter();
+			unsigned long long objectID = inv->getUnsignedLongParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			bool notifyGroup = inv->getBooleanParameter();
+			
+			addSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+			
+		}
+		break;
+	case RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_BOOL_:
+		{
+			unsigned long long missionOwnerID = inv->getUnsignedLongParameter();
+			unsigned long long objectID = inv->getUnsignedLongParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			bool notifyGroup = inv->getBooleanParameter();
+			
+			removeSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+			
+		}
+		break;
+	case RPC_REMOVEALLSPACEMISSIONOBJECTS__BOOL_:
+		{
+			bool notifyClient = inv->getBooleanParameter();
+			
+			removeAllSpaceMissionObjects(notifyClient);
+			
+		}
+		break;
 	case RPC_SENDCONVERSATIONSTARTTO__SCENEOBJECT_:
 		{
 			SceneObject* player = static_cast<SceneObject*>(inv->getObjectParameter());
 			
 			bool _m_res = sendConversationStartTo(player);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_STOPCONVERSATION__:
+		{
+			
+			bool _m_res = stopConversation();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -8437,9 +9121,9 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_ISAGGRESSIVETO__CREATUREOBJECT_:
+	case RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_:
 		{
-			CreatureObject* object = static_cast<CreatureObject*>(inv->getObjectParameter());
+			TangibleObject* object = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
 			bool _m_res = isAggressiveTo(object);
 			resp->insertBoolean(_m_res);
@@ -8491,6 +9175,15 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			String _m_res = getFirstName();
+			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_SETFIRSTNAME__STRING_BOOL_:
+		{
+			 String newFirstName; inv->getAsciiParameter(newFirstName);
+			bool skipVerify = inv->getBooleanParameter();
+			
+			String _m_res = setFirstName(newFirstName, skipVerify);
 			resp->insertAscii(_m_res);
 		}
 		break;
@@ -8712,12 +9405,14 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_SETNEXTATTACKDELAY__INT_INT_:
+	case RPC_SETNEXTATTACKDELAY__CREATUREOBJECT_STRING_INT_INT_:
 		{
+			CreatureObject* attacker = static_cast<CreatureObject*>(inv->getObjectParameter());
+			 String command; inv->getAsciiParameter(command);
 			unsigned int mod = inv->getUnsignedIntParameter();
 			int del = inv->getSignedIntParameter();
 			
-			bool _m_res = setNextAttackDelay(mod, del);
+			bool _m_res = setNextAttackDelay(attacker, command, mod, del);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -8778,13 +9473,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_HASSPICE__:
-		{
-			
-			bool _m_res = hasSpice();
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_UPDATELASTSUCCESSFULCOMBATACTION__:
 		{
 			
@@ -8792,19 +9480,26 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_UPDATEPOSTURECHANGEDELAY__LONG_:
+	case RPC_SETPOSTURECHANGEDELAY__LONG_:
 		{
 			unsigned long long delay = inv->getUnsignedLongParameter();
 			
-			updatePostureChangeDelay(delay);
+			setPostureChangeDelay(delay);
 			
 		}
 		break;
-	case RPC_CHECKPOSTURECHANGEDELAY__:
+	case RPC_HASPOSTURECHANGEDELAY__:
 		{
 			
-			bool _m_res = checkPostureChangeDelay();
+			bool _m_res = hasPostureChangeDelay();
 			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_REMOVEPOSTURECHANGEDELAY__:
+		{
+			
+			removePostureChangeDelay();
+			
 		}
 		break;
 	case RPC_UPDATEPOSTUREDOWNRECOVERY__:
@@ -8846,6 +9541,21 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			bool _m_res = checkKnockdownRecovery();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_SETNEXTALLOWEDMOVETIME__LONG_:
+		{
+			unsigned long long time = inv->getUnsignedLongParameter();
+			
+			setNextAllowedMoveTime(time);
+			
+		}
+		break;
+	case RPC_ISMOVEMENTALLOWED__:
+		{
+			
+			bool _m_res = isMovementAllowed();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -8945,20 +9655,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			unsigned int animationCRC = inv->getUnsignedIntParameter();
 			
 			doCombatAnimation(animationCRC);
-			
-		}
-		break;
-	case RPC_ACTIVATEQUEUEACTION__:
-		{
-			
-			activateQueueAction();
-			
-		}
-		break;
-	case RPC_ACTIVATEIMMEDIATEACTION__:
-		{
-			
-			activateImmediateAction();
 			
 		}
 		break;
@@ -9172,10 +9868,24 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertInt(_m_res);
 		}
 		break;
-	case RPC_GETRUNSPEED__:
+	case RPC_GETSLOPEMODANGLE__:
 		{
 			
-			float _m_res = getRunSpeed();
+			float _m_res = getSlopeModAngle();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETSLOPEMODPERCENT__:
+		{
+			
+			float _m_res = getSlopeModPercent();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETWATERMODPERCENT__:
+		{
+			
+			float _m_res = getWaterModPercent();
 			resp->insertFloat(_m_res);
 		}
 		break;
@@ -9190,13 +9900,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			float _m_res = getTurnScale();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETTERRAINNEGOTIATION__:
-		{
-			
-			float _m_res = getTerrainNegotiation();
 			resp->insertFloat(_m_res);
 		}
 		break;
@@ -9239,6 +9942,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			DistributedObject* _m_res = getWeapon();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETDEFAULTWEAPON__:
+		{
+			
+			DistributedObject* _m_res = getDefaultWeapon();
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -9313,24 +10023,17 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertByte(_m_res);
 		}
 		break;
-	case RPC_GETSLOPEMODPERCENT__:
+	case RPC_GETPERFORMANCESTARTTIME__:
 		{
 			
-			float _m_res = getSlopeModPercent();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETPERFORMANCECOUNTER__:
-		{
-			
-			int _m_res = getPerformanceCounter();
+			int _m_res = getPerformanceStartTime();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETINSTRUMENTID__:
+	case RPC_GETPERFORMANCETYPE__:
 		{
 			
-			int _m_res = getInstrumentID();
+			int _m_res = getPerformanceType();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -9339,13 +10042,6 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			byte _m_res = getFrozen();
 			resp->insertByte(_m_res);
-		}
-		break;
-	case RPC_GETHEIGHT__:
-		{
-			
-			float _m_res = getHeight();
-			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_ISDROIDSPECIES__:
@@ -9481,6 +10177,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertFloat(_m_res);
 		}
 		break;
+	case RPC_GETSPAWNERID__:
+		{
+			
+			unsigned long long _m_res = getSpawnerID();
+			resp->insertLong(_m_res);
+		}
+		break;
 	case RPC_ISINCAPACITATED__:
 		{
 			
@@ -9527,6 +10230,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			bool _m_res = isSitting();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISLYINGDOWN__:
+		{
+			
+			bool _m_res = isLyingDown();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -9691,6 +10401,48 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISPILOTINGSHIP__:
+		{
+			
+			bool _m_res = isPilotingShip();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISONBOARDPOBSHIP__:
+		{
+			
+			bool _m_res = isOnboardPobShip();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISINSHIPSTATION__:
+		{
+			
+			bool _m_res = isInShipStation();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISPOBSHIPOPERATOR__:
+		{
+			
+			bool _m_res = isPobShipOperator();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISSHIPGUNNER__:
+		{
+			
+			bool _m_res = isShipGunner();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISWALKING__:
+		{
+			
+			bool _m_res = isWalking();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_ISRUNNING__:
 		{
 			
@@ -9709,6 +10461,13 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			bool _m_res = isDroidObject();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISHELPERDROIDOBJECT__:
+		{
+			
+			bool _m_res = isHelperDroidObject();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -9792,6 +10551,28 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			float baseCost = inv->getFloatParameter();
 			
 			float _m_res = calculateCostAdjustment(stat, baseCost);
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETSPEEDMODIFIER__:
+		{
+			
+			float _m_res = getSpeedModifier();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETACCELERATIONMODIFIER__:
+		{
+			
+			float _m_res = getAccelerationModifier();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETHEIGHT__BOOL_:
+		{
+			bool postureMod = inv->getBooleanParameter();
+			
+			float _m_res = getHeight(postureMod);
 			resp->insertFloat(_m_res);
 		}
 		break;
@@ -9909,11 +10690,52 @@ void CreatureObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETPASSENGERCAPACITY__:
+	case RPC_SETTRADETARGETID__LONG_:
+		{
+			unsigned long long playerID = inv->getUnsignedLongParameter();
+			
+			setTradeTargetID(playerID);
+			
+		}
+		break;
+	case RPC_GETTRADETARGETID__:
 		{
 			
-			int _m_res = getPassengerCapacity();
-			resp->insertSignedInt(_m_res);
+			unsigned long long _m_res = getTradeTargetID();
+			resp->insertLong(_m_res);
+		}
+		break;
+	case RPC_SETQUEUECOMMANDDELTATIME__STRING_STRING_:
+		{
+			 String commandName; inv->getDereferencedSerializableParameter<String >();
+			 String commandGroup; inv->getDereferencedSerializableParameter<String >();
+			
+			setQueueCommandDeltaTime(commandName, commandGroup);
+			
+		}
+		break;
+	case RPC_GETQUEUECOMMANDDELTATIME__STRING_:
+		{
+			 String commandName; inv->getDereferencedSerializableParameter<String >();
+			
+			unsigned long long _m_res = getQueueCommandDeltaTime(commandName);
+			resp->insertLong(_m_res);
+		}
+		break;
+	case RPC_GETOUTOFRANGEDISTANCE__LONG_:
+		{
+			unsigned long long specialRangeObjectID = inv->getUnsignedLongParameter();
+			
+			float _m_res = getOutOfRangeDistance(specialRangeObjectID);
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_ISMISSIONRANGEOBJECT__LONG_:
+		{
+			unsigned const long long objectID = inv->getUnsignedLongParameter();
+			
+			bool _m_res = isMissionRangeObject(objectID);
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	default:
@@ -9937,8 +10759,8 @@ void CreatureObjectAdapter::initializeTransientMembers() {
 	(static_cast<CreatureObject*>(stub))->initializeTransientMembers();
 }
 
-void CreatureObjectAdapter::setCountdownTimer(unsigned int newCount, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setCountdownTimer(newCount, notifyClient);
+void CreatureObjectAdapter::setIncapacitationTimer(unsigned int newCount, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->setIncapacitationTimer(newCount, notifyClient);
 }
 
 void CreatureObjectAdapter::clearQueueAction(unsigned int actioncntr, float timer, unsigned int tab1, unsigned int tab2) {
@@ -9957,6 +10779,14 @@ void CreatureObjectAdapter::sendToOwner(bool doClose) {
 	(static_cast<CreatureObject*>(stub))->sendToOwner(doClose);
 }
 
+void CreatureObjectAdapter::sendSceneResetToOwner() {
+	(static_cast<CreatureObject*>(stub))->sendSceneResetToOwner();
+}
+
+void CreatureObjectAdapter::sendObjectsToOwner(bool doClose) {
+	(static_cast<CreatureObject*>(stub))->sendObjectsToOwner(doClose);
+}
+
 void CreatureObjectAdapter::sendSystemMessage(const String& message) {
 	(static_cast<CreatureObject*>(stub))->sendSystemMessage(message);
 }
@@ -9973,8 +10803,8 @@ void CreatureObjectAdapter::sendNewbieTutorialEnableHudElement(const String& ui,
 	(static_cast<CreatureObject*>(stub))->sendNewbieTutorialEnableHudElement(ui, enable, blinkCount);
 }
 
-void CreatureObjectAdapter::sendOpenHolocronToPageMessage() {
-	(static_cast<CreatureObject*>(stub))->sendOpenHolocronToPageMessage();
+void CreatureObjectAdapter::sendOpenHolocronToPageMessage(const String& page) {
+	(static_cast<CreatureObject*>(stub))->sendOpenHolocronToPageMessage(page);
 }
 
 void CreatureObjectAdapter::sendSystemMessage(UnicodeString& message) {
@@ -10025,24 +10855,36 @@ void CreatureObjectAdapter::setAccelerationMultiplierBase(float newMultiplierBas
 	(static_cast<CreatureObject*>(stub))->setAccelerationMultiplierBase(newMultiplierBase, notifyClient);
 }
 
-void CreatureObjectAdapter::setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setAccelerationMultiplierMod(newMultiplierMod, notifyClient);
+void CreatureObjectAdapter::setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs) {
+	(static_cast<CreatureObject*>(stub))->setAccelerationMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 }
 
 void CreatureObjectAdapter::setSpeedMultiplierBase(float newMultiplierBase, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setSpeedMultiplierBase(newMultiplierBase, notifyClient);
 }
 
-void CreatureObjectAdapter::setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setSpeedMultiplierMod(newMultiplierMod, notifyClient);
+void CreatureObjectAdapter::setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs) {
+	(static_cast<CreatureObject*>(stub))->setSpeedMultiplierMod(newMultiplierMod, notifyClient, recalculateBuffs);
 }
 
 void CreatureObjectAdapter::setTurnScale(float newMultiplierMod, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setTurnScale(newMultiplierMod, notifyClient);
 }
 
+void CreatureObjectAdapter::setWalkSpeed(float value, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->setWalkSpeed(value, notifyClient);
+}
+
+void CreatureObjectAdapter::setWaterModPercent(float value, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->setWaterModPercent(value, notifyClient);
+}
+
 void CreatureObjectAdapter::setRunSpeed(float newSpeed, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setRunSpeed(newSpeed, notifyClient);
+}
+
+void CreatureObjectAdapter::updateRunSpeed() {
+	(static_cast<CreatureObject*>(stub))->updateRunSpeed();
 }
 
 void CreatureObjectAdapter::setCurrentSpeed(float newSpeed) {
@@ -10061,7 +10903,7 @@ int CreatureObjectAdapter::inflictDamage(TangibleObject* attacker, int damageTyp
 	return (static_cast<CreatureObject*>(stub))->inflictDamage(attacker, damageType, damage, destroy, xp, notifyClient, isCombatAction);
 }
 
-bool CreatureObjectAdapter::hasDamage(int attribute) {
+bool CreatureObjectAdapter::hasDamage(int attribute) const {
 	return (static_cast<CreatureObject*>(stub))->hasDamage(attribute);
 }
 
@@ -10113,16 +10955,16 @@ int CreatureObjectAdapter::notifyObjectRemoved(SceneObject* object) {
 	return (static_cast<CreatureObject*>(stub))->notifyObjectRemoved(object);
 }
 
-void CreatureObjectAdapter::setInstrumentID(int instrumentid, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setInstrumentID(instrumentid, notifyClient);
+void CreatureObjectAdapter::setPerformanceType(int type, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->setPerformanceType(type, notifyClient);
 }
 
 void CreatureObjectAdapter::setListenToID(unsigned long long id, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setListenToID(id, notifyClient);
 }
 
-void CreatureObjectAdapter::setPerformanceCounter(int counter, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setPerformanceCounter(counter, notifyClient);
+void CreatureObjectAdapter::setPerformanceStartTime(int counter, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->setPerformanceStartTime(counter, notifyClient);
 }
 
 void CreatureObjectAdapter::setPerformanceAnimation(const String& animation, bool notifyClient) {
@@ -10139,10 +10981,6 @@ void CreatureObjectAdapter::addShockWounds(int shockToAdd, bool notiyClient, boo
 
 void CreatureObjectAdapter::setTargetID(unsigned long long targetID, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setTargetID(targetID, notifyClient);
-}
-
-void CreatureObjectAdapter::setBankCredits(int credits, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setBankCredits(credits, notifyClient);
 }
 
 void CreatureObjectAdapter::addBuff(Buff* buff) {
@@ -10181,16 +11019,28 @@ void CreatureObjectAdapter::removeWearableObject(TangibleObject* object, bool no
 	(static_cast<CreatureObject*>(stub))->removeWearableObject(object, notifyClient);
 }
 
-void CreatureObjectAdapter::sendBuffsTo(CreatureObject* creature) {
+void CreatureObjectAdapter::sendBuffsTo(CreatureObject* creature) const {
 	(static_cast<CreatureObject*>(stub))->sendBuffsTo(creature);
 }
 
-Buff* CreatureObjectAdapter::getBuff(unsigned int buffcrc) {
+Buff* CreatureObjectAdapter::getBuff(unsigned int buffcrc) const {
 	return (static_cast<CreatureObject*>(stub))->getBuff(buffcrc);
 }
 
-long long CreatureObjectAdapter::getSkillModFromBuffs(const String& skillMod) {
+long long CreatureObjectAdapter::getSkillModFromBuffs(const String& skillMod) const {
 	return (static_cast<CreatureObject*>(stub))->getSkillModFromBuffs(skillMod);
+}
+
+bool CreatureObjectAdapter::hasBuff(unsigned int buffcrc) const {
+	return (static_cast<CreatureObject*>(stub))->hasBuff(buffcrc);
+}
+
+bool CreatureObjectAdapter::hasSpice() const {
+	return (static_cast<CreatureObject*>(stub))->hasSpice();
+}
+
+bool CreatureObjectAdapter::hasTrapBuff() const {
+	return (static_cast<CreatureObject*>(stub))->hasTrapBuff();
 }
 
 int CreatureObjectAdapter::addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength) {
@@ -10203,10 +11053,6 @@ bool CreatureObjectAdapter::healDot(unsigned long long dotType, int reduction, b
 
 void CreatureObjectAdapter::clearDots() {
 	(static_cast<CreatureObject*>(stub))->clearDots();
-}
-
-bool CreatureObjectAdapter::hasBuff(unsigned int buffcrc) {
-	return (static_cast<CreatureObject*>(stub))->hasBuff(buffcrc);
 }
 
 void CreatureObjectAdapter::notifySelfPositionUpdate() {
@@ -10237,6 +11083,18 @@ void CreatureObjectAdapter::addCashCredits(int credits, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->addCashCredits(credits, notifyClient);
 }
 
+void CreatureObjectAdapter::clearBankCredits(bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->clearBankCredits(notifyClient);
+}
+
+void CreatureObjectAdapter::clearCashCredits(bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->clearCashCredits(notifyClient);
+}
+
+void CreatureObjectAdapter::transferCredits(int cash, int bank, bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->transferCredits(cash, bank, notifyClient);
+}
+
 CreditObject* CreatureObjectAdapter::getCreditObject() {
 	return (static_cast<CreatureObject*>(stub))->getCreditObject();
 }
@@ -10249,12 +11107,20 @@ void CreatureObjectAdapter::subtractCashCredits(int credits) {
 	(static_cast<CreatureObject*>(stub))->subtractCashCredits(credits);
 }
 
+bool CreatureObjectAdapter::subtractCredits(int credits) {
+	return (static_cast<CreatureObject*>(stub))->subtractCredits(credits);
+}
+
 bool CreatureObjectAdapter::verifyCashCredits(int credits) {
 	return (static_cast<CreatureObject*>(stub))->verifyCashCredits(credits);
 }
 
 bool CreatureObjectAdapter::verifyBankCredits(int credits) {
 	return (static_cast<CreatureObject*>(stub))->verifyBankCredits(credits);
+}
+
+bool CreatureObjectAdapter::verifyCredits(int credits) {
+	return (static_cast<CreatureObject*>(stub))->verifyCredits(credits);
 }
 
 bool CreatureObjectAdapter::isDancing() {
@@ -10273,16 +11139,12 @@ bool CreatureObjectAdapter::isEntertaining() {
 	return (static_cast<CreatureObject*>(stub))->isEntertaining();
 }
 
-void CreatureObjectAdapter::setCashCredits(int credits, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setCashCredits(credits, notifyClient);
+void CreatureObjectAdapter::updateSlopeMods(bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->updateSlopeMods(notifyClient);
 }
 
-void CreatureObjectAdapter::setTerrainNegotiation(float value, bool notifyClient) {
-	(static_cast<CreatureObject*>(stub))->setTerrainNegotiation(value, notifyClient);
-}
-
-void CreatureObjectAdapter::updateTerrainNegotiation() {
-	(static_cast<CreatureObject*>(stub))->updateTerrainNegotiation();
+void CreatureObjectAdapter::updateWaterMod(bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->updateWaterMod(notifyClient);
 }
 
 void CreatureObjectAdapter::addSkill(const String& skill, bool notifyClient) {
@@ -10345,8 +11207,16 @@ void CreatureObjectAdapter::setAlternateAppearance(const String& appearanceTeamp
 	(static_cast<CreatureObject*>(stub))->setAlternateAppearance(appearanceTeamplate, notifyClient);
 }
 
+void CreatureObjectAdapter::setSpawnerID(unsigned long long spawnID) {
+	(static_cast<CreatureObject*>(stub))->setSpawnerID(spawnID);
+}
+
 bool CreatureObjectAdapter::clearState(unsigned long long state, bool notifyClient) {
 	return (static_cast<CreatureObject*>(stub))->clearState(state, notifyClient);
+}
+
+void CreatureObjectAdapter::clearSpaceStates() {
+	(static_cast<CreatureObject*>(stub))->clearSpaceStates();
 }
 
 void CreatureObjectAdapter::setControlDevice(ControlDevice* device) {
@@ -10385,12 +11255,36 @@ bool CreatureObjectAdapter::isHealableBy(CreatureObject* object) {
 	return (static_cast<CreatureObject*>(stub))->isHealableBy(object);
 }
 
+bool CreatureObjectAdapter::healFactionChecks(CreatureObject* object, bool isPlayer) {
+	return (static_cast<CreatureObject*>(stub))->healFactionChecks(object, isPlayer);
+}
+
+bool CreatureObjectAdapter::isInvulnerable() {
+	return (static_cast<CreatureObject*>(stub))->isInvulnerable();
+}
+
 bool CreatureObjectAdapter::hasBountyMissionFor(CreatureObject* target) {
 	return (static_cast<CreatureObject*>(stub))->hasBountyMissionFor(target);
 }
 
+void CreatureObjectAdapter::addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup) {
+	(static_cast<CreatureObject*>(stub))->addSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+}
+
+void CreatureObjectAdapter::removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup) {
+	(static_cast<CreatureObject*>(stub))->removeSpaceMissionObject(missionOwnerID, objectID, notifyClient, notifyGroup);
+}
+
+void CreatureObjectAdapter::removeAllSpaceMissionObjects(bool notifyClient) {
+	(static_cast<CreatureObject*>(stub))->removeAllSpaceMissionObjects(notifyClient);
+}
+
 bool CreatureObjectAdapter::sendConversationStartTo(SceneObject* player) {
 	return (static_cast<CreatureObject*>(stub))->sendConversationStartTo(player);
+}
+
+bool CreatureObjectAdapter::stopConversation() {
+	return (static_cast<CreatureObject*>(stub))->stopConversation();
 }
 
 void CreatureObjectAdapter::selectConversationOption(int option, SceneObject* obj) {
@@ -10409,7 +11303,7 @@ void CreatureObjectAdapter::sendExecuteConsoleCommand(const String& command) {
 	(static_cast<CreatureObject*>(stub))->sendExecuteConsoleCommand(command);
 }
 
-bool CreatureObjectAdapter::isAggressiveTo(CreatureObject* object) {
+bool CreatureObjectAdapter::isAggressiveTo(TangibleObject* object) {
 	return (static_cast<CreatureObject*>(stub))->isAggressiveTo(object);
 }
 
@@ -10433,15 +11327,19 @@ void CreatureObjectAdapter::setFactionRank(int rank, bool notifyClient) {
 	(static_cast<CreatureObject*>(stub))->setFactionRank(rank, notifyClient);
 }
 
-String CreatureObjectAdapter::getFirstName() {
+String CreatureObjectAdapter::getFirstName() const {
 	return (static_cast<CreatureObject*>(stub))->getFirstName();
+}
+
+String CreatureObjectAdapter::setFirstName(const String& newFirstName, bool skipVerify) {
+	return (static_cast<CreatureObject*>(stub))->setFirstName(newFirstName, skipVerify);
 }
 
 String CreatureObjectAdapter::setFirstName(const String& newFirstName) {
 	return (static_cast<CreatureObject*>(stub))->setFirstName(newFirstName);
 }
 
-String CreatureObjectAdapter::getLastName() {
+String CreatureObjectAdapter::getLastName() const {
 	return (static_cast<CreatureObject*>(stub))->getLastName();
 }
 
@@ -10493,7 +11391,7 @@ void CreatureObjectAdapter::dismount() {
 	(static_cast<CreatureObject*>(stub))->dismount();
 }
 
-float CreatureObjectAdapter::calculateBFRatio() {
+float CreatureObjectAdapter::calculateBFRatio() const {
 	return (static_cast<CreatureObject*>(stub))->calculateBFRatio();
 }
 
@@ -10553,8 +11451,8 @@ void CreatureObjectAdapter::setRootedState(int durationSeconds) {
 	(static_cast<CreatureObject*>(stub))->setRootedState(durationSeconds);
 }
 
-bool CreatureObjectAdapter::setNextAttackDelay(unsigned int mod, int del) {
-	return (static_cast<CreatureObject*>(stub))->setNextAttackDelay(mod, del);
+bool CreatureObjectAdapter::setNextAttackDelay(CreatureObject* attacker, const String& command, unsigned int mod, int del) {
+	return (static_cast<CreatureObject*>(stub))->setNextAttackDelay(attacker, command, mod, del);
 }
 
 void CreatureObjectAdapter::setMeditateState() {
@@ -10577,7 +11475,7 @@ void CreatureObjectAdapter::updateTimeOfDeath() {
 	(static_cast<CreatureObject*>(stub))->updateTimeOfDeath();
 }
 
-bool CreatureObjectAdapter::hasAttackDelay() {
+bool CreatureObjectAdapter::hasAttackDelay() const {
 	return (static_cast<CreatureObject*>(stub))->hasAttackDelay();
 }
 
@@ -10585,31 +11483,31 @@ void CreatureObjectAdapter::removeAttackDelay() {
 	(static_cast<CreatureObject*>(stub))->removeAttackDelay();
 }
 
-bool CreatureObjectAdapter::hasIncapTimer() {
+bool CreatureObjectAdapter::hasIncapTimer() const {
 	return (static_cast<CreatureObject*>(stub))->hasIncapTimer();
-}
-
-bool CreatureObjectAdapter::hasSpice() {
-	return (static_cast<CreatureObject*>(stub))->hasSpice();
 }
 
 void CreatureObjectAdapter::updateLastSuccessfulCombatAction() {
 	(static_cast<CreatureObject*>(stub))->updateLastSuccessfulCombatAction();
 }
 
-void CreatureObjectAdapter::updatePostureChangeDelay(unsigned long long delay) {
-	(static_cast<CreatureObject*>(stub))->updatePostureChangeDelay(delay);
+void CreatureObjectAdapter::setPostureChangeDelay(unsigned long long delay) {
+	(static_cast<CreatureObject*>(stub))->setPostureChangeDelay(delay);
 }
 
-bool CreatureObjectAdapter::checkPostureChangeDelay() {
-	return (static_cast<CreatureObject*>(stub))->checkPostureChangeDelay();
+bool CreatureObjectAdapter::hasPostureChangeDelay() const {
+	return (static_cast<CreatureObject*>(stub))->hasPostureChangeDelay();
+}
+
+void CreatureObjectAdapter::removePostureChangeDelay() {
+	(static_cast<CreatureObject*>(stub))->removePostureChangeDelay();
 }
 
 void CreatureObjectAdapter::updatePostureDownRecovery() {
 	(static_cast<CreatureObject*>(stub))->updatePostureDownRecovery();
 }
 
-bool CreatureObjectAdapter::checkPostureDownRecovery() {
+bool CreatureObjectAdapter::checkPostureDownRecovery() const {
 	return (static_cast<CreatureObject*>(stub))->checkPostureDownRecovery();
 }
 
@@ -10617,7 +11515,7 @@ void CreatureObjectAdapter::updatePostureUpRecovery() {
 	(static_cast<CreatureObject*>(stub))->updatePostureUpRecovery();
 }
 
-bool CreatureObjectAdapter::checkPostureUpRecovery() {
+bool CreatureObjectAdapter::checkPostureUpRecovery() const {
 	return (static_cast<CreatureObject*>(stub))->checkPostureUpRecovery();
 }
 
@@ -10625,8 +11523,16 @@ void CreatureObjectAdapter::updateKnockdownRecovery() {
 	(static_cast<CreatureObject*>(stub))->updateKnockdownRecovery();
 }
 
-bool CreatureObjectAdapter::checkKnockdownRecovery() {
+bool CreatureObjectAdapter::checkKnockdownRecovery() const {
 	return (static_cast<CreatureObject*>(stub))->checkKnockdownRecovery();
+}
+
+void CreatureObjectAdapter::setNextAllowedMoveTime(unsigned long long time) {
+	(static_cast<CreatureObject*>(stub))->setNextAllowedMoveTime(time);
+}
+
+bool CreatureObjectAdapter::isMovementAllowed() const {
+	return (static_cast<CreatureObject*>(stub))->isMovementAllowed();
 }
 
 void CreatureObjectAdapter::updateGroupMFDPositions() {
@@ -10637,7 +11543,7 @@ void CreatureObjectAdapter::queueDizzyFallEvent() {
 	(static_cast<CreatureObject*>(stub))->queueDizzyFallEvent();
 }
 
-bool CreatureObjectAdapter::hasDizzyEvent() {
+bool CreatureObjectAdapter::hasDizzyEvent() const {
 	return (static_cast<CreatureObject*>(stub))->hasDizzyEvent();
 }
 
@@ -10657,7 +11563,7 @@ void CreatureObjectAdapter::updateCooldownTimer(const String& coooldownTimer, un
 	(static_cast<CreatureObject*>(stub))->updateCooldownTimer(coooldownTimer, miliSecondsToAdd);
 }
 
-bool CreatureObjectAdapter::checkCooldownRecovery(const String& cooldown) {
+bool CreatureObjectAdapter::checkCooldownRecovery(const String& cooldown) const {
 	return (static_cast<CreatureObject*>(stub))->checkCooldownRecovery(cooldown);
 }
 
@@ -10677,15 +11583,7 @@ void CreatureObjectAdapter::doCombatAnimation(unsigned int animationCRC) {
 	(static_cast<CreatureObject*>(stub))->doCombatAnimation(animationCRC);
 }
 
-void CreatureObjectAdapter::activateQueueAction() {
-	(static_cast<CreatureObject*>(stub))->activateQueueAction();
-}
-
-void CreatureObjectAdapter::activateImmediateAction() {
-	(static_cast<CreatureObject*>(stub))->activateImmediateAction();
-}
-
-UnicodeString CreatureObjectAdapter::getCreatureName() {
+UnicodeString CreatureObjectAdapter::getCreatureName() const {
 	return (static_cast<CreatureObject*>(stub))->getCreatureName();
 }
 
@@ -10797,12 +11695,20 @@ unsigned int CreatureObjectAdapter::incrementLastActionCounter() {
 	return (static_cast<CreatureObject*>(stub))->incrementLastActionCounter();
 }
 
-unsigned int CreatureObjectAdapter::getLastActionCounter() {
+unsigned int CreatureObjectAdapter::getLastActionCounter() const {
 	return (static_cast<CreatureObject*>(stub))->getLastActionCounter();
 }
 
-float CreatureObjectAdapter::getRunSpeed() const {
-	return (static_cast<CreatureObject*>(stub))->getRunSpeed();
+float CreatureObjectAdapter::getSlopeModAngle() const {
+	return (static_cast<CreatureObject*>(stub))->getSlopeModAngle();
+}
+
+float CreatureObjectAdapter::getSlopeModPercent() const {
+	return (static_cast<CreatureObject*>(stub))->getSlopeModPercent();
+}
+
+float CreatureObjectAdapter::getWaterModPercent() const {
+	return (static_cast<CreatureObject*>(stub))->getWaterModPercent();
 }
 
 float CreatureObjectAdapter::getWalkSpeed() const {
@@ -10811,10 +11717,6 @@ float CreatureObjectAdapter::getWalkSpeed() const {
 
 float CreatureObjectAdapter::getTurnScale() const {
 	return (static_cast<CreatureObject*>(stub))->getTurnScale();
-}
-
-float CreatureObjectAdapter::getTerrainNegotiation() const {
-	return (static_cast<CreatureObject*>(stub))->getTerrainNegotiation();
 }
 
 float CreatureObjectAdapter::getRunAcceleration() const {
@@ -10839,6 +11741,10 @@ unsigned long long CreatureObjectAdapter::getWeaponID() const {
 
 Reference<WeaponObject* > CreatureObjectAdapter::getWeapon() {
 	return (static_cast<CreatureObject*>(stub))->getWeapon();
+}
+
+WeaponObject* CreatureObjectAdapter::getDefaultWeapon() {
+	return (static_cast<CreatureObject*>(stub))->getDefaultWeapon();
 }
 
 ManagedWeakReference<GuildObject* > CreatureObjectAdapter::getGuildObject() const {
@@ -10881,43 +11787,35 @@ byte CreatureObjectAdapter::getMoodID() const {
 	return (static_cast<CreatureObject*>(stub))->getMoodID();
 }
 
-float CreatureObjectAdapter::getSlopeModPercent() const {
-	return (static_cast<CreatureObject*>(stub))->getSlopeModPercent();
+int CreatureObjectAdapter::getPerformanceStartTime() const {
+	return (static_cast<CreatureObject*>(stub))->getPerformanceStartTime();
 }
 
-int CreatureObjectAdapter::getPerformanceCounter() const {
-	return (static_cast<CreatureObject*>(stub))->getPerformanceCounter();
-}
-
-int CreatureObjectAdapter::getInstrumentID() const {
-	return (static_cast<CreatureObject*>(stub))->getInstrumentID();
+int CreatureObjectAdapter::getPerformanceType() const {
+	return (static_cast<CreatureObject*>(stub))->getPerformanceType();
 }
 
 byte CreatureObjectAdapter::getFrozen() const {
 	return (static_cast<CreatureObject*>(stub))->getFrozen();
 }
 
-float CreatureObjectAdapter::getHeight() const {
-	return (static_cast<CreatureObject*>(stub))->getHeight();
-}
-
-bool CreatureObjectAdapter::isDroidSpecies() {
+bool CreatureObjectAdapter::isDroidSpecies() const {
 	return (static_cast<CreatureObject*>(stub))->isDroidSpecies();
 }
 
-bool CreatureObjectAdapter::isWalkerSpecies() {
+bool CreatureObjectAdapter::isWalkerSpecies() const {
 	return (static_cast<CreatureObject*>(stub))->isWalkerSpecies();
 }
 
-bool CreatureObjectAdapter::isProbotSpecies() {
+bool CreatureObjectAdapter::isProbotSpecies() const {
 	return (static_cast<CreatureObject*>(stub))->isProbotSpecies();
 }
 
-bool CreatureObjectAdapter::hasEffectImmunity(byte effectType) {
+bool CreatureObjectAdapter::hasEffectImmunity(byte effectType) const {
 	return (static_cast<CreatureObject*>(stub))->hasEffectImmunity(effectType);
 }
 
-bool CreatureObjectAdapter::hasDotImmunity(unsigned int dotType) {
+bool CreatureObjectAdapter::hasDotImmunity(unsigned int dotType) const {
 	return (static_cast<CreatureObject*>(stub))->hasDotImmunity(dotType);
 }
 
@@ -10953,7 +11851,7 @@ bool CreatureObjectAdapter::isCreatureObject() {
 	return (static_cast<CreatureObject*>(stub))->isCreatureObject();
 }
 
-bool CreatureObjectAdapter::isNextActionPast() {
+bool CreatureObjectAdapter::isNextActionPast() const {
 	return (static_cast<CreatureObject*>(stub))->isNextActionPast();
 }
 
@@ -10971,6 +11869,10 @@ ManagedWeakReference<ControlDevice* > CreatureObjectAdapter::getControlDevice() 
 
 float CreatureObjectAdapter::getSwimHeight() const {
 	return (static_cast<CreatureObject*>(stub))->getSwimHeight();
+}
+
+unsigned long long CreatureObjectAdapter::getSpawnerID() const {
+	return (static_cast<CreatureObject*>(stub))->getSpawnerID();
 }
 
 bool CreatureObjectAdapter::isIncapacitated() const {
@@ -10999,6 +11901,10 @@ bool CreatureObjectAdapter::isStanding() const {
 
 bool CreatureObjectAdapter::isSitting() const {
 	return (static_cast<CreatureObject*>(stub))->isSitting();
+}
+
+bool CreatureObjectAdapter::isLyingDown() const {
+	return (static_cast<CreatureObject*>(stub))->isLyingDown();
 }
 
 bool CreatureObjectAdapter::isSkillAnimating() const {
@@ -11093,6 +11999,30 @@ bool CreatureObjectAdapter::isInCover() const {
 	return (static_cast<CreatureObject*>(stub))->isInCover();
 }
 
+bool CreatureObjectAdapter::isPilotingShip() const {
+	return (static_cast<CreatureObject*>(stub))->isPilotingShip();
+}
+
+bool CreatureObjectAdapter::isOnboardPobShip() const {
+	return (static_cast<CreatureObject*>(stub))->isOnboardPobShip();
+}
+
+bool CreatureObjectAdapter::isInShipStation() const {
+	return (static_cast<CreatureObject*>(stub))->isInShipStation();
+}
+
+bool CreatureObjectAdapter::isPobShipOperator() const {
+	return (static_cast<CreatureObject*>(stub))->isPobShipOperator();
+}
+
+bool CreatureObjectAdapter::isShipGunner() const {
+	return (static_cast<CreatureObject*>(stub))->isShipGunner();
+}
+
+bool CreatureObjectAdapter::isWalking() const {
+	return (static_cast<CreatureObject*>(stub))->isWalking();
+}
+
 bool CreatureObjectAdapter::isRunning() const {
 	return (static_cast<CreatureObject*>(stub))->isRunning();
 }
@@ -11105,11 +12035,15 @@ bool CreatureObjectAdapter::isDroidObject() {
 	return (static_cast<CreatureObject*>(stub))->isDroidObject();
 }
 
+bool CreatureObjectAdapter::isHelperDroidObject() {
+	return (static_cast<CreatureObject*>(stub))->isHelperDroidObject();
+}
+
 bool CreatureObjectAdapter::isPlayerCreature() {
 	return (static_cast<CreatureObject*>(stub))->isPlayerCreature();
 }
 
-int CreatureObjectAdapter::getReceiverFlags() {
+int CreatureObjectAdapter::getReceiverFlags() const {
 	return (static_cast<CreatureObject*>(stub))->getReceiverFlags();
 }
 
@@ -11145,8 +12079,20 @@ String CreatureObjectAdapter::getAlternateAppearance() const {
 	return (static_cast<CreatureObject*>(stub))->getAlternateAppearance();
 }
 
-float CreatureObjectAdapter::calculateCostAdjustment(byte stat, float baseCost) {
+float CreatureObjectAdapter::calculateCostAdjustment(byte stat, float baseCost) const {
 	return (static_cast<CreatureObject*>(stub))->calculateCostAdjustment(stat, baseCost);
+}
+
+float CreatureObjectAdapter::getSpeedModifier() const {
+	return (static_cast<CreatureObject*>(stub))->getSpeedModifier();
+}
+
+float CreatureObjectAdapter::getAccelerationModifier() const {
+	return (static_cast<CreatureObject*>(stub))->getAccelerationModifier();
+}
+
+float CreatureObjectAdapter::getHeight(bool postureMod) const {
+	return (static_cast<CreatureObject*>(stub))->getHeight(postureMod);
 }
 
 void CreatureObjectAdapter::updateSpeedAndAccelerationMods() {
@@ -11209,8 +12155,28 @@ int CreatureObjectAdapter::getHueValue() const {
 	return (static_cast<CreatureObject*>(stub))->getHueValue();
 }
 
-int CreatureObjectAdapter::getPassengerCapacity() {
-	return (static_cast<CreatureObject*>(stub))->getPassengerCapacity();
+void CreatureObjectAdapter::setTradeTargetID(unsigned long long playerID) {
+	(static_cast<CreatureObject*>(stub))->setTradeTargetID(playerID);
+}
+
+unsigned long long CreatureObjectAdapter::getTradeTargetID() {
+	return (static_cast<CreatureObject*>(stub))->getTradeTargetID();
+}
+
+void CreatureObjectAdapter::setQueueCommandDeltaTime(const String& commandName, const String& commandGroup) {
+	(static_cast<CreatureObject*>(stub))->setQueueCommandDeltaTime(commandName, commandGroup);
+}
+
+unsigned long long CreatureObjectAdapter::getQueueCommandDeltaTime(const String& commandName) {
+	return (static_cast<CreatureObject*>(stub))->getQueueCommandDeltaTime(commandName);
+}
+
+float CreatureObjectAdapter::getOutOfRangeDistance(unsigned long long specialRangeObjectID) {
+	return (static_cast<CreatureObject*>(stub))->getOutOfRangeDistance(specialRangeObjectID);
+}
+
+bool CreatureObjectAdapter::isMissionRangeObject(unsigned const long long& objectID) {
+	return (static_cast<CreatureObject*>(stub))->isMissionRangeObject(objectID);
 }
 
 /*
@@ -11341,8 +12307,8 @@ void CreatureObjectPOD::writeJSON(nlohmann::json& j) {
 	if (currentSpeed)
 		thisObject["currentSpeed"] = currentSpeed.value();
 
-	if (terrainNegotiation)
-		thisObject["terrainNegotiation"] = terrainNegotiation.value();
+	if (waterModPercent)
+		thisObject["waterModPercent"] = waterModPercent.value();
 
 	if (runAcceleration)
 		thisObject["runAcceleration"] = runAcceleration.value();
@@ -11395,11 +12361,11 @@ void CreatureObjectPOD::writeJSON(nlohmann::json& j) {
 	if (moodID)
 		thisObject["moodID"] = moodID.value();
 
-	if (performanceCounter)
-		thisObject["performanceCounter"] = performanceCounter.value();
+	if (performanceStartTime)
+		thisObject["performanceStartTime"] = performanceStartTime.value();
 
-	if (instrumentID)
-		thisObject["instrumentID"] = instrumentID.value();
+	if (performanceType)
+		thisObject["performanceType"] = performanceType.value();
 
 	if (hamList)
 		thisObject["hamList"] = hamList.value();
@@ -11721,12 +12687,12 @@ int CreatureObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (terrainNegotiation) {
-	_nameHashCode = 0xe5a6e8cb; //CreatureObject.terrainNegotiation
+	if (waterModPercent) {
+	_nameHashCode = 0xd9e0e9be; //CreatureObject.waterModPercent
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&terrainNegotiation.value(), stream);
+	TypeInfo<float >::toBinaryStream(&waterModPercent.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -11919,23 +12885,23 @@ int CreatureObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (performanceCounter) {
-	_nameHashCode = 0x83a587da; //CreatureObject.performanceCounter
+	if (performanceStartTime) {
+	_nameHashCode = 0x28e50767; //CreatureObject.performanceStartTime
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&performanceCounter.value(), stream);
+	TypeInfo<int >::toBinaryStream(&performanceStartTime.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 	}
 
-	if (instrumentID) {
-	_nameHashCode = 0x41617b95; //CreatureObject.instrumentID
+	if (performanceType) {
+	_nameHashCode = 0xa2a6c0f; //CreatureObject.performanceType
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&instrumentID.value(), stream);
+	TypeInfo<int >::toBinaryStream(&performanceType.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -12285,11 +13251,11 @@ bool CreatureObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
-	case 0xe5a6e8cb: //CreatureObject.terrainNegotiation
+	case 0xd9e0e9be: //CreatureObject.waterModPercent
 		{
-			float _mnterrainNegotiation;
-			TypeInfo<float >::parseFromBinaryStream(&_mnterrainNegotiation, stream);
-			terrainNegotiation = std::move(_mnterrainNegotiation);
+			float _mnwaterModPercent;
+			TypeInfo<float >::parseFromBinaryStream(&_mnwaterModPercent, stream);
+			waterModPercent = std::move(_mnwaterModPercent);
 		}
 		return true;
 
@@ -12429,19 +13395,19 @@ bool CreatureObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
-	case 0x83a587da: //CreatureObject.performanceCounter
+	case 0x28e50767: //CreatureObject.performanceStartTime
 		{
-			int _mnperformanceCounter;
-			TypeInfo<int >::parseFromBinaryStream(&_mnperformanceCounter, stream);
-			performanceCounter = std::move(_mnperformanceCounter);
+			int _mnperformanceStartTime;
+			TypeInfo<int >::parseFromBinaryStream(&_mnperformanceStartTime, stream);
+			performanceStartTime = std::move(_mnperformanceStartTime);
 		}
 		return true;
 
-	case 0x41617b95: //CreatureObject.instrumentID
+	case 0xa2a6c0f: //CreatureObject.performanceType
 		{
-			int _mninstrumentID;
-			TypeInfo<int >::parseFromBinaryStream(&_mninstrumentID, stream);
-			instrumentID = std::move(_mninstrumentID);
+			int _mnperformanceType;
+			TypeInfo<int >::parseFromBinaryStream(&_mnperformanceType, stream);
+			performanceType = std::move(_mnperformanceType);
 		}
 		return true;
 
@@ -12623,7 +13589,7 @@ void CreatureObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<float >::toBinaryStream(&currentSpeed.value(), stream);
 
-	TypeInfo<float >::toBinaryStream(&terrainNegotiation.value(), stream);
+	TypeInfo<float >::toBinaryStream(&waterModPercent.value(), stream);
 
 	TypeInfo<float >::toBinaryStream(&runAcceleration.value(), stream);
 
@@ -12659,9 +13625,9 @@ void CreatureObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<byte >::toBinaryStream(&moodID.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&performanceCounter.value(), stream);
+	TypeInfo<int >::toBinaryStream(&performanceStartTime.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&instrumentID.value(), stream);
+	TypeInfo<int >::toBinaryStream(&performanceType.value(), stream);
 
 	TypeInfo<DeltaVector<int> >::toBinaryStream(&hamList.value(), stream);
 

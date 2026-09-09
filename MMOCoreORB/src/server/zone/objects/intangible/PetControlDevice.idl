@@ -16,6 +16,7 @@ import server.zone.objects.intangible.PetControlObserver;
 include system.util.Vector;
 include system.lang.Time;
 
+@mock
 @json
 class PetControlDevice extends ControlDevice {
 
@@ -38,6 +39,10 @@ class PetControlDevice extends ControlDevice {
 
 	// Last command issued
 	protected unsigned int lastCommand;
+
+	@weakReference
+	protected SceneObject lastCommander;
+
 	@weakReference
 	protected SceneObject lastCommandTarget;
 
@@ -78,6 +83,7 @@ class PetControlDevice extends ControlDevice {
 		petType = 0;
 		trainingCommand = 0;
 		lastCommand = 0;
+		lastCommander = null;
 		lastCommandTarget = null;
 		namingProgress = 0;
 		futureName = "";
@@ -91,13 +97,13 @@ class PetControlDevice extends ControlDevice {
 		trainedCommands.setNullValue("");
 	}
 
+	// Control device is locked by the PetControlDeviceStoreTask
 	@preLocked
-	@arg1preLocked
 	public native void storeObject(CreatureObject player, boolean force = false);
 
 	@preLocked
 	@arg1preLocked
-	public native void callObject(CreatureObject player);
+	public native void callObject(CreatureObject player, boolean initialCall = false);
 
 	@preLocked
 	@arg1preLocked
@@ -219,9 +225,23 @@ class PetControlDevice extends ControlDevice {
 		lastCommand = c;
 	}
 
-	@read
-	public unsigned int getLastCommand() {
+	@mock
+	@dirty
+	public abstract unsigned int getLastCommand() {
 		return lastCommand;
+	}
+
+	@local
+	@preLocked
+	public void setLastCommander(SceneObject commander) {
+		lastCommander = commander;
+	}
+
+	@dirty
+	@local
+	@weakReference
+	public SceneObject getLastCommander() {
+		return lastCommander;
 	}
 
 	@local
@@ -230,10 +250,11 @@ class PetControlDevice extends ControlDevice {
 		lastCommandTarget = target;
 	}
 
+	@mock
 	@dirty
 	@local
 	@weakReference
-	public SceneObject getLastCommandTarget() {
+	public abstract SceneObject getLastCommandTarget() {
 		return lastCommandTarget;
 	}
 
@@ -360,4 +381,10 @@ class PetControlDevice extends ControlDevice {
 			friends.add(playerID);
 		}
 	}
+
+	@dirty
+	public native int getDataStorageCapacity();
+
+	@dirty
+	public native string getRequiredAstromechCert();
 }

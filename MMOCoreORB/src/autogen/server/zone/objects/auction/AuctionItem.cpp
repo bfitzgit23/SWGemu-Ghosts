@@ -10,7 +10,7 @@
  *	AuctionItemStub
  */
 
-enum {RPC_COMPARETO__AUCTIONITEM_ = 276266056,RPC_NOTIFYLOADFROMDATABASE__,RPC_SETVENDORID__LONG_,RPC_SETITEMNAME__STRING_,RPC_SETITEMDESCRIPTION__STRING_,RPC_SETPRICE__INT_,RPC_SETPROXY__INT_,RPC_SETAUCTIONEDITEMOBJECTID__LONG_,RPC_SETITEMTYPE__INT_,RPC_SETOWNERID__LONG_,RPC_SETOFFERTOID__LONG_,RPC_SETBIDDERNAME__STRING_,RPC_SETOWNERNAME__STRING_,RPC_SETAUCTION__BOOL_,RPC_SETAUCTIONPREMIUM__,RPC_CLEARAUCTIONWITHDRAW__,RPC_SETONBAZAAR__BOOL_,RPC_SETEXPIRETIME__INT_,RPC_SETBUYERID__LONG_,RPC_SETSTATUS__INT_,RPC_ISONBAZAAR__,RPC_ISAUCTION__,RPC_GETSTATUS__,RPC_GETVENDORID__,RPC_GETAUCTIONEDITEMOBJECTID__,RPC_GETOWNERID__,RPC_GETOFFERTOID__,RPC_SETVENDORUID__STRING_,RPC_GETVENDORUID__,RPC_GETOWNERNAME__,RPC_GETITEMNAME__,RPC_GETEXPIRETIME__,RPC_GETPRICE__,RPC_GETPROXY__,RPC_GETITEMTYPE__,RPC_GETBUYERID__,RPC_GETBIDDERNAME__,RPC_GETITEMDESCRIPTION__,RPC_GETAUCTIONOPTIONS__,RPC_ISPREMIUMAUCTION__,RPC_ISOWNER__SCENEOBJECT_,RPC_ISAUCTIONOBJECT__,RPC_SETSIZE__INT_,RPC_GETSIZE__,RPC_GETCRATEDITEMTYPE__,RPC_SETCRATEDITEMTYPE__INT_,RPC_ISFACTORYCRATE__,RPC_SETFACTORYCRATE__BOOL_,RPC_SETUPDATED__BOOL_,RPC_ISUPDATED__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 276266056,RPC_COMPARETO__AUCTIONITEM_,RPC_NOTIFYLOADFROMDATABASE__,RPC_DESTROYAUCTIONITEMFROMDATABASE__BOOL_BOOL_,RPC_SETVENDORID__LONG_,RPC_SETITEMNAME__STRING_,RPC_SETITEMDESCRIPTION__STRING_,RPC_SETPRICE__INT_,RPC_SETPROXY__INT_,RPC_SETAUCTIONEDITEMOBJECTID__LONG_,RPC_SETITEMTYPE__INT_,RPC_SETOWNERID__LONG_,RPC_SETOFFERTOID__LONG_,RPC_SETBIDDERNAME__STRING_,RPC_SETOWNERNAME__STRING_,RPC_SETAUCTION__BOOL_,RPC_SETAUCTIONPREMIUM__,RPC_CLEARAUCTIONWITHDRAW__,RPC_SETONBAZAAR__BOOL_,RPC_SETEXPIRETIME__INT_,RPC_SETBUYERID__LONG_,RPC_SETSTATUS__INT_,RPC_ISONBAZAAR__,RPC_ISAUCTION__,RPC_GETSTATUS__,RPC_GETSTATUSSTRING__,RPC_GETVENDORID__,RPC_GETAUCTIONEDITEMOBJECTID__,RPC_GETOWNERID__,RPC_GETOFFERTOID__,RPC_SETVENDORUID__STRING_,RPC_GETVENDORUID__,RPC_GETOWNERNAME__,RPC_GETITEMNAME__,RPC_GETEXPIRETIME__,RPC_GETPRICE__,RPC_GETPROXY__,RPC_GETITEMTYPE__,RPC_GETBUYERID__,RPC_GETBIDDERNAME__,RPC_GETITEMDESCRIPTION__,RPC_GETAUCTIONOPTIONS__,RPC_ISPREMIUMAUCTION__,RPC_ISOWNER__SCENEOBJECT_,RPC_ISAUCTIONOBJECT__,RPC_SETSIZE__INT_,RPC_GETSIZE__,RPC_GETCRATEDITEMTYPE__,RPC_SETCRATEDITEMTYPE__INT_,RPC_ISFACTORYCRATE__,RPC_SETFACTORYCRATE__BOOL_,RPC_SETUPDATED__BOOL_,RPC_ISUPDATED__,RPC_GETOBJECTID__,};
 
 AuctionItem::AuctionItem(unsigned long long objectid) : ManagedObject(DummyConstructorParameter::instance()) {
 	AuctionItemImplementation* _implementation = new AuctionItemImplementation(objectid);
@@ -27,6 +27,20 @@ AuctionItem::~AuctionItem() {
 }
 
 
+
+void AuctionItem::initializeTransientMembers() {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INITIALIZETRANSIENTMEMBERS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->initializeTransientMembers();
+	}
+}
 
 int AuctionItem::compareTo(AuctionItem* obj) {
 	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
@@ -54,6 +68,22 @@ void AuctionItem::notifyLoadFromDatabase() {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->notifyLoadFromDatabase();
+	}
+}
+
+bool AuctionItem::destroyAuctionItemFromDatabase(bool checkAuctionMap, bool deleteAuctionedObject) {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DESTROYAUCTIONITEMFROMDATABASE__BOOL_BOOL_);
+		method.addBooleanParameter(checkAuctionMap);
+		method.addBooleanParameter(deleteAuctionedObject);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->destroyAuctionItemFromDatabase(checkAuctionMap, deleteAuctionedObject);
 	}
 }
 
@@ -382,6 +412,22 @@ int AuctionItem::getStatus() const {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getStatus();
+	}
+}
+
+String AuctionItem::getStatusString() const {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSTATUSSTRING__);
+
+		String _return_getStatusString;
+		method.executeWithAsciiReturn(_return_getStatusString);
+		return _return_getStatusString;
+	} else {
+		return _implementation->getStatusString();
 	}
 }
 
@@ -784,6 +830,61 @@ bool AuctionItem::isUpdated() const {
 	}
 }
 
+unsigned long long AuctionItem::getObjectID() const {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETOBJECTID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getObjectID();
+	}
+}
+
+LoggerHelperStream AuctionItem::error() const {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->error();
+	}
+}
+
+LoggerHelperStream AuctionItem::info(int forced) const {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->info(forced);
+	}
+}
+
+LoggerHelperStream AuctionItem::debug() const {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->debug();
+	}
+}
+
+Time* AuctionItem::getLastUpdateTime() {
+	AuctionItemImplementation* _implementation = static_cast<AuctionItemImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		assert(this->isLockedByCurrentThread());
+		return _implementation->getLastUpdateTime();
+	}
+}
+
 DistributedObjectServant* AuctionItem::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -894,6 +995,10 @@ bool AuctionItemImplementation::readObjectMember(ObjectInputStream* stream, cons
 		return true;
 
 	switch(nameHashCode) {
+	case 0xe84f5115: //AuctionItem.lastUpdateTime
+		TypeInfo<Time >::parseFromBinaryStream(&lastUpdateTime, stream);
+		return true;
+
 	case 0xd3721eb7: //AuctionItem.vendorID
 		TypeInfo<unsigned long long >::parseFromBinaryStream(&vendorID, stream);
 		return true;
@@ -1000,6 +1105,15 @@ int AuctionItemImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	_nameHashCode = 0xe84f5115; //AuctionItem.lastUpdateTime
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<Time >::toBinaryStream(&lastUpdateTime, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0xd3721eb7; //AuctionItem.vendorID
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -1206,6 +1320,8 @@ void AuctionItemImplementation::writeJSON(nlohmann::json& j) {
 	ManagedObjectImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
+	thisObject["lastUpdateTime"] = lastUpdateTime;
+
 	thisObject["vendorID"] = vendorID;
 
 	thisObject["auctionedItemObjectID"] = auctionedItemObjectID;
@@ -1287,6 +1403,8 @@ AuctionItemImplementation::AuctionItemImplementation(unsigned long long objectid
 	updated = false;
 	// server/zone/objects/auction/AuctionItem.idl():  		auctionOptions = 0;
 	auctionOptions = 0;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 int AuctionItemImplementation::compareTo(AuctionItem* obj) {
@@ -1305,86 +1423,120 @@ int AuctionItemImplementation::compareTo(AuctionItem* obj) {
 void AuctionItemImplementation::setVendorID(unsigned long long val) {
 	// server/zone/objects/auction/AuctionItem.idl():  		vendorID = val;
 	vendorID = val;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setItemName(const String& name) {
 	// server/zone/objects/auction/AuctionItem.idl():  		itemName = name;
 	itemName = name;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setItemDescription(const String& descr) {
 	// server/zone/objects/auction/AuctionItem.idl():  		itemDescription = descr;
 	itemDescription = descr;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setPrice(int newPrice) {
 	// server/zone/objects/auction/AuctionItem.idl():  		price = newPrice;
 	price = newPrice;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setProxy(int newProxy) {
 	// server/zone/objects/auction/AuctionItem.idl():  		proxyBid = newProxy;
 	proxyBid = newProxy;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setAuctionedItemObjectID(unsigned long long objectID) {
 	// server/zone/objects/auction/AuctionItem.idl():  		auctionedItemObjectID = objectID;
 	auctionedItemObjectID = objectID;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setItemType(int type) {
 	// server/zone/objects/auction/AuctionItem.idl():  		itemType = type;
 	itemType = type;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setOwnerID(unsigned long long ownerObjectID) {
 	// server/zone/objects/auction/AuctionItem.idl():  		ownerID = ownerObjectID;
 	ownerID = ownerObjectID;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setOfferToID(unsigned long long vendorOwnerID) {
 	// server/zone/objects/auction/AuctionItem.idl():  		offerToID = vendorOwnerID;
 	offerToID = vendorOwnerID;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setBidderName(const String& name) {
 	// server/zone/objects/auction/AuctionItem.idl():  		bidderName = name;
 	bidderName = name;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setOwnerName(const String& name) {
 	// server/zone/objects/auction/AuctionItem.idl():  		ownerName = name;
 	ownerName = name;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setAuction(bool isAuction) {
 	// server/zone/objects/auction/AuctionItem.idl():  		auction = isAuction;
 	auction = isAuction;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setAuctionPremium() {
 	// server/zone/objects/auction/AuctionItem.idl():  		auctionOptions = auctionOptions | OPTION_PREMIUM;
 	auctionOptions = auctionOptions | OPTION_PREMIUM;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setOnBazaar(bool val) {
 	// server/zone/objects/auction/AuctionItem.idl():  		onBazaar = val;
 	onBazaar = val;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setExpireTime(int time) {
 	// server/zone/objects/auction/AuctionItem.idl():  		expireTime = time;
 	expireTime = time;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setBuyerID(unsigned long long id) {
 	// server/zone/objects/auction/AuctionItem.idl():  		buyerID = id;
 	buyerID = id;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setStatus(int value) {
 	// server/zone/objects/auction/AuctionItem.idl():  		status = value;
 	status = value;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 bool AuctionItemImplementation::isOnBazaar() const{
@@ -1425,6 +1577,8 @@ unsigned long long AuctionItemImplementation::getOfferToID() const{
 void AuctionItemImplementation::setVendorUID(const String& uid) {
 	// server/zone/objects/auction/AuctionItem.idl():  		vuid = uid;
 	vuid = uid;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 const String AuctionItemImplementation::getVendorUID() const{
@@ -1500,6 +1654,8 @@ bool AuctionItemImplementation::isAuctionObject() const{
 void AuctionItemImplementation::setSize(int s) {
 	// server/zone/objects/auction/AuctionItem.idl():  		size = s;
 	size = s;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 int AuctionItemImplementation::getSize() const{
@@ -1515,6 +1671,8 @@ int AuctionItemImplementation::getCratedItemType() const{
 void AuctionItemImplementation::setCratedItemType(int type) {
 	// server/zone/objects/auction/AuctionItem.idl():  		cratedItemType = type;
 	cratedItemType = type;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 bool AuctionItemImplementation::isFactoryCrate() const{
@@ -1525,16 +1683,25 @@ bool AuctionItemImplementation::isFactoryCrate() const{
 void AuctionItemImplementation::setFactoryCrate(bool crate) {
 	// server/zone/objects/auction/AuctionItem.idl():  		isCrate = crate;
 	isCrate = crate;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 void AuctionItemImplementation::setUpdated(bool val) {
 	// server/zone/objects/auction/AuctionItem.idl():  		updated = val;
 	updated = val;
+	// server/zone/objects/auction/AuctionItem.idl():  		lastUpdateTime.updateToCurrentTime();
+	(&lastUpdateTime)->updateToCurrentTime();
 }
 
 bool AuctionItemImplementation::isUpdated() const{
 	// server/zone/objects/auction/AuctionItem.idl():  		return updated;
 	return updated;
+}
+
+Time* AuctionItemImplementation::getLastUpdateTime() {
+	// server/zone/objects/auction/AuctionItem.idl():  		return lastUpdateTime;
+	return (&lastUpdateTime);
 }
 
 /*
@@ -1552,6 +1719,13 @@ void AuctionItemAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	DOBMessage* resp = inv->getInvocationMessage();
 
 	switch (methid) {
+	case RPC_INITIALIZETRANSIENTMEMBERS__:
+		{
+			
+			initializeTransientMembers();
+			
+		}
+		break;
 	case RPC_COMPARETO__AUCTIONITEM_:
 		{
 			AuctionItem* obj = static_cast<AuctionItem*>(inv->getObjectParameter());
@@ -1565,6 +1739,15 @@ void AuctionItemAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			notifyLoadFromDatabase();
 			
+		}
+		break;
+	case RPC_DESTROYAUCTIONITEMFROMDATABASE__BOOL_BOOL_:
+		{
+			bool checkAuctionMap = inv->getBooleanParameter();
+			bool deleteAuctionedObject = inv->getBooleanParameter();
+			
+			bool _m_res = destroyAuctionItemFromDatabase(checkAuctionMap, deleteAuctionedObject);
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_SETVENDORID__LONG_:
@@ -1728,6 +1911,13 @@ void AuctionItemAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			int _m_res = getStatus();
 			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETSTATUSSTRING__:
+		{
+			
+			String _m_res = getStatusString();
+			resp->insertAscii(_m_res);
 		}
 		break;
 	case RPC_GETVENDORID__:
@@ -1925,9 +2115,20 @@ void AuctionItemAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_GETOBJECTID__:
+		{
+			
+			unsigned long long _m_res = getObjectID();
+			resp->insertLong(_m_res);
+		}
+		break;
 	default:
 		ManagedObjectAdapter::invokeMethod(methid, inv);
 	}
+}
+
+void AuctionItemAdapter::initializeTransientMembers() {
+	(static_cast<AuctionItem*>(stub))->initializeTransientMembers();
 }
 
 int AuctionItemAdapter::compareTo(AuctionItem* obj) {
@@ -1936,6 +2137,10 @@ int AuctionItemAdapter::compareTo(AuctionItem* obj) {
 
 void AuctionItemAdapter::notifyLoadFromDatabase() {
 	(static_cast<AuctionItem*>(stub))->notifyLoadFromDatabase();
+}
+
+bool AuctionItemAdapter::destroyAuctionItemFromDatabase(bool checkAuctionMap, bool deleteAuctionedObject) {
+	return (static_cast<AuctionItem*>(stub))->destroyAuctionItemFromDatabase(checkAuctionMap, deleteAuctionedObject);
 }
 
 void AuctionItemAdapter::setVendorID(unsigned long long val) {
@@ -2020,6 +2225,10 @@ bool AuctionItemAdapter::isAuction() const {
 
 int AuctionItemAdapter::getStatus() const {
 	return (static_cast<AuctionItem*>(stub))->getStatus();
+}
+
+String AuctionItemAdapter::getStatusString() const {
+	return (static_cast<AuctionItem*>(stub))->getStatusString();
 }
 
 unsigned long long AuctionItemAdapter::getVendorID() const {
@@ -2130,6 +2339,10 @@ bool AuctionItemAdapter::isUpdated() const {
 	return (static_cast<AuctionItem*>(stub))->isUpdated();
 }
 
+unsigned long long AuctionItemAdapter::getObjectID() const {
+	return (static_cast<AuctionItem*>(stub))->getObjectID();
+}
+
 /*
  *	AuctionItemHelper
  */
@@ -2185,6 +2398,9 @@ void AuctionItemPOD::writeJSON(nlohmann::json& j) {
 	ManagedObjectPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
+	if (lastUpdateTime)
+		thisObject["lastUpdateTime"] = lastUpdateTime.value();
+
 	if (vendorID)
 		thisObject["vendorID"] = vendorID.value();
 
@@ -2268,6 +2484,17 @@ int AuctionItemPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	if (lastUpdateTime) {
+	_nameHashCode = 0xe84f5115; //AuctionItem.lastUpdateTime
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<Time >::toBinaryStream(&lastUpdateTime.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (vendorID) {
 	_nameHashCode = 0xd3721eb7; //AuctionItem.vendorID
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -2519,6 +2746,14 @@ bool AuctionItemPOD::readObjectMember(ObjectInputStream* stream, const uint32& n
 		return true;
 
 	switch(nameHashCode) {
+	case 0xe84f5115: //AuctionItem.lastUpdateTime
+		{
+			Time _mnlastUpdateTime;
+			TypeInfo<Time >::parseFromBinaryStream(&_mnlastUpdateTime, stream);
+			lastUpdateTime = std::move(_mnlastUpdateTime);
+		}
+		return true;
+
 	case 0xd3721eb7: //AuctionItem.vendorID
 		{
 			unsigned long long _mnvendorID;
@@ -2720,6 +2955,8 @@ void AuctionItemPOD::readObject(ObjectInputStream* stream) {
 
 void AuctionItemPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	ManagedObjectPOD::writeObjectCompact(stream);
+
+	TypeInfo<Time >::toBinaryStream(&lastUpdateTime.value(), stream);
 
 	TypeInfo<unsigned long long >::toBinaryStream(&vendorID.value(), stream);
 

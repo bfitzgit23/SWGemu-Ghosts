@@ -258,6 +258,14 @@ public:
 
 	int getPaintCount() const;
 
+	void setRentalVehicle(bool val);
+
+	bool isRentalVehicle() const;
+
+	void setUses(int use);
+
+	int getRentalUses() const;
+
 	bool isVehicleObject();
 
 	unsigned int getArmor();
@@ -279,16 +287,6 @@ public:
 	float getAcid();
 
 	float getLightSaber();
-
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -322,6 +320,10 @@ protected:
 	int vehicleType;
 
 	int paintCount;
+
+	bool rentalVehicle;
+
+	int rentalUses;
 
 public:
 	static const int PAINTCHARGES = 999;
@@ -473,6 +475,14 @@ public:
 
 	int getPaintCount() const;
 
+	void setRentalVehicle(bool val);
+
+	bool isRentalVehicle() const;
+
+	void setUses(int use);
+
+	int getRentalUses() const;
+
 	bool isVehicleObject();
 
 	unsigned int getArmor();
@@ -494,16 +504,6 @@ public:
 	float getAcid();
 
 	float getLightSaber();
-
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
 
 	WeakReference<VehicleObject*> _this;
 
@@ -589,6 +589,14 @@ public:
 
 	int getPaintCount() const;
 
+	void setRentalVehicle(bool val);
+
+	bool isRentalVehicle() const;
+
+	void setUses(int use);
+
+	int getRentalUses() const;
+
 	unsigned int getArmor();
 
 	float getKinetic();
@@ -608,16 +616,6 @@ public:
 	float getAcid();
 
 	float getLightSaber();
-
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
 
 };
 
@@ -657,6 +655,10 @@ public:
 	Optional<int> vehicleType;
 
 	Optional<int> paintCount;
+
+	Optional<bool> rentalVehicle;
+
+	Optional<int> rentalUses;
 
 	String _className;
 	VehicleObjectPOD();

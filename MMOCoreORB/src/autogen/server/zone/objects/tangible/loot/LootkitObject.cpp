@@ -14,7 +14,7 @@
  *	LootkitObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1353252600,RPC_CANADDOBJECT__SCENEOBJECT_INT_STRING_,RPC_NOTIFYOBJECTINSERTED__SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVED__SCENEOBJECT_,RPC_GETPLAYER__,};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1353252600,RPC_CANADDOBJECT__SCENEOBJECT_INT_STRING_,RPC_ISCONTAINEROBJECT__,RPC_NOTIFYOBJECTINSERTED__SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVED__SCENEOBJECT_,RPC_GETPLAYER__,};
 
 LootkitObject::LootkitObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	LootkitObjectImplementation* _implementation = new LootkitObjectImplementation();
@@ -60,6 +60,20 @@ int LootkitObject::canAddObject(SceneObject* object, int containmentType, String
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->canAddObject(object, containmentType, errorDescription);
+	}
+}
+
+bool LootkitObject::isContainerObject() {
+	LootkitObjectImplementation* _implementation = static_cast<LootkitObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISCONTAINEROBJECT__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isContainerObject();
 	}
 }
 
@@ -354,6 +368,11 @@ void LootkitObjectImplementation::initializeTransientMembers() {
 	Logger::setLoggingName("LootKitObject");
 }
 
+bool LootkitObjectImplementation::isContainerObject() {
+	// server/zone/objects/tangible/loot/LootkitObject.idl():  		return true;
+	return true;
+}
+
 /*
  *	LootkitObjectAdapter
  */
@@ -384,6 +403,13 @@ void LootkitObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			int _m_res = canAddObject(object, containmentType, errorDescription);
 			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_ISCONTAINEROBJECT__:
+		{
+			
+			bool _m_res = isContainerObject();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_NOTIFYOBJECTINSERTED__SCENEOBJECT_:
@@ -420,6 +446,10 @@ void LootkitObjectAdapter::initializeTransientMembers() {
 
 int LootkitObjectAdapter::canAddObject(SceneObject* object, int containmentType, String& errorDescription) {
 	return (static_cast<LootkitObject*>(stub))->canAddObject(object, containmentType, errorDescription);
+}
+
+bool LootkitObjectAdapter::isContainerObject() {
+	return (static_cast<LootkitObject*>(stub))->isContainerObject();
 }
 
 int LootkitObjectAdapter::notifyObjectInserted(SceneObject* object) {

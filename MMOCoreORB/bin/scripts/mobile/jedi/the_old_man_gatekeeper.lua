@@ -29,13 +29,13 @@ the_old_man_gatekeeper = Creature:new {
 	ferocity = 0,
 	pvpBitmask = NONE,
 	creatureBitmask = NONE,
-	optionsBitmask = AIENABLED, -- no CONVERSABLE: dialogue fires via createEvent only
+	optionsBitmask = AIENABLED + CONVERSABLE,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/shared_dressed_fs_village_oldman.iff"},
+	templates = {"object/mobile/dressed_fs_village_oldman.iff"},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "",
+	conversationTemplate = "GatekeeperTrialConvoTemplate",
 	attacks = {}
 }
 

@@ -18,7 +18,7 @@
 
 #include "server/zone/managers/creature/DnaManager.h"
 
-#include "server/zone/objects/area/SpawnArea.h"
+#include "server/zone/objects/region/SpawnArea.h"
 
 #include "server/zone/objects/scene/SceneObject.h"
 
@@ -26,7 +26,11 @@
  *	CreatureManagerStub
  */
 
-enum {RPC_INITIALIZE__ = 3210952586,RPC_STOP__,RPC_SPAWN__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNLAIR__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNTHEATER__INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNDYNAMICSPAWN__INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNCREATUREWITHAI__INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_,RPC_SPAWNCREATUREWITHLEVEL__INT_INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATUREASBABY__INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATUREASEVENTMOB__INT_INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATURE__INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_,RPC_CREATECREATURE__INT_BOOL_INT_,RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_,RPC_GETTEMPLATETOSPAWN__INT_,RPC_CHECKSPAWNASBABY__FLOAT_INT_INT_,RPC_LOADSPAWNAREAS__,RPC_UNLOADSPAWNAREAS__,RPC_HARVEST__CREATURE_CREATUREOBJECT_INT_,RPC_DROIDHARVEST__CREATURE_CREATUREOBJECT_INT_INT_,RPC_TAME__CREATURE_CREATUREOBJECT_BOOL_BOOL_,RPC_MILK__CREATURE_CREATUREOBJECT_,RPC_SAMPLE__CREATURE_CREATUREOBJECT_,RPC_GETSPAWNAREA__STRING_,RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_};
+unsigned const int CreatureManager::CREATURE_LAIR_MIN = 1000;
+
+unsigned const int CreatureManager::CREATURE_LAIR_MAX = 64000;
+
+enum {RPC_INITIALIZE__ = 3210952586,RPC_STOP__,RPC_SPAWN__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNLAIR__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNTHEATER__INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNDYNAMICSPAWN__INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_,RPC_SPAWNCREATUREWITHAI__INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_,RPC_SPAWNCREATUREWITHLEVEL__INT_INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATUREASBABY__INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATUREASEVENTMOB__INT_INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATURE__INT_FLOAT_FLOAT_FLOAT_LONG_,RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_FLOAT_,RPC_CREATECREATURE__INT_BOOL_INT_,RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_FLOAT_,RPC_GETTEMPLATETOSPAWN__INT_,RPC_CHECKSPAWNASBABY__FLOAT_INT_INT_,RPC_UNLOADSPAWNAREAS__,RPC_HARVEST__CREATURE_CREATUREOBJECT_INT_,RPC_DROIDHARVEST__CREATURE_CREATUREOBJECT_INT_INT_,RPC_TAME__CREATURE_CREATUREOBJECT_BOOL_BOOL_,RPC_MILK__CREATURE_CREATUREOBJECT_,RPC_SAMPLE__CREATURE_CREATUREOBJECT_,RPC_ADDSPAWNAREATOMAP__INT_SPAWNAREA_,RPC_ADDNOSPAWNAREA__SPAWNAREA_,RPC_GETSPAWNAREA__STRING_,RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_BOOL_};
 
 CreatureManager::CreatureManager(Zone* planet) : ZoneManager(DummyConstructorParameter::instance()) {
 	CreatureManagerImplementation* _implementation = new CreatureManagerImplementation(planet);
@@ -72,7 +76,7 @@ void CreatureManager::stop() {
 	}
 }
 
-SceneObject* CreatureManager::spawn(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size) {
+SceneObject* CreatureManager::spawn(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size) {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -81,7 +85,7 @@ SceneObject* CreatureManager::spawn(unsigned int lairTemplate, int difficultyLev
 		DistributedMethod method(this, RPC_SPAWN__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_);
 		method.addUnsignedIntParameter(lairTemplate);
 		method.addSignedIntParameter(difficultyLevel);
-		method.addSignedIntParameter(difficulty);
+		method.addSignedIntParameter(lairBuildingLevel);
 		method.addFloatParameter(x);
 		method.addFloatParameter(z);
 		method.addFloatParameter(y);
@@ -89,11 +93,11 @@ SceneObject* CreatureManager::spawn(unsigned int lairTemplate, int difficultyLev
 
 		return static_cast<SceneObject*>(method.executeWithObjectReturn());
 	} else {
-		return _implementation->spawn(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+		return _implementation->spawn(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 	}
 }
 
-SceneObject* CreatureManager::spawnLair(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size) {
+SceneObject* CreatureManager::spawnLair(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size) {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -102,7 +106,7 @@ SceneObject* CreatureManager::spawnLair(unsigned int lairTemplate, int difficult
 		DistributedMethod method(this, RPC_SPAWNLAIR__INT_INT_INT_FLOAT_FLOAT_FLOAT_FLOAT_);
 		method.addUnsignedIntParameter(lairTemplate);
 		method.addSignedIntParameter(difficultyLevel);
-		method.addSignedIntParameter(difficulty);
+		method.addSignedIntParameter(lairBuildingLevel);
 		method.addFloatParameter(x);
 		method.addFloatParameter(z);
 		method.addFloatParameter(y);
@@ -110,7 +114,7 @@ SceneObject* CreatureManager::spawnLair(unsigned int lairTemplate, int difficult
 
 		return static_cast<SceneObject*>(method.executeWithObjectReturn());
 	} else {
-		return _implementation->spawnLair(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+		return _implementation->spawnLair(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 	}
 }
 
@@ -252,13 +256,13 @@ CreatureObject* CreatureManager::spawnCreature(unsigned int templateCRC, float x
 	}
 }
 
-CreatureObject* CreatureManager::spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent) {
+CreatureObject* CreatureManager::spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent, float direction) {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_);
+		DistributedMethod method(this, RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_FLOAT_);
 		method.addUnsignedIntParameter(templateCRC);
 		method.addUnsignedIntParameter(objectCRC);
 		method.addFloatParameter(x);
@@ -266,10 +270,11 @@ CreatureObject* CreatureManager::spawnCreature(unsigned int templateCRC, unsigne
 		method.addFloatParameter(y);
 		method.addUnsignedLongParameter(parentID);
 		method.addBooleanParameter(persistent);
+		method.addFloatParameter(direction);
 
 		return static_cast<CreatureObject*>(method.executeWithObjectReturn());
 	} else {
-		return _implementation->spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent);
+		return _implementation->spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent, direction);
 	}
 }
 
@@ -290,22 +295,24 @@ CreatureObject* CreatureManager::createCreature(unsigned int templateCRC, bool p
 	}
 }
 
-void CreatureManager::placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID) {
+void CreatureManager::placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID, float direction) {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_);
+		DistributedMethod method(this, RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_FLOAT_);
 		method.addObjectParameter(creature);
 		method.addFloatParameter(x);
 		method.addFloatParameter(z);
 		method.addFloatParameter(y);
 		method.addUnsignedLongParameter(parentID);
+		method.addFloatParameter(direction);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->placeCreature(creature, x, z, y, parentID);
+		assert(this->isLockedByCurrentThread());
+		_implementation->placeCreature(creature, x, z, y, parentID, direction);
 	}
 }
 
@@ -352,20 +359,6 @@ int CreatureManager::notifyDestruction(TangibleObject* destructor, AiAgent* dest
 		assert((destructor == NULL) || destructor->isLockedByCurrentThread());
 		assert((destructedObject == NULL) || destructedObject->isLockedByCurrentThread());
 		return _implementation->notifyDestruction(destructor, destructedObject, condition, isCombatAction);
-	}
-}
-
-void CreatureManager::loadSpawnAreas() {
-	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_LOADSPAWNAREAS__);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->loadSpawnAreas();
 	}
 }
 
@@ -468,13 +461,44 @@ void CreatureManager::sample(Creature* creature, CreatureObject* player) {
 	}
 }
 
-SynchronizedVector<ManagedReference<SpawnArea* > >* CreatureManager::getWorldSpawnAreas() {
+SpawnArea* CreatureManager::getWorldSpawnArea() {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->getWorldSpawnAreas();
+		return _implementation->getWorldSpawnArea();
+	}
+}
+
+void CreatureManager::addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area) {
+	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDSPAWNAREATOMAP__INT_SPAWNAREA_);
+		method.addUnsignedIntParameter(nameHash);
+		method.addObjectParameter(area);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addSpawnAreaToMap(nameHash, area);
+	}
+}
+
+void CreatureManager::addNoSpawnArea(SpawnArea* area) {
+	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDNOSPAWNAREA__SPAWNAREA_);
+		method.addObjectParameter(area);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addNoSpawnArea(area);
 	}
 }
 
@@ -503,19 +527,20 @@ SpawnArea* CreatureManager::getSpawnArea(const String& areaname) {
 	}
 }
 
-bool CreatureManager::addWearableItem(CreatureObject* creature, TangibleObject* clothing) {
+bool CreatureManager::addWearableItem(CreatureObject* creature, TangibleObject* clothing, bool isVendor) {
 	CreatureManagerImplementation* _implementation = static_cast<CreatureManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_);
+		DistributedMethod method(this, RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_BOOL_);
 		method.addObjectParameter(creature);
 		method.addObjectParameter(clothing);
+		method.addBooleanParameter(isVendor);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->addWearableItem(creature, clothing);
+		return _implementation->addWearableItem(creature, clothing, isVendor);
 	}
 }
 
@@ -536,6 +561,10 @@ void CreatureManager::_setImplementation(DistributedObjectServant* servant) {
 /*
  *	CreatureManagerImplementation
  */
+
+unsigned const int CreatureManagerImplementation::CREATURE_LAIR_MIN = 1000;
+
+unsigned const int CreatureManagerImplementation::CREATURE_LAIR_MAX = 64000;
 
 CreatureManagerImplementation::CreatureManagerImplementation(DummyConstructorParameter* param) : ZoneManagerImplementation(param) {
 	_initializeImplementation();
@@ -686,13 +715,16 @@ CreatureManagerImplementation::CreatureManagerImplementation(Zone* planet) : Zon
 }
 
 void CreatureManagerImplementation::initialize() {
-	// server/zone/managers/creature/CreatureManager.idl():  		loadSpawnAreas();
-	loadSpawnAreas();
 }
 
-SynchronizedVector<ManagedReference<SpawnArea* > >* CreatureManagerImplementation::getWorldSpawnAreas() {
-	// server/zone/managers/creature/CreatureManager.idl():  		return spawnAreaMap.getWorldSpawnAreas();
-	return (&spawnAreaMap)->getWorldSpawnAreas();
+void CreatureManagerImplementation::addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area) {
+	// server/zone/managers/creature/CreatureManager.idl():  		spawnAreaMap.put(nameHash, area);
+	(&spawnAreaMap)->put(nameHash, area);
+}
+
+void CreatureManagerImplementation::addNoSpawnArea(SpawnArea* area) {
+	// server/zone/managers/creature/CreatureManager.idl():  		spawnAreaMap.addNoSpawnArea(area);
+	(&spawnAreaMap)->addNoSpawnArea(area);
 }
 
 AiSpeciesData* CreatureManagerImplementation::getAiSpeciesData(unsigned int speciesID) {
@@ -733,13 +765,13 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 		{
 			unsigned int lairTemplate = inv->getUnsignedIntParameter();
 			int difficultyLevel = inv->getSignedIntParameter();
-			int difficulty = inv->getSignedIntParameter();
+			int lairBuildingLevel = inv->getSignedIntParameter();
 			float x = inv->getFloatParameter();
 			float z = inv->getFloatParameter();
 			float y = inv->getFloatParameter();
 			float size = inv->getFloatParameter();
 			
-			DistributedObject* _m_res = spawn(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+			DistributedObject* _m_res = spawn(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -747,13 +779,13 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 		{
 			unsigned int lairTemplate = inv->getUnsignedIntParameter();
 			int difficultyLevel = inv->getSignedIntParameter();
-			int difficulty = inv->getSignedIntParameter();
+			int lairBuildingLevel = inv->getSignedIntParameter();
 			float x = inv->getFloatParameter();
 			float z = inv->getFloatParameter();
 			float y = inv->getFloatParameter();
 			float size = inv->getFloatParameter();
 			
-			DistributedObject* _m_res = spawnLair(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+			DistributedObject* _m_res = spawnLair(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -846,7 +878,7 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_:
+	case RPC_SPAWNCREATURE__INT_INT_FLOAT_FLOAT_FLOAT_LONG_BOOL_FLOAT_:
 		{
 			unsigned int templateCRC = inv->getUnsignedIntParameter();
 			unsigned int objectCRC = inv->getUnsignedIntParameter();
@@ -855,8 +887,9 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			float y = inv->getFloatParameter();
 			unsigned long long parentID = inv->getUnsignedLongParameter();
 			bool persistent = inv->getBooleanParameter();
+			float direction = inv->getFloatParameter();
 			
-			DistributedObject* _m_res = spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent);
+			DistributedObject* _m_res = spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent, direction);
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -870,15 +903,16 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_:
+	case RPC_PLACECREATURE__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_LONG_FLOAT_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
 			float x = inv->getFloatParameter();
 			float z = inv->getFloatParameter();
 			float y = inv->getFloatParameter();
 			unsigned long long parentID = inv->getUnsignedLongParameter();
+			float direction = inv->getFloatParameter();
 			
-			placeCreature(creature, x, z, y, parentID);
+			placeCreature(creature, x, z, y, parentID, direction);
 			
 		}
 		break;
@@ -898,13 +932,6 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			
 			bool _m_res = checkSpawnAsBaby(tamingChance, babiesSpawned, chance);
 			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_LOADSPAWNAREAS__:
-		{
-			
-			loadSpawnAreas();
-			
 		}
 		break;
 	case RPC_UNLOADSPAWNAREAS__:
@@ -964,6 +991,23 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			
 		}
 		break;
+	case RPC_ADDSPAWNAREATOMAP__INT_SPAWNAREA_:
+		{
+			unsigned int nameHash = inv->getUnsignedIntParameter();
+			SpawnArea* area = static_cast<SpawnArea*>(inv->getObjectParameter());
+			
+			addSpawnAreaToMap(nameHash, area);
+			
+		}
+		break;
+	case RPC_ADDNOSPAWNAREA__SPAWNAREA_:
+		{
+			SpawnArea* area = static_cast<SpawnArea*>(inv->getObjectParameter());
+			
+			addNoSpawnArea(area);
+			
+		}
+		break;
 	case RPC_GETSPAWNAREA__STRING_:
 		{
 			 String areaname; inv->getAsciiParameter(areaname);
@@ -972,12 +1016,13 @@ void CreatureManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_:
+	case RPC_ADDWEARABLEITEM__CREATUREOBJECT_TANGIBLEOBJECT_BOOL_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
 			TangibleObject* clothing = static_cast<TangibleObject*>(inv->getObjectParameter());
+			bool isVendor = inv->getBooleanParameter();
 			
-			bool _m_res = addWearableItem(creature, clothing);
+			bool _m_res = addWearableItem(creature, clothing, isVendor);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -994,12 +1039,12 @@ void CreatureManagerAdapter::stop() {
 	(static_cast<CreatureManager*>(stub))->stop();
 }
 
-SceneObject* CreatureManagerAdapter::spawn(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size) {
-	return (static_cast<CreatureManager*>(stub))->spawn(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+SceneObject* CreatureManagerAdapter::spawn(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size) {
+	return (static_cast<CreatureManager*>(stub))->spawn(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 }
 
-SceneObject* CreatureManagerAdapter::spawnLair(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size) {
-	return (static_cast<CreatureManager*>(stub))->spawnLair(lairTemplate, difficultyLevel, difficulty, x, z, y, size);
+SceneObject* CreatureManagerAdapter::spawnLair(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size) {
+	return (static_cast<CreatureManager*>(stub))->spawnLair(lairTemplate, difficultyLevel, lairBuildingLevel, x, z, y, size);
 }
 
 SceneObject* CreatureManagerAdapter::spawnTheater(unsigned int lairTemplate, int difficulty, float x, float z, float y, float size) {
@@ -1030,16 +1075,16 @@ CreatureObject* CreatureManagerAdapter::spawnCreature(unsigned int templateCRC, 
 	return (static_cast<CreatureManager*>(stub))->spawnCreature(templateCRC, x, z, y, parentID);
 }
 
-CreatureObject* CreatureManagerAdapter::spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent) {
-	return (static_cast<CreatureManager*>(stub))->spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent);
+CreatureObject* CreatureManagerAdapter::spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent, float direction) {
+	return (static_cast<CreatureManager*>(stub))->spawnCreature(templateCRC, objectCRC, x, z, y, parentID, persistent, direction);
 }
 
 CreatureObject* CreatureManagerAdapter::createCreature(unsigned int templateCRC, bool persistent, unsigned int mobileTemplate) {
 	return (static_cast<CreatureManager*>(stub))->createCreature(templateCRC, persistent, mobileTemplate);
 }
 
-void CreatureManagerAdapter::placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID) {
-	(static_cast<CreatureManager*>(stub))->placeCreature(creature, x, z, y, parentID);
+void CreatureManagerAdapter::placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID, float direction) {
+	(static_cast<CreatureManager*>(stub))->placeCreature(creature, x, z, y, parentID, direction);
 }
 
 String CreatureManagerAdapter::getTemplateToSpawn(unsigned int templateCRC) {
@@ -1048,10 +1093,6 @@ String CreatureManagerAdapter::getTemplateToSpawn(unsigned int templateCRC) {
 
 bool CreatureManagerAdapter::checkSpawnAsBaby(float tamingChance, int babiesSpawned, int chance) {
 	return (static_cast<CreatureManager*>(stub))->checkSpawnAsBaby(tamingChance, babiesSpawned, chance);
-}
-
-void CreatureManagerAdapter::loadSpawnAreas() {
-	(static_cast<CreatureManager*>(stub))->loadSpawnAreas();
 }
 
 void CreatureManagerAdapter::unloadSpawnAreas() {
@@ -1078,12 +1119,20 @@ void CreatureManagerAdapter::sample(Creature* creature, CreatureObject* player) 
 	(static_cast<CreatureManager*>(stub))->sample(creature, player);
 }
 
+void CreatureManagerAdapter::addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area) {
+	(static_cast<CreatureManager*>(stub))->addSpawnAreaToMap(nameHash, area);
+}
+
+void CreatureManagerAdapter::addNoSpawnArea(SpawnArea* area) {
+	(static_cast<CreatureManager*>(stub))->addNoSpawnArea(area);
+}
+
 SpawnArea* CreatureManagerAdapter::getSpawnArea(const String& areaname) {
 	return (static_cast<CreatureManager*>(stub))->getSpawnArea(areaname);
 }
 
-bool CreatureManagerAdapter::addWearableItem(CreatureObject* creature, TangibleObject* clothing) {
-	return (static_cast<CreatureManager*>(stub))->addWearableItem(creature, clothing);
+bool CreatureManagerAdapter::addWearableItem(CreatureObject* creature, TangibleObject* clothing, bool isVendor) {
+	return (static_cast<CreatureManager*>(stub))->addWearableItem(creature, clothing, isVendor);
 }
 
 /*

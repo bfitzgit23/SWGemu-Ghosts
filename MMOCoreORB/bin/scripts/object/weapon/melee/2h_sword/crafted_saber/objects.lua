@@ -356,6 +356,45 @@ object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_ge
 
 ObjectTemplates:addClientTemplate(object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_gen5, "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_gen5.iff")
 
+object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_gen6_must = SharedWeaponObjectTemplate:new {
+	clientTemplateFileName = "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_gen6_must.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_gen6_must, "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_gen6_must.iff")
+
+object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_gen7_sith = SharedWeaponObjectTemplate:new {
+	clientTemplateFileName = "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_gen7_sith.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_gen7_sith, "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_gen7_sith.iff")
+
+local ghostsHighGenerationTwoHandedSabers = {
+	"sword_lightsaber_two_handed_gen6",
+	"sword_lightsaber_two_handed_gen6_eow",
+	"sword_lightsaber_two_handed_gcw_s01_gen6",
+	"sword_lightsaber_two_handed_gen6_sith",
+	"sword_lightsaber_two_handed_pvp_bf_gen6",
+	"sword_lightsaber_two_handed_gen7",
+	"sword_lightsaber_two_handed_gen7_eow",
+	"sword_lightsaber_two_handed_gcw_s01_gen7",
+	"sword_lightsaber_two_handed_gen7_must",
+	"sword_lightsaber_two_handed_pvp_bf_gen7",
+	"sword_lightsaber_two_handed_gen8",
+	"sword_lightsaber_two_handed_gen8_eow",
+	"sword_lightsaber_two_handed_gcw_s01_gen8",
+	"sword_lightsaber_two_handed_gen8_must",
+	"sword_lightsaber_two_handed_gen8_sith",
+	"sword_lightsaber_two_handed_pvp_bf_gen8",
+}
+
+for _, templateName in ipairs(ghostsHighGenerationTwoHandedSabers) do
+	local variableName = "object_weapon_melee_2h_sword_crafted_saber_shared_" .. templateName
+	local templatePath = "object/weapon/melee/2h_sword/crafted_saber/shared_" .. templateName .. ".iff"
+	local template = SharedWeaponObjectTemplate:new { clientTemplateFileName = templatePath }
+	_G[variableName] = template
+	ObjectTemplates:addClientTemplate(template, templatePath)
+end
+
 object_weapon_melee_2h_sword_crafted_saber_shared_sword_lightsaber_two_handed_s1 = SharedWeaponObjectTemplate:new {
 	clientTemplateFileName = "object/weapon/melee/2h_sword/crafted_saber/shared_sword_lightsaber_two_handed_s1.iff"
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups

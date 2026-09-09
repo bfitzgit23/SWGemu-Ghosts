@@ -567,8 +567,8 @@ void GuildManagerImplementation::sendGuildCreateAbbrevTo(CreatureObject* player,
 	ManagedReference<SuiInputBox*> inputBox = new SuiInputBox(player, SuiWindowType::GUILD_CREATE_ABBREV);
 	inputBox->setCallback(new GuildCreateAbbrevResponseSuiCallback(server));
 	inputBox->setPromptTitle("@guild:create_abbrev_title"); // Guild Abbreviation
-	inputBox->setPromptText("@guild:create_abbrev_prompt"); // Enter an abbreviation for your guild. Guild abbreviations must be 1-10 characters in length.
-	inputBox->setMaxInputSize(9);
+	inputBox->setPromptText("@guild:create_abbrev_prompt"); // Enter an abbreviation for your guild. Guild abbreviations must be 1-5 characters in length.
+	inputBox->setMaxInputSize(4);
 	inputBox->setUsingObject(terminal);
 	inputBox->setForceCloseDistance(32);
 
@@ -582,8 +582,8 @@ void GuildManagerImplementation::sendGuildChangeAbbrevTo(CreatureObject* player,
 	ManagedReference<SuiInputBox*> inputBox = new SuiInputBox(player, SuiWindowType::GUILD_CHANGE_ABBREV);
 	inputBox->setCallback(new GuildChangeAbbrevResponseSuiCallback(server, guild));
 	inputBox->setPromptTitle("@guild:namechange_abbrev_title"); // Change Guild Abbreviation
-	inputBox->setPromptText("@guild:namechange_abbrev_prompt"); // Enter the abbreviation for your guild's new name. Guild abbreviations must be between 1 and 10 characters in length.
-	inputBox->setMaxInputSize(9);
+	inputBox->setPromptText("@guild:namechange_abbrev_prompt"); // Enter the abbreviation for your guild's new name. Guild abbreviations must be between 1 and 5 characters in length.
+	inputBox->setMaxInputSize(4);
 
 	player->getPlayerObject()->addSuiBox(inputBox);
 	player->sendMessage(inputBox->generateMessage());
@@ -596,7 +596,7 @@ bool GuildManagerImplementation::validateGuildAbbrev(CreatureObject* player, con
 
 	if (validate != NameManagerResult::ACCEPTED) {
 		if (validate == NameManagerResult::DECLINED_GUILD_LENGTH)
-			player->sendSystemMessage("@guild:create_fail_abbrev_bad_length"); // Guild abbreviations must be 1-10 characters in length.
+			player->sendSystemMessage("@guild:create_fail_abbrev_bad_length"); // Guild abbreviations must be 1-5 characters in length.
 		else
 			player->sendSystemMessage("@guild:create_fail_abbrev_not_allowed"); // That guild abbreviation is not allowed.
 
@@ -1133,6 +1133,9 @@ void GuildManagerImplementation::sendGuildMemberOptionsTo(CreatureObject* player
 }
 
 void GuildManagerImplementation::sendGuildSetTitleTo(CreatureObject* player, CreatureObject* target) {
+	if (player == nullptr || target == nullptr)
+		return;
+
 	ManagedReference<GuildObject*> guild = player->getGuildObject().get();
 
 	if (guild == nullptr || !guild->hasTitlePermission(player->getObjectID())) {
@@ -1140,22 +1143,30 @@ void GuildManagerImplementation::sendGuildSetTitleTo(CreatureObject* player, Cre
 		return;
 	}
 
-	player->getPlayerObject()->closeSuiWindowType(SuiWindowType::GUILD_MEMBER_TITLE);
+	auto ghost = player->getPlayerObject();
+
+	if (ghost == nullptr)
+		return;
+
+	ghost->closeSuiWindowType(SuiWindowType::GUILD_MEMBER_TITLE);
 
 	ManagedReference<SuiInputBox*> suiBox = new SuiInputBox(player, SuiWindowType::GUILD_MEMBER_TITLE);
 	suiBox->setCallback(new GuildTitleResponseSuiCallback(server));
-	suiBox->setPromptTitle("@guild:title_title"); // Guild Member Title
+
+	// Guild Member Title
+	suiBox->setPromptTitle("@guild:title_title");
 
 	UnicodeString text = StringIdManager::instance()->getStringId("@guild:title_prompt"); // Enter a title to set for %TU.
 	text = text.replaceFirst("%TU", target->getDisplayedName());
 
 	suiBox->setPromptText(text.toString());
 	suiBox->setUsingObject(target);
-	suiBox->setForceCloseDistance(32);
+	suiBox->setForceCloseDisabled();
 	suiBox->setMaxInputSize(24);
 	suiBox->setCancelButton(true, "@cancel");
 
-	player->getPlayerObject()->addSuiBox(suiBox);
+	ghost->addSuiBox(suiBox);
+
 	player->sendMessage(suiBox->generateMessage());
 }
 
@@ -2310,4 +2321,17 @@ void GuildManagerImplementation::viewElectionStandings(GuildObject* guild, Creat
 
 	player->getPlayerObject()->addSuiBox(listbox);
 	player->sendMessage(listbox->generateMessage());
+}
+
+void GuildManagerImplementation::iterateGuilds(const GuildObjectIterator& iterator) {
+	Locker _lock(_this.getReferenceUnsafeStaticCast());
+
+	for (int i = 0; i < guildList.size(); ++i) {
+		Reference<GuildObject*> guild = guildList.getValueAt(i);
+
+		if (guild != nullptr) {
+			Locker locker(guild);
+			iterator(guild);
+		}
+	}
 }

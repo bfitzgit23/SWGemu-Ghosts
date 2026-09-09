@@ -2,10 +2,10 @@
 				Copyright <SWGEmu>
 		See file COPYING for copying conditions.*/
 
+#include "QueueCommand.h"
+
 #ifndef UNSTICKCOMMAND_H_
 #define UNSTICKCOMMAND_H_
-
-#include "server/zone/objects/scene/SceneObject.h"
 
 class UnstickCommand : public QueueCommand {
 public:
@@ -23,55 +23,28 @@ public:
 		if (!checkInvalidLocomotions(creature))
 			return INVALIDLOCOMOTION;
 
-		if (creature->isInCombat())
-			return INVALIDSTATE;
-
-		CreatureObject* player = cast<CreatureObject*>(creature);
-		Zone* zone = player->getZone();
-
-		if(zone == nullptr){
+		if (!creature->checkCooldownRecovery("unstick")) {
+			creature->sendSystemMessage("You can't /unstick yet, please wait a bit before trying again.");
 			return GENERALERROR;
 		}
 
-		if (player->isDead() || player->isIncapacitated()){
-			player->sendSystemMessage("You cant unstick now");
-			return GENERALERROR;
-		}
-		
-		if (player->isRidingMount()) {
-			player->sendSystemMessage("You cannot unstick while mounted.");
-			return GENERALERROR;
-		}
+		creature->addCooldown("unstick", 1800 * 1000); // Wait 30 mins before they can try again
 
-		if (player->hasState(CreatureState::PILOTINGSHIP)) {
-			player->sendSystemMessage("You cant unstick while in a ship");
-			return GENERALERROR;
-			}
+		if (creature != nullptr)
+			creature->error("used /unstick " + arguments.toString());
 
-		if (!player->checkCooldownRecovery("used_unstick")) {
-			StringIdChatParameter stringId;
+		creature->sendSystemMessage("@cmd_err:unstick_request_cancelled"); // Unstick request was cancelled
 
-			Time* cdTime = player->getCooldownTime("used_unstick");
+		/*
+string/en/cmd_err.stf	7	unstick_in_progress	Unstick in progress
+string/en/cmd_err.stf	8	unstick_request_complete	Unstick complete
+string/en/cmd_err.stf	9	unstick_request_cancelled	Unstick request was cancelled
+		 */
 
-
-			int timeLeft = floor((float)cdTime->miliDifference() / 1000) *-1;
-
-			stringId.setStringId("You must waiting....");
-			stringId.setDI(timeLeft);
-			player->sendSystemMessage("Unstick is on a 1 minute cooldown.");
-			return 0;
-		}
-
-		player->initializePosition(player->getPositionX() + 10, player->getPositionZ() + 10, player->getPositionY() + 10);
-
-		zone->transferObject(player, 1, true);
-
-		player->setPosture(CreaturePosture::UPRIGHT);
-		player->addCooldown("used_unstick", 60000);
-		player->sendSystemMessage("You have been teleported to a safe spot. Wait 15 seconds for recalibration.");
-
-	return SUCCESS;
+		return SUCCESS;
 	}
+
 };
 
 #endif //UNSTICKCOMMAND_H_
+

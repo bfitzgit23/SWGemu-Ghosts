@@ -111,6 +111,10 @@ function LightEnclaveKnight:onTrialAccept(pPlayer)
         return
     end
 
+    if not holocron_progression_timer_ready(pPlayer, "padawan_unlocked_at", "The Knight trials") then
+        return
+    end
+
     local wave = readData(playerKey(pPlayer, "wave"))
     if wave ~= nil and wave > 0 then
         CreatureObject(pPlayer):sendSystemMessage("\\#88CCFF[Council Elder]: Your trial is already underway. Seek your opponent.")

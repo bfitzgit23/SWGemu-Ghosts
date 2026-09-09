@@ -135,18 +135,18 @@ using namespace server::zone::managers::creature;
 namespace server {
 namespace zone {
 namespace objects {
-namespace area {
+namespace region {
 
 class SpawnArea;
 
 class SpawnAreaPOD;
 
-} // namespace area
+} // namespace region
 } // namespace objects
 } // namespace zone
 } // namespace server
 
-using namespace server::zone::objects::area;
+using namespace server::zone::objects::region;
 
 namespace server {
 namespace zone {
@@ -195,15 +195,19 @@ public:
 
 	static const short DNADEATH = 0x03;
 
+	unsigned static const int CREATURE_LAIR_MIN;
+
+	unsigned static const int CREATURE_LAIR_MAX;
+
 	CreatureManager(Zone* planet);
 
 	void initialize();
 
 	void stop();
 
-	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size);
+	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size);
 
-	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size = 20);
+	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size = 20);
 
 	SceneObject* spawnTheater(unsigned int lairTemplate, int difficulty, float x, float z, float y, float size = 10);
 
@@ -217,7 +221,7 @@ public:
 	 * @param x position x
 	 * @param y position y
 	 * @param parentID cell object id (optional)
-	 * @return returns creature object that has been spawned, nullptr on error
+	 * @return returns creature object that has been spawned, NULL on error
 	 */
 	CreatureObject* spawnCreatureWithAi(unsigned int templateCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false);
 
@@ -229,11 +233,11 @@ public:
 
 	CreatureObject* spawnCreature(unsigned int templateCRC, float x, float z, float y, unsigned long long parentID = 0);
 
-	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false);
+	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false, float direction = 0);
 
 	CreatureObject* createCreature(unsigned int templateCRC, bool persistent = false, unsigned int mobileTemplate = 0);
 
-	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID);
+	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID, float direction = 0);
 
 	String getTemplateToSpawn(unsigned int templateCRC);
 
@@ -244,8 +248,6 @@ public:
 	 * @post { destructor and destructedObject locked }
 	 */
 	int notifyDestruction(TangibleObject* destructor, AiAgent* destructedObject, int condition, bool isCombatAction);
-
-	void loadSpawnAreas();
 
 	void unloadSpawnAreas();
 
@@ -260,13 +262,17 @@ public:
 	/** Gather a DNA sample from the given creature*/
 	void sample(Creature* creature, CreatureObject* player);
 
-	SynchronizedVector<ManagedReference<SpawnArea* > >* getWorldSpawnAreas();
+	SpawnArea* getWorldSpawnArea();
+
+	void addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area);
+
+	void addNoSpawnArea(SpawnArea* area);
 
 	AiSpeciesData* getAiSpeciesData(unsigned int speciesID);
 
 	SpawnArea* getSpawnArea(const String& areaname);
 
-	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing);
+	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing, bool isVendor);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -318,6 +324,10 @@ public:
 
 	static const short DNADEATH = 0x03;
 
+	unsigned static const int CREATURE_LAIR_MIN;
+
+	unsigned static const int CREATURE_LAIR_MAX;
+
 	CreatureManagerImplementation(Zone* planet);
 
 	CreatureManagerImplementation(DummyConstructorParameter* param);
@@ -326,9 +336,9 @@ public:
 
 	void stop();
 
-	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size);
+	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size);
 
-	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size = 20);
+	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size = 20);
 
 	SceneObject* spawnTheater(unsigned int lairTemplate, int difficulty, float x, float z, float y, float size = 10);
 
@@ -342,7 +352,7 @@ public:
 	 * @param x position x
 	 * @param y position y
 	 * @param parentID cell object id (optional)
-	 * @return returns creature object that has been spawned, nullptr on error
+	 * @return returns creature object that has been spawned, NULL on error
 	 */
 	CreatureObject* spawnCreatureWithAi(unsigned int templateCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false);
 
@@ -354,11 +364,11 @@ public:
 
 	CreatureObject* spawnCreature(unsigned int templateCRC, float x, float z, float y, unsigned long long parentID = 0);
 
-	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false);
+	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID = 0, bool persistent = false, float direction = 0);
 
 	CreatureObject* createCreature(unsigned int templateCRC, bool persistent = false, unsigned int mobileTemplate = 0);
 
-	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID);
+	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID, float direction = 0);
 
 	String getTemplateToSpawn(unsigned int templateCRC);
 
@@ -369,8 +379,6 @@ public:
 	 * @post { destructor and destructedObject locked }
 	 */
 	int notifyDestruction(TangibleObject* destructor, AiAgent* destructedObject, int condition, bool isCombatAction);
-
-	void loadSpawnAreas();
 
 	void unloadSpawnAreas();
 
@@ -391,13 +399,17 @@ public:
 	/** Gather a DNA sample from the given creature*/
 	void sample(Creature* creature, CreatureObject* player);
 
-	SynchronizedVector<ManagedReference<SpawnArea* > >* getWorldSpawnAreas();
+	SpawnArea* getWorldSpawnArea();
+
+	void addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area);
+
+	void addNoSpawnArea(SpawnArea* area);
 
 	AiSpeciesData* getAiSpeciesData(unsigned int speciesID);
 
 	SpawnArea* getSpawnArea(const String& areaname);
 
-	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing);
+	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing, bool isVendor);
 
 	WeakReference<CreatureManager*> _this;
 
@@ -446,9 +458,9 @@ public:
 
 	void stop();
 
-	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size);
+	SceneObject* spawn(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size);
 
-	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int difficulty, float x, float z, float y, float size);
+	SceneObject* spawnLair(unsigned int lairTemplate, int difficultyLevel, int lairBuildingLevel, float x, float z, float y, float size);
 
 	SceneObject* spawnTheater(unsigned int lairTemplate, int difficulty, float x, float z, float y, float size);
 
@@ -464,17 +476,15 @@ public:
 
 	CreatureObject* spawnCreature(unsigned int templateCRC, float x, float z, float y, unsigned long long parentID);
 
-	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent);
+	CreatureObject* spawnCreature(unsigned int templateCRC, unsigned int objectCRC, float x, float z, float y, unsigned long long parentID, bool persistent, float direction);
 
 	CreatureObject* createCreature(unsigned int templateCRC, bool persistent, unsigned int mobileTemplate);
 
-	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID);
+	void placeCreature(CreatureObject* creature, float x, float z, float y, unsigned long long parentID, float direction);
 
 	String getTemplateToSpawn(unsigned int templateCRC);
 
 	bool checkSpawnAsBaby(float tamingChance, int babiesSpawned, int chance);
-
-	void loadSpawnAreas();
 
 	void unloadSpawnAreas();
 
@@ -488,9 +498,13 @@ public:
 
 	void sample(Creature* creature, CreatureObject* player);
 
+	void addSpawnAreaToMap(unsigned int nameHash, SpawnArea* area);
+
+	void addNoSpawnArea(SpawnArea* area);
+
 	SpawnArea* getSpawnArea(const String& areaname);
 
-	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing);
+	bool addWearableItem(CreatureObject* creature, TangibleObject* clothing, bool isVendor);
 
 };
 

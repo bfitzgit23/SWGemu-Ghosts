@@ -12,10 +12,6 @@
 
 #include "server/zone/objects/draftschematic/DraftSchematic.h"
 
-#include "server/zone/managers/crafting/labratories/SharedLabratory.h"
-
-#include "server/zone/objects/tangible/TangibleObject.h"
-
 /*
  *	CraftingManagerStub
  */

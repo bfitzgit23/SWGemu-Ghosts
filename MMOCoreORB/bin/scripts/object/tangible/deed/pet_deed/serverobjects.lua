@@ -45,6 +45,7 @@
 --Children folder includes
 
 -- Server Objects
+includeFile("tangible/deed/pet_deed/hk47_deed.lua")
 includeFile("tangible/deed/pet_deed/acklay_deed.lua")
 includeFile("tangible/deed/pet_deed/angler_deed.lua")
 includeFile("tangible/deed/pet_deed/bageraset_deed.lua")

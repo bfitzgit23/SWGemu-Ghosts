@@ -18,7 +18,7 @@
  *	EventPerkDeedStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 716999798,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_ACTIVATEREMOVEEVENT__BOOL_,RPC_GETDURATIONSTRING__,RPC_PARSECHILDOBJECTS__SCENEOBJECT_,RPC_SETOWNER__CREATUREOBJECT_,RPC_GETOWNER__,RPC_GETGENERATEDOBJECT__,RPC_GETPERKTYPE__,RPC_ISEVENTPERKDEED__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 716999798,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_ACTIVATEREMOVEEVENT__BOOL_,RPC_GETDURATIONSTRING__,RPC_PARSECHILDOBJECTS__SCENEOBJECT_,RPC_SETOWNER__CREATUREOBJECT_,RPC_SETGENERATEDOBJECT__TANGIBLEOBJECT_,RPC_GETOWNER__,RPC_GETGENERATEDOBJECT__,RPC_GETPERKTYPE__,RPC_ISEVENTPERKDEED__};
 
 EventPerkDeed::EventPerkDeed() : Deed(DummyConstructorParameter::instance()) {
 	EventPerkDeedImplementation* _implementation = new EventPerkDeedImplementation();
@@ -169,6 +169,22 @@ void EventPerkDeed::setOwner(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->setOwner(player);
+	}
+}
+
+void EventPerkDeed::setGeneratedObject(TangibleObject* object) {
+	EventPerkDeedImplementation* _implementation = static_cast<EventPerkDeedImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETGENERATEDOBJECT__TANGIBLEOBJECT_);
+		method.addObjectParameter(object);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setGeneratedObject(object);
 	}
 }
 
@@ -473,6 +489,11 @@ void EventPerkDeedImplementation::setOwner(CreatureObject* player) {
 	owner = player;
 }
 
+void EventPerkDeedImplementation::setGeneratedObject(TangibleObject* object) {
+	// server/zone/objects/tangible/deed/eventperk/EventPerkDeed.idl():  		generatedObject = object;
+	generatedObject = object;
+}
+
 ManagedWeakReference<CreatureObject* > EventPerkDeedImplementation::getOwner() const{
 	// server/zone/objects/tangible/deed/eventperk/EventPerkDeed.idl():  		return owner;
 	return owner;
@@ -568,6 +589,14 @@ void EventPerkDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_SETGENERATEDOBJECT__TANGIBLEOBJECT_:
+		{
+			TangibleObject* object = static_cast<TangibleObject*>(inv->getObjectParameter());
+			
+			setGeneratedObject(object);
+			
+		}
+		break;
 	case RPC_GETOWNER__:
 		{
 			
@@ -627,6 +656,10 @@ void EventPerkDeedAdapter::parseChildObjects(SceneObject* parent) {
 
 void EventPerkDeedAdapter::setOwner(CreatureObject* player) {
 	(static_cast<EventPerkDeed*>(stub))->setOwner(player);
+}
+
+void EventPerkDeedAdapter::setGeneratedObject(TangibleObject* object) {
+	(static_cast<EventPerkDeed*>(stub))->setGeneratedObject(object);
 }
 
 ManagedWeakReference<CreatureObject* > EventPerkDeedAdapter::getOwner() const {

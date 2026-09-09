@@ -20,7 +20,7 @@
  *	AuctionManagerStub
  */
 
-enum {RPC_INITIALIZE__ = 1052585454,RPC_GETITEMATTRIBUTES__CREATUREOBJECT_LONG_,RPC_GETDATA__CREATUREOBJECT_INT_LONG_INT_INT_UNICODESTRING_INT_INT_BOOL_INT_INT_,RPC_RETRIEVEITEM__CREATUREOBJECT_LONG_LONG_,RPC_BUYITEM__CREATUREOBJECT_LONG_INT_INT_,RPC_DOAUCTIONBID__CREATUREOBJECT_AUCTIONITEM_INT_INT_,RPC_DOINSTANTBUY__CREATUREOBJECT_AUCTIONITEM_,RPC_CHECKBIDAUCTION__CREATUREOBJECT_AUCTIONITEM_INT_INT_,RPC_CANCELITEM__CREATUREOBJECT_LONG_,RPC_GETAUCTIONMAP__,RPC_CHECKVENDORITEMS__BOOL_,RPC_CHECKAUCTIONS__BOOL_,RPC_GETVENDORUID__SCENEOBJECT_,RPC_UPDATEVENDORUID__SCENEOBJECT_STRING_STRING_,RPC_UPDATEVENDORSEARCH__SCENEOBJECT_BOOL_,RPC_EXPIRESALE__AUCTIONITEM_,RPC_EXPIREBIDAUCTION__AUCTIONITEM_,RPC_EXPIREAUCTION__AUCTIONITEM_,RPC_DELETEEXPIREDSALE__AUCTIONITEM_,RPC_ISMARKETENABLED__,RPC_SETMARKETENABLED__BOOL_,RPC_DISPLAYINFO__CREATUREOBJECT_,RPC_UPDATEAUCTIONOWNER__AUCTIONITEM_CREATUREOBJECT_,RPC_REMOVECOLORCODES__STRING_,RPC_GETZONESERVER__};
+enum {RPC_INITIALIZE__ = 1052585454,RPC_GETITEMATTRIBUTES__CREATUREOBJECT_LONG_,RPC_GETDATA__CREATUREOBJECT_INT_LONG_INT_INT_UNICODESTRING_INT_INT_BOOL_INT_INT_,RPC_RETRIEVEITEM__CREATUREOBJECT_LONG_LONG_,RPC_BUYITEM__CREATUREOBJECT_LONG_INT_INT_,RPC_DOAUCTIONBID__CREATUREOBJECT_AUCTIONITEM_INT_INT_,RPC_DOINSTANTBUY__CREATUREOBJECT_AUCTIONITEM_,RPC_CHECKBIDAUCTION__CREATUREOBJECT_AUCTIONITEM_INT_INT_,RPC_CANCELITEM__CREATUREOBJECT_LONG_,RPC_GETAUCTIONMAP__,RPC_CHECKVENDORITEMS__BOOL_,RPC_CHECKAUCTIONS__BOOL_,RPC_GETVENDORUID__SCENEOBJECT_,RPC_UPDATEVENDORUID__SCENEOBJECT_STRING_STRING_,RPC_UPDATEVENDORSEARCH__SCENEOBJECT_BOOL_,RPC_EXPIRESALE__AUCTIONITEM_,RPC_EXPIREBIDAUCTION__AUCTIONITEM_,RPC_EXPIREAUCTION__AUCTIONITEM_,RPC_DELETEEXPIREDSALE__AUCTIONITEM_BOOL_,RPC_ISMARKETENABLED__,RPC_SETMARKETENABLED__BOOL_,RPC_DISPLAYINFO__CREATUREOBJECT_,RPC_UPDATEAUCTIONOWNER__AUCTIONITEM_CREATUREOBJECT_,RPC_REMOVECOLORCODES__STRING_,RPC_GETZONESERVER__};
 
 AuctionManager::AuctionManager(ZoneServer* server) : ManagedService(DummyConstructorParameter::instance()) {
 	AuctionManagerImplementation* _implementation = new AuctionManagerImplementation(server);
@@ -52,13 +52,13 @@ void AuctionManager::initialize() {
 	}
 }
 
-void AuctionManager::addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium, bool isRelist) {
+void AuctionManager::addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium) {
 	AuctionManagerImplementation* _implementation = static_cast<AuctionManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		_implementation->addSaleItem(player, objectid, vendor, description, price, duration, auction, premium, isRelist);
+		_implementation->addSaleItem(player, objectid, vendor, description, price, duration, auction, premium);
 	}
 }
 
@@ -317,6 +317,16 @@ String AuctionManager::getVendorUID(SceneObject* vendor) {
 	}
 }
 
+Logger* AuctionManager::getLogger() {
+	AuctionManagerImplementation* _implementation = static_cast<AuctionManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getLogger();
+	}
+}
+
 void AuctionManager::updateVendorUID(SceneObject* vendor, const String& oldUID, const String& newUID) {
 	AuctionManagerImplementation* _implementation = static_cast<AuctionManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -395,18 +405,19 @@ void AuctionManager::expireAuction(AuctionItem* item) {
 	}
 }
 
-void AuctionManager::deleteExpiredSale(AuctionItem* item) {
+void AuctionManager::deleteExpiredSale(AuctionItem* item, bool sendMail) {
 	AuctionManagerImplementation* _implementation = static_cast<AuctionManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_DELETEEXPIREDSALE__AUCTIONITEM_);
+		DistributedMethod method(this, RPC_DELETEEXPIREDSALE__AUCTIONITEM_BOOL_);
 		method.addObjectParameter(item);
+		method.addBooleanParameter(sendMail);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->deleteExpiredSale(item);
+		_implementation->deleteExpiredSale(item, sendMail);
 	}
 }
 
@@ -747,7 +758,7 @@ AuctionsMap* AuctionManagerImplementation::getAuctionMap() {
 void AuctionManagerImplementation::updateVendorUID(SceneObject* vendor, const String& oldUID, const String& newUID) {
 	Locker _locker(_this.getReferenceUnsafeStaticCast());
 	// server/zone/managers/auction/AuctionManager.idl():  		auctionMap.
-	if (auctionMap == NULL){
+	if (!auctionMap){
 	// server/zone/managers/auction/AuctionManager.idl():  			pendingUIDUpdates.put(vendor, newUID);
 	(&pendingUIDUpdates)->put(vendor, newUID);
 	// server/zone/managers/auction/AuctionManager.idl():  			pendingOldUIDUpdates.put(vendor, oldUID);
@@ -965,11 +976,12 @@ void AuctionManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_DELETEEXPIREDSALE__AUCTIONITEM_:
+	case RPC_DELETEEXPIREDSALE__AUCTIONITEM_BOOL_:
 		{
 			AuctionItem* item = static_cast<AuctionItem*>(inv->getObjectParameter());
+			bool sendMail = inv->getBooleanParameter();
 			
-			deleteExpiredSale(item);
+			deleteExpiredSale(item, sendMail);
 			
 		}
 		break;
@@ -1097,8 +1109,8 @@ void AuctionManagerAdapter::expireAuction(AuctionItem* item) {
 	(static_cast<AuctionManager*>(stub))->expireAuction(item);
 }
 
-void AuctionManagerAdapter::deleteExpiredSale(AuctionItem* item) {
-	(static_cast<AuctionManager*>(stub))->deleteExpiredSale(item);
+void AuctionManagerAdapter::deleteExpiredSale(AuctionItem* item, bool sendMail) {
+	(static_cast<AuctionManager*>(stub))->deleteExpiredSale(item, sendMail);
 }
 
 bool AuctionManagerAdapter::isMarketEnabled() {

@@ -11,6 +11,7 @@
 #include "server/zone/packets/MessageCallback.h"
 #include "server/zone/ZoneServer.h"
 #include "server/zone/Zone.h"
+#include "server/zone/SpaceZone.h"
 #include "server/zone/managers/player/PlayerManager.h"
 #include "server/zone/managers/reaction/ReactionManager.h"
 #include "server/zone/packets/creature/CreatureObjectDeltaMessage6.h"
@@ -18,13 +19,22 @@
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/chat/ChatManager.h"
 #include "server/zone/objects/player/events/DisconnectClientEvent.h"
+#include "server/login/account/Account.h"
+#include "server/login/account/AccountManager.h"
+#include "server/zone/managers/collision/CollisionManager.h"
+#include "templates/params/creature/PlayerArrangement.h"
+#include "server/zone/packets/object/DataTransform.h"
+
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif // WITH_SWGREALMS_API
+
+// #define DEBUG_SELECT_CHAR_CALLBACK
 
 class SelectCharacterCallback : public MessageCallback {
 	uint64 characterID;
 public:
-	SelectCharacterCallback(ZoneClientSession* client, ZoneProcessServer* server) :
-		MessageCallback(client, server), characterID(0) {
-
+	SelectCharacterCallback(ZoneClientSession* client, ZoneProcessServer* server) : MessageCallback(client, server), characterID(0) {
 		setCustomTaskQueue("slowQueue");
 	}
 
@@ -33,10 +43,26 @@ public:
 	}
 
 	static void connectPlayer(SceneObject* obj, uint64_t characterID, CreatureObject* player, ZoneClientSession* client, ZoneServer* zoneServer) {
-		PlayerObject* ghost = player->getPlayerObject();
+		auto ghost = player->getPlayerObject();
 
 		if (ghost == nullptr) {
 			return;
+		}
+
+		// Ghosts staff login repair:
+		// refresh the authenticated account directly from SQL and keep the
+		// character permission level synchronized with the account.
+		ManagedReference<Account*> account =
+			AccountManager::getAccount(client->getAccountID(), true);
+
+		if (account == nullptr)
+			account = ghost->getAccount();
+
+		if (account != nullptr &&
+			account->getAdminLevel() != ghost->getAdminLevel()) {
+			zoneServer->getPlayerManager()->updatePermissionLevel(
+				player,
+				account->getAdminLevel());
 		}
 
 		if (ghost->getAdminLevel() == 0 && (zoneServer->getConnectionCount() >= zoneServer->getServerCap())) {
@@ -51,72 +77,241 @@ public:
 			return;
 		}
 
+#ifdef WITH_SWGREALMS_API
+		auto clientIP = client->getIPAddress();
+		auto loggedInAccounts = zoneServer->getPlayerManager()->getOnlineZoneClientMap()->getAccountsLoggedIn(clientIP);
+
+		SWGRealmsAPI::instance()->approvePlayerConnect(clientIP, ghost->getAccountID(), characterID, loggedInAccounts,
+				[object = Reference<SceneObject*>(obj), characterID,
+				playerCreature = Reference<CreatureObject*>(player),
+				clientObject = Reference<ZoneClientSession*>(client),
+				zoneServer](const SessionApprovalResult& result) {
+
+			if (!result.isActionAllowed()) {
+				clientObject->info(true) << "Player connect not approved: " << result.getLogMessage();
+
+				clientObject->sendMessage(new ErrorMessage(result.getTitle(), result.getMessage(true), 0));
+				return;
+			}
+
+			SWGRealmsAPI::updateClientIPAddress(clientObject, result);
+
+			Locker locker(object);
+
+			if (result.isActionDebug() && playerCreature != nullptr) {
+				auto ghost = playerCreature->getPlayerObject();
+
+				if (ghost != nullptr) {
+					ghost->setLogLevel(Logger::DEBUG);
+				}
+			}
+
+			connectApprovedPlayer(object, characterID, playerCreature, clientObject, zoneServer);
+		});
+	};
+
+	static void connectApprovedPlayer(SceneObject* obj, uint64_t characterID, CreatureObject* player, ZoneClientSession* client, ZoneServer* zoneServer) {
+		PlayerObject* ghost = player->getPlayerObject();
+
+		if (ghost == nullptr) {
+			return;
+		}
+#endif // WITH_SWGREALMS_API
+
+		// Tie client to player object
 		player->setClient(client);
 		client->setPlayer(player);
 
+		// Get stored zone name
 		String zoneName = ghost->getSavedTerrainName();
-		Zone* zone = zoneServer->getZone(zoneName);
+
+		// Characters created from legacy player templates may not have received a
+		// zone component callback, leaving their saved terrain empty. Recover them
+		// into the tutorial zone instead of rejecting the login permanently.
+		if (zoneName.isEmpty()) {
+			zoneName = "tutorial";
+			ghost->setSavedTerrainName(zoneName);
+			player->info(true) << "Recovered character with empty saved terrain into tutorial -- ID: " << player->getObjectID();
+		}
+
+		auto zone = zoneServer->getZone(zoneName);
+
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+		StringBuffer debugMsg;
+
+		debugMsg << endl << endl <<
+		"=============================================" << endl <<
+		"---------- SelectCharacterCallback ----------" << endl <<
+		"Player: " << player->getDisplayedName() << endl <<
+		"Zone: " << zoneName << endl;
+#endif // DEBUG_SELECT_CHAR_CALLBACK
 
 		if (zone == nullptr) {
 			ErrorMessage* errMsg = new ErrorMessage("Login Error", "The planet where your character was stored is disabled!", 0x0);
 			client->sendMessage(errMsg);
 
+			player->error() << "Player: " << player->getFirstName() << " ID: " << player->getObjectID() << " attempted to connect to Zone: " << zoneName << " which is disabled.";
+
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+			player->info(true) << debugMsg.toString();
+#endif // DEBUG_SELECT_CHAR_CALLBACK
 			return;
 		}
 
 		if (!zoneServer->getPlayerManager()->increaseOnlineCharCountIfPossible(client)) {
-			ErrorMessage* errMsg = new ErrorMessage("Login Error", "You reached the max online character count.", 0x0);
+			auto maxOnline = zoneServer->getPlayerManager()->getOnlineCharactersPerAccount();
+			StringBuffer msg;
+			String plural = maxOnline > 1 ? "s" : "";
+
+			msg << "\\#ffff00You have reached this server's limit of " <<  maxOnline << " character" << plural << " online per account.\\#." << endl << endl
+				<< "\\#ffffffPlease logout your other character" << plural << " and try again.\\#.";
+
+			ErrorMessage* errMsg = new ErrorMessage("Login Error", msg.toString(), 0x0);
 			client->sendMessage(errMsg);
 
 			return;
 		}
 
+		// Set player as teleporing and reset their movement count and timestamp
 		ghost->setTeleporting(true);
 		player->setMovementCounter(0);
 		ghost->setClientLastMovementStamp(0);
 
+		// Set PlayerObject on Load Screen if they are not in the world
 		if (player->getZone() == nullptr) {
 			ghost->setOnLoadScreen(true);
 		}
 
+		/* Select Character Callback Notes:
+
+		Player is in a container (cell, ship, pilot chair, operations chair, ship turret):
+			- If a player is LD and not in the zone both playerParent and currentParent should not be true.
+			- If a player has unloaded playerParent is not null and currentParent is null.
+			- Vehicles are excluded, they are stored when a player logs back in.
+
+		Player is in the zone or was in a vehicle:
+			- Both playerParent and currentParent are nullptr's, except with vehicles where playerParent is not null.
+
+		Players can be transferred into one of the following:
+
+		1. No parent, transferred into the zone
+		2. Parent is a cell in a building
+		3. Root Parent is a ship.
+			3a. Parent is a ship itself
+			3b. Parent is a cell in a Ship (PoB)
+			3c. Parent is a pilot chair
+		*/
+
+		// Players saved parent ID
 		uint64 savedParentID = ghost->getSavedParentID();
-		ManagedReference<SceneObject*> playerParent = zoneServer->getObject(savedParentID, true);
-		ManagedReference<SceneObject*> currentParent = player->getParent().get();
+		// Players last logout position
+		Vector3 lastWorldPosition = ghost->getLastLogoutWorldPosition();
+		// Players current containmentType
+		int playerArrangement = player->getContainmentType();
 
-		if ((playerParent != nullptr && currentParent == nullptr) || (currentParent != nullptr && currentParent->isCellObject())) {
-			playerParent = playerParent == nullptr ? currentParent : playerParent;
+		ManagedReference<SceneObject*> playerParent = zoneServer->getObject(savedParentID, true).get();
+		auto currentParent = player->getParent().get();
+		ManagedReference<SceneObject*> rootParent = player->getRootParent();
 
-			ManagedReference<SceneObject*> root = playerParent->getRootParent();
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+		debugMsg << "Player Arrangement: " << playerArrangement << "\nsavedParentID: " << savedParentID << "\nLast Logout World Position: " << lastWorldPosition.toString() << endl;
+		debugMsg << "Player Position : " << player->getPosition().toString() << " World Position: " << player->getWorldPosition().toString() << endl;
 
-			root = root == nullptr ? playerParent : root;
+		if (playerParent != nullptr) {
+			debugMsg << "playerParent: " << playerParent->getObjectName()->getFullPath() << " ID: " << playerParent->getObjectID() << endl;
+			debugMsg << "playerParent Position - " << playerParent->getWorldPosition().toString() << endl;
+		} else {
+			debugMsg << "playerParent: nullptr" << endl;
+		}
 
-			//ghost->updateLastValidatedPosition();
+		if (currentParent != nullptr)
+			debugMsg << "currentParent: " << currentParent->getObjectName()->getFullPath() << " ID: " << currentParent->getObjectID() << endl;
+		else
+			debugMsg << "currentParent: nullptr" << endl;
 
-			if (root->getZone() == nullptr && root->isStructureObject()) {
-				player->initializePosition(root->getPositionX(), root->getPositionZ(), root->getPositionY());
+		if (rootParent != nullptr)
+			debugMsg << "rootParent: " << rootParent->getObjectName()->getFullPath() << " ID: " << rootParent->getObjectID() << endl;
+		else
+			debugMsg << "rootParent: nullptr" << endl;
+
+		debugMsg << "=============================================" << endl << endl;
+
+		player->info(true) << debugMsg.toString();
+#endif
+
+		// This bool signifies a player was inside of a parent but fully unloaded from the game world (not LD).
+		bool unloadedInParent = (playerParent != nullptr && currentParent == nullptr);
+		bool currentParentNull = (currentParent == nullptr);
+
+		// Lets branch for Ships First, player must still be LD in the game world or they should be sent back to their launch position. - Ship, Pilot Chair, Operatios Chair, Ship Turret.
+		if (!currentParentNull && playerParent != nullptr && ((!unloadedInParent && currentParent->isValidJtlParent()) ||
+			(currentParent->isCellObject() && rootParent != nullptr && rootParent->isPobShip() && rootParent->getLocalZone() != nullptr))) {
+
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+			player->info(true) << "SelectCharacterCallback -- Sending Player into Ship or child of a ship";
+#endif
+
+			playerParent->transferObject(player, playerArrangement, false, false, false);
+			player->sendToOwner(true);
+
+			// Reset onLoadScreen after sendToOwner so notifyObjectInsertedToChild
+			// detects this as a reconnect (isTeleporting && !isOnLoadScreen).
+			// isOnLoadScreen may be left true from a hyperspace switchZone if the
+			// client crashed before sending a position update.
+			ghost->setOnLoadScreen(false);
+
+			if (playerParent->isShipObject()) {
+				rootParent = playerParent;
+			} else {
+				rootParent = playerParent->getRootParent();
+			}
+
+			if (rootParent != nullptr) {
+				rootParent->notifyObjectInsertedToChild(player, playerParent, nullptr);
+
+				// Send the ship's authoritative position to the reconnecting player to prevent the client
+				// from briefly using stale cached coordinates before its first transform is processed.
+				auto data = new DataTransform(rootParent);
+				player->sendMessage(data);
+
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+				player->info(true) << "SelectCharacterCallback -- rootParent Ship - Notified player has been inserted.";
+#endif
+			}
+		// Player is inside a cell
+		} else if ((!currentParentNull && currentParent->isCellObject()) || (unloadedInParent && playerParent->isCellObject())) {
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+			player->info(true) << "SelectCharacterCallback -- Sending Player into cell";
+#endif
+			// playerParent shouldn't be null, but just in case update it with currentParent
+			playerParent = (playerParent == nullptr ? currentParent : playerParent);
+
+			rootParent = playerParent->getRootParent();
+
+			rootParent = (rootParent == nullptr ? playerParent : rootParent);
+
+			// The root parent structure or building is no longer in the game world, player will be placed in the zone at their last world logout position.
+			if (rootParent->getZone() == nullptr) {
+				float x = lastWorldPosition.getX();
+				float y = lastWorldPosition.getY();
+				float z = CollisionManager::getWorldFloorCollision(x, y, zone, false);
+
+				player->initializePosition(lastWorldPosition.getX(), lastWorldPosition.getZ(), lastWorldPosition.getY());
 
 				zone->transferObject(player, -1, true);
 
 				playerParent = nullptr;
+			// Structure or building exists, transfer player back into their parent cell
 			} else {
-				if (!(playerParent->isCellObject() && playerParent == root)) {
-					playerParent->transferObject(player, -1, false);
-				}
-
-				if (player->getParent() == nullptr) {
-					zone->transferObject(player, -1, false);
-				} else if (root->getZone() == nullptr) {
-					Locker clocker(root, player);
-					zone->transferObject(root, -1, false);
-				}
+				playerParent->transferObject(player, -1, true);
 
 				player->sendToOwner(true);
 			}
-
-		} else if (currentParent == nullptr) {
-			player->removeAllSkillModsOfType(SkillModManager::STRUCTURE);
-			zone->transferObject(player, -1, true);
-		} else {
+		// Player is LD on a vehicle. Vehicle is auto stored when player reconnects.
+		} else if (!unloadedInParent && !currentParentNull && currentParent->isVehicleObject()) {
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+			player->info(true) << "SelectCharacterCallback -- Player is in vehicle still LD, transferring vehicle into zone.";
+#endif
 			if (player->getZone() == nullptr) {
 				ManagedReference<SceneObject*> objectToInsert = currentParent != nullptr ? player->getRootParent() : player;
 
@@ -128,48 +323,120 @@ public:
 			}
 
 			player->sendToOwner(true);
+		} else {
+#ifdef DEBUG_SELECT_CHAR_CALLBACK
+			player->info(true) << "SelectCharacterCallback -- Sending Player directly to zone";
+#endif
+			// Clear structure mods from the player
+			player->removeAllSkillModsOfType(SkillModManager::STRUCTURE);
+
+			// Lets make sure we clear space states
+			player->clearSpaceStates();
+
+			if (savedParentID != 0) {
+				float x = lastWorldPosition.getX();
+				float y = lastWorldPosition.getY();
+				float z = CollisionManager::getWorldFloorCollision(x, y, zone, false);
+
+				player->initializePosition(x, z, y);
+			}
+
+			zone->transferObject(player, -1, true);
+
+			// Handle re-creating the new player tutorial, this exception will put players back into a new tutorial building.
+			if (zoneName == "tutorial") {
+				Reference<CreatureObject*> playerRef = player;
+
+				Core::getTaskManager()->scheduleTask([playerRef]() {
+					if (playerRef == nullptr) {
+						return;
+					}
+
+					auto zoneServer = playerRef->getZoneServer();
+
+					if (zoneServer == nullptr) {
+						return;
+					}
+
+					auto playerManager = zoneServer->getPlayerManager();
+
+					if (playerManager == nullptr) {
+						return;
+					}
+
+					Locker locker(playerRef);
+
+					auto ghost = playerRef->getPlayerObject();
+
+					if (ghost != nullptr && !ghost->isTutorialParticipant()) {
+						// playerRef->info(true) << " sending player into a skipped tutorial building";
+
+						playerManager->insertIntoSkippedTutorialBuilding(playerRef);
+					} else {
+						// playerRef->info(true) << " sending player into a new tutorial";
+
+						playerManager->createTutorialBuilding(playerRef);
+					}
+				}, "ReinsertTutorialLambda", 500, zoneName.toCharArray());
+			}
 		}
 
-		if (playerParent == nullptr)
+		// Player does not have a parent, clear the saved parent.
+		if (playerParent == nullptr) {
 			ghost->setSavedParentID(0);
+		}
 
+		// Set the player online & notify
 		ghost->setOnline();
-
-		ChatManager* chatManager = zoneServer->getChatManager();
-		chatManager->addPlayer(player);
-		chatManager->loadMail(player);
-
 		ghost->notifyOnline();
 
-		PlayerManager* playerManager = zoneServer->getPlayerManager();
-		playerManager->sendLoginMessage(player);
 
-		ReactionManager* reactionManager = zoneServer->getReactionManager();
-		reactionManager->doReactionFineMailCheck(player);
+		auto chatManager = zoneServer->getChatManager();
+
+		if (chatManager != nullptr) {
+			chatManager->addPlayer(player);
+			chatManager->loadMail(player);
+		}
+
+		auto playerManager = zoneServer->getPlayerManager();
+
+		if (playerManager != nullptr) {
+			playerManager->sendLoginMessage(player);
+		}
+
+		auto reactionManager = zoneServer->getReactionManager();
+
+		if (reactionManager != nullptr) {
+			reactionManager->doReactionFineMailCheck(player);
+		}
 
 		//player->info("sending login Message:" + zoneServer->getLoginMessage(), true);
 
 		// Disable music notes if player had been playing music
 		if (!player->isPlayingMusic() && !player->isDancing()) {
-			player->setPerformanceCounter(0, false);
-			player->setInstrumentID(0, false);
+			player->setPerformanceStartTime(0, false);
+			player->setPerformanceType(0, false);
 
 			CreatureObjectDeltaMessage6* dcreo6 = new CreatureObjectDeltaMessage6(player);
 			dcreo6->updatePerformanceAnimation(player->getPerformanceAnimation());
-			dcreo6->updatePerformanceCounter(0);
-			dcreo6->updateInstrumentID(0);
+			dcreo6->updatePerformanceStartTime(0);
+			dcreo6->updatePerformanceType(0);
 			dcreo6->close();
 			player->broadcastMessage(dcreo6, true);
 
 			player->setListenToID(0);
 
 			// Stop playing music/dancing animation
-			if (player->getPosture() == CreaturePosture::SKILLANIMATING)
+			if (player->getPosture() == CreaturePosture::SKILLANIMATING) {
 				player->setPosture(CreaturePosture::UPRIGHT);
+			}
 
 		}
 
 		SkillModManager::instance()->verifyWearableSkillMods(player);
+
+		// Store all of the players spawned children: Pets & vehicles, except ships (bool)
+		ghost->unloadSpawnedChildren(true);
 	}
 
 	void run() {
@@ -232,10 +499,30 @@ public:
 
 			connectPlayer(obj, characterID, player, client, zoneServer);
 		} else {
-			if (obj != nullptr)
-				client->error("could get from zone server character id " + String::valueOf(characterID) + " but is not a player creature");
-			else
-				client->error("could not get from zone server character id " + String::valueOf(characterID));
+			// Failure here leaves the SWG client parked at "Now connecting to
+			// the Galaxy..." until its own timeout - the previous code only
+			// wrote to the per-client log and sent no ErrorMessage back, which
+			// made it look like a hang.  Surface the reason in the main log
+			// AND tell the client so it stops waiting.
+			StringBuffer reason;
+			if (obj != nullptr) {
+				reason << "object " << String::hexvalueOf((int64)characterID)
+				       << " loaded but is not a player creature (gameObjectType="
+				       << String::hexvalueOf((int64)obj->getGameObjectType()) << ")";
+			} else {
+				reason << "object " << String::hexvalueOf((int64)characterID)
+				       << " not found in object broker (account="
+				       << client->getAccountID() << " galaxy="
+				       << zoneServer->getGalaxyID() << ")";
+			}
+
+			client->error() << "SelectCharacter failed: " << reason.toString();
+			Logger::console.error() << "SelectCharacter failed for account "
+			                        << client->getAccountID() << ": " << reason.toString();
+
+			ErrorMessage* errMsg = new ErrorMessage("Login Error",
+				"Server could not load this character.\nContact support if this persists.", 0x0);
+			client->sendMessage(errMsg);
 		}
 	}
 };

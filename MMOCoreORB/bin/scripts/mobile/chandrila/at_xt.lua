@@ -1,0 +1,35 @@
+at_xt = Creature:new {
+	customName = "a Chandrila Security Droid",
+	socialGroup = "",
+	faction = "rebel",
+	level = 50,
+	chanceHit = 1.0,
+	damageMin = 500,
+	damageMax = 800,
+	baseXp = 5000,
+	baseHAM = 50000,
+	baseHAMmax = 60000,
+	armor = 5,
+	resists = {50,50,50,50,50,50,50,50,50},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED + CONVERSABLE,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/3po_protocol_droid.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(at_xt, "at_xt")

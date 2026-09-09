@@ -84,6 +84,8 @@ using namespace server::zone::packets::object;
 
 #include "system/lang/Time.h"
 
+#include "server/zone/TreeEntry.h"
+
 #include "server/zone/objects/tangible/terminal/Terminal.h"
 
 #include "system/lang/ref/Reference.h"
@@ -96,6 +98,10 @@ namespace eventperk {
 
 class Jukebox : public Terminal {
 public:
+	static const float INDOOR_RADIUS;
+
+	static const float OUTDOOR_RADIUS;
+
 	Jukebox();
 
 	void initializeTransientMembers();
@@ -109,6 +115,10 @@ public:
 	void setRadius(float radius);
 
 	void notifyInsertToZone(Zone* zone);
+
+	void notifyInsert(TreeEntry* obj);
+
+	void notifyDissapear(TreeEntry* obj);
 
 	void doMusicSelection(CreatureObject* player);
 
@@ -162,6 +172,11 @@ namespace tangible {
 namespace eventperk {
 
 class JukeboxImplementation : public TerminalImplementation {
+public:
+	static const float INDOOR_RADIUS;
+
+	static const float OUTDOOR_RADIUS;
+
 protected:
 	ManagedWeakReference<CreatureObject* > owner;
 
@@ -191,6 +206,10 @@ public:
 	void setRadius(float radius);
 
 	void notifyInsertToZone(Zone* zone);
+
+	void notifyInsert(TreeEntry* obj);
+
+	void notifyDissapear(TreeEntry* obj);
 
 	void doMusicSelection(CreatureObject* player);
 

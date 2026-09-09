@@ -18,7 +18,7 @@
  *	FactoryCrateStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISFACTORYCRATE__,RPC_GETMAXCAPACITY__,RPC_SETMAXCAPACITY__INT_,RPC_SETUSECOUNT__INT_BOOL_,RPC_GETPROTOTYPE__,RPC_GETCRAFTERSNAME__,RPC_GETSERIALNUMBER__,RPC_EXTRACTOBJECTTOINVENTORY__CREATUREOBJECT_,RPC_EXTRACTOBJECT__INT_,RPC_SPLIT__INT_,RPC_GETCOUNTABLEOBJECTSRECURSIVE__,RPC_GETSIZEONVENDORRECURSIVE__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISFACTORYCRATE__,RPC_ISVALIDFACTORYCRATE__,RPC_GETMAXCAPACITY__,RPC_SETMAXCAPACITY__INT_,RPC_SETUSECOUNT__INT_BOOL_,RPC_GETPROTOTYPE__,RPC_GETCRAFTERSNAME__,RPC_GETSERIALNUMBER__,RPC_GETPROTOTYPEUSECOUNT__,RPC_EXTRACTOBJECTTOINVENTORY__CREATUREOBJECT_,RPC_EXTRACTOBJECT__,RPC_SPLIT__INT_,RPC_GETCOUNTABLEOBJECTSRECURSIVE__,RPC_GETSIZEONVENDORRECURSIVE__};
 
 FactoryCrate::FactoryCrate() : TangibleObject(DummyConstructorParameter::instance()) {
 	FactoryCrateImplementation* _implementation = new FactoryCrateImplementation();
@@ -127,6 +127,20 @@ bool FactoryCrate::isFactoryCrate() {
 	}
 }
 
+bool FactoryCrate::isValidFactoryCrate() {
+	FactoryCrateImplementation* _implementation = static_cast<FactoryCrateImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISVALIDFACTORYCRATE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isValidFactoryCrate();
+	}
+}
+
 int FactoryCrate::getMaxCapacity() const {
 	FactoryCrateImplementation* _implementation = static_cast<FactoryCrateImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -220,6 +234,20 @@ String FactoryCrate::getSerialNumber() {
 	}
 }
 
+int FactoryCrate::getPrototypeUseCount() {
+	FactoryCrateImplementation* _implementation = static_cast<FactoryCrateImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETPROTOTYPEUSECOUNT__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getPrototypeUseCount();
+	}
+}
+
 bool FactoryCrate::extractObjectToInventory(CreatureObject* player) {
 	FactoryCrateImplementation* _implementation = static_cast<FactoryCrateImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -235,18 +263,17 @@ bool FactoryCrate::extractObjectToInventory(CreatureObject* player) {
 	}
 }
 
-Reference<TangibleObject* > FactoryCrate::extractObject(int count) {
+Reference<TangibleObject* > FactoryCrate::extractObject() {
 	FactoryCrateImplementation* _implementation = static_cast<FactoryCrateImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_EXTRACTOBJECT__INT_);
-		method.addSignedIntParameter(count);
+		DistributedMethod method(this, RPC_EXTRACTOBJECT__);
 
 		return static_cast<TangibleObject*>(method.executeWithObjectReturn());
 	} else {
-		return _implementation->extractObject(count);
+		return _implementation->extractObject();
 	}
 }
 
@@ -452,8 +479,8 @@ FactoryCrateImplementation::FactoryCrateImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/factorycrate/FactoryCrate.idl():  		Logger.setLoggingName("FactoryCrate");
 	Logger::setLoggingName("FactoryCrate");
-	// server/zone/objects/factorycrate/FactoryCrate.idl():  		maxCapacity = 1000;
-	maxCapacity = 1000;
+	// server/zone/objects/factorycrate/FactoryCrate.idl():  		maxCapacity = 10000;
+	maxCapacity = 10000;
 	// server/zone/objects/factorycrate/FactoryCrate.idl():  		super.setContainerInheritPermissionsFromParent(false);
 	TangibleObjectImplementation::setContainerInheritPermissionsFromParent(false);
 	// server/zone/objects/factorycrate/FactoryCrate.idl():  		super.setContainerDefaultDenyPermission(ContainerPermissions.OPEN);
@@ -475,8 +502,6 @@ int FactoryCrateImplementation::getMaxCapacity() const{
 }
 
 void FactoryCrateImplementation::setMaxCapacity(int value) {
-	// server/zone/objects/factorycrate/FactoryCrate.idl():  		value = 1000;
-	value = 1000;
 	// server/zone/objects/factorycrate/FactoryCrate.idl():  		maxCapacity = value;
 	maxCapacity = value;
 }
@@ -537,6 +562,13 @@ void FactoryCrateAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISVALIDFACTORYCRATE__:
+		{
+			
+			bool _m_res = isValidFactoryCrate();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_GETMAXCAPACITY__:
 		{
 			
@@ -582,6 +614,13 @@ void FactoryCrateAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertAscii(_m_res);
 		}
 		break;
+	case RPC_GETPROTOTYPEUSECOUNT__:
+		{
+			
+			int _m_res = getPrototypeUseCount();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	case RPC_EXTRACTOBJECTTOINVENTORY__CREATUREOBJECT_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -590,11 +629,10 @@ void FactoryCrateAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_EXTRACTOBJECT__INT_:
+	case RPC_EXTRACTOBJECT__:
 		{
-			int count = inv->getSignedIntParameter();
 			
-			DistributedObject* _m_res = extractObject(count);
+			DistributedObject* _m_res = extractObject();
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -641,6 +679,10 @@ bool FactoryCrateAdapter::isFactoryCrate() {
 	return (static_cast<FactoryCrate*>(stub))->isFactoryCrate();
 }
 
+bool FactoryCrateAdapter::isValidFactoryCrate() {
+	return (static_cast<FactoryCrate*>(stub))->isValidFactoryCrate();
+}
+
 int FactoryCrateAdapter::getMaxCapacity() const {
 	return (static_cast<FactoryCrate*>(stub))->getMaxCapacity();
 }
@@ -665,12 +707,16 @@ String FactoryCrateAdapter::getSerialNumber() {
 	return (static_cast<FactoryCrate*>(stub))->getSerialNumber();
 }
 
+int FactoryCrateAdapter::getPrototypeUseCount() {
+	return (static_cast<FactoryCrate*>(stub))->getPrototypeUseCount();
+}
+
 bool FactoryCrateAdapter::extractObjectToInventory(CreatureObject* player) {
 	return (static_cast<FactoryCrate*>(stub))->extractObjectToInventory(player);
 }
 
-Reference<TangibleObject* > FactoryCrateAdapter::extractObject(int count) {
-	return (static_cast<FactoryCrate*>(stub))->extractObject(count);
+Reference<TangibleObject* > FactoryCrateAdapter::extractObject() {
+	return (static_cast<FactoryCrate*>(stub))->extractObject();
 }
 
 void FactoryCrateAdapter::split(int newStackSize) {

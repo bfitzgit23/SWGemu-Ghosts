@@ -84,6 +84,8 @@ public:
 
 	void deactivate();
 
+	void initializeBuffObservers();
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -135,6 +137,8 @@ public:
 	void activate();
 
 	void deactivate();
+
+	void initializeBuffObservers();
 
 private:
 	void addObservers();
@@ -194,6 +198,8 @@ public:
 
 	void deactivate();
 
+	void initializeBuffObservers();
+
 };
 
 class SingleUseBuffHelper : public DistributedObjectClassHelper, public Singleton<SingleUseBuffHelper> {
@@ -231,8 +237,6 @@ namespace buffs {
 
 class SingleUseBuffPOD : public BuffPOD {
 public:
-	Optional<ManagedReference<SingleUseBuffObserverPOD* >> observer;
-
 	Optional<ManagedReference<CreatureObjectPOD* >> player;
 
 	Optional<unsigned int> commandCRC;

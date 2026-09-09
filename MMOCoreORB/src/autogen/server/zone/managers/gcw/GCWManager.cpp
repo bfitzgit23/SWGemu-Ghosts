@@ -10,8 +10,6 @@
 
 #include "server/zone/objects/structure/StructureObject.h"
 
-#include "server/zone/objects/building/BuildingObject.h"
-
 #include "server/zone/objects/installation/InstallationObject.h"
 
 #include "server/zone/objects/creature/CreatureObject.h"
@@ -22,13 +20,11 @@
 
 #include "server/zone/objects/tangible/deed/Deed.h"
 
-#include "server/zone/managers/gcw/TerminalSpawn.h"
-
 /*
  *	GCWManagerStub
  */
 
-enum {RPC_GETZONE__ = 3465843338,RPC_INITIALIZE__,RPC_START__,RPC_LOADLUACONFIG__,RPC_STOP__,RPC_PERFORMGCWTASKS__BOOL_,RPC_CANPLACEMOREBASES__CREATUREOBJECT_,RPC_GETBASECOUNT__CREATUREOBJECT_,RPC_HASTOOMANYBASESNEARBY__INT_INT_,RPC_REGISTERGCWBASE__BUILDINGOBJECT_BOOL_,RPC_UNREGISTERGCWBASE__BUILDINGOBJECT_,RPC_ADDMINEFIELD__BUILDINGOBJECT_SCENEOBJECT_,RPC_ADDSCANNER__BUILDINGOBJECT_SCENEOBJECT_,RPC_ADDTURRET__BUILDINGOBJECT_SCENEOBJECT_,RPC_STARTVULNERABILITY__BUILDINGOBJECT_,RPC_ENDVULNERABILITY__BUILDINGOBJECT_,RPC_INITIALIZENEWVULNERABILITY__BUILDINGOBJECT_,RPC_GETVULNERABLESTATUS__BUILDINGOBJECT_CREATUREOBJECT_,RPC_ISBASEVULNERABLE__BUILDINGOBJECT_,RPC_ISBANDIDENTIFIED__BUILDINGOBJECT_,RPC_ISUPLINKJAMMED__BUILDINGOBJECT_,RPC_ISTERMINALDAMAGED__TANGIBLEOBJECT_,RPC_ISSECURITYTERMSLICED__BUILDINGOBJECT_,RPC_ISDNASAMPLED__BUILDINGOBJECT_,RPC_ISPOWEROVERLOADED__BUILDINGOBJECT_,RPC_ISSHUTDOWNSEQUENCESTARTED__BUILDINGOBJECT_,RPC_ISFACILITYREBOOTING__BUILDINGOBJECT_,RPC_CANUSETERMINALS__CREATUREOBJECT_BUILDINGOBJECT_SCENEOBJECT_,RPC_AREOPPOSINGFACTIONS__INT_INT_,RPC_AWARDSLICINGXP__CREATUREOBJECT_STRING_INT_,RPC_SENDJAMUPLINKMENU__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_VERIFYUPLINKBAND__CREATUREOBJECT_BUILDINGOBJECT_INT_TANGIBLEOBJECT_,RPC_CANSTARTSLICE__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_COMPLETESECURITYSLICE__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_FAILSECURITYSLICE__TANGIBLEOBJECT_,RPC_REPAIRTERMINAL__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_SENDDNASAMPLEMENU__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_PROCESSDNASAMPLE__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_SENDPOWERREGULATORCONTROLS__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_HANDLEPOWERREGULATORSWITCH__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_,RPC_DOBASEDESTRUCTION__STRUCTUREOBJECT_,RPC_DOBASEDESTRUCTION__BUILDINGOBJECT_,RPC_STARTABORTSEQUENCEDELAY__BUILDINGOBJECT_CREATUREOBJECT_SCENEOBJECT_,RPC_ABORTSHUTDOWNSEQUENCE__BUILDINGOBJECT_CREATUREOBJECT_,RPC_RESETVULNERABILITY__CREATUREOBJECT_BUILDINGOBJECT_,RPC_HASRESETTIMERPAST__BUILDINGOBJECT_,RPC_SENDBASEDEFENSESTATUS__CREATUREOBJECT_BUILDINGOBJECT_,RPC_SENDREMOVEDEFENSECONFIRMATION__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_REMOVEDEFENSE__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_NOTIFYINSTALLATIONDESTRUCTION__INSTALLATIONOBJECT_,RPC_NOTIFYTURRETDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_,RPC_NOTIFYMINEFIELDDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_,RPC_SENDSELECTDEEDTODONATE__BUILDINGOBJECT_CREATUREOBJECT_,RPC_PERFORMDEFENSEDONATION__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_SENDTURRETATTACKLISTTO__CREATUREOBJECT_SCENEOBJECT_,RPC_CANUSETURRET__TANGIBLEOBJECT_SCENEOBJECT_CREATUREOBJECT_,RPC_GETGCWDISCOUNT__CREATUREOBJECT_,RPC_RUNCRACKDOWNSCAN__AIAGENT_CREATUREOBJECT_,RPC_ISSTRONGHOLDCITY__STRING_,RPC_GETMAXBASESPERPLAYER__,RPC_ISPLANETCAPPED__,RPC_GETIMPERIALBASECOUNT__,RPC_GETREBELBASECOUNT__,RPC_GETTURRETAUTOFIRETIMEOUT__,RPC_GETDESTRUCTIONTIMER__,RPC_GETOVERTCOOLDOWN__,RPC_GETRESETTIMER__};
+enum {RPC_GETZONE__ = 3465843338,RPC_INITIALIZE__,RPC_START__,RPC_LOADLUACONFIG__,RPC_STOP__,RPC_PERFORMGCWTASKS__,RPC_CANPLACEMOREBASES__CREATUREOBJECT_,RPC_GETBASECOUNT__CREATUREOBJECT_BOOL_,RPC_HASTOOMANYBASESNEARBY__FLOAT_FLOAT_,RPC_REGISTERGCWBASE__BUILDINGOBJECT_BOOL_,RPC_UNREGISTERGCWBASE__BUILDINGOBJECT_,RPC_ADDMINEFIELD__BUILDINGOBJECT_SCENEOBJECT_,RPC_ADDSCANNER__BUILDINGOBJECT_SCENEOBJECT_,RPC_ADDTURRET__BUILDINGOBJECT_SCENEOBJECT_,RPC_ADDBASEALARM__BUILDINGOBJECT_SCENEOBJECT_,RPC_SPAWNSECURITYPATROL__BUILDINGOBJECT_STRING_VECTOR3_LONG_FLOAT_BOOL_BOOL_,RPC_SPAWNBASESECURITYPATROLS__BUILDINGOBJECT_,RPC_STARTVULNERABILITY__BUILDINGOBJECT_,RPC_ENDVULNERABILITY__BUILDINGOBJECT_,RPC_INITIALIZENEWVULNERABILITY__BUILDINGOBJECT_,RPC_GETVULNERABLESTATUS__BUILDINGOBJECT_CREATUREOBJECT_,RPC_ISBASEVULNERABLE__BUILDINGOBJECT_,RPC_ISBANDIDENTIFIED__BUILDINGOBJECT_,RPC_ISUPLINKJAMMED__BUILDINGOBJECT_,RPC_ISTERMINALDAMAGED__TANGIBLEOBJECT_,RPC_ISSECURITYTERMSLICED__BUILDINGOBJECT_,RPC_ISDNASAMPLED__BUILDINGOBJECT_,RPC_ISPOWEROVERLOADED__BUILDINGOBJECT_,RPC_ISSHUTDOWNSEQUENCESTARTED__BUILDINGOBJECT_,RPC_ISFACILITYREBOOTING__BUILDINGOBJECT_,RPC_ISPLANETCAPPED__,RPC_CANUSETERMINALS__CREATUREOBJECT_BUILDINGOBJECT_SCENEOBJECT_,RPC_AREOPPOSINGFACTIONS__INT_INT_,RPC_ISPROPERFACTIONSTATUS__CREATUREOBJECT_,RPC_AWARDSLICINGXP__CREATUREOBJECT_STRING_INT_,RPC_SENDJAMUPLINKMENU__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_VERIFYUPLINKBAND__CREATUREOBJECT_BUILDINGOBJECT_INT_TANGIBLEOBJECT_,RPC_RENEWUPLINKBAND__BUILDINGOBJECT_,RPC_CANSTARTSLICE__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_COMPLETESECURITYSLICE__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_FAILSECURITYSLICE__TANGIBLEOBJECT_,RPC_REPAIRTERMINAL__CREATUREOBJECT_TANGIBLEOBJECT_,RPC_SENDDNASAMPLEMENU__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_PROCESSDNASAMPLE__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_SENDPOWERREGULATORCONTROLS__CREATUREOBJECT_BUILDINGOBJECT_TANGIBLEOBJECT_,RPC_HANDLEPOWERREGULATORSWITCH__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_BOOL_,RPC_DOBASEDESTRUCTION__STRUCTUREOBJECT_,RPC_DOBASEDESTRUCTION__BUILDINGOBJECT_,RPC_STARTABORTSEQUENCEDELAY__BUILDINGOBJECT_CREATUREOBJECT_SCENEOBJECT_,RPC_ABORTSHUTDOWNSEQUENCE__BUILDINGOBJECT_CREATUREOBJECT_,RPC_RESETVULNERABILITY__CREATUREOBJECT_BUILDINGOBJECT_,RPC_HASRESETTIMERPAST__BUILDINGOBJECT_,RPC_SENDBASEDEFENSESTATUS__CREATUREOBJECT_BUILDINGOBJECT_,RPC_SENDREMOVEDEFENSECONFIRMATION__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_REMOVEDEFENSE__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_NOTIFYINSTALLATIONDESTRUCTION__INSTALLATIONOBJECT_,RPC_NOTIFYTURRETDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_,RPC_NOTIFYMINEFIELDDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_,RPC_NOTIFYSCANNERDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_,RPC_SENDSELECTDEEDTODONATE__BUILDINGOBJECT_CREATUREOBJECT_,RPC_SENDSELECTMINETODONATE__INSTALLATIONOBJECT_CREATUREOBJECT_,RPC_PERFORMDEFENSEDONATION__BUILDINGOBJECT_CREATUREOBJECT_LONG_,RPC_SENDTURRETATTACKLISTTO__CREATUREOBJECT_SCENEOBJECT_,RPC_CANUSETURRET__TANGIBLEOBJECT_SCENEOBJECT_CREATUREOBJECT_,RPC_GETGCWDISCOUNT__CREATUREOBJECT_,RPC_RUNCRACKDOWNSCAN__AIAGENT_CREATUREOBJECT_,RPC_STARTCONTRABANDSCANSESSION__AIAGENT_CREATUREOBJECT_BOOL_,RPC_PERFORMCHECKWILDCONTRABANDSCANTASK__,RPC_COUNTCONTRABANDITEMS__CREATUREOBJECT_,RPC_ACTIVATEBASEALARMS__BUILDINGOBJECT_INT_,RPC_DEACTIVATEBASEALARMS__BUILDINGOBJECT_,RPC_ISSTRONGHOLDCITY__STRING_,RPC_GETMAXBASESPERPLAYER__,RPC_GETBASEPLACEMENTDELAY__,RPC_CANPLACEGCWBASEINCOMBAT__,RPC_ALLOWPVEBASEPLACEMENT__,RPC_GETIMPERIALBASECOUNT__,RPC_GETREBELBASECOUNT__,RPC_GETTURRETAUTOFIRETIMEOUT__,RPC_GETDESTRUCTIONTIMER__,RPC_GETOVERTCOOLDOWN__,RPC_GETRESETTIMER__,};
 
 GCWManager::GCWManager(Zone* zne) : ManagedService(DummyConstructorParameter::instance()) {
 	GCWManagerImplementation* _implementation = new GCWManagerImplementation(zne);
@@ -116,18 +112,17 @@ void GCWManager::stop() {
 	}
 }
 
-void GCWManager::performGCWTasks(bool initial) {
+void GCWManager::performGCWTasks() {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_PERFORMGCWTASKS__BOOL_);
-		method.addBooleanParameter(initial);
+		DistributedMethod method(this, RPC_PERFORMGCWTASKS__);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->performGCWTasks(initial);
+		_implementation->performGCWTasks();
 	}
 }
 
@@ -146,30 +141,31 @@ bool GCWManager::canPlaceMoreBases(CreatureObject* creature) {
 	}
 }
 
-int GCWManager::getBaseCount(CreatureObject* creature) {
+int GCWManager::getBaseCount(CreatureObject* creature, bool pvpOnly) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETBASECOUNT__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_GETBASECOUNT__CREATUREOBJECT_BOOL_);
 		method.addObjectParameter(creature);
+		method.addBooleanParameter(pvpOnly);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getBaseCount(creature);
+		return _implementation->getBaseCount(creature, pvpOnly);
 	}
 }
 
-bool GCWManager::hasTooManyBasesNearby(int x, int y) {
+bool GCWManager::hasTooManyBasesNearby(float x, float y) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_HASTOOMANYBASESNEARBY__INT_INT_);
-		method.addSignedIntParameter(x);
-		method.addSignedIntParameter(y);
+		DistributedMethod method(this, RPC_HASTOOMANYBASESNEARBY__FLOAT_FLOAT_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(y);
 
 		return method.executeWithBooleanReturn();
 	} else {
@@ -253,6 +249,58 @@ void GCWManager::addTurret(BuildingObject* building, SceneObject* turret) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->addTurret(building, turret);
+	}
+}
+
+void GCWManager::addBaseAlarm(BuildingObject* building, SceneObject* alarm) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDBASEALARM__BUILDINGOBJECT_SCENEOBJECT_);
+		method.addObjectParameter(building);
+		method.addObjectParameter(alarm);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addBaseAlarm(building, alarm);
+	}
+}
+
+unsigned long long GCWManager::spawnSecurityPatrol(BuildingObject* building, String& patrol, Vector3& location, unsigned long long parentID, float direction, bool stationary, bool attackable) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SPAWNSECURITYPATROL__BUILDINGOBJECT_STRING_VECTOR3_LONG_FLOAT_BOOL_BOOL_);
+		method.addObjectParameter(building);
+		method.addAsciiParameter(patrol);
+		method.addDereferencedSerializableParameter(location);
+		method.addUnsignedLongParameter(parentID);
+		method.addFloatParameter(direction);
+		method.addBooleanParameter(stationary);
+		method.addBooleanParameter(attackable);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->spawnSecurityPatrol(building, patrol, location, parentID, direction, stationary, attackable);
+	}
+}
+
+void GCWManager::spawnBaseSecurityPatrols(BuildingObject* building) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SPAWNBASESECURITYPATROLS__BUILDINGOBJECT_);
+		method.addObjectParameter(building);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->spawnBaseSecurityPatrols(building);
 	}
 }
 
@@ -454,6 +502,20 @@ bool GCWManager::isFacilityRebooting(BuildingObject* building) {
 	}
 }
 
+bool GCWManager::isPlanetCapped() {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPLANETCAPPED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isPlanetCapped();
+	}
+}
+
 bool GCWManager::canUseTerminals(CreatureObject* creature, BuildingObject* building, SceneObject* terminal) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -484,6 +546,21 @@ bool GCWManager::areOpposingFactions(int faction1, int faction2) {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->areOpposingFactions(faction1, faction2);
+	}
+}
+
+bool GCWManager::isProperFactionStatus(CreatureObject* creature) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPROPERFACTIONSTATUS__CREATUREOBJECT_);
+		method.addObjectParameter(creature);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isProperFactionStatus(creature);
 	}
 }
 
@@ -536,6 +613,21 @@ void GCWManager::verifyUplinkBand(CreatureObject* creature, BuildingObject* buil
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->verifyUplinkBand(creature, building, band, uplinkTerminal);
+	}
+}
+
+void GCWManager::renewUplinkBand(BuildingObject* building) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_RENEWUPLINKBAND__BUILDINGOBJECT_);
+		method.addObjectParameter(building);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->renewUplinkBand(building);
 	}
 }
 
@@ -670,19 +762,20 @@ void GCWManager::handlePowerRegulatorSwitch(CreatureObject* creature, TangibleOb
 	}
 }
 
-void GCWManager::scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature) {
+void GCWManager::scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature, bool force) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_BOOL_);
 		method.addObjectParameter(building);
 		method.addObjectParameter(creature);
+		method.addBooleanParameter(force);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->scheduleBaseDestruction(building, creature);
+		_implementation->scheduleBaseDestruction(building, creature, force);
 	}
 }
 
@@ -871,7 +964,7 @@ void GCWManager::notifyTurretDestruction(BuildingObject* building, InstallationO
 	}
 }
 
-void GCWManager::notifyMinefieldDestruction(BuildingObject* building, InstallationObject* turret) {
+void GCWManager::notifyMinefieldDestruction(BuildingObject* building, InstallationObject* minefield) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -879,11 +972,27 @@ void GCWManager::notifyMinefieldDestruction(BuildingObject* building, Installati
 
 		DistributedMethod method(this, RPC_NOTIFYMINEFIELDDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_);
 		method.addObjectParameter(building);
-		method.addObjectParameter(turret);
+		method.addObjectParameter(minefield);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->notifyMinefieldDestruction(building, turret);
+		_implementation->notifyMinefieldDestruction(building, minefield);
+	}
+}
+
+void GCWManager::notifyScannerDestruction(BuildingObject* building, InstallationObject* scanner) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_NOTIFYSCANNERDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_);
+		method.addObjectParameter(building);
+		method.addObjectParameter(scanner);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->notifyScannerDestruction(building, scanner);
 	}
 }
 
@@ -900,6 +1009,22 @@ void GCWManager::sendSelectDeedToDonate(BuildingObject* building, CreatureObject
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->sendSelectDeedToDonate(building, creature);
+	}
+}
+
+void GCWManager::sendSelectMineToDonate(InstallationObject* installation, CreatureObject* player) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDSELECTMINETODONATE__INSTALLATIONOBJECT_CREATUREOBJECT_);
+		method.addObjectParameter(installation);
+		method.addObjectParameter(player);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendSelectMineToDonate(installation, player);
 	}
 }
 
@@ -968,7 +1093,7 @@ float GCWManager::getGCWDiscount(CreatureObject* creature) {
 	}
 }
 
-void GCWManager::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
+bool GCWManager::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -978,9 +1103,86 @@ void GCWManager::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
 		method.addObjectParameter(scanner);
 		method.addObjectParameter(player);
 
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->runCrackdownScan(scanner, player);
+	}
+}
+
+void GCWManager::startContrabandScanSession(AiAgent* scanner, CreatureObject* player, bool enforced) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_STARTCONTRABANDSCANSESSION__AIAGENT_CREATUREOBJECT_BOOL_);
+		method.addObjectParameter(scanner);
+		method.addObjectParameter(player);
+		method.addBooleanParameter(enforced);
+
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->runCrackdownScan(scanner, player);
+		_implementation->startContrabandScanSession(scanner, player, enforced);
+	}
+}
+
+void GCWManager::performCheckWildContrabandScanTask() {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_PERFORMCHECKWILDCONTRABANDSCANTASK__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->performCheckWildContrabandScanTask();
+	}
+}
+
+int GCWManager::countContrabandItems(CreatureObject* player) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_COUNTCONTRABANDITEMS__CREATUREOBJECT_);
+		method.addObjectParameter(player);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->countContrabandItems(player);
+	}
+}
+
+void GCWManager::activateBaseAlarms(BuildingObject* building, int alarmType) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ACTIVATEBASEALARMS__BUILDINGOBJECT_INT_);
+		method.addObjectParameter(building);
+		method.addSignedIntParameter(alarmType);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->activateBaseAlarms(building, alarmType);
+	}
+}
+
+void GCWManager::deactivateBaseAlarms(BuildingObject* building) {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DEACTIVATEBASEALARMS__BUILDINGOBJECT_);
+		method.addObjectParameter(building);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->deactivateBaseAlarms(building);
 	}
 }
 
@@ -1013,17 +1215,45 @@ int GCWManager::getMaxBasesPerPlayer() {
 	}
 }
 
-bool GCWManager::isPlanetCapped() {
+int GCWManager::getBasePlacementDelay() {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISPLANETCAPPED__);
+		DistributedMethod method(this, RPC_GETBASEPLACEMENTDELAY__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getBasePlacementDelay();
+	}
+}
+
+bool GCWManager::canPlaceGcwBaseInCombat() {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CANPLACEGCWBASEINCOMBAT__);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->isPlanetCapped();
+		return _implementation->canPlaceGcwBaseInCombat();
+	}
+}
+
+bool GCWManager::allowPveBasePlacement() {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ALLOWPVEBASEPLACEMENT__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->allowPveBasePlacement();
 	}
 }
 
@@ -1115,6 +1345,76 @@ int GCWManager::getWinningFactionDifficultyScaling() const {
 	}
 }
 
+int GCWManager::getCrackdownPlayerScanCooldown() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownPlayerScanCooldown();
+	}
+}
+
+int GCWManager::getCrackdownScannerCooldown() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownScannerCooldown();
+	}
+}
+
+int GCWManager::getCrackdownContrabandFineCredits() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownContrabandFineCredits();
+	}
+}
+
+int GCWManager::getCrackdownContrabandFineFactionPoints() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownContrabandFineFactionPoints();
+	}
+}
+
+int GCWManager::getWildScanInterval() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getWildScanInterval();
+	}
+}
+
+int GCWManager::getWildScanLoginDelay() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getWildScanLoginDelay();
+	}
+}
+
+int GCWManager::getWildScanChance() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getWildScanChance();
+	}
+}
+
 int GCWManager::getGCWXPBonus() const {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1185,6 +1485,16 @@ bool GCWManager::shouldSpawnDefenses() const {
 	}
 }
 
+bool GCWManager::shouldSpawnBaseAlarms() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->shouldSpawnBaseAlarms();
+	}
+}
+
 int GCWManager::getInitialVulnerabilityDelay() const {
 	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1248,6 +1558,26 @@ int GCWManager::getResetTimer() const {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getResetTimer();
+	}
+}
+
+int GCWManager::getCrackdownScansEnabled() const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownScansEnabled();
+	}
+}
+
+String GCWManager::getCrackdownInfo(CreatureObject* player) const {
+	GCWManagerImplementation* _implementation = static_cast<GCWManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCrackdownInfo(player);
 	}
 }
 
@@ -1426,8 +1756,24 @@ GCWManagerImplementation::GCWManagerImplementation(Zone* zne) {
 	dnaStrandLength = 23;
 	// server/zone/managers/gcw/GCWManager.idl():  		destructionTimer = 600;
 	destructionTimer = 600;
-	// server/zone/managers/gcw/GCWManager.idl():  		maxBases = -1;
-	maxBases = -1;
+	// server/zone/managers/gcw/GCWManager.idl():  		maxBasesPerPlanet = -1;
+	maxBasesPerPlanet = -1;
+	// server/zone/managers/gcw/GCWManager.idl():  		maxBasesPerPlayer = 3;
+	maxBasesPerPlayer = 3;
+	// server/zone/managers/gcw/GCWManager.idl():  		basePlacementDelay = 10;
+	basePlacementDelay = 10;
+	// server/zone/managers/gcw/GCWManager.idl():  		placeInCombat = true;
+	placeInCombat = true;
+	// server/zone/managers/gcw/GCWManager.idl():  		allowPveBases = true;
+	allowPveBases = true;
+	// server/zone/managers/gcw/GCWManager.idl():  		allowBaseComplex = true;
+	allowBaseComplex = true;
+	// server/zone/managers/gcw/GCWManager.idl():  		baseComplexSize = 3;
+	baseComplexSize = 3;
+	// server/zone/managers/gcw/GCWManager.idl():  		nearbyBaseDistance = 600;
+	nearbyBaseDistance = 600;
+	// server/zone/managers/gcw/GCWManager.idl():  		donationCooldown = 1;
+	donationCooldown = 1;
 	// server/zone/managers/gcw/GCWManager.idl():  		powerSwitchCount = 7;
 	powerSwitchCount = 7;
 	// server/zone/managers/gcw/GCWManager.idl():  		overtCooldown = 300;
@@ -1436,8 +1782,6 @@ GCWManagerImplementation::GCWManagerImplementation(Zone* zne) {
 	reactivationTimer = 300;
 	// server/zone/managers/gcw/GCWManager.idl():  		turretAutoFireTimeout = 20;
 	turretAutoFireTimeout = 20;
-	// server/zone/managers/gcw/GCWManager.idl():  		maxBasesPerPlayer = 3;
-	maxBasesPerPlayer = 3;
 	// server/zone/managers/gcw/GCWManager.idl():  		bonusXP = 15;
 	bonusXP = 15;
 	// server/zone/managers/gcw/GCWManager.idl():  		loserBonus = 0;
@@ -1448,6 +1792,8 @@ GCWManagerImplementation::GCWManagerImplementation(Zone* zne) {
 	racialPenaltyEnabled = true;
 	// server/zone/managers/gcw/GCWManager.idl():  		spawnDefenses = true;
 	spawnDefenses = true;
+	// server/zone/managers/gcw/GCWManager.idl():  		spawnBaseAlarms = false;
+	spawnBaseAlarms = false;
 	// server/zone/managers/gcw/GCWManager.idl():  		initialVulnerabilityDelay = 0;
 	initialVulnerabilityDelay = 0;
 	// server/zone/managers/gcw/GCWManager.idl():  		Logger.setLoggingName("GCWManager " + zne.getZoneName());
@@ -1595,10 +1941,19 @@ int GCWManagerImplementation::getMaxBasesPerPlayer() {
 	return maxBasesPerPlayer;
 }
 
-bool GCWManagerImplementation::isPlanetCapped() {
-	Locker _locker(_this.getReferenceUnsafeStaticCast());
-	// server/zone/managers/gcw/GCWManager.idl():  		return maxBases <= gcwBaseList.size();
-	return maxBases <= (&gcwBaseList)->size();
+int GCWManagerImplementation::getBasePlacementDelay() {
+	// server/zone/managers/gcw/GCWManager.idl():  		return basePlacementDelay;
+	return basePlacementDelay;
+}
+
+bool GCWManagerImplementation::canPlaceGcwBaseInCombat() {
+	// server/zone/managers/gcw/GCWManager.idl():  		return placeInCombat;
+	return placeInCombat;
+}
+
+bool GCWManagerImplementation::allowPveBasePlacement() {
+	// server/zone/managers/gcw/GCWManager.idl():  		return allowPveBases;
+	return allowPveBases;
 }
 
 int GCWManagerImplementation::getImperialBaseCount() {
@@ -1651,6 +2006,41 @@ int GCWManagerImplementation::getWinningFactionDifficultyScaling() const{
 	return winnerDifficultyScaling;
 }
 
+int GCWManagerImplementation::getCrackdownPlayerScanCooldown() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return crackdownPlayerScanCooldown;
+	return crackdownPlayerScanCooldown;
+}
+
+int GCWManagerImplementation::getCrackdownScannerCooldown() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return crackdownScannerCooldown;
+	return crackdownScannerCooldown;
+}
+
+int GCWManagerImplementation::getCrackdownContrabandFineCredits() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return crackdownContrabandFineCredits;
+	return crackdownContrabandFineCredits;
+}
+
+int GCWManagerImplementation::getCrackdownContrabandFineFactionPoints() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return crackdownContrabandFineFactionPoints;
+	return crackdownContrabandFineFactionPoints;
+}
+
+int GCWManagerImplementation::getWildScanInterval() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return wildScanInterval;
+	return wildScanInterval;
+}
+
+int GCWManagerImplementation::getWildScanLoginDelay() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return wildScanLoginDelay;
+	return wildScanLoginDelay;
+}
+
+int GCWManagerImplementation::getWildScanChance() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return wildScanChance;
+	return wildScanChance;
+}
+
 int GCWManagerImplementation::getGCWXPBonus() const{
 	// server/zone/managers/gcw/GCWManager.idl():  		return bonusXP;
 	return bonusXP;
@@ -1694,6 +2084,11 @@ bool GCWManagerImplementation::shouldSpawnDefenses() const{
 	return spawnDefenses;
 }
 
+bool GCWManagerImplementation::shouldSpawnBaseAlarms() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return spawnBaseAlarms;
+	return spawnBaseAlarms;
+}
+
 int GCWManagerImplementation::getInitialVulnerabilityDelay() const{
 	// server/zone/managers/gcw/GCWManager.idl():  		return initialVulnerabilityDelay;
 	return initialVulnerabilityDelay;
@@ -1717,6 +2112,11 @@ int GCWManagerImplementation::getOvertCooldown() const{
 int GCWManagerImplementation::getResetTimer() const{
 	// server/zone/managers/gcw/GCWManager.idl():  		return resetTimer;
 	return resetTimer;
+}
+
+int GCWManagerImplementation::getCrackdownScansEnabled() const{
+	// server/zone/managers/gcw/GCWManager.idl():  		return crackdownScansEnabled;
+	return crackdownScansEnabled;
 }
 
 /*
@@ -1769,11 +2169,10 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_PERFORMGCWTASKS__BOOL_:
+	case RPC_PERFORMGCWTASKS__:
 		{
-			bool initial = inv->getBooleanParameter();
 			
-			performGCWTasks(initial);
+			performGCWTasks();
 			
 		}
 		break;
@@ -1785,18 +2184,19 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_GETBASECOUNT__CREATUREOBJECT_:
+	case RPC_GETBASECOUNT__CREATUREOBJECT_BOOL_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool pvpOnly = inv->getBooleanParameter();
 			
-			int _m_res = getBaseCount(creature);
+			int _m_res = getBaseCount(creature, pvpOnly);
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_HASTOOMANYBASESNEARBY__INT_INT_:
+	case RPC_HASTOOMANYBASESNEARBY__FLOAT_FLOAT_:
 		{
-			int x = inv->getSignedIntParameter();
-			int y = inv->getSignedIntParameter();
+			float x = inv->getFloatParameter();
+			float y = inv->getFloatParameter();
 			
 			bool _m_res = hasTooManyBasesNearby(x, y);
 			resp->insertBoolean(_m_res);
@@ -1843,6 +2243,37 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			SceneObject* turret = static_cast<SceneObject*>(inv->getObjectParameter());
 			
 			addTurret(building, turret);
+			
+		}
+		break;
+	case RPC_ADDBASEALARM__BUILDINGOBJECT_SCENEOBJECT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			SceneObject* alarm = static_cast<SceneObject*>(inv->getObjectParameter());
+			
+			addBaseAlarm(building, alarm);
+			
+		}
+		break;
+	case RPC_SPAWNSECURITYPATROL__BUILDINGOBJECT_STRING_VECTOR3_LONG_FLOAT_BOOL_BOOL_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			String patrol; inv->getAsciiParameter(patrol);
+			Vector3 location = inv->getDereferencedSerializableParameter<Vector3 >();
+			unsigned long long parentID = inv->getUnsignedLongParameter();
+			float direction = inv->getFloatParameter();
+			bool stationary = inv->getBooleanParameter();
+			bool attackable = inv->getBooleanParameter();
+			
+			unsigned long long _m_res = spawnSecurityPatrol(building, patrol, location, parentID, direction, stationary, attackable);
+			resp->insertLong(_m_res);
+		}
+		break;
+	case RPC_SPAWNBASESECURITYPATROLS__BUILDINGOBJECT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			
+			spawnBaseSecurityPatrols(building);
 			
 		}
 		break;
@@ -1951,6 +2382,13 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISPLANETCAPPED__:
+		{
+			
+			bool _m_res = isPlanetCapped();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_CANUSETERMINALS__CREATUREOBJECT_BUILDINGOBJECT_SCENEOBJECT_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -1967,6 +2405,14 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int faction2 = inv->getSignedIntParameter();
 			
 			bool _m_res = areOpposingFactions(faction1, faction2);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISPROPERFACTIONSTATUS__CREATUREOBJECT_:
+		{
+			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			bool _m_res = isProperFactionStatus(creature);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -1998,6 +2444,14 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			TangibleObject* uplinkTerminal = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
 			verifyUplinkBand(creature, building, band, uplinkTerminal);
+			
+		}
+		break;
+	case RPC_RENEWUPLINKBAND__BUILDINGOBJECT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			
+			renewUplinkBand(building);
 			
 		}
 		break;
@@ -2076,12 +2530,13 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_:
+	case RPC_SCHEDULEBASEDESTRUCTION__BUILDINGOBJECT_CREATUREOBJECT_BOOL_:
 		{
 			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool force = inv->getBooleanParameter();
 			
-			scheduleBaseDestruction(building, creature);
+			scheduleBaseDestruction(building, creature, force);
 			
 		}
 		break;
@@ -2186,9 +2641,18 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_NOTIFYMINEFIELDDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_:
 		{
 			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
-			InstallationObject* turret = static_cast<InstallationObject*>(inv->getObjectParameter());
+			InstallationObject* minefield = static_cast<InstallationObject*>(inv->getObjectParameter());
 			
-			notifyMinefieldDestruction(building, turret);
+			notifyMinefieldDestruction(building, minefield);
+			
+		}
+		break;
+	case RPC_NOTIFYSCANNERDESTRUCTION__BUILDINGOBJECT_INSTALLATIONOBJECT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			InstallationObject* scanner = static_cast<InstallationObject*>(inv->getObjectParameter());
+			
+			notifyScannerDestruction(building, scanner);
 			
 		}
 		break;
@@ -2198,6 +2662,15 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			sendSelectDeedToDonate(building, creature);
+			
+		}
+		break;
+	case RPC_SENDSELECTMINETODONATE__INSTALLATIONOBJECT_CREATUREOBJECT_:
+		{
+			InstallationObject* installation = static_cast<InstallationObject*>(inv->getObjectParameter());
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			sendSelectMineToDonate(installation, player);
 			
 		}
 		break;
@@ -2243,7 +2716,49 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			AiAgent* scanner = static_cast<AiAgent*>(inv->getObjectParameter());
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
-			runCrackdownScan(scanner, player);
+			bool _m_res = runCrackdownScan(scanner, player);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_STARTCONTRABANDSCANSESSION__AIAGENT_CREATUREOBJECT_BOOL_:
+		{
+			AiAgent* scanner = static_cast<AiAgent*>(inv->getObjectParameter());
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool enforced = inv->getBooleanParameter();
+			
+			startContrabandScanSession(scanner, player, enforced);
+			
+		}
+		break;
+	case RPC_PERFORMCHECKWILDCONTRABANDSCANTASK__:
+		{
+			
+			performCheckWildContrabandScanTask();
+			
+		}
+		break;
+	case RPC_COUNTCONTRABANDITEMS__CREATUREOBJECT_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			int _m_res = countContrabandItems(player);
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_ACTIVATEBASEALARMS__BUILDINGOBJECT_INT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			int alarmType = inv->getSignedIntParameter();
+			
+			activateBaseAlarms(building, alarmType);
+			
+		}
+		break;
+	case RPC_DEACTIVATEBASEALARMS__BUILDINGOBJECT_:
+		{
+			BuildingObject* building = static_cast<BuildingObject*>(inv->getObjectParameter());
+			
+			deactivateBaseAlarms(building);
 			
 		}
 		break;
@@ -2262,10 +2777,24 @@ void GCWManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_ISPLANETCAPPED__:
+	case RPC_GETBASEPLACEMENTDELAY__:
 		{
 			
-			bool _m_res = isPlanetCapped();
+			int _m_res = getBasePlacementDelay();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_CANPLACEGCWBASEINCOMBAT__:
+		{
+			
+			bool _m_res = canPlaceGcwBaseInCombat();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ALLOWPVEBASEPLACEMENT__:
+		{
+			
+			bool _m_res = allowPveBasePlacement();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -2336,19 +2865,19 @@ void GCWManagerAdapter::stop() {
 	(static_cast<GCWManager*>(stub))->stop();
 }
 
-void GCWManagerAdapter::performGCWTasks(bool initial) {
-	(static_cast<GCWManager*>(stub))->performGCWTasks(initial);
+void GCWManagerAdapter::performGCWTasks() {
+	(static_cast<GCWManager*>(stub))->performGCWTasks();
 }
 
 bool GCWManagerAdapter::canPlaceMoreBases(CreatureObject* creature) {
 	return (static_cast<GCWManager*>(stub))->canPlaceMoreBases(creature);
 }
 
-int GCWManagerAdapter::getBaseCount(CreatureObject* creature) {
-	return (static_cast<GCWManager*>(stub))->getBaseCount(creature);
+int GCWManagerAdapter::getBaseCount(CreatureObject* creature, bool pvpOnly) {
+	return (static_cast<GCWManager*>(stub))->getBaseCount(creature, pvpOnly);
 }
 
-bool GCWManagerAdapter::hasTooManyBasesNearby(int x, int y) {
+bool GCWManagerAdapter::hasTooManyBasesNearby(float x, float y) {
 	return (static_cast<GCWManager*>(stub))->hasTooManyBasesNearby(x, y);
 }
 
@@ -2370,6 +2899,18 @@ void GCWManagerAdapter::addScanner(BuildingObject* building, SceneObject* scanne
 
 void GCWManagerAdapter::addTurret(BuildingObject* building, SceneObject* turret) {
 	(static_cast<GCWManager*>(stub))->addTurret(building, turret);
+}
+
+void GCWManagerAdapter::addBaseAlarm(BuildingObject* building, SceneObject* alarm) {
+	(static_cast<GCWManager*>(stub))->addBaseAlarm(building, alarm);
+}
+
+unsigned long long GCWManagerAdapter::spawnSecurityPatrol(BuildingObject* building, String& patrol, Vector3& location, unsigned long long parentID, float direction, bool stationary, bool attackable) {
+	return (static_cast<GCWManager*>(stub))->spawnSecurityPatrol(building, patrol, location, parentID, direction, stationary, attackable);
+}
+
+void GCWManagerAdapter::spawnBaseSecurityPatrols(BuildingObject* building) {
+	(static_cast<GCWManager*>(stub))->spawnBaseSecurityPatrols(building);
 }
 
 void GCWManagerAdapter::startVulnerability(BuildingObject* building) {
@@ -2424,12 +2965,20 @@ bool GCWManagerAdapter::isFacilityRebooting(BuildingObject* building) {
 	return (static_cast<GCWManager*>(stub))->isFacilityRebooting(building);
 }
 
+bool GCWManagerAdapter::isPlanetCapped() {
+	return (static_cast<GCWManager*>(stub))->isPlanetCapped();
+}
+
 bool GCWManagerAdapter::canUseTerminals(CreatureObject* creature, BuildingObject* building, SceneObject* terminal) {
 	return (static_cast<GCWManager*>(stub))->canUseTerminals(creature, building, terminal);
 }
 
 bool GCWManagerAdapter::areOpposingFactions(int faction1, int faction2) {
 	return (static_cast<GCWManager*>(stub))->areOpposingFactions(faction1, faction2);
+}
+
+bool GCWManagerAdapter::isProperFactionStatus(CreatureObject* creature) {
+	return (static_cast<GCWManager*>(stub))->isProperFactionStatus(creature);
 }
 
 void GCWManagerAdapter::awardSlicingXP(CreatureObject* creature, const String& xpType, int value) {
@@ -2442,6 +2991,10 @@ void GCWManagerAdapter::sendJamUplinkMenu(CreatureObject* creature, BuildingObje
 
 void GCWManagerAdapter::verifyUplinkBand(CreatureObject* creature, BuildingObject* building, int band, TangibleObject* uplinkTerminal) {
 	(static_cast<GCWManager*>(stub))->verifyUplinkBand(creature, building, band, uplinkTerminal);
+}
+
+void GCWManagerAdapter::renewUplinkBand(BuildingObject* building) {
+	(static_cast<GCWManager*>(stub))->renewUplinkBand(building);
 }
 
 bool GCWManagerAdapter::canStartSlice(CreatureObject* creature, TangibleObject* terminal) {
@@ -2476,8 +3029,8 @@ void GCWManagerAdapter::handlePowerRegulatorSwitch(CreatureObject* creature, Tan
 	(static_cast<GCWManager*>(stub))->handlePowerRegulatorSwitch(creature, powerRegulator, indx);
 }
 
-void GCWManagerAdapter::scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature) {
-	(static_cast<GCWManager*>(stub))->scheduleBaseDestruction(building, creature);
+void GCWManagerAdapter::scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature, bool force) {
+	(static_cast<GCWManager*>(stub))->scheduleBaseDestruction(building, creature, force);
 }
 
 void GCWManagerAdapter::doBaseDestruction(StructureObject* structure) {
@@ -2524,12 +3077,20 @@ void GCWManagerAdapter::notifyTurretDestruction(BuildingObject* building, Instal
 	(static_cast<GCWManager*>(stub))->notifyTurretDestruction(building, turret);
 }
 
-void GCWManagerAdapter::notifyMinefieldDestruction(BuildingObject* building, InstallationObject* turret) {
-	(static_cast<GCWManager*>(stub))->notifyMinefieldDestruction(building, turret);
+void GCWManagerAdapter::notifyMinefieldDestruction(BuildingObject* building, InstallationObject* minefield) {
+	(static_cast<GCWManager*>(stub))->notifyMinefieldDestruction(building, minefield);
+}
+
+void GCWManagerAdapter::notifyScannerDestruction(BuildingObject* building, InstallationObject* scanner) {
+	(static_cast<GCWManager*>(stub))->notifyScannerDestruction(building, scanner);
 }
 
 void GCWManagerAdapter::sendSelectDeedToDonate(BuildingObject* building, CreatureObject* creature) {
 	(static_cast<GCWManager*>(stub))->sendSelectDeedToDonate(building, creature);
+}
+
+void GCWManagerAdapter::sendSelectMineToDonate(InstallationObject* installation, CreatureObject* player) {
+	(static_cast<GCWManager*>(stub))->sendSelectMineToDonate(installation, player);
 }
 
 void GCWManagerAdapter::performDefenseDonation(BuildingObject* building, CreatureObject* creature, unsigned long long deedOID) {
@@ -2548,8 +3109,28 @@ float GCWManagerAdapter::getGCWDiscount(CreatureObject* creature) {
 	return (static_cast<GCWManager*>(stub))->getGCWDiscount(creature);
 }
 
-void GCWManagerAdapter::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
-	(static_cast<GCWManager*>(stub))->runCrackdownScan(scanner, player);
+bool GCWManagerAdapter::runCrackdownScan(AiAgent* scanner, CreatureObject* player) {
+	return (static_cast<GCWManager*>(stub))->runCrackdownScan(scanner, player);
+}
+
+void GCWManagerAdapter::startContrabandScanSession(AiAgent* scanner, CreatureObject* player, bool enforced) {
+	(static_cast<GCWManager*>(stub))->startContrabandScanSession(scanner, player, enforced);
+}
+
+void GCWManagerAdapter::performCheckWildContrabandScanTask() {
+	(static_cast<GCWManager*>(stub))->performCheckWildContrabandScanTask();
+}
+
+int GCWManagerAdapter::countContrabandItems(CreatureObject* player) {
+	return (static_cast<GCWManager*>(stub))->countContrabandItems(player);
+}
+
+void GCWManagerAdapter::activateBaseAlarms(BuildingObject* building, int alarmType) {
+	(static_cast<GCWManager*>(stub))->activateBaseAlarms(building, alarmType);
+}
+
+void GCWManagerAdapter::deactivateBaseAlarms(BuildingObject* building) {
+	(static_cast<GCWManager*>(stub))->deactivateBaseAlarms(building);
 }
 
 int GCWManagerAdapter::isStrongholdCity(String& city) {
@@ -2560,8 +3141,16 @@ int GCWManagerAdapter::getMaxBasesPerPlayer() {
 	return (static_cast<GCWManager*>(stub))->getMaxBasesPerPlayer();
 }
 
-bool GCWManagerAdapter::isPlanetCapped() {
-	return (static_cast<GCWManager*>(stub))->isPlanetCapped();
+int GCWManagerAdapter::getBasePlacementDelay() {
+	return (static_cast<GCWManager*>(stub))->getBasePlacementDelay();
+}
+
+bool GCWManagerAdapter::canPlaceGcwBaseInCombat() {
+	return (static_cast<GCWManager*>(stub))->canPlaceGcwBaseInCombat();
+}
+
+bool GCWManagerAdapter::allowPveBasePlacement() {
+	return (static_cast<GCWManager*>(stub))->allowPveBasePlacement();
 }
 
 int GCWManagerAdapter::getImperialBaseCount() {

@@ -72,6 +72,8 @@ class WearableObject : public TangibleObject {
 public:
 	static const int MAXSOCKETS = 8;
 
+	static const int MIN_SOCKET_MOD = 60;
+
 	WearableObject();
 
 	void initializeTransientMembers();
@@ -97,11 +99,9 @@ public:
 
 	bool isEquipped();
 
-	int getMaxSockets();
+	int getMaxSockets() const;
 
-	int socketsUsed();
-
-	int socketsLeft();
+	int getRemainingSockets() const;
 
 	String repairAttempt(int repairChance);
 
@@ -112,8 +112,6 @@ public:
 	void addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	void setMaxSockets(int maxSockets);
-
-	void setSockets(int count);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -148,14 +146,14 @@ protected:
 
 	bool socketsGenerated;
 
-	bool objectCreatedPreUsedSocketCountFix;
-
 	int usedSocketCount;
 
 	int modsNotInSockets;
 
 public:
 	static const int MAXSOCKETS = 8;
+
+	static const int MIN_SOCKET_MOD = 60;
 
 protected:
 	VectorMap<String, int> wearableSkillMods;
@@ -188,11 +186,9 @@ public:
 
 	bool isEquipped();
 
-	int getMaxSockets();
+	int getMaxSockets() const;
 
-	int socketsUsed();
-
-	int socketsLeft();
+	int getRemainingSockets() const;
 
 private:
 	void generateSockets(CraftingValues* craftingValues);
@@ -207,8 +203,6 @@ public:
 	virtual void addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	void setMaxSockets(int maxSockets);
-
-	void setSockets(int count);
 
 	WeakReference<WearableObject*> _this;
 
@@ -266,19 +260,15 @@ public:
 
 	bool isEquipped();
 
-	int getMaxSockets();
+	int getMaxSockets() const;
 
-	int socketsUsed();
-
-	int socketsLeft();
+	int getRemainingSockets() const;
 
 	String repairAttempt(int repairChance);
 
 	void addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient);
 
 	void setMaxSockets(int maxSockets);
-
-	void setSockets(int count);
 
 };
 
@@ -320,8 +310,6 @@ public:
 	Optional<int> socketCount;
 
 	Optional<bool> socketsGenerated;
-
-	Optional<bool> objectCreatedPreUsedSocketCountFix;
 
 	Optional<int> usedSocketCount;
 

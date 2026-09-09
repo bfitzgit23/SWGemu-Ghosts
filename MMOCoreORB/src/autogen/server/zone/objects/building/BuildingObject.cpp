@@ -16,7 +16,7 @@
  *	BuildingObjectStub
  */
 
-enum {RPC_CREATECELLOBJECTS__ = 3291165931,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CREATECONTAINERCOMPONENT__,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_,RPC_UPDATESIGNNAME__BOOL_,RPC_SENDCONTAINEROBJECTSTO__SCENEOBJECT_BOOL_,RPC_UPDATECELLPERMISSIONSTO__CREATUREOBJECT_,RPC_BROADCASTCELLPERMISSIONS__,RPC_BROADCASTCELLPERMISSIONS__LONG_,RPC_ISALLOWEDENTRY__CREATUREOBJECT_,RPC_ISCITYBANNED__CREATUREOBJECT_,RPC_NOTIFYSTRUCTUREPLACED__CREATUREOBJECT_,RPC_HASTEMPLATEEJECTIONPOINT__,RPC_EJECTOBJECT__CREATUREOBJECT_,RPC_NOTIFYREMOVEFROMZONE__,RPC_NOTIFYINSERTTOZONE__ZONE_,RPC_NOTIFYOBJECTINSERTEDTOZONE__SCENEOBJECT_,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDDESTROYTO__SCENEOBJECT_,RPC_ADDCELL__CELLOBJECT_INT_,RPC_ISSTATICBUILDING__,RPC_GETCELL__INT_,RPC_GETCELL__STRING_,RPC_GETTOTALCELLNUMBER__,RPC_NOTIFYOBJECTINSERTEDTOCHILD__SCENEOBJECT_SCENEOBJECT_SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVEDFROMCHILD__SCENEOBJECT_SCENEOBJECT_,RPC_GETCURRENTNUMBEROFPLAYERITEMS__,RPC_GETCURRENTNUMBEROFPLAYERVENDORS__,RPC_DESTROYALLPLAYERITEMS__,RPC_ONENTER__CREATUREOBJECT_,RPC_ONEXIT__CREATUREOBJECT_LONG_,RPC_SETSIGNOBJECT__SIGNOBJECT_,RPC_GETSIGNOBJECT__,RPC_ISPUBLICSTRUCTURE__,RPC_ISPRIVATESTRUCTURE__,RPC_SETPUBLICSTRUCTURE__BOOL_,RPC_ISCONDEMNED__,RPC_GETMAPCELLSIZE__,RPC_TOGGLEPRIVACY__,RPC_GETMAXIMUMNUMBEROFPLAYERITEMS__,RPC_GETREDEEDMESSAGE__,RPC_GETPACKUPMESSAGE__,RPC_HASACCESSFEE__,RPC_GETACCESSFEE__,RPC_CANCHANGEACCESSFEE__,RPC_SETACCESSFEE__INT_INT_,RPC_REMOVEACCESSFEE__,RPC_GETACCESSFEEDELAY__,RPC_PAYACCESSFEE__CREATUREOBJECT_,RPC_UPDATEPAIDACCESSLIST__,RPC_REGISTERPROFESSIONAL__CREATUREOBJECT_,RPC_UNREGISTERPROFESSIONAL__CREATUREOBJECT_,RPC_ISINPLAYERCITY__,RPC_CANPLAYERREGISTERWITHIN__,RPC_ISPLAYERREGISTEREDWITHIN__LONG_,RPC_CREATECHILDOBJECTS__,RPC_SPAWNCHILDCREATURESFROMTEMPLATE__,RPC_HASTEMPLATECHILDCREATURES__,RPC_DESTROYCHILDOBJECTS__,RPC_ISRESIDENCE__,RPC_SETRESIDENCE__BOOL_,RPC_GETFACTIONBASETYPE__,RPC_GETOUTOFRANGEDISTANCE__,RPC_GETCELLNAME__LONG_};
+enum {RPC_CREATECELLOBJECTS__ = 3291165931,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CREATECONTAINERCOMPONENT__,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_,RPC_UPDATESIGNNAME__BOOL_,RPC_SENDCONTAINEROBJECTSTO__SCENEOBJECT_BOOL_,RPC_UPDATECELLPERMISSIONSTO__CREATUREOBJECT_,RPC_BROADCASTCELLPERMISSIONS__,RPC_BROADCASTCELLPERMISSIONS__LONG_,RPC_ISALLOWEDENTRY__CREATUREOBJECT_,RPC_ISCITYBANNED__CREATUREOBJECT_,RPC_NOTIFYSTRUCTUREPLACED__CREATUREOBJECT_,RPC_HASTEMPLATEEJECTIONPOINT__,RPC_EJECTOBJECT__CREATUREOBJECT_,RPC_NOTIFYREMOVEFROMZONE__,RPC_NOTIFYINSERTTOZONE__ZONE_,RPC_NOTIFYOBJECTINSERTEDTOZONE__SCENEOBJECT_,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDDESTROYTO__SCENEOBJECT_,RPC_ADDCELL__CELLOBJECT_INT_,RPC_ISSTATICBUILDING__,RPC_GETCELL__INT_,RPC_GETCELL__STRING_,RPC_GETTOTALCELLNUMBER__,RPC_NOTIFYOBJECTINSERTEDTOCHILD__SCENEOBJECT_SCENEOBJECT_SCENEOBJECT_,RPC_NOTIFYOBJECTREMOVEDFROMCHILD__SCENEOBJECT_SCENEOBJECT_,RPC_GETCURRENTNUMBEROFPLAYERITEMS__,RPC_DESTROYALLPLAYERITEMS__,RPC_ONENTER__CREATUREOBJECT_,RPC_ONEXIT__CREATUREOBJECT_LONG_,RPC_SETSIGNOBJECT__SIGNOBJECT_,RPC_GETSIGNOBJECT__,RPC_ISPUBLICSTRUCTURE__,RPC_ISPRIVATESTRUCTURE__,RPC_SETPUBLICSTRUCTURE__BOOL_,RPC_ISCONDEMNED__,RPC_GETMAPCELLSIZE__,RPC_TOGGLEPRIVACY__,RPC_GETMAXIMUMNUMBEROFPLAYERITEMS__,RPC_GETREDEEDMESSAGE__,RPC_HASACCESSFEE__,RPC_GETACCESSFEE__,RPC_CANCHANGEACCESSFEE__,RPC_SETACCESSFEE__INT_INT_,RPC_REMOVEACCESSFEE__,RPC_GETACCESSFEEDELAY__,RPC_PAYACCESSFEE__CREATUREOBJECT_,RPC_UPDATEPAIDACCESSLIST__,RPC_REGISTERPROFESSIONAL__CREATUREOBJECT_,RPC_UNREGISTERPROFESSIONAL__CREATUREOBJECT_,RPC_ISINPLAYERCITY__,RPC_CANPLAYERREGISTERWITHIN__,RPC_ISPLAYERREGISTEREDWITHIN__LONG_,RPC_CREATECHILDOBJECTS__,RPC_SPAWNCHILDCREATURESFROMTEMPLATE__,RPC_HASTEMPLATECHILDCREATURES__,RPC_DESTROYCHILDOBJECTS__,RPC_ISRESIDENCE__,RPC_SETRESIDENCE__BOOL_,RPC_GETFACTIONBASETYPE__,RPC_GETOUTOFRANGEDISTANCE__LONG_,RPC_GETCELLNAME__LONG_,RPC_ADDCHILDCREATUREOBJECT__CREATUREOBJECT_,RPC_CHECKCOOLDOWNRECOVERY__STRING_,RPC_ADDCOOLDOWN__STRING_LONG_};
 
 BuildingObject::BuildingObject() : StructureObject(DummyConstructorParameter::instance()) {
 	BuildingObjectImplementation* _implementation = new BuildingObjectImplementation();
@@ -304,7 +304,7 @@ void BuildingObject::notifyRemoveFromZone() {
 	}
 }
 
-void BuildingObject::notifyInsert(QuadTreeEntry* obj) {
+void BuildingObject::notifyInsert(TreeEntry* obj) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -329,7 +329,7 @@ void BuildingObject::notifyInsertToZone(Zone* zone) {
 	}
 }
 
-void BuildingObject::notifyDissapear(QuadTreeEntry* obj) {
+void BuildingObject::notifyDissapear(TreeEntry* obj) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -339,7 +339,7 @@ void BuildingObject::notifyDissapear(QuadTreeEntry* obj) {
 	}
 }
 
-void BuildingObject::notifyPositionUpdate(QuadTreeEntry* entry) {
+void BuildingObject::notifyPositionUpdate(TreeEntry* entry) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -364,7 +364,7 @@ void BuildingObject::notifyObjectInsertedToZone(SceneObject* object) {
 	}
 }
 
-void BuildingObject::insert(QuadTreeEntry* obj) {
+void BuildingObject::insert(TreeEntry* obj) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -374,7 +374,7 @@ void BuildingObject::insert(QuadTreeEntry* obj) {
 	}
 }
 
-void BuildingObject::remove(QuadTreeEntry* obj) {
+void BuildingObject::remove(TreeEntry* obj) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -384,7 +384,7 @@ void BuildingObject::remove(QuadTreeEntry* obj) {
 	}
 }
 
-void BuildingObject::update(QuadTreeEntry* obj) {
+void BuildingObject::update(TreeEntry* obj) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -394,7 +394,7 @@ void BuildingObject::update(QuadTreeEntry* obj) {
 	}
 }
 
-void BuildingObject::inRange(QuadTreeEntry* obj, float range) {
+void BuildingObject::inRange(TreeEntry* obj, float range) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -570,20 +570,6 @@ int BuildingObject::getCurrentNumberOfPlayerItems() {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getCurrentNumberOfPlayerItems();
-	}
-}
-
-int BuildingObject::getCurrentNumberOfPlayerVendors() {
-	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETCURRENTNUMBEROFPLAYERVENDORS__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getCurrentNumberOfPlayerVendors();
 	}
 }
 
@@ -786,22 +772,6 @@ String BuildingObject::getRedeedMessage() {
 		return _return_getRedeedMessage;
 	} else {
 		return _implementation->getRedeedMessage();
-	}
-}
-
-String BuildingObject::getPackupMessage() {
-	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETPACKUPMESSAGE__);
-
-		String _return_getPackupMessage;
-		method.executeWithAsciiReturn(_return_getPackupMessage);
-		return _return_getPackupMessage;
-	} else {
-		return _implementation->getPackupMessage();
 	}
 }
 
@@ -1159,17 +1129,18 @@ const BaseBoundingVolume* BuildingObject::getBoundingVolume() {
 	}
 }
 
-float BuildingObject::getOutOfRangeDistance() const {
+float BuildingObject::getOutOfRangeDistance(unsigned long long specialRangeObjectID) {
 	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETOUTOFRANGEDISTANCE__);
+		DistributedMethod method(this, RPC_GETOUTOFRANGEDISTANCE__LONG_);
+		method.addUnsignedLongParameter(specialRangeObjectID);
 
 		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getOutOfRangeDistance();
+		return _implementation->getOutOfRangeDistance(specialRangeObjectID);
 	}
 }
 
@@ -1187,6 +1158,63 @@ String BuildingObject::getCellName(unsigned long long cellID) const {
 		return _return_getCellName;
 	} else {
 		return _implementation->getCellName(cellID);
+	}
+}
+
+void BuildingObject::addChildCreatureObject(CreatureObject* creature) {
+	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDCHILDCREATUREOBJECT__CREATUREOBJECT_);
+		method.addObjectParameter(creature);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->addChildCreatureObject(creature);
+	}
+}
+
+bool BuildingObject::checkCooldownRecovery(const String& cooldown) const {
+	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CHECKCOOLDOWNRECOVERY__STRING_);
+		method.addAsciiParameter(cooldown);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->checkCooldownRecovery(cooldown);
+	}
+}
+
+const Time* BuildingObject::getCooldownTime(const String& cooldown) const {
+	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCooldownTime(cooldown);
+	}
+}
+
+void BuildingObject::addCooldown(const String& name, unsigned long long miliseconds) {
+	BuildingObjectImplementation* _implementation = static_cast<BuildingObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDCOOLDOWN__STRING_LONG_);
+		method.addAsciiParameter(name);
+		method.addUnsignedLongParameter(miliseconds);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addCooldown(name, miliseconds);
 	}
 }
 
@@ -1664,6 +1692,29 @@ int BuildingObjectImplementation::getFactionBaseType() const{
 	return factionBaseType;
 }
 
+void BuildingObjectImplementation::addChildCreatureObject(CreatureObject* creature) {
+	// server/zone/objects/building/BuildingObject.idl():  	}
+	if (creature != NULL){
+	// server/zone/objects/building/BuildingObject.idl():  			childCreatureObjects.put(creature);
+	(&childCreatureObjects)->put(creature);
+}
+}
+
+bool BuildingObjectImplementation::checkCooldownRecovery(const String& cooldown) const{
+	// server/zone/objects/building/BuildingObject.idl():  		return cooldownTimerMap.isPast(cooldown);
+	return cooldownTimerMap->isPast(cooldown);
+}
+
+const Time* BuildingObjectImplementation::getCooldownTime(const String& cooldown) const{
+	// server/zone/objects/building/BuildingObject.idl():  		return cooldownTimerMap.getTime(cooldown);
+	return cooldownTimerMap->getTime(cooldown);
+}
+
+void BuildingObjectImplementation::addCooldown(const String& name, unsigned long long miliseconds) {
+	// server/zone/objects/building/BuildingObject.idl():  		cooldownTimerMap.updateToCurrentAndAddMili(name, miliseconds);
+	cooldownTimerMap->updateToCurrentAndAddMili(name, miliseconds);
+}
+
 /*
  *	BuildingObjectAdapter
  */
@@ -1910,13 +1961,6 @@ void BuildingObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETCURRENTNUMBEROFPLAYERVENDORS__:
-		{
-			
-			int _m_res = getCurrentNumberOfPlayerVendors();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
 	case RPC_DESTROYALLPLAYERITEMS__:
 		{
 			
@@ -2010,13 +2054,6 @@ void BuildingObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 		{
 			
 			String _m_res = getRedeedMessage();
-			resp->insertAscii(_m_res);
-		}
-		break;
-	case RPC_GETPACKUPMESSAGE__:
-		{
-			
-			String _m_res = getPackupMessage();
 			resp->insertAscii(_m_res);
 		}
 		break;
@@ -2167,10 +2204,11 @@ void BuildingObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETOUTOFRANGEDISTANCE__:
+	case RPC_GETOUTOFRANGEDISTANCE__LONG_:
 		{
+			unsigned long long specialRangeObjectID = inv->getUnsignedLongParameter();
 			
-			float _m_res = getOutOfRangeDistance();
+			float _m_res = getOutOfRangeDistance(specialRangeObjectID);
 			resp->insertFloat(_m_res);
 		}
 		break;
@@ -2180,6 +2218,31 @@ void BuildingObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			String _m_res = getCellName(cellID);
 			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_ADDCHILDCREATUREOBJECT__CREATUREOBJECT_:
+		{
+			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			addChildCreatureObject(creature);
+			
+		}
+		break;
+	case RPC_CHECKCOOLDOWNRECOVERY__STRING_:
+		{
+			 String cooldown; inv->getAsciiParameter(cooldown);
+			
+			bool _m_res = checkCooldownRecovery(cooldown);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ADDCOOLDOWN__STRING_LONG_:
+		{
+			 String name; inv->getAsciiParameter(name);
+			unsigned long long miliseconds = inv->getUnsignedLongParameter();
+			
+			addCooldown(name, miliseconds);
+			
 		}
 		break;
 	default:
@@ -2303,10 +2366,6 @@ int BuildingObjectAdapter::getCurrentNumberOfPlayerItems() {
 	return (static_cast<BuildingObject*>(stub))->getCurrentNumberOfPlayerItems();
 }
 
-int BuildingObjectAdapter::getCurrentNumberOfPlayerVendors() {
-	return (static_cast<BuildingObject*>(stub))->getCurrentNumberOfPlayerVendors();
-}
-
 void BuildingObjectAdapter::destroyAllPlayerItems() {
 	(static_cast<BuildingObject*>(stub))->destroyAllPlayerItems();
 }
@@ -2357,10 +2416,6 @@ unsigned int BuildingObjectAdapter::getMaximumNumberOfPlayerItems() {
 
 String BuildingObjectAdapter::getRedeedMessage() {
 	return (static_cast<BuildingObject*>(stub))->getRedeedMessage();
-}
-
-String BuildingObjectAdapter::getPackupMessage() {
-	return (static_cast<BuildingObject*>(stub))->getPackupMessage();
 }
 
 bool BuildingObjectAdapter::hasAccessFee() const {
@@ -2443,12 +2498,24 @@ int BuildingObjectAdapter::getFactionBaseType() const {
 	return (static_cast<BuildingObject*>(stub))->getFactionBaseType();
 }
 
-float BuildingObjectAdapter::getOutOfRangeDistance() const {
-	return (static_cast<BuildingObject*>(stub))->getOutOfRangeDistance();
+float BuildingObjectAdapter::getOutOfRangeDistance(unsigned long long specialRangeObjectID) {
+	return (static_cast<BuildingObject*>(stub))->getOutOfRangeDistance(specialRangeObjectID);
 }
 
 String BuildingObjectAdapter::getCellName(unsigned long long cellID) const {
 	return (static_cast<BuildingObject*>(stub))->getCellName(cellID);
+}
+
+void BuildingObjectAdapter::addChildCreatureObject(CreatureObject* creature) {
+	(static_cast<BuildingObject*>(stub))->addChildCreatureObject(creature);
+}
+
+bool BuildingObjectAdapter::checkCooldownRecovery(const String& cooldown) const {
+	return (static_cast<BuildingObject*>(stub))->checkCooldownRecovery(cooldown);
+}
+
+void BuildingObjectAdapter::addCooldown(const String& name, unsigned long long miliseconds) {
+	(static_cast<BuildingObject*>(stub))->addCooldown(name, miliseconds);
 }
 
 /*

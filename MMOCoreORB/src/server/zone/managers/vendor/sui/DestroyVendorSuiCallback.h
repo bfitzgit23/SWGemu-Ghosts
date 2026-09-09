@@ -10,6 +10,7 @@
 
 #include "server/zone/objects/player/sui/SuiCallback.h"
 #include "server/zone/managers/vendor/VendorManager.h"
+#include "server/zone/objects/transaction/TransactionLog.h"
 
 class DestroyVendorSuiCallback : public SuiCallback {
 public:
@@ -38,7 +39,7 @@ public:
 
 		Locker clocker(vendor, player);
 
-		VendorManager::instance()->destroyVendor(vendor);
+		VendorManager::instance()->destroyVendor(vendor, "destroyed by owner");
 	}
 };
 

@@ -94,7 +94,7 @@ int ImageDesignSession::initializeSession() {
 	}
 }
 
-int ImageDesignSession::doPayment() {
+bool ImageDesignSession::doPayment() {
 	ImageDesignSessionImplementation* _implementation = static_cast<ImageDesignSessionImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -102,7 +102,7 @@ int ImageDesignSession::doPayment() {
 
 		DistributedMethod method(this, RPC_DOPAYMENT__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->doPayment();
 	}
@@ -446,7 +446,7 @@ void ImageDesignSessionImplementation::queueIdTimeoutEvent() {
 {
 	Locker _locker((&idTimeoutLock));
 	// server/zone/objects/player/sessions/ImageDesignSession.idl():  			if 
-	if (idTimeoutEvent == NULL){
+	if (!idTimeoutEvent){
 	Reference<ImageDesignTimeoutEvent*> _ref0;
 	// server/zone/objects/player/sessions/ImageDesignSession.idl():  				ImageDesignTimeoutEvent ev = new ImageDesignTimeoutEvent(this);
 	ImageDesignTimeoutEvent* ev = _ref0 = new ImageDesignTimeoutEvent(_this.getReferenceUnsafeStaticCast());
@@ -464,7 +464,7 @@ void ImageDesignSessionImplementation::dequeueIdTimeoutEvent() {
 {
 	Locker _locker((&idTimeoutLock));
 	// server/zone/objects/player/sessions/ImageDesignSession.idl():  		}
-	if (idTimeoutEvent != NULL){
+	if (idTimeoutEvent){
 	// server/zone/objects/player/sessions/ImageDesignSession.idl():  				idTimeoutEvent 
 	if (idTimeoutEvent->isScheduled())	// server/zone/objects/player/sessions/ImageDesignSession.idl():  					idTimeoutEvent.cancel();
 	idTimeoutEvent->cancel();
@@ -506,8 +506,8 @@ void ImageDesignSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 	case RPC_DOPAYMENT__:
 		{
 			
-			int _m_res = doPayment();
-			resp->insertSignedInt(_m_res);
+			bool _m_res = doPayment();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_CANCELSESSION__:
@@ -573,7 +573,7 @@ int ImageDesignSessionAdapter::initializeSession() {
 	return (static_cast<ImageDesignSession*>(stub))->initializeSession();
 }
 
-int ImageDesignSessionAdapter::doPayment() {
+bool ImageDesignSessionAdapter::doPayment() {
 	return (static_cast<ImageDesignSession*>(stub))->doPayment();
 }
 

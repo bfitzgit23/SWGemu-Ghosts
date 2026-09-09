@@ -60,6 +60,8 @@ using namespace server::zone::packets::scene;
 
 #include "server/zone/objects/scene/SceneObjectType.h"
 
+#include "system/util/VectorMap.h"
+
 #include "server/zone/objects/tangible/TangibleObject.h"
 
 #include "system/util/HashTable.h"
@@ -77,8 +79,6 @@ public:
 	void initializeTransientMembers();
 
 	void updateCraftingValues(CraftingValues* values, bool firstUpdate);
-
-	void updateAttachmentValues(const String& modName, int value);
 
 	void initializeMembers();
 
@@ -105,7 +105,7 @@ public:
 
 	bool isClothingAttachment();
 
-	HashTable<String, int>* getSkillMods();
+	VectorMap<String, int>* getSkillMods();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -140,6 +140,8 @@ protected:
 
 	HashTable<String, int> skillModMap;
 
+	VectorMap<String, int> skillModifiers;
+
 	static const int CLOTHINGTYPE = 1;
 
 	static const int ARMORTYPE = 2;
@@ -152,8 +154,6 @@ public:
 	void initializeTransientMembers();
 
 	void updateCraftingValues(CraftingValues* values, bool firstUpdate);
-
-	void updateAttachmentValues(const String& modName, int value);
 
 	void initializeMembers();
 
@@ -180,7 +180,7 @@ public:
 
 	bool isClothingAttachment();
 
-	HashTable<String, int>* getSkillMods();
+	VectorMap<String, int>* getSkillMods();
 
 	WeakReference<Attachment*> _this;
 
@@ -227,8 +227,6 @@ public:
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
 	void initializeTransientMembers();
-
-	void updateAttachmentValues(const String& modName, int value);
 
 	void initializeMembers();
 
@@ -278,6 +276,8 @@ public:
 	Optional<int> attachmentType;
 
 	Optional<HashTable<String, int>> skillModMap;
+
+	Optional<VectorMap<String, int>> skillModifiers;
 
 	String _className;
 	AttachmentPOD();

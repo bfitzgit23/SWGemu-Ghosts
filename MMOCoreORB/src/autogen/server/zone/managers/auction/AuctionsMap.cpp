@@ -14,7 +14,7 @@
  *	AuctionsMapStub
  */
 
-enum {RPC_ADDITEM__CREATUREOBJECT_SCENEOBJECT_AUCTIONITEM_ = 1493191660,RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_,RPC_GETITEM__LONG_,RPC_CONTAINSITEM__LONG_,RPC_GETPLAYERITEMCOUNT__CREATUREOBJECT_,RPC_GETVENDOREXPIREDOFFERSCOUNT__SCENEOBJECT_CREATUREOBJECT_,RPC_GETVENDOREXPIREDITEMCOUNT__SCENEOBJECT_,RPC_GETVENDORITEMCOUNT__SCENEOBJECT_BOOL_,RPC_DELETETERMINALITEMS__SCENEOBJECT_,RPC_GETCOMMODITYCOUNT__CREATUREOBJECT_,RPC_UPDATEUID__SCENEOBJECT_STRING_STRING_,RPC_UPDATEVENDORSEARCH__SCENEOBJECT_BOOL_,RPC_ADDTOCOMMODITYLIMIT__AUCTIONITEM_,RPC_REMOVEFROMCOMMODITYLIMIT__AUCTIONITEM_,RPC_GETBAZAARCOUNT__,RPC_GETVENDORCOUNT__,RPC_GETTOTALITEMCOUNT__};
+enum {RPC_ADDITEM__CREATUREOBJECT_SCENEOBJECT_AUCTIONITEM_ = 1493191660,RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_BOOL_,RPC_REMOVEITEM__SCENEOBJECT_AUCTIONITEM_,RPC_GETITEM__LONG_,RPC_CONTAINSITEM__LONG_,RPC_GETPLAYERITEMCOUNT__CREATUREOBJECT_,RPC_GETVENDORITEMCOUNT__SCENEOBJECT_BOOL_,RPC_DELETETERMINALITEMS__SCENEOBJECT_,RPC_GETCOMMODITYCOUNT__CREATUREOBJECT_,RPC_UPDATEUID__SCENEOBJECT_STRING_STRING_,RPC_UPDATEVENDORSEARCH__SCENEOBJECT_BOOL_,RPC_ADDTOCOMMODITYLIMIT__AUCTIONITEM_,RPC_REMOVEFROMCOMMODITYLIMIT__AUCTIONITEM_,RPC_GETBAZAARCOUNT__,RPC_GETVENDORCOUNT__,RPC_GETTOTALITEMCOUNT__};
 
 AuctionsMap::AuctionsMap() : ManagedObject(DummyConstructorParameter::instance()) {
 	AuctionsMapImplementation* _implementation = new AuctionsMapImplementation();
@@ -49,19 +49,36 @@ int AuctionsMap::addItem(CreatureObject* player, SceneObject* vendor, AuctionIte
 	}
 }
 
-void AuctionsMap::deleteItem(SceneObject* vendor, AuctionItem* item) {
+void AuctionsMap::deleteItem(SceneObject* vendor, AuctionItem* item, bool deleteAuctionedObject) {
 	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_);
+		DistributedMethod method(this, RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_BOOL_);
+		method.addObjectParameter(vendor);
+		method.addObjectParameter(item);
+		method.addBooleanParameter(deleteAuctionedObject);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->deleteItem(vendor, item, deleteAuctionedObject);
+	}
+}
+
+void AuctionsMap::removeItem(SceneObject* vendor, AuctionItem* item) {
+	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEITEM__SCENEOBJECT_AUCTIONITEM_);
 		method.addObjectParameter(vendor);
 		method.addObjectParameter(item);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->deleteItem(vendor, item);
+		_implementation->removeItem(vendor, item);
 	}
 }
 
@@ -127,37 +144,6 @@ int AuctionsMap::getPlayerItemCount(CreatureObject* player) {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getPlayerItemCount(player);
-	}
-}
-
-int AuctionsMap::getVendorExpiredOffersCount(SceneObject* vendor, CreatureObject* player) {
-	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETVENDOREXPIREDOFFERSCOUNT__SCENEOBJECT_CREATUREOBJECT_);
-		method.addObjectParameter(vendor);
-		method.addObjectParameter(player);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getVendorExpiredOffersCount(vendor, player);
-	}
-}
-
-int AuctionsMap::getVendorExpiredItemCount(SceneObject* vendor) {
-	AuctionsMapImplementation* _implementation = static_cast<AuctionsMapImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETVENDOREXPIREDITEMCOUNT__SCENEOBJECT_);
-		method.addObjectParameter(vendor);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getVendorExpiredItemCount(vendor);
 	}
 }
 
@@ -535,12 +521,22 @@ void AuctionsMapAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_:
+	case RPC_DELETEITEM__SCENEOBJECT_AUCTIONITEM_BOOL_:
+		{
+			SceneObject* vendor = static_cast<SceneObject*>(inv->getObjectParameter());
+			AuctionItem* item = static_cast<AuctionItem*>(inv->getObjectParameter());
+			bool deleteAuctionedObject = inv->getBooleanParameter();
+			
+			deleteItem(vendor, item, deleteAuctionedObject);
+			
+		}
+		break;
+	case RPC_REMOVEITEM__SCENEOBJECT_AUCTIONITEM_:
 		{
 			SceneObject* vendor = static_cast<SceneObject*>(inv->getObjectParameter());
 			AuctionItem* item = static_cast<AuctionItem*>(inv->getObjectParameter());
 			
-			deleteItem(vendor, item);
+			removeItem(vendor, item);
 			
 		}
 		break;
@@ -565,23 +561,6 @@ void AuctionsMapAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			int _m_res = getPlayerItemCount(player);
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETVENDOREXPIREDOFFERSCOUNT__SCENEOBJECT_CREATUREOBJECT_:
-		{
-			SceneObject* vendor = static_cast<SceneObject*>(inv->getObjectParameter());
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			int _m_res = getVendorExpiredOffersCount(vendor, player);
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETVENDOREXPIREDITEMCOUNT__SCENEOBJECT_:
-		{
-			SceneObject* vendor = static_cast<SceneObject*>(inv->getObjectParameter());
-			
-			int _m_res = getVendorExpiredItemCount(vendor);
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -675,8 +654,12 @@ int AuctionsMapAdapter::addItem(CreatureObject* player, SceneObject* vendor, Auc
 	return (static_cast<AuctionsMap*>(stub))->addItem(player, vendor, item);
 }
 
-void AuctionsMapAdapter::deleteItem(SceneObject* vendor, AuctionItem* item) {
-	(static_cast<AuctionsMap*>(stub))->deleteItem(vendor, item);
+void AuctionsMapAdapter::deleteItem(SceneObject* vendor, AuctionItem* item, bool deleteAuctionedObject) {
+	(static_cast<AuctionsMap*>(stub))->deleteItem(vendor, item, deleteAuctionedObject);
+}
+
+void AuctionsMapAdapter::removeItem(SceneObject* vendor, AuctionItem* item) {
+	(static_cast<AuctionsMap*>(stub))->removeItem(vendor, item);
 }
 
 AuctionItem* AuctionsMapAdapter::getItem(unsigned long long id) {
@@ -689,14 +672,6 @@ bool AuctionsMapAdapter::containsItem(unsigned long long id) {
 
 int AuctionsMapAdapter::getPlayerItemCount(CreatureObject* player) {
 	return (static_cast<AuctionsMap*>(stub))->getPlayerItemCount(player);
-}
-
-int AuctionsMapAdapter::getVendorExpiredOffersCount(SceneObject* vendor, CreatureObject* player) {
-	return (static_cast<AuctionsMap*>(stub))->getVendorExpiredOffersCount(vendor, player);
-}
-
-int AuctionsMapAdapter::getVendorExpiredItemCount(SceneObject* vendor) {
-	return (static_cast<AuctionsMap*>(stub))->getVendorExpiredItemCount(vendor);
 }
 
 int AuctionsMapAdapter::getVendorItemCount(SceneObject* vendor, bool forSaleOnly) {

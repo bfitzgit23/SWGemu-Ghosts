@@ -18,7 +18,7 @@
  *	MissionObjectStub
  */
 
-enum {RPC_CREATEWAYPOINT__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_UPDATETODATABASEALLOBJECTS__BOOL_,RPC_SETREFRESHCOUNTER__INT_BOOL_,RPC_SETTYPECRC__INT_BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SETMISSIONDESCRIPTION__STRING_STRING_BOOL_,RPC_SETMISSIONTITLE__STRING_STRING_BOOL_,RPC_SETMISSIONTARGETNAME__STRING_BOOL_,RPC_SETMISSIONDIFFICULTY__INT_BOOL_,RPC_SETMISSIONDIFFICULTY__INT_INT_INT_BOOL_,RPC_SETREWARDCREDITS__INT_BOOL_,RPC_SETSTARTPOSITION__FLOAT_FLOAT_STRING_BOOL_,RPC_SETSTARTPOSITION__FLOAT_FLOAT_BOOL_,RPC_SETENDPOSITION__FLOAT_FLOAT_STRING_BOOL_,RPC_SETCREATORNAME__STRING_BOOL_,RPC_GETSTARTPLANETCRC__,RPC_UPDATEMISSIONLOCATION__,RPC_ABORT__,RPC_SETFACTION__INT_,RPC_SETMISSIONOBJECTIVE__MISSIONOBJECTIVE_,RPC_SETREWARDFACTIONPOINTSREBEL__INT_,RPC_SETREWARDFACTIONPOINTSIMPERIAL__INT_,RPC_SETMISSIONNUMBER__INT_,RPC_SETTARGETOPTIONALTEMPLATE__STRING_,RPC_SETTEMPLATESTRINGS__STRING_STRING_,RPC_GETMISSIONOBJECTIVE__,RPC_GETFACTION__,RPC_GETREWARDFACTIONPOINTSREBEL__,RPC_GETREWARDFACTIONPOINTSIMPERIAL__,RPC_GETSTARTPOSITIONX__,RPC_GETSTARTPOSITIONY__,RPC_GETTARGETOPTIONALTEMPLATE__,RPC_GETSTARTPLANET__,RPC_GETENDPOSITIONX__,RPC_GETENDPOSITIONY__,RPC_GETENDPLANET__,RPC_SETENDPLANET__STRING_,RPC_GETWAYPOINTTOMISSION__,RPC_GETTYPECRC__,RPC_GETREWARDCREDITS__,RPC_GETREWARDCREDITSDIVISOR__,RPC_GETCREATORNAME__,RPC_GETDIFFICULTYLEVEL__,RPC_GETDIFFICULTYDISPLAY__,RPC_GETDIFFICULTY__,RPC_GETTARGETNAME__,RPC_GETREFRESHCOUNTER__,RPC_GETMISSIONNUMBER__,RPC_ISSURVEYMISSION__,RPC_ISMISSIONOBJECT__,RPC_GETTEMPLATESTRING1__,RPC_GETTEMPLATESTRING2__,RPC_GETTARGETOBJECTID__,RPC_SETTARGETOBJECTID__LONG_,RPC_SETMISSIONLEVEL__INT_,RPC_GETMISSIONLEVEL__,RPC_SETSIZE__FLOAT_,RPC_GETSIZE__};
+enum {RPC_CREATEWAYPOINT__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_UPDATETODATABASEALLOBJECTS__BOOL_,RPC_SETREFRESHCOUNTER__INT_BOOL_,RPC_SETTYPECRC__INT_BOOL_,RPC_SETQUESTTYPE__STRING_,RPC_SETQUESTNAME__STRING_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SETMISSIONDESCRIPTION__STRING_STRING_BOOL_,RPC_SETMISSIONTITLE__STRING_STRING_BOOL_,RPC_SETMISSIONTARGETNAME__STRING_BOOL_,RPC_SETMISSIONDIFFICULTY__INT_BOOL_,RPC_SETMISSIONDIFFICULTY__INT_INT_INT_BOOL_,RPC_SETREWARDCREDITS__INT_BOOL_,RPC_SETSTARTPOSITION__FLOAT_FLOAT_STRING_BOOL_,RPC_SETSTARTPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_,RPC_SETSTARTPOSITION__FLOAT_FLOAT_BOOL_,RPC_SETENDPOSITION__FLOAT_FLOAT_STRING_BOOL_,RPC_SETENDPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_,RPC_SETCREATORNAME__STRING_BOOL_,RPC_GETSTARTPLANETCRC__,RPC_UPDATEMISSIONLOCATION__,RPC_ABORT__,RPC_SETFACTION__INT_,RPC_SETMISSIONOBJECTIVE__MISSIONOBJECTIVE_,RPC_SETREWARDFACTIONPOINTSREBEL__INT_,RPC_SETREWARDFACTIONPOINTSIMPERIAL__INT_,RPC_SETMISSIONNUMBER__INT_,RPC_SETTARGETOPTIONALTEMPLATE__STRING_,RPC_SETTEMPLATESTRINGS__STRING_STRING_,RPC_GETMISSIONOBJECTIVE__,RPC_GETFACTION__,RPC_GETREWARDFACTIONPOINTSREBEL__,RPC_GETREWARDFACTIONPOINTSIMPERIAL__,RPC_GETSTARTPOSITIONX__,RPC_GETSTARTPOSITIONY__,RPC_GETTARGETOPTIONALTEMPLATE__,RPC_GETSTARTPLANET__,RPC_GETENDPOSITIONX__,RPC_GETENDPOSITIONY__,RPC_GETENDPLANET__,RPC_SETENDPLANET__STRING_,RPC_GETWAYPOINTTOMISSION__,RPC_GETTYPECRC__,RPC_GETQUESTTYPE__,RPC_GETQUESTNAME__,RPC_GETQUESTCRC__,RPC_GETTYPEASSTRING__,RPC_GETREWARDCREDITS__,RPC_GETREWARDCREDITSDIVISOR__,RPC_GETCREATORNAME__,RPC_GETDIFFICULTYLEVEL__,RPC_GETDIFFICULTYDISPLAY__,RPC_GETDIFFICULTY__,RPC_GETTARGETNAME__,RPC_GETREFRESHCOUNTER__,RPC_GETMISSIONNUMBER__,RPC_ISSURVEYMISSION__,RPC_ISMISSIONOBJECT__,RPC_GETTEMPLATESTRING1__,RPC_GETTEMPLATESTRING2__,RPC_GETTARGETOBJECTID__,RPC_SETTARGETOBJECTID__LONG_,RPC_SETMISSIONLEVEL__INT_,RPC_GETMISSIONLEVEL__,RPC_SETSIZE__FLOAT_,RPC_GETSIZE__,RPC_SETBONUSCREDITS__INT_,RPC_GETBONUSCREDITS__,RPC_SETSPACEDUTYMISSION__,RPC_ISSPACEDUTYMISSION__,RPC_ISABORTED__};
 
 MissionObject::MissionObject() : IntangibleObject(DummyConstructorParameter::instance()) {
 	MissionObjectImplementation* _implementation = new MissionObjectImplementation();
@@ -123,6 +123,38 @@ void MissionObject::setTypeCRC(unsigned int crc, bool notifyClient) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setTypeCRC(crc, notifyClient);
+	}
+}
+
+void MissionObject::setQuestType(const String& type) {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETQUESTTYPE__STRING_);
+		method.addAsciiParameter(type);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setQuestType(type);
+	}
+}
+
+void MissionObject::setQuestName(const String& name) {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETQUESTNAME__STRING_);
+		method.addAsciiParameter(name);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setQuestName(name);
 	}
 }
 
@@ -290,6 +322,26 @@ void MissionObject::setStartPosition(float posX, float posY, const String& plane
 	}
 }
 
+void MissionObject::setStartPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient) {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETSTARTPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_);
+		method.addFloatParameter(posX);
+		method.addFloatParameter(posZ);
+		method.addFloatParameter(posY);
+		method.addAsciiParameter(planet);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setStartPosition(posX, posZ, posY, planet, notifyClient);
+	}
+}
+
 void MissionObject::setStartPosition(float posX, float posY, bool notifyClient) {
 	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -323,6 +375,26 @@ void MissionObject::setEndPosition(float posX, float posY, const String& planet,
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setEndPosition(posX, posY, planet, notifyClient);
+	}
+}
+
+void MissionObject::setEndPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient) {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETENDPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_);
+		method.addFloatParameter(posX);
+		method.addFloatParameter(posZ);
+		method.addFloatParameter(posY);
+		method.addAsciiParameter(planet);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setEndPosition(posX, posZ, posY, planet, notifyClient);
 	}
 }
 
@@ -702,6 +774,68 @@ unsigned int MissionObject::getTypeCRC() const {
 	}
 }
 
+String MissionObject::getQuestType() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETQUESTTYPE__);
+
+		String _return_getQuestType;
+		method.executeWithAsciiReturn(_return_getQuestType);
+		return _return_getQuestType;
+	} else {
+		return _implementation->getQuestType();
+	}
+}
+
+String MissionObject::getQuestName() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETQUESTNAME__);
+
+		String _return_getQuestName;
+		method.executeWithAsciiReturn(_return_getQuestName);
+		return _return_getQuestName;
+	} else {
+		return _implementation->getQuestName();
+	}
+}
+
+unsigned int MissionObject::getQuestCRC() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETQUESTCRC__);
+
+		return method.executeWithUnsignedIntReturn();
+	} else {
+		return _implementation->getQuestCRC();
+	}
+}
+
+String MissionObject::getTypeAsString() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETTYPEASSTRING__);
+
+		String _return_getTypeAsString;
+		method.executeWithAsciiReturn(_return_getTypeAsString);
+		return _return_getTypeAsString;
+	} else {
+		return _implementation->getTypeAsString();
+	}
+}
+
 int MissionObject::getRewardCredits() const {
 	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1012,6 +1146,79 @@ float MissionObject::getSize() const {
 	}
 }
 
+void MissionObject::setBonusCredits(int creds) {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETBONUSCREDITS__INT_);
+		method.addSignedIntParameter(creds);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setBonusCredits(creds);
+	}
+}
+
+int MissionObject::getBonusCredits() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETBONUSCREDITS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getBonusCredits();
+	}
+}
+
+void MissionObject::setSpaceDutyMission() {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETSPACEDUTYMISSION__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setSpaceDutyMission();
+	}
+}
+
+bool MissionObject::isSpaceDutyMission() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPACEDUTYMISSION__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSpaceDutyMission();
+	}
+}
+
+bool MissionObject::isAborted() const {
+	MissionObjectImplementation* _implementation = static_cast<MissionObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISABORTED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isAborted();
+	}
+}
+
 DistributedObjectServant* MissionObject::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -1134,6 +1341,14 @@ bool MissionObjectImplementation::readObjectMember(ObjectInputStream* stream, co
 		TypeInfo<unsigned int >::parseFromBinaryStream(&typeCRC, stream);
 		return true;
 
+	case 0xa61fb840: //MissionObject.questType
+		TypeInfo<String >::parseFromBinaryStream(&questType, stream);
+		return true;
+
+	case 0xa90b14c: //MissionObject.questName
+		TypeInfo<String >::parseFromBinaryStream(&questName, stream);
+		return true;
+
 	case 0x67bd2214: //MissionObject.difficultyLevel
 		TypeInfo<int >::parseFromBinaryStream(&difficultyLevel, stream);
 		return true;
@@ -1152,6 +1367,10 @@ bool MissionObjectImplementation::readObjectMember(ObjectInputStream* stream, co
 
 	case 0x6da29f69: //MissionObject.rewardCredits
 		TypeInfo<int >::parseFromBinaryStream(&rewardCredits, stream);
+		return true;
+
+	case 0x7a5bced8: //MissionObject.bonusCredits
+		TypeInfo<int >::parseFromBinaryStream(&bonusCredits, stream);
 		return true;
 
 	case 0x6c912b9c: //MissionObject.rewardCreditsDivisor
@@ -1186,6 +1405,10 @@ bool MissionObjectImplementation::readObjectMember(ObjectInputStream* stream, co
 		TypeInfo<float >::parseFromBinaryStream(&startPositionX, stream);
 		return true;
 
+	case 0x641d9c09: //MissionObject.startPositionZ
+		TypeInfo<float >::parseFromBinaryStream(&startPositionZ, stream);
+		return true;
+
 	case 0x695ebad0: //MissionObject.startPositionY
 		TypeInfo<float >::parseFromBinaryStream(&startPositionY, stream);
 		return true;
@@ -1196,6 +1419,10 @@ bool MissionObjectImplementation::readObjectMember(ObjectInputStream* stream, co
 
 	case 0xe05d8a36: //MissionObject.endPositionX
 		TypeInfo<float >::parseFromBinaryStream(&endPositionX, stream);
+		return true;
+
+	case 0xe9dfb158: //MissionObject.endPositionZ
+		TypeInfo<float >::parseFromBinaryStream(&endPositionZ, stream);
 		return true;
 
 	case 0xe49c9781: //MissionObject.endPositionY
@@ -1240,6 +1467,14 @@ bool MissionObjectImplementation::readObjectMember(ObjectInputStream* stream, co
 
 	case 0x5151bc3b: //MissionObject.targetOptionalTemplate
 		TypeInfo<String >::parseFromBinaryStream(&targetOptionalTemplate, stream);
+		return true;
+
+	case 0x5db5fa74: //MissionObject.spaceDutyMission
+		TypeInfo<bool >::parseFromBinaryStream(&spaceDutyMission, stream);
+		return true;
+
+	case 0xa7536254: //MissionObject.aborted
+		TypeInfo<bool >::parseFromBinaryStream(&aborted, stream);
 		return true;
 
 	}
@@ -1287,6 +1522,24 @@ int MissionObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xa61fb840; //MissionObject.questType
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&questType, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xa90b14c; //MissionObject.questName
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&questName, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x67bd2214; //MissionObject.difficultyLevel
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -1328,6 +1581,15 @@ int MissionObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&rewardCredits, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x7a5bced8; //MissionObject.bonusCredits
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&bonusCredits, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1404,6 +1666,15 @@ int MissionObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x641d9c09; //MissionObject.startPositionZ
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&startPositionZ, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x695ebad0; //MissionObject.startPositionY
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -1427,6 +1698,15 @@ int MissionObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<float >::toBinaryStream(&endPositionX, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xe9dfb158; //MissionObject.endPositionZ
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&endPositionZ, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1530,6 +1810,24 @@ int MissionObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x5db5fa74; //MissionObject.spaceDutyMission
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&spaceDutyMission, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xa7536254; //MissionObject.aborted
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&aborted, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -1544,6 +1842,10 @@ void MissionObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["typeCRC"] = typeCRC;
 
+	thisObject["questType"] = questType;
+
+	thisObject["questName"] = questName;
+
 	thisObject["difficultyLevel"] = difficultyLevel;
 
 	thisObject["difficultyDisplay"] = difficultyDisplay;
@@ -1553,6 +1855,8 @@ void MissionObjectImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["creatorName"] = creatorName;
 
 	thisObject["rewardCredits"] = rewardCredits;
+
+	thisObject["bonusCredits"] = bonusCredits;
 
 	thisObject["rewardCreditsDivisor"] = rewardCreditsDivisor;
 
@@ -1570,11 +1874,15 @@ void MissionObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["startPositionX"] = startPositionX;
 
+	thisObject["startPositionZ"] = startPositionZ;
+
 	thisObject["startPositionY"] = startPositionY;
 
 	thisObject["startPlanet"] = startPlanet;
 
 	thisObject["endPositionX"] = endPositionX;
+
+	thisObject["endPositionZ"] = endPositionZ;
 
 	thisObject["endPositionY"] = endPositionY;
 
@@ -1598,6 +1906,10 @@ void MissionObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["targetOptionalTemplate"] = targetOptionalTemplate;
 
+	thisObject["spaceDutyMission"] = spaceDutyMission;
+
+	thisObject["aborted"] = aborted;
+
 	j["MissionObject"] = thisObject;
 }
 
@@ -1605,6 +1917,10 @@ MissionObjectImplementation::MissionObjectImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/mission/MissionObject.idl():  		typeCRC = MissionTypes.SURVEY;
 	typeCRC = MissionTypes::SURVEY;
+	// server/zone/objects/mission/MissionObject.idl():  		questType = "";
+	questType = "";
+	// server/zone/objects/mission/MissionObject.idl():  		questName = "";
+	questName = "";
 	// server/zone/objects/mission/MissionObject.idl():  		refreshCounter = 0;
 	refreshCounter = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		missionDescription.setStringId("mission/mission_npc_survey_neutral_easy", "m1o");
@@ -1621,6 +1937,8 @@ MissionObjectImplementation::MissionObjectImplementation() {
 	difficulty = 2;
 	// server/zone/objects/mission/MissionObject.idl():  		rewardCredits = 100;
 	rewardCredits = 100;
+	// server/zone/objects/mission/MissionObject.idl():  		bonusCredits = 0;
+	bonusCredits = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		rewardCreditsDivisor = 1;
 	rewardCreditsDivisor = 1;
 	// server/zone/objects/mission/MissionObject.idl():  		rewardFactionPointsRebel = 0;
@@ -1631,10 +1949,14 @@ MissionObjectImplementation::MissionObjectImplementation() {
 	size = 20;
 	// server/zone/objects/mission/MissionObject.idl():  		startPositionX = 0;
 	startPositionX = 0;
+	// server/zone/objects/mission/MissionObject.idl():  		startPositionZ = 0;
+	startPositionZ = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		startPositionY = 0;
 	startPositionY = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		endPositionX = 0;
 	endPositionX = 0;
+	// server/zone/objects/mission/MissionObject.idl():  		endPositionZ = 0;
+	endPositionZ = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		endPositionY = 0;
 	endPositionY = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		targetObjectId = 0;
@@ -1645,14 +1967,32 @@ MissionObjectImplementation::MissionObjectImplementation() {
 	missionNumber = 0;
 	// server/zone/objects/mission/MissionObject.idl():  		missionLevel = 0;
 	missionLevel = 0;
+	// server/zone/objects/mission/MissionObject.idl():  		spaceDutyMission = false;
+	spaceDutyMission = false;
+	// server/zone/objects/mission/MissionObject.idl():  		aborted = false;
+	aborted = false;
 	// server/zone/objects/mission/MissionObject.idl():  		Logger.setLoggingName("MissionObject");
 	Logger::setLoggingName("MissionObject");
 }
 
+void MissionObjectImplementation::setQuestType(const String& type) {
+	// server/zone/objects/mission/MissionObject.idl():  		questType = type;
+	questType = type;
+}
+
+void MissionObjectImplementation::setQuestName(const String& name) {
+	// server/zone/objects/mission/MissionObject.idl():  		questName = name;
+	questName = name;
+}
+
 void MissionObjectImplementation::abort() {
+	// server/zone/objects/mission/MissionObject.idl():  		aborted = true;
+	aborted = true;
 	// server/zone/objects/mission/MissionObject.idl():  	}
-	if (missionObjective != NULL)	// server/zone/objects/mission/MissionObject.idl():  			missionObjective.abort();
+	if (missionObjective){
+	// server/zone/objects/mission/MissionObject.idl():  			missionObjective.abort();
 	missionObjective->abort();
+}
 }
 
 void MissionObjectImplementation::setFaction(const int missionFaction) {
@@ -1762,6 +2102,16 @@ unsigned int MissionObjectImplementation::getTypeCRC() const{
 	return typeCRC;
 }
 
+String MissionObjectImplementation::getQuestType() const{
+	// server/zone/objects/mission/MissionObject.idl():  		return questType;
+	return questType;
+}
+
+String MissionObjectImplementation::getQuestName() const{
+	// server/zone/objects/mission/MissionObject.idl():  		return questName;
+	return questName;
+}
+
 int MissionObjectImplementation::getRewardCredits() const{
 	// server/zone/objects/mission/MissionObject.idl():  		return rewardCredits;
 	return rewardCredits;
@@ -1867,6 +2217,31 @@ float MissionObjectImplementation::getSize() const{
 	return size;
 }
 
+void MissionObjectImplementation::setBonusCredits(int creds) {
+	// server/zone/objects/mission/MissionObject.idl():  		bonusCredits = creds;
+	bonusCredits = creds;
+}
+
+int MissionObjectImplementation::getBonusCredits() const{
+	// server/zone/objects/mission/MissionObject.idl():  		return bonusCredits;
+	return bonusCredits;
+}
+
+void MissionObjectImplementation::setSpaceDutyMission() {
+	// server/zone/objects/mission/MissionObject.idl():  		spaceDutyMission = true;
+	spaceDutyMission = true;
+}
+
+bool MissionObjectImplementation::isSpaceDutyMission() const{
+	// server/zone/objects/mission/MissionObject.idl():  		return spaceDutyMission;
+	return spaceDutyMission;
+}
+
+bool MissionObjectImplementation::isAborted() const{
+	// server/zone/objects/mission/MissionObject.idl():  		return aborted;
+	return aborted;
+}
+
 /*
  *	MissionObjectAdapter
  */
@@ -1920,6 +2295,22 @@ void MissionObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			bool notifyClient = inv->getBooleanParameter();
 			
 			setTypeCRC(crc, notifyClient);
+			
+		}
+		break;
+	case RPC_SETQUESTTYPE__STRING_:
+		{
+			 String type; inv->getAsciiParameter(type);
+			
+			setQuestType(type);
+			
+		}
+		break;
+	case RPC_SETQUESTNAME__STRING_:
+		{
+			 String name; inv->getAsciiParameter(name);
+			
+			setQuestName(name);
 			
 		}
 		break;
@@ -2007,6 +2398,18 @@ void MissionObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_SETSTARTPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_:
+		{
+			float posX = inv->getFloatParameter();
+			float posZ = inv->getFloatParameter();
+			float posY = inv->getFloatParameter();
+			 String planet; inv->getAsciiParameter(planet);
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setStartPosition(posX, posZ, posY, planet, notifyClient);
+			
+		}
+		break;
 	case RPC_SETSTARTPOSITION__FLOAT_FLOAT_BOOL_:
 		{
 			float posX = inv->getFloatParameter();
@@ -2025,6 +2428,18 @@ void MissionObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			bool notifyClient = inv->getBooleanParameter();
 			
 			setEndPosition(posX, posY, planet, notifyClient);
+			
+		}
+		break;
+	case RPC_SETENDPOSITION__FLOAT_FLOAT_FLOAT_STRING_BOOL_:
+		{
+			float posX = inv->getFloatParameter();
+			float posZ = inv->getFloatParameter();
+			float posY = inv->getFloatParameter();
+			 String planet; inv->getAsciiParameter(planet);
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setEndPosition(posX, posZ, posY, planet, notifyClient);
 			
 		}
 		break;
@@ -2214,6 +2629,34 @@ void MissionObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertInt(_m_res);
 		}
 		break;
+	case RPC_GETQUESTTYPE__:
+		{
+			
+			String _m_res = getQuestType();
+			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_GETQUESTNAME__:
+		{
+			
+			String _m_res = getQuestName();
+			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_GETQUESTCRC__:
+		{
+			
+			unsigned int _m_res = getQuestCRC();
+			resp->insertInt(_m_res);
+		}
+		break;
+	case RPC_GETTYPEASSTRING__:
+		{
+			
+			String _m_res = getTypeAsString();
+			resp->insertAscii(_m_res);
+		}
+		break;
 	case RPC_GETREWARDCREDITS__:
 		{
 			
@@ -2350,6 +2793,42 @@ void MissionObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertFloat(_m_res);
 		}
 		break;
+	case RPC_SETBONUSCREDITS__INT_:
+		{
+			int creds = inv->getSignedIntParameter();
+			
+			setBonusCredits(creds);
+			
+		}
+		break;
+	case RPC_GETBONUSCREDITS__:
+		{
+			
+			int _m_res = getBonusCredits();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_SETSPACEDUTYMISSION__:
+		{
+			
+			setSpaceDutyMission();
+			
+		}
+		break;
+	case RPC_ISSPACEDUTYMISSION__:
+		{
+			
+			bool _m_res = isSpaceDutyMission();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISABORTED__:
+		{
+			
+			bool _m_res = isAborted();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	default:
 		IntangibleObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -2373,6 +2852,14 @@ void MissionObjectAdapter::setRefreshCounter(int ctr, bool notifyClient) {
 
 void MissionObjectAdapter::setTypeCRC(unsigned int crc, bool notifyClient) {
 	(static_cast<MissionObject*>(stub))->setTypeCRC(crc, notifyClient);
+}
+
+void MissionObjectAdapter::setQuestType(const String& type) {
+	(static_cast<MissionObject*>(stub))->setQuestType(type);
+}
+
+void MissionObjectAdapter::setQuestName(const String& name) {
+	(static_cast<MissionObject*>(stub))->setQuestName(name);
 }
 
 void MissionObjectAdapter::initializeTransientMembers() {
@@ -2411,12 +2898,20 @@ void MissionObjectAdapter::setStartPosition(float posX, float posY, const String
 	(static_cast<MissionObject*>(stub))->setStartPosition(posX, posY, planet, notifyClient);
 }
 
+void MissionObjectAdapter::setStartPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient) {
+	(static_cast<MissionObject*>(stub))->setStartPosition(posX, posZ, posY, planet, notifyClient);
+}
+
 void MissionObjectAdapter::setStartPosition(float posX, float posY, bool notifyClient) {
 	(static_cast<MissionObject*>(stub))->setStartPosition(posX, posY, notifyClient);
 }
 
 void MissionObjectAdapter::setEndPosition(float posX, float posY, const String& planet, bool notifyClient) {
 	(static_cast<MissionObject*>(stub))->setEndPosition(posX, posY, planet, notifyClient);
+}
+
+void MissionObjectAdapter::setEndPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient) {
+	(static_cast<MissionObject*>(stub))->setEndPosition(posX, posZ, posY, planet, notifyClient);
 }
 
 void MissionObjectAdapter::setCreatorName(const String& name, bool notifyClient) {
@@ -2519,6 +3014,22 @@ unsigned int MissionObjectAdapter::getTypeCRC() const {
 	return (static_cast<MissionObject*>(stub))->getTypeCRC();
 }
 
+String MissionObjectAdapter::getQuestType() const {
+	return (static_cast<MissionObject*>(stub))->getQuestType();
+}
+
+String MissionObjectAdapter::getQuestName() const {
+	return (static_cast<MissionObject*>(stub))->getQuestName();
+}
+
+unsigned int MissionObjectAdapter::getQuestCRC() const {
+	return (static_cast<MissionObject*>(stub))->getQuestCRC();
+}
+
+String MissionObjectAdapter::getTypeAsString() const {
+	return (static_cast<MissionObject*>(stub))->getTypeAsString();
+}
+
 int MissionObjectAdapter::getRewardCredits() const {
 	return (static_cast<MissionObject*>(stub))->getRewardCredits();
 }
@@ -2595,6 +3106,26 @@ float MissionObjectAdapter::getSize() const {
 	return (static_cast<MissionObject*>(stub))->getSize();
 }
 
+void MissionObjectAdapter::setBonusCredits(int creds) {
+	(static_cast<MissionObject*>(stub))->setBonusCredits(creds);
+}
+
+int MissionObjectAdapter::getBonusCredits() const {
+	return (static_cast<MissionObject*>(stub))->getBonusCredits();
+}
+
+void MissionObjectAdapter::setSpaceDutyMission() {
+	(static_cast<MissionObject*>(stub))->setSpaceDutyMission();
+}
+
+bool MissionObjectAdapter::isSpaceDutyMission() const {
+	return (static_cast<MissionObject*>(stub))->isSpaceDutyMission();
+}
+
+bool MissionObjectAdapter::isAborted() const {
+	return (static_cast<MissionObject*>(stub))->isAborted();
+}
+
 /*
  *	MissionObjectHelper
  */
@@ -2660,6 +3191,12 @@ void MissionObjectPOD::writeJSON(nlohmann::json& j) {
 	if (typeCRC)
 		thisObject["typeCRC"] = typeCRC.value();
 
+	if (questType)
+		thisObject["questType"] = questType.value();
+
+	if (questName)
+		thisObject["questName"] = questName.value();
+
 	if (difficultyLevel)
 		thisObject["difficultyLevel"] = difficultyLevel.value();
 
@@ -2674,6 +3211,9 @@ void MissionObjectPOD::writeJSON(nlohmann::json& j) {
 
 	if (rewardCredits)
 		thisObject["rewardCredits"] = rewardCredits.value();
+
+	if (bonusCredits)
+		thisObject["bonusCredits"] = bonusCredits.value();
 
 	if (rewardCreditsDivisor)
 		thisObject["rewardCreditsDivisor"] = rewardCreditsDivisor.value();
@@ -2699,6 +3239,9 @@ void MissionObjectPOD::writeJSON(nlohmann::json& j) {
 	if (startPositionX)
 		thisObject["startPositionX"] = startPositionX.value();
 
+	if (startPositionZ)
+		thisObject["startPositionZ"] = startPositionZ.value();
+
 	if (startPositionY)
 		thisObject["startPositionY"] = startPositionY.value();
 
@@ -2707,6 +3250,9 @@ void MissionObjectPOD::writeJSON(nlohmann::json& j) {
 
 	if (endPositionX)
 		thisObject["endPositionX"] = endPositionX.value();
+
+	if (endPositionZ)
+		thisObject["endPositionZ"] = endPositionZ.value();
 
 	if (endPositionY)
 		thisObject["endPositionY"] = endPositionY.value();
@@ -2740,6 +3286,12 @@ void MissionObjectPOD::writeJSON(nlohmann::json& j) {
 
 	if (targetOptionalTemplate)
 		thisObject["targetOptionalTemplate"] = targetOptionalTemplate.value();
+
+	if (spaceDutyMission)
+		thisObject["spaceDutyMission"] = spaceDutyMission.value();
+
+	if (aborted)
+		thisObject["aborted"] = aborted.value();
 
 	j["MissionObject"] = thisObject;
 }
@@ -2786,6 +3338,28 @@ int MissionObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<unsigned int >::toBinaryStream(&typeCRC.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (questType) {
+	_nameHashCode = 0xa61fb840; //MissionObject.questType
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&questType.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (questName) {
+	_nameHashCode = 0xa90b14c; //MissionObject.questName
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&questName.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2841,6 +3415,17 @@ int MissionObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&rewardCredits.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (bonusCredits) {
+	_nameHashCode = 0x7a5bced8; //MissionObject.bonusCredits
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&bonusCredits.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2934,6 +3519,17 @@ int MissionObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (startPositionZ) {
+	_nameHashCode = 0x641d9c09; //MissionObject.startPositionZ
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&startPositionZ.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (startPositionY) {
 	_nameHashCode = 0x695ebad0; //MissionObject.startPositionY
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -2962,6 +3558,17 @@ int MissionObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<float >::toBinaryStream(&endPositionX.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (endPositionZ) {
+	_nameHashCode = 0xe9dfb158; //MissionObject.endPositionZ
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&endPositionZ.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3088,6 +3695,28 @@ int MissionObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (spaceDutyMission) {
+	_nameHashCode = 0x5db5fa74; //MissionObject.spaceDutyMission
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&spaceDutyMission.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (aborted) {
+	_nameHashCode = 0xa7536254; //MissionObject.aborted
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&aborted.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -3118,6 +3747,22 @@ bool MissionObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 			unsigned int _mntypeCRC;
 			TypeInfo<unsigned int >::parseFromBinaryStream(&_mntypeCRC, stream);
 			typeCRC = std::move(_mntypeCRC);
+		}
+		return true;
+
+	case 0xa61fb840: //MissionObject.questType
+		{
+			String _mnquestType;
+			TypeInfo<String >::parseFromBinaryStream(&_mnquestType, stream);
+			questType = std::move(_mnquestType);
+		}
+		return true;
+
+	case 0xa90b14c: //MissionObject.questName
+		{
+			String _mnquestName;
+			TypeInfo<String >::parseFromBinaryStream(&_mnquestName, stream);
+			questName = std::move(_mnquestName);
 		}
 		return true;
 
@@ -3158,6 +3803,14 @@ bool MissionObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 			int _mnrewardCredits;
 			TypeInfo<int >::parseFromBinaryStream(&_mnrewardCredits, stream);
 			rewardCredits = std::move(_mnrewardCredits);
+		}
+		return true;
+
+	case 0x7a5bced8: //MissionObject.bonusCredits
+		{
+			int _mnbonusCredits;
+			TypeInfo<int >::parseFromBinaryStream(&_mnbonusCredits, stream);
+			bonusCredits = std::move(_mnbonusCredits);
 		}
 		return true;
 
@@ -3225,6 +3878,14 @@ bool MissionObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
+	case 0x641d9c09: //MissionObject.startPositionZ
+		{
+			float _mnstartPositionZ;
+			TypeInfo<float >::parseFromBinaryStream(&_mnstartPositionZ, stream);
+			startPositionZ = std::move(_mnstartPositionZ);
+		}
+		return true;
+
 	case 0x695ebad0: //MissionObject.startPositionY
 		{
 			float _mnstartPositionY;
@@ -3246,6 +3907,14 @@ bool MissionObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 			float _mnendPositionX;
 			TypeInfo<float >::parseFromBinaryStream(&_mnendPositionX, stream);
 			endPositionX = std::move(_mnendPositionX);
+		}
+		return true;
+
+	case 0xe9dfb158: //MissionObject.endPositionZ
+		{
+			float _mnendPositionZ;
+			TypeInfo<float >::parseFromBinaryStream(&_mnendPositionZ, stream);
+			endPositionZ = std::move(_mnendPositionZ);
 		}
 		return true;
 
@@ -3337,6 +4006,22 @@ bool MissionObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
+	case 0x5db5fa74: //MissionObject.spaceDutyMission
+		{
+			bool _mnspaceDutyMission;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnspaceDutyMission, stream);
+			spaceDutyMission = std::move(_mnspaceDutyMission);
+		}
+		return true;
+
+	case 0xa7536254: //MissionObject.aborted
+		{
+			bool _mnaborted;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnaborted, stream);
+			aborted = std::move(_mnaborted);
+		}
+		return true;
+
 	}
 
 	return false;
@@ -3369,6 +4054,10 @@ void MissionObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<unsigned int >::toBinaryStream(&typeCRC.value(), stream);
 
+	TypeInfo<String >::toBinaryStream(&questType.value(), stream);
+
+	TypeInfo<String >::toBinaryStream(&questName.value(), stream);
+
 	TypeInfo<int >::toBinaryStream(&difficultyLevel.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&difficultyDisplay.value(), stream);
@@ -3378,6 +4067,8 @@ void MissionObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<UnicodeString >::toBinaryStream(&creatorName.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&rewardCredits.value(), stream);
+
+	TypeInfo<int >::toBinaryStream(&bonusCredits.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&rewardCreditsDivisor.value(), stream);
 
@@ -3395,11 +4086,15 @@ void MissionObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<float >::toBinaryStream(&startPositionX.value(), stream);
 
+	TypeInfo<float >::toBinaryStream(&startPositionZ.value(), stream);
+
 	TypeInfo<float >::toBinaryStream(&startPositionY.value(), stream);
 
 	TypeInfo<String >::toBinaryStream(&startPlanet.value(), stream);
 
 	TypeInfo<float >::toBinaryStream(&endPositionX.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&endPositionZ.value(), stream);
 
 	TypeInfo<float >::toBinaryStream(&endPositionY.value(), stream);
 
@@ -3422,6 +4117,10 @@ void MissionObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<TemplateReference<SharedObjectTemplate*> >::toBinaryStream(&targetTemplate.value(), stream);
 
 	TypeInfo<String >::toBinaryStream(&targetOptionalTemplate.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&spaceDutyMission.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&aborted.value(), stream);
 
 
 }

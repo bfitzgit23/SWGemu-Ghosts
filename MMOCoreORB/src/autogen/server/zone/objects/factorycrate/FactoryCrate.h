@@ -148,6 +148,8 @@ public:
 
 	bool isFactoryCrate();
 
+	bool isValidFactoryCrate();
+
 	int getMaxCapacity() const;
 
 	void setMaxCapacity(int value);
@@ -160,9 +162,11 @@ public:
 
 	String getSerialNumber();
 
+	int getPrototypeUseCount();
+
 	bool extractObjectToInventory(CreatureObject* player);
 
-	Reference<TangibleObject* > extractObject(int count = 1);
+	Reference<TangibleObject* > extractObject();
 
 	void split(int newStackSize);
 
@@ -239,6 +243,8 @@ public:
 
 	virtual bool isFactoryCrate();
 
+	bool isValidFactoryCrate();
+
 	int getMaxCapacity() const;
 
 	void setMaxCapacity(int value);
@@ -251,9 +257,11 @@ public:
 
 	String getSerialNumber();
 
+	int getPrototypeUseCount();
+
 	bool extractObjectToInventory(CreatureObject* player);
 
-	Reference<TangibleObject* > extractObject(int count = 1);
+	Reference<TangibleObject* > extractObject();
 
 	void split(int newStackSize);
 
@@ -313,6 +321,8 @@ public:
 
 	bool isFactoryCrate();
 
+	bool isValidFactoryCrate();
+
 	int getMaxCapacity() const;
 
 	void setMaxCapacity(int value);
@@ -325,9 +335,11 @@ public:
 
 	String getSerialNumber();
 
+	int getPrototypeUseCount();
+
 	bool extractObjectToInventory(CreatureObject* player);
 
-	Reference<TangibleObject* > extractObject(int count);
+	Reference<TangibleObject* > extractObject();
 
 	void split(int newStackSize);
 

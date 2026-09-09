@@ -1,0 +1,37 @@
+borda_the_hutt = Creature:new {
+	customName = "Borda the Hutt",
+	randomNameType = NAME_GENERIC_TAG,
+	socialGroup = "townsperson",
+	faction = "",
+	level = 85,
+	chanceHit = 1.0,
+	damageMin = 700,
+	damageMax = 1000,
+	baseXp = 4000,
+	baseHAM = 70000,
+	baseHAMmax = 80000,
+	armor = 1,
+	resists = {50,50,50,50,50,50,50,50,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	scale = 1.0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation",
+	attacks = merge(brawlermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(borda_the_hutt, "borda_the_hutt")

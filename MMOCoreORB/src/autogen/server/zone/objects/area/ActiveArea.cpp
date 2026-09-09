@@ -4,17 +4,17 @@
 
 #include "ActiveArea.h"
 
-#include "server/zone/objects/area/areashapes/AreaShape.h"
+#include "server/zone/Zone.h"
 
 #include "server/zone/objects/pathfinding/NavArea.h"
 
-#include "server/zone/Zone.h"
+#include "server/zone/objects/region/Region.h"
 
 /*
  *	ActiveAreaStub
  */
 
-enum {RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_ = 1878528101,RPC_ENQUEUEENTEREVENT__SCENEOBJECT_,RPC_ENQUEUEEXITEVENT__SCENEOBJECT_,RPC_NOTIFYENTER__SCENEOBJECT_,RPC_NOTIFYEXIT__SCENEOBJECT_,RPC_SETZONE__ZONE_,RPC_ISACTIVEAREA__,RPC_ISREGION__,RPC_ISCITYREGION__,RPC_ISNAVAREA__,RPC_ISNOBUILDAREA__,RPC_ISCAMPINGPERMITTED__,RPC_CONTAINSPOINT__FLOAT_FLOAT_LONG_,RPC_CONTAINSPOINT__FLOAT_FLOAT_,RPC_GETRADIUS2__,RPC_SETNOBUILDAREA__BOOL_,RPC_SETCAMPINGPERMITTED__BOOL_,RPC_SETMUNICIPALZONE__BOOL_,RPC_SETRADIUS__FLOAT_,RPC_ISCAMPAREA__,RPC_SETNOSPAWNAREA__BOOL_,RPC_ISNOSPAWNAREA__,RPC_ISMUNICIPALZONE__,RPC_GETCELLOBJECTID__,RPC_SETCELLOBJECTID__LONG_,RPC_SETAREASHAPE__AREASHAPE_,RPC_GETAREASHAPE__,RPC_INTERSECTSWITH__ACTIVEAREA_,RPC_ATTACHSCENERY__SCENEOBJECT_,RPC_INITIALIZECHILDOBJECT__SCENEOBJECT_};
+enum {RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_ = 1878528101,RPC_ENQUEUEENTEREVENT__SCENEOBJECT_,RPC_ENQUEUEEXITEVENT__SCENEOBJECT_,RPC_NOTIFYENTER__SCENEOBJECT_,RPC_NOTIFYEXIT__SCENEOBJECT_,RPC_SENDDEBUGMESSAGE__SCENEOBJECT_BOOL_,RPC_SETZONE__ZONE_,RPC_CONTAINSPOINT__FLOAT_FLOAT_LONG_,RPC_CONTAINSPOINT__FLOAT_FLOAT_,RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_LONG_,RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_,RPC_INTERSECTSWITH__ACTIVEAREA_,RPC_SETREGIONFLAGS__INT_,RPC_SETAREANAME__STRING_,RPC_ISACTIVEAREA__,RPC_ISREGION__,RPC_ISNAVAREA__,RPC_ISCAMPAREA__,RPC_ISUNDEFINEDREGION__,RPC_ISCITYREGION__,RPC_ISSPAWNAREA__,RPC_ISNOSPAWNAREA__,RPC_ISWORLDSPAWNAREA__,RPC_ISNOWORLDSPAWNAREA__,RPC_ISNOBUILDZONE__,RPC_ISCAMPINGAREA__,RPC_SHOULDBUILDNAVMESH__,RPC_ISNAMEDREGION__,RPC_ISLOCKEDAREA__,RPC_ISPVPAREA__,RPC_ISOVERTAREA__,RPC_ISREBELAREA__,RPC_ISIMPERIALAREA__,RPC_ISNOCOMBATAREA__,RPC_ISNODUELAREA__,RPC_ISNOPETAREA__,RPC_ISRECTANGULARAREASHAPE__,RPC_ISCUBOIDAREASHAPE__,RPC_ISSPHEREAREASHAPE__,RPC_ADDAREAFLAG__INT_,RPC_REMOVEAREAFLAG__INT_,RPC_SETRADIUS__FLOAT_,RPC_SETCELLOBJECTID__LONG_,RPC_SETAREASHAPE__AREASHAPE_,RPC_GETAREAFLAGS__,RPC_GETRADIUS2__,RPC_GETRADIUS__,RPC_GETHEIGHT__,RPC_GETWIDTH__,RPC_GETLENGTH__,RPC_GETCELLOBJECTID__,RPC_GETAREASHAPE__,RPC_GETAREANAME__,RPC_ATTACHSCENERY__SCENEOBJECT_,RPC_INITIALIZECHILDOBJECT__SCENEOBJECT_,};
 
 ActiveArea::ActiveArea() : SceneObject(DummyConstructorParameter::instance()) {
 	ActiveAreaImplementation* _implementation = new ActiveAreaImplementation();
@@ -109,6 +109,22 @@ void ActiveArea::notifyExit(SceneObject* object) {
 	}
 }
 
+void ActiveArea::sendDebugMessage(SceneObject* creature, bool entry) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDDEBUGMESSAGE__SCENEOBJECT_BOOL_);
+		method.addObjectParameter(creature);
+		method.addBooleanParameter(entry);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendDebugMessage(creature, entry);
+	}
+}
+
 void ActiveArea::setZone(Zone* zone) {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -121,6 +137,141 @@ void ActiveArea::setZone(Zone* zone) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->setZone(zone);
+	}
+}
+
+bool ActiveArea::containsPoint(float x, float y, unsigned long long cellid) const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_LONG_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(y);
+		method.addUnsignedLongParameter(cellid);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->containsPoint(x, y, cellid);
+	}
+}
+
+bool ActiveArea::containsPoint(float x, float y) const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(y);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->containsPoint(x, y);
+	}
+}
+
+bool ActiveArea::containsPoint(float x, float z, float y, unsigned long long cellid) const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_LONG_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(z);
+		method.addFloatParameter(y);
+		method.addUnsignedLongParameter(cellid);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->containsPoint(x, z, y, cellid);
+	}
+}
+
+bool ActiveArea::containsPoint(float x, float z, float y) const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_);
+		method.addFloatParameter(x);
+		method.addFloatParameter(z);
+		method.addFloatParameter(y);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->containsPoint(x, z, y);
+	}
+}
+
+bool ActiveArea::intersectsWith(ActiveArea* area) const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INTERSECTSWITH__ACTIVEAREA_);
+		method.addObjectParameter(area);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->intersectsWith(area);
+	}
+}
+
+NavArea* ActiveArea::asNavArea() {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->asNavArea();
+	}
+}
+
+Region* ActiveArea::asRegion() {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->asRegion();
+	}
+}
+
+void ActiveArea::setRegionFlags(unsigned int flags) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETREGIONFLAGS__INT_);
+		method.addUnsignedIntParameter(flags);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setRegionFlags(flags);
+	}
+}
+
+void ActiveArea::setAreaName(const String& name) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETAREANAME__STRING_);
+		method.addAsciiParameter(name);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setAreaName(name);
 	}
 }
 
@@ -152,21 +303,7 @@ bool ActiveArea::isRegion() {
 	}
 }
 
-bool ActiveArea::isCityRegion() {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISCITYREGION__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isCityRegion();
-	}
-}
-
-bool ActiveArea::isNavArea() {
+bool ActiveArea::isNavArea() const {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -177,155 +314,6 @@ bool ActiveArea::isNavArea() {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isNavArea();
-	}
-}
-
-NavArea* ActiveArea::asNavArea() {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->asNavArea();
-	}
-}
-
-bool ActiveArea::isNoBuildArea() const {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISNOBUILDAREA__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isNoBuildArea();
-	}
-}
-
-bool ActiveArea::isCampingPermitted() const {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISCAMPINGPERMITTED__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isCampingPermitted();
-	}
-}
-
-bool ActiveArea::containsPoint(float x, float y, unsigned long long cellid) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_LONG_);
-		method.addFloatParameter(x);
-		method.addFloatParameter(y);
-		method.addUnsignedLongParameter(cellid);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->containsPoint(x, y, cellid);
-	}
-}
-
-bool ActiveArea::containsPoint(float x, float y) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_CONTAINSPOINT__FLOAT_FLOAT_);
-		method.addFloatParameter(x);
-		method.addFloatParameter(y);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->containsPoint(x, y);
-	}
-}
-
-float ActiveArea::getRadius2() {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETRADIUS2__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getRadius2();
-	}
-}
-
-void ActiveArea::setNoBuildArea(bool val) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETNOBUILDAREA__BOOL_);
-		method.addBooleanParameter(val);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setNoBuildArea(val);
-	}
-}
-
-void ActiveArea::setCampingPermitted(bool val) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETCAMPINGPERMITTED__BOOL_);
-		method.addBooleanParameter(val);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setCampingPermitted(val);
-	}
-}
-
-void ActiveArea::setMunicipalZone(bool val) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETMUNICIPALZONE__BOOL_);
-		method.addBooleanParameter(val);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setMunicipalZone(val);
-	}
-}
-
-void ActiveArea::setRadius(float r) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETRADIUS__FLOAT_);
-		method.addFloatParameter(r);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setRadius(r);
 	}
 }
 
@@ -343,19 +331,45 @@ bool ActiveArea::isCampArea() {
 	}
 }
 
-void ActiveArea::setNoSpawnArea(bool val) {
-	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+bool ActiveArea::isUndefinedRegion() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETNOSPAWNAREA__BOOL_);
-		method.addBooleanParameter(val);
+		DistributedMethod method(this, RPC_ISUNDEFINEDREGION__);
 
-		method.executeWithVoidReturn();
+		return method.executeWithBooleanReturn();
 	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setNoSpawnArea(val);
+		return _implementation->isUndefinedRegion();
+	}
+}
+
+bool ActiveArea::isCityRegion() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISCITYREGION__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isCityRegion();
+	}
+}
+
+bool ActiveArea::isSpawnArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPAWNAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSpawnArea();
 	}
 }
 
@@ -373,31 +387,289 @@ bool ActiveArea::isNoSpawnArea() const {
 	}
 }
 
-bool ActiveArea::isMunicipalZone() const {
+bool ActiveArea::isWorldSpawnArea() const {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISMUNICIPALZONE__);
+		DistributedMethod method(this, RPC_ISWORLDSPAWNAREA__);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->isMunicipalZone();
+		return _implementation->isWorldSpawnArea();
 	}
 }
 
-unsigned long long ActiveArea::getCellObjectID() const {
+bool ActiveArea::isNoWorldSpawnArea() const {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETCELLOBJECTID__);
+		DistributedMethod method(this, RPC_ISNOWORLDSPAWNAREA__);
 
-		return method.executeWithUnsignedLongReturn();
+		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->getCellObjectID();
+		return _implementation->isNoWorldSpawnArea();
+	}
+}
+
+bool ActiveArea::isNoBuildZone() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNOBUILDZONE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNoBuildZone();
+	}
+}
+
+bool ActiveArea::isCampingArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISCAMPINGAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isCampingArea();
+	}
+}
+
+bool ActiveArea::shouldBuildNavmesh() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SHOULDBUILDNAVMESH__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->shouldBuildNavmesh();
+	}
+}
+
+bool ActiveArea::isNamedRegion() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNAMEDREGION__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNamedRegion();
+	}
+}
+
+bool ActiveArea::isLockedArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISLOCKEDAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isLockedArea();
+	}
+}
+
+bool ActiveArea::isPvpArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPVPAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isPvpArea();
+	}
+}
+
+bool ActiveArea::isOvertArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISOVERTAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isOvertArea();
+	}
+}
+
+bool ActiveArea::isRebelArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISREBELAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isRebelArea();
+	}
+}
+
+bool ActiveArea::isImperialArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISIMPERIALAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isImperialArea();
+	}
+}
+
+bool ActiveArea::isNoCombatArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNOCOMBATAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNoCombatArea();
+	}
+}
+
+bool ActiveArea::isNoDuelArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNODUELAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNoDuelArea();
+	}
+}
+
+bool ActiveArea::isNoPetArea() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNOPETAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNoPetArea();
+	}
+}
+
+bool ActiveArea::isRectangularAreaShape() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISRECTANGULARAREASHAPE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isRectangularAreaShape();
+	}
+}
+
+bool ActiveArea::isCuboidAreaShape() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISCUBOIDAREASHAPE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isCuboidAreaShape();
+	}
+}
+
+bool ActiveArea::isSphereAreaShape() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPHEREAREASHAPE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSphereAreaShape();
+	}
+}
+
+void ActiveArea::addAreaFlag(unsigned int flag) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDAREAFLAG__INT_);
+		method.addUnsignedIntParameter(flag);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->addAreaFlag(flag);
+	}
+}
+
+void ActiveArea::removeAreaFlag(unsigned int flag) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEAREAFLAG__INT_);
+		method.addUnsignedIntParameter(flag);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->removeAreaFlag(flag);
+	}
+}
+
+void ActiveArea::setRadius(float r) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETRADIUS__FLOAT_);
+		method.addFloatParameter(r);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setRadius(r);
 	}
 }
 
@@ -433,6 +705,134 @@ void ActiveArea::setAreaShape(AreaShape* area) {
 	}
 }
 
+int ActiveArea::getAreaFlags() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETAREAFLAGS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getAreaFlags();
+	}
+}
+
+Vector3 ActiveArea::getAreaCenter() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getAreaCenter();
+	}
+}
+
+float ActiveArea::getRadius2() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETRADIUS2__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getRadius2();
+	}
+}
+
+float ActiveArea::getRadius() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETRADIUS__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getRadius();
+	}
+}
+
+float ActiveArea::getHeight() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETHEIGHT__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getHeight();
+	}
+}
+
+float ActiveArea::getWidth() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETWIDTH__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getWidth();
+	}
+}
+
+float ActiveArea::getLength() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETLENGTH__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getLength();
+	}
+}
+
+Vector4 ActiveArea::getRectangularDimensions() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getRectangularDimensions();
+	}
+}
+
+Vector3 ActiveArea::getCuboidDimensions() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCuboidDimensions();
+	}
+}
+
+unsigned long long ActiveArea::getCellObjectID() const {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCELLOBJECTID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getCellObjectID();
+	}
+}
+
 AreaShape* ActiveArea::getAreaShape() const {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -447,18 +847,19 @@ AreaShape* ActiveArea::getAreaShape() const {
 	}
 }
 
-bool ActiveArea::intersectsWith(ActiveArea* area) {
+String ActiveArea::getAreaName() const {
 	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_INTERSECTSWITH__ACTIVEAREA_);
-		method.addObjectParameter(area);
+		DistributedMethod method(this, RPC_GETAREANAME__);
 
-		return method.executeWithBooleanReturn();
+		String _return_getAreaName;
+		method.executeWithAsciiReturn(_return_getAreaName);
+		return _return_getAreaName;
 	} else {
-		return _implementation->intersectsWith(area);
+		return _implementation->getAreaName();
 	}
 }
 
@@ -490,6 +891,16 @@ void ActiveArea::initializeChildObject(SceneObject* controllerObject) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->initializeChildObject(controllerObject);
+	}
+}
+
+bool ActiveArea::ejectFromArea(SceneObject* object) {
+	ActiveAreaImplementation* _implementation = static_cast<ActiveAreaImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->ejectFromArea(object);
 	}
 }
 
@@ -603,28 +1014,20 @@ bool ActiveAreaImplementation::readObjectMember(ObjectInputStream* stream, const
 		return true;
 
 	switch(nameHashCode) {
-	case 0x331902db: //ActiveArea.noBuildArea
-		TypeInfo<bool >::parseFromBinaryStream(&noBuildArea, stream);
-		return true;
-
-	case 0x157f549a: //ActiveArea.campingPermitted
-		TypeInfo<bool >::parseFromBinaryStream(&campingPermitted, stream);
-		return true;
-
-	case 0x3690552d: //ActiveArea.municipalZone
-		TypeInfo<bool >::parseFromBinaryStream(&municipalZone, stream);
-		return true;
-
 	case 0x1d1bd89e: //ActiveArea.cellObjectID
 		TypeInfo<unsigned long long >::parseFromBinaryStream(&cellObjectID, stream);
 		return true;
 
-	case 0xa0804b0: //ActiveArea.noSpawnArea
-		TypeInfo<bool >::parseFromBinaryStream(&noSpawnArea, stream);
-		return true;
-
 	case 0x1bb3704b: //ActiveArea.areaShape
 		TypeInfo<ManagedReference<AreaShape* > >::parseFromBinaryStream(&areaShape, stream);
+		return true;
+
+	case 0xfc64a5e7: //ActiveArea.areaFlags
+		TypeInfo<unsigned int >::parseFromBinaryStream(&areaFlags, stream);
+		return true;
+
+	case 0x50693d74: //ActiveArea.areaName
+		TypeInfo<String >::parseFromBinaryStream(&areaName, stream);
 		return true;
 
 	}
@@ -645,47 +1048,11 @@ int ActiveAreaImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	_nameHashCode = 0x331902db; //ActiveArea.noBuildArea
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&noBuildArea, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x157f549a; //ActiveArea.campingPermitted
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&campingPermitted, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x3690552d; //ActiveArea.municipalZone
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&municipalZone, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0x1d1bd89e; //ActiveArea.cellObjectID
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<unsigned long long >::toBinaryStream(&cellObjectID, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xa0804b0; //ActiveArea.noSpawnArea
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&noSpawnArea, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -699,6 +1066,24 @@ int ActiveAreaImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xfc64a5e7; //ActiveArea.areaFlags
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned int >::toBinaryStream(&areaFlags, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x50693d74; //ActiveArea.areaName
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&areaName, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -707,17 +1092,13 @@ void ActiveAreaImplementation::writeJSON(nlohmann::json& j) {
 	SceneObjectImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	thisObject["noBuildArea"] = noBuildArea;
-
-	thisObject["campingPermitted"] = campingPermitted;
-
-	thisObject["municipalZone"] = municipalZone;
-
 	thisObject["cellObjectID"] = cellObjectID;
 
-	thisObject["noSpawnArea"] = noSpawnArea;
-
 	thisObject["areaShape"] = areaShape;
+
+	thisObject["areaFlags"] = areaFlags;
+
+	thisObject["areaName"] = areaName;
 
 	j["ActiveArea"] = thisObject;
 }
@@ -726,21 +1107,37 @@ ActiveAreaImplementation::ActiveAreaImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/area/ActiveArea.idl():  		cellObjectID = 0;
 	cellObjectID = 0;
-	// server/zone/objects/area/ActiveArea.idl():  		noBuildArea = false;
-	noBuildArea = false;
-	// server/zone/objects/area/ActiveArea.idl():  		campingPermitted = false;
-	campingPermitted = false;
-	// server/zone/objects/area/ActiveArea.idl():  		municipalZone = false;
-	municipalZone = false;
-	// server/zone/objects/area/ActiveArea.idl():  		noSpawnArea = false;
-	noSpawnArea = false;
 	// server/zone/objects/area/ActiveArea.idl():  		areaShape = null;
 	areaShape = NULL;
+	// server/zone/objects/area/ActiveArea.idl():  		areaName = "";
+	areaName = "";
+	// server/zone/objects/area/ActiveArea.idl():  		areaFlags = 0;
+	areaFlags = 0;
 	// server/zone/objects/area/ActiveArea.idl():  		Logger.setLoggingName("ActiveArea");
 	Logger::setLoggingName("ActiveArea");
 }
 
 void ActiveAreaImplementation::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
+}
+
+NavArea* ActiveAreaImplementation::asNavArea() {
+	// server/zone/objects/area/ActiveArea.idl():  		return null;
+	return NULL;
+}
+
+Region* ActiveAreaImplementation::asRegion() {
+	// server/zone/objects/area/ActiveArea.idl():  		return null;
+	return NULL;
+}
+
+void ActiveAreaImplementation::setRegionFlags(unsigned int flags) {
+	// server/zone/objects/area/ActiveArea.idl():  		areaFlags = flags;
+	areaFlags = flags;
+}
+
+void ActiveAreaImplementation::setAreaName(const String& name) {
+	// server/zone/objects/area/ActiveArea.idl():  		areaName = name;
+	areaName = name;
 }
 
 bool ActiveAreaImplementation::isActiveArea() {
@@ -753,67 +1150,9 @@ bool ActiveAreaImplementation::isRegion() {
 	return false;
 }
 
-bool ActiveAreaImplementation::isCityRegion() {
+bool ActiveAreaImplementation::isNavArea() const{
 	// server/zone/objects/area/ActiveArea.idl():  		return false;
 	return false;
-}
-
-bool ActiveAreaImplementation::isNavArea() {
-	// server/zone/objects/area/ActiveArea.idl():  		return false;
-	return false;
-}
-
-NavArea* ActiveAreaImplementation::asNavArea() {
-	// server/zone/objects/area/ActiveArea.idl():  		return null;
-	return NULL;
-}
-
-bool ActiveAreaImplementation::isNoBuildArea() const{
-	// server/zone/objects/area/ActiveArea.idl():  		return noBuildArea;
-	return noBuildArea;
-}
-
-bool ActiveAreaImplementation::isCampingPermitted() const{
-	// server/zone/objects/area/ActiveArea.idl():  		return campingPermitted;
-	return campingPermitted;
-}
-
-float ActiveAreaImplementation::getRadius2() {
-	// server/zone/objects/area/ActiveArea.idl():  		}
-	if (areaShape != NULL){
-	// server/zone/objects/area/ActiveArea.idl():  			return areaShape.getRadius() * areaShape.getRadius();
-	return areaShape->getRadius() * areaShape->getRadius();
-}
-
-	else {
-	// server/zone/objects/area/ActiveArea.idl():  			return super.getRadius() * super.getRadius();
-	return SceneObjectImplementation::getRadius() * SceneObjectImplementation::getRadius();
-}
-}
-
-void ActiveAreaImplementation::setNoBuildArea(bool val) {
-	// server/zone/objects/area/ActiveArea.idl():  		noBuildArea = val;
-	noBuildArea = val;
-}
-
-void ActiveAreaImplementation::setCampingPermitted(bool val) {
-	// server/zone/objects/area/ActiveArea.idl():  		campingPermitted = val;
-	campingPermitted = val;
-}
-
-void ActiveAreaImplementation::setMunicipalZone(bool val) {
-	// server/zone/objects/area/ActiveArea.idl():  		municipalZone = val;
-	municipalZone = val;
-}
-
-void ActiveAreaImplementation::setRadius(float r) {
-	// server/zone/objects/area/ActiveArea.idl():  		super.
-	if (areaShape != NULL && r < areaShape->getRadius()){
-	// server/zone/objects/area/ActiveArea.idl():  			r = areaShape.getRadius();
-	r = areaShape->getRadius();
-}
-	// server/zone/objects/area/ActiveArea.idl():  		super.setRadius(r);
-	SceneObjectImplementation::setRadius(r);
 }
 
 bool ActiveAreaImplementation::isCampArea() {
@@ -821,24 +1160,119 @@ bool ActiveAreaImplementation::isCampArea() {
 	return false;
 }
 
-void ActiveAreaImplementation::setNoSpawnArea(bool val) {
-	// server/zone/objects/area/ActiveArea.idl():  		noSpawnArea = val;
-	noSpawnArea = val;
+bool ActiveAreaImplementation::isUndefinedRegion() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & UNDEFINEDAREA;
+	return areaFlags & UNDEFINEDAREA;
+}
+
+bool ActiveAreaImplementation::isCityRegion() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & CITY;
+	return areaFlags & CITY;
+}
+
+bool ActiveAreaImplementation::isSpawnArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & SPAWNAREA;
+	return areaFlags & SPAWNAREA;
 }
 
 bool ActiveAreaImplementation::isNoSpawnArea() const{
-	// server/zone/objects/area/ActiveArea.idl():  		return noSpawnArea;
-	return noSpawnArea;
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NOSPAWNAREA;
+	return areaFlags & NOSPAWNAREA;
 }
 
-bool ActiveAreaImplementation::isMunicipalZone() const{
-	// server/zone/objects/area/ActiveArea.idl():  		return municipalZone;
-	return municipalZone;
+bool ActiveAreaImplementation::isWorldSpawnArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & WORLDSPAWNAREA;
+	return areaFlags & WORLDSPAWNAREA;
 }
 
-unsigned long long ActiveAreaImplementation::getCellObjectID() const{
-	// server/zone/objects/area/ActiveArea.idl():  		return cellObjectID;
-	return cellObjectID;
+bool ActiveAreaImplementation::isNoWorldSpawnArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NOWORLDSPAWNAREA;
+	return areaFlags & NOWORLDSPAWNAREA;
+}
+
+bool ActiveAreaImplementation::isNoBuildZone() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NOBUILDZONEAREA;
+	return areaFlags & NOBUILDZONEAREA;
+}
+
+bool ActiveAreaImplementation::isCampingArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & CAMPINGAREA;
+	return areaFlags & CAMPINGAREA;
+}
+
+bool ActiveAreaImplementation::shouldBuildNavmesh() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NAVAREA;
+	return areaFlags & NAVAREA;
+}
+
+bool ActiveAreaImplementation::isNamedRegion() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NAMEDREGION;
+	return areaFlags & NAMEDREGION;
+}
+
+bool ActiveAreaImplementation::isLockedArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & LOCKEDAREA;
+	return areaFlags & LOCKEDAREA;
+}
+
+bool ActiveAreaImplementation::isPvpArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & PVPAREA;
+	return areaFlags & PVPAREA;
+}
+
+bool ActiveAreaImplementation::isOvertArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & OVERTAREA;
+	return areaFlags & OVERTAREA;
+}
+
+bool ActiveAreaImplementation::isRebelArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & REBELAREA;
+	return areaFlags & REBELAREA;
+}
+
+bool ActiveAreaImplementation::isImperialArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & IMPERIALAREA;
+	return areaFlags & IMPERIALAREA;
+}
+
+bool ActiveAreaImplementation::isNoCombatArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NOCOMBATAREA;
+	return areaFlags & NOCOMBATAREA;
+}
+
+bool ActiveAreaImplementation::isNoDuelArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NODUELAREA;
+	return areaFlags & NODUELAREA;
+}
+
+bool ActiveAreaImplementation::isNoPetArea() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags & NOPETAREA;
+	return areaFlags & NOPETAREA;
+}
+
+bool ActiveAreaImplementation::isRectangularAreaShape() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaShape && areaShape.isRectangularAreaShape();
+	return areaShape && areaShape->isRectangularAreaShape();
+}
+
+bool ActiveAreaImplementation::isCuboidAreaShape() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaShape && areaShape.isCuboidAreaShape();
+	return areaShape && areaShape->isCuboidAreaShape();
+}
+
+bool ActiveAreaImplementation::isSphereAreaShape() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaShape && areaShape.isSphereAreaShape();
+	return areaShape && areaShape->isSphereAreaShape();
+}
+
+void ActiveAreaImplementation::setRadius(float r) {
+	// server/zone/objects/area/ActiveArea.idl():  		super.
+	if (areaShape && r < areaShape->getRadius()){
+	// server/zone/objects/area/ActiveArea.idl():  			r = areaShape.getRadius();
+	r = areaShape->getRadius();
+}
+	// server/zone/objects/area/ActiveArea.idl():  		super.setRadius(r);
+	SceneObjectImplementation::setRadius(r);
 }
 
 void ActiveAreaImplementation::setCellObjectID(unsigned long long celloid) {
@@ -850,15 +1284,80 @@ void ActiveAreaImplementation::setAreaShape(AreaShape* area) {
 	// server/zone/objects/area/ActiveArea.idl():  		areaShape = area;
 	areaShape = area;
 	// server/zone/objects/area/ActiveArea.idl():  	}
-	if (areaShape != NULL){
+	if (areaShape){
 	// server/zone/objects/area/ActiveArea.idl():  			setRadius(areaShape.getRadius());
 	setRadius(areaShape->getRadius());
 }
 }
 
+int ActiveAreaImplementation::getAreaFlags() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaFlags;
+	return areaFlags;
+}
+
+float ActiveAreaImplementation::getRadius2() const{
+	// server/zone/objects/area/ActiveArea.idl():  		float radius = getRadius();
+	float radius = getRadius();
+	// server/zone/objects/area/ActiveArea.idl():  		return radius * radius;
+	return radius * radius;
+}
+
+float ActiveAreaImplementation::getRadius() const{
+	// server/zone/objects/area/ActiveArea.idl():  		}
+	if (areaShape){
+	// server/zone/objects/area/ActiveArea.idl():  			return areaShape.getRadius();
+	return areaShape->getRadius();
+}
+
+	else {
+	// server/zone/objects/area/ActiveArea.idl():  			return super.getRadius();
+	return SceneObjectImplementation::getRadius();
+}
+}
+
+float ActiveAreaImplementation::getHeight() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return 
+	if (areaShape){
+	// server/zone/objects/area/ActiveArea.idl():  			return areaShape.getHeight();
+	return areaShape->getHeight();
+}
+	// server/zone/objects/area/ActiveArea.idl():  		return 0.f;
+	return 0.f;
+}
+
+float ActiveAreaImplementation::getWidth() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return 
+	if (areaShape){
+	// server/zone/objects/area/ActiveArea.idl():  			return areaShape.getWidth();
+	return areaShape->getWidth();
+}
+	// server/zone/objects/area/ActiveArea.idl():  		return 0.f;
+	return 0.f;
+}
+
+float ActiveAreaImplementation::getLength() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return 
+	if (areaShape){
+	// server/zone/objects/area/ActiveArea.idl():  			return areaShape.getLength();
+	return areaShape->getLength();
+}
+	// server/zone/objects/area/ActiveArea.idl():  		return 0.f;
+	return 0.f;
+}
+
+unsigned long long ActiveAreaImplementation::getCellObjectID() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return cellObjectID;
+	return cellObjectID;
+}
+
 AreaShape* ActiveAreaImplementation::getAreaShape() const{
 	// server/zone/objects/area/ActiveArea.idl():  		return areaShape;
 	return areaShape;
+}
+
+String ActiveAreaImplementation::getAreaName() const{
+	// server/zone/objects/area/ActiveArea.idl():  		return areaName;
+	return areaName;
 }
 
 void ActiveAreaImplementation::attachScenery(SceneObject* scene) {
@@ -923,54 +1422,21 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_SENDDEBUGMESSAGE__SCENEOBJECT_BOOL_:
+		{
+			SceneObject* creature = static_cast<SceneObject*>(inv->getObjectParameter());
+			bool entry = inv->getBooleanParameter();
+			
+			sendDebugMessage(creature, entry);
+			
+		}
+		break;
 	case RPC_SETZONE__ZONE_:
 		{
 			Zone* zone = static_cast<Zone*>(inv->getObjectParameter());
 			
 			setZone(zone);
 			
-		}
-		break;
-	case RPC_ISACTIVEAREA__:
-		{
-			
-			bool _m_res = isActiveArea();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISREGION__:
-		{
-			
-			bool _m_res = isRegion();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISCITYREGION__:
-		{
-			
-			bool _m_res = isCityRegion();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISNAVAREA__:
-		{
-			
-			bool _m_res = isNavArea();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISNOBUILDAREA__:
-		{
-			
-			bool _m_res = isNoBuildArea();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISCAMPINGPERMITTED__:
-		{
-			
-			bool _m_res = isCampingPermitted();
-			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_CONTAINSPOINT__FLOAT_FLOAT_LONG_:
@@ -992,43 +1458,70 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_GETRADIUS2__:
+	case RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_LONG_:
 		{
+			float x = inv->getFloatParameter();
+			float z = inv->getFloatParameter();
+			float y = inv->getFloatParameter();
+			unsigned long long cellid = inv->getUnsignedLongParameter();
 			
-			float _m_res = getRadius2();
-			resp->insertFloat(_m_res);
+			bool _m_res = containsPoint(x, z, y, cellid);
+			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETNOBUILDAREA__BOOL_:
+	case RPC_CONTAINSPOINT__FLOAT_FLOAT_FLOAT_:
 		{
-			bool val = inv->getBooleanParameter();
+			float x = inv->getFloatParameter();
+			float z = inv->getFloatParameter();
+			float y = inv->getFloatParameter();
 			
-			setNoBuildArea(val);
+			bool _m_res = containsPoint(x, z, y);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_INTERSECTSWITH__ACTIVEAREA_:
+		{
+			ActiveArea* area = static_cast<ActiveArea*>(inv->getObjectParameter());
+			
+			bool _m_res = intersectsWith(area);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_SETREGIONFLAGS__INT_:
+		{
+			unsigned int flags = inv->getUnsignedIntParameter();
+			
+			setRegionFlags(flags);
 			
 		}
 		break;
-	case RPC_SETCAMPINGPERMITTED__BOOL_:
+	case RPC_SETAREANAME__STRING_:
 		{
-			bool val = inv->getBooleanParameter();
+			 String name; inv->getAsciiParameter(name);
 			
-			setCampingPermitted(val);
+			setAreaName(name);
 			
 		}
 		break;
-	case RPC_SETMUNICIPALZONE__BOOL_:
+	case RPC_ISACTIVEAREA__:
 		{
-			bool val = inv->getBooleanParameter();
 			
-			setMunicipalZone(val);
-			
+			bool _m_res = isActiveArea();
+			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETRADIUS__FLOAT_:
+	case RPC_ISREGION__:
 		{
-			float r = inv->getFloatParameter();
 			
-			setRadius(r);
+			bool _m_res = isRegion();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNAVAREA__:
+		{
 			
+			bool _m_res = isNavArea();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_ISCAMPAREA__:
@@ -1038,12 +1531,25 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETNOSPAWNAREA__BOOL_:
+	case RPC_ISUNDEFINEDREGION__:
 		{
-			bool val = inv->getBooleanParameter();
 			
-			setNoSpawnArea(val);
+			bool _m_res = isUndefinedRegion();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISCITYREGION__:
+		{
 			
+			bool _m_res = isCityRegion();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISSPAWNAREA__:
+		{
+			
+			bool _m_res = isSpawnArea();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_ISNOSPAWNAREA__:
@@ -1053,18 +1559,147 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_ISMUNICIPALZONE__:
+	case RPC_ISWORLDSPAWNAREA__:
 		{
 			
-			bool _m_res = isMunicipalZone();
+			bool _m_res = isWorldSpawnArea();
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_GETCELLOBJECTID__:
+	case RPC_ISNOWORLDSPAWNAREA__:
 		{
 			
-			unsigned long long _m_res = getCellObjectID();
-			resp->insertLong(_m_res);
+			bool _m_res = isNoWorldSpawnArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNOBUILDZONE__:
+		{
+			
+			bool _m_res = isNoBuildZone();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISCAMPINGAREA__:
+		{
+			
+			bool _m_res = isCampingArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_SHOULDBUILDNAVMESH__:
+		{
+			
+			bool _m_res = shouldBuildNavmesh();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNAMEDREGION__:
+		{
+			
+			bool _m_res = isNamedRegion();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISLOCKEDAREA__:
+		{
+			
+			bool _m_res = isLockedArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISPVPAREA__:
+		{
+			
+			bool _m_res = isPvpArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISOVERTAREA__:
+		{
+			
+			bool _m_res = isOvertArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISREBELAREA__:
+		{
+			
+			bool _m_res = isRebelArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISIMPERIALAREA__:
+		{
+			
+			bool _m_res = isImperialArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNOCOMBATAREA__:
+		{
+			
+			bool _m_res = isNoCombatArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNODUELAREA__:
+		{
+			
+			bool _m_res = isNoDuelArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISNOPETAREA__:
+		{
+			
+			bool _m_res = isNoPetArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISRECTANGULARAREASHAPE__:
+		{
+			
+			bool _m_res = isRectangularAreaShape();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISCUBOIDAREASHAPE__:
+		{
+			
+			bool _m_res = isCuboidAreaShape();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISSPHEREAREASHAPE__:
+		{
+			
+			bool _m_res = isSphereAreaShape();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ADDAREAFLAG__INT_:
+		{
+			unsigned int flag = inv->getUnsignedIntParameter();
+			
+			addAreaFlag(flag);
+			
+		}
+		break;
+	case RPC_REMOVEAREAFLAG__INT_:
+		{
+			unsigned int flag = inv->getUnsignedIntParameter();
+			
+			removeAreaFlag(flag);
+			
+		}
+		break;
+	case RPC_SETRADIUS__FLOAT_:
+		{
+			float r = inv->getFloatParameter();
+			
+			setRadius(r);
+			
 		}
 		break;
 	case RPC_SETCELLOBJECTID__LONG_:
@@ -1083,6 +1718,55 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_GETAREAFLAGS__:
+		{
+			
+			int _m_res = getAreaFlags();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETRADIUS2__:
+		{
+			
+			float _m_res = getRadius2();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETRADIUS__:
+		{
+			
+			float _m_res = getRadius();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETHEIGHT__:
+		{
+			
+			float _m_res = getHeight();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETWIDTH__:
+		{
+			
+			float _m_res = getWidth();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETLENGTH__:
+		{
+			
+			float _m_res = getLength();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETCELLOBJECTID__:
+		{
+			
+			unsigned long long _m_res = getCellObjectID();
+			resp->insertLong(_m_res);
+		}
+		break;
 	case RPC_GETAREASHAPE__:
 		{
 			
@@ -1090,12 +1774,11 @@ void ActiveAreaAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_INTERSECTSWITH__ACTIVEAREA_:
+	case RPC_GETAREANAME__:
 		{
-			ActiveArea* area = static_cast<ActiveArea*>(inv->getObjectParameter());
 			
-			bool _m_res = intersectsWith(area);
-			resp->insertBoolean(_m_res);
+			String _m_res = getAreaName();
+			resp->insertAscii(_m_res);
 		}
 		break;
 	case RPC_ATTACHSCENERY__SCENEOBJECT_:
@@ -1139,8 +1822,40 @@ void ActiveAreaAdapter::notifyExit(SceneObject* object) {
 	(static_cast<ActiveArea*>(stub))->notifyExit(object);
 }
 
+void ActiveAreaAdapter::sendDebugMessage(SceneObject* creature, bool entry) {
+	(static_cast<ActiveArea*>(stub))->sendDebugMessage(creature, entry);
+}
+
 void ActiveAreaAdapter::setZone(Zone* zone) {
 	(static_cast<ActiveArea*>(stub))->setZone(zone);
+}
+
+bool ActiveAreaAdapter::containsPoint(float x, float y, unsigned long long cellid) const {
+	return (static_cast<ActiveArea*>(stub))->containsPoint(x, y, cellid);
+}
+
+bool ActiveAreaAdapter::containsPoint(float x, float y) const {
+	return (static_cast<ActiveArea*>(stub))->containsPoint(x, y);
+}
+
+bool ActiveAreaAdapter::containsPoint(float x, float z, float y, unsigned long long cellid) const {
+	return (static_cast<ActiveArea*>(stub))->containsPoint(x, z, y, cellid);
+}
+
+bool ActiveAreaAdapter::containsPoint(float x, float z, float y) const {
+	return (static_cast<ActiveArea*>(stub))->containsPoint(x, z, y);
+}
+
+bool ActiveAreaAdapter::intersectsWith(ActiveArea* area) const {
+	return (static_cast<ActiveArea*>(stub))->intersectsWith(area);
+}
+
+void ActiveAreaAdapter::setRegionFlags(unsigned int flags) {
+	(static_cast<ActiveArea*>(stub))->setRegionFlags(flags);
+}
+
+void ActiveAreaAdapter::setAreaName(const String& name) {
+	(static_cast<ActiveArea*>(stub))->setAreaName(name);
 }
 
 bool ActiveAreaAdapter::isActiveArea() {
@@ -1151,68 +1866,108 @@ bool ActiveAreaAdapter::isRegion() {
 	return (static_cast<ActiveArea*>(stub))->isRegion();
 }
 
-bool ActiveAreaAdapter::isCityRegion() {
-	return (static_cast<ActiveArea*>(stub))->isCityRegion();
-}
-
-bool ActiveAreaAdapter::isNavArea() {
+bool ActiveAreaAdapter::isNavArea() const {
 	return (static_cast<ActiveArea*>(stub))->isNavArea();
-}
-
-bool ActiveAreaAdapter::isNoBuildArea() const {
-	return (static_cast<ActiveArea*>(stub))->isNoBuildArea();
-}
-
-bool ActiveAreaAdapter::isCampingPermitted() const {
-	return (static_cast<ActiveArea*>(stub))->isCampingPermitted();
-}
-
-bool ActiveAreaAdapter::containsPoint(float x, float y, unsigned long long cellid) {
-	return (static_cast<ActiveArea*>(stub))->containsPoint(x, y, cellid);
-}
-
-bool ActiveAreaAdapter::containsPoint(float x, float y) {
-	return (static_cast<ActiveArea*>(stub))->containsPoint(x, y);
-}
-
-float ActiveAreaAdapter::getRadius2() {
-	return (static_cast<ActiveArea*>(stub))->getRadius2();
-}
-
-void ActiveAreaAdapter::setNoBuildArea(bool val) {
-	(static_cast<ActiveArea*>(stub))->setNoBuildArea(val);
-}
-
-void ActiveAreaAdapter::setCampingPermitted(bool val) {
-	(static_cast<ActiveArea*>(stub))->setCampingPermitted(val);
-}
-
-void ActiveAreaAdapter::setMunicipalZone(bool val) {
-	(static_cast<ActiveArea*>(stub))->setMunicipalZone(val);
-}
-
-void ActiveAreaAdapter::setRadius(float r) {
-	(static_cast<ActiveArea*>(stub))->setRadius(r);
 }
 
 bool ActiveAreaAdapter::isCampArea() {
 	return (static_cast<ActiveArea*>(stub))->isCampArea();
 }
 
-void ActiveAreaAdapter::setNoSpawnArea(bool val) {
-	(static_cast<ActiveArea*>(stub))->setNoSpawnArea(val);
+bool ActiveAreaAdapter::isUndefinedRegion() const {
+	return (static_cast<ActiveArea*>(stub))->isUndefinedRegion();
+}
+
+bool ActiveAreaAdapter::isCityRegion() const {
+	return (static_cast<ActiveArea*>(stub))->isCityRegion();
+}
+
+bool ActiveAreaAdapter::isSpawnArea() const {
+	return (static_cast<ActiveArea*>(stub))->isSpawnArea();
 }
 
 bool ActiveAreaAdapter::isNoSpawnArea() const {
 	return (static_cast<ActiveArea*>(stub))->isNoSpawnArea();
 }
 
-bool ActiveAreaAdapter::isMunicipalZone() const {
-	return (static_cast<ActiveArea*>(stub))->isMunicipalZone();
+bool ActiveAreaAdapter::isWorldSpawnArea() const {
+	return (static_cast<ActiveArea*>(stub))->isWorldSpawnArea();
 }
 
-unsigned long long ActiveAreaAdapter::getCellObjectID() const {
-	return (static_cast<ActiveArea*>(stub))->getCellObjectID();
+bool ActiveAreaAdapter::isNoWorldSpawnArea() const {
+	return (static_cast<ActiveArea*>(stub))->isNoWorldSpawnArea();
+}
+
+bool ActiveAreaAdapter::isNoBuildZone() const {
+	return (static_cast<ActiveArea*>(stub))->isNoBuildZone();
+}
+
+bool ActiveAreaAdapter::isCampingArea() const {
+	return (static_cast<ActiveArea*>(stub))->isCampingArea();
+}
+
+bool ActiveAreaAdapter::shouldBuildNavmesh() const {
+	return (static_cast<ActiveArea*>(stub))->shouldBuildNavmesh();
+}
+
+bool ActiveAreaAdapter::isNamedRegion() const {
+	return (static_cast<ActiveArea*>(stub))->isNamedRegion();
+}
+
+bool ActiveAreaAdapter::isLockedArea() const {
+	return (static_cast<ActiveArea*>(stub))->isLockedArea();
+}
+
+bool ActiveAreaAdapter::isPvpArea() const {
+	return (static_cast<ActiveArea*>(stub))->isPvpArea();
+}
+
+bool ActiveAreaAdapter::isOvertArea() const {
+	return (static_cast<ActiveArea*>(stub))->isOvertArea();
+}
+
+bool ActiveAreaAdapter::isRebelArea() const {
+	return (static_cast<ActiveArea*>(stub))->isRebelArea();
+}
+
+bool ActiveAreaAdapter::isImperialArea() const {
+	return (static_cast<ActiveArea*>(stub))->isImperialArea();
+}
+
+bool ActiveAreaAdapter::isNoCombatArea() const {
+	return (static_cast<ActiveArea*>(stub))->isNoCombatArea();
+}
+
+bool ActiveAreaAdapter::isNoDuelArea() const {
+	return (static_cast<ActiveArea*>(stub))->isNoDuelArea();
+}
+
+bool ActiveAreaAdapter::isNoPetArea() const {
+	return (static_cast<ActiveArea*>(stub))->isNoPetArea();
+}
+
+bool ActiveAreaAdapter::isRectangularAreaShape() const {
+	return (static_cast<ActiveArea*>(stub))->isRectangularAreaShape();
+}
+
+bool ActiveAreaAdapter::isCuboidAreaShape() const {
+	return (static_cast<ActiveArea*>(stub))->isCuboidAreaShape();
+}
+
+bool ActiveAreaAdapter::isSphereAreaShape() const {
+	return (static_cast<ActiveArea*>(stub))->isSphereAreaShape();
+}
+
+void ActiveAreaAdapter::addAreaFlag(unsigned int flag) {
+	(static_cast<ActiveArea*>(stub))->addAreaFlag(flag);
+}
+
+void ActiveAreaAdapter::removeAreaFlag(unsigned int flag) {
+	(static_cast<ActiveArea*>(stub))->removeAreaFlag(flag);
+}
+
+void ActiveAreaAdapter::setRadius(float r) {
+	(static_cast<ActiveArea*>(stub))->setRadius(r);
 }
 
 void ActiveAreaAdapter::setCellObjectID(unsigned long long celloid) {
@@ -1223,12 +1978,40 @@ void ActiveAreaAdapter::setAreaShape(AreaShape* area) {
 	(static_cast<ActiveArea*>(stub))->setAreaShape(area);
 }
 
+int ActiveAreaAdapter::getAreaFlags() const {
+	return (static_cast<ActiveArea*>(stub))->getAreaFlags();
+}
+
+float ActiveAreaAdapter::getRadius2() const {
+	return (static_cast<ActiveArea*>(stub))->getRadius2();
+}
+
+float ActiveAreaAdapter::getRadius() const {
+	return (static_cast<ActiveArea*>(stub))->getRadius();
+}
+
+float ActiveAreaAdapter::getHeight() const {
+	return (static_cast<ActiveArea*>(stub))->getHeight();
+}
+
+float ActiveAreaAdapter::getWidth() const {
+	return (static_cast<ActiveArea*>(stub))->getWidth();
+}
+
+float ActiveAreaAdapter::getLength() const {
+	return (static_cast<ActiveArea*>(stub))->getLength();
+}
+
+unsigned long long ActiveAreaAdapter::getCellObjectID() const {
+	return (static_cast<ActiveArea*>(stub))->getCellObjectID();
+}
+
 AreaShape* ActiveAreaAdapter::getAreaShape() const {
 	return (static_cast<ActiveArea*>(stub))->getAreaShape();
 }
 
-bool ActiveAreaAdapter::intersectsWith(ActiveArea* area) {
-	return (static_cast<ActiveArea*>(stub))->intersectsWith(area);
+String ActiveAreaAdapter::getAreaName() const {
+	return (static_cast<ActiveArea*>(stub))->getAreaName();
 }
 
 void ActiveAreaAdapter::attachScenery(SceneObject* scene) {
@@ -1295,23 +2078,17 @@ void ActiveAreaPOD::writeJSON(nlohmann::json& j) {
 	SceneObjectPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	if (noBuildArea)
-		thisObject["noBuildArea"] = noBuildArea.value();
-
-	if (campingPermitted)
-		thisObject["campingPermitted"] = campingPermitted.value();
-
-	if (municipalZone)
-		thisObject["municipalZone"] = municipalZone.value();
-
 	if (cellObjectID)
 		thisObject["cellObjectID"] = cellObjectID.value();
 
-	if (noSpawnArea)
-		thisObject["noSpawnArea"] = noSpawnArea.value();
-
 	if (areaShape)
 		thisObject["areaShape"] = areaShape.value();
+
+	if (areaFlags)
+		thisObject["areaFlags"] = areaFlags.value();
+
+	if (areaName)
+		thisObject["areaName"] = areaName.value();
 
 	j["ActiveArea"] = thisObject;
 }
@@ -1330,56 +2107,12 @@ int ActiveAreaPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	if (noBuildArea) {
-	_nameHashCode = 0x331902db; //ActiveArea.noBuildArea
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&noBuildArea.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (campingPermitted) {
-	_nameHashCode = 0x157f549a; //ActiveArea.campingPermitted
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&campingPermitted.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (municipalZone) {
-	_nameHashCode = 0x3690552d; //ActiveArea.municipalZone
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&municipalZone.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (cellObjectID) {
 	_nameHashCode = 0x1d1bd89e; //ActiveArea.cellObjectID
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<unsigned long long >::toBinaryStream(&cellObjectID.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (noSpawnArea) {
-	_nameHashCode = 0xa0804b0; //ActiveArea.noSpawnArea
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&noSpawnArea.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1396,6 +2129,28 @@ int ActiveAreaPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (areaFlags) {
+	_nameHashCode = 0xfc64a5e7; //ActiveArea.areaFlags
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned int >::toBinaryStream(&areaFlags.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (areaName) {
+	_nameHashCode = 0x50693d74; //ActiveArea.areaName
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&areaName.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -1405,30 +2160,6 @@ bool ActiveAreaPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 		return true;
 
 	switch(nameHashCode) {
-	case 0x331902db: //ActiveArea.noBuildArea
-		{
-			bool _mnnoBuildArea;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnnoBuildArea, stream);
-			noBuildArea = std::move(_mnnoBuildArea);
-		}
-		return true;
-
-	case 0x157f549a: //ActiveArea.campingPermitted
-		{
-			bool _mncampingPermitted;
-			TypeInfo<bool >::parseFromBinaryStream(&_mncampingPermitted, stream);
-			campingPermitted = std::move(_mncampingPermitted);
-		}
-		return true;
-
-	case 0x3690552d: //ActiveArea.municipalZone
-		{
-			bool _mnmunicipalZone;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnmunicipalZone, stream);
-			municipalZone = std::move(_mnmunicipalZone);
-		}
-		return true;
-
 	case 0x1d1bd89e: //ActiveArea.cellObjectID
 		{
 			unsigned long long _mncellObjectID;
@@ -1437,19 +2168,27 @@ bool ActiveAreaPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 		}
 		return true;
 
-	case 0xa0804b0: //ActiveArea.noSpawnArea
-		{
-			bool _mnnoSpawnArea;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnnoSpawnArea, stream);
-			noSpawnArea = std::move(_mnnoSpawnArea);
-		}
-		return true;
-
 	case 0x1bb3704b: //ActiveArea.areaShape
 		{
 			ManagedReference<AreaShapePOD* > _mnareaShape;
 			TypeInfo<ManagedReference<AreaShapePOD* > >::parseFromBinaryStream(&_mnareaShape, stream);
 			areaShape = std::move(_mnareaShape);
+		}
+		return true;
+
+	case 0xfc64a5e7: //ActiveArea.areaFlags
+		{
+			unsigned int _mnareaFlags;
+			TypeInfo<unsigned int >::parseFromBinaryStream(&_mnareaFlags, stream);
+			areaFlags = std::move(_mnareaFlags);
+		}
+		return true;
+
+	case 0x50693d74: //ActiveArea.areaName
+		{
+			String _mnareaName;
+			TypeInfo<String >::parseFromBinaryStream(&_mnareaName, stream);
+			areaName = std::move(_mnareaName);
 		}
 		return true;
 
@@ -1479,17 +2218,13 @@ void ActiveAreaPOD::readObject(ObjectInputStream* stream) {
 void ActiveAreaPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	SceneObjectPOD::writeObjectCompact(stream);
 
-	TypeInfo<bool >::toBinaryStream(&noBuildArea.value(), stream);
-
-	TypeInfo<bool >::toBinaryStream(&campingPermitted.value(), stream);
-
-	TypeInfo<bool >::toBinaryStream(&municipalZone.value(), stream);
-
 	TypeInfo<unsigned long long >::toBinaryStream(&cellObjectID.value(), stream);
 
-	TypeInfo<bool >::toBinaryStream(&noSpawnArea.value(), stream);
-
 	TypeInfo<ManagedReference<AreaShapePOD* > >::toBinaryStream(&areaShape.value(), stream);
+
+	TypeInfo<unsigned int >::toBinaryStream(&areaFlags.value(), stream);
+
+	TypeInfo<String >::toBinaryStream(&areaName.value(), stream);
 
 
 }

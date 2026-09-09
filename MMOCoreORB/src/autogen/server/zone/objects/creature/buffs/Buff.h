@@ -91,6 +91,8 @@ public:
 
 	void loadBuffDurationEvent(CreatureObject* creo);
 
+	void initializeBuffObservers();
+
 	void init();
 
 	void sendTo(CreatureObject* player);
@@ -105,9 +107,9 @@ public:
 
 	void deactivate();
 
-	bool checkRenew();
+	bool checkRenew() const;
 
-	VectorMap<String, int>* getSkillModifiers();
+	const VectorMap<String, int>* getSkillModifiers() const;
 
 	void applyAttributeModifiers();
 
@@ -137,11 +139,11 @@ public:
 
 	void parseSkillModifierString(const String& modifierstring);
 
-	String getAttributeModifierString();
+	String getAttributeModifierString() const;
 
-	String getSkillModifierString();
+	String getSkillModifierString() const;
 
-	float getTimeLeft();
+	float getTimeLeft() const;
 
 	void setAttributeModifier(byte attribute, int value);
 
@@ -153,9 +155,9 @@ public:
 
 	void setAccelerationMultiplierMod(float multiplier);
 
-	float getSpeedMultiplierMod();
+	float getSpeedMultiplierMod() const;
 
-	float getAccelerationMultiplierMod();
+	float getAccelerationMultiplierMod() const;
 
 	void setFillAttributesOnBuff(bool val);
 
@@ -167,13 +169,13 @@ public:
 
 	int getBuffType() const;
 
-	VectorMap<byte, int>* getAttributeModifiers();
+	const VectorMap<byte, int>* getAttributeModifiers() const;
 
-	int getAttributeModifierValue(byte attribute);
+	int getAttributeModifierValue(byte attribute) const;
 
-	int getSkillModifierValue(const String& modname);
+	int getSkillModifierValue(const String& modname) const;
 
-	bool isActive();
+	bool isActive() const;
 
 	bool isSpiceBuff() const;
 
@@ -197,17 +199,19 @@ public:
 
 	void addSecondaryBuffCRC(unsigned long long secondaryCRC);
 
-	Time getTimeApplied();
+	Time getTimeApplied() const;
 
-	int compareTo(Buff* obj);
+	int compareTo(const Buff* obj) const;
 
-	Vector<unsigned long long>* getSecondaryBuffCRCs();
+	const Vector<unsigned long long>* getSecondaryBuffCRCs() const;
 
 	bool hasMods() const;
 
 	void setModsApplied(bool applied);
 
 	bool removeOnClearBuffs() const;
+
+	bool isTrapBuff() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -314,6 +318,8 @@ public:
 
 	void loadBuffDurationEvent(CreatureObject* creo);
 
+	virtual void initializeBuffObservers();
+
 	void init();
 
 	virtual void sendTo(CreatureObject* player);
@@ -328,9 +334,9 @@ public:
 
 	virtual void deactivate();
 
-	virtual bool checkRenew();
+	virtual bool checkRenew() const;
 
-	VectorMap<String, int>* getSkillModifiers();
+	const VectorMap<String, int>* getSkillModifiers() const;
 
 	virtual void applyAttributeModifiers();
 
@@ -360,11 +366,11 @@ public:
 
 	virtual void parseSkillModifierString(const String& modifierstring);
 
-	virtual String getAttributeModifierString();
+	virtual String getAttributeModifierString() const;
 
-	virtual String getSkillModifierString();
+	virtual String getSkillModifierString() const;
 
-	virtual float getTimeLeft();
+	virtual float getTimeLeft() const;
 
 	void setAttributeModifier(byte attribute, int value);
 
@@ -376,9 +382,9 @@ public:
 
 	void setAccelerationMultiplierMod(float multiplier);
 
-	float getSpeedMultiplierMod();
+	float getSpeedMultiplierMod() const;
 
-	float getAccelerationMultiplierMod();
+	float getAccelerationMultiplierMod() const;
 
 	void setFillAttributesOnBuff(bool val);
 
@@ -390,13 +396,13 @@ public:
 
 	int getBuffType() const;
 
-	VectorMap<byte, int>* getAttributeModifiers();
+	const VectorMap<byte, int>* getAttributeModifiers() const;
 
-	virtual int getAttributeModifierValue(byte attribute);
+	virtual int getAttributeModifierValue(byte attribute) const;
 
-	virtual int getSkillModifierValue(const String& modname);
+	virtual int getSkillModifierValue(const String& modname) const;
 
-	bool isActive();
+	bool isActive() const;
 
 	bool isSpiceBuff() const;
 
@@ -420,17 +426,19 @@ public:
 
 	void addSecondaryBuffCRC(unsigned long long secondaryCRC);
 
-	Time getTimeApplied();
+	Time getTimeApplied() const;
 
-	virtual int compareTo(Buff* obj);
+	virtual int compareTo(const Buff* obj) const;
 
-	Vector<unsigned long long>* getSecondaryBuffCRCs();
+	const Vector<unsigned long long>* getSecondaryBuffCRCs() const;
 
 	bool hasMods() const;
 
 	void setModsApplied(bool applied);
 
 	virtual bool removeOnClearBuffs() const;
+
+	virtual bool isTrapBuff() const;
 
 	WeakReference<Buff*> _this;
 
@@ -482,6 +490,8 @@ public:
 
 	void loadBuffDurationEvent(CreatureObject* creo);
 
+	void initializeBuffObservers();
+
 	void init();
 
 	void sendTo(CreatureObject* player);
@@ -496,7 +506,7 @@ public:
 
 	void deactivate();
 
-	bool checkRenew();
+	bool checkRenew() const;
 
 	void applyAttributeModifiers();
 
@@ -526,11 +536,11 @@ public:
 
 	void parseSkillModifierString(const String& modifierstring);
 
-	String getAttributeModifierString();
+	String getAttributeModifierString() const;
 
-	String getSkillModifierString();
+	String getSkillModifierString() const;
 
-	float getTimeLeft();
+	float getTimeLeft() const;
 
 	void setAttributeModifier(byte attribute, int value);
 
@@ -542,9 +552,9 @@ public:
 
 	void setAccelerationMultiplierMod(float multiplier);
 
-	float getSpeedMultiplierMod();
+	float getSpeedMultiplierMod() const;
 
-	float getAccelerationMultiplierMod();
+	float getAccelerationMultiplierMod() const;
 
 	void setFillAttributesOnBuff(bool val);
 
@@ -556,11 +566,11 @@ public:
 
 	int getBuffType() const;
 
-	int getAttributeModifierValue(byte attribute);
+	int getAttributeModifierValue(byte attribute) const;
 
-	int getSkillModifierValue(const String& modname);
+	int getSkillModifierValue(const String& modname) const;
 
-	bool isActive();
+	bool isActive() const;
 
 	bool isSpiceBuff() const;
 
@@ -576,13 +586,13 @@ public:
 
 	void addSecondaryBuffCRC(unsigned long long secondaryCRC);
 
-	int compareTo(Buff* obj);
-
 	bool hasMods() const;
 
 	void setModsApplied(bool applied);
 
 	bool removeOnClearBuffs() const;
+
+	bool isTrapBuff() const;
 
 };
 

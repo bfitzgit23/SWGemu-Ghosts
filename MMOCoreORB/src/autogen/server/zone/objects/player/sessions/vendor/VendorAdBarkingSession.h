@@ -27,18 +27,18 @@
 namespace server {
 namespace zone {
 namespace objects {
-namespace scene {
+namespace tangible {
 
-class SceneObject;
+class TangibleObject;
 
-class SceneObjectPOD;
+class TangibleObjectPOD;
 
-} // namespace scene
+} // namespace tangible
 } // namespace objects
 } // namespace zone
 } // namespace server
 
-using namespace server::zone::objects::scene;
+using namespace server::zone::objects::tangible;
 
 namespace server {
 namespace zone {
@@ -73,7 +73,7 @@ namespace vendor {
 
 class VendorAdBarkingSession : public Facade {
 public:
-	VendorAdBarkingSession(CreatureObject* play, SceneObject* vend);
+	VendorAdBarkingSession(CreatureObject* player, TangibleObject* vendor);
 
 	int initializeSession();
 
@@ -128,7 +128,7 @@ class VendorAdBarkingSessionImplementation : public FacadeImplementation {
 protected:
 	ManagedWeakReference<CreatureObject* > owner;
 
-	ManagedWeakReference<SceneObject* > vendor;
+	ManagedWeakReference<TangibleObject* > weakVendor;
 
 	int advertisingMod;
 
@@ -139,7 +139,7 @@ protected:
 	String animation;
 
 public:
-	VendorAdBarkingSessionImplementation(CreatureObject* play, SceneObject* vend);
+	VendorAdBarkingSessionImplementation(CreatureObject* player, TangibleObject* vendor);
 
 	VendorAdBarkingSessionImplementation(DummyConstructorParameter* param);
 
@@ -271,7 +271,7 @@ class VendorAdBarkingSessionPOD : public FacadePOD {
 public:
 	Optional<ManagedWeakReference<CreatureObjectPOD* >> owner;
 
-	Optional<ManagedWeakReference<SceneObjectPOD* >> vendor;
+	Optional<ManagedWeakReference<TangibleObjectPOD* >> weakVendor;
 
 	Optional<int> advertisingMod;
 

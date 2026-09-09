@@ -12,7 +12,9 @@
  *	WearableContainerObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 753592095,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ISEQUIPPED__,RPC_ISWEARABLECONTAINEROBJECT__};
+const bool WearableContainerObject::ALLOW_SEA = false;
+
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 753592095,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ISEQUIPPED__,RPC_ISWEARABLECONTAINEROBJECT__,RPC_GETREMAININGSOCKETS__,RPC_SETMAXSOCKETS__INT_};
 
 WearableContainerObject::WearableContainerObject() : Container(DummyConstructorParameter::instance()) {
 	WearableContainerObjectImplementation* _implementation = new WearableContainerObjectImplementation();
@@ -51,6 +53,16 @@ void WearableContainerObject::fillAttributeList(AttributeListMessage* msg, Creat
 
 	} else {
 		_implementation->fillAttributeList(msg, object);
+	}
+}
+
+void WearableContainerObject::updateCraftingValues(CraftingValues* values, bool initialUpdate) {
+	WearableContainerObjectImplementation* _implementation = static_cast<WearableContainerObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->updateCraftingValues(values, initialUpdate);
 	}
 }
 
@@ -140,6 +152,35 @@ bool WearableContainerObject::isWearableContainerObject() {
 	}
 }
 
+int WearableContainerObject::getRemainingSockets() const {
+	WearableContainerObjectImplementation* _implementation = static_cast<WearableContainerObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETREMAININGSOCKETS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getRemainingSockets();
+	}
+}
+
+void WearableContainerObject::setMaxSockets(int maxSockets) {
+	WearableContainerObjectImplementation* _implementation = static_cast<WearableContainerObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETMAXSOCKETS__INT_);
+		method.addSignedIntParameter(maxSockets);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setMaxSockets(maxSockets);
+	}
+}
+
 DistributedObjectServant* WearableContainerObject::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -157,6 +198,8 @@ void WearableContainerObject::_setImplementation(DistributedObjectServant* serva
 /*
  *	WearableContainerObjectImplementation
  */
+
+const bool WearableContainerObjectImplementation::ALLOW_SEA = false;
 
 WearableContainerObjectImplementation::WearableContainerObjectImplementation(DummyConstructorParameter* param) : ContainerImplementation(param) {
 	_initializeImplementation();
@@ -250,6 +293,22 @@ bool WearableContainerObjectImplementation::readObjectMember(ObjectInputStream* 
 		return true;
 
 	switch(nameHashCode) {
+	case 0x22c78a1a: //WearableContainerObject.socketCount
+		TypeInfo<int >::parseFromBinaryStream(&socketCount, stream);
+		return true;
+
+	case 0xbb0fc7b2: //WearableContainerObject.socketsGenerated
+		TypeInfo<bool >::parseFromBinaryStream(&socketsGenerated, stream);
+		return true;
+
+	case 0x4738a989: //WearableContainerObject.usedSocketCount
+		TypeInfo<int >::parseFromBinaryStream(&usedSocketCount, stream);
+		return true;
+
+	case 0x83b9d41c: //WearableContainerObject.modsNotInSockets
+		TypeInfo<int >::parseFromBinaryStream(&modsNotInSockets, stream);
+		return true;
+
 	case 0x4e6d3f82: //WearableContainerObject.wearableSkillMods
 		TypeInfo<VectorMap<String, int> >::parseFromBinaryStream(&wearableSkillMods, stream);
 		return true;
@@ -272,6 +331,42 @@ int WearableContainerObjectImplementation::writeObjectMembers(ObjectOutputStream
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	_nameHashCode = 0x22c78a1a; //WearableContainerObject.socketCount
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&socketCount, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xbb0fc7b2; //WearableContainerObject.socketsGenerated
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&socketsGenerated, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x4738a989; //WearableContainerObject.usedSocketCount
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&usedSocketCount, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x83b9d41c; //WearableContainerObject.modsNotInSockets
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&modsNotInSockets, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x4e6d3f82; //WearableContainerObject.wearableSkillMods
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -289,6 +384,14 @@ void WearableContainerObjectImplementation::writeJSON(nlohmann::json& j) {
 	ContainerImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
+	thisObject["socketCount"] = socketCount;
+
+	thisObject["socketsGenerated"] = socketsGenerated;
+
+	thisObject["usedSocketCount"] = usedSocketCount;
+
+	thisObject["modsNotInSockets"] = modsNotInSockets;
+
 	thisObject["wearableSkillMods"] = wearableSkillMods;
 
 	j["WearableContainerObject"] = thisObject;
@@ -296,6 +399,14 @@ void WearableContainerObjectImplementation::writeJSON(nlohmann::json& j) {
 
 WearableContainerObjectImplementation::WearableContainerObjectImplementation() : ContainerImplementation() {
 	_initializeImplementation();
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketsGenerated = false;
+	socketsGenerated = false;
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketCount = 0;
+	socketCount = 0;
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		usedSocketCount = 0;
+	usedSocketCount = 0;
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		modsNotInSockets = 0;
+	modsNotInSockets = 0;
 	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		Logger.setLoggingName("WearableContainerObject");
 	Logger::setLoggingName("WearableContainerObject");
 	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		wearableSkillMods.setAllowOverwriteInsertPlan();
@@ -315,6 +426,29 @@ const VectorMap<String, int>* WearableContainerObjectImplementation::getWearable
 bool WearableContainerObjectImplementation::isWearableContainerObject() {
 	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		return true;
 	return true;
+}
+
+int WearableContainerObjectImplementation::getRemainingSockets() const{
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		return socketCount - usedSocketCount;
+	return socketCount - usedSocketCount;
+}
+
+void WearableContainerObjectImplementation::setMaxSockets(int maxSockets) {
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketCount 
+	if (maxSockets < 0){
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  			maxSockets = 0;
+	maxSockets = 0;
+}
+
+	else 	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketCount 
+	if (maxSockets > MAXSOCKETS){
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  			maxSockets = MAXSOCKETS;
+	maxSockets = MAXSOCKETS;
+}
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketCount = maxSockets;
+	socketCount = maxSockets;
+	// server/zone/objects/tangible/wearables/WearableContainerObject.idl():  		socketsGenerated = true;
+	socketsGenerated = true;
 }
 
 /*
@@ -380,6 +514,21 @@ void WearableContainerObjectAdapter::invokeMethod(uint32 methid, DistributedMeth
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_GETREMAININGSOCKETS__:
+		{
+			
+			int _m_res = getRemainingSockets();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_SETMAXSOCKETS__INT_:
+		{
+			int maxSockets = inv->getSignedIntParameter();
+			
+			setMaxSockets(maxSockets);
+			
+		}
+		break;
 	default:
 		ContainerAdapter::invokeMethod(methid, inv);
 	}
@@ -407,6 +556,14 @@ bool WearableContainerObjectAdapter::isEquipped() {
 
 bool WearableContainerObjectAdapter::isWearableContainerObject() {
 	return (static_cast<WearableContainerObject*>(stub))->isWearableContainerObject();
+}
+
+int WearableContainerObjectAdapter::getRemainingSockets() const {
+	return (static_cast<WearableContainerObject*>(stub))->getRemainingSockets();
+}
+
+void WearableContainerObjectAdapter::setMaxSockets(int maxSockets) {
+	(static_cast<WearableContainerObject*>(stub))->setMaxSockets(maxSockets);
 }
 
 /*
@@ -465,6 +622,18 @@ void WearableContainerObjectPOD::writeJSON(nlohmann::json& j) {
 	ContainerPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
+	if (socketCount)
+		thisObject["socketCount"] = socketCount.value();
+
+	if (socketsGenerated)
+		thisObject["socketsGenerated"] = socketsGenerated.value();
+
+	if (usedSocketCount)
+		thisObject["usedSocketCount"] = usedSocketCount.value();
+
+	if (modsNotInSockets)
+		thisObject["modsNotInSockets"] = modsNotInSockets.value();
+
 	if (wearableSkillMods)
 		thisObject["wearableSkillMods"] = wearableSkillMods.value();
 
@@ -485,6 +654,50 @@ int WearableContainerObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	if (socketCount) {
+	_nameHashCode = 0x22c78a1a; //WearableContainerObject.socketCount
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&socketCount.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (socketsGenerated) {
+	_nameHashCode = 0xbb0fc7b2; //WearableContainerObject.socketsGenerated
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&socketsGenerated.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (usedSocketCount) {
+	_nameHashCode = 0x4738a989; //WearableContainerObject.usedSocketCount
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&usedSocketCount.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (modsNotInSockets) {
+	_nameHashCode = 0x83b9d41c; //WearableContainerObject.modsNotInSockets
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&modsNotInSockets.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (wearableSkillMods) {
 	_nameHashCode = 0x4e6d3f82; //WearableContainerObject.wearableSkillMods
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -505,6 +718,38 @@ bool WearableContainerObjectPOD::readObjectMember(ObjectInputStream* stream, con
 		return true;
 
 	switch(nameHashCode) {
+	case 0x22c78a1a: //WearableContainerObject.socketCount
+		{
+			int _mnsocketCount;
+			TypeInfo<int >::parseFromBinaryStream(&_mnsocketCount, stream);
+			socketCount = std::move(_mnsocketCount);
+		}
+		return true;
+
+	case 0xbb0fc7b2: //WearableContainerObject.socketsGenerated
+		{
+			bool _mnsocketsGenerated;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnsocketsGenerated, stream);
+			socketsGenerated = std::move(_mnsocketsGenerated);
+		}
+		return true;
+
+	case 0x4738a989: //WearableContainerObject.usedSocketCount
+		{
+			int _mnusedSocketCount;
+			TypeInfo<int >::parseFromBinaryStream(&_mnusedSocketCount, stream);
+			usedSocketCount = std::move(_mnusedSocketCount);
+		}
+		return true;
+
+	case 0x83b9d41c: //WearableContainerObject.modsNotInSockets
+		{
+			int _mnmodsNotInSockets;
+			TypeInfo<int >::parseFromBinaryStream(&_mnmodsNotInSockets, stream);
+			modsNotInSockets = std::move(_mnmodsNotInSockets);
+		}
+		return true;
+
 	case 0x4e6d3f82: //WearableContainerObject.wearableSkillMods
 		{
 			VectorMap<String, int> _mnwearableSkillMods;
@@ -538,6 +783,14 @@ void WearableContainerObjectPOD::readObject(ObjectInputStream* stream) {
 
 void WearableContainerObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	ContainerPOD::writeObjectCompact(stream);
+
+	TypeInfo<int >::toBinaryStream(&socketCount.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&socketsGenerated.value(), stream);
+
+	TypeInfo<int >::toBinaryStream(&usedSocketCount.value(), stream);
+
+	TypeInfo<int >::toBinaryStream(&modsNotInSockets.value(), stream);
 
 	TypeInfo<VectorMap<String, int> >::toBinaryStream(&wearableSkillMods.value(), stream);
 

@@ -9,6 +9,9 @@
 #define DISCONNECTCLIENTEVENT_H_
 
 #include "server/zone/objects/player/PlayerObject.h"
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif // WITH_SWGREALMS_API
 
 class DisconnectClientEvent : public Task {
 	ManagedReference<CreatureObject*> player;
@@ -34,6 +37,32 @@ public:
 		Locker _locker(player);
 
 		PlayerObject* ghost = player->getPlayerObject();
+
+		if (ghost == nullptr)
+			return;
+
+#ifdef WITH_SWGREALMS_API
+		String eventTypeStr;
+
+		switch(eventType) {
+		case DISCONNECT:
+			eventTypeStr = "disconnect";
+			break;
+		case LOGOUT:
+			eventTypeStr = "logout";
+			break;
+		case SETLINKDEAD:
+			eventTypeStr = "setlinkdead";
+			break;
+		default:
+			eventTypeStr = "unknown_" + String::valueOf(eventType);
+			break;
+		}
+
+		SWGRealmsAPI::instance()->notifyDisconnectClient(client->getIPAddress(), ghost->getAccountID(), player->getObjectID(), eventTypeStr);
+#endif // WITH_SWGREALMS_API
+
+		ghost->setLastLogoutWorldPosition();
 
 		switch (eventType) {
 		case DISCONNECT:

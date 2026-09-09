@@ -158,6 +158,10 @@ public:
 
 	void setTypeCRC(unsigned int crc, bool notifyClient = true);
 
+	void setQuestType(const String& type);
+
+	void setQuestName(const String& name);
+
 	void initializeTransientMembers();
 
 	void sendBaselinesTo(SceneObject* player);
@@ -178,9 +182,13 @@ public:
 
 	void setStartPosition(float posX, float posY, const String& planet, bool notifyClient = true);
 
+	void setStartPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient = true);
+
 	void setStartPosition(float posX, float posY, bool notifyClient = true);
 
 	void setEndPosition(float posX, float posY, const String& planet, bool notifyClient = true);
+
+	void setEndPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient = true);
 
 	void setCreatorName(const String& name, bool notifyClient = true);
 
@@ -232,6 +240,14 @@ public:
 
 	unsigned int getTypeCRC() const;
 
+	String getQuestType() const;
+
+	String getQuestName() const;
+
+	unsigned int getQuestCRC() const;
+
+	String getTypeAsString() const;
+
 	int getRewardCredits() const;
 
 	int getRewardCreditsDivisor() const;
@@ -276,6 +292,16 @@ public:
 
 	float getSize() const;
 
+	void setBonusCredits(int creds);
+
+	int getBonusCredits() const;
+
+	void setSpaceDutyMission();
+
+	bool isSpaceDutyMission() const;
+
+	bool isAborted() const;
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -309,6 +335,10 @@ protected:
 
 	unsigned int typeCRC;
 
+	String questType;
+
+	String questName;
+
 	int difficultyLevel;
 
 	int difficultyDisplay;
@@ -318,6 +348,8 @@ protected:
 	UnicodeString creatorName;
 
 	int rewardCredits;
+
+	int bonusCredits;
 
 	int rewardCreditsDivisor;
 
@@ -335,11 +367,15 @@ protected:
 
 	float startPositionX;
 
+	float startPositionZ;
+
 	float startPositionY;
 
 	String startPlanet;
 
 	float endPositionX;
+
+	float endPositionZ;
 
 	float endPositionY;
 
@@ -362,6 +398,10 @@ protected:
 	TemplateReference<SharedObjectTemplate*> targetTemplate;
 
 	String targetOptionalTemplate;
+
+	bool spaceDutyMission;
+
+	bool aborted;
 
 public:
 	MissionObjectImplementation();
@@ -399,6 +439,10 @@ public:
 
 	void setTypeCRC(unsigned int crc, bool notifyClient = true);
 
+	void setQuestType(const String& type);
+
+	void setQuestName(const String& name);
+
 	void initializeTransientMembers();
 
 	void sendBaselinesTo(SceneObject* player);
@@ -419,9 +463,13 @@ public:
 
 	void setStartPosition(float posX, float posY, const String& planet, bool notifyClient = true);
 
+	void setStartPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient = true);
+
 	void setStartPosition(float posX, float posY, bool notifyClient = true);
 
 	void setEndPosition(float posX, float posY, const String& planet, bool notifyClient = true);
+
+	void setEndPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient = true);
 
 	void setCreatorName(const String& name, bool notifyClient = true);
 
@@ -473,6 +521,14 @@ public:
 
 	unsigned int getTypeCRC() const;
 
+	String getQuestType() const;
+
+	String getQuestName() const;
+
+	unsigned int getQuestCRC() const;
+
+	String getTypeAsString() const;
+
 	int getRewardCredits() const;
 
 	int getRewardCreditsDivisor() const;
@@ -516,6 +572,16 @@ public:
 	void setSize(float siz);
 
 	float getSize() const;
+
+	void setBonusCredits(int creds);
+
+	int getBonusCredits() const;
+
+	void setSpaceDutyMission();
+
+	bool isSpaceDutyMission() const;
+
+	bool isAborted() const;
 
 	WeakReference<MissionObject*> _this;
 
@@ -571,6 +637,10 @@ public:
 
 	void setTypeCRC(unsigned int crc, bool notifyClient);
 
+	void setQuestType(const String& type);
+
+	void setQuestName(const String& name);
+
 	void initializeTransientMembers();
 
 	void sendBaselinesTo(SceneObject* player);
@@ -589,9 +659,13 @@ public:
 
 	void setStartPosition(float posX, float posY, const String& planet, bool notifyClient);
 
+	void setStartPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient);
+
 	void setStartPosition(float posX, float posY, bool notifyClient);
 
 	void setEndPosition(float posX, float posY, const String& planet, bool notifyClient);
+
+	void setEndPosition(float posX, float posZ, float posY, const String& planet, bool notifyClient);
 
 	void setCreatorName(const String& name, bool notifyClient);
 
@@ -643,6 +717,14 @@ public:
 
 	unsigned int getTypeCRC() const;
 
+	String getQuestType() const;
+
+	String getQuestName() const;
+
+	unsigned int getQuestCRC() const;
+
+	String getTypeAsString() const;
+
 	int getRewardCredits() const;
 
 	int getRewardCreditsDivisor() const;
@@ -680,6 +762,16 @@ public:
 	void setSize(float siz);
 
 	float getSize() const;
+
+	void setBonusCredits(int creds);
+
+	int getBonusCredits() const;
+
+	void setSpaceDutyMission();
+
+	bool isSpaceDutyMission() const;
+
+	bool isAborted() const;
 
 };
 
@@ -722,6 +814,10 @@ public:
 
 	Optional<unsigned int> typeCRC;
 
+	Optional<String> questType;
+
+	Optional<String> questName;
+
 	Optional<int> difficultyLevel;
 
 	Optional<int> difficultyDisplay;
@@ -731,6 +827,8 @@ public:
 	Optional<UnicodeString> creatorName;
 
 	Optional<int> rewardCredits;
+
+	Optional<int> bonusCredits;
 
 	Optional<int> rewardCreditsDivisor;
 
@@ -748,11 +846,15 @@ public:
 
 	Optional<float> startPositionX;
 
+	Optional<float> startPositionZ;
+
 	Optional<float> startPositionY;
 
 	Optional<String> startPlanet;
 
 	Optional<float> endPositionX;
+
+	Optional<float> endPositionZ;
 
 	Optional<float> endPositionY;
 
@@ -775,6 +877,10 @@ public:
 	Optional<TemplateReference<SharedObjectTemplate*>> targetTemplate;
 
 	Optional<String> targetOptionalTemplate;
+
+	Optional<bool> spaceDutyMission;
+
+	Optional<bool> aborted;
 
 	String _className;
 	MissionObjectPOD();

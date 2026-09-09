@@ -26,7 +26,11 @@
 
 #include "engine/util/u3d/Vector3.h"
 
+#include "engine/util/u3d/Vector4.h"
+
 #include "server/zone/objects/area/areashapes/AreaShape.h"
+
+#include "engine/log/Logger.h"
 
 namespace server {
 namespace zone {
@@ -46,17 +50,21 @@ public:
 	 */
 	void setDimensions(float x1, float y1, float x2, float y2);
 
+	void logDimensions();
+
+	Vector4 getRectangularDimensions() const;
+
 	/**
 	 * Get the height of the rectangle.
 	 * @return height of the rectangle.
 	 */
-	float getHeight();
+	float getHeight() const;
 
 	/**
 	 * Get the width of the rectangle.
 	 * @return width of the rectangle.
 	 */
-	float getWidth();
+	float getWidth() const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
@@ -64,20 +72,20 @@ public:
 	 * @param y the y coordinate.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
 	 * @param point the point to check if it is within the area shape.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	bool containsPoint(const Vector3& point);
+	bool containsPoint(const Vector3& point) const;
 
 	/**
 	 * Generate a random position within the area.
 	 * @return a random position within the area.
 	 */
-	Vector3 getRandomPosition();
+	Vector3 getRandomPosition() const;
 
 	/**
 	 * Generate a random position within the area with the supplied origin and radius as limits.
@@ -86,26 +94,28 @@ public:
 	 * @param maxDistance the maximum distance from the origin.
 	 * @return a random position within the area.
 	 */
-	Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance);
+	Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) const;
 
 	/**
 	 * Check if this is a rectangular area shape.
 	 * @return true if it is a rectangular area shape.
 	 */
-	bool isRectangularAreaShape();
+	bool isRectangularAreaShape() const;
 
 	/**
 	 * Check if this area shape intersects with the supplied area shape.
 	 * @param areaShape the area shape to check for intersections with.s
 	 * @return true if the area shapes intersects each other.
 	 */
-	bool intersectsWith(AreaShape* areaShape);
+	bool intersectsWith(AreaShape* areaShape) const;
 
 	/**
 	 * Get the area of the areaShape.
 	 * @return the area of the area shape.
 	 */
-	float getArea();
+	float getArea() const;
+
+	float getRadius() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -158,17 +168,21 @@ public:
 	 */
 	void setDimensions(float x1, float y1, float x2, float y2);
 
+	void logDimensions();
+
+	Vector4 getRectangularDimensions() const;
+
 	/**
 	 * Get the height of the rectangle.
 	 * @return height of the rectangle.
 	 */
-	virtual float getHeight();
+	float getHeight() const;
 
 	/**
 	 * Get the width of the rectangle.
 	 * @return width of the rectangle.
 	 */
-	virtual float getWidth();
+	float getWidth() const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
@@ -176,20 +190,20 @@ public:
 	 * @param y the y coordinate.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	virtual bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
 	 * @param point the point to check if it is within the area shape.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	virtual bool containsPoint(const Vector3& point);
+	bool containsPoint(const Vector3& point) const;
 
 	/**
 	 * Generate a random position within the area.
 	 * @return a random position within the area.
 	 */
-	virtual Vector3 getRandomPosition();
+	Vector3 getRandomPosition() const;
 
 	/**
 	 * Generate a random position within the area with the supplied origin and radius as limits.
@@ -198,20 +212,20 @@ public:
 	 * @param maxDistance the maximum distance from the origin.
 	 * @return a random position within the area.
 	 */
-	virtual Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance);
+	Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) const;
 
 	/**
 	 * Check if this is a rectangular area shape.
 	 * @return true if it is a rectangular area shape.
 	 */
-	virtual bool isRectangularAreaShape();
+	bool isRectangularAreaShape() const;
 
 	/**
 	 * Check if this area shape intersects with the supplied area shape.
 	 * @param areaShape the area shape to check for intersections with.s
 	 * @return true if the area shapes intersects each other.
 	 */
-	virtual bool intersectsWith(AreaShape* areaShape);
+	bool intersectsWith(AreaShape* areaShape) const;
 
 private:
 	/**
@@ -220,7 +234,7 @@ private:
 	 * @param position the position to find the closest point towards.
 	 * @return the closest point inside the area.
 	 */
-	Vector3 getClosestPoint(const Vector3& position);
+	Vector3 getClosestPoint(const Vector3& position) const;
 
 	/**
 	 * Calculates the point in the area that has the longest distance to the supplied
@@ -228,14 +242,16 @@ private:
 	 * @param position the position to find the closest point towards.
 	 * @return the farthest point inside the area.
 	 */
-	Vector3 getFarthestPoint(const Vector3& position);
+	Vector3 getFarthestPoint(const Vector3& position) const;
 
 public:
 	/**
 	 * Get the area of the areaShape.
 	 * @return the area of the area shape.
 	 */
-	virtual float getArea();
+	float getArea() const;
+
+	float getRadius() const;
 
 	WeakReference<RectangularAreaShape*> _this;
 
@@ -282,17 +298,21 @@ public:
 
 	void setDimensions(float x1, float y1, float x2, float y2);
 
-	float getHeight();
+	void logDimensions();
 
-	float getWidth();
+	float getHeight() const;
 
-	bool containsPoint(float x, float y);
+	float getWidth() const;
 
-	bool isRectangularAreaShape();
+	bool containsPoint(float x, float y) const;
 
-	bool intersectsWith(AreaShape* areaShape);
+	bool isRectangularAreaShape() const;
 
-	float getArea();
+	bool intersectsWith(AreaShape* areaShape) const;
+
+	float getArea() const;
+
+	float getRadius() const;
 
 };
 

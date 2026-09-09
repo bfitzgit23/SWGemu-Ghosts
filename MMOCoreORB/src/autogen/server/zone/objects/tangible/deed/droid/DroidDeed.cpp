@@ -16,7 +16,7 @@
  *	DroidDeedStub
  */
 
-enum {RPC_ONCLONEOBJECT__SCENEOBJECT_ = 493480336,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISDROIDDEEDOBJECT__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_};
+enum {RPC_ONCLONEOBJECT__SCENEOBJECT_ = 493480336,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISDROIDDEEDOBJECT__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_ISBOMBDROID__};
 
 DroidDeed::DroidDeed() : Deed(DummyConstructorParameter::instance()) {
 	DroidDeedImplementation* _implementation = new DroidDeedImplementation();
@@ -157,6 +157,20 @@ void DroidDeed::destroyObjectFromDatabase(bool destroyContainedObjects) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->destroyObjectFromDatabase(destroyContainedObjects);
+	}
+}
+
+bool DroidDeed::isBombDroid() {
+	DroidDeedImplementation* _implementation = static_cast<DroidDeedImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISBOMBDROID__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isBombDroid();
 	}
 }
 
@@ -463,6 +477,13 @@ void DroidDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_ISBOMBDROID__:
+		{
+			
+			bool _m_res = isBombDroid();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	default:
 		DeedAdapter::invokeMethod(methid, inv);
 	}
@@ -486,6 +507,10 @@ bool DroidDeedAdapter::isDroidDeedObject() {
 
 void DroidDeedAdapter::destroyObjectFromDatabase(bool destroyContainedObjects) {
 	(static_cast<DroidDeed*>(stub))->destroyObjectFromDatabase(destroyContainedObjects);
+}
+
+bool DroidDeedAdapter::isBombDroid() {
+	return (static_cast<DroidDeed*>(stub))->isBombDroid();
 }
 
 /*

@@ -76,13 +76,29 @@ class GamblingTerminalPOD;
 
 using namespace server::zone::objects::tangible::terminal::gambling;
 
-#include "engine/util/Observer.h"
+namespace server {
+namespace zone {
+namespace managers {
+namespace minigames {
+namespace events {
 
-#include "engine/log/Logger.h"
+class GamblingEvent;
+
+} // namespace events
+} // namespace minigames
+} // namespace managers
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::managers::minigames::events;
 
 #include "system/util/VectorMap.h"
 
 #include "system/util/Vector.h"
+
+#include "engine/log/Logger.h"
+
+#include "engine/util/Observer.h"
 
 namespace server {
 namespace zone {
@@ -99,7 +115,7 @@ public:
 
 	void initializeRouletteTimer();
 
-	void initializeSlots();
+	void initializeSlotsWinnings();
 
 	void initializeRouletteRed();
 
@@ -119,7 +135,25 @@ public:
 
 	bool isRed(int value);
 
+	void removeOutOfRangePlayers(GamblingTerminal* terminal);
+
+	int rollSlotDigit();
+
 	void handleSlot(CreatureObject* player, bool cancel, bool other);
+
+	bool bettingAllowed(CreatureObject* player);
+
+	/**
+	 * Get maximum allowed bet for a player.
+	 * This method looks through the already placed bets and calculates the amount of credits remaining for the player until
+	 * maximum bet is reached for the target.
+	 * @pre { this object is not locked }
+	 * @post { this object is not locked }
+	 * @param terminal GablingTerminal being played
+	 * @param player CreatureObject betting money
+	 * @param target target to bet on.
+	 */
+	int getMaximumAllowedBet(GamblingTerminal* terminal, CreatureObject* player, int target);
 
 	/**
 	 * Accept bet from /bet command
@@ -147,9 +181,20 @@ public:
 	void bet(GamblingTerminal* terminal, CreatureObject* player, int amount, int target);
 
 	/**
+	 * Creates Gambling Event
+	 * This method receives a Terminal and a time,
+	 * creates a GamblingEvent, stores it in the Terminal and schedules it to time
+	 * @pre { this object is not locked }
+	 * @post { this object is not locked }
+	 * @param terminal GamblingTerminal for which to create event
+	 * @param time Time in ms to schedule the Task
+	 */
+	void createGamblingEvent(GamblingTerminal* terminal, unsigned int time);
+
+	/**
 	 * StartGame called by SuiManager
 	 * This method receives a CreatureObject, looks it up in the machineType's corresponding VectorMap
-	 * and then calls startGame(Terminal) 
+	 * and then calls startGame(Terminal)
 	 * @pre { this object is not locked }
 	 * @post { this object is not locked }
 	 * @param player CreatureObject for which to start the Game
@@ -169,7 +214,7 @@ public:
 	/**
 	 * LeaveTerminal called by SuiManager
 	 * This method receives a CreatureObject, looks it up in the machineType's corresponding VectorMap
-	 * and then calls Terminal::leaveTerminal(player) 
+	 * and then calls Terminal::leaveTerminal(player)
 	 * @pre { this object is not locked }
 	 * @post { this object is not locked }
 	 * @param player CreatureObject who wants to leave the Terminal
@@ -268,18 +313,9 @@ public:
 	 */
 	unsigned int createRouletteWindow(CreatureObject* player);
 
-	/**
-	 * Creates Events
-	 * This method receives a Terminal and a time,
-	 * creates a GamblingEvent, stores it in the Terminal and schedules it to time
-	 * @pre { this object is not locked }
-	 * @post { this object is not locked }
-	 * @param terminal GamblingTerminal for which to create event
-	 * @param time Time in ms to schedule the Task
-	 */
-	void createEvent(GamblingTerminal* terminal, int time);
-
 	bool isPlaying(CreatureObject* player);
+
+	void removeGambler(CreatureObject* player, int machineType);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -322,6 +358,11 @@ protected:
 
 	Vector<int> rouletteTimer;
 
+	Vector<int> slotWeights;
+
+private:
+	int slotWeightsTotal;
+
 public:
 	GamblingManagerImplementation();
 
@@ -333,7 +374,7 @@ public:
 
 	void initializeRouletteTimer();
 
-	void initializeSlots();
+	void initializeSlotsWinnings();
 
 	void initializeRouletteRed();
 
@@ -353,12 +394,34 @@ public:
 
 	bool isRed(int value);
 
+	void removeOutOfRangePlayers(GamblingTerminal* terminal);
+
+protected:
+	void initializeSlotWeights();
+
+public:
+	int rollSlotDigit();
+
 	void handleSlot(CreatureObject* player, bool cancel, bool other);
 
 protected:
 	void refreshSlotMenu(CreatureObject* player, GamblingTerminal* terminal);
 
 public:
+	bool bettingAllowed(CreatureObject* player);
+
+	/**
+	 * Get maximum allowed bet for a player.
+	 * This method looks through the already placed bets and calculates the amount of credits remaining for the player until
+	 * maximum bet is reached for the target.
+	 * @pre { this object is not locked }
+	 * @post { this object is not locked }
+	 * @param terminal GablingTerminal being played
+	 * @param player CreatureObject betting money
+	 * @param target target to bet on.
+	 */
+	int getMaximumAllowedBet(GamblingTerminal* terminal, CreatureObject* player, int target);
+
 	/**
 	 * Accept bet from /bet command
 	 * This method receives the player who wants to bet, the amount he wants to bet, and the target he's betting on
@@ -385,9 +448,20 @@ public:
 	void bet(GamblingTerminal* terminal, CreatureObject* player, int amount, int target);
 
 	/**
+	 * Creates Gambling Event
+	 * This method receives a Terminal and a time,
+	 * creates a GamblingEvent, stores it in the Terminal and schedules it to time
+	 * @pre { this object is not locked }
+	 * @post { this object is not locked }
+	 * @param terminal GamblingTerminal for which to create event
+	 * @param time Time in ms to schedule the Task
+	 */
+	void createGamblingEvent(GamblingTerminal* terminal, unsigned int time);
+
+	/**
 	 * StartGame called by SuiManager
 	 * This method receives a CreatureObject, looks it up in the machineType's corresponding VectorMap
-	 * and then calls startGame(Terminal) 
+	 * and then calls startGame(Terminal)
 	 * @pre { this object is not locked }
 	 * @post { this object is not locked }
 	 * @param player CreatureObject for which to start the Game
@@ -407,7 +481,7 @@ public:
 	/**
 	 * LeaveTerminal called by SuiManager
 	 * This method receives a CreatureObject, looks it up in the machineType's corresponding VectorMap
-	 * and then calls Terminal::leaveTerminal(player) 
+	 * and then calls Terminal::leaveTerminal(player)
 	 * @pre { this object is not locked }
 	 * @post { this object is not locked }
 	 * @param player CreatureObject who wants to leave the Terminal
@@ -506,18 +580,9 @@ public:
 	 */
 	unsigned int createRouletteWindow(CreatureObject* player);
 
-	/**
-	 * Creates Events
-	 * This method receives a Terminal and a time,
-	 * creates a GamblingEvent, stores it in the Terminal and schedules it to time
-	 * @pre { this object is not locked }
-	 * @post { this object is not locked }
-	 * @param terminal GamblingTerminal for which to create event
-	 * @param time Time in ms to schedule the Task
-	 */
-	void createEvent(GamblingTerminal* terminal, int time);
-
 	bool isPlaying(CreatureObject* player);
+
+	void removeGambler(CreatureObject* player, int machineType);
 
 	WeakReference<GamblingManager*> _this;
 
@@ -566,7 +631,7 @@ public:
 
 	void initializeRouletteTimer();
 
-	void initializeSlots();
+	void initializeSlotsWinnings();
 
 	void initializeRouletteRed();
 
@@ -586,11 +651,19 @@ public:
 
 	bool isRed(int value);
 
+	void removeOutOfRangePlayers(GamblingTerminal* terminal);
+
 	void handleSlot(CreatureObject* player, bool cancel, bool other);
+
+	bool bettingAllowed(CreatureObject* player);
+
+	int getMaximumAllowedBet(GamblingTerminal* terminal, CreatureObject* player, int target);
 
 	void bet(CreatureObject* player, int amount, int target, int machineType);
 
 	void bet(GamblingTerminal* terminal, CreatureObject* player, int amount, int target);
+
+	void createGamblingEvent(GamblingTerminal* terminal, unsigned int time);
 
 	void startGame(CreatureObject* player, int machineType);
 
@@ -616,9 +689,9 @@ public:
 
 	unsigned int createRouletteWindow(CreatureObject* player);
 
-	void createEvent(GamblingTerminal* terminal, int time);
-
 	bool isPlaying(CreatureObject* player);
+
+	void removeGambler(CreatureObject* player, int machineType);
 
 };
 
@@ -668,6 +741,10 @@ public:
 	Optional<Vector<int>> slotTimer;
 
 	Optional<Vector<int>> rouletteTimer;
+
+	Optional<Vector<int>> slotWeights;
+
+	Optional<int> slotWeightsTotal;
 
 	String _className;
 	GamblingManagerPOD();

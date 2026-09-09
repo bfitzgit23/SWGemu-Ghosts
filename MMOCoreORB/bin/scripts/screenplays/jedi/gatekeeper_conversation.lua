@@ -21,7 +21,8 @@ GatekeeperConversation = ScreenPlay:new {
     screenPlayName = "GatekeeperConversation",
 }
 
-registerScreenPlay("GatekeeperConversation", true)
+-- Event-driven conversation logic; it has no startup work.
+registerScreenPlay("GatekeeperConversation", false)
 
 -- ============================================================
 -- HELPERS
@@ -37,9 +38,86 @@ local function wsd(pCreature, key, value)
     writeScreenPlayData(pCreature, "HolocronJedi", key, tostring(value))
 end
 
-local function gkSay(pCreature, msg)
+local function getOrSpawnGatekeeper(pCreature)
+    if pCreature == nil then return nil end
+
+    local gatekeeperID = tonumber(rsd(pCreature, "gatekeeper_ghost_id")) or 0
+    local pGatekeeper = gatekeeperID > 0 and getSceneObject(gatekeeperID) or nil
+    if pGatekeeper ~= nil and SceneObject(pGatekeeper):getZoneName() == SceneObject(pCreature):getZoneName() and
+            SceneObject(pCreature):isInRangeWithObject(pGatekeeper, 30) then
+        return pGatekeeper
+    end
+
+    if pGatekeeper ~= nil then
+        SceneObject(pGatekeeper):destroyObjectFromWorld()
+        SceneObject(pGatekeeper):destroyObjectFromDatabase(true)
+    end
+    wsd(pCreature, "gatekeeper_ghost_id", "0")
+
+    local zone = SceneObject(pCreature):getZoneName()
+    if zone == nil or zone == "" then return nil end
+
+    local cellID = CreatureObject(pCreature):getParentID()
+    local x, y, z
+    if cellID ~= 0 then
+        x = SceneObject(pCreature):getPositionX() + 2
+        y = SceneObject(pCreature):getPositionY() + 1
+        z = SceneObject(pCreature):getPositionZ()
+    else
+        x = SceneObject(pCreature):getWorldPositionX() + 3
+        y = SceneObject(pCreature):getWorldPositionY() + 2
+        z = getWorldFloor(x, y, zone)
+    end
+
+    local gatekeeperTemplate = "gatekeeper_fs_wanderer"
+    pGatekeeper = spawnMobile(zone, gatekeeperTemplate, 0, x, z, y, 180, cellID)
+    if pGatekeeper == nil then return nil end
+
+    CreatureObject(pGatekeeper):setPvpStatusBitmask(0)
+    CreatureObject(pGatekeeper):clearOptionBit(AIENABLED)
+    AiAgent(pGatekeeper):addObjectFlag(AI_STATIC)
+    wsd(pCreature, "gatekeeper_ghost_id", SceneObject(pGatekeeper):getObjectID())
+    wsd(pCreature, "gatekeeper_mobile_template", gatekeeperTemplate)
+    createEvent(300000, "GatekeeperConversation", "despawnGatekeeper", pCreature, "")
+    return pGatekeeper
+end
+
+function GatekeeperConversation:despawnGatekeeperNow(pCreature)
     if pCreature == nil then return end
-    CreatureObject(pCreature):sendSystemMessage("\\#AADDFF[The Gatekeeper] \\#FFFFFF" .. msg)
+    local gatekeeperID = tonumber(rsd(pCreature, "gatekeeper_ghost_id")) or 0
+    local pGatekeeper = gatekeeperID > 0 and getSceneObject(gatekeeperID) or nil
+    if pGatekeeper ~= nil then
+        SceneObject(pGatekeeper):destroyObjectFromWorld()
+        SceneObject(pGatekeeper):destroyObjectFromDatabase(true)
+    end
+    wsd(pCreature, "gatekeeper_ghost_id", "0")
+    wsd(pCreature, "gatekeeper_mobile_template", "")
+end
+
+function GatekeeperConversation:summonForTrial(pCreature)
+    if pCreature == nil then return nil end
+    local pGatekeeper = getOrSpawnGatekeeper(pCreature)
+    if pGatekeeper == nil then
+        CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[The Force] \\#FFFFFFThe presence cannot take form here. Move to a clear area and use the holocron again.")
+        return nil
+    end
+
+    spatialChat(pGatekeeper, "You there. Your studies have drawn my attention. Speak with me when you are ready.")
+    return pGatekeeper
+end
+
+function gatekeeperSpatialSay(pCreature, msg)
+    if pCreature == nil then return end
+    local pGatekeeper = getOrSpawnGatekeeper(pCreature)
+    if pGatekeeper ~= nil then
+        spatialChat(pGatekeeper, msg)
+    else
+        CreatureObject(pCreature):sendSystemMessage("\\#AADDFF[The Gatekeeper] \\#FFFFFF" .. msg)
+    end
+end
+
+local function gkSay(pCreature, msg)
+    gatekeeperSpatialSay(pCreature, msg)
 end
 
 local function forceMsg(pCreature, msg)
@@ -47,7 +125,12 @@ local function forceMsg(pCreature, msg)
     CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[The Force] \\#FFFFFF" .. msg)
 end
 
--- No Gatekeeper NPC - dialogue delivered via system messages from holocron.lua
+-- The Gatekeeper is a dedicated temporary Force Ghost. It is reused for the
+-- whole dialogue chain and removed after five minutes of inactivity.
+
+function GatekeeperConversation:despawnGatekeeper(pCreature, params)
+    self:despawnGatekeeperNow(pCreature)
+end
 
 -- ============================================================
 -- CONTEXT-AWARE INSTRUCTIONS
@@ -154,17 +237,51 @@ function GatekeeperConversation:onPlayerLoggedIn(pCreature)
 
     local mobID = tonumber(rsd(pCreature, "trial_djk_id")) or 0
     if mobID == 0 then
-        self:trialSuccess(pCreature, pGhost)
+        self:cleanupTrialAttempt(pCreature)
+        forceMsg(pCreature, "Your interrupted final trial has been cleared. Use a holocron to summon the Gatekeeper when you are ready to try again.")
         return
     end
 
     local pMob = getSceneObject(mobID)
     if pMob == nil then
-        self:trialSuccess(pCreature, pGhost)
+        self:cleanupTrialAttempt(pCreature)
+        forceMsg(pCreature, "Your interrupted final trial has been cleared. Use a holocron to summon the Gatekeeper when you are ready to try again.")
     else
         gkSay(pCreature, "Welcome back. Your trial is not yet complete.")
         self:giveInstructions(pCreature)
         createEvent(5000, "GatekeeperConversation", "checkTrialComplete", pCreature, "")
+    end
+end
+
+function GatekeeperConversation:cleanupTrialAttempt(pCreature)
+    if pCreature == nil then return end
+    local mobID = tonumber(rsd(pCreature, "trial_djk_id")) or 0
+    local pMob = mobID > 0 and getSceneObject(mobID) or nil
+    if pMob ~= nil then
+        SceneObject(pMob):destroyObjectFromWorld()
+        SceneObject(pMob):destroyObjectFromDatabase(true)
+    end
+
+    local pGhost = CreatureObject(pCreature):getPlayerObject()
+    if pGhost ~= nil then
+        PlayerObject(pGhost):removeWaypointBySpecialType(WAYPOINTQUESTTASK)
+    end
+
+    wsd(pCreature, "padawan_test_active", "0")
+    wsd(pCreature, "padawan_mob_spawned", "0")
+    wsd(pCreature, "trial_djk_id", "0")
+    wsd(pCreature, "trial_spawn_time", "0")
+    wsd(pCreature, "trial_start_x", "0")
+    wsd(pCreature, "trial_start_y", "0")
+end
+
+function GatekeeperConversation:onPlayerLoggedOut(pCreature)
+    if pCreature == nil then return end
+    self:despawnGatekeeperNow(pCreature)
+    if rsd(pCreature, "padawan_test_active") == "1" then
+        self:cleanupTrialAttempt(pCreature)
+        -- Preserve eligibility while requiring a deliberate fresh attempt.
+        wsd(pCreature, "padawan_test_done", "0")
     end
 end
 
@@ -234,7 +351,7 @@ function GatekeeperConversation:spawnTrialMob(pCreature, params)
     wsd(pCreature, "trial_start_x",       tostring(px))
     wsd(pCreature, "trial_start_y",       tostring(py))
 
-    PlayerObject(pGhost):addWaypoint(zoneName, "The False Sith", "", spawnX, spawnY, WAYPOINTRED, true, true, WAYPOINTQUESTTASK)
+    PlayerObject(pGhost):addWaypoint(zoneName, "The False Sith", "", spawnX, 0, spawnY, WAYPOINT_RED, true, true, WAYPOINTQUESTTASK)
 
     createObserver(OBJECTDESTRUCTION, "GatekeeperConversation", "onFalseSithKilled", pFalseSith)
 
@@ -279,6 +396,13 @@ function GatekeeperConversation:checkTrialComplete(pCreature, params)
 
     if rsd(pCreature, "padawan_test_active") ~= "1" then return end
 
+    local okPlayerDead, playerDead = pcall(function() return CreatureObject(pCreature):isDead() end)
+    if okPlayerDead and playerDead then
+        self:cleanupTrialAttempt(pCreature)
+        wsd(pCreature, "padawan_test_done", "0")
+        return
+    end
+
     local mobID = tonumber(rsd(pCreature, "trial_djk_id")) or 0
     if mobID == 0 then return end
 
@@ -288,6 +412,13 @@ function GatekeeperConversation:checkTrialComplete(pCreature, params)
     if pMob == nil then
         isDead = true
     else
+        if SceneObject(pMob):getZoneName() ~= SceneObject(pCreature):getZoneName() or
+                not SceneObject(pCreature):isInRangeWithObject(pMob, 600) then
+            self:cleanupTrialAttempt(pCreature)
+            wsd(pCreature, "padawan_test_done", "0")
+            forceMsg(pCreature, "You have left the final trial behind. Use a holocron when you are ready to attempt it again.")
+            return
+        end
         local ok, dead = pcall(function() return CreatureObject(pMob):isDead() end)
         local ok2, incap = pcall(function() return CreatureObject(pMob):isIncapacitated() end)
         if (ok and dead) or (ok2 and incap) then
@@ -318,19 +449,19 @@ function GatekeeperConversation:trialSuccess(pCreature, pGhost)
 
     PlayerObject(pGhost):removeWaypointBySpecialType(WAYPOINTQUESTTASK)
 
-    gkSay(pCreature, "I felt it fall. The Force surged through you in that moment.")
+    forceMsg(pCreature, "The Gatekeeper's final words return to you: the Force surged through you in that moment.")
     createEvent(2500, "GatekeeperConversation", "trialSuccessPart2", pCreature, "")
 end
 
 function GatekeeperConversation:trialSuccessPart2(pCreature, params)
     if pCreature == nil then return end
-    gkSay(pCreature, "You did not hesitate. You did not fail. The path ahead is yours now.")
+    forceMsg(pCreature, "You did not hesitate. You did not fail. The path ahead is yours now.")
     createEvent(3000, "GatekeeperConversation", "trialSuccessPart3", pCreature, "")
 end
 
 function GatekeeperConversation:trialSuccessPart3(pCreature, params)
     if pCreature == nil then return end
-    gkSay(pCreature, "Step forward... Padawan.")
+    forceMsg(pCreature, "Step forward... Padawan.")
     createEvent(2500, "GatekeeperConversation", "doGrantPadawan", pCreature, "")
 end
 

@@ -14,7 +14,7 @@ knife_vibroblade = {
 		{"maxrangemod",-2,8,0},
 		{"midrange",3,3,0},
 		{"midrangemod",-2,8,0},
-		{"maxrange",4,4,0},		
+		{"maxrange",4,4,0},
 		{"attackhealthcost",12,2,0},
 		{"attackactioncost",25,11,0},
 		{"attackmindcost",12,2,0},

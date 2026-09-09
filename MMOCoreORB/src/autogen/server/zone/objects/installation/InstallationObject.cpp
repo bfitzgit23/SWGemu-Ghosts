@@ -4,6 +4,8 @@
 
 #include "InstallationObject.h"
 
+#include "server/zone/objects/tangible/TangibleObject.h"
+
 #include "server/zone/objects/creature/CreatureObject.h"
 
 #include "server/zone/packets/scene/AttributeListMessage.h"
@@ -22,7 +24,7 @@
  *	InstallationObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3858591664,RPC_GETCURRENTSPAWNNAME__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_UPDATERESOURCECONTAINERQUANTITY__RESOURCECONTAINER_INT_BOOL_,RPC_SETOPERATING__BOOL_BOOL_,RPC_ACTIVATEUISYNC__,RPC_UPDATEOPERATORS__,RPC_VERIFYOPERATORS__,RPC_UPDATEINSTALLATIONWORK__,RPC_HANDLESTRUCTUREADDENERGY__CREATUREOBJECT_,RPC_SETACTIVERESOURCE__RESOURCECONTAINER_,RPC_CHANGEACTIVERESOURCEID__LONG_,RPC_ADDRESOURCETOHOPPER__RESOURCECONTAINER_,RPC_CLEARRESOURCEHOPPER__,RPC_GETHOPPERSIZE__,RPC_GETHOPPERITEMQUANTITY__RESOURCESPAWN_,RPC_GETCONTAINERFROMHOPPER__RESOURCESPAWN_,RPC_GETRESOURCECONTAINERCOUNTFROMHOPPER__,RPC_GETCONTAINERFROMHOPPERBYINDEX__INT_,RPC_GETACTIVERESOURCESPAWNID__,RPC_GETACTUALRATE__,RPC_QUICKRETRIEVEALLRESOURCES__CREATUREOBJECT_,RPC_QUICKADDMAINT__CREATUREOBJECT_FLOAT_,RPC_QUICKADDPOWER__CREATUREOBJECT_FLOAT_,RPC_ADDOPERATOR__CREATUREOBJECT_,RPC_REMOVEOPERATOR__CREATUREOBJECT_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_ISINSTALLATIONOBJECT__,RPC_ISOPERATING__,RPC_GETINSTALLATIONTYPE__,RPC_GETEXTRACTIONRATE__,RPC_GETHOPPERSIZEMAX__,RPC_UPDATESTRUCTURESTATUS__,RPC_ISHARVESTEROBJECT__,RPC_ISGENERATOROBJECT__,RPC_ISSHUTTLEINSTALLATION__,RPC_ISAGGRESSIVETO__CREATUREOBJECT_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_CREATECHILDOBJECTS__,RPC_GETHITCHANCE__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3858591664,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_UPDATERESOURCECONTAINERQUANTITY__RESOURCECONTAINER_INT_BOOL_,RPC_SETACTIVE__BOOL_BOOL_,RPC_ACTIVATEUISYNC__,RPC_UPDATEOPERATORS__,RPC_VERIFYOPERATORS__,RPC_UPDATEINSTALLATIONWORK__,RPC_HANDLESTRUCTUREADDENERGY__CREATUREOBJECT_,RPC_SETACTIVERESOURCE__RESOURCECONTAINER_,RPC_CHANGEACTIVERESOURCEID__LONG_,RPC_ADDRESOURCETOHOPPER__RESOURCECONTAINER_,RPC_CLEARRESOURCEHOPPER__,RPC_GETHOPPERSIZE__,RPC_GETHOPPERITEMQUANTITY__RESOURCESPAWN_,RPC_GETCONTAINERFROMHOPPER__RESOURCESPAWN_,RPC_GETACTIVERESOURCESPAWNID__,RPC_GETACTUALRATE__,RPC_ADDOPERATOR__CREATUREOBJECT_,RPC_REMOVEOPERATOR__CREATUREOBJECT_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_ISINSTALLATIONOBJECT__,RPC_ISACTIVE__,RPC_GETINSTALLATIONTYPE__,RPC_GETEXTRACTIONRATE__,RPC_GETHOPPERSIZEMAX__,RPC_UPDATESTRUCTURESTATUS__,RPC_ISHARVESTEROBJECT__,RPC_ISGENERATOROBJECT__,RPC_ISSHUTTLEINSTALLATION__,RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_CREATECHILDOBJECTS__,RPC_GETHITCHANCE__,RPC_GETRECEIVERFLAGS__};
 
 InstallationObject::InstallationObject() : StructureObject(DummyConstructorParameter::instance()) {
 	InstallationObjectImplementation* _implementation = new InstallationObjectImplementation();
@@ -51,22 +53,6 @@ void InstallationObject::initializeTransientMembers() {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->initializeTransientMembers();
-	}
-}
-
-String InstallationObject::getCurrentSpawnName() {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETCURRENTSPAWNNAME__);
-
-		String _return_getCurrentSpawnName;
-		method.executeWithAsciiReturn(_return_getCurrentSpawnName);
-		return _return_getCurrentSpawnName;
-	} else {
-		return _implementation->getCurrentSpawnName();
 	}
 }
 
@@ -124,20 +110,20 @@ void InstallationObject::updateResourceContainerQuantity(ResourceContainer* cont
 	}
 }
 
-void InstallationObject::setOperating(bool operating, bool notifyClient) {
+void InstallationObject::setActive(bool value, bool notifyClient) {
 	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETOPERATING__BOOL_BOOL_);
-		method.addBooleanParameter(operating);
+		DistributedMethod method(this, RPC_SETACTIVE__BOOL_BOOL_);
+		method.addBooleanParameter(value);
 		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setOperating(operating, notifyClient);
+		_implementation->setActive(value, notifyClient);
 	}
 }
 
@@ -343,35 +329,6 @@ ResourceContainer* InstallationObject::getContainerFromHopper(ResourceSpawn* spa
 	}
 }
 
-int InstallationObject::getResourceContainerCountFromHopper() {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETRESOURCECONTAINERCOUNTFROMHOPPER__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getResourceContainerCountFromHopper();
-	}
-}
-
-ResourceContainer* InstallationObject::getContainerFromHopperByIndex(int index) {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETCONTAINERFROMHOPPERBYINDEX__INT_);
-		method.addSignedIntParameter(index);
-
-		return static_cast<ResourceContainer*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getContainerFromHopperByIndex(index);
-	}
-}
-
 unsigned long long InstallationObject::getActiveResourceSpawnID() {
 	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -397,53 +354,6 @@ float InstallationObject::getActualRate() {
 		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getActualRate();
-	}
-}
-
-void InstallationObject::quickRetrieveAllResources(CreatureObject* player) {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_QUICKRETRIEVEALLRESOURCES__CREATUREOBJECT_);
-		method.addObjectParameter(player);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->quickRetrieveAllResources(player);
-	}
-}
-
-void InstallationObject::quickAddMaint(CreatureObject* player, float amount) {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_QUICKADDMAINT__CREATUREOBJECT_FLOAT_);
-		method.addObjectParameter(player);
-		method.addFloatParameter(amount);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->quickAddMaint(player, amount);
-	}
-}
-
-void InstallationObject::quickAddPower(CreatureObject* player, float amount) {
-	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_QUICKADDPOWER__CREATUREOBJECT_FLOAT_);
-		method.addObjectParameter(player);
-		method.addFloatParameter(amount);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->quickAddPower(player, amount);
 	}
 }
 
@@ -518,17 +428,17 @@ bool InstallationObject::isInstallationObject() {
 	}
 }
 
-bool InstallationObject::isOperating() const {
+bool InstallationObject::isActive() const {
 	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISOPERATING__);
+		DistributedMethod method(this, RPC_ISACTIVE__);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->isOperating();
+		return _implementation->isActive();
 	}
 }
 
@@ -663,13 +573,13 @@ void InstallationObject::setExtractionRate(float rate) {
 	}
 }
 
-bool InstallationObject::isAggressiveTo(CreatureObject* object) {
+bool InstallationObject::isAggressiveTo(TangibleObject* object) {
 	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISAGGRESSIVETO__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_);
 		method.addObjectParameter(object);
 
 		return method.executeWithBooleanReturn();
@@ -719,6 +629,20 @@ float InstallationObject::getHitChance() const {
 		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getHitChance();
+	}
+}
+
+int InstallationObject::getReceiverFlags() const {
+	InstallationObjectImplementation* _implementation = static_cast<InstallationObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETRECEIVERFLAGS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getReceiverFlags();
 	}
 }
 
@@ -832,8 +756,8 @@ bool InstallationObjectImplementation::readObjectMember(ObjectInputStream* strea
 		return true;
 
 	switch(nameHashCode) {
-	case 0xea532c73: //InstallationObject.operating
-		TypeInfo<bool >::parseFromBinaryStream(&operating, stream);
+	case 0xc4358350: //InstallationObject.active
+		TypeInfo<bool >::parseFromBinaryStream(&active, stream);
 		return true;
 
 	case 0x4bf10856: //InstallationObject.installationType
@@ -894,11 +818,11 @@ int InstallationObjectImplementation::writeObjectMembers(ObjectOutputStream* str
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	_nameHashCode = 0xea532c73; //InstallationObject.operating
+	_nameHashCode = 0xc4358350; //InstallationObject.active
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&operating, stream);
+	TypeInfo<bool >::toBinaryStream(&active, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1001,7 +925,7 @@ void InstallationObjectImplementation::writeJSON(nlohmann::json& j) {
 	StructureObjectImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	thisObject["operating"] = operating;
+	thisObject["active"] = active;
 
 	thisObject["installationType"] = installationType;
 
@@ -1035,8 +959,8 @@ InstallationObjectImplementation::InstallationObjectImplementation() {
 	StructureObjectImplementation::closeobjects = _ref0 = new CloseObjectsVector();
 	// server/zone/objects/installation/InstallationObject.idl():  		super.closeobjects.setNoDuplicateInsertPlan();
 	StructureObjectImplementation::closeobjects->setNoDuplicateInsertPlan();
-	// server/zone/objects/installation/InstallationObject.idl():  		operating = false;
-	operating = false;
+	// server/zone/objects/installation/InstallationObject.idl():  		active = false;
+	active = false;
 	// server/zone/objects/installation/InstallationObject.idl():  		installationType = 0;
 	installationType = 0;
 	// server/zone/objects/installation/InstallationObject.idl():  		extractionRemainder = 0;
@@ -1080,9 +1004,9 @@ bool InstallationObjectImplementation::isInstallationObject() {
 	return true;
 }
 
-bool InstallationObjectImplementation::isOperating() const{
-	// server/zone/objects/installation/InstallationObject.idl():  		return operating;
-	return operating;
+bool InstallationObjectImplementation::isActive() const{
+	// server/zone/objects/installation/InstallationObject.idl():  		return active;
+	return active;
 }
 
 int InstallationObjectImplementation::getInstallationType() const{
@@ -1120,6 +1044,11 @@ bool InstallationObjectImplementation::isShuttleInstallation() {
 	return false;
 }
 
+int InstallationObjectImplementation::getReceiverFlags() const{
+	// server/zone/objects/installation/InstallationObject.idl():  		return CloseObjectsVector.INSTALLATIONTYPE | super.getReceiverFlags();
+	return CloseObjectsVector::INSTALLATIONTYPE | StructureObjectImplementation::getReceiverFlags();
+}
+
 /*
  *	InstallationObjectAdapter
  */
@@ -1142,13 +1071,6 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			
 		}
 		break;
-	case RPC_GETCURRENTSPAWNNAME__:
-		{
-			
-			String _m_res = getCurrentSpawnName();
-			resp->insertAscii(_m_res);
-		}
-		break;
 	case RPC_DESTROYOBJECTFROMDATABASE__BOOL_:
 		{
 			bool destroyContainedObjects = inv->getBooleanParameter();
@@ -1167,12 +1089,12 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			
 		}
 		break;
-	case RPC_SETOPERATING__BOOL_BOOL_:
+	case RPC_SETACTIVE__BOOL_BOOL_:
 		{
-			bool operating = inv->getBooleanParameter();
+			bool value = inv->getBooleanParameter();
 			bool notifyClient = inv->getBooleanParameter();
 			
-			setOperating(operating, notifyClient);
+			setActive(value, notifyClient);
 			
 		}
 		break;
@@ -1266,21 +1188,6 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_GETRESOURCECONTAINERCOUNTFROMHOPPER__:
-		{
-			
-			int _m_res = getResourceContainerCountFromHopper();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETCONTAINERFROMHOPPERBYINDEX__INT_:
-		{
-			int index = inv->getSignedIntParameter();
-			
-			DistributedObject* _m_res = getContainerFromHopperByIndex(index);
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
 	case RPC_GETACTIVERESOURCESPAWNID__:
 		{
 			
@@ -1293,32 +1200,6 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			
 			float _m_res = getActualRate();
 			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_QUICKRETRIEVEALLRESOURCES__CREATUREOBJECT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			quickRetrieveAllResources(player);
-			
-		}
-		break;
-	case RPC_QUICKADDMAINT__CREATUREOBJECT_FLOAT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			float amount = inv->getFloatParameter();
-			
-			quickAddMaint(player, amount);
-			
-		}
-		break;
-	case RPC_QUICKADDPOWER__CREATUREOBJECT_FLOAT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			float amount = inv->getFloatParameter();
-			
-			quickAddPower(player, amount);
-			
 		}
 		break;
 	case RPC_ADDOPERATOR__CREATUREOBJECT_:
@@ -1352,10 +1233,10 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_ISOPERATING__:
+	case RPC_ISACTIVE__:
 		{
 			
-			bool _m_res = isOperating();
+			bool _m_res = isActive();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -1408,9 +1289,9 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_ISAGGRESSIVETO__CREATUREOBJECT_:
+	case RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_:
 		{
-			CreatureObject* object = static_cast<CreatureObject*>(inv->getObjectParameter());
+			TangibleObject* object = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
 			bool _m_res = isAggressiveTo(object);
 			resp->insertBoolean(_m_res);
@@ -1438,6 +1319,13 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			resp->insertFloat(_m_res);
 		}
 		break;
+	case RPC_GETRECEIVERFLAGS__:
+		{
+			
+			int _m_res = getReceiverFlags();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	default:
 		StructureObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -1445,10 +1333,6 @@ void InstallationObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 
 void InstallationObjectAdapter::initializeTransientMembers() {
 	(static_cast<InstallationObject*>(stub))->initializeTransientMembers();
-}
-
-String InstallationObjectAdapter::getCurrentSpawnName() {
-	return (static_cast<InstallationObject*>(stub))->getCurrentSpawnName();
 }
 
 void InstallationObjectAdapter::destroyObjectFromDatabase(bool destroyContainedObjects) {
@@ -1459,8 +1343,8 @@ void InstallationObjectAdapter::updateResourceContainerQuantity(ResourceContaine
 	(static_cast<InstallationObject*>(stub))->updateResourceContainerQuantity(container, newQuantity, notifyClient);
 }
 
-void InstallationObjectAdapter::setOperating(bool operating, bool notifyClient) {
-	(static_cast<InstallationObject*>(stub))->setOperating(operating, notifyClient);
+void InstallationObjectAdapter::setActive(bool value, bool notifyClient) {
+	(static_cast<InstallationObject*>(stub))->setActive(value, notifyClient);
 }
 
 void InstallationObjectAdapter::activateUiSync() {
@@ -1511,32 +1395,12 @@ ResourceContainer* InstallationObjectAdapter::getContainerFromHopper(ResourceSpa
 	return (static_cast<InstallationObject*>(stub))->getContainerFromHopper(spawn);
 }
 
-int InstallationObjectAdapter::getResourceContainerCountFromHopper() {
-	return (static_cast<InstallationObject*>(stub))->getResourceContainerCountFromHopper();
-}
-
-ResourceContainer* InstallationObjectAdapter::getContainerFromHopperByIndex(int index) {
-	return (static_cast<InstallationObject*>(stub))->getContainerFromHopperByIndex(index);
-}
-
 unsigned long long InstallationObjectAdapter::getActiveResourceSpawnID() {
 	return (static_cast<InstallationObject*>(stub))->getActiveResourceSpawnID();
 }
 
 float InstallationObjectAdapter::getActualRate() {
 	return (static_cast<InstallationObject*>(stub))->getActualRate();
-}
-
-void InstallationObjectAdapter::quickRetrieveAllResources(CreatureObject* player) {
-	(static_cast<InstallationObject*>(stub))->quickRetrieveAllResources(player);
-}
-
-void InstallationObjectAdapter::quickAddMaint(CreatureObject* player, float amount) {
-	(static_cast<InstallationObject*>(stub))->quickAddMaint(player, amount);
-}
-
-void InstallationObjectAdapter::quickAddPower(CreatureObject* player, float amount) {
-	(static_cast<InstallationObject*>(stub))->quickAddPower(player, amount);
 }
 
 void InstallationObjectAdapter::addOperator(CreatureObject* player) {
@@ -1555,8 +1419,8 @@ bool InstallationObjectAdapter::isInstallationObject() {
 	return (static_cast<InstallationObject*>(stub))->isInstallationObject();
 }
 
-bool InstallationObjectAdapter::isOperating() const {
-	return (static_cast<InstallationObject*>(stub))->isOperating();
+bool InstallationObjectAdapter::isActive() const {
+	return (static_cast<InstallationObject*>(stub))->isActive();
 }
 
 int InstallationObjectAdapter::getInstallationType() const {
@@ -1587,7 +1451,7 @@ bool InstallationObjectAdapter::isShuttleInstallation() {
 	return (static_cast<InstallationObject*>(stub))->isShuttleInstallation();
 }
 
-bool InstallationObjectAdapter::isAggressiveTo(CreatureObject* object) {
+bool InstallationObjectAdapter::isAggressiveTo(TangibleObject* object) {
 	return (static_cast<InstallationObject*>(stub))->isAggressiveTo(object);
 }
 
@@ -1601,6 +1465,10 @@ void InstallationObjectAdapter::createChildObjects() {
 
 float InstallationObjectAdapter::getHitChance() const {
 	return (static_cast<InstallationObject*>(stub))->getHitChance();
+}
+
+int InstallationObjectAdapter::getReceiverFlags() const {
+	return (static_cast<InstallationObject*>(stub))->getReceiverFlags();
 }
 
 /*
@@ -1659,8 +1527,8 @@ void InstallationObjectPOD::writeJSON(nlohmann::json& j) {
 	StructureObjectPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	if (operating)
-		thisObject["operating"] = operating.value();
+	if (active)
+		thisObject["active"] = active.value();
 
 	if (installationType)
 		thisObject["installationType"] = installationType.value();
@@ -1709,12 +1577,12 @@ int InstallationObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	if (operating) {
-	_nameHashCode = 0xea532c73; //InstallationObject.operating
+	if (active) {
+	_nameHashCode = 0xc4358350; //InstallationObject.active
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&operating.value(), stream);
+	TypeInfo<bool >::toBinaryStream(&active.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1839,11 +1707,11 @@ bool InstallationObjectPOD::readObjectMember(ObjectInputStream* stream, const ui
 		return true;
 
 	switch(nameHashCode) {
-	case 0xea532c73: //InstallationObject.operating
+	case 0xc4358350: //InstallationObject.active
 		{
-			bool _mnoperating;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnoperating, stream);
-			operating = std::move(_mnoperating);
+			bool _mnactive;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnactive, stream);
+			active = std::move(_mnactive);
 		}
 		return true;
 
@@ -1953,7 +1821,7 @@ void InstallationObjectPOD::readObject(ObjectInputStream* stream) {
 void InstallationObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	StructureObjectPOD::writeObjectCompact(stream);
 
-	TypeInfo<bool >::toBinaryStream(&operating.value(), stream);
+	TypeInfo<bool >::toBinaryStream(&active.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&installationType.value(), stream);
 

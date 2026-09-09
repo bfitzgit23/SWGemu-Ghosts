@@ -236,7 +236,7 @@ object_tangible_wearables_ithorian_shared_ith_backpack_s01 = SharedTangibleObjec
 	collisionMaterialFlags = 1,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 50,
+	containerVolumeLimit = 150,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@wearables_detail:backpack_s01",
@@ -295,7 +295,7 @@ object_tangible_wearables_ithorian_shared_ith_backpack_s03 = SharedTangibleObjec
 	collisionMaterialFlags = 1,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 50,
+	containerVolumeLimit = 150,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@wearables_detail:backpack_s01",
@@ -354,7 +354,7 @@ object_tangible_wearables_ithorian_shared_ith_backpack_s05 = SharedTangibleObjec
 	collisionMaterialFlags = 1,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 50,
+	containerVolumeLimit = 150,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@wearables_detail:backpack_s01",
@@ -413,7 +413,7 @@ object_tangible_wearables_ithorian_shared_ith_backpack_s06 = SharedTangibleObjec
 	collisionMaterialFlags = 1,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 50,
+	containerVolumeLimit = 150,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@wearables_detail:backpack_s01",

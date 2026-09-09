@@ -1,0 +1,35 @@
+chandriltech_greeter = Creature:new {
+	customName = "a ChandrilTech Greeter",
+	socialGroup = "townsperson",
+	faction = "",
+	level = 10,
+	chanceHit = 0.1,
+	damageMin = 10,
+	damageMax = 30,
+	baseXp = 50,
+	baseHAM = 2000,
+	baseHAMmax = 2500,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/dressed_businessman_human_male_01.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation_generic",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chandriltech_greeter, "chandriltech_greeter")

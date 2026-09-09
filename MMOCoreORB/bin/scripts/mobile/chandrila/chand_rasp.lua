@@ -1,0 +1,36 @@
+chand_rasp = Creature:new {
+	customName = "a Rasp",
+	socialGroup = "rasp",
+	faction = "",
+	level = 18,
+	chanceHit = 0.3,
+	damageMin = 100,
+	damageMax = 240,
+	baseXp = 180,
+	baseHAM = 5500,
+	baseHAMmax = 6500,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_carnivore",
+	meatAmount = 200,
+	hideType = "hide_leathery",
+	hideAmount = 175,
+	boneType = "bone_mammal",
+	boneAmount = 150,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 1.1,
+
+	templates = {"object/mobile/flite_rasp_hue.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_rasp, "chand_rasp")

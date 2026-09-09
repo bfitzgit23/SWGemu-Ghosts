@@ -9,50 +9,45 @@
 
 #include "ObjectControllerMessageCallback.h"
 
-MessageCallbackFactory<MessageCallback* (ObjectControllerMessageCallback*), uint32>* ObjectControllerMessageCallback::objectMessageControllerFactory = nullptr;
+UniqueReference<MessageCallbackFactory<MessageCallback* (ObjectControllerMessageCallback*), uint32>*> ObjectControllerMessageCallback::objectMessageControllerFactory;
 
 void ObjectControllerMessageCallback::parse(Message* message) {
+	// StringBuffer msg;
+	// msg << "Object controller message Start -- Offset: " << message->getOffset();
+
 	priority = message->parseInt();
 	type = message->parseInt();
 
-	/*StringBuffer priorityMsg;
-	priorityMsg << "received objc with priority 0x" << hex << priority;
-	client->getPlayer()->info(priorityMsg.toString(), true);*/
+	client->debug() << "received objc with priority 0x" << hex << priority;
 
 	objectID = message->parseLong();
 
+	// msg << "Priority: " << priority << " Type: " << type << " ObjectID: " << objectID;
+
 	if (client != nullptr) {
-		StringBuffer objectCtrl;
-		objectCtrl << "parsing objc type 0x" << hex << type;
-		client->debug(objectCtrl.toString());
+		client->debug() << "parsing objc type 0x" << hex << type;
 	}
 
 	objectControllerCallback = objectMessageControllerFactory->createObject(type, this);
 
 	if (objectControllerCallback == nullptr) {
-		StringBuffer msg;
-		msg << "unregistered 0x" << hex << type << " object controller message received";
+		client->error() << "unregistered 0x" << hex << type << " object controller message received";
 
-		//CreatureObject* player = client->getPlayer();
-		client->error(msg.toString());
 		return;
 	}
-	
+
 	const auto& newTaskQueue = objectControllerCallback->getCustomTaskQueue();
-	
-	if (newTaskQueue.length()) {
+
+	if (!newTaskQueue.isEmpty()) {
 		setCustomTaskQueue(newTaskQueue);
 	}
-	
+
+	// info(true) << msg.toString();
+
 	try {
-
-		/*StringBuffer objectCtrl;
-		objectCtrl << "parsing objc type 0x" << hex << type;
-		client->getPlayer()->info(objectCtrl.toString(), true);*/
-
 		objectControllerCallback->parse(message);
 
-	} catch (Exception& e) {
+	} catch (const Exception& e) {
 		System::out << "exception parsing ObjectControllerMessage" << e.getMessage();
 		e.printStackTrace();
 

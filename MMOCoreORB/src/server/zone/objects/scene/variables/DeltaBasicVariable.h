@@ -8,6 +8,9 @@
 #ifndef DELTABASICVARIABLE_H_
 #define DELTABASICVARIABLE_H_
 
+#include "engine/engine.h"
+#include "engine/util/json_utils.h"
+
 template<typename K>
 class DeltaBasicVariable {
 protected:
@@ -93,5 +96,10 @@ public:
 		return object;
 	}
 };
+
+template<typename K>
+void to_json(nlohmann::json& j, const DeltaBasicVariable<K>& var) {
+	j = var.get();
+}
 
 #endif /* DELTAVARIABLE_H_ */

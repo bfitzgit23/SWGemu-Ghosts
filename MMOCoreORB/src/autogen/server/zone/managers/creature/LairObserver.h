@@ -27,11 +27,29 @@
 namespace server {
 namespace zone {
 namespace objects {
+namespace creature {
+namespace ai {
+
+class AiAgent;
+
+class AiAgentPOD;
+
+} // namespace ai
+} // namespace creature
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::creature::ai;
+
+namespace server {
+namespace zone {
+namespace objects {
 namespace tangible {
 
-class TangibleObject;
+class LairObject;
 
-class TangibleObjectPOD;
+class LairObjectPOD;
 
 } // namespace tangible
 } // namespace objects
@@ -40,19 +58,7 @@ class TangibleObjectPOD;
 
 using namespace server::zone::objects::tangible;
 
-namespace server {
-namespace zone {
-namespace managers {
-namespace creature {
-
-class HealLairObserverEvent;
-
-} // namespace creature
-} // namespace managers
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::managers::creature;
+#include "server/zone/objects/tangible/TangibleObject.h"
 
 #include "system/thread/atomic/AtomicInteger.h"
 
@@ -62,6 +68,8 @@ using namespace server::zone::managers::creature;
 
 #include "server/zone/managers/creature/SpawnObserver.h"
 
+#include "system/lang/Time.h"
+
 namespace server {
 namespace zone {
 namespace managers {
@@ -69,19 +77,49 @@ namespace creature {
 
 class LairObserver : public SpawnObserver {
 public:
+	static const int BABY_SPAWN_CHANCE = 500;
+
+	static const int WILD_LAIR_PASSIVE_MAX = 10;
+
+	static const int SPAWN_TIME_MIN = 1;
+
+	static const int SPAWN_TIME_MAX = 10;
+
+	static const int RESPAWN_TIME_MIN = 120;
+
+	static const int RESPAWN_TIME_MAX = 240;
+
+	static const int PASSIVE_SPAWN_TIME_MIN = 15;
+
+	static const int PASSIVE_SPAWN_TIME_MAX = 20;
+
+	static const int HEAL_CHECK_INTERVAL = 15;
+
+	static const int AGGRO_CHECK_INTERVAL = 30;
+
+	static const int AGGRO_TASK_DELAY = 4;
+
+	static const int SCOUT_SPAWN_CHANCE = 10;
+
 	LairObserver();
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
 
 	void notifyDestruction(TangibleObject* lair, TangibleObject* attacker, int condition);
 
+	void checkForHeal(TangibleObject* lair, bool forceNewUpdate = false);
+
 	bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn = false);
 
-	void healLair(TangibleObject* lair, TangibleObject* attacker);
+	void checkForBossSpawn(TangibleObject* lair, TangibleObject* attacker);
 
-	void checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate = false);
+	void checkRespawn(LairObject* lair, TangibleObject* attacker);
+
+	void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive = true);
 
 	void doAggro(TangibleObject* lair, TangibleObject* attacker, bool allAttack = false);
+
+	void repopulateLair(TangibleObject* lair);
 
 	bool isLairObserver();
 
@@ -117,10 +155,41 @@ namespace managers {
 namespace creature {
 
 class LairObserverImplementation : public SpawnObserverImplementation {
+public:
+	static const int BABY_SPAWN_CHANCE = 500;
+
+	static const int WILD_LAIR_PASSIVE_MAX = 10;
+
+	static const int SPAWN_TIME_MIN = 1;
+
+	static const int SPAWN_TIME_MAX = 10;
+
+	static const int RESPAWN_TIME_MIN = 120;
+
+	static const int RESPAWN_TIME_MAX = 240;
+
+	static const int PASSIVE_SPAWN_TIME_MIN = 15;
+
+	static const int PASSIVE_SPAWN_TIME_MAX = 20;
+
+	static const int HEAL_CHECK_INTERVAL = 15;
+
+	static const int AGGRO_CHECK_INTERVAL = 30;
+
+	static const int AGGRO_TASK_DELAY = 4;
+
+	static const int SCOUT_SPAWN_CHANCE = 10;
+
 protected:
 	AtomicInteger spawnNumber;
 
-	Reference<HealLairObserverEvent* > healLairEvent;
+	AtomicInteger bossesSpawned;
+
+	Time lastHealTime;
+
+	Time lastAggroTime;
+
+	unsigned long long scoutCreatureId;
 
 public:
 	LairObserverImplementation();
@@ -131,13 +200,19 @@ public:
 
 	void notifyDestruction(TangibleObject* lair, TangibleObject* attacker, int condition);
 
+	virtual void checkForHeal(TangibleObject* lair, bool forceNewUpdate = false);
+
 	virtual bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn = false);
 
-	void healLair(TangibleObject* lair, TangibleObject* attacker);
+	void checkForBossSpawn(TangibleObject* lair, TangibleObject* attacker);
 
-	virtual void checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate = false);
+	void checkRespawn(LairObject* lair, TangibleObject* attacker);
+
+	virtual void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive = true);
 
 	void doAggro(TangibleObject* lair, TangibleObject* attacker, bool allAttack = false);
+
+	void repopulateLair(TangibleObject* lair);
 
 	bool isLairObserver();
 
@@ -194,13 +269,19 @@ public:
 
 	void notifyDestruction(TangibleObject* lair, TangibleObject* attacker, int condition);
 
+	void checkForHeal(TangibleObject* lair, bool forceNewUpdate);
+
 	bool checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn);
 
-	void healLair(TangibleObject* lair, TangibleObject* attacker);
+	void checkForBossSpawn(TangibleObject* lair, TangibleObject* attacker);
 
-	void checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate);
+	void checkRespawn(LairObject* lair, TangibleObject* attacker);
+
+	void spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive);
 
 	void doAggro(TangibleObject* lair, TangibleObject* attacker, bool allAttack);
+
+	void repopulateLair(TangibleObject* lair);
 
 	bool isLairObserver();
 
@@ -246,6 +327,10 @@ namespace creature {
 class LairObserverPOD : public SpawnObserverPOD {
 public:
 	Optional<AtomicInteger> spawnNumber;
+
+	Optional<AtomicInteger> bossesSpawned;
+
+	Optional<unsigned long long> scoutCreatureId;
 
 	String _className;
 	LairObserverPOD();

@@ -2,6 +2,7 @@ dark_jedi_knight = Creature:new {
 	objectName = "@mob/creature_names:dark_jedi_knight",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
+	mobType = MOB_NPC,
 	socialGroup = "dark_jedi",
 	faction = "",
 	level = 265,
@@ -31,46 +32,21 @@ dark_jedi_knight = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "jedi_comp_group", chance = 10000000},
-			},
-			lootChance = 400000
-		},		
-		{
-			groups = {
-				{group = "holocron_dark", chance = 2000000},
-				{group = "holocron_light", chance = 2000000},
-				{group = "power_crystals", chance = 1000000},
-				{group = "armor_attachments", chance = 2000000},
-				{group = "clothing_attachments", chance = 2000000},
-				{group = "dark_jedi_common", chance = 1000000}
-			},
-			lootChance = 10000000
-		},
-		{
-			groups = {
-				{group = "tierone", chance = 1500000},
-				{group = "tiertwo", chance = 3500000},
-				{group = "tierthree", chance = 2500000},
-				{group = "tierdiamond", chance = 2500000},
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
-				{group = "vehicledeedsrare", chance = 10000000},
-			},
-			lootChance = 500000
-		},
-		{
-			groups = {
-				{group = "nge_all", chance = 10000000},
-			},
-			lootChance = 10000000
+				{group = "dark_jedi_tier_5", chance = 10000000}
+			}
 		}
 	},
-	weapons = {"dark_jedi_weapons_gen3"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "dark_jedi_weapons_gen3",
+	secondaryWeapon = "dark_jedi_weapons_ranged",
 	conversationTemplate = "",
-	attacks = merge(lightsabermaster,forcepowermaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = merge(lightsabermaster,forcepowermaster),
+	secondaryAttacks = forcepowermaster
 }
 
 CreatureTemplates:addCreatureTemplate(dark_jedi_knight, "dark_jedi_knight")

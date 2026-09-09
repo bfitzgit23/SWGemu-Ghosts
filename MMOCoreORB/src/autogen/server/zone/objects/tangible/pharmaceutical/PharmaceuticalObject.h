@@ -40,6 +40,20 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+namespace server {
+namespace zone {
+namespace packets {
+namespace scene {
+
+class AttributeListMessage;
+
+} // namespace scene
+} // namespace packets
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::packets::scene;
+
 #include "templates/SharedObjectTemplate.h"
 
 #include "system/lang/String.h"
@@ -55,6 +69,15 @@ namespace pharmaceutical {
 class PharmaceuticalObject : public TangibleObject {
 public:
 	PharmaceuticalObject();
+
+	/**
+	 * Fills the attribute list message options that are sent to player creature
+	 * @pre { }
+	 * @post { }
+	 * @param msg attribute list message with the attributes
+	 * @param object player creature to which the message is sent
+	 */
+	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	int getMedicineUseRequired();
 
@@ -123,6 +146,15 @@ public:
 	PharmaceuticalObjectImplementation();
 
 	PharmaceuticalObjectImplementation(DummyConstructorParameter* param);
+
+	/**
+	 * Fills the attribute list message options that are sent to player creature
+	 * @pre { }
+	 * @post { }
+	 * @param msg attribute list message with the attributes
+	 * @param object player creature to which the message is sent
+	 */
+	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	int getMedicineUseRequired();
 

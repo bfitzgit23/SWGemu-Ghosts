@@ -18,7 +18,7 @@
  *	PetControlDeviceStub
  */
 
-enum {RPC_STOREOBJECT__CREATUREOBJECT_BOOL_ = 1584499549,RPC_CALLOBJECT__CREATUREOBJECT_,RPC_SPAWNOBJECT__CREATUREOBJECT_,RPC_CANCELSPAWNOBJECT__CREATUREOBJECT_,RPC_GROWPET__CREATUREOBJECT_BOOL_BOOL_,RPC_ARRESTGROWTH__,RPC_TRAINASMOUNT__CREATUREOBJECT_,RPC_ISTRAINEDASMOUNT__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_DESTROYOBJECTFROMWORLD__BOOL_,RPC_CANBEDESTROYED__CREATUREOBJECT_,RPC_CANBETRADEDTO__CREATUREOBJECT_CREATUREOBJECT_INT_,RPC_GETTRAININGCOMMAND__,RPC_HASTRAINEDCOMMAND__INT_,RPC_HASTRAINEDCOMMANDSTRING__STRING_,RPC_HASUSEDNAMINGCOMMAND__INT_,RPC_GETTRAINEDCOMMAND__INT_,RPC_ADDTRAINEDCOMMAND__INT_STRING_,RPC_SETLASTCOMMAND__INT_,RPC_GETLASTCOMMAND__,RPC_GETFUTURENAME__,RPC_SETFUTURENAME__STRING_,RPC_GETNAMINGPROGRESS__,RPC_INCREMENTNAMINGPROGRESS__INT_,RPC_RESETNAMINGPROGRESS__,RPC_RESETNAMINGCOMMANDS__,RPC_ISPETCONTROLDEVICE__,RPC_GETVITALITY__,RPC_GETMAXVITALITY__,RPC_SETVITALITY__INT_,RPC_SETMAXVITALITY__INT_,RPC_GETPETTYPE__,RPC_SETPETTYPE__INT_,RPC_SETGROWTHSTAGE__INT_,RPC_CLEARPATROLPOINTS__,RPC_TOGGLEUSERANGED__,RPC_SETVITALITYHEALTHPENALTY__FLOAT_,RPC_SETVITALITYACTIONPENALTY__FLOAT_,RPC_SETVITALITYMINDPENALTY__FLOAT_,RPC_GETUSERANGED__,RPC_ISFRIEND__LONG_,RPC_TOGGLEFRIEND__LONG_};
+enum {RPC_STOREOBJECT__CREATUREOBJECT_BOOL_ = 1584499549,RPC_CALLOBJECT__CREATUREOBJECT_BOOL_,RPC_SPAWNOBJECT__CREATUREOBJECT_,RPC_CANCELSPAWNOBJECT__CREATUREOBJECT_,RPC_GROWPET__CREATUREOBJECT_BOOL_BOOL_,RPC_ARRESTGROWTH__,RPC_TRAINASMOUNT__CREATUREOBJECT_,RPC_ISTRAINEDASMOUNT__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_DESTROYOBJECTFROMWORLD__BOOL_,RPC_CANBEDESTROYED__CREATUREOBJECT_,RPC_CANBETRADEDTO__CREATUREOBJECT_CREATUREOBJECT_INT_,RPC_GETTRAININGCOMMAND__,RPC_HASTRAINEDCOMMAND__INT_,RPC_HASTRAINEDCOMMANDSTRING__STRING_,RPC_HASUSEDNAMINGCOMMAND__INT_,RPC_GETTRAINEDCOMMAND__INT_,RPC_ADDTRAINEDCOMMAND__INT_STRING_,RPC_SETLASTCOMMAND__INT_,RPC_GETLASTCOMMAND__,RPC_GETFUTURENAME__,RPC_SETFUTURENAME__STRING_,RPC_GETNAMINGPROGRESS__,RPC_INCREMENTNAMINGPROGRESS__INT_,RPC_RESETNAMINGPROGRESS__,RPC_RESETNAMINGCOMMANDS__,RPC_ISPETCONTROLDEVICE__,RPC_GETVITALITY__,RPC_GETMAXVITALITY__,RPC_SETVITALITY__INT_,RPC_SETMAXVITALITY__INT_,RPC_GETPETTYPE__,RPC_SETPETTYPE__INT_,RPC_SETGROWTHSTAGE__INT_,RPC_CLEARPATROLPOINTS__,RPC_TOGGLEUSERANGED__,RPC_SETVITALITYHEALTHPENALTY__FLOAT_,RPC_SETVITALITYACTIONPENALTY__FLOAT_,RPC_SETVITALITYMINDPENALTY__FLOAT_,RPC_GETUSERANGED__,RPC_ISFRIEND__LONG_,RPC_TOGGLEFRIEND__LONG_,RPC_GETDATASTORAGECAPACITY__,RPC_GETREQUIREDASTROMECHCERT__};
 
 PetControlDevice::PetControlDevice() : ControlDevice(DummyConstructorParameter::instance()) {
 	PetControlDeviceImplementation* _implementation = new PetControlDeviceImplementation();
@@ -49,25 +49,25 @@ void PetControlDevice::storeObject(CreatureObject* player, bool force) {
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->storeObject(player, force);
 	}
 }
 
-void PetControlDevice::callObject(CreatureObject* player) {
+void PetControlDevice::callObject(CreatureObject* player, bool initialCall) {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CALLOBJECT__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_CALLOBJECT__CREATUREOBJECT_BOOL_);
 		method.addObjectParameter(player);
+		method.addBooleanParameter(initialCall);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
 		assert((player == NULL) || player->isLockedByCurrentThread());
-		_implementation->callObject(player);
+		_implementation->callObject(player, initialCall);
 	}
 }
 
@@ -390,7 +390,7 @@ void PetControlDevice::setLastCommand(unsigned int c) {
 	}
 }
 
-unsigned int PetControlDevice::getLastCommand() const {
+unsigned int PetControlDevice::getLastCommand() {
 	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -401,6 +401,27 @@ unsigned int PetControlDevice::getLastCommand() const {
 		return method.executeWithUnsignedIntReturn();
 	} else {
 		return _implementation->getLastCommand();
+	}
+}
+
+void PetControlDevice::setLastCommander(SceneObject* commander) {
+	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setLastCommander(commander);
+	}
+}
+
+ManagedWeakReference<SceneObject* > PetControlDevice::getLastCommander() {
+	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getLastCommander();
 	}
 }
 
@@ -797,6 +818,36 @@ void PetControlDevice::toggleFriend(unsigned long long playerID) {
 	}
 }
 
+int PetControlDevice::getDataStorageCapacity() {
+	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETDATASTORAGECAPACITY__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getDataStorageCapacity();
+	}
+}
+
+String PetControlDevice::getRequiredAstromechCert() {
+	PetControlDeviceImplementation* _implementation = static_cast<PetControlDeviceImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETREQUIREDASTROMECHCERT__);
+
+		String _return_getRequiredAstromechCert;
+		method.executeWithAsciiReturn(_return_getRequiredAstromechCert);
+		return _return_getRequiredAstromechCert;
+	} else {
+		return _implementation->getRequiredAstromechCert();
+	}
+}
+
 DistributedObjectServant* PetControlDevice::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -947,6 +998,10 @@ bool PetControlDeviceImplementation::readObjectMember(ObjectInputStream* stream,
 		TypeInfo<unsigned int >::parseFromBinaryStream(&lastCommand, stream);
 		return true;
 
+	case 0x55bb2dad: //PetControlDevice.lastCommander
+		TypeInfo<ManagedWeakReference<SceneObject* > >::parseFromBinaryStream(&lastCommander, stream);
+		return true;
+
 	case 0x25729aff: //PetControlDevice.lastCommandTarget
 		TypeInfo<ManagedWeakReference<SceneObject* > >::parseFromBinaryStream(&lastCommandTarget, stream);
 		return true;
@@ -1091,6 +1146,15 @@ int PetControlDeviceImplementation::writeObjectMembers(ObjectOutputStream* strea
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x55bb2dad; //PetControlDevice.lastCommander
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<SceneObject* > >::toBinaryStream(&lastCommander, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x25729aff; //PetControlDevice.lastCommandTarget
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -1200,6 +1264,8 @@ void PetControlDeviceImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["lastCommand"] = lastCommand;
 
+	thisObject["lastCommander"] = lastCommander;
+
 	thisObject["lastCommandTarget"] = lastCommandTarget;
 
 	thisObject["futureName"] = futureName;
@@ -1245,6 +1311,8 @@ PetControlDeviceImplementation::PetControlDeviceImplementation() {
 	trainingCommand = 0;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommand = 0;
 	lastCommand = 0;
+	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommander = null;
+	lastCommander = NULL;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommandTarget = null;
 	lastCommandTarget = NULL;
 	// server/zone/objects/intangible/PetControlDevice.idl():  		namingProgress = 0;
@@ -1317,9 +1385,19 @@ void PetControlDeviceImplementation::setLastCommand(unsigned int c) {
 	lastCommand = c;
 }
 
-unsigned int PetControlDeviceImplementation::getLastCommand() const{
+unsigned int PetControlDeviceImplementation::getLastCommand() {
 	// server/zone/objects/intangible/PetControlDevice.idl():  		return lastCommand;
 	return lastCommand;
+}
+
+void PetControlDeviceImplementation::setLastCommander(SceneObject* commander) {
+	// server/zone/objects/intangible/PetControlDevice.idl():  		lastCommander = commander;
+	lastCommander = commander;
+}
+
+ManagedWeakReference<SceneObject* > PetControlDeviceImplementation::getLastCommander() {
+	// server/zone/objects/intangible/PetControlDevice.idl():  		return lastCommander;
+	return lastCommander;
 }
 
 void PetControlDeviceImplementation::setLastCommandTarget(SceneObject* target) {
@@ -1473,11 +1551,12 @@ void PetControlDeviceAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 		}
 		break;
-	case RPC_CALLOBJECT__CREATUREOBJECT_:
+	case RPC_CALLOBJECT__CREATUREOBJECT_BOOL_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool initialCall = inv->getBooleanParameter();
 			
-			callObject(player);
+			callObject(player, initialCall);
 			
 		}
 		break;
@@ -1800,6 +1879,20 @@ void PetControlDeviceAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 		}
 		break;
+	case RPC_GETDATASTORAGECAPACITY__:
+		{
+			
+			int _m_res = getDataStorageCapacity();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETREQUIREDASTROMECHCERT__:
+		{
+			
+			String _m_res = getRequiredAstromechCert();
+			resp->insertAscii(_m_res);
+		}
+		break;
 	default:
 		ControlDeviceAdapter::invokeMethod(methid, inv);
 	}
@@ -1809,8 +1902,8 @@ void PetControlDeviceAdapter::storeObject(CreatureObject* player, bool force) {
 	(static_cast<PetControlDevice*>(stub))->storeObject(player, force);
 }
 
-void PetControlDeviceAdapter::callObject(CreatureObject* player) {
-	(static_cast<PetControlDevice*>(stub))->callObject(player);
+void PetControlDeviceAdapter::callObject(CreatureObject* player, bool initialCall) {
+	(static_cast<PetControlDevice*>(stub))->callObject(player, initialCall);
 }
 
 void PetControlDeviceAdapter::spawnObject(CreatureObject* player) {
@@ -1885,7 +1978,7 @@ void PetControlDeviceAdapter::setLastCommand(unsigned int c) {
 	(static_cast<PetControlDevice*>(stub))->setLastCommand(c);
 }
 
-unsigned int PetControlDeviceAdapter::getLastCommand() const {
+unsigned int PetControlDeviceAdapter::getLastCommand() {
 	return (static_cast<PetControlDevice*>(stub))->getLastCommand();
 }
 
@@ -1977,6 +2070,14 @@ void PetControlDeviceAdapter::toggleFriend(unsigned long long playerID) {
 	(static_cast<PetControlDevice*>(stub))->toggleFriend(playerID);
 }
 
+int PetControlDeviceAdapter::getDataStorageCapacity() {
+	return (static_cast<PetControlDevice*>(stub))->getDataStorageCapacity();
+}
+
+String PetControlDeviceAdapter::getRequiredAstromechCert() {
+	return (static_cast<PetControlDevice*>(stub))->getRequiredAstromechCert();
+}
+
 /*
  *	PetControlDeviceHelper
  */
@@ -2062,6 +2163,9 @@ void PetControlDevicePOD::writeJSON(nlohmann::json& j) {
 
 	if (lastCommand)
 		thisObject["lastCommand"] = lastCommand.value();
+
+	if (lastCommander)
+		thisObject["lastCommander"] = lastCommander.value();
 
 	if (lastCommandTarget)
 		thisObject["lastCommandTarget"] = lastCommandTarget.value();
@@ -2212,6 +2316,17 @@ int PetControlDevicePOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<unsigned int >::toBinaryStream(&lastCommand.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (lastCommander) {
+	_nameHashCode = 0x55bb2dad; //PetControlDevice.lastCommander
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&lastCommander.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2405,6 +2520,14 @@ bool PetControlDevicePOD::readObjectMember(ObjectInputStream* stream, const uint
 		}
 		return true;
 
+	case 0x55bb2dad: //PetControlDevice.lastCommander
+		{
+			ManagedWeakReference<SceneObjectPOD* > _mnlastCommander;
+			TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::parseFromBinaryStream(&_mnlastCommander, stream);
+			lastCommander = std::move(_mnlastCommander);
+		}
+		return true;
+
 	case 0x25729aff: //PetControlDevice.lastCommandTarget
 		{
 			ManagedWeakReference<SceneObjectPOD* > _mnlastCommandTarget;
@@ -2522,6 +2645,8 @@ void PetControlDevicePOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<unsigned int >::toBinaryStream(&trainingCommand.value(), stream);
 
 	TypeInfo<unsigned int >::toBinaryStream(&lastCommand.value(), stream);
+
+	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&lastCommander.value(), stream);
 
 	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&lastCommandTarget.value(), stream);
 

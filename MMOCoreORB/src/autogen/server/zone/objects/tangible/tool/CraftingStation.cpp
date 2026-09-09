@@ -16,7 +16,7 @@
  *	CraftingStationStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 2544907394,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SENDINPUTHOPPER__CREATUREOBJECT_,RPC_ISCRAFTINGSTATION__,RPC_GETCOMPLEXITYLEVEL__,RPC_GETSTATIONTYPE__,RPC_SETCOMPLEXITYLEVEL__INT_,RPC_FINDCRAFTINGTOOL__CREATUREOBJECT_,RPC_CREATECHILDOBJECTS__,RPC_SETEFFECTIVENESS__FLOAT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 2544907394,RPC_NOTIFYLOADFROMDATABASE__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SENDINPUTHOPPER__CREATUREOBJECT_,RPC_ISCRAFTINGSTATION__,RPC_GETCOMPLEXITYLEVEL__,RPC_GETSTATIONTYPE__,RPC_SETCOMPLEXITYLEVEL__INT_,RPC_FINDCRAFTINGTOOL__CREATUREOBJECT_,RPC_CREATECHILDOBJECTS__,RPC_SETEFFECTIVENESS__FLOAT_,RPC_SETDROIDPARENT__CREATUREOBJECT_,RPC_GETDROIDPARENT__};
 
 CraftingStation::CraftingStation() : ToolTangibleObject(DummyConstructorParameter::instance()) {
 	CraftingStationImplementation* _implementation = new CraftingStationImplementation();
@@ -55,6 +55,20 @@ void CraftingStation::loadTemplateData(SharedObjectTemplate* templateData) {
 
 	} else {
 		_implementation->loadTemplateData(templateData);
+	}
+}
+
+void CraftingStation::notifyLoadFromDatabase() {
+	CraftingStationImplementation* _implementation = static_cast<CraftingStationImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_NOTIFYLOADFROMDATABASE__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->notifyLoadFromDatabase();
 	}
 }
 
@@ -221,6 +235,35 @@ void CraftingStation::setEffectiveness(float newValue) {
 	}
 }
 
+void CraftingStation::setDroidParent(CreatureObject* parentCreO) {
+	CraftingStationImplementation* _implementation = static_cast<CraftingStationImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETDROIDPARENT__CREATUREOBJECT_);
+		method.addObjectParameter(parentCreO);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setDroidParent(parentCreO);
+	}
+}
+
+ManagedWeakReference<CreatureObject* > CraftingStation::getDroidParent() {
+	CraftingStationImplementation* _implementation = static_cast<CraftingStationImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETDROIDPARENT__);
+
+		return static_cast<CreatureObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getDroidParent();
+	}
+}
+
 DistributedObjectServant* CraftingStation::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -343,6 +386,10 @@ bool CraftingStationImplementation::readObjectMember(ObjectInputStream* stream, 
 		TypeInfo<int >::parseFromBinaryStream(&complexityLevel, stream);
 		return true;
 
+	case 0xf7cbc30: //CraftingStation.droidParent
+		TypeInfo<ManagedWeakReference<CreatureObject* > >::parseFromBinaryStream(&droidParent, stream);
+		return true;
+
 	}
 
 	return false;
@@ -388,6 +435,15 @@ int CraftingStationImplementation::writeObjectMembers(ObjectOutputStream* stream
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xf7cbc30; //CraftingStation.droidParent
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<CreatureObject* > >::toBinaryStream(&droidParent, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -401,6 +457,8 @@ void CraftingStationImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["effectiveness"] = effectiveness;
 
 	thisObject["complexityLevel"] = complexityLevel;
+
+	thisObject["droidParent"] = droidParent;
 
 	j["CraftingStation"] = thisObject;
 }
@@ -447,6 +505,16 @@ void CraftingStationImplementation::setEffectiveness(float newValue) {
 	effectiveness = newValue;
 }
 
+void CraftingStationImplementation::setDroidParent(CreatureObject* parentCreO) {
+	// server/zone/objects/tangible/tool/CraftingStation.idl():  		droidParent = parentCreO;
+	droidParent = parentCreO;
+}
+
+ManagedWeakReference<CreatureObject* > CraftingStationImplementation::getDroidParent() {
+	// server/zone/objects/tangible/tool/CraftingStation.idl():  		return droidParent;
+	return droidParent;
+}
+
 /*
  *	CraftingStationAdapter
  */
@@ -466,6 +534,13 @@ void CraftingStationAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 		{
 			
 			initializeTransientMembers();
+			
+		}
+		break;
+	case RPC_NOTIFYLOADFROMDATABASE__:
+		{
+			
+			notifyLoadFromDatabase();
 			
 		}
 		break;
@@ -538,6 +613,21 @@ void CraftingStationAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			
 		}
 		break;
+	case RPC_SETDROIDPARENT__CREATUREOBJECT_:
+		{
+			CreatureObject* parentCreO = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			setDroidParent(parentCreO);
+			
+		}
+		break;
+	case RPC_GETDROIDPARENT__:
+		{
+			
+			DistributedObject* _m_res = getDroidParent().get();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
 	default:
 		ToolTangibleObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -545,6 +635,10 @@ void CraftingStationAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 
 void CraftingStationAdapter::initializeTransientMembers() {
 	(static_cast<CraftingStation*>(stub))->initializeTransientMembers();
+}
+
+void CraftingStationAdapter::notifyLoadFromDatabase() {
+	(static_cast<CraftingStation*>(stub))->notifyLoadFromDatabase();
 }
 
 int CraftingStationAdapter::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
@@ -581,6 +675,14 @@ void CraftingStationAdapter::createChildObjects() {
 
 void CraftingStationAdapter::setEffectiveness(float newValue) {
 	(static_cast<CraftingStation*>(stub))->setEffectiveness(newValue);
+}
+
+void CraftingStationAdapter::setDroidParent(CreatureObject* parentCreO) {
+	(static_cast<CraftingStation*>(stub))->setDroidParent(parentCreO);
+}
+
+ManagedWeakReference<CreatureObject* > CraftingStationAdapter::getDroidParent() {
+	return (static_cast<CraftingStation*>(stub))->getDroidParent();
 }
 
 /*
@@ -648,6 +750,9 @@ void CraftingStationPOD::writeJSON(nlohmann::json& j) {
 	if (complexityLevel)
 		thisObject["complexityLevel"] = complexityLevel.value();
 
+	if (droidParent)
+		thisObject["droidParent"] = droidParent.value();
+
 	j["CraftingStation"] = thisObject;
 }
 
@@ -698,6 +803,17 @@ int CraftingStationPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (droidParent) {
+	_nameHashCode = 0xf7cbc30; //CraftingStation.droidParent
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::toBinaryStream(&droidParent.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -728,6 +844,14 @@ bool CraftingStationPOD::readObjectMember(ObjectInputStream* stream, const uint3
 			int _mncomplexityLevel;
 			TypeInfo<int >::parseFromBinaryStream(&_mncomplexityLevel, stream);
 			complexityLevel = std::move(_mncomplexityLevel);
+		}
+		return true;
+
+	case 0xf7cbc30: //CraftingStation.droidParent
+		{
+			ManagedWeakReference<CreatureObjectPOD* > _mndroidParent;
+			TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::parseFromBinaryStream(&_mndroidParent, stream);
+			droidParent = std::move(_mndroidParent);
 		}
 		return true;
 
@@ -762,6 +886,8 @@ void CraftingStationPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<float >::toBinaryStream(&effectiveness.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&complexityLevel.value(), stream);
+
+	TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::toBinaryStream(&droidParent.value(), stream);
 
 
 }

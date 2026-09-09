@@ -10,7 +10,7 @@
  *	TradeSessionStub
  */
 
-enum {RPC_GETACCEPTEDTRADE__ = 1291877752,RPC_ADDTRADEITEM__SCENEOBJECT_,RPC_GETTRADEITEM__INT_,RPC_GETTRADESIZE__,RPC_GETMONEYTOTRADE__,RPC_GETTRADETARGETPLAYER__,RPC_ISTRYINGTOTRADE__,RPC_HASVERIFIEDTRADE__,RPC_SETACCEPTEDTRADE__BOOL_,RPC_SETMONEYTOTRADE__INT_,RPC_SETTRADETARGETPLAYER__LONG_,RPC_SETVERIFIEDTRADE__BOOL_};
+enum {RPC_GETACCEPTEDTRADE__ = 1291877752,RPC_ADDTRADEITEM__SCENEOBJECT_,RPC_GETTRADEITEM__INT_,RPC_GETTRADESIZE__,RPC_GETMONEYTOTRADE__,RPC_GETTRADETARGETPLAYER__,RPC_HASVERIFIEDTRADE__,RPC_SETACCEPTEDTRADE__BOOL_,RPC_SETMONEYTOTRADE__INT_,RPC_SETTRADETARGETPLAYER__LONG_,RPC_SETVERIFIEDTRADE__BOOL_,RPC_CLEARTRADECONTAINER__};
 
 TradeSession::TradeSession() : Facade(DummyConstructorParameter::instance()) {
 	TradeSessionImplementation* _implementation = new TradeSessionImplementation();
@@ -124,20 +124,6 @@ unsigned long long TradeSession::getTradeTargetPlayer() {
 	}
 }
 
-bool TradeSession::isTryingToTrade() {
-	TradeSessionImplementation* _implementation = static_cast<TradeSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISTRYINGTOTRADE__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isTryingToTrade();
-	}
-}
-
 bool TradeSession::hasVerifiedTrade() {
 	TradeSessionImplementation* _implementation = static_cast<TradeSessionImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -209,6 +195,20 @@ void TradeSession::setVerifiedTrade(bool val) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->setVerifiedTrade(val);
+	}
+}
+
+void TradeSession::clearTradeContainer() {
+	TradeSessionImplementation* _implementation = static_cast<TradeSessionImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CLEARTRADECONTAINER__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->clearTradeContainer();
 	}
 }
 
@@ -429,7 +429,7 @@ bool TradeSessionImplementation::getAcceptedTrade() {
 }
 
 void TradeSessionImplementation::addTradeItem(SceneObject* object) {
-	// server/zone/objects/player/sessions/TradeSession.idl():   	itemsToTrade.put(object);
+	// server/zone/objects/player/sessions/TradeSession.idl():  		itemsToTrade.put(object);
 	(&itemsToTrade)->put(object);
 }
 
@@ -439,12 +439,12 @@ SortedVector<ManagedReference<SceneObject* > >* TradeSessionImplementation::getI
 }
 
 SceneObject* TradeSessionImplementation::getTradeItem(int index) {
-	// server/zone/objects/player/sessions/TradeSession.idl():   	return itemsToTrade.get(index);
+	// server/zone/objects/player/sessions/TradeSession.idl():  		return itemsToTrade.get(index);
 	return (&itemsToTrade)->get(index);
 }
 
 int TradeSessionImplementation::getTradeSize() {
-	// server/zone/objects/player/sessions/TradeSession.idl():   	return itemsToTrade.size();
+	// server/zone/objects/player/sessions/TradeSession.idl():  		return itemsToTrade.size();
 	return (&itemsToTrade)->size();
 }
 
@@ -456,11 +456,6 @@ int TradeSessionImplementation::getMoneyToTrade() {
 unsigned long long TradeSessionImplementation::getTradeTargetPlayer() {
 	// server/zone/objects/player/sessions/TradeSession.idl():  		return tradeTargetPlayer;
 	return tradeTargetPlayer;
-}
-
-bool TradeSessionImplementation::isTryingToTrade() {
-	// server/zone/objects/player/sessions/TradeSession.idl():   	return tradeTargetPlayer != 0;
-	return tradeTargetPlayer != 0;
 }
 
 bool TradeSessionImplementation::hasVerifiedTrade() {
@@ -486,6 +481,19 @@ void TradeSessionImplementation::setTradeTargetPlayer(unsigned long long val) {
 void TradeSessionImplementation::setVerifiedTrade(bool val) {
 	// server/zone/objects/player/sessions/TradeSession.idl():  		verifiedTrade = val;
 	verifiedTrade = val;
+}
+
+void TradeSessionImplementation::clearTradeContainer() {
+	// server/zone/objects/player/sessions/TradeSession.idl():  		tradeTargetPlayer = 0;
+	tradeTargetPlayer = 0;
+	// server/zone/objects/player/sessions/TradeSession.idl():  		moneyToTrade = 0;
+	moneyToTrade = 0;
+	// server/zone/objects/player/sessions/TradeSession.idl():  		itemsToTrade.removeAll();
+	(&itemsToTrade)->removeAll();
+	// server/zone/objects/player/sessions/TradeSession.idl():  		acceptedTrade = false;
+	acceptedTrade = false;
+	// server/zone/objects/player/sessions/TradeSession.idl():  		verifiedTrade = false;
+	verifiedTrade = false;
 }
 
 /*
@@ -547,13 +555,6 @@ void TradeSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res);
 		}
 		break;
-	case RPC_ISTRYINGTOTRADE__:
-		{
-			
-			bool _m_res = isTryingToTrade();
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_HASVERIFIEDTRADE__:
 		{
 			
@@ -593,6 +594,13 @@ void TradeSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_CLEARTRADECONTAINER__:
+		{
+			
+			clearTradeContainer();
+			
+		}
+		break;
 	default:
 		FacadeAdapter::invokeMethod(methid, inv);
 	}
@@ -622,10 +630,6 @@ unsigned long long TradeSessionAdapter::getTradeTargetPlayer() {
 	return (static_cast<TradeSession*>(stub))->getTradeTargetPlayer();
 }
 
-bool TradeSessionAdapter::isTryingToTrade() {
-	return (static_cast<TradeSession*>(stub))->isTryingToTrade();
-}
-
 bool TradeSessionAdapter::hasVerifiedTrade() {
 	return (static_cast<TradeSession*>(stub))->hasVerifiedTrade();
 }
@@ -644,6 +648,10 @@ void TradeSessionAdapter::setTradeTargetPlayer(unsigned long long val) {
 
 void TradeSessionAdapter::setVerifiedTrade(bool val) {
 	(static_cast<TradeSession*>(stub))->setVerifiedTrade(val);
+}
+
+void TradeSessionAdapter::clearTradeContainer() {
+	(static_cast<TradeSession*>(stub))->clearTradeContainer();
 }
 
 /*

@@ -10,7 +10,6 @@
 #include "server/zone/objects/draftschematic/DraftSchematic.h"
 #include "server/zone/objects/factorycrate/FactoryCrate.h"
 #include "server/zone/managers/crafting/CraftingManager.h"
-#include "server/zone/managers/stringid/StringIdManager.h"
 
 class GenerateCraftedItemCommand : public QueueCommand {
 public:
@@ -126,64 +125,51 @@ public:
 			craftingValues->setManufactureSchematic(manuSchematic);
 			craftingValues->setPlayer(player);
 
-			int nRows = craftingValues->getVisibleExperimentalPropertyTitleSize();
-
-			prototype->updateCraftingValues(craftingValues, true);
-
 			if (quality > 0) {
-				for (int i = 0; i < nRows; i++) {
-					String title = craftingValues->getVisibleExperimentalPropertyTitle(i);
-					for (int j = 0; j < craftingValues->getExperimentalPropertySubtitleSize(); ++j) {
-						String subtitlesTitle = craftingValues->getExperimentalPropertySubtitlesTitle(j);
-						if (subtitlesTitle == title) {
-							String subtitle = craftingValues->getExperimentalPropertySubtitle(j);
+				for (int i = 0; i < craftingValues->getTotalVisibleAttributeGroups(); i++) {
+					String visibleGroup = craftingValues->getVisibleAttributeGroup(i);
 
-							float maxValue = craftingValues->getMaxValue(subtitle);
-							float minValue = craftingValues->getMinValue(subtitle);
+					for (int j = 0; j < craftingValues->getTotalExperimentalAttributes(); ++j) {
+						String attribute = craftingValues->getAttribute(j);
+						String group = craftingValues->getAttributeGroup(attribute);
+
+						if (group == visibleGroup) {
+							float maxValue = craftingValues->getMaxValue(attribute);
+							float minValue = craftingValues->getMinValue(attribute);
 
 							//float newValue = fabs(maxValue-minValue)*((float)quality/100.f) + Math::max(minValue, maxValue);
-							//craftingValues->setCurrentValue(subtitle, newValue);
+							//craftingValues->setCurrentValue(attribute, newValue);
 
-							craftingValues->setCurrentPercentage(subtitle, (float)quality/100.f, 5.f);
+							craftingValues->setCurrentPercentage(attribute, (float)quality/100.f, 5.f);
 						}
 					}
 				}
 
 				craftingValues->recalculateValues(true);
-				prototype->updateCraftingValues(craftingValues, true);
 			}
+
+			prototype->updateCraftingValues(craftingValues, true);
 
 			mlock.release();
 
 			prototype->createChildObjects();
 
-			// Crafter Name
-			ManagedReference<PlayerObject*> ghost = player->getPlayerObject();
-			if (ghost->getAdminLevel() >= 15) {
-				String name = player->getFirstName();
-				prototype->setCraftersName(name);
-			} else {
-				String name = "Generated with GenerateC Command";
-				prototype->setCraftersName(name);
-			}
+			// Set Crafter name and generate serial number
+			String name = creature->getFirstName();
+			prototype->setCraftersName(name);
+			prototype->setCraftersID(creature->getObjectID());
 
-			// Object Name
-			StringBuffer customName;
-			if (ghost->getAdminLevel() >= 15) {
-				customName << prototype->getDisplayedName() << " \\#00CC00(" << player->getFirstName() << ")\\#FFFFFF";
-			} else {
-				customName << prototype->getDisplayedName() <<  " (Flurry)";
-			}
-			prototype->setCustomObjectName(customName.toString(), false);
+			prototype->setCustomObjectName(prototype->getDisplayedName(), false);
 
-			// Serial Number
 			String serial = craftingManager->generateSerial();
 			prototype->setSerialNumber(serial);
 
 			prototype->updateToDatabase();
 
 			if (quantity > 1) {
-				ManagedReference<FactoryCrate* > crate = prototype->createFactoryCrate(quantity, true);
+				String crateType = draftSchematic->getFactoryCrateType();
+
+				ManagedReference<FactoryCrate* > crate = prototype->createFactoryCrate(quantity, crateType, true);
 
 				if (crate == nullptr) {
 					prototype->destroyObjectFromDatabase(true);

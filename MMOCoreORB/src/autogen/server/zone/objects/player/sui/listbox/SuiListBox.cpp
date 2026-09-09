@@ -425,7 +425,7 @@ unsigned long long SuiListBoxImplementation::getMenuObjectID(unsigned int idx) {
 	// server/zone/objects/player/sui/listbox/SuiListBox.idl():  			SuiListBoxMenuItem menuItem = menuItems.get(idx);
 	ManagedReference<SuiListBoxMenuItem* > menuItem = (&menuItems)->get(idx);
 	// server/zone/objects/player/sui/listbox/SuiListBox.idl():  		}
-	if (menuItem != NULL)	// server/zone/objects/player/sui/listbox/SuiListBox.idl():  				return menuItem.getObjectID();
+	if (menuItem)	// server/zone/objects/player/sui/listbox/SuiListBox.idl():  				return menuItem.getObjectID();
 	return menuItem->getObjectID();
 }
 	// server/zone/objects/player/sui/listbox/SuiListBox.idl():  		return 0;

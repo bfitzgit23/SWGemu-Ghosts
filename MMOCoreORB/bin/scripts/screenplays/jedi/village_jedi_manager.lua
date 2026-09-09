@@ -56,8 +56,34 @@ function VillageJediManager:onPlayerLoggedIn(pPlayer)
 
 	Glowing:onPlayerLoggedIn(pPlayer)
 
-	if (VillageJediManagerCommon.isVillageEligible(pPlayer) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice")) then
+	-- Ghosts: only the vanilla village intro path auto-awards the novice title;
+	-- holocron-unlocked and grey jedi keep whatever path granted them their skills.
+	if (VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS) and QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice")) then
 		awardSkill(pPlayer, "force_title_jedi_novice")
+	end
+
+	-- Ghosts: village ACCESS for force-path players (holocron jedi or grey jedi).
+	-- The pre-CU client gates the Aurilia mist wall on the vanilla village-intro
+	-- state, which our holocron unlock path never grants.  Grant the same access
+	-- markers the vanilla intro grants (access flag, completed intro quest,
+	-- jediState >= 1).  This grants ACCESS only -- jedi unlock itself remains
+	-- holocron-driven, and the novice title is NOT auto-awarded here.
+	if (CreatureObject(pPlayer):hasSkill("force_title_jedi_novice") or CreatureObject(pPlayer):hasSkill("combat_jedi_novice")) then
+		if (not VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS)) then
+			VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS)
+		end
+
+		if (not QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)) then
+			if (not QuestManager.hasActiveQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)) then
+				QuestManager.activateQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)
+			end
+			QuestManager.completeQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)
+		end
+
+		local pGhostForce = CreatureObject(pPlayer):getPlayerObject()
+		if (pGhostForce ~= nil and PlayerObject(pGhostForce):getJediState() < 1) then
+			PlayerObject(pGhostForce):setJediState(1)
+		end
 	end
 
 	if (FsIntro:isOnIntro(pPlayer)) then

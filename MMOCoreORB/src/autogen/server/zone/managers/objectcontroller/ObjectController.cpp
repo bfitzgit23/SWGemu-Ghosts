@@ -71,7 +71,7 @@ bool ObjectController::transferObject(SceneObject* objectToTransfer, SceneObject
 	}
 }
 
-float ObjectController::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments) {
+float ObjectController::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments) const {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -100,7 +100,7 @@ void ObjectController::addQueueCommand(QueueCommand* command) {
 	}
 }
 
-QueueCommand* ObjectController::getQueueCommand(const String& name) {
+const QueueCommand* ObjectController::getQueueCommand(const String& name) const {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -110,7 +110,7 @@ QueueCommand* ObjectController::getQueueCommand(const String& name) {
 	}
 }
 
-QueueCommand* ObjectController::getQueueCommand(unsigned int crc) {
+const QueueCommand* ObjectController::getQueueCommand(unsigned int crc) const {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -120,7 +120,7 @@ QueueCommand* ObjectController::getQueueCommand(unsigned int crc) {
 	}
 }
 
-void ObjectController::logAdminCommand(SceneObject* object, const QueueCommand* command, unsigned long long targetID, const UnicodeString& argumets) {
+void ObjectController::logAdminCommand(SceneObject* object, const QueueCommand* command, unsigned long long targetID, const UnicodeString& argumets) const {
 	ObjectControllerImplementation* _implementation = static_cast<ObjectControllerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -266,8 +266,8 @@ ObjectControllerImplementation::ObjectControllerImplementation(ZoneProcessServer
 	server = srv;
 	// server/zone/managers/objectcontroller/ObjectController.idl():  		Logger.setLoggingName("ObjectController");
 	Logger::setLoggingName("ObjectController");
-	// server/zone/managers/objectcontroller/ObjectController.idl():  		Logger.setLogging(true);
-	Logger::setLogging(true);
+	// server/zone/managers/objectcontroller/ObjectController.idl():  		Logger.setLogging(false);
+	Logger::setLogging(false);
 	// server/zone/managers/objectcontroller/ObjectController.idl():  		Logger.setGlobalLogging(true);
 	Logger::setGlobalLogging(true);
 	// server/zone/managers/objectcontroller/ObjectController.idl():  		loadCommands();
@@ -344,7 +344,7 @@ bool ObjectControllerAdapter::transferObject(SceneObject* objectToTransfer, Scen
 	return (static_cast<ObjectController*>(stub))->transferObject(objectToTransfer, destinationObject, containmentType, notifyClient, allowOverflow);
 }
 
-float ObjectControllerAdapter::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments) {
+float ObjectControllerAdapter::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, unsigned long long targetID, const UnicodeString& arguments) const {
 	return (static_cast<ObjectController*>(stub))->activateCommand(object, actionCRC, actionCount, targetID, arguments);
 }
 

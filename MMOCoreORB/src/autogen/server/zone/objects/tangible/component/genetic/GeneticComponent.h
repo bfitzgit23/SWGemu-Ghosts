@@ -69,9 +69,9 @@ class GeneticComponent : public Component {
 public:
 	GeneticComponent();
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
 	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
 
@@ -83,11 +83,11 @@ public:
 
 	int getPower();
 
-	int getIntelligence();
+	int getIntellect();
 
 	int getCourage();
 
-	int getDependency();
+	int getDependability();
 
 	int getDexterity();
 
@@ -163,25 +163,25 @@ public:
 
 	void setConstitution(int value);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	void setPower(int value);
+	void setPower(float value);
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
 	void setEnergy(float value);
 
@@ -230,7 +230,7 @@ public:
 
 	void resetResists(CraftingValues* values);
 
-	int getEffectiveArmor();
+	float getEffectiveArmor();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -263,25 +263,25 @@ namespace genetic {
 
 class GeneticComponentImplementation : public ComponentImplementation {
 protected:
-	int cleverness;
+	float cleverness;
 
-	int endurance;
+	float endurance;
 
-	int fierceness;
+	float fierceness;
 
-	int power;
+	float power;
 
-	int intelligence;
+	float intellect;
 
-	int courage;
+	float courage;
 
-	int dependency;
+	float dependability;
 
-	int dexterity;
+	float dexterity;
 
-	int fortitude;
+	float fortitude;
 
-	int hardiness;
+	float hardiness;
 
 	String special1;
 
@@ -346,9 +346,9 @@ public:
 
 	GeneticComponentImplementation(DummyConstructorParameter* param);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
 	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
 
@@ -360,11 +360,11 @@ public:
 
 	int getPower();
 
-	int getIntelligence();
+	int getIntellect();
 
 	int getCourage();
 
-	int getDependency();
+	int getDependability();
 
 	int getDexterity();
 
@@ -440,25 +440,25 @@ public:
 
 	void setConstitution(int value);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	void setPower(int value);
+	void setPower(float value);
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
 	void setEnergy(float value);
 
@@ -507,7 +507,7 @@ public:
 
 	void resetResists(CraftingValues* values);
 
-	int getEffectiveArmor();
+	float getEffectiveArmor();
 
 	WeakReference<GeneticComponent*> _this;
 
@@ -553,9 +553,9 @@ public:
 
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
 	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
 
@@ -567,11 +567,11 @@ public:
 
 	int getPower();
 
-	int getIntelligence();
+	int getIntellect();
 
 	int getCourage();
 
-	int getDependency();
+	int getDependability();
 
 	int getDexterity();
 
@@ -647,25 +647,25 @@ public:
 
 	void setConstitution(int value);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	void setPower(int value);
+	void setPower(float value);
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
 	void setEnergy(float value);
 
@@ -742,25 +742,25 @@ namespace genetic {
 
 class GeneticComponentPOD : public ComponentPOD {
 public:
-	Optional<int> cleverness;
+	Optional<float> cleverness;
 
-	Optional<int> endurance;
+	Optional<float> endurance;
 
-	Optional<int> fierceness;
+	Optional<float> fierceness;
 
-	Optional<int> power;
+	Optional<float> power;
 
-	Optional<int> intelligence;
+	Optional<float> intellect;
 
-	Optional<int> courage;
+	Optional<float> courage;
 
-	Optional<int> dependency;
+	Optional<float> dependability;
 
-	Optional<int> dexterity;
+	Optional<float> dexterity;
 
-	Optional<int> fortitude;
+	Optional<float> fortitude;
 
-	Optional<int> hardiness;
+	Optional<float> hardiness;
 
 	Optional<String> special1;
 

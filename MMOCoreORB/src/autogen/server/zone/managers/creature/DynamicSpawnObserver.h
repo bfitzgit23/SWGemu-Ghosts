@@ -42,6 +42,8 @@ using namespace server::zone::objects::scene;
 
 #include "templates/mobile/LairTemplate.h"
 
+#include "server/zone/managers/creature/observers/CreatureHerdObserver.h"
+
 #include "engine/core/ManagedObject.h"
 
 #include "engine/util/Observable.h"
@@ -55,6 +57,8 @@ namespace creature {
 
 class DynamicSpawnObserver : public SpawnObserver {
 public:
+	static const int BABY_SPAWN_CHANCE = 500;
+
 	DynamicSpawnObserver();
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
@@ -64,6 +68,10 @@ public:
 	bool isTheaterSpawnObserver();
 
 	bool isDynamicSpawnObserver();
+
+	void setHerdObserver(CreatureHerdObserver* observer);
+
+	CreatureHerdObserver* getHerdObserver();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -91,6 +99,11 @@ namespace managers {
 namespace creature {
 
 class DynamicSpawnObserverImplementation : public SpawnObserverImplementation {
+public:
+	static const int BABY_SPAWN_CHANCE = 500;
+
+protected:
+	ManagedWeakReference<CreatureHerdObserver* > herdObserver;
 
 public:
 	DynamicSpawnObserverImplementation();
@@ -104,6 +117,10 @@ public:
 	bool isTheaterSpawnObserver();
 
 	bool isDynamicSpawnObserver();
+
+	void setHerdObserver(CreatureHerdObserver* observer);
+
+	CreatureHerdObserver* getHerdObserver();
 
 	WeakReference<DynamicSpawnObserver*> _this;
 
@@ -156,6 +173,10 @@ public:
 
 	bool isDynamicSpawnObserver();
 
+	void setHerdObserver(CreatureHerdObserver* observer);
+
+	CreatureHerdObserver* getHerdObserver();
+
 };
 
 class DynamicSpawnObserverHelper : public DistributedObjectClassHelper, public Singleton<DynamicSpawnObserverHelper> {
@@ -191,7 +212,9 @@ namespace creature {
 
 class DynamicSpawnObserverPOD : public SpawnObserverPOD {
 public:
+	Optional<ManagedWeakReference<CreatureHerdObserverPOD* >> herdObserver;
 
+	String _className;
 	DynamicSpawnObserverPOD();
 	virtual void readObject(ObjectInputStream* stream);
 	virtual void writeObject(ObjectOutputStream* stream);

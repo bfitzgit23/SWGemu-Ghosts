@@ -2,6 +2,7 @@
 				Copyright <SWGEmu>
 		See file COPYING for copying conditions.*/
 
+#ifndef WITH_SWGREALMS_API
 #ifndef SERVERDATABASE_H_
 #define SERVERDATABASE_H_
 
@@ -24,9 +25,7 @@ public:
 		if (databases == nullptr)
 			throw DatabaseException("No Server Database initiated");
 
-		int i = currentDB.get() % databases->size();
-
-		currentDB.increment();
+		int i = currentDB.postIncrement() % databases->size();
 
 		return databases->get(i);
 	}
@@ -40,3 +39,4 @@ private:
 };
 
 #endif /*SERVERDATABASE_H_*/
+#endif // !WITH_SWGREALMS_API

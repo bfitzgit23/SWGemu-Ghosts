@@ -2,15 +2,16 @@ tusken_carnage_champion = Creature:new {
 	objectName = "@mob/creature_names:tusken_fort_tusken_champion",
 	socialGroup = "tusken_raider",
 	faction = "tusken_raider",
-	level = 300,
-	chanceHit = 30.0,
-	damageMin = 1600,
-	damageMax = 2000,
-	baseXp = 25000,
-	baseHAM = 100000,
-	baseHAMmax = 120000,
+	mobType = MOB_NPC,
+	level = 116,
+	chanceHit = 3.85,
+	damageMin = 750,
+	damageMax = 1210,
+	baseXp = 11015,
+	baseHAM = 43000,
+	baseHAMmax = 53000,
 	armor = 2,
-	resists = {125,125,125,125,125,125,125,125,125},
+	resists = {65,40,10,30,-1,30,-1,-1,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -29,35 +30,21 @@ tusken_carnage_champion = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "trash_rare", chance = 10000000},
-			},
-			lootChance = 2000000
-		},		
-		{
-			groups = {
-				{group = "trash_common", chance = 10000000},
-			},
-			lootChance = 10000000
-		},
-		{
-			groups = {
-				{group = "weapon_component_advanced", chance = 10000000},
-			},
-			lootChance = 7000000
-		},
-		{
-			groups = {
-				{group = "tierone", chance = 1500000},
-				{group = "tiertwo", chance = 3500000},
-				{group = "tierthree", chance = 2500000},
-				{group = "tierdiamond", chance = 2500000},
-			},
-			lootChance = 3000000
+				{group = "tusken_raider_tier_4", chance = 10000000}
+			}
 		}
 	},
-	weapons = {"tusken_weapons"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "tusken_ranged",
+	secondaryWeapon = "tusken_melee",
 	conversationTemplate = "",
-	attacks = merge(marksmanmaster,brawlermaster,fencermaster,riflemanmaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = merge(marksmanmaster,riflemanmaster),
+	secondaryAttacks = merge(brawlermaster,fencermaster)
 }
 
 CreatureTemplates:addCreatureTemplate(tusken_carnage_champion, "tusken_carnage_champion")

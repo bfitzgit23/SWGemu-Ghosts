@@ -70,30 +70,29 @@ void DraftSchematicImplementation::insertIngredients(ObjectControllerMessage* ms
 void DraftSchematicImplementation::sendResourceWeightsTo(CreatureObject* player) {
 	const Vector<Reference<ResourceWeight* > >* resourceWeights = schematicTemplate->getResourceWeights();
 
-	if (resourceWeights == nullptr){
-		Logger::console.error("resourceWeights null for draft schematic template: " + schematicTemplate->getTemplateFileName() + " This is likely due to a typo in the lua template file.");		
-		player->sendSystemMessage("There was an error on server that prevented this crafting action from completing. The error has been logged. Please contact support for further assistance.");
-		
-		// Note: The broken draft schematic will be added to the player's crafting tool, but the tool will not let them use it.
-
+	if (resourceWeights == nullptr)
 		return;
-	}
 
 	ObjectControllerMessage* msg = new ObjectControllerMessage(player->getObjectID(), 0x0B, 0x0207);
 
+	if (msg == nullptr)
+		return;
+
 	msg->insertInt(clientObjectCRC);
 	msg->insertInt(clientObjectCRC);
 
-	msg->insertByte(resourceWeights->size());
+	int weightsSize = resourceWeights->size();
+
+	msg->insertByte((byte)weightsSize);
 
 	//Send all the resource batch property data
-	for (int i = 0; i < resourceWeights->size(); i++)
+	for (int i = 0; i < weightsSize; i++)
 		resourceWeights->get(i)->insertBatchToMessage(msg);
 
-	msg->insertByte(resourceWeights->size());
+	msg->insertByte((byte)weightsSize);
 
 	//Send all the resource property data
-	for (int i = 0; i < resourceWeights->size(); i++)
+	for (int i = 0; i < weightsSize; i++)
 		resourceWeights->get(i)->insertToMessage(msg);
 
 	player->sendMessage(msg);
@@ -171,12 +170,7 @@ String DraftSchematicImplementation::getCustomizationSkill() {
 }
 
 String DraftSchematicImplementation::getCustomName() {
-if (schematicTemplate == nullptr) {		
-	error("ERROR Illegal Argument Exception");
-	return nullptr;
-	}
 	return schematicTemplate->getCustomObjectName();
-	error("Safe Argument Exception");
 }
 
 uint32 DraftSchematicImplementation::getTanoCRC() {
@@ -189,4 +183,8 @@ int DraftSchematicImplementation::getLabratory() {
 
 int DraftSchematicImplementation::getFactoryCrateSize() {
 	return schematicTemplate->getFactoryCrateSize();
+}
+
+String DraftSchematicImplementation::getFactoryCrateType() {
+	return schematicTemplate->getFactoryCrateType();
 }

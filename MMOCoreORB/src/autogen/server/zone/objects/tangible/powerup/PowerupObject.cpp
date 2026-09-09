@@ -14,6 +14,10 @@
  *	PowerupObjectStub
  */
 
+const float PowerupObject::MAXPRIMARY = 33.16;
+
+const float PowerupObject::MAXSECONDARY = 16.33;
+
 enum {RPC_ISRANGED__ = 2188074194,RPC_ISMELEE__,RPC_ISTHROWN__,RPC_ISMINE__,RPC_DECREASEUSES__,RPC_GETUSES__,RPC_SETUSES__INT_,RPC_SETTYPE__STRING_,RPC_GETPOWERUPSTAT__STRING_,RPC_ADDPOWERUPSTAT__STRING_STRING_STRING_FLOAT_,};
 
 PowerupObject::PowerupObject() : TangibleObject(DummyConstructorParameter::instance()) {
@@ -189,6 +193,16 @@ void PowerupObject::fillAttributeList(AttributeListMessage* msg, CreatureObject*
 	}
 }
 
+void PowerupObject::addSecondaryStat(CraftingValues* values, PowerupTemplate* pupTemplate) {
+	PowerupObjectImplementation* _implementation = static_cast<PowerupObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->addSecondaryStat(values, pupTemplate);
+	}
+}
+
 void PowerupObject::updateCraftingValues(CraftingValues* values, bool firstUpdate) {
 	PowerupObjectImplementation* _implementation = static_cast<PowerupObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -226,6 +240,10 @@ void PowerupObject::_setImplementation(DistributedObjectServant* servant) {
 /*
  *	PowerupObjectImplementation
  */
+
+const float PowerupObjectImplementation::MAXPRIMARY = 33.16;
+
+const float PowerupObjectImplementation::MAXSECONDARY = 16.33;
 
 PowerupObjectImplementation::PowerupObjectImplementation(DummyConstructorParameter* param) : TangibleObjectImplementation(param) {
 	_initializeImplementation();
@@ -633,6 +651,7 @@ Luna<LuaPowerupObject>::RegType LuaPowerupObject::Register[] = {
 	{ "getPowerupStat", &LuaPowerupObject::getPowerupStat },
 	{ "addPowerupStat", &LuaPowerupObject::addPowerupStat },
 	{ "fillAttributeList", &LuaPowerupObject::fillAttributeList },
+	{ "addSecondaryStat", &LuaPowerupObject::addSecondaryStat },
 	{ "updateCraftingValues", &LuaPowerupObject::updateCraftingValues },
 	{ "fillWeaponAttributeList", &LuaPowerupObject::fillWeaponAttributeList },
 	{ 0, 0 }
@@ -852,6 +871,30 @@ int LuaPowerupObject::fillAttributeList(lua_State *L) {
 		}
 	} else {
 		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'PowerupObject:fillAttributeList(userdata, userdata)'");
+	}
+	return 0;
+}
+
+int LuaPowerupObject::addSecondaryStat(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isuserdata(L, -1)) {
+		if (lua_isuserdata(L, -2)) {
+			if (parameterCount == 2) {
+				CraftingValues* values = static_cast<CraftingValues*>(lua_touserdata(L, -2));
+				PowerupTemplate* pupTemplate = static_cast<PowerupTemplate*>(lua_touserdata(L, -1));
+
+				realObject->addSecondaryStat(values, pupTemplate);
+
+				return 0;
+			} else {
+				throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'PowerupObject:addSecondaryStat(userdata, userdata)'");
+			}
+		} else {
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'PowerupObject:addSecondaryStat(userdata, userdata)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'PowerupObject:addSecondaryStat(userdata, userdata)'");
 	}
 	return 0;
 }

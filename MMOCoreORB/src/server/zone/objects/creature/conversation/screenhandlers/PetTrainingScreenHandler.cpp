@@ -8,6 +8,7 @@
 #include "server/zone/managers/creature/PetManager.h"
 #include "server/zone/objects/group/GroupObject.h"
 #include "server/zone/objects/intangible/PetControlDevice.h"
+#include "server/zone/managers/creature/AiMap.h"
 
 const String PetTrainingScreenHandler::STARTSCREENHANDLERID = "convoscreenpetinfo";
 const String PetTrainingScreenHandler::PETCOMMANDREPAIR = "pet_repair_command";
@@ -26,9 +27,10 @@ const String PetTrainingScreenHandler::PETFOLLOWOTHERCOMMAND = "pet_follow_other
 const String PetTrainingScreenHandler::PETGROUPCOMMAND = "pet_group_command";
 const String PetTrainingScreenHandler::PETRELEASECOMMAND = "pet_release_command";
 
-ConversationScreen* PetTrainingScreenHandler::handleScreen(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen) {
+ConversationScreen* PetTrainingScreenHandler::handleScreen(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen) {
 
-	ManagedReference<PetControlDevice*> controller = conversingNPC->getControlDevice().get().castTo<PetControlDevice*>();
+	CreatureObject* creo = conversingNPC->asCreatureObject();
+	ManagedReference<PetControlDevice*> controller = creo->getControlDevice().get().castTo<PetControlDevice*>();
 	if (controller == nullptr) {
 		return nullptr;
 	}
@@ -109,9 +111,9 @@ ConversationScreen* PetTrainingScreenHandler::handleScreen(CreatureObject* conve
 	locker.release();
 
 	if (conversationScreen->getScreenID() == "pet_leave_group_command") {
-		GroupObject* g = conversingNPC->getGroup();
+		GroupObject* g = creo->getGroup();
 		if (g != nullptr) {
-			g->removeMember(conversingNPC);
+			g->removeMember(creo);
 		}
 		return nullptr;
 	}

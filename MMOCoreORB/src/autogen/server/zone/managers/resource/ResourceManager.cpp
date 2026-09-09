@@ -18,7 +18,7 @@
  *	ResourceManagerStub
  */
 
-enum {RPC_STOP__ = 1114213504,RPC_INITIALIZE__,RPC_SHIFTRESOURCES__,RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_GETRESOURCERECYCLETYPE__RESOURCESPAWN_,RPC_SENDRESOURCELISTFORSURVEY__CREATUREOBJECT_INT_STRING_,RPC_SENDSURVEY__CREATUREOBJECT_STRING_,RPC_SENDSAMPLE__CREATUREOBJECT_STRING_STRING_,RPC_HARVESTRESOURCE__CREATUREOBJECT_STRING_INT_,RPC_HARVESTRESOURCETOPLAYER__CREATUREOBJECT_RESOURCESPAWN_INT_,RPC_GETAVAILABLEPOWERFROMPLAYER__CREATUREOBJECT_,RPC_REMOVEPOWERFROMPLAYER__CREATUREOBJECT_INT_,RPC_CREATERESOURCESPAWN__CREATUREOBJECT_UNICODESTRING_,RPC_GIVEPLAYERRESOURCE__CREATUREOBJECT_STRING_INT_,RPC_GETCURRENTSPAWN__STRING_STRING_,RPC_GETRESOURCESPAWN__STRING_,RPC_ISRECYCLEDRESOURCE__RESOURCESPAWN_,RPC_GETRECYCLEDVERSION__RESOURCESPAWN_,RPC_GETRECYCLEDVERSIONBYTYPE__STRING_,RPC_ADDNODETOLISTBOX__SUILISTBOX_STRING_,RPC_ADDPARENTNODETOLISTBOX__SUILISTBOX_STRING_,RPC_ADDNODETOLISTBOXCR__SUILISTBOX_STRING_,RPC_ADDPARENTNODETOLISTBOXCR__SUILISTBOX_STRING_,RPC_LISTRESOURCESFORPLANETONSCREEN__CREATUREOBJECT_STRING_,RPC_HEALTHCHECK__,RPC_DUMPRESOURCES__,RPC_DESPAWNRESOURCE__STRING_,RPC_ADDPLANETSTOLISTBOX__SUILISTBOX_,RPC_GETPLANETBYINDEX__INT_,RPC_GETZONESERVER__};
+enum {RPC_STOP__ = 1114213504,RPC_INITIALIZE__,RPC_SHIFTRESOURCES__,RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_GETRESOURCERECYCLETYPE__RESOURCESPAWN_,RPC_SENDRESOURCELISTFORSURVEY__CREATUREOBJECT_INT_STRING_,RPC_SENDSURVEY__CREATUREOBJECT_STRING_,RPC_SENDSAMPLE__CREATUREOBJECT_STRING_STRING_,RPC_HARVESTRESOURCE__CREATUREOBJECT_STRING_INT_,RPC_GETAVAILABLEPOWERFROMPLAYER__CREATUREOBJECT_,RPC_REMOVEPOWERFROMPLAYER__CREATUREOBJECT_INT_,RPC_CREATERESOURCESPAWN__CREATUREOBJECT_UNICODESTRING_,RPC_GIVEPLAYERRESOURCE__CREATUREOBJECT_STRING_INT_,RPC_GETCURRENTSPAWN__STRING_STRING_,RPC_GETRESOURCESPAWN__STRING_,RPC_ISRECYCLEDRESOURCE__RESOURCESPAWN_,RPC_GETRECYCLEDVERSION__RESOURCESPAWN_,RPC_ADDNODETOLISTBOX__SUILISTBOX_STRING_,RPC_ADDPARENTNODETOLISTBOX__SUILISTBOX_STRING_,RPC_LISTRESOURCESFORPLANETONSCREEN__CREATUREOBJECT_STRING_,RPC_HEALTHCHECK__,RPC_DUMPRESOURCES__,RPC_DESPAWNRESOURCE__STRING_,RPC_ADDPLANETSTOLISTBOX__SUILISTBOX_,RPC_GETPLANETBYINDEX__INT_,RPC_GETZONESERVER__};
 
 ResourceManager::ResourceManager(ZoneServer* server, ZoneProcessServer* impl) : Observer(DummyConstructorParameter::instance()) {
 	ResourceManagerImplementation* _implementation = new ResourceManagerImplementation(server, impl);
@@ -178,20 +178,13 @@ ResourceContainer* ResourceManager::harvestResource(CreatureObject* player, cons
 	}
 }
 
-bool ResourceManager::harvestResourceToPlayer(CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
+bool ResourceManager::harvestResourceToPlayer(TransactionLog& trx, CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_HARVESTRESOURCETOPLAYER__CREATUREOBJECT_RESOURCESPAWN_INT_);
-		method.addObjectParameter(player);
-		method.addObjectParameter(resourceSpawn);
-		method.addSignedIntParameter(quantity);
-
-		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->harvestResourceToPlayer(player, resourceSpawn, quantity);
+		return _implementation->harvestResourceToPlayer(trx, player, resourceSpawn, quantity);
 	}
 }
 
@@ -330,21 +323,6 @@ ResourceSpawn* ResourceManager::getRecycledVersion(ResourceSpawn* resource) {
 	}
 }
 
-ResourceSpawn* ResourceManager::getRecycledVersionByType(const String& resourceType) {
-	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETRECYCLEDVERSIONBYTYPE__STRING_);
-		method.addAsciiParameter(resourceType);
-
-		return static_cast<ResourceSpawn*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getRecycledVersionByType(resourceType);
-	}
-}
-
 void ResourceManager::addNodeToListBox(SuiListBox* sui, const String& nodeName) {
 	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -376,40 +354,6 @@ String ResourceManager::addParentNodeToListBox(SuiListBox* sui, const String& cu
 		return _return_addParentNodeToListBox;
 	} else {
 		return _implementation->addParentNodeToListBox(sui, currentNode);
-	}
-}
-
-void ResourceManager::addNodeToListBoxCR(SuiListBox* sui, const String& nodeName) {
-	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ADDNODETOLISTBOXCR__SUILISTBOX_STRING_);
-		method.addObjectParameter(sui);
-		method.addAsciiParameter(nodeName);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->addNodeToListBoxCR(sui, nodeName);
-	}
-}
-
-String ResourceManager::addParentNodeToListBoxCR(SuiListBox* sui, const String& currentNode) {
-	ResourceManagerImplementation* _implementation = static_cast<ResourceManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ADDPARENTNODETOLISTBOXCR__SUILISTBOX_STRING_);
-		method.addObjectParameter(sui);
-		method.addAsciiParameter(currentNode);
-
-		String _return_addParentNodeToListBoxCR;
-		method.executeWithAsciiReturn(_return_addParentNodeToListBoxCR);
-		return _return_addParentNodeToListBoxCR;
-	} else {
-		return _implementation->addParentNodeToListBoxCR(sui, currentNode);
 	}
 }
 
@@ -789,16 +733,6 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_HARVESTRESOURCETOPLAYER__CREATUREOBJECT_RESOURCESPAWN_INT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			ResourceSpawn* resourceSpawn = static_cast<ResourceSpawn*>(inv->getObjectParameter());
-			 int quantity = inv->getSignedIntParameter();
-			
-			bool _m_res = harvestResourceToPlayer(player, resourceSpawn, quantity);
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_GETAVAILABLEPOWERFROMPLAYER__CREATUREOBJECT_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -868,14 +802,6 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_GETRECYCLEDVERSIONBYTYPE__STRING_:
-		{
-			 String resourceType; inv->getAsciiParameter(resourceType);
-			
-			DistributedObject* _m_res = getRecycledVersionByType(resourceType);
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
 	case RPC_ADDNODETOLISTBOX__SUILISTBOX_STRING_:
 		{
 			SuiListBox* sui = static_cast<SuiListBox*>(inv->getObjectParameter());
@@ -891,24 +817,6 @@ void ResourceManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv)
 			 String currentNode; inv->getAsciiParameter(currentNode);
 			
 			String _m_res = addParentNodeToListBox(sui, currentNode);
-			resp->insertAscii(_m_res);
-		}
-		break;
-	case RPC_ADDNODETOLISTBOXCR__SUILISTBOX_STRING_:
-		{
-			SuiListBox* sui = static_cast<SuiListBox*>(inv->getObjectParameter());
-			 String nodeName; inv->getAsciiParameter(nodeName);
-			
-			addNodeToListBoxCR(sui, nodeName);
-			
-		}
-		break;
-	case RPC_ADDPARENTNODETOLISTBOXCR__SUILISTBOX_STRING_:
-		{
-			SuiListBox* sui = static_cast<SuiListBox*>(inv->getObjectParameter());
-			 String currentNode; inv->getAsciiParameter(currentNode);
-			
-			String _m_res = addParentNodeToListBoxCR(sui, currentNode);
 			resp->insertAscii(_m_res);
 		}
 		break;
@@ -1007,10 +915,6 @@ ResourceContainer* ResourceManagerAdapter::harvestResource(CreatureObject* playe
 	return (static_cast<ResourceManager*>(stub))->harvestResource(player, type, quantity);
 }
 
-bool ResourceManagerAdapter::harvestResourceToPlayer(CreatureObject* player, ResourceSpawn* resourceSpawn, const int quantity) {
-	return (static_cast<ResourceManager*>(stub))->harvestResourceToPlayer(player, resourceSpawn, quantity);
-}
-
 unsigned int ResourceManagerAdapter::getAvailablePowerFromPlayer(CreatureObject* player) {
 	return (static_cast<ResourceManager*>(stub))->getAvailablePowerFromPlayer(player);
 }
@@ -1043,24 +947,12 @@ ResourceSpawn* ResourceManagerAdapter::getRecycledVersion(ResourceSpawn* resourc
 	return (static_cast<ResourceManager*>(stub))->getRecycledVersion(resource);
 }
 
-ResourceSpawn* ResourceManagerAdapter::getRecycledVersionByType(const String& resourceType) {
-	return (static_cast<ResourceManager*>(stub))->getRecycledVersionByType(resourceType);
-}
-
 void ResourceManagerAdapter::addNodeToListBox(SuiListBox* sui, const String& nodeName) {
 	(static_cast<ResourceManager*>(stub))->addNodeToListBox(sui, nodeName);
 }
 
 String ResourceManagerAdapter::addParentNodeToListBox(SuiListBox* sui, const String& currentNode) {
 	return (static_cast<ResourceManager*>(stub))->addParentNodeToListBox(sui, currentNode);
-}
-
-void ResourceManagerAdapter::addNodeToListBoxCR(SuiListBox* sui, const String& nodeName) {
-	(static_cast<ResourceManager*>(stub))->addNodeToListBoxCR(sui, nodeName);
-}
-
-String ResourceManagerAdapter::addParentNodeToListBoxCR(SuiListBox* sui, const String& currentNode) {
-	return (static_cast<ResourceManager*>(stub))->addParentNodeToListBoxCR(sui, currentNode);
 }
 
 void ResourceManagerAdapter::listResourcesForPlanetOnScreen(CreatureObject* creature, const String& planet) {

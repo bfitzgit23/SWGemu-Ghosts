@@ -40,7 +40,15 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+#include "engine/log/LoggerHelperStream.h"
+
 #include "system/util/SynchronizedVectorMap.h"
+
+#include "server/zone/objects/scene/variables/PendingTasksMap.h"
+
+#include "server/zone/objects/scene/variables/OrderedTaskExecutioner.h"
+
+#include "engine/log/Logger.h"
 
 #include "engine/service/proto/BaseClientProxy.h"
 
@@ -51,6 +59,8 @@ using namespace server::zone::objects::creature;
 #include "system/lang/Time.h"
 
 #include "system/util/VectorMap.h"
+
+#include "engine/core/Task.h"
 
 namespace server {
 namespace zone {
@@ -71,27 +81,49 @@ public:
 
 	void closeConnection(bool lockPlayer, bool doLock = true);
 
+	void startPacketLogging(const String& playerName);
+
+	void stopPacketLogging();
+
+	void setupLogging();
+
 	void info(const String& msg, bool force = false);
 
 	void debug(const String& msg);
 
 	void error(const String& msg);
 
-	String getAddress();
+	void executeOrderedTask(Task* task);
 
-	String getIPAddress();
+	PendingTasksMap* getPendingTasks();
+
+	LoggerHelperStream info(int forced = false) const;
+
+	LoggerHelperStream error() const;
+
+	LoggerHelperStream debug() const;
+
+	String getAddress() const;
+
+	String getIPAddress() const;
+
+	void setIPAddress(const String& newIP);
+
+	unsigned short getPort() const;
 
 	void setPlayer(CreatureObject* playerCreature);
 
-	void setSessionID(unsigned int id);
+	void setSessionID(const String& id);
 
 	void setAccountID(unsigned int acc);
 
-	int getCommandCount();
+	int getCommandCount() const;
 
 	void increaseCommandCount();
 
 	void resetCommandCount();
+
+	const Time* getCommandSpamCooldown() const;
 
 	Time* getCommandSpamCooldown();
 
@@ -99,19 +131,19 @@ public:
 
 	Reference<CreatureObject* > getPlayer();
 
-	unsigned int getSessionID();
+	String getSessionID() const;
 
-	unsigned int getAccountID();
+	unsigned int getAccountID() const;
 
-	bool hasCharacter(unsigned long long cid, unsigned int galaxyId);
+	bool hasCharacter(unsigned long long cid, unsigned int galaxyId) const;
 
 	void addCharacter(unsigned long long cid, unsigned int galaxyId);
 
 	void addBannedCharacter(unsigned long long cid, unsigned int galaxyId);
 
-	int getCharacterCount();
+	int getCharacterCount() const;
 
-	int getCharacterCount(int galaxyId);
+	int getCharacterCount(int galaxyId) const;
 
 	void resetCharacters();
 
@@ -150,14 +182,20 @@ protected:
 
 	ManagedWeakReference<CreatureObject* > player;
 
-	unsigned int sessionID;
+	String sessionID;
 
 	unsigned int accountID;
+
+	Reference<PendingTasksMap* > pendingTasks;
 
 private:
 	bool disconnecting;
 
+	bool packetLogging;
+
 protected:
+	Logger packetLogger;
+
 	Time commandSpamCooldown;
 
 	int commandCount;
@@ -179,27 +217,49 @@ public:
 
 	void closeConnection(bool lockPlayer, bool doLock = true);
 
+	void startPacketLogging(const String& playerName);
+
+	void stopPacketLogging();
+
+	void setupLogging();
+
 	void info(const String& msg, bool force = false);
 
 	void debug(const String& msg);
 
 	void error(const String& msg);
 
-	String getAddress();
+	void executeOrderedTask(Task* task);
 
-	String getIPAddress();
+	PendingTasksMap* getPendingTasks();
+
+	LoggerHelperStream info(int forced = false) const;
+
+	LoggerHelperStream error() const;
+
+	LoggerHelperStream debug() const;
+
+	String getAddress() const;
+
+	String getIPAddress() const;
+
+	void setIPAddress(const String& newIP);
+
+	unsigned short getPort() const;
 
 	void setPlayer(CreatureObject* playerCreature);
 
-	void setSessionID(unsigned int id);
+	void setSessionID(const String& id);
 
 	void setAccountID(unsigned int acc);
 
-	int getCommandCount();
+	int getCommandCount() const;
 
 	void increaseCommandCount();
 
 	void resetCommandCount();
+
+	const Time* getCommandSpamCooldown() const;
 
 	Time* getCommandSpamCooldown();
 
@@ -207,19 +267,19 @@ public:
 
 	Reference<CreatureObject* > getPlayer();
 
-	unsigned int getSessionID();
+	String getSessionID() const;
 
-	unsigned int getAccountID();
+	unsigned int getAccountID() const;
 
-	bool hasCharacter(unsigned long long cid, unsigned int galaxyId);
+	bool hasCharacter(unsigned long long cid, unsigned int galaxyId) const;
 
 	void addCharacter(unsigned long long cid, unsigned int galaxyId);
 
 	void addBannedCharacter(unsigned long long cid, unsigned int galaxyId);
 
-	int getCharacterCount();
+	int getCharacterCount() const;
 
-	int getCharacterCount(int galaxyId);
+	int getCharacterCount(int galaxyId) const;
 
 	void resetCharacters();
 
@@ -276,23 +336,33 @@ public:
 
 	void closeConnection(bool lockPlayer, bool doLock);
 
+	void startPacketLogging(const String& playerName);
+
+	void stopPacketLogging();
+
+	void setupLogging();
+
 	void info(const String& msg, bool force);
 
 	void debug(const String& msg);
 
 	void error(const String& msg);
 
-	String getAddress();
+	String getAddress() const;
 
-	String getIPAddress();
+	String getIPAddress() const;
+
+	void setIPAddress(const String& newIP);
+
+	unsigned short getPort() const;
 
 	void setPlayer(CreatureObject* playerCreature);
 
-	void setSessionID(unsigned int id);
+	void setSessionID(const String& id);
 
 	void setAccountID(unsigned int acc);
 
-	int getCommandCount();
+	int getCommandCount() const;
 
 	void increaseCommandCount();
 
@@ -300,19 +370,19 @@ public:
 
 	Reference<CreatureObject* > getPlayer();
 
-	unsigned int getSessionID();
+	String getSessionID() const;
 
-	unsigned int getAccountID();
+	unsigned int getAccountID() const;
 
-	bool hasCharacter(unsigned long long cid, unsigned int galaxyId);
+	bool hasCharacter(unsigned long long cid, unsigned int galaxyId) const;
 
 	void addCharacter(unsigned long long cid, unsigned int galaxyId);
 
 	void addBannedCharacter(unsigned long long cid, unsigned int galaxyId);
 
-	int getCharacterCount();
+	int getCharacterCount() const;
 
-	int getCharacterCount(int galaxyId);
+	int getCharacterCount(int galaxyId) const;
 
 	void resetCharacters();
 
@@ -355,7 +425,7 @@ public:
 
 	Optional<ManagedWeakReference<CreatureObjectPOD* >> player;
 
-	Optional<unsigned int> sessionID;
+	Optional<String> sessionID;
 
 	Optional<unsigned int> accountID;
 

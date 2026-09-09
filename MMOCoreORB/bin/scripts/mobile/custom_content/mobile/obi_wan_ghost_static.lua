@@ -27,7 +27,7 @@ obi_wan_ghost_static = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/obi_wan_ghost_static.iff"},
+	templates = {"object/mobile/hologram/human_male.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",

@@ -75,8 +75,6 @@ public:
 
 	void createVendor(String& name);
 
-	void randomizeVendorLooks(CreatureObject* vendor);
-
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -136,18 +134,6 @@ public:
 
 	void createVendor(String& name);
 
-	void randomizeVendorLooks(CreatureObject* vendor);
-
-private:
-	void randomizeVendorClothing(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl);
-
-	void randomizeVendorHair(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl);
-
-	void randomizeVendorFeatures(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl);
-
-	void randomizeVendorHeight(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl);
-
-public:
 	WeakReference<CreateVendorSession*> _this;
 
 	operator const CreateVendorSession*();
@@ -200,8 +186,6 @@ public:
 	void handleVendorSelection(byte menuID);
 
 	void createVendor(String& name);
-
-	void randomizeVendorLooks(CreatureObject* vendor);
 
 };
 

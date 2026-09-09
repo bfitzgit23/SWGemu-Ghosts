@@ -953,3 +953,19 @@ object_mobile_vehicle_shared_vehicle_base = SharedCreatureObjectTemplate:new {
 }
 
 ObjectTemplates:addClientTemplate(object_mobile_vehicle_shared_vehicle_base, "object/mobile/vehicle/shared_vehicle_base.iff")
+
+local customVehicleTemplates = {
+	"grievous_wheel_bike",
+	"air2_swoop", "fg_8t8_podracer", "geonosian_speeder", "koro2_speeder",
+	"landspeeder_organa", "mechno_chair", "pod_racer_balta_podracer",
+	"pod_racer_ipg_longtail", "senate_pod", "tcg_hk47_jetpack",
+	"tcg_merr_sonn_jt12_jetpack", "tcg_republic_gunship", "xj6_air_speeder"
+}
+
+for _, templateName in ipairs(customVehicleTemplates) do
+	local template = SharedCreatureObjectTemplate:new {
+		clientTemplateFileName = "object/mobile/vehicle/shared_" .. templateName .. ".iff"
+	}
+	_G["object_mobile_vehicle_shared_" .. templateName] = template
+	ObjectTemplates:addClientTemplate(template, template.clientTemplateFileName)
+end

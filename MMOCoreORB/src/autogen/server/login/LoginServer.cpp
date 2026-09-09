@@ -44,7 +44,7 @@ LoginServer::~LoginServer() {
 
 
 void LoginServer::initializeTransientMembers() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -58,7 +58,7 @@ void LoginServer::initializeTransientMembers() {
 }
 
 LoginClient* LoginServer::createConnection(Socket* sock, SocketAddress& addr) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -68,7 +68,7 @@ LoginClient* LoginServer::createConnection(Socket* sock, SocketAddress& addr) {
 }
 
 void LoginServer::initialize() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -82,7 +82,7 @@ void LoginServer::initialize() {
 }
 
 void LoginServer::shutdown() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -96,7 +96,7 @@ void LoginServer::shutdown() {
 }
 
 void LoginServer::startManagers() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -110,7 +110,7 @@ void LoginServer::startManagers() {
 }
 
 void LoginServer::stopManagers() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -124,7 +124,7 @@ void LoginServer::stopManagers() {
 }
 
 void LoginServer::start(int p, int mconn) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -140,7 +140,7 @@ void LoginServer::start(int p, int mconn) {
 }
 
 void LoginServer::stop() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -154,7 +154,7 @@ void LoginServer::stop() {
 }
 
 void LoginServer::handleMessage(LoginClient* client, Packet* message) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -164,7 +164,7 @@ void LoginServer::handleMessage(LoginClient* client, Packet* message) {
 }
 
 void LoginServer::processMessage(Message* message) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -174,7 +174,7 @@ void LoginServer::processMessage(Message* message) {
 }
 
 bool LoginServer::handleError(ServiceClient* client, Exception& e) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -184,7 +184,7 @@ bool LoginServer::handleError(ServiceClient* client, Exception& e) {
 }
 
 void LoginServer::printInfo() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -198,7 +198,7 @@ void LoginServer::printInfo() {
 }
 
 AccountManager* LoginServer::getAccountManager() {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -208,7 +208,7 @@ AccountManager* LoginServer::getAccountManager() {
 }
 
 LoginClient* LoginServer::getLoginClient(ServiceClient* session) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -218,7 +218,7 @@ LoginClient* LoginServer::getLoginClient(ServiceClient* session) {
 }
 
 LoginEnumCluster* LoginServer::getLoginEnumClusterMessage(Account* account) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -228,7 +228,7 @@ LoginEnumCluster* LoginServer::getLoginEnumClusterMessage(Account* account) {
 }
 
 LoginClusterStatus* LoginServer::getLoginClusterStatusMessage(Account* account) {
-	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementation());
+	LoginServerImplementation* _implementation = static_cast<LoginServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 

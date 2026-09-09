@@ -6,11 +6,10 @@
  */
 
 #include "server/zone/objects/mission/BountyMissionObjective.h"
-#include "server/zone/packets/player/PlayMusicMessage.h"
+
 #include "server/zone/objects/waypoint/WaypointObject.h"
 #include "server/zone/Zone.h"
 #include "server/zone/ZoneServer.h"
-#include "server/zone/packets/MessageCallback.h"
 #include "server/zone/managers/mission/MissionManager.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/managers/player/PlayerManager.h"
@@ -23,10 +22,6 @@
 #include "server/zone/objects/mission/bountyhunter/BountyHunterDroid.h"
 #include "server/zone/objects/mission/bountyhunter/events/BountyHunterTargetTask.h"
 #include "server/zone/managers/visibility/VisibilityManager.h"
-#include "server/zone/objects/player/sui/callbacks/BountyHuntSuiCallback.h"
-#include "server/zone/objects/player/sui/inputbox/SuiInputBox.h"
-#include "server/zone/packets/player/PlayMusicMessage.h"
-#include "server/zone/managers/loot/LootManager.h"
 
 void BountyMissionObjectiveImplementation::setNpcTemplateToSpawn(SharedObjectTemplate* sp) {
 	npcTemplateToSpawn = sp;
@@ -85,6 +80,16 @@ void BountyMissionObjectiveImplementation::abort() {
 
 	cancelAllTasks();
 
+	if (activeDroid != nullptr) {
+		if (!activeDroid->isPlayerCreature()) {
+			Locker locker(activeDroid);
+			activeDroid->destroyObjectFromDatabase();
+			activeDroid->destroyObjectFromWorld(true);
+		}
+
+		activeDroid = nullptr;
+	}
+
 	if (strongRef == nullptr)
 		return;
 
@@ -120,7 +125,10 @@ void BountyMissionObjectiveImplementation::complete() {
 
 	ManagedReference<CreatureObject*> owner = getPlayerOwner();
 	//Award bountyhunter xp.
-	owner->getZoneServer()->getPlayerManager()->awardExperience(owner, "bountyhunter", mission->getRewardCredits() / 50, true, 1);
+
+	int expGain = (mission->getRewardCredits() + mission->getBonusCredits()) / 50;
+
+	owner->getZoneServer()->getPlayerManager()->awardExperience(owner, "bountyhunter", expGain, true, 1);
 
 	owner->getZoneServer()->getMissionManager()->completePlayerBounty(mission->getTargetObjectId(), owner->getObjectID());
 
@@ -142,6 +150,13 @@ void BountyMissionObjectiveImplementation::spawnTarget(const String& zoneName) {
 
 	ZoneServer* zoneServer = getPlayerOwner()->getZoneServer();
 	Zone* zone = zoneServer->getZone(zoneName);
+
+	if (zone == nullptr){
+		error("null zone " + zoneName + " in BountyMissionObjective::spawnTarget");
+
+		return;
+	}
+
 	CreatureManager* cmng = zone->getCreatureManager();
 
 	if (npcTarget == nullptr) {
@@ -181,7 +196,7 @@ int BountyMissionObjectiveImplementation::notifyObserverEvent(MissionObserver* o
 	} else if (eventType == ObserverEventType::DAMAGERECEIVED) {
 		return handleNpcTargetReceivesDamage(arg1);
 	} else if (eventType == ObserverEventType::PLAYERKILLED) {
-		handlePlayerKilled(arg1);
+		handlePlayerKilled(arg1, arg2);
 	}
 
 	return 0;
@@ -339,13 +354,13 @@ void BountyMissionObjectiveImplementation::cancelAllTasks() {
 		targetTask = nullptr;
 	}
 
-	for (int i = 0; i < droidTasks.size(); i++) {
+	/*for (int i = 0; i < droidTasks.size(); i++) {
 		Reference<Task*> droidTask = droidTasks.get(i);
 
 		if (droidTask != nullptr && droidTask->isScheduled()) {
 			droidTask->cancel();
 		}
-	}
+	}*/
 
 	droidTasks.removeAll();
 }
@@ -564,7 +579,10 @@ int BountyMissionObjectiveImplementation::handleNpcTargetReceivesDamage(ManagedO
 	return 0;
 }
 
-void BountyMissionObjectiveImplementation::handlePlayerKilled(ManagedObject* arg1) {
+void BountyMissionObjectiveImplementation::handlePlayerKilled(ManagedObject* arg1, uint64 destructedID) {
+	if (completedMission)
+		return;
+
 	CreatureObject* creo = cast<CreatureObject*>(arg1);
 
 	if (creo == nullptr)
@@ -577,99 +595,124 @@ void BountyMissionObjectiveImplementation::handlePlayerKilled(ManagedObject* arg
 	else
 		killer = creo;
 
-	ManagedReference<MissionObject* > mission = this->mission.get();
-	ManagedReference<CreatureObject*> owner = getPlayerOwner();
-	ManagedReference<SceneObject*> inventory = killer->getSlottedObject("inventory");
-	ManagedReference<LootManager*> lootManager = killer->getZoneServer()->getLootManager();
-
-	if(mission == nullptr)
+	if (killer == nullptr)
 		return;
 
-	if (owner != nullptr && killer != nullptr && !completedMission) {
-		String playerName = killer->getFirstName();
-		String bhName = owner->getFirstName();
-		if (owner->getObjectID() == killer->getObjectID()) {
-			//Target killed by player, complete mission.
-			ZoneServer* zoneServer = owner->getZoneServer();
-			if (zoneServer != nullptr) {
-				ManagedReference<CreatureObject*> target = zoneServer->getObject(mission->getTargetObjectId()).castTo<CreatureObject*>();
-				if (target != nullptr) {
-					int minXpLoss = -50000;
-					int maxXpLoss = -500000;
+	ManagedReference<MissionObject*> mission = this->mission.get();
+	ManagedReference<CreatureObject*> owner = getPlayerOwner();
 
-					VisibilityManager::instance()->clearVisibility(target);
-					int xpLoss = mission->getRewardCredits() * -2;
+	if (mission == nullptr || owner == nullptr)
+		return;
 
-					if (xpLoss > minXpLoss)
-						xpLoss = minXpLoss;
-					else if (xpLoss < maxXpLoss)
-						xpLoss = maxXpLoss;
-			        
-			       	 	PlayerObject* attackerGhost = owner->getPlayerObject();
-					owner->getZoneServer()->getPlayerManager()->awardExperience(target, "jedi_general", xpLoss, true);
-					StringIdChatParameter message("base_player","prose_revoke_xp");
-					message.setDI(xpLoss * -1);
-					message.setTO("exp_n", "jedi_general");
-					target->sendSystemMessage(message);
+	uint64 targetID = mission->getTargetObjectId();
+	uint64 ownerID = owner->getObjectID();
+	uint64 killerID = killer->getObjectID();
 
-					String victimName = target->getFirstName();
-					lootManager->createNamedLoot(inventory, "saberhand28", victimName, 300);//, victimName);
+	// Player died to DoT
+	if (killerID == destructedID)
+		return;
 
-					if (target->hasSkill("force_rank_light_novice")) {
-					lootManager->createNamedLoot(inventory, "holocron_light", victimName, 300);//, victimName);
-					}
-					
-					if (target->hasSkill("force_rank_dark_novice")) {
-					lootManager->createNamedLoot(inventory, "holocron_dark", victimName, 300);//, victimName);
-					}
+	// info(true) << "BountyMissionObjectiveImplementation::handlePlayerKilled -- Owner: " << ownerID << " Killer: " << killerID << " Mission Target ID: " << targetID << " Destructed ID: " << destructedID;
 
-					Zone* zone = owner->getZone();
-					String planetName = zone->getZoneName();
-					String bhName = owner->getFirstName();
-					StringBuffer zBroadcast;
-                        		Vector3 worldPosition = owner->getWorldPosition();
-					String name = " (" + String::valueOf((int)owner->getWorldPositionX()) + ", " + String::valueOf((int)owner->getWorldPositionZ()) + ", " + String::valueOf((int)owner->getWorldPositionY()) + ")";
-					zBroadcast << "\\#00bfff" << bhName << "\\#ffd700" << " a" << "\\#ff7f00 Bounty Hunter" << "\\#ffd700 has collected the bounty on\\#00bfff " << victimName << " On Planet " << planetName;
-					owner->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
-					ChatManager* chatManager = owner->getZoneServer()->getChatManager();	
-					StringBuffer zGeneral;
-	                		String playerName = target->getFirstName();
-					zGeneral << "A Bounty Hunter Has Collected A Bounty On " << playerName << " On Planet " << planetName << name << " [Bounty Complete]";	
-					chatManager->handleGeneralChat(owner, zGeneral.toString());
-					attackerGhost->updateBountyKills();
-					complete();
-					if (!killer->hasSkill("combat_jedi_novice") && !killer->hasSkill("force_title_jedi_novice")) {
-					owner->addBankCredits(50000);
-					complete();
-					owner->sendSystemMessage("You have earned 50,000 Credits! This will be forwarded to your bank");
-					}
+	// Fail Mission if the target killed the owner
+	if (killerID == targetID && ownerID != killerID) {
+		PlayerObject* hunterGhost = owner->getPlayerObject();
+		int xpLoss = 0;
+
+		// Ghosts bounty failure penalty: lose 10% of current bounty hunter XP.
+		if (hunterGhost != nullptr) {
+			xpLoss = hunterGhost->getExperience("bountyhunter") / 10;
+
+			if (xpLoss > 0) {
+				PlayerManager* playerManager =
+					owner->getZoneServer()->getPlayerManager();
+
+				if (playerManager != nullptr) {
+					playerManager->awardExperience(
+						owner,
+						"bountyhunter",
+						-xpLoss,
+						true,
+						1.0f,
+						false);
 				}
 			}
-			complete();
-		} else if (mission->getTargetObjectId() == killer->getObjectID() ||
-				(npcTarget != nullptr && npcTarget->getObjectID() == killer->getObjectID())) {
-
-			owner->sendSystemMessage("@mission/mission_generic:failed"); // Mission failed
-			killer->sendSystemMessage("You have defeated a bounty hunter, ruining his mission against you!");
-			fail();
-			ChatManager* chatManager = killer->getZoneServer()->getChatManager();	
-			StringBuffer zGeneral;
-	                String playerName = owner->getFirstName();
-			Zone* zone = owner->getZone();
-			String planetName = zone->getZoneName();
-                        Vector3 worldPosition = owner->getWorldPosition();
-			String name = " (" + String::valueOf((int)owner->getWorldPositionX()) + ", " + String::valueOf((int)owner->getWorldPositionZ()) + ", " + String::valueOf((int)owner->getWorldPositionY()) + ")";
-			zGeneral << "Has Defeated "  << playerName << " A Bounty Hunter " << " on Planet " << planetName << name << " [Bounty Still Active]";	
-			chatManager->handleGeneralChat(killer, zGeneral.toString());
-			//Player killed by target, fail mission.
-		        String missionName = killer->getFirstName();
-			StringBuffer zBroadcast;
-			if (killer->hasSkill("force_title_jedi_novice")) {
-			zBroadcast << "\\#00bfff" << missionName << "\\#ffd700" << " a" << "\\#00e604 Jedi" << "\\#ffd700 has defeated\\#00bfff " << playerName << "\\#ffd700 a" << "\\#ff7f00 Bounty Hunter";
-			}
-			killer->getZoneServer()->getChatManager()->broadcastGalaxy(nullptr, zBroadcast.toString());
-			PlayMusicMessage* pmm = new PlayMusicMessage("sound/music_themequest_victory_imperial.snd");
-			killer->sendMessage(pmm);
 		}
+
+		// Lose 10% of total cash + bank credits.
+		int cashCredits = owner->getCashCredits();
+		int bankCredits = owner->getBankCredits();
+
+		int creditFee =
+			(int)(((int64)cashCredits + (int64)bankCredits) / 10);
+
+		int cashFee =
+			creditFee < cashCredits ? creditFee : cashCredits;
+
+		int bankFee = creditFee - cashFee;
+
+		if (cashFee > 0)
+			owner->subtractCashCredits(cashFee);
+
+		if (bankFee > 0)
+			owner->subtractBankCredits(bankFee);
+
+		StringBuffer penaltyMessage;
+		penaltyMessage
+			<< "Bounty failure penalty: "
+			<< xpLoss
+			<< " bounty hunter XP and "
+			<< creditFee
+			<< " credits lost.";
+
+		owner->sendSystemMessage(penaltyMessage.toString());
+
+		owner->sendSystemMessage("@mission/mission_generic:failed"); // Mission failed
+
+		if (killer->isPlayerCreature())
+			killer->sendSystemMessage("You have defeated a bounty hunter, ruining his mission against you!");
+
+		fail();
+
+		return;
 	}
+
+	// Killer must be the mission owner to return succesful
+	if (killerID != ownerID)
+		return;
+
+	// Target killed by player, complete mission.
+	ZoneServer* zoneServer = owner->getZoneServer();
+
+	if (zoneServer == nullptr)
+		return;
+
+	ManagedReference<CreatureObject*> target = zoneServer->getObject(mission->getTargetObjectId()).castTo<CreatureObject*>();
+
+	if (target == nullptr)
+		return;
+
+	int minXpLoss = -50000;
+	int maxXpLoss = -500000;
+
+	VisibilityManager::instance()->clearVisibility(target);
+	int rewardCreds = mission->getRewardCredits() + mission->getBonusCredits();
+	int xpLoss = rewardCreds * -2;
+
+	if (xpLoss > minXpLoss)
+		xpLoss = minXpLoss;
+	else if (xpLoss < maxXpLoss)
+		xpLoss = maxXpLoss;
+
+	auto playerManager = zoneServer->getPlayerManager();
+
+	if (playerManager != nullptr)
+		playerManager->awardExperience(target, "jedi_general", xpLoss, true);
+
+	StringIdChatParameter message("base_player", "prose_revoke_xp");
+	message.setDI(xpLoss * -1);
+	message.setTO("exp_n", "jedi_general");
+	target->sendSystemMessage(message);
+
+	complete();
 }

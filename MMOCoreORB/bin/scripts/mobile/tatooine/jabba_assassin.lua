@@ -2,6 +2,7 @@ jabba_assassin = Creature:new {
 	objectName = "@mob/creature_names:jabba_assassin",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
+	mobType = MOB_NPC,
 	socialGroup = "jabba",
 	faction = "jabba",
 	level = 17,
@@ -20,7 +21,7 @@ jabba_assassin = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0.0,
+	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -31,19 +32,22 @@ jabba_assassin = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 1500000},
-				{group = "wearables_common", chance = 2000000},
-				{group = "rifles", chance = 2000000},
-				{group = "tailor_components", chance = 1500000},
-				{group = "loot_kit_parts", chance = 1500000},
-				{group = "jabba_common", chance = 1500000}
+				{group = "jabba_tier_1", chance = 10000000}
 			}
 		}
 	},
-	weapons = {"pirate_weapons_medium"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "pirate_pistol",
+	secondaryWeapon = "pirate_carbine",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/slang",
-	attacks = merge(brawlermaster,marksmanmaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = marksmanmid,
+	secondaryAttacks = marksmanmid
 }
 
 CreatureTemplates:addCreatureTemplate(jabba_assassin, "jabba_assassin")

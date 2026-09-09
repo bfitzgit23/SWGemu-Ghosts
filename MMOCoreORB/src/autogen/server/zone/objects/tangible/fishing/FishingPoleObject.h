@@ -144,7 +144,7 @@ public:
 
 	String getText(CreatureObject* player);
 
-	bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient = false);
+	bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient = false, bool nullifyParent = true);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -214,7 +214,7 @@ public:
 
 	String getText(CreatureObject* player);
 
-	virtual bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient = false);
+	virtual bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient = false, bool nullifyParent = true);
 
 	WeakReference<FishingPoleObject*> _this;
 
@@ -274,7 +274,7 @@ public:
 
 	String getText(CreatureObject* player);
 
-	bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient);
+	bool removeObject(SceneObject* object, SceneObject* destination, bool notifyClient, bool nullifyParent);
 
 };
 

@@ -160,6 +160,12 @@ public:
 
 	static const int WEAPON = 7;
 
+	static const int TOOL_READY = 0;
+
+	static const int TOOL_WORKING = 1;
+
+	static const int TOOL_FINISHED = 2;
+
 	CraftingTool();
 
 	void initializeTransientMembers();
@@ -228,8 +234,6 @@ public:
 
 	Vector<unsigned int>* getToolTabs();
 
-	void disperseItems();
-
 	int getForceCriticalAssembly();
 
 	int getForceCriticalExperiment();
@@ -267,7 +271,7 @@ namespace tool {
 
 class CraftingToolImplementation : public ToolTangibleObjectImplementation {
 protected:
-	String status;
+	int status;
 
 	int type;
 
@@ -295,6 +299,12 @@ public:
 	static const int STRUCTURE = 6;
 
 	static const int WEAPON = 7;
+
+	static const int TOOL_READY = 0;
+
+	static const int TOOL_WORKING = 1;
+
+	static const int TOOL_FINISHED = 2;
 
 	CraftingToolImplementation();
 
@@ -365,8 +375,6 @@ public:
 	Reference<ManufactureSchematic* > getManufactureSchematic();
 
 	Vector<unsigned int>* getToolTabs();
-
-	void disperseItems();
 
 	int getForceCriticalAssembly();
 
@@ -450,8 +458,6 @@ public:
 
 	Reference<ManufactureSchematic* > getManufactureSchematic();
 
-	void disperseItems();
-
 	int getForceCriticalAssembly();
 
 	int getForceCriticalExperiment();
@@ -497,8 +503,6 @@ namespace tool {
 
 class CraftingToolPOD : public ToolTangibleObjectPOD {
 public:
-	Optional<String> status;
-
 	Optional<int> type;
 
 	Optional<float> effectiveness;

@@ -10,7 +10,7 @@
  *	CharacterBuilderTerminalStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SENDINITIALCHOICES__CREATUREOBJECT_,RPC_GIVELANGUAGES__CREATUREOBJECT_,RPC_ENHANCECHARACTER__CREATUREOBJECT_,RPC_GRANTGLOWYBADGES__CREATUREOBJECT_,RPC_GRANTJEDIINITIATE__CREATUREOBJECT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SENDINITIALCHOICES__CREATUREOBJECT_,RPC_GIVELANGUAGES__CREATUREOBJECT_,RPC_ENHANCECHARACTER__CREATUREOBJECT_,RPC_GRANTGLOWYBADGES__CREATUREOBJECT_,RPC_GRANTJEDIINITIATE__CREATUREOBJECT_,RPC_GIVEDNATESTINGSET__CREATUREOBJECT_STRING_,};
 
 CharacterBuilderTerminal::CharacterBuilderTerminal() : Terminal(DummyConstructorParameter::instance()) {
 	CharacterBuilderTerminalImplementation* _implementation = new CharacterBuilderTerminalImplementation();
@@ -140,6 +140,22 @@ void CharacterBuilderTerminal::grantJediInitiate(CreatureObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->grantJediInitiate(player);
+	}
+}
+
+void CharacterBuilderTerminal::giveDnaTestingSet(CreatureObject* player, const String& testName) {
+	CharacterBuilderTerminalImplementation* _implementation = static_cast<CharacterBuilderTerminalImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GIVEDNATESTINGSET__CREATUREOBJECT_STRING_);
+		method.addObjectParameter(player);
+		method.addAsciiParameter(testName);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->giveDnaTestingSet(player, testName);
 	}
 }
 
@@ -359,6 +375,15 @@ void CharacterBuilderTerminalAdapter::invokeMethod(uint32 methid, DistributedMet
 			
 		}
 		break;
+	case RPC_GIVEDNATESTINGSET__CREATUREOBJECT_STRING_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			 String testName; inv->getAsciiParameter(testName);
+			
+			giveDnaTestingSet(player, testName);
+			
+		}
+		break;
 	default:
 		TerminalAdapter::invokeMethod(methid, inv);
 	}
@@ -390,6 +415,10 @@ void CharacterBuilderTerminalAdapter::grantGlowyBadges(CreatureObject* player) {
 
 void CharacterBuilderTerminalAdapter::grantJediInitiate(CreatureObject* player) {
 	(static_cast<CharacterBuilderTerminal*>(stub))->grantJediInitiate(player);
+}
+
+void CharacterBuilderTerminalAdapter::giveDnaTestingSet(CreatureObject* player, const String& testName) {
+	(static_cast<CharacterBuilderTerminal*>(stub))->giveDnaTestingSet(player, testName);
 }
 
 /*

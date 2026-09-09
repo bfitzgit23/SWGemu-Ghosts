@@ -212,7 +212,7 @@ void SpiceDownerBuffImplementation::activate(bool applyModifiers) {
 	// server/zone/objects/creature/buffs/SpiceDownerBuff.idl():  			Buff buff = super.creature.getBuff(BuffCRC.FOOD_REDUCE_SPICE_DOWNTIME);
 	ManagedReference<Buff* > buff = BuffImplementation::creature.getForUpdate().get()->getBuff(BuffCRC::FOOD_REDUCE_SPICE_DOWNTIME);
 	// server/zone/objects/creature/buffs/SpiceDownerBuff.idl():  		}
-	if (buff != NULL){
+	if (buff){
 	// server/zone/objects/creature/buffs/SpiceDownerBuff.idl():  				float reductionMod = buff.getSkillModifierValue("reduce_spice_downtime");
 	float reductionMod = buff->getSkillModifierValue("reduce_spice_downtime");
 	// server/zone/objects/creature/buffs/SpiceDownerBuff.idl():  				float reduction = 1.f - (reductionMod / 100);

@@ -22,7 +22,7 @@
  *	CraftingToolStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1559421302,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISCRAFTINGTOOL__,RPC_ISREADY__,RPC_SETREADY__,RPC_ISBUSY__,RPC_SETBUSY__,RPC_ISFINISHED__,RPC_SETFINISHED__,RPC_SENDTOOLSTARTFAILURE__CREATUREOBJECT_STRING_,RPC_GETTOOLTYPE__,RPC_GETEFFECTIVENESS__,RPC_GETCOMPLEXITYLEVEL__,RPC_GETPROTOTYPE__,RPC_GETMANUFACTURESCHEMATIC__,RPC_DISPERSEITEMS__,RPC_GETFORCECRITICALASSEMBLY__,RPC_GETFORCECRITICALEXPERIMENT__,RPC_SETFORCECRITICALASSEMBLY__INT_,RPC_SETFORCECRITICALEXPERIMENT__INT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1559421302,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISCRAFTINGTOOL__,RPC_ISREADY__,RPC_SETREADY__,RPC_ISBUSY__,RPC_SETBUSY__,RPC_ISFINISHED__,RPC_SETFINISHED__,RPC_SENDTOOLSTARTFAILURE__CREATUREOBJECT_STRING_,RPC_GETTOOLTYPE__,RPC_GETEFFECTIVENESS__,RPC_GETCOMPLEXITYLEVEL__,RPC_GETPROTOTYPE__,RPC_GETMANUFACTURESCHEMATIC__,RPC_GETFORCECRITICALASSEMBLY__,RPC_GETFORCECRITICALEXPERIMENT__,RPC_SETFORCECRITICALASSEMBLY__INT_,RPC_SETFORCECRITICALEXPERIMENT__INT_};
 
 CraftingTool::CraftingTool() : ToolTangibleObject(DummyConstructorParameter::instance()) {
 	CraftingToolImplementation* _implementation = new CraftingToolImplementation();
@@ -304,20 +304,6 @@ Vector<unsigned int>* CraftingTool::getToolTabs() {
 	}
 }
 
-void CraftingTool::disperseItems() {
-	CraftingToolImplementation* _implementation = static_cast<CraftingToolImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_DISPERSEITEMS__);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->disperseItems();
-	}
-}
-
 int CraftingTool::getForceCriticalAssembly() {
 	CraftingToolImplementation* _implementation = static_cast<CraftingToolImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -486,10 +472,6 @@ bool CraftingToolImplementation::readObjectMember(ObjectInputStream* stream, con
 		return true;
 
 	switch(nameHashCode) {
-	case 0xb4e9c332: //CraftingTool.status
-		TypeInfo<String >::parseFromBinaryStream(&status, stream);
-		return true;
-
 	case 0x6b2e23d7: //CraftingTool.type
 		TypeInfo<int >::parseFromBinaryStream(&type, stream);
 		return true;
@@ -532,15 +514,6 @@ int CraftingToolImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	_nameHashCode = 0xb4e9c332; //CraftingTool.status
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<String >::toBinaryStream(&status, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0x6b2e23d7; //CraftingTool.type
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -603,8 +576,6 @@ void CraftingToolImplementation::writeJSON(nlohmann::json& j) {
 	ToolTangibleObjectImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	thisObject["status"] = status;
-
 	thisObject["type"] = type;
 
 	thisObject["effectiveness"] = effectiveness;
@@ -624,8 +595,8 @@ CraftingToolImplementation::CraftingToolImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/tangible/tool/CraftingTool.idl():  		Logger.setLoggingName("CraftingTool");
 	Logger::setLoggingName("CraftingTool");
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = "@crafting:tool_status_ready";
-	status = "@crafting:tool_status_ready";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = 0;
+	status = 0;
 	// server/zone/objects/tangible/tool/CraftingTool.idl():  		effectiveness = 0;
 	effectiveness = 0;
 	// server/zone/objects/tangible/tool/CraftingTool.idl():  		forceCriticalAssembly = 0;
@@ -642,56 +613,39 @@ CraftingToolImplementation::CraftingToolImplementation() {
 	ToolTangibleObjectImplementation::setContainerDefaultDenyPermission(ContainerPermissions::MOVEOUT);
 }
 
-void CraftingToolImplementation::initializeTransientMembers() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		super.initializeTransientMembers();
-	ToolTangibleObjectImplementation::initializeTransientMembers();
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		}
-	if (getContainerObjectsSize() == 0){
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  			status = "@crafting:tool_status_ready";
-	status = "@crafting:tool_status_ready";
-}
-
-	else {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  			status = "@crafting:tool_status_finished";
-	status = "@crafting:tool_status_finished";
-}
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		setCountdownTimer(0, false);
-	setCountdownTimer(0, false);
-}
-
 bool CraftingToolImplementation::isCraftingTool() {
 	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return true;
 	return true;
 }
 
 bool CraftingToolImplementation::isReady() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return status == "@crafting:tool_status_ready";
-	return status == "@crafting:tool_status_ready";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return (status == TOOL_READY);
+	return (status == TOOL_READY);
 }
 
 void CraftingToolImplementation::setReady() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = "@crafting:tool_status_ready";
-	status = "@crafting:tool_status_ready";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = TOOL_READY;
+	status = TOOL_READY;
 }
 
 bool CraftingToolImplementation::isBusy() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return status == "@crafting:tool_status_working";
-	return status == "@crafting:tool_status_working";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return (status == TOOL_WORKING);
+	return (status == TOOL_WORKING);
 }
 
 void CraftingToolImplementation::setBusy() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = "@crafting:tool_status_working";
-	status = "@crafting:tool_status_working";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = TOOL_WORKING;
+	status = TOOL_WORKING;
 }
 
 bool CraftingToolImplementation::isFinished() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return status == "@crafting:tool_status_finished";
-	return status == "@crafting:tool_status_finished";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		return (status == TOOL_FINISHED);
+	return (status == TOOL_FINISHED);
 }
 
 void CraftingToolImplementation::setFinished() {
-	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = "@crafting:tool_status_finished";
-	status = "@crafting:tool_status_finished";
+	// server/zone/objects/tangible/tool/CraftingTool.idl():  		status = TOOL_FINISHED;
+	status = TOOL_FINISHED;
 }
 
 int CraftingToolImplementation::getToolType() {
@@ -853,13 +807,6 @@ void CraftingToolAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_DISPERSEITEMS__:
-		{
-			
-			disperseItems();
-			
-		}
-		break;
 	case RPC_GETFORCECRITICALASSEMBLY__:
 		{
 			
@@ -955,10 +902,6 @@ Reference<ManufactureSchematic* > CraftingToolAdapter::getManufactureSchematic()
 	return (static_cast<CraftingTool*>(stub))->getManufactureSchematic();
 }
 
-void CraftingToolAdapter::disperseItems() {
-	(static_cast<CraftingTool*>(stub))->disperseItems();
-}
-
 int CraftingToolAdapter::getForceCriticalAssembly() {
 	return (static_cast<CraftingTool*>(stub))->getForceCriticalAssembly();
 }
@@ -1031,9 +974,6 @@ void CraftingToolPOD::writeJSON(nlohmann::json& j) {
 	ToolTangibleObjectPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	if (status)
-		thisObject["status"] = status.value();
-
 	if (type)
 		thisObject["type"] = type.value();
 
@@ -1069,17 +1009,6 @@ int CraftingToolPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	if (status) {
-	_nameHashCode = 0xb4e9c332; //CraftingTool.status
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<String >::toBinaryStream(&status.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (type) {
 	_nameHashCode = 0x6b2e23d7; //CraftingTool.type
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1155,14 +1084,6 @@ bool CraftingToolPOD::readObjectMember(ObjectInputStream* stream, const uint32& 
 		return true;
 
 	switch(nameHashCode) {
-	case 0xb4e9c332: //CraftingTool.status
-		{
-			String _mnstatus;
-			TypeInfo<String >::parseFromBinaryStream(&_mnstatus, stream);
-			status = std::move(_mnstatus);
-		}
-		return true;
-
 	case 0x6b2e23d7: //CraftingTool.type
 		{
 			int _mntype;
@@ -1236,8 +1157,6 @@ void CraftingToolPOD::readObject(ObjectInputStream* stream) {
 
 void CraftingToolPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	ToolTangibleObjectPOD::writeObjectCompact(stream);
-
-	TypeInfo<String >::toBinaryStream(&status.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&type.value(), stream);
 

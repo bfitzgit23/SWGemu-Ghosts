@@ -55,5 +55,23 @@ includeFile("tangible/deed/vehicle_deed/speederbike_deed.lua")
 includeFile("tangible/deed/vehicle_deed/speederbike_flash_deed.lua")
 includeFile("tangible/deed/vehicle_deed/speederbike_swoop_deed.lua")
 includeFile("tangible/deed/vehicle_deed/vehicle_deed_base.lua")
+includeFile("tangible/deed/vehicle_deed/grievous_wheel_bike_deed.lua")
 includeFile("tangible/deed/vehicle_deed/vehicular_prototype_bike_deed.lua")
 includeFile("tangible/deed/vehicle_deed/vehicular_prototype_deed.lua")
+
+-- Custom mount deeds with complete 2026 VehicleDeed definitions.
+-- These are intentionally loaded from custom_content: the similarly named
+-- generated files in this directory are only client-template stubs.
+includeFile("custom_content/tangible/deed/vehicle_deed/air2_swoop_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/fg_8t8_podracer_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/geonosian_speeder_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/koro2_speeder_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/landspeeder_organa_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/mechno_chair_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/pod_racer_balta_podracer_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/pod_racer_ipg_longtail_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/senate_pod_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/tcg_hk47_jetpack_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/tcg_merr_sonn_jt12_jetpack_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/tcg_republic_gunship_deed.lua")
+includeFile("custom_content/tangible/deed/vehicle_deed/xj6_air_speeder_deed.lua")

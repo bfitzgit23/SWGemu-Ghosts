@@ -1,15 +1,33 @@
 SkillTrainer = ScreenPlay:new {}
 
 function SkillTrainer:getTrainerType(pPlayer, pNpc, pConvTemplate)
+	-- Explicit conversation trainer types must win.  In particular, the
+	-- Grand Jedi Master and Dark Jedi Lord trainers use dedicated skill
+	-- tables.  Treating one of those NPCs as the player's generated Jedi
+	-- trainer silently redirects the conversation to trainer_jedi and makes
+	-- the advanced selections resolve against the wrong skill list.
+	local convoTemplate = LuaConversationTemplate(pConvTemplate)
+	local pScreen = convoTemplate:getScreen("trainerType")
+
+	if (pScreen ~= nil) then
+		local screen = LuaConversationScreen(pScreen)
+		local explicitTrainerType = screen:getOptionLink(0)
+
+		if (explicitTrainerType ~= nil and explicitTrainerType ~= "" and explicitTrainerType ~= "trainer_jedi") then
+			return explicitTrainerType
+		end
+	end
+
 	local pGhost = CreatureObject(pPlayer):getPlayerObject()
-	local isJediTrainer = false
 
 	if (pGhost ~= nil and PlayerObject(pGhost):isJediTrainer(pNpc)) then
 		return "trainer_jedi"
 	end
 
-	local convoTemplate = LuaConversationTemplate(pConvTemplate)
-	local pScreen = convoTemplate:getScreen("trainerType")
+	if (pScreen == nil) then
+		return ""
+	end
+
 	local screen = LuaConversationScreen(pScreen)
 
 	return screen:getOptionLink(0)
@@ -24,12 +42,35 @@ function SkillTrainer:getTeachableSkills(pPlayer, trainerType, qualifiedOnly)
 	end
 
 	local skillManager = LuaSkillManager()
+	local pGhost = CreatureObject(pPlayer):getPlayerObject()
 
 	for i = 1, #skills, 1 do
 		if (not CreatureObject(pPlayer):hasSkill(skills[i])) then
-			if (qualifiedOnly and skillManager:fulfillsSkillPrerequisitesAndXp(pPlayer, skills[i])) then
+			local prereqOK = false
+			if (qualifiedOnly) then
+				prereqOK = skillManager:fulfillsSkillPrerequisitesAndXp(pPlayer, skills[i])
+			else
+				prereqOK = skillManager:fulfillsSkillPrerequisites(pPlayer, skills[i])
+			end
+
+			local xpType = "?"
+			local xpCost = -1
+			local haveXP = -1
+			local pSkill = skillManager:getSkill(skills[i])
+			if (pSkill ~= nil) then
+				local skillObject = LuaSkill(pSkill)
+				xpType = skillObject:getXpType()
+				xpCost = skillObject:getXpCost()
+			end
+			if (pGhost ~= nil) then
+				haveXP = PlayerObject(pGhost):getExperience(xpType)
+			end
+
+			printLuaError("[TRAINER-DEBUG] type=" .. trainerType .. " qual=" .. tostring(qualifiedOnly) .. " skill=" .. skills[i] .. " prereqOK=" .. tostring(prereqOK) .. " xpType=" .. xpType .. " need=" .. xpCost .. " have=" .. haveXP)
+
+			if (qualifiedOnly and prereqOK) then
 				table.insert(teachableSkills, skills[i])
-			elseif (not qualifiedOnly and skillManager:fulfillsSkillPrerequisites(pPlayer, skills[i])) then
+			elseif (not qualifiedOnly and prereqOK) then
 				table.insert(teachableSkills, skills[i])
 			end
 		end

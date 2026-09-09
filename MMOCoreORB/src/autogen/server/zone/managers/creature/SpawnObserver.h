@@ -24,21 +24,7 @@
 #endif
 #include "engine/util/json_utils.h"
 
-namespace server {
-namespace zone {
-namespace objects {
-namespace creature {
-
-class CreatureObject;
-
-class CreatureObjectPOD;
-
-} // namespace creature
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::creature;
+#include "server/zone/objects/creature/CreatureObject.h"
 
 #include "templates/mobile/LairTemplate.h"
 
@@ -71,6 +57,8 @@ public:
 
 	String getLairTemplateName();
 
+	int getDifficultyLevel();
+
 	SynchronizedVector<ManagedReference<CreatureObject* > >* getSpawnedCreatures();
 
 	int getBabiesSpawned();
@@ -84,6 +72,8 @@ public:
 	bool isTheaterSpawnObserver();
 
 	bool isDynamicSpawnObserver();
+
+	bool isSpaceSpawnObserver();
 
 	void despawnSpawns();
 
@@ -139,6 +129,8 @@ public:
 
 	String getLairTemplateName();
 
+	int getDifficultyLevel();
+
 	SynchronizedVector<ManagedReference<CreatureObject* > >* getSpawnedCreatures();
 
 	int getBabiesSpawned();
@@ -147,13 +139,15 @@ public:
 
 	bool isLairObserver();
 
-	bool isDestroyMissionLairObserver();
+	virtual bool isDestroyMissionLairObserver();
 
-	bool isTheaterSpawnObserver();
+	virtual bool isTheaterSpawnObserver();
 
-	bool isDynamicSpawnObserver();
+	virtual bool isDynamicSpawnObserver();
 
-	void despawnSpawns();
+	virtual bool isSpaceSpawnObserver();
+
+	virtual void despawnSpawns();
 
 	WeakReference<SpawnObserver*> _this;
 
@@ -206,6 +200,8 @@ public:
 
 	String getLairTemplateName();
 
+	int getDifficultyLevel();
+
 	int getBabiesSpawned();
 
 	bool isSpawnObserver();
@@ -217,6 +213,8 @@ public:
 	bool isTheaterSpawnObserver();
 
 	bool isDynamicSpawnObserver();
+
+	bool isSpaceSpawnObserver();
 
 	void despawnSpawns();
 

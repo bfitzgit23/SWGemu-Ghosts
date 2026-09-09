@@ -5,6 +5,8 @@ function trainerConvHandler:getInitialScreen(pPlayer, pNpc, pConvTemplate)
 	local trainerType = SkillTrainer:getTrainerType(pPlayer, pNpc, pConvTemplate)
 	local prereqSkills = SkillTrainer:getPrerequisiteTrainerSkills(trainerType)
 
+	printLuaError("[TRAINER-DEBUG] initial trainerType=" .. tostring(trainerType) .. " prereqs=" .. (prereqSkills ~= nil and table.concat(prereqSkills, ",") or "nil") .. " allPrereq=" .. tostring(SkillTrainer:hasAllPrereqSkills(pPlayer, trainerType)))
+
 	if (trainerType == "") then
 		return convoTemplate:getScreen("trainer_unknown")
 	elseif (not SkillTrainer:hasAllPrereqSkills(pPlayer, trainerType)) then
@@ -25,7 +27,7 @@ function trainerConvHandler:runScreenHandlers(pConvTemplate, pPlayer, pNpc, sele
 	local stringTable = "@skill_teacher:"
 	local isJediTrainer = false
 
-	if (trainerType == "trainer_jedi") then
+	if (trainerType == "trainer_jedi" or string.sub(trainerType, 1, 12) == "trainer_jedi") then
 		isJediTrainer = true
 		stringTable = "@jedi_trainer:"
 	end

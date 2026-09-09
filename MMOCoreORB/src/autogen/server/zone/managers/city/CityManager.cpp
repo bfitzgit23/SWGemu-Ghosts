@@ -12,8 +12,6 @@
 
 #include "server/zone/objects/scene/SceneObject.h"
 
-#include "server/zone/objects/region/CityRegion.h"
-
 #include "server/zone/objects/waypoint/WaypointObject.h"
 
 #include "server/zone/objects/structure/StructureObject.h"
@@ -1368,9 +1366,9 @@ int CityManagerImplementation::getTotalCities() {
 
 bool CityManagerImplementation::renameCity(CityRegion* city, const String& newName) {
 	// server/zone/managers/city/CityManager.idl():  		return 
-	if ((&cities)->contains(city->getRegionName())){
-	// server/zone/managers/city/CityManager.idl():  			cities.drop(city.getRegionName());
-	(&cities)->drop(city->getRegionName());
+	if ((&cities)->contains(city->getCityRegionName())){
+	// server/zone/managers/city/CityManager.idl():  			cities.drop(city.getCityRegionName());
+	(&cities)->drop(city->getCityRegionName());
 	// server/zone/managers/city/CityManager.idl():  			cities.put(newName, city);
 	(&cities)->put(newName, city);
 	// server/zone/managers/city/CityManager.idl():  			return true;

@@ -2,15 +2,15 @@ hk47 = Creature:new {
 	customName = "HK-47",
 	socialGroup = "townsperson",
 	faction = "",
-	level = 70,
-	chanceHit = 0.27,
-	damageMin = 550,
-	damageMax = 800,
-	baseXp = 235,
-	baseHAM = 16000,
-	baseHAMmax = 19000,
-	armor = 0,
-	resists = {0,0,0,0,0,0,0,-1,-1},
+	level = 250,
+	chanceHit = 25.0,
+	damageMin = 2250,
+	damageMax = 3470,
+	baseXp = 25000,
+	baseHAM = 400000,
+	baseHAMmax = 500000,
+	armor = 1,
+	resists = {85,85,85,85,85,85,85,85,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -25,10 +25,12 @@ hk47 = Creature:new {
 	optionsBitmask = AIENABLED,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/som/hk47.iff"},
+	templates = {"object/mobile/som/shared_hk47.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "hk47_loot", chance = 10000000},
+			},
 			lootChance = 2100000
 		}
 	},

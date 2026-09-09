@@ -1,0 +1,2 @@
+-- Custom Jedi rank trainers are registered by scripts/mobile/trainer/serverobjects.lua.
+-- Do not load the legacy conversation or duplicate the mobile registrations here.

@@ -145,6 +145,8 @@ public:
 
 	void destroyObjectFromDatabase(bool destroyContainedObjects = false);
 
+	bool isBombDroid();
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -229,6 +231,8 @@ public:
 
 	virtual void destroyObjectFromDatabase(bool destroyContainedObjects = false);
 
+	bool isBombDroid();
+
 	WeakReference<DroidDeed*> _this;
 
 	operator const DroidDeed*();
@@ -282,6 +286,8 @@ public:
 	bool isDroidDeedObject();
 
 	void destroyObjectFromDatabase(bool destroyContainedObjects);
+
+	bool isBombDroid();
 
 };
 

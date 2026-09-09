@@ -42,7 +42,6 @@
 
 
 object_tangible_scout_trap_trap_noise_maker = object_tangible_scout_trap_shared_trap_noise_maker:new {
-
 	templateType = TRAP,
 	objectMenuComponent = "TrapMenuComponent",
 
@@ -52,16 +51,17 @@ object_tangible_scout_trap_trap_noise_maker = object_tangible_scout_trap_shared_
 	skillMods = {},
 
 	healthCost = 17,
-	actionCost = 30, 
+	actionCost = 30,
 	mindCost = 17,
 
 	maxRange = 32,
+	areaOfEffect = false,
 
 	poolToDamage = MIND,
-	minDamage = 100,
-	maxDamage = 150,
+	minDamage = 80,
+	maxDamage = 120,
 
-	duration = 15,
+	duration = 10,
 	state = STUNNED,
 	defenseMod = "stun_defense",
 

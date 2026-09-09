@@ -2,6 +2,7 @@ mound_mite = Creature:new {
 	objectName = "@mob/creature_names:mound_mite",
 	socialGroup = "self",
 	faction = "",
+	mobType = MOB_CARNIVORE,
 	level = 9,
 	chanceHit = 0.27,
 	damageMin = 80,
@@ -29,13 +30,18 @@ mound_mite = Creature:new {
 	hues = { 24, 25, 26, 27, 28, 29, 30, 31 },
 	controlDeviceTemplate = "object/intangible/pet/rock_mite_hue.iff",
 	scale = 0.8,
-	lootGroups = {},
-	weapons = {},
+	lootGroups = {{groups = {{group = "junk", chance = 7500000}, {group = "wearables_common", chance = 1000000}, {group = "armor_all", chance = 1000000}, {group = "melee_weapons", chance = 500000}}, lootChance = 3000000}},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "unarmed",
+	secondaryWeapon = "none",
 	conversationTemplate = "",
-	attacks = {
-		{"",""},
-		{"stunattack",""}
-	}
+	
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = { {"",""}, {"stunattack",""} },
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(mound_mite, "mound_mite")

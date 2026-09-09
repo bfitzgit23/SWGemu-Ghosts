@@ -24,6 +24,46 @@ FighterShipObject::~FighterShipObject() {
 
 
 
+void FighterShipObject::loadTemplateData(SharedObjectTemplate* templateData) {
+	FighterShipObjectImplementation* _implementation = static_cast<FighterShipObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->loadTemplateData(templateData);
+	}
+}
+
+void FighterShipObject::loadTemplateData(SharedShipObjectTemplate* shipTemp) {
+	FighterShipObjectImplementation* _implementation = static_cast<FighterShipObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->loadTemplateData(shipTemp);
+	}
+}
+
+bool FighterShipObject::__isFighterShipObject() {
+	FighterShipObjectImplementation* _implementation = static_cast<FighterShipObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->isFighterShipObject();
+	}
+}
+
+FighterShipObject* FighterShipObject::__asFighterShipObject() {
+	FighterShipObjectImplementation* _implementation = static_cast<FighterShipObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->asFighterShipObject();
+	}
+}
+
 DistributedObjectServant* FighterShipObject::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -156,6 +196,12 @@ int FighterShipObjectImplementation::writeObjectMembers(ObjectOutputStream* stre
 	return _count;
 }
 
+void FighterShipObjectImplementation::writeJSON(nlohmann::json& j) {
+	ShipObjectImplementation::writeJSON(j);
+
+	nlohmann::json thisObject = nlohmann::json::object();
+}
+
 FighterShipObjectImplementation::FighterShipObjectImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/ship/FighterShipObject.idl():  		Logger.setLoggingName("FighterShipObject");
@@ -231,6 +277,13 @@ FighterShipObjectPOD::~FighterShipObjectPOD() {
 
 FighterShipObjectPOD::FighterShipObjectPOD(void) {
 	_className = "FighterShipObject";
+}
+
+
+void FighterShipObjectPOD::writeJSON(nlohmann::json& j) {
+	ShipObjectPOD::writeJSON(j);
+
+	nlohmann::json thisObject = nlohmann::json::object();
 }
 
 

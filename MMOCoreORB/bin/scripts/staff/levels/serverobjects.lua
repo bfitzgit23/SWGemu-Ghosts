@@ -41,22 +41,19 @@
 --which carries forward this exception.
 --true = 1, false = 0
 
--- Ghosts staff levels
---includeFile("levels/qa_basilisk.lua")
+-- Basilisk staff levels
+includeFile("levels/qa_basilisk.lua")
+includeFile("levels/dev_basilisk.lua")
 
 includeFile("levels/admin.lua")
 includeFile("levels/dev.lua")
 includeFile("levels/qa.lua")
 includeFile("levels/csr.lua")
 includeFile("levels/ec.lua")
---includeFile("levels/intern.lua")
+includeFile("levels/intern.lua")
 --includeFile("levels/tester.lua")
 includeFile("levels/player.lua")
 includeFile("levels/eci.lua")
 includeFile("levels/csi.lua")
 includeFile("levels/cc.lua")
 includeFile("levels/ct.lua")
---Ghosts Custom
-includeFile("levels/senator.lua")
-includeFile("levels/vip.lua")
-includeFile("levels/contributor.lua")

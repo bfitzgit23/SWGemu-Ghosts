@@ -40,8 +40,8 @@ void RobeObject::initializeTransientMembers() {
 	}
 }
 
-String RobeObject::getSkillRequired() {
-	RobeObjectImplementation* _implementation = static_cast<RobeObjectImplementation*>(_getImplementation());
+String RobeObject::getSkillRequired() const {
+	RobeObjectImplementation* _implementation = static_cast<RobeObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -271,7 +271,7 @@ void RobeObjectAdapter::initializeTransientMembers() {
 	(static_cast<RobeObject*>(stub))->initializeTransientMembers();
 }
 
-String RobeObjectAdapter::getSkillRequired() {
+String RobeObjectAdapter::getSkillRequired() const {
 	return (static_cast<RobeObject*>(stub))->getSkillRequired();
 }
 

@@ -22,6 +22,10 @@ const byte WaypointObject::COLOR_YELLOW = 0x04;
 
 const byte WaypointObject::COLOR_PURPLE = 0x05;
 
+const byte WaypointObject::COLOR_WHITE2 = 0x06;
+
+const byte WaypointObject::COLOR_SPACE = 0x07;
+
 enum {RPC_SETCELLID__INT_,RPC_SETPLANETCRC__INT_,RPC_GETPLANETCRC__,RPC_SETCOLOR__BYTE_,RPC_SETACTIVE__BYTE_,RPC_SETUNKNOWN__LONG_,RPC_SETSPECIALTYPEID__INT_,RPC_GETSPECIALTYPEID__,RPC_TOGGLESTATUS__,RPC_ISACTIVE__,RPC_GETCOLOR__,RPC_GETDETAILEDDESCRIPTION__,RPC_SETDETAILEDDESCRIPTION__STRING_,RPC_SETQUESTDETAILS__STRING_};
 
 WaypointObject::WaypointObject() : IntangibleObject(DummyConstructorParameter::instance()) {
@@ -237,7 +241,7 @@ byte WaypointObject::getColor() const {
 	}
 }
 
-String WaypointObject::getDetailedDescription() {
+String WaypointObject::getDetailedDescription() const {
 	WaypointObjectImplementation* _implementation = static_cast<WaypointObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -314,6 +318,10 @@ const byte WaypointObjectImplementation::COLOR_ORANGE = 0x03;
 const byte WaypointObjectImplementation::COLOR_YELLOW = 0x04;
 
 const byte WaypointObjectImplementation::COLOR_PURPLE = 0x05;
+
+const byte WaypointObjectImplementation::COLOR_WHITE2 = 0x06;
+
+const byte WaypointObjectImplementation::COLOR_SPACE = 0x07;
 
 WaypointObjectImplementation::WaypointObjectImplementation(DummyConstructorParameter* param) : IntangibleObjectImplementation(param) {
 	_initializeImplementation();
@@ -797,7 +805,7 @@ byte WaypointObjectAdapter::getColor() const {
 	return (static_cast<WaypointObject*>(stub))->getColor();
 }
 
-String WaypointObjectAdapter::getDetailedDescription() {
+String WaypointObjectAdapter::getDetailedDescription() const {
 	return (static_cast<WaypointObject*>(stub))->getDetailedDescription();
 }
 

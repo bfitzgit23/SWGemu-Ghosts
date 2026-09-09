@@ -105,7 +105,7 @@ bool SquadLeaderBuff::qualifiesForActivation() {
 	}
 }
 
-bool SquadLeaderBuff::checkRenew() {
+bool SquadLeaderBuff::checkRenew() const {
 	SquadLeaderBuffImplementation* _implementation = static_cast<SquadLeaderBuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -256,14 +256,6 @@ bool SquadLeaderBuffImplementation::readObjectMember(ObjectInputStream* stream, 
 		return true;
 
 	switch(nameHashCode) {
-	case 0x13e3fb0f: //SquadLeaderBuff.playerObserver
-		TypeInfo<ManagedReference<SquadLeaderBuffObserver* > >::parseFromBinaryStream(&playerObserver, stream);
-		return true;
-
-	case 0x8281ae99: //SquadLeaderBuff.leaderObserver
-		TypeInfo<ManagedReference<SquadLeaderBuffObserver* > >::parseFromBinaryStream(&leaderObserver, stream);
-		return true;
-
 	case 0xc3fc01df: //SquadLeaderBuff.player
 		TypeInfo<ManagedReference<CreatureObject* > >::parseFromBinaryStream(&player, stream);
 		return true;
@@ -290,24 +282,6 @@ int SquadLeaderBuffImplementation::writeObjectMembers(ObjectOutputStream* stream
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	_nameHashCode = 0x13e3fb0f; //SquadLeaderBuff.playerObserver
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SquadLeaderBuffObserver* > >::toBinaryStream(&playerObserver, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x8281ae99; //SquadLeaderBuff.leaderObserver
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SquadLeaderBuffObserver* > >::toBinaryStream(&leaderObserver, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0xc3fc01df; //SquadLeaderBuff.player
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -334,10 +308,6 @@ void SquadLeaderBuffImplementation::writeJSON(nlohmann::json& j) {
 	BuffImplementation::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	thisObject["playerObserver"] = playerObserver;
-
-	thisObject["leaderObserver"] = leaderObserver;
-
 	thisObject["player"] = player;
 
 	thisObject["leader"] = leader;
@@ -382,10 +352,10 @@ CreatureObject* SquadLeaderBuffImplementation::getLeader() {
 
 void SquadLeaderBuffImplementation::activate() {
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		if 
-	if (player == NULL)	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return;
+	if (!player)	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return;
 	return;
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		doActivate(
-	if (leader == NULL || player->getGroupID() != leader->getGroupID()){
+	if (!leader || player->getGroupID() != leader->getGroupID()){
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			player.removeBuff(super.buffCRC);
 	player->removeBuff(BuffImplementation::buffCRC);
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return;
@@ -405,15 +375,15 @@ void SquadLeaderBuffImplementation::doActivate(bool doCheck) {
 
 bool SquadLeaderBuffImplementation::qualifiesForActivation() {
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		return 
-	if (player == NULL || leader == NULL || leader->isDead() || leader->isIncapacitated())	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return false;
+	if (!player || !leader || leader->isDead() || leader->isIncapacitated())	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return false;
 	return false;
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		return SquadLeaderCommand.isValidGroupAbilityTarget(leader, player, false);
 	return SquadLeaderCommand::isValidGroupAbilityTarget(leader, player, false);
 }
 
-bool SquadLeaderBuffImplementation::checkRenew() {
+bool SquadLeaderBuffImplementation::checkRenew() const{
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		return 
-	if (leader == NULL || player == NULL || player->getGroupID() != leader->getGroupID()){
+	if (!leader || !player || player->getGroupID() != leader->getGroupID()){
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  			return false;
 	return false;
 }
@@ -426,14 +396,10 @@ void SquadLeaderBuffImplementation::addObservers() {
 	ManagedReference<SquadLeaderBuffObserver*> _ref1;
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		SquadLeaderBuffObserver playObserver = new SquadLeaderBuffObserver(this);
 	ManagedReference<SquadLeaderBuffObserver* > playObserver = _ref0 = new SquadLeaderBuffObserver(_this.getReferenceUnsafeStaticCast());
-	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		ObjectManager.instance().persistObject(playObserver, 1, "buffs");
-	ObjectManager::instance()->persistObject(playObserver, 1, "buffs");
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		playerObserver = playObserver;
 	playerObserver = playObserver;
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		SquadLeaderBuffObserver leadObserver = new SquadLeaderBuffObserver(this);
 	ManagedReference<SquadLeaderBuffObserver* > leadObserver = _ref1 = new SquadLeaderBuffObserver(_this.getReferenceUnsafeStaticCast());
-	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		ObjectManager.instance().persistObject(leadObserver, 1, "buffs");
-	ObjectManager::instance()->persistObject(leadObserver, 1, "buffs");
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		leaderObserver = leadObserver;
 	leaderObserver = leadObserver;
 	// server/zone/objects/creature/buffs/SquadLeaderBuff.idl():  		player.registerObserver(ObserverEventType.PARENTCHANGED, playerObserver);
@@ -565,7 +531,7 @@ bool SquadLeaderBuffAdapter::qualifiesForActivation() {
 	return (static_cast<SquadLeaderBuff*>(stub))->qualifiesForActivation();
 }
 
-bool SquadLeaderBuffAdapter::checkRenew() {
+bool SquadLeaderBuffAdapter::checkRenew() const {
 	return (static_cast<SquadLeaderBuff*>(stub))->checkRenew();
 }
 
@@ -633,12 +599,6 @@ void SquadLeaderBuffPOD::writeJSON(nlohmann::json& j) {
 	BuffPOD::writeJSON(j);
 
 	nlohmann::json thisObject = nlohmann::json::object();
-	if (playerObserver)
-		thisObject["playerObserver"] = playerObserver.value();
-
-	if (leaderObserver)
-		thisObject["leaderObserver"] = leaderObserver.value();
-
 	if (player)
 		thisObject["player"] = player.value();
 
@@ -662,28 +622,6 @@ int SquadLeaderBuffPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
-	if (playerObserver) {
-	_nameHashCode = 0x13e3fb0f; //SquadLeaderBuff.playerObserver
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::toBinaryStream(&playerObserver.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (leaderObserver) {
-	_nameHashCode = 0x8281ae99; //SquadLeaderBuff.leaderObserver
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::toBinaryStream(&leaderObserver.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (player) {
 	_nameHashCode = 0xc3fc01df; //SquadLeaderBuff.player
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -715,22 +653,6 @@ bool SquadLeaderBuffPOD::readObjectMember(ObjectInputStream* stream, const uint3
 		return true;
 
 	switch(nameHashCode) {
-	case 0x13e3fb0f: //SquadLeaderBuff.playerObserver
-		{
-			ManagedReference<SquadLeaderBuffObserverPOD* > _mnplayerObserver;
-			TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::parseFromBinaryStream(&_mnplayerObserver, stream);
-			playerObserver = std::move(_mnplayerObserver);
-		}
-		return true;
-
-	case 0x8281ae99: //SquadLeaderBuff.leaderObserver
-		{
-			ManagedReference<SquadLeaderBuffObserverPOD* > _mnleaderObserver;
-			TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::parseFromBinaryStream(&_mnleaderObserver, stream);
-			leaderObserver = std::move(_mnleaderObserver);
-		}
-		return true;
-
 	case 0xc3fc01df: //SquadLeaderBuff.player
 		{
 			ManagedReference<CreatureObjectPOD* > _mnplayer;
@@ -772,10 +694,6 @@ void SquadLeaderBuffPOD::readObject(ObjectInputStream* stream) {
 
 void SquadLeaderBuffPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	BuffPOD::writeObjectCompact(stream);
-
-	TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::toBinaryStream(&playerObserver.value(), stream);
-
-	TypeInfo<ManagedReference<SquadLeaderBuffObserverPOD* > >::toBinaryStream(&leaderObserver.value(), stream);
 
 	TypeInfo<ManagedReference<CreatureObjectPOD* > >::toBinaryStream(&player.value(), stream);
 

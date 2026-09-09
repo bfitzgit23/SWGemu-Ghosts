@@ -1,0 +1,36 @@
+chand_leviasquall = Creature:new {
+	customName = "a Leviasquall",
+	socialGroup = "squall",
+	faction = "",
+	level = 45,
+	chanceHit = 0.6,
+	damageMin = 350,
+	damageMax = 700,
+	baseXp = 1200,
+	baseHAM = 18000,
+	baseHAMmax = 21000,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_carnivore",
+	meatAmount = 600,
+	hideType = "hide_leathery",
+	hideAmount = 550,
+	boneType = "bone_mammal",
+	boneAmount = 500,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 2.0,
+
+	templates = {"object/mobile/leviasquall.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_leviasquall, "chand_leviasquall")

@@ -9,24 +9,21 @@
 
 class PetSpecialAttackCommand : public QueueCommand {
 public:
-	PetSpecialAttackCommand(const String& name, ZoneProcessServer* server)
-		: QueueCommand(name, server) {
+	PetSpecialAttackCommand(const String& name, ZoneProcessServer* server) : QueueCommand(name, server) {
 	}
 
-
 	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
-
 		ManagedReference<PetControlDevice*> controlDevice = creature->getControlDevice().get().castTo<PetControlDevice*>();
 		if (controlDevice == nullptr)
 			return GENERALERROR;
 
 		int petType = controlDevice->getPetType();
-		if( petType == PetManager::DROIDPET || petType == PetManager::FACTIONPET ) {
+		if (petType == PetManager::DROIDPET || petType == PetManager::FACTIONPET) {
 			return GENERALERROR;
 		}
 
 		ManagedReference<AiAgent*> pet = cast<AiAgent*>(creature);
-		if( pet == nullptr )
+		if (pet == nullptr)
 			return GENERALERROR;
 
 		if (pet->hasRidingCreature())
@@ -36,8 +33,8 @@ public:
 			pet->setPosture(CreaturePosture::UPRIGHT);
 
 		Reference<TangibleObject*> targetObject = server->getZoneServer()->getObject(target, true).castTo<TangibleObject*>();
-		if (targetObject == nullptr || !targetObject->isAttackableBy(pet) ) {
-			pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
+		if (targetObject == nullptr || !targetObject->isAttackableBy(pet)) {
+			pet->showFlyText("npc_reaction/flytext", "confused", 204, 0, 0); // "?!!?!?!"
 			return INVALIDTARGET;
 		}
 
@@ -58,31 +55,14 @@ public:
 		if (player == nullptr)
 			return GENERALERROR;
 
-		if (player->isSwimming()) {
+		if (player->isSwimming() || pet->isSwimming()) {
 			pet->showFlyText("npc_reaction/flytext", "confused", 204, 0, 0); // "?!!?!?!"
 			return GENERALERROR;
 		}
 
-		if (pet->isSwimming()) {
-			return GENERALERROR;
-		}
-
-		if (!CollisionManager::checkLineOfSight(player, targetObject)) {
-			pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
+		if (!CollisionManager::checkLineOfSight(player, targetObject) || !playerEntryCheck(player, targetObject)) {
+			pet->showFlyText("npc_reaction/flytext", "confused", 204, 0, 0); // "?!!?!?!"
 			return INVALIDTARGET;
-		}
-
-		Reference<CellObject*> targetCell = targetObject->getParent().get().castTo<CellObject*>();
-
-		if (targetCell != nullptr) {
-			auto perms = targetCell->getContainerPermissions();
-
-			if (!perms->hasInheritPermissionsFromParent()) {
-				if (!targetCell->checkContainerPermission(player, ContainerPermissions::WALKIN)) {
-					pet->showFlyText("npc_reaction/flytext","confused", 204, 0, 0);  // "?!!?!?!"
-					return INVALIDTARGET;
-				}
-			}
 		}
 
 		ManagedReference<TangibleObject*> targetTano = targetObject.castTo<TangibleObject*>();
@@ -104,7 +84,7 @@ public:
 		controlDevice->setLastCommandTarget(targetTano);
 
 		if (!pet->isInCombat()) {
-			pet->activateInterrupt(pet->getLinkedCreature().get(), ObserverEventType::STARTCOMBAT);
+			pet->notifyObservers(ObserverEventType::STARTCOMBAT, pet->getLinkedCreature().get());
 		} else if (targetTano != pet->getFollowObject().get()) {
 			pet->setDefender(targetTano);
 		}
@@ -114,8 +94,6 @@ public:
 
 		return SUCCESS;
 	}
-
 };
-
 
 #endif /* PETSPECIALATTACKCOMMAND_H_ */

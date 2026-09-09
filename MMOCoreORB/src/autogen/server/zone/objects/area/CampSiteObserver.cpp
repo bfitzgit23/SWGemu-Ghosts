@@ -201,10 +201,10 @@ int CampSiteObserverImplementation::notifyObserverEvent(unsigned int eventType, 
 	// server/zone/objects/area/CampSiteObserver.idl():  		CampSiteActiveArea strongRef = campArea;
 	ManagedReference<CampSiteActiveArea* > strongRef = campArea;
 	// server/zone/objects/area/CampSiteObserver.idl():  		if(
-	if (strongRef != NULL && eventType == ObserverEventType::HEALINGRECEIVED)	// server/zone/objects/area/CampSiteObserver.idl():  			return strongRef.notifyHealEvent(arg2);
+	if (strongRef && eventType == ObserverEventType::HEALINGRECEIVED)	// server/zone/objects/area/CampSiteObserver.idl():  			return strongRef.notifyHealEvent(arg2);
 	return strongRef->notifyHealEvent(arg2);
 	// server/zone/objects/area/CampSiteObserver.idl():  		return 
-	if (strongRef != NULL && eventType == ObserverEventType::STARTCOMBAT)	// server/zone/objects/area/CampSiteObserver.idl():  			return strongRef.notifyCombatEvent();
+	if (strongRef && eventType == ObserverEventType::STARTCOMBAT)	// server/zone/objects/area/CampSiteObserver.idl():  			return strongRef.notifyCombatEvent();
 	return strongRef->notifyCombatEvent();
 	// server/zone/objects/area/CampSiteObserver.idl():  		return 0;
 	return 0;

@@ -27,20 +27,6 @@
 namespace server {
 namespace zone {
 namespace objects {
-namespace tangible {
-
-class DespawnLairOnPlayerDisappear;
-
-} // namespace tangible
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::tangible;
-
-namespace server {
-namespace zone {
-namespace objects {
 namespace creature {
 
 class CreatureObject;
@@ -53,18 +39,6 @@ class CreatureObjectPOD;
 } // namespace server
 
 using namespace server::zone::objects::creature;
-
-namespace server {
-namespace zone {
-
-class QuadTreeEntry;
-
-class QuadTreeEntryPOD;
-
-} // namespace zone
-} // namespace server
-
-using namespace server::zone;
 
 namespace server {
 namespace zone {
@@ -82,11 +56,25 @@ class SceneObjectPOD;
 
 using namespace server::zone::objects::scene;
 
-#include "server/zone/CloseObjectsVector.h"
+namespace server {
+namespace zone {
+
+class TreeEntry;
+
+class TreeEntryPOD;
+
+} // namespace zone
+} // namespace server
+
+using namespace server::zone;
 
 #include "system/thread/atomic/AtomicInteger.h"
 
+#include "server/zone/objects/tangible/DespawnLairOnPlayerDisappear.h"
+
 #include "engine/log/Logger.h"
+
+#include "server/zone/CloseObjectsVector.h"
 
 #include "server/zone/objects/building/BuildingObject.h"
 
@@ -105,9 +93,9 @@ public:
 
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyDissapear(TreeEntry* entry);
 
 	void activateDespawnEvent();
 
@@ -159,9 +147,9 @@ public:
 
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyDissapear(TreeEntry* entry);
 
 	void activateDespawnEvent();
 
@@ -218,9 +206,9 @@ public:
 
 	void setDespawnOnNoPlayersInRange(bool b);
 
-	void notifyInsert(QuadTreeEntry* entry);
+	void notifyInsert(TreeEntry* entry);
 
-	void notifyDissapear(QuadTreeEntry* entry);
+	void notifyDissapear(TreeEntry* entry);
 
 	void activateDespawnEvent();
 

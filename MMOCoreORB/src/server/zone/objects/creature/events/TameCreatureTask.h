@@ -81,11 +81,8 @@ public:
 			break;
 		case FINAL:
 			float tamingChance = creature->getChanceToTame(player);
-			int failureChance = System::random(100);
-			player->sendSystemMessage("Your taming chance against this creature was: " + String::valueOf(tamingChance));
-			player->sendSystemMessage("The creature rolled a " + String::valueOf(failureChance) + " against your tame!");
 
-			if (tamingChance > failureChance)
+			if (tamingChance > System::random(100))
 				success(false);
 			else {
 				player->sendSystemMessage("@hireling/hireling:taming_fail"); // You fail to tame the creature.
@@ -93,9 +90,15 @@ public:
 				resetStatus();
 
 				int ferocity = creature->getFerocity();
+				int aggroChance = System::random(20 - ferocity);
 
-				if (System::random(20 - ferocity) == 0) {
-					CombatManager::instance()->startCombat(creature,player,true);
+				if (aggroChance == 0 && creature->isAiAgent()) {
+					AiAgent* agent = creature->asAiAgent();
+
+					if (agent != nullptr) {
+						Locker aLock(agent);
+						agent->addDefender(player);
+					}
 				}
 			}
 
@@ -166,10 +169,15 @@ public:
 		creature->setCreatureLink(player);
 		creature->setFaction(player->getFaction());
 
-		if (player->getPvpStatusBitmask() & CreatureFlag::PLAYER)
-			creature->setPvpStatusBitmask(player->getPvpStatusBitmask() - CreatureFlag::PLAYER, false);
-		else
-			creature->setPvpStatusBitmask(player->getPvpStatusBitmask(), false);
+		uint32 playerPvpStatusBitmask = player->getPvpStatusBitmask();
+
+		if (playerPvpStatusBitmask & ObjectFlag::PLAYER) {
+			playerPvpStatusBitmask &= ~ObjectFlag::PLAYER;
+
+			creature->setPvpStatusBitmask(playerPvpStatusBitmask, false);
+		} else {
+			creature->setPvpStatusBitmask(playerPvpStatusBitmask, false);
+		}
 
 		creature->setBaby(false);
 
@@ -198,15 +206,23 @@ public:
 			}
 
 			agent->setLairTemplateCRC(0);
-			agent->setFollowObject(player);
-			agent->storeFollowObject();
+
+			agent->setCreatureBitmask(ObjectFlag::PET);
+			agent->setAITemplate();
+			agent->clearPatrolPoints();
 
 			agent->setHomeLocation(player->getPositionX(), player->getPositionZ(), player->getPositionY(), parent);
 			agent->setNextStepPosition(player->getPositionX(), player->getPositionZ(), player->getPositionY(), parent);
-			agent->clearPatrolPoints();
 
-			agent->setCreatureBitmask(CreatureFlag::PET);
-			agent->activateLoad("");
+			controlDevice->setLastCommand(PetManager::FOLLOW);
+			controlDevice->setLastCommander(player);
+
+			agent->eraseBlackboard("restingTime");
+			agent->setPosture(CreaturePosture::UPRIGHT, true, true);
+
+			agent->setFollowObject(player);
+			agent->storeFollowObject();
+			agent->setMovementState(AiAgent::FOLLOWING);
 		}
 
 		creature->getZone()->broadcastObject(creature, true);
@@ -233,10 +249,11 @@ public:
 			return;
 
 		creature->setPvpStatusBitmask(originalMask, true);
-		if (creature->isAiAgent()) {
-			AiAgent* agent = cast<AiAgent*>(creature.get());
-			agent->activateLoad("");
-		}
+
+		creature->removeObjectFlag(ObjectFlag::STATIONARY);
+		creature->setAITemplate();
+
+		creature->setMovementState(AiAgent::FOLLOWING);
 	}
 };
 

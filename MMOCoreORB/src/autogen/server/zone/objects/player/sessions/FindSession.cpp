@@ -99,13 +99,13 @@ WaypointObject* FindSession::addWaypoint(float x, float y, const String& name) {
 	}
 }
 
-void FindSession::findPlanetaryObject(String& maplocationtype) {
+void FindSession::findPlanetaryObject(const String& mapCategory, const String& mapSubCategory) {
 	FindSessionImplementation* _implementation = static_cast<FindSessionImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		_implementation->findPlanetaryObject(maplocationtype);
+		_implementation->findPlanetaryObject(mapCategory, mapSubCategory);
 	}
 }
 
@@ -302,7 +302,7 @@ int FindSessionImplementation::cancelSession() {
 	// server/zone/objects/player/sessions/FindSession.idl():  		CreatureObject play = player;
 	ManagedReference<CreatureObject* > play = player;
 	// server/zone/objects/player/sessions/FindSession.idl():  		clearSession(
-	if (play != NULL)	// server/zone/objects/player/sessions/FindSession.idl():  			play.dropActiveSession(SessionFacadeType.FIND);
+	if (play)	// server/zone/objects/player/sessions/FindSession.idl():  			play.dropActiveSession(SessionFacadeType.FIND);
 	play->dropActiveSession(SessionFacadeType::FIND);
 	// server/zone/objects/player/sessions/FindSession.idl():  		clearSession();
 	clearSession();

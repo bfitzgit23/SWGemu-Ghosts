@@ -8,11 +8,13 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
+#include "server/zone/objects/creature/ai/CreatureTemplate.h"
+
 /*
  *	PetDeedStub
  */
 
-enum {RPC_SETSPECIALRESIST__INT_ = 3403443374,RPC_ISSPECIALRESIST__INT_,RPC_GETSAMPLECOUNT__,RPC_INCREMENTSAMPLECOUNT__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_GETQUALITY__,RPC_GETLEVEL__,RPC_GETATTACKSPEED__,RPC_GETHITCHANCE__,RPC_GETHEALTH__,RPC_GETACTION__,RPC_GETMIND__,RPC_GETMINDAMAGE__,RPC_GETMAXDAMAGE__,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETBLAST__,RPC_GETCOLD__,RPC_GETHEAT__,RPC_GETELECTRIC__,RPC_GETACID__,RPC_GETSTUN__,RPC_GETSABER__,RPC_GETRANGED__,RPC_GETARMOR__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISPETDEEDOBJECT__,RPC_GETSPECIAL1__,RPC_GETSPECIAL2__,RPC_GETCLEVERNESS__,RPC_GETENDURANCE__,RPC_GETFIERCENESS__,RPC_GETPOWER__,RPC_GETINTELLIGENCE__,RPC_GETCOURAGE__,RPC_GETDEPENDENCY__,RPC_GETDEXTERITY__,RPC_GETFORTITUDE__,RPC_GETHARDINESS__,};
+enum {RPC_SETSPECIALRESIST__INT_ = 3403443374,RPC_ISSPECIALRESIST__INT_,RPC_GETSAMPLECOUNT__,RPC_INCREMENTSAMPLECOUNT__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_GETQUALITY__,RPC_GETLEVEL__,RPC_GETATTACKSPEED__,RPC_GETHITCHANCE__,RPC_GETHEALTH__,RPC_GETACTION__,RPC_GETMIND__,RPC_GETMINDAMAGE__,RPC_GETMAXDAMAGE__,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETBLAST__,RPC_GETCOLD__,RPC_GETHEAT__,RPC_GETELECTRIC__,RPC_GETACID__,RPC_GETSTUN__,RPC_GETSABER__,RPC_GETRANGED__,RPC_GETARMOR__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_ISPETDEEDOBJECT__,RPC_GETSPECIAL1__,RPC_GETSPECIAL2__,RPC_GETCLEVERNESS__,RPC_GETENDURANCE__,RPC_GETFIERCENESS__,RPC_GETPOWER__,RPC_GETINTELLECT__,RPC_GETCOURAGE__,RPC_GETDEPENDABILITY__,RPC_GETDEXTERITY__,RPC_GETFORTITUDE__,RPC_GETHARDINESS__,RPC_GETCONTROLLEDDEVICETEMPLATE__,};
 
 PetDeed::PetDeed() : Deed(DummyConstructorParameter::instance()) {
 	PetDeedImplementation* _implementation = new PetDeedImplementation();
@@ -30,14 +32,14 @@ PetDeed::~PetDeed() {
 
 
 
-void PetDeed::setSpecialResist(int type) {
+void PetDeed::setSpecialResist(unsigned int type) {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_SETSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -45,14 +47,14 @@ void PetDeed::setSpecialResist(int type) {
 	}
 }
 
-bool PetDeed::isSpecialResist(int type) const {
+bool PetDeed::isSpecialResist(unsigned int type) const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_ISSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		return method.executeWithBooleanReturn();
 	} else {
@@ -496,7 +498,7 @@ String PetDeed::getSpecial2() const {
 	}
 }
 
-int PetDeed::getCleverness() const {
+float PetDeed::getCleverness() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -504,13 +506,13 @@ int PetDeed::getCleverness() const {
 
 		DistributedMethod method(this, RPC_GETCLEVERNESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getCleverness();
 	}
 }
 
-int PetDeed::getEndurance() const {
+float PetDeed::getEndurance() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -518,13 +520,13 @@ int PetDeed::getEndurance() const {
 
 		DistributedMethod method(this, RPC_GETENDURANCE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getEndurance();
 	}
 }
 
-int PetDeed::getFierceness() const {
+float PetDeed::getFierceness() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -532,13 +534,13 @@ int PetDeed::getFierceness() const {
 
 		DistributedMethod method(this, RPC_GETFIERCENESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getFierceness();
 	}
 }
 
-int PetDeed::getPower() const {
+float PetDeed::getPower() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -546,27 +548,27 @@ int PetDeed::getPower() const {
 
 		DistributedMethod method(this, RPC_GETPOWER__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getPower();
 	}
 }
 
-int PetDeed::getIntelligence() const {
+float PetDeed::getIntellect() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETINTELLIGENCE__);
+		DistributedMethod method(this, RPC_GETINTELLECT__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getIntelligence();
+		return _implementation->getIntellect();
 	}
 }
 
-int PetDeed::getCourage() const {
+float PetDeed::getCourage() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -574,27 +576,27 @@ int PetDeed::getCourage() const {
 
 		DistributedMethod method(this, RPC_GETCOURAGE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getCourage();
 	}
 }
 
-int PetDeed::getDependency() const {
+float PetDeed::getDependability() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETDEPENDENCY__);
+		DistributedMethod method(this, RPC_GETDEPENDABILITY__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getDependency();
+		return _implementation->getDependability();
 	}
 }
 
-int PetDeed::getDexterity() const {
+float PetDeed::getDexterity() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -602,13 +604,13 @@ int PetDeed::getDexterity() const {
 
 		DistributedMethod method(this, RPC_GETDEXTERITY__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getDexterity();
 	}
 }
 
-int PetDeed::getFortitude() const {
+float PetDeed::getFortitude() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -616,13 +618,13 @@ int PetDeed::getFortitude() const {
 
 		DistributedMethod method(this, RPC_GETFORTITUDE__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getFortitude();
 	}
 }
 
-int PetDeed::getHardiness() const {
+float PetDeed::getHardiness() const {
 	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -630,9 +632,25 @@ int PetDeed::getHardiness() const {
 
 		DistributedMethod method(this, RPC_GETHARDINESS__);
 
-		return method.executeWithSignedIntReturn();
+		return method.executeWithFloatReturn();
 	} else {
 		return _implementation->getHardiness();
+	}
+}
+
+String PetDeed::getControlledDeviceTemplate() const {
+	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCONTROLLEDDEVICETEMPLATE__);
+
+		String _return_getControlledDeviceTemplate;
+		method.executeWithAsciiReturn(_return_getControlledDeviceTemplate);
+		return _return_getControlledDeviceTemplate;
+	} else {
+		return _implementation->getControlledDeviceTemplate();
 	}
 }
 
@@ -643,6 +661,16 @@ String PetDeed::getTemplateName() const {
 
 	} else {
 		return _implementation->getTemplateName();
+	}
+}
+
+CreatureTemplate* PetDeed::getCreatureTemplate() const {
+	PetDeedImplementation* _implementation = static_cast<PetDeedImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getCreatureTemplate();
 	}
 }
 
@@ -897,43 +925,43 @@ bool PetDeedImplementation::readObjectMember(ObjectInputStream* stream, const ui
 		return true;
 
 	case 0x17add007: //PetDeed.cleverness
-		TypeInfo<int >::parseFromBinaryStream(&cleverness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&cleverness, stream);
 		return true;
 
 	case 0xeb9fff0d: //PetDeed.endurance
-		TypeInfo<int >::parseFromBinaryStream(&endurance, stream);
+		TypeInfo<float >::parseFromBinaryStream(&endurance, stream);
 		return true;
 
 	case 0xb0e1584e: //PetDeed.fierceness
-		TypeInfo<int >::parseFromBinaryStream(&fierceness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&fierceness, stream);
 		return true;
 
 	case 0x2cb61934: //PetDeed.power
-		TypeInfo<int >::parseFromBinaryStream(&power, stream);
+		TypeInfo<float >::parseFromBinaryStream(&power, stream);
 		return true;
 
-	case 0x4e108f9a: //PetDeed.intelligence
-		TypeInfo<int >::parseFromBinaryStream(&intelligence, stream);
+	case 0x9d7412df: //PetDeed.intellect
+		TypeInfo<float >::parseFromBinaryStream(&intellect, stream);
 		return true;
 
 	case 0x12a5e8ab: //PetDeed.courage
-		TypeInfo<int >::parseFromBinaryStream(&courage, stream);
+		TypeInfo<float >::parseFromBinaryStream(&courage, stream);
 		return true;
 
-	case 0x2105ac14: //PetDeed.dependency
-		TypeInfo<int >::parseFromBinaryStream(&dependency, stream);
+	case 0x898537fe: //PetDeed.dependability
+		TypeInfo<float >::parseFromBinaryStream(&dependability, stream);
 		return true;
 
 	case 0x22d48997: //PetDeed.dexterity
-		TypeInfo<int >::parseFromBinaryStream(&dexterity, stream);
+		TypeInfo<float >::parseFromBinaryStream(&dexterity, stream);
 		return true;
 
 	case 0x90df2a88: //PetDeed.fortitude
-		TypeInfo<int >::parseFromBinaryStream(&fortitude, stream);
+		TypeInfo<float >::parseFromBinaryStream(&fortitude, stream);
 		return true;
 
 	case 0x5ab3092e: //PetDeed.hardiness
-		TypeInfo<int >::parseFromBinaryStream(&hardiness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&hardiness, stream);
 		return true;
 
 	case 0x7c55a5ed: //PetDeed.sampleCount
@@ -1195,7 +1223,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&cleverness, stream);
+	TypeInfo<float >::toBinaryStream(&cleverness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1204,7 +1232,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&endurance, stream);
+	TypeInfo<float >::toBinaryStream(&endurance, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1213,7 +1241,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fierceness, stream);
+	TypeInfo<float >::toBinaryStream(&fierceness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1222,16 +1250,16 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&power, stream);
+	TypeInfo<float >::toBinaryStream(&power, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x4e108f9a; //PetDeed.intelligence
+	_nameHashCode = 0x9d7412df; //PetDeed.intellect
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&intelligence, stream);
+	TypeInfo<float >::toBinaryStream(&intellect, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1240,16 +1268,16 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&courage, stream);
+	TypeInfo<float >::toBinaryStream(&courage, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x2105ac14; //PetDeed.dependency
+	_nameHashCode = 0x898537fe; //PetDeed.dependability
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dependency, stream);
+	TypeInfo<float >::toBinaryStream(&dependability, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1258,7 +1286,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dexterity, stream);
+	TypeInfo<float >::toBinaryStream(&dexterity, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1267,7 +1295,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fortitude, stream);
+	TypeInfo<float >::toBinaryStream(&fortitude, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1276,7 +1304,7 @@ int PetDeedImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&hardiness, stream);
+	TypeInfo<float >::toBinaryStream(&hardiness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1374,11 +1402,11 @@ void PetDeedImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["power"] = power;
 
-	thisObject["intelligence"] = intelligence;
+	thisObject["intellect"] = intellect;
 
 	thisObject["courage"] = courage;
 
-	thisObject["dependency"] = dependency;
+	thisObject["dependability"] = dependability;
 
 	thisObject["dexterity"] = dexterity;
 
@@ -1439,26 +1467,26 @@ PetDeedImplementation::PetDeedImplementation() {
 	attackSpeed = 0;
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		level = 1;
 	level = 1;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		cleverness = 0;
-	cleverness = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		endurance = 0;
-	endurance = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		fierceness = 0;
-	fierceness = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		power = 0;
-	power = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		intelligence = 0;
-	intelligence = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		courage = 0;
-	courage = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		dependency = 0;
-	dependency = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		dexterity = 0;
-	dexterity = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		fortitude = 0;
-	fortitude = 0;
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		hardiness = 0;
-	hardiness = 0;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		fortitude = 0.f;
+	fortitude = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		hardiness = 0.f;
+	hardiness = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		dexterity = 0.f;
+	dexterity = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		endurance = 0.f;
+	endurance = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		intellect = 0.f;
+	intellect = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		cleverness = 0.f;
+	cleverness = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		dependability = 0.f;
+	dependability = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		courage = 0.f;
+	courage = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		fierceness = 0.f;
+	fierceness = 0.f;
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		power = 0.f;
+	power = 0.f;
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		quality = 7;
 	quality = 7;
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		sampleCount = 0;
@@ -1594,54 +1622,59 @@ String PetDeedImplementation::getSpecial2() const{
 	return special2;
 }
 
-int PetDeedImplementation::getCleverness() const{
+float PetDeedImplementation::getCleverness() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return cleverness;
 	return cleverness;
 }
 
-int PetDeedImplementation::getEndurance() const{
+float PetDeedImplementation::getEndurance() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return endurance;
 	return endurance;
 }
 
-int PetDeedImplementation::getFierceness() const{
+float PetDeedImplementation::getFierceness() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return fierceness;
 	return fierceness;
 }
 
-int PetDeedImplementation::getPower() const{
+float PetDeedImplementation::getPower() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return power;
 	return power;
 }
 
-int PetDeedImplementation::getIntelligence() const{
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return intelligence;
-	return intelligence;
+float PetDeedImplementation::getIntellect() const{
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return intellect;
+	return intellect;
 }
 
-int PetDeedImplementation::getCourage() const{
+float PetDeedImplementation::getCourage() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return courage;
 	return courage;
 }
 
-int PetDeedImplementation::getDependency() const{
-	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return dependency;
-	return dependency;
+float PetDeedImplementation::getDependability() const{
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return dependability;
+	return dependability;
 }
 
-int PetDeedImplementation::getDexterity() const{
+float PetDeedImplementation::getDexterity() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return dexterity;
 	return dexterity;
 }
 
-int PetDeedImplementation::getFortitude() const{
+float PetDeedImplementation::getFortitude() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return fortitude;
 	return fortitude;
 }
 
-int PetDeedImplementation::getHardiness() const{
+float PetDeedImplementation::getHardiness() const{
 	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return hardiness;
 	return hardiness;
+}
+
+String PetDeedImplementation::getControlledDeviceTemplate() const{
+	// server/zone/objects/tangible/deed/pet/PetDeed.idl():  		return controlDeviceObjectTemplate;
+	return controlDeviceObjectTemplate;
 }
 
 /*
@@ -1661,7 +1694,7 @@ void PetDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	switch (methid) {
 	case RPC_SETSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			setSpecialResist(type);
 			
@@ -1669,7 +1702,7 @@ void PetDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		break;
 	case RPC_ISSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			bool _m_res = isSpecialResist(type);
 			resp->insertBoolean(_m_res);
@@ -1869,71 +1902,78 @@ void PetDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	case RPC_GETCLEVERNESS__:
 		{
 			
-			int _m_res = getCleverness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getCleverness();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETENDURANCE__:
 		{
 			
-			int _m_res = getEndurance();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getEndurance();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETFIERCENESS__:
 		{
 			
-			int _m_res = getFierceness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getFierceness();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETPOWER__:
 		{
 			
-			int _m_res = getPower();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getPower();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_GETINTELLIGENCE__:
+	case RPC_GETINTELLECT__:
 		{
 			
-			int _m_res = getIntelligence();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getIntellect();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETCOURAGE__:
 		{
 			
-			int _m_res = getCourage();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getCourage();
+			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_GETDEPENDENCY__:
+	case RPC_GETDEPENDABILITY__:
 		{
 			
-			int _m_res = getDependency();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getDependability();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETDEXTERITY__:
 		{
 			
-			int _m_res = getDexterity();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getDexterity();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETFORTITUDE__:
 		{
 			
-			int _m_res = getFortitude();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getFortitude();
+			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_GETHARDINESS__:
 		{
 			
-			int _m_res = getHardiness();
-			resp->insertSignedInt(_m_res);
+			float _m_res = getHardiness();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETCONTROLLEDDEVICETEMPLATE__:
+		{
+			
+			String _m_res = getControlledDeviceTemplate();
+			resp->insertAscii(_m_res);
 		}
 		break;
 	default:
@@ -1941,11 +1981,11 @@ void PetDeedAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	}
 }
 
-void PetDeedAdapter::setSpecialResist(int type) {
+void PetDeedAdapter::setSpecialResist(unsigned int type) {
 	(static_cast<PetDeed*>(stub))->setSpecialResist(type);
 }
 
-bool PetDeedAdapter::isSpecialResist(int type) const {
+bool PetDeedAdapter::isSpecialResist(unsigned int type) const {
 	return (static_cast<PetDeed*>(stub))->isSpecialResist(type);
 }
 
@@ -2057,44 +2097,48 @@ String PetDeedAdapter::getSpecial2() const {
 	return (static_cast<PetDeed*>(stub))->getSpecial2();
 }
 
-int PetDeedAdapter::getCleverness() const {
+float PetDeedAdapter::getCleverness() const {
 	return (static_cast<PetDeed*>(stub))->getCleverness();
 }
 
-int PetDeedAdapter::getEndurance() const {
+float PetDeedAdapter::getEndurance() const {
 	return (static_cast<PetDeed*>(stub))->getEndurance();
 }
 
-int PetDeedAdapter::getFierceness() const {
+float PetDeedAdapter::getFierceness() const {
 	return (static_cast<PetDeed*>(stub))->getFierceness();
 }
 
-int PetDeedAdapter::getPower() const {
+float PetDeedAdapter::getPower() const {
 	return (static_cast<PetDeed*>(stub))->getPower();
 }
 
-int PetDeedAdapter::getIntelligence() const {
-	return (static_cast<PetDeed*>(stub))->getIntelligence();
+float PetDeedAdapter::getIntellect() const {
+	return (static_cast<PetDeed*>(stub))->getIntellect();
 }
 
-int PetDeedAdapter::getCourage() const {
+float PetDeedAdapter::getCourage() const {
 	return (static_cast<PetDeed*>(stub))->getCourage();
 }
 
-int PetDeedAdapter::getDependency() const {
-	return (static_cast<PetDeed*>(stub))->getDependency();
+float PetDeedAdapter::getDependability() const {
+	return (static_cast<PetDeed*>(stub))->getDependability();
 }
 
-int PetDeedAdapter::getDexterity() const {
+float PetDeedAdapter::getDexterity() const {
 	return (static_cast<PetDeed*>(stub))->getDexterity();
 }
 
-int PetDeedAdapter::getFortitude() const {
+float PetDeedAdapter::getFortitude() const {
 	return (static_cast<PetDeed*>(stub))->getFortitude();
 }
 
-int PetDeedAdapter::getHardiness() const {
+float PetDeedAdapter::getHardiness() const {
 	return (static_cast<PetDeed*>(stub))->getHardiness();
+}
+
+String PetDeedAdapter::getControlledDeviceTemplate() const {
+	return (static_cast<PetDeed*>(stub))->getControlledDeviceTemplate();
 }
 
 /*
@@ -2240,14 +2284,14 @@ void PetDeedPOD::writeJSON(nlohmann::json& j) {
 	if (power)
 		thisObject["power"] = power.value();
 
-	if (intelligence)
-		thisObject["intelligence"] = intelligence.value();
+	if (intellect)
+		thisObject["intellect"] = intellect.value();
 
 	if (courage)
 		thisObject["courage"] = courage.value();
 
-	if (dependency)
-		thisObject["dependency"] = dependency.value();
+	if (dependability)
+		thisObject["dependability"] = dependability.value();
 
 	if (dexterity)
 		thisObject["dexterity"] = dexterity.value();
@@ -2564,7 +2608,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&cleverness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&cleverness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2575,7 +2619,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&endurance.value(), stream);
+	TypeInfo<float >::toBinaryStream(&endurance.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2586,7 +2630,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fierceness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fierceness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2597,18 +2641,18 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&power.value(), stream);
+	TypeInfo<float >::toBinaryStream(&power.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 	}
 
-	if (intelligence) {
-	_nameHashCode = 0x4e108f9a; //PetDeed.intelligence
+	if (intellect) {
+	_nameHashCode = 0x9d7412df; //PetDeed.intellect
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&intelligence.value(), stream);
+	TypeInfo<float >::toBinaryStream(&intellect.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2619,18 +2663,18 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&courage.value(), stream);
+	TypeInfo<float >::toBinaryStream(&courage.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 	}
 
-	if (dependency) {
-	_nameHashCode = 0x2105ac14; //PetDeed.dependency
+	if (dependability) {
+	_nameHashCode = 0x898537fe; //PetDeed.dependability
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dependability.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2641,7 +2685,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dexterity.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dexterity.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2652,7 +2696,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fortitude.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fortitude.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2663,7 +2707,7 @@ int PetDeedPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&hardiness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&hardiness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2913,80 +2957,80 @@ bool PetDeedPOD::readObjectMember(ObjectInputStream* stream, const uint32& nameH
 
 	case 0x17add007: //PetDeed.cleverness
 		{
-			int _mncleverness;
-			TypeInfo<int >::parseFromBinaryStream(&_mncleverness, stream);
+			float _mncleverness;
+			TypeInfo<float >::parseFromBinaryStream(&_mncleverness, stream);
 			cleverness = std::move(_mncleverness);
 		}
 		return true;
 
 	case 0xeb9fff0d: //PetDeed.endurance
 		{
-			int _mnendurance;
-			TypeInfo<int >::parseFromBinaryStream(&_mnendurance, stream);
+			float _mnendurance;
+			TypeInfo<float >::parseFromBinaryStream(&_mnendurance, stream);
 			endurance = std::move(_mnendurance);
 		}
 		return true;
 
 	case 0xb0e1584e: //PetDeed.fierceness
 		{
-			int _mnfierceness;
-			TypeInfo<int >::parseFromBinaryStream(&_mnfierceness, stream);
+			float _mnfierceness;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfierceness, stream);
 			fierceness = std::move(_mnfierceness);
 		}
 		return true;
 
 	case 0x2cb61934: //PetDeed.power
 		{
-			int _mnpower;
-			TypeInfo<int >::parseFromBinaryStream(&_mnpower, stream);
+			float _mnpower;
+			TypeInfo<float >::parseFromBinaryStream(&_mnpower, stream);
 			power = std::move(_mnpower);
 		}
 		return true;
 
-	case 0x4e108f9a: //PetDeed.intelligence
+	case 0x9d7412df: //PetDeed.intellect
 		{
-			int _mnintelligence;
-			TypeInfo<int >::parseFromBinaryStream(&_mnintelligence, stream);
-			intelligence = std::move(_mnintelligence);
+			float _mnintellect;
+			TypeInfo<float >::parseFromBinaryStream(&_mnintellect, stream);
+			intellect = std::move(_mnintellect);
 		}
 		return true;
 
 	case 0x12a5e8ab: //PetDeed.courage
 		{
-			int _mncourage;
-			TypeInfo<int >::parseFromBinaryStream(&_mncourage, stream);
+			float _mncourage;
+			TypeInfo<float >::parseFromBinaryStream(&_mncourage, stream);
 			courage = std::move(_mncourage);
 		}
 		return true;
 
-	case 0x2105ac14: //PetDeed.dependency
+	case 0x898537fe: //PetDeed.dependability
 		{
-			int _mndependency;
-			TypeInfo<int >::parseFromBinaryStream(&_mndependency, stream);
-			dependency = std::move(_mndependency);
+			float _mndependability;
+			TypeInfo<float >::parseFromBinaryStream(&_mndependability, stream);
+			dependability = std::move(_mndependability);
 		}
 		return true;
 
 	case 0x22d48997: //PetDeed.dexterity
 		{
-			int _mndexterity;
-			TypeInfo<int >::parseFromBinaryStream(&_mndexterity, stream);
+			float _mndexterity;
+			TypeInfo<float >::parseFromBinaryStream(&_mndexterity, stream);
 			dexterity = std::move(_mndexterity);
 		}
 		return true;
 
 	case 0x90df2a88: //PetDeed.fortitude
 		{
-			int _mnfortitude;
-			TypeInfo<int >::parseFromBinaryStream(&_mnfortitude, stream);
+			float _mnfortitude;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfortitude, stream);
 			fortitude = std::move(_mnfortitude);
 		}
 		return true;
 
 	case 0x5ab3092e: //PetDeed.hardiness
 		{
-			int _mnhardiness;
-			TypeInfo<int >::parseFromBinaryStream(&_mnhardiness, stream);
+			float _mnhardiness;
+			TypeInfo<float >::parseFromBinaryStream(&_mnhardiness, stream);
 			hardiness = std::move(_mnhardiness);
 		}
 		return true;
@@ -3091,25 +3135,25 @@ void PetDeedPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<String >::toBinaryStream(&mobileTemplate.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&cleverness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&cleverness.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&endurance.value(), stream);
+	TypeInfo<float >::toBinaryStream(&endurance.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&fierceness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fierceness.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&power.value(), stream);
+	TypeInfo<float >::toBinaryStream(&power.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&intelligence.value(), stream);
+	TypeInfo<float >::toBinaryStream(&intellect.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&courage.value(), stream);
+	TypeInfo<float >::toBinaryStream(&courage.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dependability.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&dexterity.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dexterity.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&fortitude.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fortitude.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&hardiness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&hardiness.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&sampleCount.value(), stream);
 

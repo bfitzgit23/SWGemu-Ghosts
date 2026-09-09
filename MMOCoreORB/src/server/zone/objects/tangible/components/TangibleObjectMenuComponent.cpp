@@ -9,6 +9,14 @@
 #include "server/zone/objects/player/sessions/SlicingSession.h"
 #include "server/zone/packets/object/ObjectMenuResponse.h"
 #include "server/zone/objects/player/PlayerObject.h"
+#include "server/zone/objects/player/sui/colorbox/SuiColorBox.h"
+#include "server/zone/objects/player/sui/inputbox/SuiInputBox.h"
+#include "server/zone/objects/player/sui/callbacks/ColorArmorSuiCallback.h"
+#include "server/zone/objects/player/sui/callbacks/RenameItemSuiCallback.h"
+#include "server/zone/objects/building/BuildingObject.h"
+#include "server/zone/ZoneServer.h"
+#include "server/zone/managers/components/ComponentManager.h"
+#include "templates/customization/AssetCustomizationManagerTemplate.h"
 
 void TangibleObjectMenuComponent::fillObjectMenuResponse(SceneObject* sceneObject, ObjectMenuResponse* menuResponse, CreatureObject* player) const {
 	ObjectMenuComponent::fillObjectMenuResponse(sceneObject, menuResponse, player);
@@ -41,18 +49,15 @@ void TangibleObjectMenuComponent::fillObjectMenuResponse(SceneObject* sceneObjec
 			menuResponse->addRadialMenuItem(69, 3, "@slicing/slicing:slice"); // Slice
 	}
 
-	if(player->getPlayerObject() != nullptr && player->getPlayerObject()->isPrivileged()) {
+	if (player->getPlayerObject() != nullptr && player->getPlayerObject()->isPrivileged()) {
 		/// Viewing components used to craft item, for admins
 		ManagedReference<SceneObject*> container = tano->getSlottedObject("crafted_components");
-		if(container != nullptr) {
 
-			if(container->getContainerObjectsSize() > 0) {
+		if (container != nullptr && container->getContainerObjectsSize() > 0) {
+			SceneObject* satchel = container->getContainerObject(0);
 
-				SceneObject* satchel = container->getContainerObject(0);
-
-				if(satchel != nullptr && satchel->getContainerObjectsSize() > 0) {
-					menuResponse->addRadialMenuItem(79, 3, "@ui_radial:ship_manage_components"); // View Components
-				}
+			if (satchel != nullptr && satchel->getContainerObjectsSize() > 0) {
+				menuResponse->addRadialMenuItem(79, 3, "@ui_radial:ship_manage_components"); // View Components
 			}
 		}
 	}
@@ -60,6 +65,51 @@ void TangibleObjectMenuComponent::fillObjectMenuResponse(SceneObject* sceneObjec
 	ManagedReference<SceneObject*> parent = tano->getParent().get();
 	if (parent != nullptr && parent->getGameObjectType() == SceneObjectType::STATICLOOTCONTAINER) {
 		menuResponse->addRadialMenuItem(10, 3, "@ui_radial:item_pickup"); //Pick up
+	}
+
+	// Ghosts: color change for every wearable with a palette (crafted or not)
+	if (tano->isWearableObject() && sceneObject->getObjectMenuComponent() != ComponentManager::instance()->getComponent<ObjectMenuComponent*>("GogglesObjectMenuComponent")) {
+		String appearanceFilename = sceneObject->getObjectTemplate()->getAppearanceFilename();
+
+		if (!appearanceFilename.isEmpty()) {
+			bool canColor = sceneObject->isASubChildOf(player);
+
+			if (!canColor) {
+				ManagedReference<SceneObject*> par = sceneObject->getParent().get();
+				if (par != nullptr && par->isCellObject()) {
+					ManagedReference<SceneObject*> obj = par->getParent().get();
+					if (obj != nullptr && obj->isBuildingObject()) {
+						ManagedReference<BuildingObject*> buio = cast<BuildingObject*>(obj.get());
+						if (buio != nullptr && buio->isOnAdminList(player))
+							canColor = true;
+					}
+				}
+			}
+
+			if (canColor)
+				menuResponse->addRadialMenuItem(81, 3, "Color Change");
+		}
+	}
+
+	// Ghosts: rename any item (owner, building admin, or privileged admin)
+	{
+		bool canRename = (player->getPlayerObject() != nullptr && player->getPlayerObject()->isPrivileged())
+			|| sceneObject->isASubChildOf(player);
+
+		if (!canRename) {
+			ManagedReference<SceneObject*> par = sceneObject->getParent().get();
+			if (par != nullptr && par->isCellObject()) {
+				ManagedReference<SceneObject*> obj = par->getParent().get();
+				if (obj != nullptr && obj->isBuildingObject()) {
+					ManagedReference<BuildingObject*> buio = cast<BuildingObject*>(obj.get());
+					if (buio != nullptr && buio->isOnAdminList(player))
+						canRename = true;
+				}
+			}
+		}
+
+		if (canRename)
+			menuResponse->addRadialMenuItem(80, 3, "Rename Item");
 	}
 }
 
@@ -106,6 +156,83 @@ int TangibleObjectMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 				player->sendSystemMessage("There is no component container in this object");
 			}
 		}
+
+		return 0;
+	} else if (selectedID == 81) { // Ghosts: color change
+		if (!tano->isWearableObject() || sceneObject->getObjectMenuComponent() == ComponentManager::instance()->getComponent<ObjectMenuComponent*>("GogglesObjectMenuComponent"))
+			return 0;
+
+		ManagedReference<SceneObject*> parent = sceneObject->getParent().get();
+		if (parent != nullptr && parent->isPlayerCreature()) {
+			player->sendSystemMessage("@armor_rehue:equipped");
+			return 0;
+		}
+
+		ZoneServer* server = player->getZoneServer();
+		if (server == nullptr)
+			return 0;
+
+		String appearanceFilename = sceneObject->getObjectTemplate()->getAppearanceFilename();
+		if (appearanceFilename.isEmpty()) {
+			player->sendSystemMessage("This item cannot be recolored.");
+			return 0;
+		}
+
+		VectorMap<String, Reference<CustomizationVariable*> > variables;
+		AssetCustomizationManagerTemplate::instance()->getCustomizationVariables(appearanceFilename.hashCode(), variables, false);
+
+		if (variables.isEmpty()) {
+			player->sendSystemMessage("This item cannot be recolored.");
+			return 0;
+		}
+
+		int paletteIndex = (variables.size() > 1) ? 1 : 0;
+
+		ManagedReference<SuiColorBox*> cbox = new SuiColorBox(player, SuiWindowType::COLOR_ARMOR);
+		cbox->setCallback(new ColorArmorSuiCallback(server));
+		cbox->setColorPalette(variables.elementAt(paletteIndex).getKey());
+		cbox->setUsingObject(sceneObject);
+		cbox->setSkillMod(255);
+
+		ManagedReference<PlayerObject*> ghost = player->getPlayerObject();
+		if (ghost != nullptr) {
+			ghost->addSuiBox(cbox);
+			player->sendMessage(cbox->generateMessage());
+		}
+
+		return 0;
+	} else if (selectedID == 80) { // Ghosts: rename item
+		ManagedReference<PlayerObject*> ghost = player->getPlayerObject();
+		if (ghost == nullptr)
+			return 0;
+
+		bool canRename = ghost->isPrivileged() || sceneObject->isASubChildOf(player);
+
+		if (!canRename) {
+			ManagedReference<SceneObject*> par = sceneObject->getParent().get();
+			if (par != nullptr && par->isCellObject()) {
+				ManagedReference<SceneObject*> obj = par->getParent().get();
+				if (obj != nullptr && obj->isBuildingObject()) {
+					ManagedReference<BuildingObject*> buio = cast<BuildingObject*>(obj.get());
+					if (buio != nullptr && buio->isOnAdminList(player))
+						canRename = true;
+				}
+			}
+		}
+
+		if (!canRename)
+			return 0;
+
+		ManagedReference<SuiInputBox*> inputBox = new SuiInputBox(player, 1045 /* Ghosts: RENAME_ITEM */);
+		inputBox->setCallback(new RenameItemSuiCallback(player->getZoneServer()));
+		inputBox->setUsingObject(sceneObject);
+		inputBox->setPromptTitle("Rename Item");
+		inputBox->setPromptText("Enter the new name for this item.");
+		inputBox->setCancelButton(true, "@cancel");
+		inputBox->setMaxInputSize(60);
+
+		ghost->addSuiBox(inputBox);
+		player->sendMessage(inputBox->generateMessage());
 
 		return 0;
 	}else

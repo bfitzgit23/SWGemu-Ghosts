@@ -91,6 +91,15 @@ public:
 		return skillModMax.get(modType);
 	}
 
+	inline int getMaxSkill(const uint32 modType, const String& skillMod) {
+		// Force-pool attachments use a larger numeric scale than ordinary
+		// clothing/armor attachment skill modifiers.
+		if (modType == WEARABLE && skillMod == "jedi_force_power_max")
+			return 5000;
+
+		return skillModMax.get(modType);
+	}
+
 	inline bool isWearableModDisabled(String mod) {
 		return disabledWearableSkillMods.contains(mod);
 	}

@@ -1,0 +1,36 @@
+chand_paralope = Creature:new {
+	customName = "a Paralope",
+	socialGroup = "paralope",
+	faction = "",
+	level = 12,
+	chanceHit = 0.25,
+	damageMin = 60,
+	damageMax = 150,
+	baseXp = 90,
+	baseHAM = 3600,
+	baseHAMmax = 4200,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_herbivore",
+	meatAmount = 150,
+	hideType = "hide_leathery",
+	hideAmount = 125,
+	boneType = "bone_mammal",
+	boneAmount = 100,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = HERBIVORE,
+	scale = 1.0,
+
+	templates = {"object/mobile/paralope.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_paralope, "chand_paralope")

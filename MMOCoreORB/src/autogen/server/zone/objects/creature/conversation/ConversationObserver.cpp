@@ -6,6 +6,8 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
+#include "server/zone/objects/scene/SceneObject.h"
+
 /*
  *	ConversationObserverStub
  */
@@ -47,7 +49,7 @@ int ConversationObserver::notifyObserverEvent(unsigned int eventType, Observable
 	}
 }
 
-ConversationScreen* ConversationObserver::getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, CreatureObject* conversingNPC) {
+ConversationScreen* ConversationObserver::getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, SceneObject* conversingNPC) {
 	ConversationObserverImplementation* _implementation = static_cast<ConversationObserverImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -57,7 +59,7 @@ ConversationScreen* ConversationObserver::getNextConversationScreen(CreatureObje
 	}
 }
 
-ConversationScreen* ConversationObserver::runScreenHandlers(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen) {
+ConversationScreen* ConversationObserver::runScreenHandlers(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen) {
 	ConversationObserverImplementation* _implementation = static_cast<ConversationObserverImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);

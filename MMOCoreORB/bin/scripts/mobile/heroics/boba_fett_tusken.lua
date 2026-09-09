@@ -1,0 +1,37 @@
+boba_fett_tusken = Creature:new {
+	customName = "Boba Fett",
+	randomNameType = NAME_GENERIC_TAG,
+	socialGroup = "townsperson",
+	faction = "",
+	level = 90,
+	chanceHit = 1.0,
+	damageMin = 800,
+	damageMax = 1200,
+	baseXp = 5000,
+	baseHAM = 80000,
+	baseHAMmax = 90000,
+	armor = 1,
+	resists = {50,50,50,50,50,50,50,50,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	scale = 1.0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation",
+	attacks = merge(brawlermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(boba_fett_tusken, "boba_fett_tusken")

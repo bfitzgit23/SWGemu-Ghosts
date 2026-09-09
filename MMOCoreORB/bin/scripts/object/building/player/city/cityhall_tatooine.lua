@@ -44,9 +44,10 @@
 object_building_player_city_cityhall_tatooine = object_building_player_city_shared_cityhall_tatooine:new {
 	lotSize = 0,
 	baseMaintenanceRate = 0,
-	allowedZones = {"chandrila", "corellia", "coruscant", "dantooine", "dathomir", "endor", "geonosis", "hoth", "hutta", "jakku", "kaas", "kashyyyk", "korriban", "lok", "mandalore", "mustafar", "naboo", "rori", "taanab", "talus", "tatooine", "yavin4"},
+	allowedZones = {"dantooine", "lok", "tatooine"},
+	length = 7,
 	width = 9,
-	zoneComponent = "CityHallZoneComponent",
+	groundZoneComponent = "CityHallZoneComponent",
 	cityRankRequired = 0,
 	uniqueStructure = true,
 	cityMaintenanceBase = 35000,

@@ -54,6 +54,22 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+namespace server {
+namespace zone {
+namespace objects {
+namespace creature {
+namespace ai {
+
+class CreatureTemplate;
+
+} // namespace ai
+} // namespace creature
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::creature::ai;
+
 #include "server/zone/objects/manufactureschematic/craftingvalues/CraftingValues.h"
 
 #include "server/zone/packets/scene/AttributeListMessage.h"
@@ -75,9 +91,9 @@ class PetDeed : public Deed {
 public:
 	PetDeed();
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type) const;
+	bool isSpecialResist(unsigned int type) const;
 
 	int getSampleCount() const;
 
@@ -155,27 +171,31 @@ public:
 
 	String getSpecial2() const;
 
-	int getCleverness() const;
+	float getCleverness() const;
 
-	int getEndurance() const;
+	float getEndurance() const;
 
-	int getFierceness() const;
+	float getFierceness() const;
 
-	int getPower() const;
+	float getPower() const;
 
-	int getIntelligence() const;
+	float getIntellect() const;
 
-	int getCourage() const;
+	float getCourage() const;
 
-	int getDependency() const;
+	float getDependability() const;
 
-	int getDexterity() const;
+	float getDexterity() const;
 
-	int getFortitude() const;
+	float getFortitude() const;
 
-	int getHardiness() const;
+	float getHardiness() const;
+
+	String getControlledDeviceTemplate() const;
 
 	String getTemplateName() const;
+
+	CreatureTemplate* getCreatureTemplate() const;
 
 	/**
 	 * Setup attack map during initialize
@@ -269,25 +289,25 @@ protected:
 
 	String mobileTemplate;
 
-	int cleverness;
+	float cleverness;
 
-	int endurance;
+	float endurance;
 
-	int fierceness;
+	float fierceness;
 
-	int power;
+	float power;
 
-	int intelligence;
+	float intellect;
 
-	int courage;
+	float courage;
 
-	int dependency;
+	float dependability;
 
-	int dexterity;
+	float dexterity;
 
-	int fortitude;
+	float fortitude;
 
-	int hardiness;
+	float hardiness;
 
 	int sampleCount;
 
@@ -300,9 +320,9 @@ public:
 
 	PetDeedImplementation(DummyConstructorParameter* param);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type) const;
+	bool isSpecialResist(unsigned int type) const;
 
 	int getSampleCount() const;
 
@@ -380,27 +400,31 @@ public:
 
 	String getSpecial2() const;
 
-	int getCleverness() const;
+	float getCleverness() const;
 
-	int getEndurance() const;
+	float getEndurance() const;
 
-	int getFierceness() const;
+	float getFierceness() const;
 
-	int getPower() const;
+	float getPower() const;
 
-	int getIntelligence() const;
+	float getIntellect() const;
 
-	int getCourage() const;
+	float getCourage() const;
 
-	int getDependency() const;
+	float getDependability() const;
 
-	int getDexterity() const;
+	float getDexterity() const;
 
-	int getFortitude() const;
+	float getFortitude() const;
 
-	int getHardiness() const;
+	float getHardiness() const;
+
+	String getControlledDeviceTemplate() const;
 
 	String getTemplateName() const;
+
+	CreatureTemplate* getCreatureTemplate() const;
 
 	/**
 	 * Setup attack map during initialize
@@ -457,9 +481,9 @@ public:
 
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type) const;
+	bool isSpecialResist(unsigned int type) const;
 
 	int getSampleCount() const;
 
@@ -515,25 +539,27 @@ public:
 
 	String getSpecial2() const;
 
-	int getCleverness() const;
+	float getCleverness() const;
 
-	int getEndurance() const;
+	float getEndurance() const;
 
-	int getFierceness() const;
+	float getFierceness() const;
 
-	int getPower() const;
+	float getPower() const;
 
-	int getIntelligence() const;
+	float getIntellect() const;
 
-	int getCourage() const;
+	float getCourage() const;
 
-	int getDependency() const;
+	float getDependability() const;
 
-	int getDexterity() const;
+	float getDexterity() const;
 
-	int getFortitude() const;
+	float getFortitude() const;
 
-	int getHardiness() const;
+	float getHardiness() const;
+
+	String getControlledDeviceTemplate() const;
 
 };
 
@@ -624,25 +650,25 @@ public:
 
 	Optional<String> mobileTemplate;
 
-	Optional<int> cleverness;
+	Optional<float> cleverness;
 
-	Optional<int> endurance;
+	Optional<float> endurance;
 
-	Optional<int> fierceness;
+	Optional<float> fierceness;
 
-	Optional<int> power;
+	Optional<float> power;
 
-	Optional<int> intelligence;
+	Optional<float> intellect;
 
-	Optional<int> courage;
+	Optional<float> courage;
 
-	Optional<int> dependency;
+	Optional<float> dependability;
 
-	Optional<int> dexterity;
+	Optional<float> dexterity;
 
-	Optional<int> fortitude;
+	Optional<float> fortitude;
 
-	Optional<int> hardiness;
+	Optional<float> hardiness;
 
 	Optional<int> sampleCount;
 

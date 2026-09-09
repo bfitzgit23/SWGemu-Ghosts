@@ -83,7 +83,7 @@ public:
 
 	void generateObject(CreatureObject* player);
 
-	void callObject(CreatureObject* player);
+	void callObject(CreatureObject* player, bool initialCall = false);
 
 	bool canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade);
 
@@ -139,7 +139,7 @@ public:
 
 	virtual void generateObject(CreatureObject* player);
 
-	virtual void callObject(CreatureObject* player);
+	virtual void callObject(CreatureObject* player, bool initialCall = false);
 
 	virtual bool canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade);
 
@@ -199,7 +199,7 @@ public:
 
 	void generateObject(CreatureObject* player);
 
-	void callObject(CreatureObject* player);
+	void callObject(CreatureObject* player, bool initialCall);
 
 	bool canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade);
 

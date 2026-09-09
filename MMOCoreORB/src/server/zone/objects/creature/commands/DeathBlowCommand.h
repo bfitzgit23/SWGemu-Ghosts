@@ -39,10 +39,25 @@ public:
 		if (targetObject->isPlayerCreature()) {
 			CreatureObject* player = cast<CreatureObject*>( targetObject.get());
 
+			if (player == nullptr) {
+				return INVALIDTARGET;
+			}
+
 			Locker clocker(player, creature);
+
+			if (player->isDead()) {
+				StringIdChatParameter params("error_message", "prose_target_already_dead"); // But %TT is already dead!
+				params.setTT(player->getDisplayedName());
+				creature->sendSystemMessage(params);
+				return GENERALERROR;
+			}
 
 			if (!CollisionManager::checkLineOfSight(creature, player)) {
 				creature->sendSystemMessage("@combat_effects:cansee_fail");// You cannot see your target.
+				return GENERALERROR;
+			}
+
+			if (!playerEntryCheck(creature, player)) {
 				return GENERALERROR;
 			}
 
@@ -59,10 +74,25 @@ public:
 		} else if (targetObject->isPet()) {
 			AiAgent* pet = cast<AiAgent*>( targetObject.get());
 
+			if (pet == nullptr) {
+				return INVALIDTARGET;
+			}
+
 			Locker clocker(pet, creature);
+
+			if (pet->isDead()) {
+				StringIdChatParameter params("error_message", "prose_target_already_dead"); // But %TT is already dead!
+				params.setTT(pet->getDisplayedName());
+				creature->sendSystemMessage(params);
+				return GENERALERROR;
+			}
 
 			if (!CollisionManager::checkLineOfSight(creature, pet)) {
 				creature->sendSystemMessage("@combat_effects:cansee_fail");// You cannot see your target.
+				return GENERALERROR;
+			}
+
+			if (!playerEntryCheck(creature, pet)) {
 				return GENERALERROR;
 			}
 

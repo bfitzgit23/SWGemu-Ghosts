@@ -4,11 +4,15 @@
 
 #include "IntangibleObject.h"
 
+#include "server/zone/packets/scene/AttributeListMessage.h"
+
+#include "server/zone/objects/creature/CreatureObject.h"
+
 /*
  *	IntangibleObjectStub
  */
 
-enum {RPC_FINALIZE__ = 3178238000,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ISINTANGIBLEOBJECT__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_UPDATESTATUS__INT_BOOL_,RPC_GETSTATUS__,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_};
+enum {RPC_FINALIZE__ = 3178238000,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_UPDATESTATUS__INT_BOOL_,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_,RPC_SETDATASIZE__FLOAT_BOOL_,RPC_SETITEMIDENTIFIER__STRING_BOOL_,RPC_GETSTATUS__,RPC_GETDATASIZE__,RPC_GETITEMIDENTIFIER__,RPC_ISINTANGIBLEOBJECT__};
 
 IntangibleObject::IntangibleObject() : SceneObject(DummyConstructorParameter::instance()) {
 	IntangibleObjectImplementation* _implementation = new IntangibleObjectImplementation();
@@ -50,20 +54,6 @@ void IntangibleObject::loadTemplateData(SharedObjectTemplate* templateData) {
 	}
 }
 
-bool IntangibleObject::isIntangibleObject() {
-	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISINTANGIBLEOBJECT__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isIntangibleObject();
-	}
-}
-
 void IntangibleObject::sendBaselinesTo(SceneObject* player) {
 	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -76,6 +66,16 @@ void IntangibleObject::sendBaselinesTo(SceneObject* player) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->sendBaselinesTo(player);
+	}
+}
+
+void IntangibleObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->fillAttributeList(msg, object);
 	}
 }
 
@@ -96,20 +96,6 @@ void IntangibleObject::updateStatus(int newStatus, bool notifyClient) {
 	}
 }
 
-unsigned int IntangibleObject::getStatus() const {
-	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETSTATUS__);
-
-		return method.executeWithUnsignedIntReturn();
-	} else {
-		return _implementation->getStatus();
-	}
-}
-
 void IntangibleObject::setCustomObjectName(const UnicodeString& name, bool notifyClient) {
 	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -124,6 +110,98 @@ void IntangibleObject::setCustomObjectName(const UnicodeString& name, bool notif
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setCustomObjectName(name, notifyClient);
+	}
+}
+
+void IntangibleObject::setDataSize(float dataSize, bool notifyClient) {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETDATASIZE__FLOAT_BOOL_);
+		method.addFloatParameter(dataSize);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setDataSize(dataSize, notifyClient);
+	}
+}
+
+void IntangibleObject::setItemIdentifier(const String& itemName, bool notifyClient) {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETITEMIDENTIFIER__STRING_BOOL_);
+		method.addAsciiParameter(itemName);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setItemIdentifier(itemName, notifyClient);
+	}
+}
+
+unsigned int IntangibleObject::getStatus() const {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSTATUS__);
+
+		return method.executeWithUnsignedIntReturn();
+	} else {
+		return _implementation->getStatus();
+	}
+}
+
+float IntangibleObject::getDataSize() const {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETDATASIZE__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getDataSize();
+	}
+}
+
+String IntangibleObject::getItemIdentifier() const {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETITEMIDENTIFIER__);
+
+		String _return_getItemIdentifier;
+		method.executeWithAsciiReturn(_return_getItemIdentifier);
+		return _return_getItemIdentifier;
+	} else {
+		return _implementation->getItemIdentifier();
+	}
+}
+
+bool IntangibleObject::isIntangibleObject() {
+	IntangibleObjectImplementation* _implementation = static_cast<IntangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINTANGIBLEOBJECT__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isIntangibleObject();
 	}
 }
 
@@ -239,6 +317,14 @@ bool IntangibleObjectImplementation::readObjectMember(ObjectInputStream* stream,
 		TypeInfo<unsigned int >::parseFromBinaryStream(&status, stream);
 		return true;
 
+	case 0xb5fd3566: //IntangibleObject.datapadSize
+		TypeInfo<float >::parseFromBinaryStream(&datapadSize, stream);
+		return true;
+
+	case 0xc8d420ff: //IntangibleObject.itemIdentifier
+		TypeInfo<String >::parseFromBinaryStream(&itemIdentifier, stream);
+		return true;
+
 	}
 
 	return false;
@@ -266,6 +352,24 @@ int IntangibleObjectImplementation::writeObjectMembers(ObjectOutputStream* strea
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xb5fd3566; //IntangibleObject.datapadSize
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&datapadSize, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xc8d420ff; //IntangibleObject.itemIdentifier
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&itemIdentifier, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -276,6 +380,10 @@ void IntangibleObjectImplementation::writeJSON(nlohmann::json& j) {
 	nlohmann::json thisObject = nlohmann::json::object();
 	thisObject["status"] = status;
 
+	thisObject["datapadSize"] = datapadSize;
+
+	thisObject["itemIdentifier"] = itemIdentifier;
+
 	j["IntangibleObject"] = thisObject;
 }
 
@@ -285,6 +393,10 @@ IntangibleObjectImplementation::IntangibleObjectImplementation() {
 	Logger::setLoggingName("IntangibleObject");
 	// server/zone/objects/intangible/IntangibleObject.idl():  		status = 0;
 	status = 0;
+	// server/zone/objects/intangible/IntangibleObject.idl():  		datapadSize = 0;
+	datapadSize = 0;
+	// server/zone/objects/intangible/IntangibleObject.idl():  		itemIdentifier = "";
+	itemIdentifier = "";
 	// server/zone/objects/intangible/IntangibleObject.idl():  		super.setContainerInheritPermissionsFromParent(false);
 	SceneObjectImplementation::setContainerInheritPermissionsFromParent(false);
 	// server/zone/objects/intangible/IntangibleObject.idl():  		super.setContainerDefaultDenyPermission(ContainerPermissions.MOVECONTAINER);
@@ -301,14 +413,24 @@ void IntangibleObjectImplementation::loadTemplateData(SharedObjectTemplate* temp
 	SceneObjectImplementation::loadTemplateData(templateData);
 }
 
-bool IntangibleObjectImplementation::isIntangibleObject() {
-	// server/zone/objects/intangible/IntangibleObject.idl():  		return true;
-	return true;
-}
-
 unsigned int IntangibleObjectImplementation::getStatus() const{
 	// server/zone/objects/intangible/IntangibleObject.idl():  		return status;
 	return status;
+}
+
+float IntangibleObjectImplementation::getDataSize() const{
+	// server/zone/objects/intangible/IntangibleObject.idl():  		return datapadSize;
+	return datapadSize;
+}
+
+String IntangibleObjectImplementation::getItemIdentifier() const{
+	// server/zone/objects/intangible/IntangibleObject.idl():  		return itemIdentifier;
+	return itemIdentifier;
+}
+
+bool IntangibleObjectImplementation::isIntangibleObject() {
+	// server/zone/objects/intangible/IntangibleObject.idl():  		return true;
+	return true;
 }
 
 /*
@@ -340,13 +462,6 @@ void IntangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 		}
 		break;
-	case RPC_ISINTANGIBLEOBJECT__:
-		{
-			
-			bool _m_res = isIntangibleObject();
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_SENDBASELINESTO__SCENEOBJECT_:
 		{
 			SceneObject* player = static_cast<SceneObject*>(inv->getObjectParameter());
@@ -364,13 +479,6 @@ void IntangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 		}
 		break;
-	case RPC_GETSTATUS__:
-		{
-			
-			unsigned int _m_res = getStatus();
-			resp->insertInt(_m_res);
-		}
-		break;
 	case RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_:
 		{
 			 UnicodeString name; inv->getUnicodeParameter(name);
@@ -378,6 +486,52 @@ void IntangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 			setCustomObjectName(name, notifyClient);
 			
+		}
+		break;
+	case RPC_SETDATASIZE__FLOAT_BOOL_:
+		{
+			float dataSize = inv->getFloatParameter();
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setDataSize(dataSize, notifyClient);
+			
+		}
+		break;
+	case RPC_SETITEMIDENTIFIER__STRING_BOOL_:
+		{
+			 String itemName; inv->getAsciiParameter(itemName);
+			bool notifyClient = inv->getBooleanParameter();
+			
+			setItemIdentifier(itemName, notifyClient);
+			
+		}
+		break;
+	case RPC_GETSTATUS__:
+		{
+			
+			unsigned int _m_res = getStatus();
+			resp->insertInt(_m_res);
+		}
+		break;
+	case RPC_GETDATASIZE__:
+		{
+			
+			float _m_res = getDataSize();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETITEMIDENTIFIER__:
+		{
+			
+			String _m_res = getItemIdentifier();
+			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_ISINTANGIBLEOBJECT__:
+		{
+			
+			bool _m_res = isIntangibleObject();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	default:
@@ -393,10 +547,6 @@ void IntangibleObjectAdapter::initializeTransientMembers() {
 	(static_cast<IntangibleObject*>(stub))->initializeTransientMembers();
 }
 
-bool IntangibleObjectAdapter::isIntangibleObject() {
-	return (static_cast<IntangibleObject*>(stub))->isIntangibleObject();
-}
-
 void IntangibleObjectAdapter::sendBaselinesTo(SceneObject* player) {
 	(static_cast<IntangibleObject*>(stub))->sendBaselinesTo(player);
 }
@@ -405,12 +555,32 @@ void IntangibleObjectAdapter::updateStatus(int newStatus, bool notifyClient) {
 	(static_cast<IntangibleObject*>(stub))->updateStatus(newStatus, notifyClient);
 }
 
+void IntangibleObjectAdapter::setCustomObjectName(const UnicodeString& name, bool notifyClient) {
+	(static_cast<IntangibleObject*>(stub))->setCustomObjectName(name, notifyClient);
+}
+
+void IntangibleObjectAdapter::setDataSize(float dataSize, bool notifyClient) {
+	(static_cast<IntangibleObject*>(stub))->setDataSize(dataSize, notifyClient);
+}
+
+void IntangibleObjectAdapter::setItemIdentifier(const String& itemName, bool notifyClient) {
+	(static_cast<IntangibleObject*>(stub))->setItemIdentifier(itemName, notifyClient);
+}
+
 unsigned int IntangibleObjectAdapter::getStatus() const {
 	return (static_cast<IntangibleObject*>(stub))->getStatus();
 }
 
-void IntangibleObjectAdapter::setCustomObjectName(const UnicodeString& name, bool notifyClient) {
-	(static_cast<IntangibleObject*>(stub))->setCustomObjectName(name, notifyClient);
+float IntangibleObjectAdapter::getDataSize() const {
+	return (static_cast<IntangibleObject*>(stub))->getDataSize();
+}
+
+String IntangibleObjectAdapter::getItemIdentifier() const {
+	return (static_cast<IntangibleObject*>(stub))->getItemIdentifier();
+}
+
+bool IntangibleObjectAdapter::isIntangibleObject() {
+	return (static_cast<IntangibleObject*>(stub))->isIntangibleObject();
 }
 
 /*
@@ -472,6 +642,12 @@ void IntangibleObjectPOD::writeJSON(nlohmann::json& j) {
 	if (status)
 		thisObject["status"] = status.value();
 
+	if (datapadSize)
+		thisObject["datapadSize"] = datapadSize.value();
+
+	if (itemIdentifier)
+		thisObject["itemIdentifier"] = itemIdentifier.value();
+
 	j["IntangibleObject"] = thisObject;
 }
 
@@ -500,6 +676,28 @@ int IntangibleObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (datapadSize) {
+	_nameHashCode = 0xb5fd3566; //IntangibleObject.datapadSize
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&datapadSize.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (itemIdentifier) {
+	_nameHashCode = 0xc8d420ff; //IntangibleObject.itemIdentifier
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<String >::toBinaryStream(&itemIdentifier.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -514,6 +712,22 @@ bool IntangibleObjectPOD::readObjectMember(ObjectInputStream* stream, const uint
 			unsigned int _mnstatus;
 			TypeInfo<unsigned int >::parseFromBinaryStream(&_mnstatus, stream);
 			status = std::move(_mnstatus);
+		}
+		return true;
+
+	case 0xb5fd3566: //IntangibleObject.datapadSize
+		{
+			float _mndatapadSize;
+			TypeInfo<float >::parseFromBinaryStream(&_mndatapadSize, stream);
+			datapadSize = std::move(_mndatapadSize);
+		}
+		return true;
+
+	case 0xc8d420ff: //IntangibleObject.itemIdentifier
+		{
+			String _mnitemIdentifier;
+			TypeInfo<String >::parseFromBinaryStream(&_mnitemIdentifier, stream);
+			itemIdentifier = std::move(_mnitemIdentifier);
 		}
 		return true;
 
@@ -544,6 +758,10 @@ void IntangibleObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	SceneObjectPOD::writeObjectCompact(stream);
 
 	TypeInfo<unsigned int >::toBinaryStream(&status.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&datapadSize.value(), stream);
+
+	TypeInfo<String >::toBinaryStream(&itemIdentifier.value(), stream);
 
 
 }

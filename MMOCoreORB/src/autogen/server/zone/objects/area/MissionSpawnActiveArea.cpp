@@ -236,7 +236,7 @@ void MissionSpawnActiveAreaImplementation::notifyEnter(SceneObject* player) {
 	// server/zone/objects/area/MissionSpawnActiveArea.idl():  			DestroyMissionObjective objective = destroyMissionObjective;
 	ManagedReference<DestroyMissionObjective* > objective = destroyMissionObjective;
 	// server/zone/objects/area/MissionSpawnActiveArea.idl():  			}
-	if (objective != NULL){
+	if (objective){
 	// server/zone/objects/area/MissionSpawnActiveArea.idl():  				CreatureObject missionOwner = objective.getPlayerOwner();
 	ManagedReference<CreatureObject* > missionOwner = objective->getPlayerOwner();
 	// server/zone/objects/area/MissionSpawnActiveArea.idl():  			}

@@ -2,6 +2,7 @@ klin_nif = Creature:new {
 	objectName = "",
 	customName = "Klin Nif",
 	socialGroup = "death_watch",
+	mobType = MOB_NPC,
 	faction = "",
 	level = 178,
 	chanceHit = 12.25,
@@ -31,44 +32,22 @@ klin_nif = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "wearables_uncommon", chance = 10000000}
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
-				{group = "wearables_common", chance = 10000000}
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
-				{group = "jetpack_base", chance = 10000000}
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
-				{group = "death_watch_bunker_commoners", chance = 10000000}
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
 				{group = "klin_nif_drop", chance = 10000000}
 			},
 			lootChance = 10000000
-		},
-		{
-			groups = {
-				{group = "jedi_comp_group", chance = 10000000}
-			},
-			lootChance = 100000
-		},
+		}
 	},
-	weapons = {"death_watch_commander_weapons"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "death_watch_commander_weapons",
+	secondaryWeapon = "unarmed",
 	conversationTemplate = "",
-	attacks = merge(carbineermaster,marksmanmaster,brawlermaster,fencermaster,pistoleermaster)
+	
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = merge(carbineermaster,marksmanmaster,brawlermaster,fencermaster,pistoleermaster),
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(klin_nif, "klin_nif")

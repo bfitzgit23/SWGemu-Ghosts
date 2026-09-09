@@ -618,7 +618,7 @@ void ChatRoom::setPublic() {
 	}
 }
 
-bool ChatRoom::isPublic() {
+bool ChatRoom::isPublic() const {
 	ChatRoomImplementation* _implementation = static_cast<ChatRoomImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1777,7 +1777,7 @@ void ChatRoomImplementation::setPublic() {
 	isPublicRoom = true;
 }
 
-bool ChatRoomImplementation::isPublic() {
+bool ChatRoomImplementation::isPublic() const{
 	// server/chat/room/ChatRoom.idl():  		return isPublicRoom == true;
 	return isPublicRoom == true;
 }
@@ -2664,7 +2664,7 @@ void ChatRoomAdapter::setPublic() {
 	(static_cast<ChatRoom*>(stub))->setPublic();
 }
 
-bool ChatRoomAdapter::isPublic() {
+bool ChatRoomAdapter::isPublic() const {
 	return (static_cast<ChatRoom*>(stub))->isPublic();
 }
 

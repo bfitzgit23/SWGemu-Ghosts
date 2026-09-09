@@ -29,6 +29,7 @@ private:
 public:
 	bool add(Ability* const& ability, DeltaMessage* message = nullptr, int updates = 1) override;
 	bool contains(const String& element) const;
+	int deduplicateAbilities();
 
 	bool toBinaryStream(ObjectOutputStream* stream) override;
 	bool parseFromBinaryStream(ObjectInputStream* stream) override;

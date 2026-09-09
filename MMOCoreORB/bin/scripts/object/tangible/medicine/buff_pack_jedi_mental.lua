@@ -41,7 +41,7 @@
 --which carries forward this exception.
 
 -- Using stock medpack_dizzy IFF file (no custom IFF needed)
-object_tangible_medicine_buff_pack_jedi_mental = object_tangible_medicine_shared_medic_damage01:new {
+object_tangible_medicine_buff_pack_jedi_mental = object_tangible_medicine_shared_medpack_dizzy:new {
 
 	templateType = CONSUMABLE,
 	
@@ -69,4 +69,4 @@ object_tangible_medicine_buff_pack_jedi_mental = object_tangible_medicine_shared
 	experimentalCombineType = {0, 0, 1, 1, 1, 1},
 }
 
-ObjectTemplates:addTemplate(object_tangible_medicine_buff_pack_jedi_mental, "object/tangible/medicine/medic_damage01.iff")
+ObjectTemplates:addTemplate(object_tangible_medicine_buff_pack_jedi_mental, "object/tangible/medicine/medpack_dizzy.iff")

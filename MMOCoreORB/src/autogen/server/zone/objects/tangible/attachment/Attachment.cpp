@@ -12,7 +12,7 @@
  *	AttachmentStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 4007443492,RPC_UPDATEATTACHMENTVALUES__STRING_INT_,RPC_INITIALIZEMEMBERS__,RPC_ISATTACHMENT__,RPC_ISARMORATTACHMENT__,RPC_ISCLOTHINGATTACHMENT__,};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 4007443492,RPC_INITIALIZEMEMBERS__,RPC_ISATTACHMENT__,RPC_ISARMORATTACHMENT__,RPC_ISCLOTHINGATTACHMENT__,};
 
 Attachment::Attachment() : TangibleObject(DummyConstructorParameter::instance()) {
 	AttachmentImplementation* _implementation = new AttachmentImplementation();
@@ -51,22 +51,6 @@ void Attachment::updateCraftingValues(CraftingValues* values, bool firstUpdate) 
 
 	} else {
 		_implementation->updateCraftingValues(values, firstUpdate);
-	}
-}
-
-void Attachment::updateAttachmentValues(const String& modName, int value) {
-	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_UPDATEATTACHMENTVALUES__STRING_INT_);
-		method.addAsciiParameter(modName);
-		method.addSignedIntParameter(value);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->updateAttachmentValues(modName, value);
 	}
 }
 
@@ -146,7 +130,7 @@ bool Attachment::isClothingAttachment() {
 	}
 }
 
-HashTable<String, int>* Attachment::getSkillMods() {
+VectorMap<String, int>* Attachment::getSkillMods() {
 	AttachmentImplementation* _implementation = static_cast<AttachmentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -274,6 +258,10 @@ bool AttachmentImplementation::readObjectMember(ObjectInputStream* stream, const
 		TypeInfo<HashTable<String, int> >::parseFromBinaryStream(&skillModMap, stream);
 		return true;
 
+	case 0xdcc1764: //Attachment.skillModifiers
+		TypeInfo<VectorMap<String, int> >::parseFromBinaryStream(&skillModifiers, stream);
+		return true;
+
 	}
 
 	return false;
@@ -310,6 +298,15 @@ int AttachmentImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xdcc1764; //Attachment.skillModifiers
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<VectorMap<String, int> >::toBinaryStream(&skillModifiers, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -322,6 +319,8 @@ void AttachmentImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["skillModMap"] = skillModMap;
 
+	thisObject["skillModifiers"] = skillModifiers;
+
 	j["Attachment"] = thisObject;
 }
 
@@ -331,6 +330,8 @@ AttachmentImplementation::AttachmentImplementation() {
 	Logger::setLoggingName("Attachment");
 	// server/zone/objects/tangible/attachment/Attachment.idl():  		skillModMap.setNullValue(0);
 	(&skillModMap)->setNullValue(0);
+	// server/zone/objects/tangible/attachment/Attachment.idl():  		skillModifiers.setNullValue(0);
+	(&skillModifiers)->setNullValue(0);
 }
 
 void AttachmentImplementation::loadTemplateData(SharedObjectTemplate* templateData) {
@@ -355,9 +356,9 @@ bool AttachmentImplementation::isClothingAttachment() {
 	return TangibleObjectImplementation::gameObjectType == SceneObjectType::CLOTHINGATTACHMENT;
 }
 
-HashTable<String, int>* AttachmentImplementation::getSkillMods() {
-	// server/zone/objects/tangible/attachment/Attachment.idl():  		return skillModMap;
-	return (&skillModMap);
+VectorMap<String, int>* AttachmentImplementation::getSkillMods() {
+	// server/zone/objects/tangible/attachment/Attachment.idl():  		return skillModifiers;
+	return (&skillModifiers);
 }
 
 /*
@@ -379,15 +380,6 @@ void AttachmentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			initializeTransientMembers();
-			
-		}
-		break;
-	case RPC_UPDATEATTACHMENTVALUES__STRING_INT_:
-		{
-			 String modName; inv->getAsciiParameter(modName);
-			int value = inv->getSignedIntParameter();
-			
-			updateAttachmentValues(modName, value);
 			
 		}
 		break;
@@ -426,10 +418,6 @@ void AttachmentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 
 void AttachmentAdapter::initializeTransientMembers() {
 	(static_cast<Attachment*>(stub))->initializeTransientMembers();
-}
-
-void AttachmentAdapter::updateAttachmentValues(const String& modName, int value) {
-	(static_cast<Attachment*>(stub))->updateAttachmentValues(modName, value);
 }
 
 void AttachmentAdapter::initializeMembers() {
@@ -510,6 +498,9 @@ void AttachmentPOD::writeJSON(nlohmann::json& j) {
 	if (skillModMap)
 		thisObject["skillModMap"] = skillModMap.value();
 
+	if (skillModifiers)
+		thisObject["skillModifiers"] = skillModifiers.value();
+
 	j["Attachment"] = thisObject;
 }
 
@@ -549,6 +540,17 @@ int AttachmentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (skillModifiers) {
+	_nameHashCode = 0xdcc1764; //Attachment.skillModifiers
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<VectorMap<String, int> >::toBinaryStream(&skillModifiers.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -571,6 +573,14 @@ bool AttachmentPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 			HashTable<String, int> _mnskillModMap;
 			TypeInfo<HashTable<String, int> >::parseFromBinaryStream(&_mnskillModMap, stream);
 			skillModMap = std::move(_mnskillModMap);
+		}
+		return true;
+
+	case 0xdcc1764: //Attachment.skillModifiers
+		{
+			VectorMap<String, int> _mnskillModifiers;
+			TypeInfo<VectorMap<String, int> >::parseFromBinaryStream(&_mnskillModifiers, stream);
+			skillModifiers = std::move(_mnskillModifiers);
 		}
 		return true;
 
@@ -603,6 +613,8 @@ void AttachmentPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<int >::toBinaryStream(&attachmentType.value(), stream);
 
 	TypeInfo<HashTable<String, int> >::toBinaryStream(&skillModMap.value(), stream);
+
+	TypeInfo<VectorMap<String, int> >::toBinaryStream(&skillModifiers.value(), stream);
 
 
 }

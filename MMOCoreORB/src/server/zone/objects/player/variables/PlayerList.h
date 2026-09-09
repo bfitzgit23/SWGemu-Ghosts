@@ -28,6 +28,16 @@ public:
 
 	}
 
+	PlayerList& operator=(const PlayerList& list) {
+		if (this == &list) {
+			return *this;
+		}
+
+		DeltaVector<String>::operator=(list);
+
+		return *this;
+	}
+
 	friend void to_json(nlohmann::json& j, const PlayerList& l) {
 		const DeltaVector<String>& dv = l;
 
@@ -42,7 +52,7 @@ public:
 		if (contains(lowerCase))
 			return false;
 
-		add(lowerCase);
+		add(lowerCase, nullptr, 0);
 
 		return true;
 	}
@@ -57,7 +67,7 @@ public:
 		if (idx == -1)
 			return false;
 
-		remove(idx);
+		remove(idx, nullptr, 0);
 
 		return true;
 	}

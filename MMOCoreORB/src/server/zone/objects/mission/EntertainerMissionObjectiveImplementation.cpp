@@ -141,6 +141,7 @@ void EntertainerMissionObjectiveImplementation::startCompleteTask() {
 			completeTask = new CompleteMissionAfterCertainTimeTask(_this.getReferenceUnsafeStaticCast());
 		}
 
+		// Ghosts custom entertainer missions are always 10 minutes.
 		if (completeTask->isScheduled()) {
 			completeTask->reschedule(10 * 60 * 1000);
 		} else {
@@ -177,19 +178,4 @@ int EntertainerMissionObjectiveImplementation::notifyObserverEvent(MissionObserv
 	startCompleteTask();
 
 	return 0;
-}
-
-Vector3 EntertainerMissionObjectiveImplementation::getEndPosition() {
-	ManagedReference<MissionObject* > mission = this->mission.get();
-
-	Vector3 missionEndPoint;
-	if (mission == nullptr)
-		return missionEndPoint;
-
-	missionEndPoint.setX(mission->getStartPositionX());
-	missionEndPoint.setY(mission->getStartPositionY());
-	TerrainManager* terrain = getPlayerOwner()->getZone()->getPlanetManager()->getTerrainManager();
-	missionEndPoint.setZ(terrain->getHeight(missionEndPoint.getX(), missionEndPoint.getY()));
-
-	return missionEndPoint;
 }

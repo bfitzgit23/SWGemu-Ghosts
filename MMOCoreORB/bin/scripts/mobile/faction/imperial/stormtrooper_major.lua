@@ -2,6 +2,7 @@ stormtrooper_major = Creature:new {
 	objectName = "@mob/creature_names:stormtrooper_major",
 	randomNameType = NAME_STORMTROOPER,
 	randomNameTag = true,
+	mobType = MOB_NPC,
 	socialGroup = "imperial",
 	faction = "imperial",
 	level = 32,
@@ -32,25 +33,24 @@ stormtrooper_major = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "color_crystals", chance = 100000},
-				{group = "junk", chance = 5050000},
-				{group = "rifles", chance = 550000},
-				{group = "pistols", chance = 550000},
-				{group = "melee_weapons", chance = 550000},
-				{group = "carbines", chance = 550000},
-				{group = "clothing_attachments", chance = 250000},
-				{group = "armor_attachments", chance = 250000},
-				{group = "imperial_officer_common", chance = 450000},
-				{group = "stormtrooper_common", chance = 700000},
-				{group = "wearables_common", chance = 500000},
-				{group = "wearables_uncommon", chance = 500000}
+				{group = "imperial_stormtrooper_tier_1", chance = 10000000}
 			}
 		}
 	},
-	weapons = {"stormtrooper_weapons"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "stormtrooper_carbine",
+	secondaryWeapon = "stormtrooper_pistol",
+	thrownWeapon = "thrown_weapons",
+
 	conversationTemplate = "imperialRecruiterConvoTemplate",
 	reactionStf = "@npc_reaction/stormtrooper",
-	attacks = merge(riflemanmaster,carbineermaster,brawlermaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = merge(carbineermaster,marksmanmaster),
+	secondaryAttacks = merge(pistoleermaster,marksmanmaster)
 }
 
 CreatureTemplates:addCreatureTemplate(stormtrooper_major, "stormtrooper_major")

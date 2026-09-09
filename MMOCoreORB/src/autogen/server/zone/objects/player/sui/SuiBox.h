@@ -43,6 +43,38 @@ using namespace server::zone::objects::scene;
 namespace server {
 namespace zone {
 namespace objects {
+namespace structure {
+
+class StructureObject;
+
+class StructureObjectPOD;
+
+} // namespace structure
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::structure;
+
+namespace server {
+namespace zone {
+namespace objects {
+namespace ship {
+
+class PobShipObject;
+
+class PobShipObjectPOD;
+
+} // namespace ship
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::ship;
+
+namespace server {
+namespace zone {
+namespace objects {
 namespace creature {
 
 class CreatureObject;
@@ -114,10 +146,6 @@ public:
 
 	static const int QUESTPOPUP = 30;
 
-	static const int ADDWEAPONDOT = 40;
-
-	static const int DECONSTRUCTWEAPON = 41;
-
 	SuiBox(CreatureObject* play, unsigned int windowtype, unsigned int boxtype);
 
 	void initialize();
@@ -141,8 +169,6 @@ public:
 	 * \sa addSetting(), clearOptions()
 	 */
 	void generateBody(SuiCreatePageMessage* message);
-
-	void generateBodySorted(SuiCreatePageMessage* message);
 
 	/**
 	 * Call after generating both the header and body.
@@ -217,10 +243,6 @@ public:
 
 	bool isColorPicker();
 
-	bool isDeconstructWeapon();
-
-	bool isAddWeaponDot();
-
 	void setCancelButton(bool value, const String& cancelText);
 
 	void setOtherButton(bool value, const String& backText);
@@ -240,6 +262,14 @@ public:
 	ManagedWeakReference<SceneObject* > getUsingObject();
 
 	void setUsingObject(SceneObject* object);
+
+	ManagedWeakReference<StructureObject* > getStructureObject();
+
+	void setStructureObject(StructureObject* structure);
+
+	ManagedWeakReference<PobShipObject* > getPobShipObject();
+
+	void setPobShipObject(PobShipObject* pobShip);
 
 	void setCallback(SuiCallback* callback);
 
@@ -283,6 +313,10 @@ protected:
 	unsigned int boxID;
 
 	ManagedWeakReference<SceneObject* > usingObject;
+
+	ManagedWeakReference<StructureObject* > structureObject;
+
+	ManagedWeakReference<PobShipObject* > pobShipObject;
 
 	String handlerStr;
 
@@ -337,10 +371,6 @@ public:
 
 	static const int QUESTPOPUP = 30;
 
-	static const int ADDWEAPONDOT = 40;
-
-	static const int DECONSTRUCTWEAPON = 41;
-
 	SuiBoxImplementation(CreatureObject* play, unsigned int windowtype, unsigned int boxtype);
 
 	SuiBoxImplementation(DummyConstructorParameter* param);
@@ -368,8 +398,6 @@ public:
 	 * \sa addSetting(), clearOptions()
 	 */
 	void generateBody(SuiCreatePageMessage* message);
-
-	void generateBodySorted(SuiCreatePageMessage* message);
 
 	/**
 	 * Call after generating both the header and body.
@@ -444,10 +472,6 @@ public:
 
 	virtual bool isColorPicker();
 
-	virtual bool isDeconstructWeapon();
-
-	virtual bool isAddWeaponDot();
-
 	void setCancelButton(bool value, const String& cancelText);
 
 	void setOtherButton(bool value, const String& backText);
@@ -467,6 +491,14 @@ public:
 	ManagedWeakReference<SceneObject* > getUsingObject();
 
 	void setUsingObject(SceneObject* object);
+
+	ManagedWeakReference<StructureObject* > getStructureObject();
+
+	void setStructureObject(StructureObject* structure);
+
+	ManagedWeakReference<PobShipObject* > getPobShipObject();
+
+	void setPobShipObject(PobShipObject* pobShip);
 
 	void setCallback(SuiCallback* callback);
 
@@ -561,10 +593,6 @@ public:
 
 	bool isColorPicker();
 
-	bool isDeconstructWeapon();
-
-	bool isAddWeaponDot();
-
 	void setCancelButton(bool value, const String& cancelText);
 
 	void setOtherButton(bool value, const String& backText);
@@ -584,6 +612,14 @@ public:
 	ManagedWeakReference<SceneObject* > getUsingObject();
 
 	void setUsingObject(SceneObject* object);
+
+	ManagedWeakReference<StructureObject* > getStructureObject();
+
+	void setStructureObject(StructureObject* structure);
+
+	ManagedWeakReference<PobShipObject* > getPobShipObject();
+
+	void setPobShipObject(PobShipObject* pobShip);
 
 	bool isSuiBoxPage();
 
@@ -631,6 +667,10 @@ public:
 	Optional<unsigned int> boxID;
 
 	Optional<ManagedWeakReference<SceneObjectPOD* >> usingObject;
+
+	Optional<ManagedWeakReference<StructureObjectPOD* >> structureObject;
+
+	Optional<ManagedWeakReference<PobShipObjectPOD* >> pobShipObject;
 
 	Optional<String> handlerStr;
 

@@ -13,10 +13,10 @@
 #include "server/zone/objects/player/sui/messagebox/SuiMessageBox.h"
 #include "server/zone/managers/vendor/sui/RenameVendorSuiCallback.h"
 #include "server/zone/managers/vendor/sui/RegisterVendorSuiCallback.h"
-#include "server/zone/managers/vendor/sui/RelistItemsSuiCallback.h"
 #include "server/zone/managers/auction/AuctionManager.h"
 #include "server/zone/managers/auction/AuctionsMap.h"
 #include "server/zone/objects/tangible/components/vendor/VendorDataComponent.h"
+#include "server/zone/objects/transaction/TransactionLog.h"
 #include "server/zone/ZoneProcessServer.h"
 
 VendorManager::VendorManager() {
@@ -114,12 +114,12 @@ void VendorManager::handleDisplayStatus(CreatureObject* player, TangibleObject* 
 
 	ManagedReference<AuctionManager*> auctionManager = server->getZoneServer()->getAuctionManager();
 	if(auctionManager == nullptr) {
-		error("nullptr auction manager");
+		error("null auction manager");
 		return;
 	}
 	ManagedReference<AuctionsMap*> auctionsMap = auctionManager->getAuctionMap();
 	if(auctionsMap == nullptr) {
-		error("nullptr auctionsMap");
+		error("null auctionsMap");
 		return;
 	}
 
@@ -127,9 +127,10 @@ void VendorManager::handleDisplayStatus(CreatureObject* player, TangibleObject* 
 	String region = "@planet_n:" + vendor->getZone()->getZoneName();
 
 
-	ManagedReference<CityRegion*> regionObject = vendor->getCityRegion().get();
-	if(regionObject != nullptr)
-		region = regionObject->getRegionName();
+	ManagedReference<CityRegion*> cityRegion = vendor->getCityRegion().get();
+
+	if(cityRegion != nullptr)
+		region = cityRegion->getCityRegionName();
 
 	TerminalListVector vendorList = auctionsMap->getVendorTerminalData(planet, region, vendor);
 
@@ -203,34 +204,6 @@ String VendorManager::getTimeString(uint32 timestamp) {
 	return "(" + str.toString() + ")";
 }
 
-void VendorManager::promptRelistItems(CreatureObject* player, TangibleObject* vendor) {
-	ManagedReference<AuctionManager*> auctionManager = server->getZoneServer()->getAuctionManager();
-	if (auctionManager == nullptr) return;
-	ManagedReference<AuctionsMap*> auctionsMap = auctionManager->getAuctionMap();
-	if (auctionsMap == nullptr) return;
-
-	int expiredSales = auctionsMap->getVendorExpiredItemCount(vendor) - auctionsMap->getVendorExpiredOffersCount(vendor, player);
-
-	if (expiredSales > 0){
-		SuiMessageBox* confirmationWindow = new SuiMessageBox(player, SuiWindowType::NONE);
-		confirmationWindow->setCallback(new RelistItemsSuiCallback(player->getZoneServer()));
-		confirmationWindow->setUsingObject(vendor);
-		confirmationWindow->setPromptTitle("Restock Items");
-		confirmationWindow->setPromptText("The service fee for re-listing the "
-				+ String::valueOf(expiredSales)
-				+ " items in the stockroom is "
-				+ String::valueOf(expiredSales * 50)
-				+ " credits.\n\nContinue?");
-		confirmationWindow->setOkButton(true, "@yes");
-		confirmationWindow->setCancelButton(true, "@no");
-
-		player->getPlayerObject()->addSuiBox(confirmationWindow);
-		player->sendMessage(confirmationWindow->generateMessage());
-	} else {
-		player->sendSystemMessage("There are no items in the stockroom");
-	}
-}
-
 void VendorManager::promptDestroyVendor(CreatureObject* player, TangibleObject* vendor) {
 
 	DataObjectComponentReference* data = vendor->getDataObjectComponent();
@@ -268,12 +241,13 @@ void VendorManager::promptRenameVendorTo(CreatureObject* player, TangibleObject*
 	input->setCancelButton(true, "@cancel");
 	input->setPromptTitle("@player_structure:name_t");
 	input->setPromptText("@player_structure:name_d");
+	input->setDefaultInput(vendor->getCustomObjectName().toString());
 
 	player->sendMessage(input->generateMessage());
 	player->getPlayerObject()->addSuiBox(input);
 }
 
-void VendorManager::destroyVendor(TangibleObject* vendor) {
+void VendorManager::destroyVendor(TangibleObject* vendor, const String& reason) {
 	DataObjectComponentReference* data = vendor->getDataObjectComponent();
 	if (data == nullptr || data->get() == nullptr || !data->get()->isVendorData()) {
 		error("Vendor has no data component");
@@ -288,15 +262,85 @@ void VendorManager::destroyVendor(TangibleObject* vendor) {
 
 	ManagedReference<AuctionManager*> auctionManager = server->getZoneServer()->getAuctionManager();
 	if (auctionManager == nullptr) {
-		error("nullptr auctionManager when deleting vendor");
+		error("null auctionManager when deleting vendor");
 		return;
 	}
 
 	ManagedReference<AuctionsMap*> auctionsMap = auctionManager->getAuctionMap();
 	if (auctionsMap == nullptr) {
-		error("nullptr auctionsMap");
+		error("null auctionsMap");
 		return;
 	}
+
+	// Counts are gathered before locking the vendor, deleteTerminalItems() takes the AuctionsMap lock
+	int itemsForSale = auctionsMap->getVendorItemCount(vendor, true);
+	int itemsTotal = auctionsMap->getVendorItemCount(vendor, false);
+
+	ManagedReference<CreatureObject*> owner = server->getZoneServer()->getObject(vendorData->getOwnerId()).castTo<CreatureObject*>();
+
+	TransactionLog trx(owner, vendor, TrxCode::VENDORLIFECYCLE);
+	trx.addState("subjectAction", "destroy");
+	trx.addState("subjectDestroyReason", reason);
+	trx.addState("vendorName", vendor->getDisplayedName());
+	trx.addState("vendorOwnerId", vendorData->getOwnerId());
+	trx.addState("vendorItemsForSale", itemsForSale);
+	trx.addState("vendorItemsTotal", itemsTotal);
+	trx.addState("vendorMaintAmount", vendorData->getMaint());
+	trx.addState("vendorEmptyDays", vendorData->getEmptyDays());
+	trx.addState("vendorRegistered", vendorData->isRegistered());
+	trx.addState("vendorUID", vendorData->getUID());
+
+	// Items for sale are not contained by the vendor, they have to be pulled from the auction
+	// map by vendor oid and added by hand or the export misses everything the owner lost
+	int itemsExported = 0;
+	auto zone = vendor->getZone();
+
+	if (zone != nullptr) {
+		String planet = zone->getZoneName();
+		String region = "@planet_n:" + planet;
+
+		ManagedReference<CityRegion*> cityRegion = vendor->getCityRegion().get();
+
+		if (cityRegion != nullptr)
+			region = cityRegion->getCityRegionName();
+
+		TerminalListVector vendorList = auctionsMap->getVendorTerminalData(planet, region, vendor);
+
+		if (vendorList.size() > 0) {
+			Reference<TerminalItemList*> list = vendorList.get(0);
+
+			if (list != nullptr) {
+				ReadLocker rlocker(list);
+
+				for (int i = 0; i < list->size(); ++i) {
+					ManagedReference<AuctionItem*> item = list->get(i);
+
+					if (item == nullptr)
+						continue;
+
+					uint64 sellingID = item->getAuctionedItemObjectID();
+
+					if (sellingID == 0)
+						continue;
+
+					trx.addRelatedObject(sellingID, true);
+					itemsExported++;
+				}
+			}
+		}
+	}
+
+	trx.addState("vendorItemsExported", itemsExported);
+
+	// A vendor with no zone cannot be looked up by planet/region, getVendorTerminalData would
+	// fall back to the whole galaxy listing, so the manifest is skipped rather than guessed at
+	if (zone == nullptr && itemsTotal > 0)
+		trx.addState("vendorItemsExportSkipped", "vendor has no zone");
+
+	// Force a synchronous export, the vendor and its items are deleted below
+	trx.addRelatedObject(vendor, true);
+	trx.setExportRelatedObjects(true);
+	trx.exportRelated();
 
 	if (vendorData->isRegistered() && vendor->getZone() != nullptr) {
 		vendor->getZone()->unregisterObjectWithPlanetaryMap(vendor);
@@ -305,6 +349,7 @@ void VendorManager::destroyVendor(TangibleObject* vendor) {
 	Locker locker(vendor);
 
 	vendorData->cancelVendorCheckTask();
+	vendorData->setDestroyStarted();
 
 	vendor->destroyObjectFromWorld(true);
 	vendor->destroyObjectFromDatabase(true);
@@ -342,56 +387,6 @@ void VendorManager::sendRegisterVendorTo(CreatureObject* player, TangibleObject*
 
 }
 
-void VendorManager::handleRelistItems(CreatureObject* player, TangibleObject* vendor) {
-
-	ManagedReference<AuctionManager*> auctionManager = server->getZoneServer()->getAuctionManager();
-	if (auctionManager == nullptr) return;
-
-	ManagedReference<AuctionsMap*> auctionsMap = auctionManager->getAuctionMap();
-	if (auctionsMap == nullptr) return;
-
-	String planet = vendor->getZone()->getZoneName();
-	String region = "@planet_n:" + vendor->getZone()->getZoneName();
-
-	TerminalListVector vendorList = auctionsMap->getVendorTerminalData(planet, region, vendor);
-	Reference<TerminalItemList*> itemList = vendorList.get(0);
-
-	int availableCredits = player->getBankCredits();
-	int expiredOffers = auctionsMap->getVendorExpiredOffersCount(vendor, player);
-	int expiredSalesCount = auctionsMap->getVendorExpiredItemCount(vendor) - expiredOffers;
-	int totalFees = expiredSalesCount * 50;
-	if (totalFees > availableCredits) {
-		player->sendSystemMessage("You do not have enough credits for the relisting fee");
-		return;
-	}
-
-	if (itemList != nullptr){
-
-		while (expiredSalesCount > 0) {
-			for (int i = 0; i < itemList->size(); i++) {
-				ManagedReference<AuctionItem*> item = itemList->get(i);
-				if (item != nullptr) {
-					Locker locker(item);
-					int salePrice = item->getPrice() > 99999990 ? 99999990 : item->getPrice();
-					if (item->getStatus() == AuctionItem::EXPIRED && item->getOwnerID() == player->getObjectID()) {
-						auctionManager->addSaleItem(player, item->getAuctionedItemObjectID(), vendor, item->getItemDescription(), salePrice, AuctionManager::VENDOREXPIREPERIOD, false, false, true);
-					}
-				}
-			}
-			expiredSalesCount = auctionsMap->getVendorExpiredItemCount(vendor) - expiredOffers;
-		}
-	}
-	// charge the fees after the entire transaction is complete
-	player->subtractBankCredits(totalFees);
-	// if in a player city add a percentage to the treasury
-	ManagedReference<CityRegion*> city = vendor->getCityRegion().get();
-	if (city != nullptr) {
-		Locker clocker(city);
-		city->addToCityTreasury((double)(totalFees * 0.25));
-	}
-	player->sendSystemMessage("Stockroom items have been relisted");
-}
-
 void VendorManager::handleRegisterVendorCallback(CreatureObject* player, TangibleObject* vendor, const String& planetMapCategoryName) {
 
 	Zone* zone = vendor->getZone();
@@ -417,7 +412,7 @@ void VendorManager::handleRegisterVendorCallback(CreatureObject* player, Tangibl
 	}
 
 	Reference<const PlanetMapCategory*> planetMapCategory = TemplateManager::instance()->getPlanetMapCategoryByName("vendor");
-	Reference<const PlanetMapCategory*> planetMapSubCategory = TemplateManager::instance()->getPlanetMapCategoryByName("vendor_" + planetMapCategoryName);
+	Reference<const PlanetMapSubCategory*> planetMapSubCategory = TemplateManager::instance()->getPlanetMapSubCategoryByName("vendor_" + planetMapCategoryName);
 
 	if (planetMapCategory == nullptr || planetMapSubCategory == nullptr)
 		return;
@@ -505,4 +500,138 @@ void VendorManager::handleRenameVendor(CreatureObject* player, TangibleObject* v
 	} else
 		player->sendSystemMessage("@player_structure:vendor_rename");
 
+}
+
+void VendorManager::randomizeVendorLooks(CreatureObject* vendor) {
+	// Vendor is locked coming in
+	if (vendor == nullptr) {
+		return;
+	}
+
+	VendorCreatureTemplate* vendorTempl = dynamic_cast<VendorCreatureTemplate*>(vendor->getObjectTemplate());
+
+	if (vendorTempl == nullptr) {
+		return;
+	}
+
+	randomizeVendorClothing(vendor, vendorTempl);
+	randomizeVendorHair(vendor, vendorTempl);
+	randomizeVendorFeatures(vendor, vendorTempl);
+	randomizeVendorHeight(vendor, vendorTempl);
+}
+
+void VendorManager::randomizeVendorClothing(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl) {
+	auto zoneServer = server->getZoneServer();
+
+	if (zoneServer == nullptr) {
+		return;
+	}
+
+	String randomOutfit = vendorTempl->getOutfitName(System::random(vendorTempl->getOutfitsSize() - 1));
+	if (randomOutfit.isEmpty())
+		return;
+
+	Reference<Outfit*> outfit = VendorOutfitManager::instance()->getOutfit(randomOutfit);
+	if (outfit == nullptr)
+		return;
+
+	Vector<uint32>* clothing = outfit->getClothing();
+
+	for (int i = 0; i < clothing->size(); ++i) {
+		ManagedReference<SceneObject*> obj = zoneServer->createObject(clothing->get(i), 1);
+		if (obj == nullptr)
+			continue;
+
+		for (int j = 0; j < obj->getArrangementDescriptorSize(); ++j) {
+			const Vector<String>* descriptors = obj->getArrangementDescriptor(j);
+
+			for (int k = 0; k < descriptors->size(); ++k) {
+				ManagedReference<SceneObject*> slot = vendor->getSlottedObject(descriptors->get(k));
+
+				if (slot != nullptr) {
+					slot->destroyObjectFromWorld(true);
+					slot->destroyObjectFromDatabase(true);
+				}
+			}
+		}
+
+		if (!vendor->transferObject(obj, 4)) {
+			obj->destroyObjectFromDatabase(true);
+		}
+	}
+}
+
+void VendorManager::randomizeVendorHair(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl) {
+	auto zoneServer = server->getZoneServer();
+
+	if (zoneServer == nullptr) {
+		return;
+	}
+
+	String hairFile = vendorTempl->getHairFile(System::random(vendorTempl->getHairSize() - 1));
+	ManagedReference<SceneObject*> hairSlot = vendor->getSlottedObject("hair");
+
+	if (hairSlot == nullptr && !hairFile.isEmpty()) {
+		Reference<TangibleObject*> hair = zoneServer->createObject(hairFile.hashCode(), 1).castTo<TangibleObject*>();
+
+		if (hair != nullptr) {
+			if (hair->getGameObjectType() != SceneObjectType::GENERICITEM || hair->getArrangementDescriptor(0)->get(0) != "hair") {
+				hair->destroyObjectFromDatabase(true);
+				return;
+			}
+
+			// TODO: randomize hair customization
+
+			if (!vendor->transferObject(hair, 4)) {
+				hair->destroyObjectFromDatabase(true);
+			}
+		}
+	}
+}
+
+void VendorManager::randomizeVendorFeatures(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl) {
+	// Randomize Configured Customization Variables
+	for (int i = 0; i < vendorTempl->getCustomizationStringNamesSize(); i++) {
+		String customizationStringName = vendorTempl->getCustomizationStringName(i);
+
+		if (i >= vendorTempl->getCustomizationValuesSize())
+			continue;
+
+		Vector<int> values = vendorTempl->getCustomizationValues(i);
+		if (values.isEmpty())
+			continue;
+
+		// Select random value from array
+		int randomValue = values.get(System::random(values.size() - 1));
+
+		// Some customization strings are mutually exclusive pairs of names separated by
+		// a comma.  Client expects only one of those names to be non-zero.  The other
+		// should be zero.  Randomly choose which one to give a value from the values array
+		int idx = customizationStringName.indexOf(',');
+		if (idx >= 0) {
+			String customizationStringName1 = customizationStringName.subString(0, idx);
+			String customizationStringName2 = customizationStringName.subString(idx + 1);
+			if (System::random(1) == 1) {
+				vendor->setCustomizationVariable(customizationStringName1, randomValue, false);
+				vendor->setCustomizationVariable(customizationStringName2, 0, false);
+			} else {
+				vendor->setCustomizationVariable(customizationStringName1, 0, false);
+				vendor->setCustomizationVariable(customizationStringName2, randomValue, false);
+			}
+
+		} else {
+			// Set single variable
+			vendor->setCustomizationVariable(customizationStringName, randomValue, false);
+		}
+	} // foreach customizationStringName
+}
+
+void VendorManager::randomizeVendorHeight(CreatureObject* vendor, VendorCreatureTemplate* vendorTempl) {
+	// minScale/maxScale are floats with two significant digits past the decimal
+	int minScale = vendorTempl->getMinScale() * 100;
+	int maxScale = vendorTempl->getMaxScale() * 100;
+	int heightMod = System::random(maxScale - minScale);
+
+	float height = (minScale + heightMod) / 100.0;
+	vendor->setHeight(height, false);
 }

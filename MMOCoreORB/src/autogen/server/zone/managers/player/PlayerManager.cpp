@@ -38,7 +38,27 @@
  *	PlayerManagerStub
  */
 
-enum {RPC_LOADNAMEMAP__ = 2324343300,RPC_FINALIZE__,RPC_KICKUSER__STRING_STRING_STRING_BOOL_,RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_,RPC_SETLASTNAME__CREATUREOBJECT_STRING_BOOL_,RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_NOTIFYDESTRUCTION__TANGIBLEOBJECT_TANGIBLEOBJECT_INT_BOOL_,RPC_SHOULDRESCHEDULECORPSEDESTRUCTION__CREATUREOBJECT_CREATUREOBJECT_,RPC_RESCHEDULECORPSEDESTRUCTION__CREATUREOBJECT_CREATUREOBJECT_,RPC_CANGROUPMEMBERHARVESTCORPSE__CREATUREOBJECT_CREATURE_,RPC_KILLPLAYER__TANGIBLEOBJECT_CREATUREOBJECT_INT_BOOL_,RPC_CALCULATEINCAPACITATIONTIMER__CREATUREOBJECT_INT_,RPC_CHECKENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_APPLYENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_REMOVEENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_AWARDBADGE__PLAYEROBJECT_INT_,RPC_SETEXPERIENCEMULTIPLIER__FLOAT_,RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_,RPC_FRSSKILLCHECK__CREATUREOBJECT_STRING_STRING_,RPC_GCWSKILLCHECK__CREATUREOBJECT_STRING_STRING_,RPC_BHGSKILLCHECK__CREATUREOBJECT_STRING_STRING_,RPC_HANDLEABORTTRADEMESSAGE__CREATUREOBJECT_,RPC_HANDLEADDITEMTOTRADEWINDOW__CREATUREOBJECT_LONG_,RPC_HANDLEGIVEMONEYMESSAGE__CREATUREOBJECT_INT_,RPC_HANDLEACCEPTTRANSACTIONMESSAGE__CREATUREOBJECT_,RPC_HANDLEUNACCEPTTRANSACTIONMESSAGE__CREATUREOBJECT_,RPC_HANDLEVERIFYTRADEMESSAGE__CREATUREOBJECT_,RPC_CHECKTRADEITEMS__CREATUREOBJECT_CREATUREOBJECT_,RPC_GETINRANGESTRUCTUREWITHADMINRIGHTS__CREATUREOBJECT_LONG_,RPC_GETINRANGEOWNEDSTRUCTURE__CREATUREOBJECT_FLOAT_,RPC_SENDBATTLEFATIGUEMESSAGE__CREATUREOBJECT_CREATUREOBJECT_,RPC_STOPWATCH__CREATUREOBJECT_LONG_BOOL_BOOL_BOOL_BOOL_,RPC_STOPLISTEN__CREATUREOBJECT_LONG_BOOL_BOOL_BOOL_BOOL_,RPC_STARTWATCH__CREATUREOBJECT_LONG_,RPC_STARTLISTEN__CREATUREOBJECT_LONG_,RPC_LOOTALL__CREATUREOBJECT_CREATUREOBJECT_,RPC_PROPOSEUNITY__CREATUREOBJECT_CREATUREOBJECT_SCENEOBJECT_,RPC_DENYUNITY__CREATUREOBJECT_,RPC_ACCEPTUNITY__CREATUREOBJECT_,RPC_COMPLETEUNITY__CREATUREOBJECT_LONG_,RPC_PROMPTDIVORCE__CREATUREOBJECT_,RPC_GRANTDIVORCE__CREATUREOBJECT_,RPC_CLAIMVETERANREWARDS__CREATUREOBJECT_,RPC_GETELIGIBLEMILESTONE__PLAYEROBJECT_ACCOUNT_,RPC_GETFIRSTINELIGIBLEMILESTONE__PLAYEROBJECT_ACCOUNT_,RPC_CANCELVETERANREWARDSESSION__CREATUREOBJECT_,RPC_CONFIRMVETERANREWARD__CREATUREOBJECT_INT_,RPC_GENERATEVETERANREWARD__CREATUREOBJECT_,RPC_HEALENHANCE__CREATUREOBJECT_CREATUREOBJECT_BYTE_INT_FLOAT_INT_,RPC_CALCULATEPLAYERLEVEL__CREATUREOBJECT_,RPC_CALCULATEPLAYERLEVEL__CREATUREOBJECT_STRING_,RPC_SENDLOGINMESSAGE__CREATUREOBJECT_,RPC_RESENDLOGINMESSAGETOALL__,RPC_SENDACTIVATECLONEREQUEST__CREATUREOBJECT_INT_,RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_,RPC_SENDPLAYERTOCLONER__CREATUREOBJECT_LONG_INT_,RPC_EJECTPLAYERFROMBUILDING__CREATUREOBJECT_,RPC_CHECKEXISTENTNAMEINDATABASE__STRING_,RPC_CREATETUTORIALBUILDING__CREATUREOBJECT_,RPC_CREATESKIPPEDTUTORIALBUILDING__CREATUREOBJECT_,RPC_CHECKSPEEDHACKSECONDTEST__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_INT_SCENEOBJECT_,RPC_EXISTSNAME__STRING_,RPC_EXISTSPLAYERCREATUREOID__LONG_,RPC_GETOBJECTID__STRING_,RPC_GETPLAYERNAME__LONG_,RPC_GETPLAYER__STRING_,RPC_UPDATEPERMISSIONLEVEL__CREATUREOBJECT_INT_,RPC_UPDATEPERMISSIONNAME__CREATUREOBJECT_INT_,RPC_ADDPLAYER__CREATUREOBJECT_,RPC_REMOVEPLAYER__STRING_,RPC_REMOVEPLAYER__LONG_,RPC_CONTAINSPLAYER__STRING_,RPC_SENDADMINJEDILIST__CREATUREOBJECT_,RPC_SENDADMINFRSLIST__CREATUREOBJECT_,RPC_SENDADMINLIST__CREATUREOBJECT_,RPC_GETNEARBYCRAFTINGSTATION__CREATUREOBJECT_INT_,RPC_FINISHHOLOGRIND__CREATUREOBJECT_,RPC_BANACCOUNT__PLAYEROBJECT_ACCOUNT_INT_STRING_,RPC_UNBANACCOUNT__PLAYEROBJECT_ACCOUNT_STRING_,RPC_BANFROMGALAXY__PLAYEROBJECT_ACCOUNT_INT_INT_STRING_,RPC_UNBANFROMGALAXY__PLAYEROBJECT_ACCOUNT_INT_STRING_,RPC_BANCHARACTER__PLAYEROBJECT_ACCOUNT_STRING_INT_INT_STRING_,RPC_UNBANCHARACTER__PLAYEROBJECT_ACCOUNT_STRING_INT_STRING_,RPC_CLEAROWNEDSTRUCTURESPERMISSIONS__CREATUREOBJECT_,RPC_PROMPTTEACHABLESKILLS__CREATUREOBJECT_SCENEOBJECT_,RPC_DECREASEONLINECHARCOUNT__ZONECLIENTSESSION_,RPC_INCREASEONLINECHARCOUNTIFPOSSIBLE__ZONECLIENTSESSION_,RPC_DISCONNECTALLPLAYERS__,RPC_FIXHAM__CREATUREOBJECT_,RPC_FIXBUFFSKILLMODS__CREATUREOBJECT_,RPC_GETPLAYERQUESTID__STRING_,RPC_GETPLAYERQUESTPARENT__INT_,RPC_GETTOTALPLAYERQUESTS__,RPC_GETCLEANUPCHARACTERCOUNT__,RPC_CLEANUPCHARACTERS__,RPC_SHOULDDELETECHARACTER__LONG_INT_,RPC_DOBURSTRUN__CREATUREOBJECT_FLOAT_FLOAT_,RPC_ENHANCECHARACTER__CREATUREOBJECT_,RPC_DOENHANCECHARACTER__INT_CREATUREOBJECT_INT_INT_INT_BYTE_,RPC_GETBASESTOREDCREATUREPETS__,RPC_GETBASESTOREDFACTIONPETS__,RPC_GETBASESTOREDDROIDS__,RPC_GETBASESTOREDVEHICLES__,RPC_GETBASESTOREDSHIPS__,RPC_GETNUMVETERANREWARDMILESTONES__,RPC_GETVETERANREWARDMILESTONE__INT_,RPC_GETNUMJUKEBOXSONGS__,RPC_SETONLINECHARACTERSPERACCOUNT__INT_,RPC_UPDATEPVPKILLCOUNT__CREATUREOBJECT_,RPC_OFFERPLAYERBOUNTY__CREATUREOBJECT_CREATUREOBJECT_,RPC_GETSPECIESXPMODIFIER__STRING_STRING_,RPC_UNLOCKFRSFORTESTING__CREATUREOBJECT_INT_,RPC_UPDATEONLINEPLAYERS__,RPC_STOPONLINEPLAYERLOGTASK__};
+const float PlayerManager::DELTA_SPEED_CHECK = 1000.f;
+
+unsigned const int PlayerManager::CORSEC_SQUADRON = 1;
+
+unsigned const int PlayerManager::RSF_SQUADRON = 2;
+
+unsigned const int PlayerManager::SMUGGLER_SQUADRON = 3;
+
+unsigned const int PlayerManager::BLACK_EPSILON_SQUADRON = 4;
+
+unsigned const int PlayerManager::STORM_SQUADRON = 5;
+
+unsigned const int PlayerManager::INQUISITION_SQUADRON = 6;
+
+unsigned const int PlayerManager::CRIMSON_PHOENIX_SQUADRON = 7;
+
+unsigned const int PlayerManager::VORTEX_SQUADRON = 8;
+
+unsigned const int PlayerManager::HAVOC_SQUADRON = 9;
+
+enum {RPC_LOADNAMEMAP__ = 2324343300,RPC_FINALIZE__,RPC_KICKUSER__STRING_STRING_STRING_BOOL_,RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_BOOL_,RPC_SETLASTNAME__CREATUREOBJECT_STRING_BOOL_,RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_NOTIFYDESTRUCTION__TANGIBLEOBJECT_TANGIBLEOBJECT_INT_BOOL_,RPC_SHOULDRESCHEDULECORPSEDESTRUCTION__CREATUREOBJECT_CREATUREOBJECT_,RPC_RESCHEDULECORPSEDESTRUCTION__CREATUREOBJECT_CREATUREOBJECT_,RPC_CANGROUPMEMBERHARVESTCORPSE__CREATUREOBJECT_CREATURE_,RPC_KILLPLAYER__TANGIBLEOBJECT_CREATUREOBJECT_INT_BOOL_,RPC_CALCULATEINCAPACITATIONTIMER__CREATUREOBJECT_INT_,RPC_CHECKENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_APPLYENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_REMOVEENCUMBRANCIES__CREATUREOBJECT_ARMOROBJECT_,RPC_AWARDBADGE__PLAYEROBJECT_INT_,RPC_SETEXPERIENCEMULTIPLIER__FLOAT_,RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_BOOL_,RPC_HANDLEABORTTRADEMESSAGE__CREATUREOBJECT_,RPC_HANDLEADDITEMTOTRADEWINDOW__CREATUREOBJECT_LONG_,RPC_HANDLEGIVEMONEYMESSAGE__CREATUREOBJECT_INT_,RPC_HANDLEACCEPTTRANSACTIONMESSAGE__CREATUREOBJECT_,RPC_HANDLEUNACCEPTTRANSACTIONMESSAGE__CREATUREOBJECT_,RPC_HANDLEVERIFYTRADEMESSAGE__CREATUREOBJECT_,RPC_CHECKTRADEITEMS__CREATUREOBJECT_CREATUREOBJECT_,RPC_GETINRANGESTRUCTUREWITHADMINRIGHTS__CREATUREOBJECT_LONG_,RPC_GETINRANGEOWNEDSTRUCTURE__CREATUREOBJECT_FLOAT_,RPC_SENDBATTLEFATIGUEMESSAGE__CREATUREOBJECT_CREATUREOBJECT_,RPC_STOPWATCH__CREATUREOBJECT_LONG_BOOL_BOOL_BOOL_BOOL_,RPC_STOPLISTEN__CREATUREOBJECT_LONG_BOOL_BOOL_BOOL_BOOL_,RPC_STARTWATCH__CREATUREOBJECT_LONG_,RPC_STARTLISTEN__CREATUREOBJECT_LONG_,RPC_LOOTALL__CREATUREOBJECT_CREATUREOBJECT_,RPC_PROPOSEUNITY__CREATUREOBJECT_CREATUREOBJECT_SCENEOBJECT_,RPC_DENYUNITY__CREATUREOBJECT_,RPC_ACCEPTUNITY__CREATUREOBJECT_,RPC_COMPLETEUNITY__CREATUREOBJECT_LONG_,RPC_PROMPTDIVORCE__CREATUREOBJECT_,RPC_GRANTDIVORCE__CREATUREOBJECT_,RPC_CLAIMVETERANREWARDS__CREATUREOBJECT_,RPC_GETELIGIBLEMILESTONE__PLAYEROBJECT_ACCOUNT_,RPC_GETFIRSTINELIGIBLEMILESTONE__PLAYEROBJECT_ACCOUNT_,RPC_CANCELVETERANREWARDSESSION__CREATUREOBJECT_,RPC_CONFIRMVETERANREWARD__CREATUREOBJECT_INT_,RPC_GENERATEVETERANREWARD__CREATUREOBJECT_,RPC_HEALENHANCE__CREATUREOBJECT_CREATUREOBJECT_BYTE_INT_FLOAT_INT_,RPC_CALCULATEPLAYERLEVEL__CREATUREOBJECT_,RPC_CALCULATEPLAYERLEVEL__CREATUREOBJECT_STRING_,RPC_SENDLOGINMESSAGE__CREATUREOBJECT_,RPC_RESENDLOGINMESSAGETOALL__,RPC_SENDACTIVATECLONEREQUEST__CREATUREOBJECT_INT_,RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_CITYREGION_,RPC_SENDPLAYERTOCLONER__CREATUREOBJECT_LONG_INT_,RPC_EJECTPLAYERFROMBUILDING__CREATUREOBJECT_,RPC_CREATETUTORIALBUILDING__CREATUREOBJECT_,RPC_INSERTINTOSKIPPEDTUTORIALBUILDING__CREATUREOBJECT_,RPC_EXISTSNAME__STRING_,RPC_EXISTSPLAYERCREATUREOID__LONG_,RPC_GETOBJECTID__STRING_,RPC_GETPLAYERNAME__LONG_,RPC_GETPLAYER__STRING_,RPC_UPDATEPERMISSIONLEVEL__CREATUREOBJECT_INT_,RPC_UPDATEPERMISSIONNAME__CREATUREOBJECT_INT_,RPC_ADDPLAYER__CREATUREOBJECT_,RPC_REMOVEPLAYER__STRING_,RPC_REMOVEPLAYER__LONG_,RPC_CONTAINSPLAYER__STRING_,RPC_SENDADMINJEDILIST__CREATUREOBJECT_,RPC_SENDADMINFRSLIST__CREATUREOBJECT_,RPC_SENDADMINLIST__CREATUREOBJECT_,RPC_GETNEARBYCRAFTINGSTATION__CREATUREOBJECT_INT_,RPC_FINISHHOLOGRIND__CREATUREOBJECT_,RPC_BANACCOUNT__PLAYEROBJECT_ACCOUNT_INT_STRING_,RPC_UNBANACCOUNT__PLAYEROBJECT_ACCOUNT_STRING_,RPC_BANFROMGALAXY__PLAYEROBJECT_ACCOUNT_INT_INT_STRING_,RPC_UNBANFROMGALAXY__PLAYEROBJECT_ACCOUNT_INT_STRING_,RPC_BANCHARACTER__PLAYEROBJECT_ACCOUNT_STRING_INT_INT_STRING_,RPC_UNBANCHARACTER__PLAYEROBJECT_ACCOUNT_STRING_INT_STRING_,RPC_CLEAROWNEDSTRUCTURESPERMISSIONS__CREATUREOBJECT_,RPC_PROMPTTEACHABLESKILLS__CREATUREOBJECT_SCENEOBJECT_,RPC_DECREASEONLINECHARCOUNT__ZONECLIENTSESSION_,RPC_INCREASEONLINECHARCOUNTIFPOSSIBLE__ZONECLIENTSESSION_,RPC_DISCONNECTALLPLAYERS__,RPC_FIXHAM__CREATUREOBJECT_,RPC_FIXBUFFSKILLMODS__CREATUREOBJECT_,RPC_GETPLAYERQUESTID__STRING_,RPC_GETPLAYERQUESTPARENT__INT_,RPC_GETTOTALPLAYERQUESTS__,RPC_GETCOAWINNINGFACTION__,RPC_SETCOAWINNINGFACTION__INT_,RPC_GETCLEANUPCHARACTERCOUNT__,RPC_CLEANUPCHARACTERS__,RPC_SHOULDDELETECHARACTER__LONG_INT_,RPC_DOBURSTRUN__CREATUREOBJECT_FLOAT_FLOAT_,RPC_ENHANCECHARACTER__CREATUREOBJECT_,RPC_APPLYMEDICALSERVICEBUFF__CREATUREOBJECT_INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_,RPC_APPLYMEDICALDROIDENHANCEMENT__CREATUREOBJECT_INT_INT_,RPC_GETBASESTOREDCREATUREPETS__,RPC_GETBASESTOREDFACTIONPETS__,RPC_GETBASESTOREDDROIDS__,RPC_GETBASESTOREDVEHICLES__,RPC_GETBASESTOREDSHIPS__,RPC_GETNUMVETERANREWARDMILESTONES__,RPC_GETVETERANREWARDMILESTONE__INT_,RPC_GETNUMJUKEBOXSONGS__,RPC_SETONLINECHARACTERSPERACCOUNT__INT_,RPC_GETONLINECHARACTERSPERACCOUNT__,RPC_GETSPECIESXPMODIFIER__STRING_STRING_,RPC_UNLOCKFRSFORTESTING__CREATUREOBJECT_INT_,RPC_UPDATEONLINEPLAYERS__,RPC_STOPONLINEPLAYERLOGTASK__,};
 
 PlayerManager::PlayerManager(ZoneServer* zoneServer, ZoneProcessServer* impl, bool trackOnlineUsers) : Observer(DummyConstructorParameter::instance()) {
 	PlayerManagerImplementation* _implementation = new PlayerManagerImplementation(zoneServer, impl, trackOnlineUsers);
@@ -129,21 +149,22 @@ bool PlayerManager::checkPlayerName(ClientCreateCharacterCallback* callback) {
 	}
 }
 
-String PlayerManager::setFirstName(CreatureObject* creature, const String& newFirstName) {
+String PlayerManager::setFirstName(CreatureObject* creature, const String& newFirstName, bool skipVerify) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_);
+		DistributedMethod method(this, RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_BOOL_);
 		method.addObjectParameter(creature);
 		method.addAsciiParameter(newFirstName);
+		method.addBooleanParameter(skipVerify);
 
 		String _return_setFirstName;
 		method.executeWithAsciiReturn(_return_setFirstName);
 		return _return_setFirstName;
 	} else {
-		return _implementation->setFirstName(creature, newFirstName);
+		return _implementation->setFirstName(creature, newFirstName, skipVerify);
 	}
 }
 
@@ -375,74 +396,24 @@ void PlayerManager::setExperienceMultiplier(float globalMultiplier) {
 	}
 }
 
-int PlayerManager::awardExperience(CreatureObject* player, const String& xpType, int amount, bool sendSystemMessage, float localMultiplier, bool applyModifiers) {
+int PlayerManager::awardExperience(CreatureObject* player, const String& xpType, int amount, bool sendSystemMessage, float localMultiplier, bool applyModifiers, bool spaceBonus) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_);
+		DistributedMethod method(this, RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_BOOL_);
 		method.addObjectParameter(player);
 		method.addAsciiParameter(xpType);
 		method.addSignedIntParameter(amount);
 		method.addBooleanParameter(sendSystemMessage);
 		method.addFloatParameter(localMultiplier);
 		method.addBooleanParameter(applyModifiers);
+		method.addBooleanParameter(spaceBonus);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers);
-	}
-}
-
-void PlayerManager::frsSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_FRSSKILLCHECK__CREATUREOBJECT_STRING_STRING_);
-		method.addObjectParameter(player);
-		method.addAsciiParameter(skill);
-		method.addAsciiParameter(skillParent);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->frsSkillCheck(player, skill, skillParent);
-	}
-}
-
-void PlayerManager::gcwSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GCWSKILLCHECK__CREATUREOBJECT_STRING_STRING_);
-		method.addObjectParameter(player);
-		method.addAsciiParameter(skill);
-		method.addAsciiParameter(skillParent);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->gcwSkillCheck(player, skill, skillParent);
-	}
-}
-
-void PlayerManager::bhgSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_BHGSKILLCHECK__CREATUREOBJECT_STRING_STRING_);
-		method.addObjectParameter(player);
-		method.addAsciiParameter(skill);
-		method.addAsciiParameter(skillParent);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->bhgSkillCheck(player, skill, skillParent);
+		return _implementation->awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers, spaceBonus);
 	}
 }
 
@@ -487,6 +458,7 @@ void PlayerManager::handleAbortTradeMessage(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleAbortTradeMessage(player);
 	}
 }
@@ -503,6 +475,7 @@ void PlayerManager::handleAddItemToTradeWindow(CreatureObject* player, unsigned 
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleAddItemToTradeWindow(player, itemID);
 	}
 }
@@ -519,6 +492,7 @@ void PlayerManager::handleGiveMoneyMessage(CreatureObject* player, unsigned int 
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleGiveMoneyMessage(player, value);
 	}
 }
@@ -564,6 +538,7 @@ void PlayerManager::handleVerifyTradeMessage(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->handleVerifyTradeMessage(player);
 	}
 }
@@ -937,6 +912,17 @@ void PlayerManager::disseminateExperience(TangibleObject* destructedObject, Thre
 	}
 }
 
+void PlayerManager::disseminateSpaceExperience(ShipAiAgent* destructedObject, ThreatMap* threatMap) {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		assert((destructedObject == NULL) || destructedObject->isLockedByCurrentThread());
+		_implementation->disseminateSpaceExperience(destructedObject, threatMap);
+	}
+}
+
 int PlayerManager::calculatePlayerLevel(CreatureObject* player) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1013,19 +999,20 @@ void PlayerManager::sendActivateCloneRequest(CreatureObject* player, int typeofd
 	}
 }
 
-bool PlayerManager::isValidClosestCloner(CreatureObject* player, SceneObject* cloner) {
+bool PlayerManager::isValidClosestCloner(CreatureObject* player, SceneObject* cloner, CityRegion* cityRegion) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_);
+		DistributedMethod method(this, RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_CITYREGION_);
 		method.addObjectParameter(player);
 		method.addObjectParameter(cloner);
+		method.addObjectParameter(cityRegion);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->isValidClosestCloner(player, cloner);
+		return _implementation->isValidClosestCloner(player, cloner, cityRegion);
 	}
 }
 
@@ -1061,21 +1048,6 @@ void PlayerManager::ejectPlayerFromBuilding(CreatureObject* player) {
 	}
 }
 
-bool PlayerManager::checkExistentNameInDatabase(const String& firstName) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_CHECKEXISTENTNAMEINDATABASE__STRING_);
-		method.addAsciiParameter(firstName);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->checkExistentNameInDatabase(firstName);
-	}
-}
-
 void PlayerManager::createTutorialBuilding(CreatureObject* player) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1087,22 +1059,24 @@ void PlayerManager::createTutorialBuilding(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->createTutorialBuilding(player);
 	}
 }
 
-void PlayerManager::createSkippedTutorialBuilding(CreatureObject* player) {
+void PlayerManager::insertIntoSkippedTutorialBuilding(CreatureObject* player) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CREATESKIPPEDTUTORIALBUILDING__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_INSERTINTOSKIPPEDTUTORIALBUILDING__CREATUREOBJECT_);
 		method.addObjectParameter(player);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->createSkippedTutorialBuilding(player);
+		assert((player == NULL) || player->isLockedByCurrentThread());
+		_implementation->insertIntoSkippedTutorialBuilding(player);
 	}
 }
 
@@ -1116,33 +1090,23 @@ void PlayerManager::updateSwimmingState(CreatureObject* player, float newZ, Inte
 	}
 }
 
-int PlayerManager::checkSpeedHackFirstTest(CreatureObject* player, float parsedSpeed, ValidatedPosition& teleportPosition, float errorMultiplier) {
+bool PlayerManager::checkPlayerSpeedTest(CreatureObject* player, SceneObject* parent, float parsedSpeed, ValidatedPosition* lastValidPosition, const Vector3& lastValidatedWorldPosition, const Vector3& newWorldPosition, float errorMultiplier) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->checkSpeedHackFirstTest(player, parsedSpeed, teleportPosition, errorMultiplier);
+		return _implementation->checkPlayerSpeedTest(player, parent, parsedSpeed, lastValidPosition, lastValidatedWorldPosition, newWorldPosition, errorMultiplier);
 	}
 }
 
-int PlayerManager::checkSpeedHackSecondTest(CreatureObject* player, float newX, float newZ, float newY, unsigned int newStamp, SceneObject* newParent) {
+int PlayerManager::checkSpeedHackTests(CreatureObject* player, PlayerObject* ghost, ValidatedPosition* lastValidPosition, const Vector3& newWorldPosition, unsigned int newStamp, float floorZ, SceneObject* newParent) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_CHECKSPEEDHACKSECONDTEST__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_INT_SCENEOBJECT_);
-		method.addObjectParameter(player);
-		method.addFloatParameter(newX);
-		method.addFloatParameter(newZ);
-		method.addFloatParameter(newY);
-		method.addUnsignedIntParameter(newStamp);
-		method.addObjectParameter(newParent);
-
-		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->checkSpeedHackSecondTest(player, newX, newZ, newY, newStamp, newParent);
+		return _implementation->checkSpeedHackTests(player, ghost, lastValidPosition, newWorldPosition, newStamp, floorZ, newParent);
 	}
 }
 
@@ -1735,6 +1699,45 @@ QuestInfo* PlayerManager::getQuestInfo(int questID) {
 	}
 }
 
+QuestTasks* PlayerManager::getQuestTasks(unsigned const int questCrc) {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getQuestTasks(questCrc);
+	}
+}
+
+unsigned int PlayerManager::getCoaWinningFaction() {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCOAWINNINGFACTION__);
+
+		return method.executeWithUnsignedIntReturn();
+	} else {
+		return _implementation->getCoaWinningFaction();
+	}
+}
+
+void PlayerManager::setCoaWinningFaction(unsigned int faction) {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETCOAWINNINGFACTION__INT_);
+		method.addUnsignedIntParameter(faction);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setCoaWinningFaction(faction);
+	}
+}
+
 bool PlayerManager::offerTeaching(CreatureObject* teacher, CreatureObject* student, Skill* skill) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1851,23 +1854,45 @@ void PlayerManager::enhanceCharacter(CreatureObject* player) {
 	}
 }
 
-bool PlayerManager::doEnhanceCharacter(unsigned int crc, CreatureObject* player, int amount, int duration, int buffType, byte attribute) {
+void PlayerManager::applyMedicalServiceBuff(CreatureObject* player, int duration, int health, int strength, int constitution, int action, int quickness, int stamina, int mind, int focus, int willpower) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_DOENHANCECHARACTER__INT_CREATUREOBJECT_INT_INT_INT_BYTE_);
-		method.addUnsignedIntParameter(crc);
+		DistributedMethod method(this, RPC_APPLYMEDICALSERVICEBUFF__CREATUREOBJECT_INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_);
 		method.addObjectParameter(player);
-		method.addSignedIntParameter(amount);
 		method.addSignedIntParameter(duration);
-		method.addSignedIntParameter(buffType);
-		method.addByteParameter(attribute);
+		method.addSignedIntParameter(health);
+		method.addSignedIntParameter(strength);
+		method.addSignedIntParameter(constitution);
+		method.addSignedIntParameter(action);
+		method.addSignedIntParameter(quickness);
+		method.addSignedIntParameter(stamina);
+		method.addSignedIntParameter(mind);
+		method.addSignedIntParameter(focus);
+		method.addSignedIntParameter(willpower);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->applyMedicalServiceBuff(player, duration, health, strength, constitution, action, quickness, stamina, mind, focus, willpower);
+	}
+}
+
+bool PlayerManager::applyMedicalDroidEnhancement(CreatureObject* player, int duration, int amount) {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_APPLYMEDICALDROIDENHANCEMENT__CREATUREOBJECT_INT_INT_);
+		method.addObjectParameter(player);
+		method.addSignedIntParameter(duration);
+		method.addSignedIntParameter(amount);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->doEnhanceCharacter(crc, player, amount, duration, buffType, attribute);
+		return _implementation->applyMedicalDroidEnhancement(player, duration, amount);
 	}
 }
 
@@ -2009,6 +2034,20 @@ void PlayerManager::setOnlineCharactersPerAccount(int count) {
 	}
 }
 
+int PlayerManager::getOnlineCharactersPerAccount() {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETONLINECHARACTERSPERACCOUNT__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getOnlineCharactersPerAccount();
+	}
+}
+
 void PlayerManager::doPvpDeathRatingUpdate(CreatureObject* player, ThreatMap* threatMap) {
 	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -2017,37 +2056,6 @@ void PlayerManager::doPvpDeathRatingUpdate(CreatureObject* player, ThreatMap* th
 	} else {
 		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->doPvpDeathRatingUpdate(player, threatMap);
-	}
-}
-
-void PlayerManager::updatePvPKillCount(CreatureObject* player) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_UPDATEPVPKILLCOUNT__CREATUREOBJECT_);
-		method.addObjectParameter(player);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->updatePvPKillCount(player);
-	}
-}
-
-void PlayerManager::offerPlayerBounty(CreatureObject* attacker, CreatureObject* defender) {
-	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_OFFERPLAYERBOUNTY__CREATUREOBJECT_CREATUREOBJECT_);
-		method.addObjectParameter(attacker);
-		method.addObjectParameter(defender);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->offerPlayerBounty(attacker, defender);
 	}
 }
 
@@ -2141,6 +2149,16 @@ void PlayerManager::stopOnlinePlayerLogTask() {
 	}
 }
 
+void PlayerManager::iteratePlayerNames(const PlayerNameIterator& iterator) {
+	PlayerManagerImplementation* _implementation = static_cast<PlayerManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->iteratePlayerNames(iterator);
+	}
+}
+
 DistributedObjectServant* PlayerManager::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -2158,6 +2176,26 @@ void PlayerManager::_setImplementation(DistributedObjectServant* servant) {
 /*
  *	PlayerManagerImplementation
  */
+
+const float PlayerManagerImplementation::DELTA_SPEED_CHECK = 1000.f;
+
+unsigned const int PlayerManagerImplementation::CORSEC_SQUADRON = 1;
+
+unsigned const int PlayerManagerImplementation::RSF_SQUADRON = 2;
+
+unsigned const int PlayerManagerImplementation::SMUGGLER_SQUADRON = 3;
+
+unsigned const int PlayerManagerImplementation::BLACK_EPSILON_SQUADRON = 4;
+
+unsigned const int PlayerManagerImplementation::STORM_SQUADRON = 5;
+
+unsigned const int PlayerManagerImplementation::INQUISITION_SQUADRON = 6;
+
+unsigned const int PlayerManagerImplementation::CRIMSON_PHOENIX_SQUADRON = 7;
+
+unsigned const int PlayerManagerImplementation::VORTEX_SQUADRON = 8;
+
+unsigned const int PlayerManagerImplementation::HAVOC_SQUADRON = 9;
 
 PlayerManagerImplementation::PlayerManagerImplementation(DummyConstructorParameter* param) : ObserverImplementation(param) {
 	_initializeImplementation();
@@ -2293,6 +2331,10 @@ bool PlayerManagerImplementation::readObjectMember(ObjectInputStream* stream, co
 		TypeInfo<int >::parseFromBinaryStream(&onlineCharactersPerAccount, stream);
 		return true;
 
+	case 0x28b07ed9: //PlayerManager.coaWinningFaction
+		TypeInfo<unsigned int >::parseFromBinaryStream(&coaWinningFaction, stream);
+		return true;
+
 	case 0x35715026: //PlayerManager.xpBonusList
 		TypeInfo<XpBonusList >::parseFromBinaryStream(&xpBonusList, stream);
 		return true;
@@ -2319,22 +2361,6 @@ bool PlayerManagerImplementation::readObjectMember(ObjectInputStream* stream, co
 
 	case 0xdccf1a2f: //PlayerManager.groupExpMultiplier
 		TypeInfo<float >::parseFromBinaryStream(&groupExpMultiplier, stream);
-		return true;
-
-	case 0x24c61817: //PlayerManager.jediExpMultiplierSolo
-		TypeInfo<float >::parseFromBinaryStream(&jediExpMultiplierSolo, stream);
-		return true;
-
-	case 0x98b0080a: //PlayerManager.jediExpMultiplierGrouped
-		TypeInfo<float >::parseFromBinaryStream(&jediExpMultiplierGrouped, stream);
-		return true;
-
-	case 0xdf33d9da: //PlayerManager.frsExpMultiplierSolo
-		TypeInfo<float >::parseFromBinaryStream(&frsExpMultiplierSolo, stream);
-		return true;
-
-	case 0xd8b0d7d1: //PlayerManager.frsExpMultiplierGrouped
-		TypeInfo<float >::parseFromBinaryStream(&frsExpMultiplierGrouped, stream);
 		return true;
 
 	}
@@ -2454,6 +2480,15 @@ int PlayerManagerImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x28b07ed9; //PlayerManager.coaWinningFaction
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned int >::toBinaryStream(&coaWinningFaction, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x35715026; //PlayerManager.xpBonusList
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -2517,42 +2552,6 @@ int PlayerManagerImplementation::writeObjectMembers(ObjectOutputStream* stream) 
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x24c61817; //PlayerManager.jediExpMultiplierSolo
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x98b0080a; //PlayerManager.jediExpMultiplierGrouped
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xdf33d9da; //PlayerManager.frsExpMultiplierSolo
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xd8b0d7d1; //PlayerManager.frsExpMultiplierGrouped
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 
 	return _count;
 }
@@ -2585,6 +2584,16 @@ int PlayerManagerImplementation::getTotalPlayerQuests() {
 QuestInfo* PlayerManagerImplementation::getQuestInfo(int questID) {
 	// server/zone/managers/player/PlayerManager.idl():  		return questInfo.get(questID);
 	return (&questInfo)->get(questID);
+}
+
+unsigned int PlayerManagerImplementation::getCoaWinningFaction() {
+	// server/zone/managers/player/PlayerManager.idl():  		return coaWinningFaction;
+	return coaWinningFaction;
+}
+
+void PlayerManagerImplementation::setCoaWinningFaction(unsigned int faction) {
+	// server/zone/managers/player/PlayerManager.idl():  		coaWinningFaction = faction;
+	coaWinningFaction = faction;
 }
 
 OnlineZoneClientMap* PlayerManagerImplementation::getOnlineZoneClientMap() {
@@ -2642,6 +2651,11 @@ void PlayerManagerImplementation::setOnlineCharactersPerAccount(int count) {
 	onlineCharactersPerAccount = count;
 }
 
+int PlayerManagerImplementation::getOnlineCharactersPerAccount() {
+	// server/zone/managers/player/PlayerManager.idl():  	 return onlineCharactersPerAccount;
+	return onlineCharactersPerAccount;
+}
+
 void PlayerManagerImplementation::updateOnlinePlayers() {
 	// server/zone/managers/player/PlayerManager.idl():  		logOnlinePlayers(!onlinePlayersLogOnSessionChange);
 	logOnlinePlayers(!onlinePlayersLogOnSessionChange);
@@ -2687,12 +2701,13 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_:
+	case RPC_SETFIRSTNAME__CREATUREOBJECT_STRING_BOOL_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
 			 String newFirstName; inv->getAsciiParameter(newFirstName);
+			bool skipVerify = inv->getBooleanParameter();
 			
-			String _m_res = setFirstName(creature, newFirstName);
+			String _m_res = setFirstName(creature, newFirstName, skipVerify);
 			resp->insertAscii(_m_res);
 		}
 		break;
@@ -2819,7 +2834,7 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_:
+	case RPC_AWARDEXPERIENCE__CREATUREOBJECT_STRING_INT_BOOL_FLOAT_BOOL_BOOL_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			 String xpType; inv->getAsciiParameter(xpType);
@@ -2827,39 +2842,10 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			bool sendSystemMessage = inv->getBooleanParameter();
 			float localMultiplier = inv->getFloatParameter();
 			bool applyModifiers = inv->getBooleanParameter();
+			bool spaceBonus = inv->getBooleanParameter();
 			
-			int _m_res = awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers);
+			int _m_res = awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers, spaceBonus);
 			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_FRSSKILLCHECK__CREATUREOBJECT_STRING_STRING_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			 String skill; inv->getAsciiParameter(skill);
-			 String skillParent; inv->getAsciiParameter(skillParent);
-			
-			frsSkillCheck(player, skill, skillParent);
-			
-		}
-		break;
-	case RPC_GCWSKILLCHECK__CREATUREOBJECT_STRING_STRING_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			 String skill; inv->getAsciiParameter(skill);
-			 String skillParent; inv->getAsciiParameter(skillParent);
-			
-			gcwSkillCheck(player, skill, skillParent);
-			
-		}
-		break;
-	case RPC_BHGSKILLCHECK__CREATUREOBJECT_STRING_STRING_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			 String skill; inv->getAsciiParameter(skill);
-			 String skillParent; inv->getAsciiParameter(skillParent);
-			
-			bhgSkillCheck(player, skill, skillParent);
-			
 		}
 		break;
 	case RPC_HANDLEABORTTRADEMESSAGE__CREATUREOBJECT_:
@@ -3157,12 +3143,13 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_:
+	case RPC_ISVALIDCLOSESTCLONER__CREATUREOBJECT_SCENEOBJECT_CITYREGION_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			SceneObject* cloner = static_cast<SceneObject*>(inv->getObjectParameter());
+			CityRegion* cityRegion = static_cast<CityRegion*>(inv->getObjectParameter());
 			
-			bool _m_res = isValidClosestCloner(player, cloner);
+			bool _m_res = isValidClosestCloner(player, cloner, cityRegion);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -3184,14 +3171,6 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_CHECKEXISTENTNAMEINDATABASE__STRING_:
-		{
-			 String firstName; inv->getAsciiParameter(firstName);
-			
-			bool _m_res = checkExistentNameInDatabase(firstName);
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_CREATETUTORIALBUILDING__CREATUREOBJECT_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -3200,25 +3179,12 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_CREATESKIPPEDTUTORIALBUILDING__CREATUREOBJECT_:
+	case RPC_INSERTINTOSKIPPEDTUTORIALBUILDING__CREATUREOBJECT_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
-			createSkippedTutorialBuilding(player);
+			insertIntoSkippedTutorialBuilding(player);
 			
-		}
-		break;
-	case RPC_CHECKSPEEDHACKSECONDTEST__CREATUREOBJECT_FLOAT_FLOAT_FLOAT_INT_SCENEOBJECT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			float newX = inv->getFloatParameter();
-			float newZ = inv->getFloatParameter();
-			float newY = inv->getFloatParameter();
-			unsigned int newStamp = inv->getUnsignedIntParameter();
-			SceneObject* newParent = static_cast<SceneObject*>(inv->getObjectParameter());
-			
-			int _m_res = checkSpeedHackSecondTest(player, newX, newZ, newY, newStamp, newParent);
-			resp->insertSignedInt(_m_res);
 		}
 		break;
 	case RPC_EXISTSNAME__STRING_:
@@ -3500,6 +3466,21 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETCOAWINNINGFACTION__:
+		{
+			
+			unsigned int _m_res = getCoaWinningFaction();
+			resp->insertInt(_m_res);
+		}
+		break;
+	case RPC_SETCOAWINNINGFACTION__INT_:
+		{
+			unsigned int faction = inv->getUnsignedIntParameter();
+			
+			setCoaWinningFaction(faction);
+			
+		}
+		break;
 	case RPC_GETCLEANUPCHARACTERCOUNT__:
 		{
 			
@@ -3541,16 +3522,31 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_DOENHANCECHARACTER__INT_CREATUREOBJECT_INT_INT_INT_BYTE_:
+	case RPC_APPLYMEDICALSERVICEBUFF__CREATUREOBJECT_INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_:
 		{
-			unsigned int crc = inv->getUnsignedIntParameter();
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			int amount = inv->getSignedIntParameter();
 			int duration = inv->getSignedIntParameter();
-			int buffType = inv->getSignedIntParameter();
-			byte attribute = inv->getByteParameter();
+			int health = inv->getSignedIntParameter();
+			int strength = inv->getSignedIntParameter();
+			int constitution = inv->getSignedIntParameter();
+			int action = inv->getSignedIntParameter();
+			int quickness = inv->getSignedIntParameter();
+			int stamina = inv->getSignedIntParameter();
+			int mind = inv->getSignedIntParameter();
+			int focus = inv->getSignedIntParameter();
+			int willpower = inv->getSignedIntParameter();
 			
-			bool _m_res = doEnhanceCharacter(crc, player, amount, duration, buffType, attribute);
+			applyMedicalServiceBuff(player, duration, health, strength, constitution, action, quickness, stamina, mind, focus, willpower);
+			
+		}
+		break;
+	case RPC_APPLYMEDICALDROIDENHANCEMENT__CREATUREOBJECT_INT_INT_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			int duration = inv->getSignedIntParameter();
+			int amount = inv->getSignedIntParameter();
+			
+			bool _m_res = applyMedicalDroidEnhancement(player, duration, amount);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -3619,21 +3615,11 @@ void PlayerManagerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_UPDATEPVPKILLCOUNT__CREATUREOBJECT_:
+	case RPC_GETONLINECHARACTERSPERACCOUNT__:
 		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
-			updatePvPKillCount(player);
-			
-		}
-		break;
-	case RPC_OFFERPLAYERBOUNTY__CREATUREOBJECT_CREATUREOBJECT_:
-		{
-			CreatureObject* attacker = static_cast<CreatureObject*>(inv->getObjectParameter());
-			CreatureObject* defender = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			offerPlayerBounty(attacker, defender);
-			
+			int _m_res = getOnlineCharactersPerAccount();
+			resp->insertSignedInt(_m_res);
 		}
 		break;
 	case RPC_GETSPECIESXPMODIFIER__STRING_STRING_:
@@ -3685,8 +3671,8 @@ bool PlayerManagerAdapter::kickUser(const String& name, const String& admin, Str
 	return (static_cast<PlayerManager*>(stub))->kickUser(name, admin, reason, doBan);
 }
 
-String PlayerManagerAdapter::setFirstName(CreatureObject* creature, const String& newFirstName) {
-	return (static_cast<PlayerManager*>(stub))->setFirstName(creature, newFirstName);
+String PlayerManagerAdapter::setFirstName(CreatureObject* creature, const String& newFirstName, bool skipVerify) {
+	return (static_cast<PlayerManager*>(stub))->setFirstName(creature, newFirstName, skipVerify);
 }
 
 String PlayerManagerAdapter::setLastName(CreatureObject* creature, const String& newLastName, bool skipVerify) {
@@ -3741,20 +3727,8 @@ void PlayerManagerAdapter::setExperienceMultiplier(float globalMultiplier) {
 	(static_cast<PlayerManager*>(stub))->setExperienceMultiplier(globalMultiplier);
 }
 
-int PlayerManagerAdapter::awardExperience(CreatureObject* player, const String& xpType, int amount, bool sendSystemMessage, float localMultiplier, bool applyModifiers) {
-	return (static_cast<PlayerManager*>(stub))->awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers);
-}
-
-void PlayerManagerAdapter::frsSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	(static_cast<PlayerManager*>(stub))->frsSkillCheck(player, skill, skillParent);
-}
-
-void PlayerManagerAdapter::gcwSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	(static_cast<PlayerManager*>(stub))->gcwSkillCheck(player, skill, skillParent);
-}
-
-void PlayerManagerAdapter::bhgSkillCheck(CreatureObject* player, const String& skill, const String& skillParent) {
-	(static_cast<PlayerManager*>(stub))->bhgSkillCheck(player, skill, skillParent);
+int PlayerManagerAdapter::awardExperience(CreatureObject* player, const String& xpType, int amount, bool sendSystemMessage, float localMultiplier, bool applyModifiers, bool spaceBonus) {
+	return (static_cast<PlayerManager*>(stub))->awardExperience(player, xpType, amount, sendSystemMessage, localMultiplier, applyModifiers, spaceBonus);
 }
 
 void PlayerManagerAdapter::handleAbortTradeMessage(CreatureObject* player) {
@@ -3889,8 +3863,8 @@ void PlayerManagerAdapter::sendActivateCloneRequest(CreatureObject* player, int 
 	(static_cast<PlayerManager*>(stub))->sendActivateCloneRequest(player, typeofdeath);
 }
 
-bool PlayerManagerAdapter::isValidClosestCloner(CreatureObject* player, SceneObject* cloner) {
-	return (static_cast<PlayerManager*>(stub))->isValidClosestCloner(player, cloner);
+bool PlayerManagerAdapter::isValidClosestCloner(CreatureObject* player, SceneObject* cloner, CityRegion* cityRegion) {
+	return (static_cast<PlayerManager*>(stub))->isValidClosestCloner(player, cloner, cityRegion);
 }
 
 void PlayerManagerAdapter::sendPlayerToCloner(CreatureObject* player, unsigned long long clonerID, int typeofdeath) {
@@ -3901,20 +3875,12 @@ void PlayerManagerAdapter::ejectPlayerFromBuilding(CreatureObject* player) {
 	(static_cast<PlayerManager*>(stub))->ejectPlayerFromBuilding(player);
 }
 
-bool PlayerManagerAdapter::checkExistentNameInDatabase(const String& firstName) {
-	return (static_cast<PlayerManager*>(stub))->checkExistentNameInDatabase(firstName);
-}
-
 void PlayerManagerAdapter::createTutorialBuilding(CreatureObject* player) {
 	(static_cast<PlayerManager*>(stub))->createTutorialBuilding(player);
 }
 
-void PlayerManagerAdapter::createSkippedTutorialBuilding(CreatureObject* player) {
-	(static_cast<PlayerManager*>(stub))->createSkippedTutorialBuilding(player);
-}
-
-int PlayerManagerAdapter::checkSpeedHackSecondTest(CreatureObject* player, float newX, float newZ, float newY, unsigned int newStamp, SceneObject* newParent) {
-	return (static_cast<PlayerManager*>(stub))->checkSpeedHackSecondTest(player, newX, newZ, newY, newStamp, newParent);
+void PlayerManagerAdapter::insertIntoSkippedTutorialBuilding(CreatureObject* player) {
+	(static_cast<PlayerManager*>(stub))->insertIntoSkippedTutorialBuilding(player);
 }
 
 bool PlayerManagerAdapter::existsName(const String& name) {
@@ -4045,6 +4011,14 @@ int PlayerManagerAdapter::getTotalPlayerQuests() {
 	return (static_cast<PlayerManager*>(stub))->getTotalPlayerQuests();
 }
 
+unsigned int PlayerManagerAdapter::getCoaWinningFaction() {
+	return (static_cast<PlayerManager*>(stub))->getCoaWinningFaction();
+}
+
+void PlayerManagerAdapter::setCoaWinningFaction(unsigned int faction) {
+	(static_cast<PlayerManager*>(stub))->setCoaWinningFaction(faction);
+}
+
 void PlayerManagerAdapter::getCleanupCharacterCount() {
 	(static_cast<PlayerManager*>(stub))->getCleanupCharacterCount();
 }
@@ -4065,8 +4039,12 @@ void PlayerManagerAdapter::enhanceCharacter(CreatureObject* player) {
 	(static_cast<PlayerManager*>(stub))->enhanceCharacter(player);
 }
 
-bool PlayerManagerAdapter::doEnhanceCharacter(unsigned int crc, CreatureObject* player, int amount, int duration, int buffType, byte attribute) {
-	return (static_cast<PlayerManager*>(stub))->doEnhanceCharacter(crc, player, amount, duration, buffType, attribute);
+void PlayerManagerAdapter::applyMedicalServiceBuff(CreatureObject* player, int duration, int health, int strength, int constitution, int action, int quickness, int stamina, int mind, int focus, int willpower) {
+	(static_cast<PlayerManager*>(stub))->applyMedicalServiceBuff(player, duration, health, strength, constitution, action, quickness, stamina, mind, focus, willpower);
+}
+
+bool PlayerManagerAdapter::applyMedicalDroidEnhancement(CreatureObject* player, int duration, int amount) {
+	return (static_cast<PlayerManager*>(stub))->applyMedicalDroidEnhancement(player, duration, amount);
 }
 
 int PlayerManagerAdapter::getBaseStoredCreaturePets() {
@@ -4105,12 +4083,8 @@ void PlayerManagerAdapter::setOnlineCharactersPerAccount(int count) {
 	(static_cast<PlayerManager*>(stub))->setOnlineCharactersPerAccount(count);
 }
 
-void PlayerManagerAdapter::updatePvPKillCount(CreatureObject* player) {
-	(static_cast<PlayerManager*>(stub))->updatePvPKillCount(player);
-}
-
-void PlayerManagerAdapter::offerPlayerBounty(CreatureObject* attacker, CreatureObject* defender) {
-	(static_cast<PlayerManager*>(stub))->offerPlayerBounty(attacker, defender);
+int PlayerManagerAdapter::getOnlineCharactersPerAccount() {
+	return (static_cast<PlayerManager*>(stub))->getOnlineCharactersPerAccount();
 }
 
 float PlayerManagerAdapter::getSpeciesXpModifier(const String& species, const String& xpType) {
@@ -4315,6 +4289,17 @@ int PlayerManagerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (coaWinningFaction) {
+	_nameHashCode = 0x28b07ed9; //PlayerManager.coaWinningFaction
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned int >::toBinaryStream(&coaWinningFaction.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (xpBonusList) {
 	_nameHashCode = 0x35715026; //PlayerManager.xpBonusList
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -4387,50 +4372,6 @@ int PlayerManagerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<float >::toBinaryStream(&groupExpMultiplier.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (jediExpMultiplierSolo) {
-	_nameHashCode = 0x24c61817; //PlayerManager.jediExpMultiplierSolo
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (jediExpMultiplierGrouped) {
-	_nameHashCode = 0x98b0080a; //PlayerManager.jediExpMultiplierGrouped
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (frsExpMultiplierSolo) {
-	_nameHashCode = 0xdf33d9da; //PlayerManager.frsExpMultiplierSolo
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (frsExpMultiplierGrouped) {
-	_nameHashCode = 0xd8b0d7d1; //PlayerManager.frsExpMultiplierGrouped
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -4533,6 +4474,14 @@ bool PlayerManagerPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
+	case 0x28b07ed9: //PlayerManager.coaWinningFaction
+		{
+			unsigned int _mncoaWinningFaction;
+			TypeInfo<unsigned int >::parseFromBinaryStream(&_mncoaWinningFaction, stream);
+			coaWinningFaction = std::move(_mncoaWinningFaction);
+		}
+		return true;
+
 	case 0x35715026: //PlayerManager.xpBonusList
 		{
 			XpBonusList _mnxpBonusList;
@@ -4589,38 +4538,6 @@ bool PlayerManagerPOD::readObjectMember(ObjectInputStream* stream, const uint32&
 		}
 		return true;
 
-	case 0x24c61817: //PlayerManager.jediExpMultiplierSolo
-		{
-			float _mnjediExpMultiplierSolo;
-			TypeInfo<float >::parseFromBinaryStream(&_mnjediExpMultiplierSolo, stream);
-			jediExpMultiplierSolo = std::move(_mnjediExpMultiplierSolo);
-		}
-		return true;
-
-	case 0x98b0080a: //PlayerManager.jediExpMultiplierGrouped
-		{
-			float _mnjediExpMultiplierGrouped;
-			TypeInfo<float >::parseFromBinaryStream(&_mnjediExpMultiplierGrouped, stream);
-			jediExpMultiplierGrouped = std::move(_mnjediExpMultiplierGrouped);
-		}
-		return true;
-
-	case 0xdf33d9da: //PlayerManager.frsExpMultiplierSolo
-		{
-			float _mnfrsExpMultiplierSolo;
-			TypeInfo<float >::parseFromBinaryStream(&_mnfrsExpMultiplierSolo, stream);
-			frsExpMultiplierSolo = std::move(_mnfrsExpMultiplierSolo);
-		}
-		return true;
-
-	case 0xd8b0d7d1: //PlayerManager.frsExpMultiplierGrouped
-		{
-			float _mnfrsExpMultiplierGrouped;
-			TypeInfo<float >::parseFromBinaryStream(&_mnfrsExpMultiplierGrouped, stream);
-			frsExpMultiplierGrouped = std::move(_mnfrsExpMultiplierGrouped);
-		}
-		return true;
-
 	}
 
 	return false;
@@ -4669,6 +4586,8 @@ void PlayerManagerPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<int >::toBinaryStream(&onlineCharactersPerAccount.value(), stream);
 
+	TypeInfo<unsigned int >::toBinaryStream(&coaWinningFaction.value(), stream);
+
 	TypeInfo<XpBonusList >::toBinaryStream(&xpBonusList.value(), stream);
 
 	TypeInfo<SortedVector<int> >::toBinaryStream(&veteranRewardMilestones.value(), stream);
@@ -4682,14 +4601,6 @@ void PlayerManagerPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<float >::toBinaryStream(&globalExpMultiplier.value(), stream);
 
 	TypeInfo<float >::toBinaryStream(&groupExpMultiplier.value(), stream);
-
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierSolo.value(), stream);
-
-	TypeInfo<float >::toBinaryStream(&jediExpMultiplierGrouped.value(), stream);
-
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierSolo.value(), stream);
-
-	TypeInfo<float >::toBinaryStream(&frsExpMultiplierGrouped.value(), stream);
 
 
 }

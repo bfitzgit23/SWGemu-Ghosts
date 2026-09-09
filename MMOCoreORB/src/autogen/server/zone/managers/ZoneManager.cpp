@@ -181,8 +181,8 @@ ZoneManagerImplementation::ZoneManagerImplementation(const String& name) {
 	_initializeImplementation();
 	// server/zone/managers/ZoneManager.idl():  		Logger.setLoggingName(name);
 	Logger::setLoggingName(name);
-	// server/zone/managers/ZoneManager.idl():  		Logger.setLogging(true);
-	Logger::setLogging(true);
+	// server/zone/managers/ZoneManager.idl():  		Logger.setLogging(false);
+	Logger::setLogging(false);
 	// server/zone/managers/ZoneManager.idl():  		Logger.setGlobalLogging(true);
 	Logger::setGlobalLogging(true);
 	// server/zone/managers/ZoneManager.idl():  		zoneServer = null;

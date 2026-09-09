@@ -12,7 +12,7 @@
  *	RegionStub
  */
 
-enum {RPC_SETCITYREGION__CITYREGION_ = 3495245448,RPC_GETCITYREGION__,RPC_NOTIFYLOADFROMDATABASE__,RPC_ENQUEUEENTEREVENT__SCENEOBJECT_,RPC_ENQUEUEEXITEVENT__SCENEOBJECT_,RPC_NOTIFYENTER__SCENEOBJECT_,RPC_NOTIFYEXIT__SCENEOBJECT_,RPC_ISREGION__};
+enum {RPC_SETCITYREGION__CITYREGION_ = 3495245448,RPC_GETCITYREGION__,RPC_NOTIFYLOADFROMDATABASE__,RPC_ENQUEUEENTEREVENT__SCENEOBJECT_,RPC_ENQUEUEEXITEVENT__SCENEOBJECT_,RPC_NOTIFYENTER__SCENEOBJECT_,RPC_NOTIFYEXIT__SCENEOBJECT_,RPC_ISREGION__,RPC_ISSPAWNAREAOBJECT__,RPC_ISPLAYERCITY__};
 
 Region::Region() : ActiveArea(DummyConstructorParameter::instance()) {
 	RegionImplementation* _implementation = new RegionImplementation();
@@ -145,6 +145,34 @@ bool Region::isRegion() {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isRegion();
+	}
+}
+
+bool Region::isSpawnAreaObject() {
+	RegionImplementation* _implementation = static_cast<RegionImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPAWNAREAOBJECT__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSpawnAreaObject();
+	}
+}
+
+bool Region::isPlayerCity() {
+	RegionImplementation* _implementation = static_cast<RegionImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISPLAYERCITY__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isPlayerCity();
 	}
 }
 
@@ -332,8 +360,10 @@ void RegionImplementation::notifyEnter(SceneObject* object) {
 	// server/zone/objects/region/Region.idl():  		CityRegion strongReference = cityRegion;
 	ManagedReference<CityRegion* > strongReference = cityRegion;
 	// server/zone/objects/region/Region.idl():  		synchronized 
-	if (strongReference == NULL)	// server/zone/objects/region/Region.idl():  			return;
+	if (!strongReference){
+	// server/zone/objects/region/Region.idl():  			return;
 	return;
+}
 	// server/zone/objects/region/Region.idl():  		}
 {
 	Locker _locker(strongReference);
@@ -348,7 +378,7 @@ void RegionImplementation::notifyExit(SceneObject* object) {
 	// server/zone/objects/region/Region.idl():  		CityRegion strongReference = cityRegion;
 	ManagedReference<CityRegion* > strongReference = cityRegion;
 	// server/zone/objects/region/Region.idl():  		synchronized 
-	if (strongReference == NULL)	// server/zone/objects/region/Region.idl():  			return;
+	if (!strongReference)	// server/zone/objects/region/Region.idl():  			return;
 	return;
 	// server/zone/objects/region/Region.idl():  		}
 {
@@ -361,6 +391,16 @@ void RegionImplementation::notifyExit(SceneObject* object) {
 bool RegionImplementation::isRegion() {
 	// server/zone/objects/region/Region.idl():  		return true;
 	return true;
+}
+
+bool RegionImplementation::isSpawnAreaObject() {
+	// server/zone/objects/region/Region.idl():  		return false;
+	return false;
+}
+
+bool RegionImplementation::isPlayerCity() {
+	// server/zone/objects/region/Region.idl():  		return cityRegion != null;
+	return cityRegion != NULL;
 }
 
 /*
@@ -439,6 +479,20 @@ void RegionAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISSPAWNAREAOBJECT__:
+		{
+			
+			bool _m_res = isSpawnAreaObject();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISPLAYERCITY__:
+		{
+			
+			bool _m_res = isPlayerCity();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	default:
 		ActiveAreaAdapter::invokeMethod(methid, inv);
 	}
@@ -474,6 +528,14 @@ void RegionAdapter::notifyExit(SceneObject* object) {
 
 bool RegionAdapter::isRegion() {
 	return (static_cast<Region*>(stub))->isRegion();
+}
+
+bool RegionAdapter::isSpawnAreaObject() {
+	return (static_cast<Region*>(stub))->isSpawnAreaObject();
+}
+
+bool RegionAdapter::isPlayerCity() {
+	return (static_cast<Region*>(stub))->isPlayerCity();
 }
 
 /*

@@ -148,6 +148,18 @@ class LairSpawn;
 
 using namespace server::zone::managers::creature;
 
+namespace server {
+namespace zone {
+
+class Zone;
+
+class ZonePOD;
+
+} // namespace zone
+} // namespace server
+
+using namespace server::zone;
+
 #include "terrain/manager/TerrainManager.h"
 
 #include "server/zone/managers/mission/spawnmaps/MissionNpcSpawnMap.h"
@@ -183,13 +195,19 @@ public:
 
 	void handleMissionAccept(MissionTerminal* missionTerminal, MissionObject* mission, CreatureObject* player);
 
-	void handleMissionAbort(MissionObject* mission, CreatureObject* player);
+	void handleMissionFail(MissionObject* mission, CreatureObject* player);
+
+	void handleMissionAbort(MissionObject* mission, CreatureObject* player, bool questMessage = false);
 
 	void removeMission(MissionObject* mission, CreatureObject* player);
+
+	NpcSpawnPoint* getFreeNpcSpawnPoint(unsigned const int planetCRC, const float x, const float y, const int spawnType, const float maxRange);
 
 	NpcSpawnPoint* getFreeNpcSpawnPoint(unsigned const int planetCRC, const float x, const float y, const int spawnType);
 
 	void createSpawnPoint(CreatureObject* player, const String& spawnTypes);
+
+	void removeSpawnPoint(CreatureObject* player, const String& spawnTypes);
 
 	Vector3 getRandomBountyTargetPosition(CreatureObject* player, const String& planet);
 
@@ -207,15 +225,15 @@ public:
 
 	void completePlayerBounty(unsigned long long targetId, unsigned long long bountyHunter);
 
-	void failPlayerBountyMission(unsigned long long bountyHunter);
+	void failPlayerBountyMission(unsigned long long bountyHunter, unsigned long long targetID);
 
 	bool hasPlayerBountyTargetInList(unsigned long long targetId);
 
 	bool hasBountyHunterInPlayerBounty(unsigned long long targetId, unsigned long long bhId);
 
-	Vector<unsigned long long>* getHuntersHuntingTarget(unsigned long long targetId);
+	Vector<unsigned long long> getHuntersHuntingTarget(unsigned long long targetId);
 
-	void allocateMissionNpcs(NpcSpawnPoint* target, NpcSpawnPoint* destination, TerrainManager* terrainManager, CreatureManager* creatureManager);
+	void allocateMissionNpcs(NpcSpawnPoint* target, NpcSpawnPoint* destination, Zone* zone, CreatureManager* creatureManager);
 
 	void freeMissionNpc(AiAgent* npc);
 
@@ -288,6 +306,22 @@ private:
 
 	unsigned long long playerBountyDebuffLength;
 
+	unsigned long long destroyMissionBaseDistance;
+
+	unsigned long long destroyMissionDifficultyDistanceFactor;
+
+	unsigned long long destroyMissionRandomDistance;
+
+	unsigned long long destroyMissionDifficultyRandomDistance;
+
+	unsigned long long destroyMissionBaseReward;
+
+	unsigned long long destroyMissionDifficultyRewardFactor;
+
+	unsigned long long destroyMissionRandomReward;
+
+	unsigned long long destroyMissionDifficultyRandomReward;
+
 public:
 	MissionManagerImplementation(ZoneServer* srv, ZoneProcessServer* impl);
 
@@ -303,7 +337,9 @@ public:
 
 	void handleMissionAccept(MissionTerminal* missionTerminal, MissionObject* mission, CreatureObject* player);
 
-	void handleMissionAbort(MissionObject* mission, CreatureObject* player);
+	void handleMissionFail(MissionObject* mission, CreatureObject* player);
+
+	void handleMissionAbort(MissionObject* mission, CreatureObject* player, bool questMessage = false);
 
 	void removeMission(MissionObject* mission, CreatureObject* player);
 
@@ -361,9 +397,13 @@ private:
 	void createCraftingMissionObjectives(MissionObject* mission, MissionTerminal* missionTerminal, CreatureObject* player);
 
 public:
+	NpcSpawnPoint* getFreeNpcSpawnPoint(unsigned const int planetCRC, const float x, const float y, const int spawnType, const float maxRange);
+
 	NpcSpawnPoint* getFreeNpcSpawnPoint(unsigned const int planetCRC, const float x, const float y, const int spawnType);
 
 	void createSpawnPoint(CreatureObject* player, const String& spawnTypes);
+
+	void removeSpawnPoint(CreatureObject* player, const String& spawnTypes);
 
 private:
 	LairSpawn* getRandomLairSpawn(CreatureObject* player, unsigned const int faction, unsigned int type);
@@ -393,7 +433,7 @@ public:
 
 	void completePlayerBounty(unsigned long long targetId, unsigned long long bountyHunter);
 
-	void failPlayerBountyMission(unsigned long long bountyHunter);
+	void failPlayerBountyMission(unsigned long long bountyHunter, unsigned long long targetID);
 
 private:
 	Vector<ManagedReference<PlayerBounty* > > getPotentialPlayerBountyTargets(CreatureObject* player);
@@ -409,9 +449,9 @@ public:
 
 	bool hasBountyHunterInPlayerBounty(unsigned long long targetId, unsigned long long bhId);
 
-	Vector<unsigned long long>* getHuntersHuntingTarget(unsigned long long targetId);
+	Vector<unsigned long long> getHuntersHuntingTarget(unsigned long long targetId);
 
-	void allocateMissionNpcs(NpcSpawnPoint* target, NpcSpawnPoint* destination, TerrainManager* terrainManager, CreatureManager* creatureManager);
+	void allocateMissionNpcs(NpcSpawnPoint* target, NpcSpawnPoint* destination, Zone* zone, CreatureManager* creatureManager);
 
 	void freeMissionNpc(AiAgent* npc);
 
@@ -470,11 +510,15 @@ public:
 
 	void handleMissionAccept(MissionTerminal* missionTerminal, MissionObject* mission, CreatureObject* player);
 
-	void handleMissionAbort(MissionObject* mission, CreatureObject* player);
+	void handleMissionFail(MissionObject* mission, CreatureObject* player);
+
+	void handleMissionAbort(MissionObject* mission, CreatureObject* player, bool questMessage);
 
 	void removeMission(MissionObject* mission, CreatureObject* player);
 
 	void createSpawnPoint(CreatureObject* player, const String& spawnTypes);
+
+	void removeSpawnPoint(CreatureObject* player, const String& spawnTypes);
 
 	Reference<MissionObject* > getBountyHunterMission(CreatureObject* player);
 
@@ -490,7 +534,7 @@ public:
 
 	void completePlayerBounty(unsigned long long targetId, unsigned long long bountyHunter);
 
-	void failPlayerBountyMission(unsigned long long bountyHunter);
+	void failPlayerBountyMission(unsigned long long bountyHunter, unsigned long long targetID);
 
 	bool hasPlayerBountyTargetInList(unsigned long long targetId);
 
@@ -560,6 +604,22 @@ public:
 	Optional<unsigned long long> playerBountyKillBuffer;
 
 	Optional<unsigned long long> playerBountyDebuffLength;
+
+	Optional<unsigned long long> destroyMissionBaseDistance;
+
+	Optional<unsigned long long> destroyMissionDifficultyDistanceFactor;
+
+	Optional<unsigned long long> destroyMissionRandomDistance;
+
+	Optional<unsigned long long> destroyMissionDifficultyRandomDistance;
+
+	Optional<unsigned long long> destroyMissionBaseReward;
+
+	Optional<unsigned long long> destroyMissionDifficultyRewardFactor;
+
+	Optional<unsigned long long> destroyMissionRandomReward;
+
+	Optional<unsigned long long> destroyMissionDifficultyRandomReward;
 
 	String _className;
 	MissionManagerPOD();

@@ -87,6 +87,30 @@ class ZonePOD;
 using namespace server::zone;
 
 namespace server {
+namespace zone {
+
+class GroundZone;
+
+class GroundZonePOD;
+
+} // namespace zone
+} // namespace server
+
+using namespace server::zone;
+
+namespace server {
+namespace zone {
+
+class SpaceZone;
+
+class SpaceZonePOD;
+
+} // namespace zone
+} // namespace server
+
+using namespace server::zone;
+
+namespace server {
 namespace chat {
 
 class ChatManager;
@@ -325,6 +349,20 @@ using namespace server::zone::managers::creature;
 namespace server {
 namespace zone {
 namespace managers {
+namespace ship {
+
+class ShipAgentTemplateManager;
+
+} // namespace ship
+} // namespace managers
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::managers::ship;
+
+namespace server {
+namespace zone {
+namespace managers {
 namespace creature {
 
 class DnaManager;
@@ -439,6 +477,12 @@ public:
 
 	static const float CLOSEOBJECTRANGE;
 
+	static const float SPACECLOSEOBJECTRANGE;
+
+	static const float CAPITALSHIPRANGE;
+
+	static const float SPACESTATIONRANGE;
+
 	ZoneServer(ConfigManager* config);
 
 	void initializeTransientMembers();
@@ -451,7 +495,9 @@ public:
 
 	void startManagers();
 
-	void startZones();
+	void startGroundZones();
+
+	void startSpaceZones();
 
 	void stopManagers();
 
@@ -461,7 +507,7 @@ public:
 
 	void clearZones();
 
-	void timedShutdown(int minutes);
+	void timedShutdown(int minutes, int flags = 0);
 
 	void handleMessage(ZoneClientSession* client, Packet* message);
 
@@ -469,9 +515,9 @@ public:
 
 	bool handleError(ZoneClientSession* client, Exception& e);
 
-	void addTotalSentPacket(int count);
+	void addTotalSentPacket(unsigned int count);
 
-	void addTotalResentPacket(int count);
+	void addTotalResentPacket(unsigned int count);
 
 	void printInfo();
 
@@ -509,27 +555,27 @@ public:
 
 	void increaseTotalDeletedPlayers();
 
-	int getGalaxyID();
+	int getGalaxyID() const;
 
-	String getGalaxyName();
+	String getGalaxyName() const;
 
 	void setGalaxyName(const String& name);
 
-	bool isServerLocked();
+	bool isServerLocked() const;
 
-	bool isServerOnline();
+	bool isServerOnline() const;
 
-	bool isServerOffline();
+	bool isServerOffline() const;
 
-	bool isServerLoading();
+	bool isServerLoading() const;
 
-	bool isServerShuttingDown();
+	bool isServerShuttingDown() const;
 
-	int getServerCap();
+	int getServerCap() const;
 
-	int getServerState();
+	int getServerState() const;
 
-	Zone* getZone(const String& terrainName);
+	Zone* getZone(const String& terrainName) const;
 
 	/**
 	 * Gets a note based on it's position in the zone map.
@@ -538,13 +584,17 @@ public:
 	 */
 	Zone* getZone(int idx);
 
-	int getZoneCount();
+	int getZoneCount() const;
 
-	int getMaxPlayers();
+	SpaceZone* getSpaceZone(int idx);
 
-	int getTotalPlayers();
+	int getSpaceZoneCount() const;
 
-	int getDeletedPlayers();
+	int getMaxPlayers() const;
+
+	int getTotalPlayers() const;
+
+	int getDeletedPlayers() const;
 
 	ObjectManager* getObjectManager();
 
@@ -588,7 +638,7 @@ public:
 
 	void setShouldDeleteNavAreas(bool b);
 
-	bool shouldDeleteNavAreas();
+	bool shouldDeleteNavAreas() const;
 
 	void setServerStateLocked();
 
@@ -600,7 +650,7 @@ public:
 
 	void changeLoginMessage(const String& motd);
 
-	String getLoginMessage();
+	String getLoginMessage() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -634,7 +684,9 @@ class ZoneServerImplementation : public ManagedServiceImplementation, public Log
 
 	ManagedReference<ZoneProcessServer* > processor;
 
-	Reference<VectorMap<String, ManagedReference<Zone* > >* > zones;
+	Reference<VectorMap<String, ManagedReference<GroundZone* > >* > zones;
+
+	Reference<VectorMap<String, ManagedReference<SpaceZone* > >* > spaceZones;
 
 	Reference<ObjectManager* > objectManager;
 
@@ -670,13 +722,15 @@ class ZoneServerImplementation : public ManagedServiceImplementation, public Log
 
 	Reference<CreatureTemplateManager* > creatureTemplateManager;
 
+	Reference<ShipAgentTemplateManager* > shipAgentTemplateManager;
+
 	Reference<DnaManager* > dnaManager;
 
-	int totalSentPackets;
+	unsigned long long totalSentPackets;
 
 	int serverCap;
 
-	int totalResentPackets;
+	unsigned long long totalResentPackets;
 
 	AtomicInteger currentPlayers;
 
@@ -709,6 +763,12 @@ public:
 
 	static const float CLOSEOBJECTRANGE;
 
+	static const float SPACECLOSEOBJECTRANGE;
+
+	static const float CAPITALSHIPRANGE;
+
+	static const float SPACESTATIONRANGE;
+
 	ZoneServerImplementation(ConfigManager* config);
 
 	ZoneServerImplementation(DummyConstructorParameter* param);
@@ -727,7 +787,9 @@ public:
 
 	void startManagers();
 
-	void startZones();
+	void startGroundZones();
+
+	void startSpaceZones();
 
 	void stopManagers();
 
@@ -737,7 +799,7 @@ public:
 
 	void clearZones();
 
-	void timedShutdown(int minutes);
+	void timedShutdown(int minutes, int flags = 0);
 
 	void handleMessage(ZoneClientSession* client, Packet* message);
 
@@ -745,9 +807,9 @@ public:
 
 	bool handleError(ZoneClientSession* client, Exception& e);
 
-	void addTotalSentPacket(int count);
+	void addTotalSentPacket(unsigned int count);
 
-	void addTotalResentPacket(int count);
+	void addTotalResentPacket(unsigned int count);
 
 	void printInfo();
 
@@ -785,27 +847,27 @@ public:
 
 	void increaseTotalDeletedPlayers();
 
-	int getGalaxyID();
+	int getGalaxyID() const;
 
-	String getGalaxyName();
+	String getGalaxyName() const;
 
 	void setGalaxyName(const String& name);
 
-	bool isServerLocked();
+	bool isServerLocked() const;
 
-	bool isServerOnline();
+	bool isServerOnline() const;
 
-	bool isServerOffline();
+	bool isServerOffline() const;
 
-	bool isServerLoading();
+	bool isServerLoading() const;
 
-	bool isServerShuttingDown();
+	bool isServerShuttingDown() const;
 
-	int getServerCap();
+	int getServerCap() const;
 
-	int getServerState();
+	int getServerState() const;
 
-	Zone* getZone(const String& terrainName);
+	Zone* getZone(const String& terrainName) const;
 
 	/**
 	 * Gets a note based on it's position in the zone map.
@@ -814,13 +876,17 @@ public:
 	 */
 	Zone* getZone(int idx);
 
-	int getZoneCount();
+	int getZoneCount() const;
 
-	int getMaxPlayers();
+	SpaceZone* getSpaceZone(int idx);
 
-	int getTotalPlayers();
+	int getSpaceZoneCount() const;
 
-	int getDeletedPlayers();
+	int getMaxPlayers() const;
+
+	int getTotalPlayers() const;
+
+	int getDeletedPlayers() const;
 
 	ObjectManager* getObjectManager();
 
@@ -864,7 +930,7 @@ public:
 
 	void setShouldDeleteNavAreas(bool b);
 
-	bool shouldDeleteNavAreas();
+	bool shouldDeleteNavAreas() const;
 
 	void setServerStateLocked();
 
@@ -876,7 +942,7 @@ public:
 
 	void changeLoginMessage(const String& motd);
 
-	String getLoginMessage();
+	String getLoginMessage() const;
 
 	WeakReference<ZoneServer*> _this;
 
@@ -923,7 +989,9 @@ public:
 
 	void startManagers();
 
-	void startZones();
+	void startGroundZones();
+
+	void startSpaceZones();
 
 	void stopManagers();
 
@@ -933,11 +1001,11 @@ public:
 
 	void clearZones();
 
-	void timedShutdown(int minutes);
+	void timedShutdown(int minutes, int flags);
 
-	void addTotalSentPacket(int count);
+	void addTotalSentPacket(unsigned int count);
 
-	void addTotalResentPacket(int count);
+	void addTotalResentPacket(unsigned int count);
 
 	void printInfo();
 
@@ -975,37 +1043,41 @@ public:
 
 	void increaseTotalDeletedPlayers();
 
-	int getGalaxyID();
+	int getGalaxyID() const;
 
-	String getGalaxyName();
+	String getGalaxyName() const;
 
 	void setGalaxyName(const String& name);
 
-	bool isServerLocked();
+	bool isServerLocked() const;
 
-	bool isServerOnline();
+	bool isServerOnline() const;
 
-	bool isServerOffline();
+	bool isServerOffline() const;
 
-	bool isServerLoading();
+	bool isServerLoading() const;
 
-	bool isServerShuttingDown();
+	bool isServerShuttingDown() const;
 
-	int getServerCap();
+	int getServerCap() const;
 
-	int getServerState();
+	int getServerState() const;
 
-	Zone* getZone(const String& terrainName);
+	Zone* getZone(const String& terrainName) const;
 
 	Zone* getZone(int idx);
 
-	int getZoneCount();
+	int getZoneCount() const;
 
-	int getMaxPlayers();
+	SpaceZone* getSpaceZone(int idx);
 
-	int getTotalPlayers();
+	int getSpaceZoneCount() const;
 
-	int getDeletedPlayers();
+	int getMaxPlayers() const;
+
+	int getTotalPlayers() const;
+
+	int getDeletedPlayers() const;
 
 	PlayerManager* getPlayerManager();
 
@@ -1041,7 +1113,7 @@ public:
 
 	void setShouldDeleteNavAreas(bool b);
 
-	bool shouldDeleteNavAreas();
+	bool shouldDeleteNavAreas() const;
 
 	void setServerStateLocked();
 
@@ -1053,7 +1125,7 @@ public:
 
 	void changeLoginMessage(const String& motd);
 
-	String getLoginMessage();
+	String getLoginMessage() const;
 
 };
 
@@ -1112,11 +1184,11 @@ public:
 
 	Optional<ManagedReference<PetManagerPOD* >> petManager;
 
-	Optional<int> totalSentPackets;
+	Optional<unsigned long long> totalSentPackets;
 
 	Optional<int> serverCap;
 
-	Optional<int> totalResentPackets;
+	Optional<unsigned long long> totalResentPackets;
 
 	Optional<AtomicInteger> currentPlayers;
 

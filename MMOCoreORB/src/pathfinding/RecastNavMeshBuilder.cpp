@@ -74,10 +74,7 @@ RecastNavMeshBuilder::RecastNavMeshBuilder(Zone* zone, const String& name, const
 		running(jobStatus),
 		header() {
 	ProceduralTerrainAppearance* pta = zone->getPlanetManager()->getTerrainManager()->getProceduralTerrainAppearance();
-
-	if (pta == nullptr) {
-		waterTableHeight = -1000.0f;
-	} else if (pta->getUseGlobalWaterTable())
+	if (pta->getUseGlobalWaterTable())
 		waterTableHeight = pta->getGlobalWaterTableHeight();
 	else {
 #ifdef NAVMESH_DEBUG
@@ -87,13 +84,13 @@ RecastNavMeshBuilder::RecastNavMeshBuilder(Zone* zone, const String& name, const
 	}
 	this->name = name;
 	this->zone = zone;
-	m_navMesh = nullptr;
+	m_navMesh = NULL;
 	m_ctx = new rcContext();
 	destroyMesh = true;
 }
 
 RecastNavMeshBuilder::~RecastNavMeshBuilder() {
-	m_geom = nullptr;
+	m_geom = NULL;
 	cleanup();
 	if (destroyMesh) {
 		dtFreeNavMesh(m_navMesh);
@@ -451,7 +448,9 @@ void RecastNavMeshBuilder::buildAllTiles() {
 					dtFree(data);
 				}
 			} else {
+#ifdef NAVMESH_DEBUG
 				info("No data", true);
+#endif
 			}
 		}
 		progress.add(tw);
@@ -496,15 +495,12 @@ RecastNavMeshBuilder::initialize(Vector<Reference<MeshData*> >& meshData, const 
 	info("Building region navmesh for: " + name, true);
 #endif
 	Vector<const Boundary*> water;
-	ProceduralTerrainAppearance* pta = terrainManager->getProceduralTerrainAppearance();
-	if (pta != nullptr) {
-		pta->getWaterBoundariesInAABB(bounds, &water);
-	}
+	terrainManager->getProceduralTerrainAppearance()->getWaterBoundariesInAABB(bounds, &water);
 	// Render water as polygons
 	for (const Boundary* boundary : water) {
 		const BoundaryPolygon* bPoly = dynamic_cast<const BoundaryPolygon*>(boundary);
 		const BoundaryRectangle* bRect = dynamic_cast<const BoundaryRectangle*>(boundary);
-		if (bPoly != nullptr) {
+		if (bPoly != NULL) {
 			const Vector<Point2D*>& points = bPoly->getVertices();
 
 			Reference < RecastPolygon * > poly = new RecastPolygon(points.size());
@@ -526,7 +522,7 @@ RecastNavMeshBuilder::initialize(Vector<Reference<MeshData*> >& meshData, const 
 			addWater(poly);
 			continue;
 
-		} else if (bRect != nullptr) {
+		} else if (bRect != NULL) {
 			Reference < RecastPolygon * > poly = new RecastPolygon(4);
 			poly->type = SAMPLE_POLYAREA_WATER;
 			float tableHeight = bRect->getLocalWaterTableHeight();
@@ -659,13 +655,11 @@ RecastNavMeshBuilder::getTerrainMesh(Vector3& position, float terrainSize, Terra
 	Vector <Vector3>* verts = mesh->getVerts();
 	Vector <MeshTriangle>* tris = mesh->getTriangles();
 	int numCells = terrainSize / distanceBetweenHeights;
-	ProceduralTerrainAppearance* pta = terrainManager->getProceduralTerrainAppearance();
 	for (int x = 0; x < numCells; x++) {
 		for (int y = 0; y < numCells; y++) {
 			float xPos = originX + x * distanceBetweenHeights;
 			float yPos = originY + y * distanceBetweenHeights;
-			float height = (pta != nullptr) ? pta->getHeight(xPos, yPos) : 0.0f;
-			verts->add(Vector3(xPos, height, -yPos));
+			verts->add(Vector3(xPos, terrainManager->getProceduralTerrainAppearance()->getHeight(xPos, yPos), -yPos));
 		}
 		//info("Building terrain verts Row #" + String::valueOf(x*numCells));
 	}

@@ -43,6 +43,26 @@ using namespace server::zone::objects::creature;
 namespace server {
 namespace zone {
 namespace objects {
+namespace tangible {
+namespace tool {
+namespace repair {
+
+class RepairTool;
+
+class RepairToolPOD;
+
+} // namespace repair
+} // namespace tool
+} // namespace tangible
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::tangible::tool::repair;
+
+namespace server {
+namespace zone {
+namespace objects {
 namespace area {
 
 class ActiveArea;
@@ -55,22 +75,6 @@ class ActiveAreaPOD;
 } // namespace server
 
 using namespace server::zone::objects::area;
-
-namespace server {
-namespace zone {
-namespace objects {
-namespace factorycrate {
-
-class FactoryCrate;
-
-class FactoryCratePOD;
-
-} // namespace factorycrate
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::factorycrate;
 
 namespace server {
 namespace zone {
@@ -91,22 +95,20 @@ using namespace server::zone::objects::tangible::threat;
 namespace server {
 namespace zone {
 namespace objects {
-namespace tangible {
-namespace tool {
-namespace repair {
+namespace factorycrate {
 
-class RepairTool;
+class FactoryCrate;
 
-class RepairToolPOD;
+class FactoryCratePOD;
 
-} // namespace repair
-} // namespace tool
-} // namespace tangible
+} // namespace factorycrate
 } // namespace objects
 } // namespace zone
 } // namespace server
 
-using namespace server::zone::objects::tangible::tool::repair;
+using namespace server::zone::objects::factorycrate;
+
+#include "gmock/gmock.h"
 
 #include "server/zone/packets/scene/AttributeListMessage.h"
 
@@ -132,13 +134,17 @@ using namespace server::zone::objects::tangible::tool::repair;
 
 #include "system/thread/atomic/AtomicInteger.h"
 
-#include "server/zone/objects/intangible/ControlDevice.h"
+#include "server/zone/TreeEntry.h"
+
+#include "server/zone/objects/cell/CellObject.h"
 
 #include "server/zone/objects/scene/SceneObject.h"
 
 #include "system/util/SortedVector.h"
 
 #include "engine/log/Logger.h"
+
+#include "engine/util/u3d/Vector3.h"
 
 namespace server {
 namespace zone {
@@ -163,6 +169,12 @@ public:
 	 */
 	void addTemplateSkillMods(TangibleObject* targetObject) const;
 
+	/**
+	 * Removes this object's skill mod map from the target object's skill mod map
+	 * @param targetObject the targeted object containing the SkillModMap which will be affected.
+	 */
+	void removeTemplateSkillMods(TangibleObject* tangibleObject) const;
+
 	void applySkillModsTo(CreatureObject* creature) const;
 
 	void removeSkillModsFrom(CreatureObject* creature);
@@ -172,12 +184,6 @@ public:
 	void removeSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	void removeAllSkillModsOfType(const int skillType, bool notifyClient = true);
-
-	/**
-	 * Removes this object's skill mod map from the target object's skill mod map
-	 * @param targetObject the targeted object containing the SkillModMap which will be affected.
-	 */
-	void removeTemplateSkillMods(TangibleObject* tangibleObject);
 
 	const VectorMap<String, int>* getTemplateSkillMods() const;
 
@@ -234,6 +240,8 @@ public:
 	 */
 	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
 
+	void notifyInsert(TreeEntry* entry);
+
 	/**
 	 * Calls the appropriate UI Listener Function
 	 * @pre { this object is locked, object is locked }
@@ -251,6 +259,8 @@ public:
 	 * @param value value from packet
 	 */
 	void synchronizedUIStopListen(CreatureObject* player, int value);
+
+	void removeOutOfRangeObjects();
 
 	/**
 	 * Sets the active defender
@@ -328,7 +338,7 @@ public:
 	 * @post { this object is locked }
 	 * @return returns true if SceneObject defender exists in the defender vector
 	 */
-	bool hasDefender(SceneObject* defender);
+	bool hasDefender(const SceneObject* defender) const;
 
 	/**
 	 * Evaluates if this object can be attacket by the passed creature object
@@ -336,7 +346,7 @@ public:
 	 * @post { }
 	 * @return returns true if the creature object can attack this
 	 */
-	bool isAttackableBy(CreatureObject* object);
+	virtual bool isAttackableBy(CreatureObject* object);
 
 	bool isAttackableBy(TangibleObject* object);
 
@@ -346,7 +356,9 @@ public:
 	 * @post { }
 	 * @return returns true if its aggressive
 	 */
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
+
+	bool isAggressive(TangibleObject* object);
 
 	bool isHealableBy(CreatureObject* object);
 
@@ -434,6 +446,10 @@ public:
 
 	int getConditionDamage() const;
 
+	int getUnmitigatedDamage() const;
+
+	void addUnmitigatedDamage(float damage);
+
 	int getVolume() const;
 
 	void setComplexity(float value);
@@ -446,7 +462,7 @@ public:
 
 	void removeMagicBit(bool notifyClient = true);
 
-	int getLevel() const;
+	virtual int getLevel() const;
 
 	bool getIsCraftedEnhancedItem() const;
 
@@ -458,11 +474,13 @@ public:
 
 	const DeltaVector<ManagedReference<SceneObject* > >* getDefenderList() const;
 
+	bool hasDefenders() const;
+
 	const AutoDeltaSet<int>* getVisibleComponents() const;
 
 	SceneObject* getMainDefender() const;
 
-	bool isDestroyed() const;
+	virtual bool isDestroyed() const;
 
 	void setFaction(unsigned int crc);
 
@@ -492,6 +510,14 @@ public:
 
 	void setSliced(bool slice);
 
+	bool isInsurable() const;
+
+	bool isJediRobe() const;
+
+	bool isUnionRing() const;
+
+	void setUnionRing(bool val);
+
 	void setCustomizationString(const String& vars);
 
 	void setIsCraftedEnhancedItem(bool value);
@@ -504,7 +530,11 @@ public:
 
 	void setCraftersName(String& name);
 
+	void setCraftersID(unsigned long long crafterOID);
+
 	String getCraftersName();
+
+	unsigned long long getCraftersID() const;
 
 	void setJunkDealerNeeded(int jdNeeded);
 
@@ -512,7 +542,7 @@ public:
 
 	void setJunkValue(int jValue);
 
-	int getJunkValue();
+	int getJunkValue() const;
 
 	void setSerialNumber(const String& serial);
 
@@ -520,9 +550,9 @@ public:
 
 	String getSerialNumber();
 
-	ThreatMap* getThreatMap();
+	virtual ThreatMap* getThreatMap();
 
-	Reference<FactoryCrate* > createFactoryCrate(int maxSize, bool insertSelf = false);
+	Reference<FactoryCrate* > createFactoryCrate(int maxSize, String& type, bool insertSelf = false);
 
 	bool canRepair(CreatureObject* player);
 
@@ -552,17 +582,33 @@ public:
 
 	bool hasActiveArea(unsigned long long objectid);
 
+	bool isInNoCombatArea() const;
+
+	void setInNoCombatArea(bool val);
+
 	SortedVector<ManagedReference<ActiveArea* > >* getActiveAreas();
 
 	int getActiveAreasSize() const;
 
 	Reference<ActiveArea* > getActiveRegion();
 
+	CellObject* getCell(int idx);
+
+	CellObject* getCell(const String& name);
+
+	bool isNoTrade() const;
+
 	bool hasAntiDecayKit() const;
+
+	unsigned long long getAntiDecayKitObjectID() const;
 
 	void applyAntiDecayKit(CreatureObject* player, SceneObject* adk);
 
 	SceneObject* removeAntiDecayKit();
+
+	void refreshPaint();
+
+	void destroyObjectFromDatabase(bool destroyContainedObjects = false);
 
 	bool isCityStreetLamp() const;
 
@@ -588,9 +634,11 @@ public:
 
 	bool isInNavMesh();
 
-	void setControlDevice(ControlDevice* device);
+	bool isVendor();
 
-	ManagedWeakReference<ControlDevice* > getControlDevice() const;
+	bool isInvulnerable();
+
+	bool isDestroying();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -635,9 +683,13 @@ protected:
 
 	bool invisible;
 
+	bool inNoCombatArea;
+
 	VectorMap<String, String> luaStringData;
 
 	CustomizationVariables customizationVariables;
+
+	int unmitigatedDamage;
 
 	float conditionDamage;
 
@@ -661,6 +713,8 @@ protected:
 
 	String craftersName;
 
+	unsigned long long craftersID;
+
 	int junkDealerNeeded;
 
 	int junkValue;
@@ -679,7 +733,11 @@ protected:
 
 	ManagedReference<SceneObject* > antiDecayKitObject;
 
-	ManagedWeakReference<ControlDevice* > controlDevice;
+	bool insurable;
+
+	bool jediRobe;
+
+	bool unionRing;
 
 public:
 	TangibleObjectImplementation();
@@ -694,6 +752,12 @@ public:
 	 */
 	virtual void addTemplateSkillMods(TangibleObject* targetObject) const;
 
+	/**
+	 * Removes this object's skill mod map from the target object's skill mod map
+	 * @param targetObject the targeted object containing the SkillModMap which will be affected.
+	 */
+	virtual void removeTemplateSkillMods(TangibleObject* tangibleObject) const;
+
 	virtual void applySkillModsTo(CreatureObject* creature) const;
 
 	virtual void removeSkillModsFrom(CreatureObject* creature);
@@ -703,12 +767,6 @@ public:
 	virtual void removeSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	virtual void removeAllSkillModsOfType(const int skillType, bool notifyClient = true);
-
-	/**
-	 * Removes this object's skill mod map from the target object's skill mod map
-	 * @param targetObject the targeted object containing the SkillModMap which will be affected.
-	 */
-	virtual void removeTemplateSkillMods(TangibleObject* tangibleObject);
 
 	const VectorMap<String, int>* getTemplateSkillMods() const;
 
@@ -765,6 +823,8 @@ public:
 	 */
 	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
 
+	void notifyInsert(TreeEntry* entry);
+
 	/**
 	 * Calls the appropriate UI Listener Function
 	 * @pre { this object is locked, object is locked }
@@ -782,6 +842,8 @@ public:
 	 * @param value value from packet
 	 */
 	virtual void synchronizedUIStopListen(CreatureObject* player, int value);
+
+	virtual void removeOutOfRangeObjects();
 
 	/**
 	 * Sets the active defender
@@ -859,7 +921,7 @@ public:
 	 * @post { this object is locked }
 	 * @return returns true if SceneObject defender exists in the defender vector
 	 */
-	bool hasDefender(SceneObject* defender);
+	bool hasDefender(const SceneObject* defender) const;
 
 	/**
 	 * Evaluates if this object can be attacket by the passed creature object
@@ -877,7 +939,9 @@ public:
 	 * @post { }
 	 * @return returns true if its aggressive
 	 */
-	virtual bool isAggressiveTo(CreatureObject* object);
+	virtual bool isAggressiveTo(TangibleObject* object);
+
+	virtual bool isAggressive(TangibleObject* object);
 
 	virtual bool isHealableBy(CreatureObject* object);
 
@@ -965,6 +1029,10 @@ public:
 
 	int getConditionDamage() const;
 
+	int getUnmitigatedDamage() const;
+
+	void addUnmitigatedDamage(float damage);
+
 	int getVolume() const;
 
 	void setComplexity(float value);
@@ -977,7 +1045,7 @@ public:
 
 	void removeMagicBit(bool notifyClient = true);
 
-	int getLevel() const;
+	virtual int getLevel() const;
 
 	bool getIsCraftedEnhancedItem() const;
 
@@ -989,11 +1057,13 @@ public:
 
 	const DeltaVector<ManagedReference<SceneObject* > >* getDefenderList() const;
 
+	bool hasDefenders() const;
+
 	const AutoDeltaSet<int>* getVisibleComponents() const;
 
 	SceneObject* getMainDefender() const;
 
-	bool isDestroyed() const;
+	virtual bool isDestroyed() const;
 
 	virtual void setFaction(unsigned int crc);
 
@@ -1023,6 +1093,14 @@ public:
 
 	void setSliced(bool slice);
 
+	bool isInsurable() const;
+
+	bool isJediRobe() const;
+
+	bool isUnionRing() const;
+
+	void setUnionRing(bool val);
+
 	void setCustomizationString(const String& vars);
 
 	void setIsCraftedEnhancedItem(bool value);
@@ -1035,7 +1113,11 @@ public:
 
 	void setCraftersName(String& name);
 
+	void setCraftersID(unsigned long long crafterOID);
+
 	virtual String getCraftersName();
+
+	unsigned long long getCraftersID() const;
 
 	void setJunkDealerNeeded(int jdNeeded);
 
@@ -1043,7 +1125,7 @@ public:
 
 	void setJunkValue(int jValue);
 
-	virtual int getJunkValue();
+	virtual int getJunkValue() const;
 
 	void setSerialNumber(const String& serial);
 
@@ -1051,9 +1133,9 @@ public:
 
 	virtual String getSerialNumber();
 
-	ThreatMap* getThreatMap();
+	virtual ThreatMap* getThreatMap();
 
-	Reference<FactoryCrate* > createFactoryCrate(int maxSize, bool insertSelf = false);
+	Reference<FactoryCrate* > createFactoryCrate(int maxSize, String& type, bool insertSelf = false);
 
 	bool canRepair(CreatureObject* player);
 
@@ -1077,7 +1159,7 @@ protected:
 public:
 	virtual float getHitChance() const;
 
-	void broadcastPvpStatusBitmask();
+	virtual void broadcastPvpStatusBitmask();
 
 	void addActiveArea(ActiveArea* area);
 
@@ -1087,17 +1169,33 @@ public:
 
 	bool hasActiveArea(unsigned long long objectid);
 
+	bool isInNoCombatArea() const;
+
+	void setInNoCombatArea(bool val);
+
 	SortedVector<ManagedReference<ActiveArea* > >* getActiveAreas();
 
 	int getActiveAreasSize() const;
 
 	Reference<ActiveArea* > getActiveRegion();
 
+	virtual CellObject* getCell(int idx);
+
+	virtual CellObject* getCell(const String& name);
+
+	virtual bool isNoTrade() const;
+
 	bool hasAntiDecayKit() const;
+
+	unsigned long long getAntiDecayKitObjectID() const;
 
 	void applyAntiDecayKit(CreatureObject* player, SceneObject* adk);
 
 	SceneObject* removeAntiDecayKit();
+
+	virtual void refreshPaint();
+
+	virtual void destroyObjectFromDatabase(bool destroyContainedObjects = false);
 
 	bool isCityStreetLamp() const;
 
@@ -1123,9 +1221,11 @@ public:
 
 	bool isInNavMesh();
 
-	void setControlDevice(ControlDevice* device);
+	bool isVendor();
 
-	ManagedWeakReference<ControlDevice* > getControlDevice() const;
+	virtual bool isInvulnerable();
+
+	virtual bool isDestroying();
 
 	WeakReference<TangibleObject*> _this;
 
@@ -1175,6 +1275,8 @@ public:
 
 	void addTemplateSkillMods(TangibleObject* targetObject) const;
 
+	void removeTemplateSkillMods(TangibleObject* tangibleObject) const;
+
 	void applySkillModsTo(CreatureObject* creature) const;
 
 	void removeSkillModsFrom(CreatureObject* creature);
@@ -1199,6 +1301,8 @@ public:
 
 	void synchronizedUIStopListen(CreatureObject* player, int value);
 
+	void removeOutOfRangeObjects();
+
 	void setDefender(SceneObject* defender);
 
 	void addDefender(SceneObject* defender);
@@ -1217,13 +1321,13 @@ public:
 
 	void clearCombatState(bool clearDefenders);
 
-	bool hasDefender(SceneObject* defender);
-
 	bool isAttackableBy(CreatureObject* object);
 
 	bool isAttackableBy(TangibleObject* object);
 
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
+
+	bool isAggressive(TangibleObject* object);
 
 	bool isHealableBy(CreatureObject* object);
 
@@ -1281,6 +1385,10 @@ public:
 
 	int getConditionDamage() const;
 
+	int getUnmitigatedDamage() const;
+
+	void addUnmitigatedDamage(float damage);
+
 	int getVolume() const;
 
 	void setComplexity(float value);
@@ -1302,6 +1410,8 @@ public:
 	bool isTangibleObject();
 
 	void getCustomizationString(String& variables) const;
+
+	bool hasDefenders() const;
 
 	SceneObject* getMainDefender() const;
 
@@ -1333,6 +1443,14 @@ public:
 
 	void setSliced(bool slice);
 
+	bool isInsurable() const;
+
+	bool isJediRobe() const;
+
+	bool isUnionRing() const;
+
+	void setUnionRing(bool val);
+
 	void setCustomizationString(const String& vars);
 
 	void setIsCraftedEnhancedItem(bool value);
@@ -1345,7 +1463,11 @@ public:
 
 	void setCraftersName(String& name);
 
+	void setCraftersID(unsigned long long crafterOID);
+
 	String getCraftersName();
+
+	unsigned long long getCraftersID() const;
 
 	void setJunkDealerNeeded(int jdNeeded);
 
@@ -1353,7 +1475,7 @@ public:
 
 	void setJunkValue(int jValue);
 
-	int getJunkValue();
+	int getJunkValue() const;
 
 	void setSerialNumber(const String& serial);
 
@@ -1361,7 +1483,7 @@ public:
 
 	String getSerialNumber();
 
-	Reference<FactoryCrate* > createFactoryCrate(int maxSize, bool insertSelf);
+	Reference<FactoryCrate* > createFactoryCrate(int maxSize, String& type, bool insertSelf);
 
 	bool canRepair(CreatureObject* player);
 
@@ -1383,15 +1505,31 @@ public:
 
 	bool hasActiveArea(unsigned long long objectid);
 
+	bool isInNoCombatArea() const;
+
+	void setInNoCombatArea(bool val);
+
 	int getActiveAreasSize() const;
 
 	Reference<ActiveArea* > getActiveRegion();
 
+	CellObject* getCell(int idx);
+
+	CellObject* getCell(const String& name);
+
+	bool isNoTrade() const;
+
 	bool hasAntiDecayKit() const;
+
+	unsigned long long getAntiDecayKitObjectID() const;
 
 	void applyAntiDecayKit(CreatureObject* player, SceneObject* adk);
 
 	SceneObject* removeAntiDecayKit();
+
+	void refreshPaint();
+
+	void destroyObjectFromDatabase(bool destroyContainedObjects);
 
 	bool isCityStreetLamp() const;
 
@@ -1417,9 +1555,11 @@ public:
 
 	bool isInNavMesh();
 
-	void setControlDevice(ControlDevice* device);
+	bool isVendor();
 
-	ManagedWeakReference<ControlDevice* > getControlDevice() const;
+	bool isInvulnerable();
+
+	bool isDestroying();
 
 };
 
@@ -1440,6 +1580,40 @@ public:
 	DistributedObjectAdapter* createAdapter(DistributedObjectStub* obj);
 
 	friend class Singleton<TangibleObjectHelper>;
+};
+
+class MockTangibleObject : public TangibleObject {
+public:
+
+	MOCK_METHOD1(isAttackableBy,bool(CreatureObject* object));
+	MOCK_METHOD0(getLevel,int());
+	MOCK_METHOD0(isDestroyed,bool());
+	MOCK_METHOD0(getThreatMap,ThreatMap*());
+	MOCK_METHOD2(isInRange,bool(SceneObject* obj, float range));
+	MOCK_METHOD1(getSlottedObjects,void(VectorMap<String, ManagedReference<SceneObject* > >& objects));
+	MOCK_METHOD1(getDistanceTo,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo3d,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo,float(Coordinate* coordinate));
+	MOCK_METHOD1(getDistanceTo3d,float(Coordinate* coordinate));
+	MOCK_METHOD0(getZone,Zone*());
+	MOCK_METHOD0(getZoneUnsafe,Zone*());
+	MOCK_METHOD1(getSlottedObject,Reference<SceneObject* >(const String& slot));
+	MOCK_METHOD0(getInventory,Reference<SceneObject* >());
+	MOCK_METHOD0(getDatapad,Reference<SceneObject* >());
+	MOCK_METHOD1(isFacingObject,bool(SceneObject* obj));
+	MOCK_METHOD0(getParent,ManagedWeakReference<SceneObject* >());
+	MOCK_METHOD0(asCreatureObject,CreatureObject*());
+	MOCK_METHOD0(asAiAgent,AiAgent*());
+	MOCK_METHOD0(asShipAiAgent,ShipAiAgent*());
+	MOCK_METHOD0(asShipObject,ShipObject*());
+	MOCK_METHOD0(asSpaceStationObject,SpaceStationObject*());
+	MOCK_METHOD0(asCapitalShipObject,CapitalShipObject*());
+	MOCK_METHOD0(asPobShip,PobShipObject*());
+	MOCK_METHOD0(asMultiPassengerShip,MultiPassengerShipObject*());
+	MOCK_METHOD0(asFighterShip,FighterShipObject*());
+	MOCK_METHOD0(asTangibleObject,TangibleObject*());
+	MOCK_METHOD0(getTemplateRadius,float());
+
 };
 
 } // namespace tangible
@@ -1474,6 +1648,8 @@ public:
 
 	Optional<CustomizationVariables> customizationVariables;
 
+	Optional<int> unmitigatedDamage;
+
 	Optional<float> conditionDamage;
 
 	Optional<int> maxCondition;
@@ -1496,6 +1672,8 @@ public:
 
 	Optional<String> craftersName;
 
+	Optional<unsigned long long> craftersID;
+
 	Optional<int> junkDealerNeeded;
 
 	Optional<int> junkValue;
@@ -1512,7 +1690,11 @@ public:
 
 	Optional<ManagedReference<SceneObjectPOD* >> antiDecayKitObject;
 
-	Optional<ManagedWeakReference<ControlDevicePOD* >> controlDevice;
+	Optional<bool> insurable;
+
+	Optional<bool> jediRobe;
+
+	Optional<bool> unionRing;
 
 	String _className;
 	TangibleObjectPOD();

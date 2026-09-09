@@ -3,7 +3,7 @@
 nalhutta_world = {
 	mobile = {
 		-- Hutta guards
-		{"hutta_gamorrean_guard", 300, -1, -1, -1, 100, 25},
+		{"gamorrean_guard", 300, -1, -1, -1, 100, 25},
 		
 		-- Force beings (7 types)
 		{"dark_jedi_knight", 300, -1, -1, -1, 100, 15},

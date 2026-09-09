@@ -3,7 +3,7 @@
 flurry_coals = {
 	minimumLevel = 0,
 	maximumLevel = 0,
-	customObjectName = "Flurry Coal",
+	customObjectName = "SWG GOTOR Coal",
 	directObjectTemplate = "object/tangible/item/loot_crates/xmas_coal.iff",
 	craftingValues = {
 	},

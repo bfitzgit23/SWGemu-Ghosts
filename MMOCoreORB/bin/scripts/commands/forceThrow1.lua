@@ -60,17 +60,7 @@ ForceThrow1Command = {
 			65,
 			0,
 			10
-		),
-
-	  StateEffect(
-		POSTUREDOWN_EFFECT,
-		{ "postureDownRecovery" },
-		{ "posture_change_down_defense" },
-		{},
-		100,
-		0,
-		0
-	  )
+		)
 	},
 
 	animation = "force_throw_1_particle_level_1",

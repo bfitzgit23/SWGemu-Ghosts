@@ -4,12 +4,6 @@
 
 #include "CityRemoveMilitiaSession.h"
 
-#include "server/zone/objects/creature/CreatureObject.h"
-
-#include "server/zone/objects/region/CityRegion.h"
-
-#include "server/zone/objects/scene/SceneObject.h"
-
 /*
  *	CityRemoveMilitiaSessionStub
  */
@@ -297,7 +291,7 @@ int CityRemoveMilitiaSessionImplementation::cancelSession() {
 	// server/zone/objects/player/sessions/CityRemoveMilitiaSession.idl():  		CreatureObject creature = creatureObject;
 	ManagedReference<CreatureObject* > creature = creatureObject;
 	// server/zone/objects/player/sessions/CityRemoveMilitiaSession.idl():  		return 
-	if (creature != NULL)	// server/zone/objects/player/sessions/CityRemoveMilitiaSession.idl():  			creature.dropActiveSession(SessionFacadeType.CITYMILITIA);
+	if (creature)	// server/zone/objects/player/sessions/CityRemoveMilitiaSession.idl():  			creature.dropActiveSession(SessionFacadeType.CITYMILITIA);
 	creature->dropActiveSession(SessionFacadeType::CITYMILITIA);
 	// server/zone/objects/player/sessions/CityRemoveMilitiaSession.idl():  		return 0;
 	return 0;

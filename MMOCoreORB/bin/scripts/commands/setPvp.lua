@@ -1,6 +1,6 @@
 -- PLEASE DO NOT STEAL OUR WORK
 -- ASK BEFOR USING
--- Contact Me Here http://swgflurry.com
+-- Legacy command maintained for SWG GOTOR.
 -- Created on: 9/21/2016
 -- Authors: Kurdtkobain
 --

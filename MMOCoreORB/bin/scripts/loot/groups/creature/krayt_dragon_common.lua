@@ -5,8 +5,9 @@ krayt_dragon_common = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{itemTemplate = "krayt_composite_segment", weight = 5000000},
-		{itemTemplate = "krayt_dragon_scales", weight = 5000000}
+		{itemTemplate = "krayt_composite_segment", weight = 4500000},
+		{itemTemplate = "krayt_dragon_scales", weight = 4500000},
+		{groupTemplate = "ghosts_armor_parts", weight = 1000000}
 	}
 }
 

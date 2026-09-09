@@ -2,6 +2,7 @@ tricky_korga_scout = Creature:new {
 	objectName = "@mob/creature_names:tricky_korga_scout",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
+	mobType = MOB_NPC,
 	socialGroup = "korga_tribe",
 	faction = "korga_tribe",
 	level = 41,
@@ -20,7 +21,7 @@ tricky_korga_scout = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0.0,
+	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
 	creatureBitmask = PACK + KILLER,
@@ -33,15 +34,22 @@ tricky_korga_scout = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "ewok", chance = 9000000},
-				{group = "wearables_uncommon", chance = 1000000},
+				{group = "korga_tribe_tier_2", chance = 10000000}
 			},
 			lootChance = 1820000
 		}
 	},
-	weapons = {},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "general_unarmed",
+	secondaryWeapon = "none",
 	conversationTemplate = "",
-	attacks = brawlermaster
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = brawlermaster,
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(tricky_korga_scout, "tricky_korga_scout")

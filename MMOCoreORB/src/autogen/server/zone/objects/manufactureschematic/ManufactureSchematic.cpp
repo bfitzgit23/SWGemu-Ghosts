@@ -18,7 +18,7 @@
  *	ManufactureSchematicStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3732900343,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SYNCHRONIZEDUILISTEN__CREATUREOBJECT_INT_,RPC_SYNCHRONIZEDUISTOPLISTEN__CREATUREOBJECT_INT_,RPC_ISMANUFACTURESCHEMATIC__,RPC_SETDRAFTSCHEMATIC__DRAFTSCHEMATIC_,RPC_ADDINGREDIENTTOSLOT__CREATUREOBJECT_SCENEOBJECT_TANGIBLEOBJECT_INT_,RPC_REMOVEINGREDIENTFROMSLOT__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_CLEANUPINGREDIENTSLOTS__CREATUREOBJECT_,RPC_GETDRAFTSCHEMATIC__,RPC_INCREASECOMPLEXITY__,RPC_DECREASECOMPLEXITY__,RPC_GETCOMPLEXITY__,RPC_ISREADYFORASSEMBLY__,RPC_SETASSEMBLED__,RPC_ISASSEMBLED__,RPC_SETCOMPLETED__,RPC_ISCOMPLETED__,RPC_GETSLOTCOUNT__,RPC_SETCRAFTER__CREATUREOBJECT_,RPC_GETCRAFTER__,RPC_SETEXPERIMENTINGCOUNTER__INT_,RPC_GETEXPERIMENTINGCOUNTER__,RPC_GETEXPERIMENTINGCOUNTERPREVIOUS__,RPC_GETINGREDIENTCOUNTER__,RPC_SETMANUFACTURELIMIT__INT_,RPC_GETMANUFACTURELIMIT__,RPC_SETPROTOTYPE__TANGIBLEOBJECT_,RPC_GETPROTOTYPE__,RPC_CANMANUFACTUREITEM__STRING_STRING_,RPC_MANUFACTUREITEM__FACTORYOBJECT_,RPC_CREATEFACTORYBLUEPRINT__,RPC_GETBLUEPRINTSIZE__,RPC_GETFACTORYCRATESIZE__,RPC_ALLOWFACTORYRUN__,RPC_GETLABRATORY__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3732900343,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SYNCHRONIZEDUILISTEN__CREATUREOBJECT_INT_,RPC_SYNCHRONIZEDUISTOPLISTEN__CREATUREOBJECT_INT_,RPC_ISMANUFACTURESCHEMATIC__,RPC_SETDRAFTSCHEMATIC__DRAFTSCHEMATIC_,RPC_ADDINGREDIENTTOSLOT__CREATUREOBJECT_SCENEOBJECT_TANGIBLEOBJECT_INT_,RPC_REMOVEINGREDIENTFROMSLOT__CREATUREOBJECT_TANGIBLEOBJECT_INT_,RPC_CLEANUPINGREDIENTSLOTS__CREATUREOBJECT_,RPC_GETDRAFTSCHEMATIC__,RPC_INCREASECOMPLEXITY__,RPC_DECREASECOMPLEXITY__,RPC_GETCOMPLEXITY__,RPC_ISREADYFORASSEMBLY__,RPC_SETASSEMBLED__,RPC_ISASSEMBLED__,RPC_SETCOMPLETED__,RPC_ISCOMPLETED__,RPC_GETSLOTCOUNT__,RPC_SETCRAFTER__CREATUREOBJECT_,RPC_GETCRAFTER__,RPC_SETEXPERIMENTINGCOUNTER__INT_,RPC_GETEXPERIMENTINGCOUNTER__,RPC_GETEXPERIMENTINGCOUNTERPREVIOUS__,RPC_GETINGREDIENTCOUNTER__,RPC_SETMANUFACTURELIMIT__INT_,RPC_GETMANUFACTURELIMIT__,RPC_SETPROTOTYPE__TANGIBLEOBJECT_,RPC_GETPROTOTYPE__,RPC_CANMANUFACTUREITEM__STRING_STRING_,RPC_MANUFACTUREITEM__FACTORYOBJECT_,RPC_CREATEFACTORYBLUEPRINT__,RPC_GETBLUEPRINTSIZE__,RPC_GETFACTORYCRATESIZE__,RPC_ALLOWFACTORYRUN__,RPC_GETLABRATORY__,RPC_GETFACTORYCRATETYPE__};
 
 ManufactureSchematic::ManufactureSchematic() : IntangibleObject(DummyConstructorParameter::instance()) {
 	ManufactureSchematicImplementation* _implementation = new ManufactureSchematicImplementation();
@@ -47,6 +47,21 @@ void ManufactureSchematic::initializeTransientMembers() {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->initializeTransientMembers();
+	}
+}
+
+void ManufactureSchematic::destroyObjectFromDatabase(bool destroyContainedObjects) {
+	ManufactureSchematicImplementation* _implementation = static_cast<ManufactureSchematicImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DESTROYOBJECTFROMDATABASE__BOOL_);
+		method.addBooleanParameter(destroyContainedObjects);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->destroyObjectFromDatabase(destroyContainedObjects);
 	}
 }
 
@@ -631,6 +646,22 @@ int ManufactureSchematic::getLabratory() {
 	}
 }
 
+String ManufactureSchematic::getFactoryCrateType() {
+	ManufactureSchematicImplementation* _implementation = static_cast<ManufactureSchematicImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETFACTORYCRATETYPE__);
+
+		String _return_getFactoryCrateType;
+		method.executeWithAsciiReturn(_return_getFactoryCrateType);
+		return _return_getFactoryCrateType;
+	} else {
+		return _implementation->getFactoryCrateType();
+	}
+}
+
 DistributedObjectServant* ManufactureSchematic::_getImplementation() {
 
 	 if (!_updated) _updated = true;
@@ -936,8 +967,8 @@ ManufactureSchematicImplementation::ManufactureSchematicImplementation() {
 	experimentingCounterPrevious = 0;
 	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		possibleSyncIssue = false;
 	possibleSyncIssue = false;
-	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		manufactureLimit = 1000;
-	manufactureLimit = 1000;
+	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		manufactureLimit = 10000;
+	manufactureLimit = 10000;
 	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		ContainerPermissions permissions = super.getContainerPermissionsForUpdate();
 	ContainerPermissions* permissions = IntangibleObjectImplementation::getContainerPermissionsForUpdate();
 	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		permissions.setInheritPermissionsFromParent(true);
@@ -946,11 +977,6 @@ ManufactureSchematicImplementation::ManufactureSchematicImplementation() {
 	permissions->clearDefaultDenyPermission(ContainerPermissions::MOVECONTAINER);
 	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		permissions.clearDenyPermission("owner", ContainerPermissions.MOVECONTAINER);
 	permissions->clearDenyPermission("owner", ContainerPermissions::MOVECONTAINER);
-}
-
-void ManufactureSchematicImplementation::initializeTransientMembers() {
-	// server/zone/objects/manufactureschematic/ManufactureSchematic.idl():  		super.initializeTransientMembers();
-	IntangibleObjectImplementation::initializeTransientMembers();
 }
 
 bool ManufactureSchematicImplementation::isManufactureSchematic() {
@@ -1102,6 +1128,14 @@ void ManufactureSchematicAdapter::invokeMethod(uint32 methid, DistributedMethod*
 		{
 			
 			initializeTransientMembers();
+			
+		}
+		break;
+	case RPC_DESTROYOBJECTFROMDATABASE__BOOL_:
+		{
+			bool destroyContainedObjects = inv->getBooleanParameter();
+			
+			destroyObjectFromDatabase(destroyContainedObjects);
 			
 		}
 		break;
@@ -1381,6 +1415,13 @@ void ManufactureSchematicAdapter::invokeMethod(uint32 methid, DistributedMethod*
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETFACTORYCRATETYPE__:
+		{
+			
+			String _m_res = getFactoryCrateType();
+			resp->insertAscii(_m_res);
+		}
+		break;
 	default:
 		IntangibleObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -1388,6 +1429,10 @@ void ManufactureSchematicAdapter::invokeMethod(uint32 methid, DistributedMethod*
 
 void ManufactureSchematicAdapter::initializeTransientMembers() {
 	(static_cast<ManufactureSchematic*>(stub))->initializeTransientMembers();
+}
+
+void ManufactureSchematicAdapter::destroyObjectFromDatabase(bool destroyContainedObjects) {
+	(static_cast<ManufactureSchematic*>(stub))->destroyObjectFromDatabase(destroyContainedObjects);
 }
 
 void ManufactureSchematicAdapter::sendTo(SceneObject* player, bool doClose, bool forceLoadContainer) {
@@ -1532,6 +1577,10 @@ bool ManufactureSchematicAdapter::allowFactoryRun() {
 
 int ManufactureSchematicAdapter::getLabratory() {
 	return (static_cast<ManufactureSchematic*>(stub))->getLabratory();
+}
+
+String ManufactureSchematicAdapter::getFactoryCrateType() {
+	return (static_cast<ManufactureSchematic*>(stub))->getFactoryCrateType();
 }
 
 /*

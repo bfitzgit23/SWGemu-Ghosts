@@ -41,6 +41,7 @@
 --which carries forward this exception.
 
 
+
 object_tangible_deed_pet_deed_shared_acklay_deed = SharedTangibleObjectTemplate:new {
 	clientTemplateFileName = "object/tangible/deed/pet_deed/shared_acklay_deed.iff"
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
@@ -5881,3 +5882,8 @@ object_tangible_deed_pet_deed_shared_zucca_boar_deed = SharedTangibleObjectTempl
 }
 
 ObjectTemplates:addClientTemplate(object_tangible_deed_pet_deed_shared_zucca_boar_deed, "object/tangible/deed/pet_deed/shared_zucca_boar_deed.iff")
+object_tangible_deed_pet_deed_shared_hk47 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/deed/pet_deed/shared_hk47.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_tangible_deed_pet_deed_shared_hk47, "object/tangible/deed/pet_deed/shared_hk47.iff")

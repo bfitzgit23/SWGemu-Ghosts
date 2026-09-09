@@ -9,22 +9,24 @@
 #include "server/zone/managers/objectcontroller/command/CommandConfigManager.h"
 #include "server/zone/managers/objectcontroller/command/CommandList.h"
 #include "server/zone/managers/skill/SkillModManager.h"
+#include "server/zone/managers/player/PermissionLevelList.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/objects/player/PlayerObject.h"
+#include "server/login/account/Account.h"
 
 void ObjectControllerImplementation::loadCommands() {
 	configManager = new CommandConfigManager(server);
 	queueCommands = new CommandList();
 
-	info("loading queue commands...", true);
+	info(true) << "Loading Queue Commands...";
+
 	configManager->registerSpecialCommands(queueCommands);
 	configManager->loadSlashCommandsFile();
 
-	StringBuffer infoMsg;
-	infoMsg << "loaded " << queueCommands->size() << " commands";
-	info(infoMsg.toString(), true);
+	info(true) << "Loaded " << queueCommands->size() << " total commands";
 
 	adminLog.setLoggingName("AdminCommands");
+
 	StringBuffer fileName;
 	fileName << "log/admin/admin.log";
 	adminLog.setFileLogger(fileName.toString(), true);
@@ -68,35 +70,48 @@ bool ObjectControllerImplementation::transferObject(SceneObject* objectToTransfe
 	return true;
 }
 
-float ObjectControllerImplementation::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, uint64 targetID, const UnicodeString& arguments) {
+float ObjectControllerImplementation::activateCommand(CreatureObject* object, unsigned int actionCRC, unsigned int actionCount, uint64 targetID, const UnicodeString& arguments) const {
 	// Pre: object is wlocked
 	// Post: object is wlocked
 
-	QueueCommand* queueCommand = getQueueCommand(actionCRC);
+	const QueueCommand* queueCommand = getQueueCommand(actionCRC);
 
 	float durationTime = 0.f;
 
 	if (queueCommand == nullptr) {
-		StringBuffer msg;
-		msg << "unregistered queue command 0x" << hex << actionCRC << " arguments: " << arguments.toString();
-		object->error(msg.toString());
+		object->error() << "unregistered queue command 0x" << hex << actionCRC << " arguments: " << arguments.toString();
 
 		return 0.f;
 	}
 
-	/*StringBuffer infoMsg;
-	infoMsg << "activating queue command 0x" << hex << actionCRC << " " << queueCommand->getQueueCommandName() << " arguments='" << arguments.toString() << "'";
-	object->info(infoMsg.toString(), true);*/
-
+	float commandTime = queueCommand->getCommandDuration(object, arguments);
 	const String& characterAbility = queueCommand->getCharacterAbility();
 
 	if (characterAbility.length() > 1) {
-		object->debug("activating characterAbility " + characterAbility);
+		object->debug() << "activating characterAbility " << characterAbility;
 
 		if (object->isPlayerCreature()) {
-			Reference<PlayerObject*> playerObject =  object->getSlottedObject("ghost").castTo<PlayerObject*>();
+			Reference<PlayerObject*> playerObject =
+				object->getSlottedObject("ghost").castTo<PlayerObject*>();
 
-			if (!playerObject->hasAbility(characterAbility)) {
+			const int administratorLevel =
+				PermissionLevelList::instance()->getLevelNumber("admin");
+
+			Account* account =
+				playerObject != nullptr ? playerObject->getAccount() : nullptr;
+
+			const int effectiveAdminLevel =
+				account != nullptr ?
+					Math::max((int)playerObject->getAdminLevel(), (int)account->getAdminLevel()) :
+					(playerObject != nullptr ? playerObject->getAdminLevel() : 0);
+
+			const bool isAdministrator =
+				effectiveAdminLevel >= administratorLevel;
+
+			// Full administrators are authorized by their account-backed level.
+			// This avoids stale character ability data swallowing admin commands.
+			if (!isAdministrator &&
+				(playerObject == nullptr || !playerObject->hasAbility(characterAbility))) {
 				object->clearQueueAction(actionCount, 0, 2);
 
 				return 0.f;
@@ -118,16 +133,38 @@ float ObjectControllerImplementation::activateCommand(CreatureObject* object, un
 
 	if (queueCommand->requiresAdmin()) {
 		try {
-			if(object->isPlayerCreature()) {
-				Reference<PlayerObject*> ghost =  object->getSlottedObject("ghost").castTo<PlayerObject*>();
+			if (object->isPlayerCreature()) {
+				Reference<PlayerObject*> ghost =
+					object->getSlottedObject("ghost").castTo<PlayerObject*>();
 
-				if (ghost == nullptr || !ghost->hasGodMode() || !ghost->hasAbility(queueCommand->getQueueCommandName())) {
-					StringBuffer logEntry;
-					logEntry << object->getDisplayedName() << " attempted to use the '/" << queueCommand->getQueueCommandName()
-							<< "' command without permissions";
-					adminLog.warning(logEntry.toString());
+				const int administratorLevel =
+					PermissionLevelList::instance()->getLevelNumber("admin");
+
+				Account* account =
+					ghost != nullptr ? ghost->getAccount() : nullptr;
+
+				const int effectiveAdminLevel =
+					account != nullptr ?
+						Math::max((int)ghost->getAdminLevel(), (int)account->getAdminLevel()) :
+						(ghost != nullptr ? ghost->getAdminLevel() : 0);
+
+				const bool isAdministrator =
+					effectiveAdminLevel >= administratorLevel;
+
+				// Full administrators are trusted by their account-backed level.
+				// Lower staff must still have God Mode and the command ability.
+				if (ghost == nullptr ||
+					(!isAdministrator &&
+					 (!ghost->hasGodMode() ||
+					  !ghost->hasAbility(queueCommand->getQueueCommandName())))) {
+					adminLog.warning() << object->getDisplayedName()
+						<< " attempted to use the '/"
+						<< queueCommand->getQueueCommandName()
+						<< "' command without permissions";
+
 					object->sendSystemMessage("@error_message:insufficient_permissions");
 					object->clearQueueAction(actionCount, 0, 2);
+
 					return 0.f;
 				}
 			} else {
@@ -135,13 +172,13 @@ float ObjectControllerImplementation::activateCommand(CreatureObject* object, un
 			}
 
 			logAdminCommand(object, queueCommand, targetID, arguments);
-		} catch (Exception& e) {
+		} catch (const Exception& e) {
 			Logger::error("Unhandled Exception logging admin commands" + e.getMessage());
 		}
 	}
 
 	/// Add Skillmods if any
-	for(int i = 0; i < queueCommand->getSkillModSize(); ++i) {
+	for (int i = 0; i < queueCommand->getSkillModSize(); ++i) {
 		String skillMod;
 		int value = queueCommand->getSkillMod(i, skillMod);
 		object->addSkillMod(SkillModManager::ABILITYBONUS, skillMod, value, false);
@@ -149,22 +186,47 @@ float ObjectControllerImplementation::activateCommand(CreatureObject* object, un
 
 	int errorNumber = queueCommand->doQueueCommand(object, targetID, arguments);
 
+#ifdef WITH_DEV_MODE
+	if(object->isPlayerCreature()) {
+		String name = "unknown";
+
+		Reference<SceneObject*> targetObject = Core::getObjectBroker()->lookUp(targetID).castTo<SceneObject*>();
+
+		if (targetObject != nullptr) {
+			name = targetObject->getDisplayedName();
+
+			if(targetObject->isPlayerCreature())
+				name += "(Player)";
+			else
+				name += "(NPC)";
+		} else {
+			name = "(null)";
+		}
+
+		info(true) << "\033[32;40m" << object->getDisplayedName() << "(" << object->getObjectID() << ") /" << queueCommand->getQueueCommandName() << ": target=" << name << "; arguments=[" << arguments.toString() << "]; actionCount=" << actionCount << "; addToQueue= " << queueCommand->addToCombatQueue() << "\033[0m";
+	}
+#endif // WITH_DEV_MODE
+
 	/// Remove Skillmods if any
-	for(int i = 0; i < queueCommand->getSkillModSize(); ++i) {
+	for (int i = 0; i < queueCommand->getSkillModSize(); ++i) {
 		String skillMod;
 		int value = queueCommand->getSkillMod(i, skillMod);
 		object->addSkillMod(SkillModManager::ABILITYBONUS, skillMod, -value, false);
 	}
 
 	//onFail onComplete must clear the action from client queue
-	if (errorNumber != QueueCommand::SUCCESS)
+	if (errorNumber != QueueCommand::SUCCESS) {
 		queueCommand->onFail(actionCount, object, errorNumber);
-	else {
-		if (queueCommand->getDefaultPriority() != QueueCommand::IMMEDIATE)
-			durationTime = queueCommand->getCommandDuration(object, arguments);
+		return 0;
+	} else {
+		if (queueCommand->getDefaultPriority() != QueueCommand::IMMEDIATE) {
+			durationTime = commandTime;
+		}
+
 
 		queueCommand->onComplete(actionCount, object, durationTime);
 	}
+
 
 	return durationTime;
 }
@@ -173,20 +235,20 @@ void ObjectControllerImplementation::addQueueCommand(QueueCommand* command) {
 	queueCommands->put(command);
 }
 
-QueueCommand* ObjectControllerImplementation::getQueueCommand(const String& name) {
+const QueueCommand* ObjectControllerImplementation::getQueueCommand(const String& name) const {
 	return queueCommands->getSlashCommand(name);
 }
 
-QueueCommand* ObjectControllerImplementation::getQueueCommand(uint32 crc) {
+const QueueCommand* ObjectControllerImplementation::getQueueCommand(uint32 crc) const {
 	return queueCommands->getSlashCommand(crc);
 }
 
-void ObjectControllerImplementation::logAdminCommand(SceneObject* object, const QueueCommand* queueCommand, uint64 targetID, const UnicodeString& arguments) {
+void ObjectControllerImplementation::logAdminCommand(SceneObject* object, const QueueCommand* queueCommand, uint64 targetID, const UnicodeString& arguments) const {
 	String name = "unknown";
 
 	Reference<SceneObject*> targetObject = Core::getObjectBroker()->lookUp(targetID).castTo<SceneObject*>();
 
-	if(targetObject != nullptr) {
+	if (targetObject != nullptr) {
 		name = targetObject->getDisplayedName();
 
 		if(targetObject->isPlayerCreature())
@@ -197,8 +259,5 @@ void ObjectControllerImplementation::logAdminCommand(SceneObject* object, const 
 		name = "(null)";
 	}
 
-	StringBuffer logEntry;
-	logEntry << object->getDisplayedName() << " used '/" << queueCommand->getQueueCommandName()
-								<< "' on " << name << " with params '" << arguments.toString() << "'";
-	adminLog.info(logEntry.toString());
+	adminLog.info() << object->getDisplayedName() << " used '/" << queueCommand->getQueueCommandName() << "' on " << name << " with params '" << arguments.toString() << "'";
 }

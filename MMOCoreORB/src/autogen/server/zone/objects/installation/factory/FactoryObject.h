@@ -176,6 +176,15 @@ public:
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
+	/**
+	 * Sends the necessary messages to player in order to create this object
+	 * @pre { this object is locked }
+	 * @post { this object is locked, player received this object }
+	 * @param player SceneObject that will receive the messages
+	 * @param doClose if true a SceneObjectCloseMessage is sent to finish the object
+	 */
+	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
+
 	bool isFactory();
 
 	/**
@@ -209,13 +218,17 @@ public:
 	 * Handles inputting the schematic to the
 	 * factory
 	 */
-	void handleRemoveFactorySchem(CreatureObject* player);
+	bool handleRemoveFactorySchem(CreatureObject* player);
 
 	void handleOperateToggle(CreatureObject* player);
+
+	bool startFactory();
 
 	void createNewObject();
 
 	String getRedeedMessage();
+
+	void sendRemoveFailureMessage(CreatureObject* player, ManufactureSchematic* schematic);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -279,6 +292,15 @@ public:
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
+	/**
+	 * Sends the necessary messages to player in order to create this object
+	 * @pre { this object is locked }
+	 * @post { this object is locked, player received this object }
+	 * @param player SceneObject that will receive the messages
+	 * @param doClose if true a SceneObjectCloseMessage is sent to finish the object
+	 */
+	virtual void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer = true);
+
 	bool isFactory();
 
 	/**
@@ -312,13 +334,13 @@ public:
 	 * Handles inputting the schematic to the
 	 * factory
 	 */
-	void handleRemoveFactorySchem(CreatureObject* player);
+	bool handleRemoveFactorySchem(CreatureObject* player);
 
 	void handleOperateToggle(CreatureObject* player);
 
-private:
 	bool startFactory();
 
+private:
 	void stopFactory(const String& message, const String& tt, const String& to, const int di);
 
 	void stopFactory(String& type, String& displayedName);
@@ -329,7 +351,7 @@ public:
 private:
 	FactoryCrate* locateCrateInOutputHopper(TangibleObject* prototype);
 
-	FactoryCrate* createNewFactoryCrate(TangibleObject* prototype, int maxSize);
+	FactoryCrate* createNewFactoryCrate(TangibleObject* prototype, int maxSize, String& crateType);
 
 	TangibleObject* createNewUncratedItem(TangibleObject* prototype);
 
@@ -339,6 +361,8 @@ private:
 
 public:
 	String getRedeedMessage();
+
+	void sendRemoveFailureMessage(CreatureObject* player, ManufactureSchematic* schematic);
 
 	WeakReference<FactoryObject*> _this;
 
@@ -386,6 +410,8 @@ public:
 
 	void notifyLoadFromDatabase();
 
+	void sendTo(SceneObject* player, bool doClose, bool forceLoadContainer);
+
 	bool isFactory();
 
 	void createChildObjects();
@@ -404,13 +430,17 @@ public:
 
 	void handleInsertFactorySchem(CreatureObject* player, ManufactureSchematic* schematic);
 
-	void handleRemoveFactorySchem(CreatureObject* player);
+	bool handleRemoveFactorySchem(CreatureObject* player);
 
 	void handleOperateToggle(CreatureObject* player);
+
+	bool startFactory();
 
 	void createNewObject();
 
 	String getRedeedMessage();
+
+	void sendRemoveFailureMessage(CreatureObject* player, ManufactureSchematic* schematic);
 
 };
 

@@ -59,7 +59,7 @@ object_tangible_wearables_armor_marine_shared_armor_marine_backpack = SharedTang
 	collisionMaterialFlags = 1,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 50,
+	containerVolumeLimit = 150,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@wearables_detail:armor_marine_backpack",

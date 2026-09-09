@@ -29,12 +29,12 @@ function NovaOrionScreenPlay:spawnSceneObjects()
         --Boss Teleporter
         --spawnSceneObject("dungeon2", "object/tangible/terminal/greeter_terminal.iff", -1.19459, -0.5, -1.81312, 14200880, 0.300706, 0, -0.953717, 0)
         --Boss Teleport Room
-        spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_quad_screen.iff", -40.3652, 0.61331, 29.4226, 14200890, 0.707107, 0, 0.707107, 0)
+        spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_bank.iff", -40.3652, 0.61331, 29.4226, 14200890, 0.707107, 0, 0.707107, 0)
         --Galactic Travel Service
-        spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_gcw_publish_gift.iff", -9.99375, -2.74497e-09, -21.2168, 14200880, -0.314184, 0, 0.949362, 0)
+        spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_event_buffs.iff", -9.99375, -2.74497e-09, -21.2168, 14200880, -0.314184, 0, 0.949362, 0)
 		--Spawn FRS Shrines
-		spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -8.78594, 29.507, 0.014969, 85, 14200833)
-		spawnSceneObject("dungeon2", "object/tangible/quest/township/axkva_dark_jedi_statue.iff", -15.063, 29.507, -0.0356328, 267, 14200833)
+		spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_cloning.iff", -8.78594, 29.507, 0.014969, 85, 14200833)
+		spawnSceneObject("dungeon2", "object/tangible/terminal/terminal_cloning.iff", -15.063, 29.507, -0.0356328, 267, 14200833)
 end
 
 function NovaOrionScreenPlay:spawnMobiles()

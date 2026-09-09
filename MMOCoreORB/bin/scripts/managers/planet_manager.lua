@@ -54,6 +54,26 @@ starportLandingTime = 14
 shuttleportLandedTime = 240
 starportLandedTime = 240
 
+dungeon1 = {
+	weatherEnabled = 0,
+	gcwEnabled = 0,
+	outpostRegionNames = {},
+	planetTravelPoints = {},
+	badgeAreas = {},
+	navAreas = {},
+	planetObjects = {},
+}
+
+dungeon2 = {
+	weatherEnabled = 0,
+	gcwEnabled = 0,
+	outpostRegionNames = {},
+	planetTravelPoints = {},
+	badgeAreas = {},
+	navAreas = {},
+	planetObjects = {},
+}
+
 
 corellia = {
 	weatherEnabled = 0,

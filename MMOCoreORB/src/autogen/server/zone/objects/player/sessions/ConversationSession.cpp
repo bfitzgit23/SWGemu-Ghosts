@@ -8,13 +8,15 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
+#include "server/zone/objects/scene/SceneObject.h"
+
 /*
  *	ConversationSessionStub
  */
 
 enum {RPC_GETNPC__};
 
-ConversationSession::ConversationSession(CreatureObject* conversingCreature) : Facade(DummyConstructorParameter::instance()) {
+ConversationSession::ConversationSession(SceneObject* conversingCreature) : Facade(DummyConstructorParameter::instance()) {
 	ConversationSessionImplementation* _implementation = new ConversationSessionImplementation(conversingCreature);
 	_impl = _implementation;
 	_impl->_setStub(this);
@@ -50,7 +52,7 @@ ConversationScreen* ConversationSession::getLastConversationScreen() {
 	}
 }
 
-ManagedWeakReference<CreatureObject* > ConversationSession::getNPC() {
+ManagedWeakReference<SceneObject* > ConversationSession::getNPC() {
 	ConversationSessionImplementation* _implementation = static_cast<ConversationSessionImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -58,7 +60,7 @@ ManagedWeakReference<CreatureObject* > ConversationSession::getNPC() {
 
 		DistributedMethod method(this, RPC_GETNPC__);
 
-		return static_cast<CreatureObject*>(method.executeWithObjectReturn());
+		return static_cast<SceneObject*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getNPC();
 	}
@@ -179,7 +181,7 @@ bool ConversationSessionImplementation::readObjectMember(ObjectInputStream* stre
 		return true;
 
 	case 0x8bed8028: //ConversationSession.npc
-		TypeInfo<ManagedWeakReference<CreatureObject* > >::parseFromBinaryStream(&npc, stream);
+		TypeInfo<ManagedWeakReference<SceneObject* > >::parseFromBinaryStream(&npc, stream);
 		return true;
 
 	}
@@ -213,7 +215,7 @@ int ConversationSessionImplementation::writeObjectMembers(ObjectOutputStream* st
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<CreatureObject* > >::toBinaryStream(&npc, stream);
+	TypeInfo<ManagedWeakReference<SceneObject* > >::toBinaryStream(&npc, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -222,7 +224,7 @@ int ConversationSessionImplementation::writeObjectMembers(ObjectOutputStream* st
 	return _count;
 }
 
-ConversationSessionImplementation::ConversationSessionImplementation(CreatureObject* conversingCreature) {
+ConversationSessionImplementation::ConversationSessionImplementation(SceneObject* conversingCreature) {
 	_initializeImplementation();
 	// server/zone/objects/player/sessions/ConversationSession.idl():  		lastConversationScreen = null;
 	lastConversationScreen = NULL;
@@ -240,7 +242,7 @@ ConversationScreen* ConversationSessionImplementation::getLastConversationScreen
 	return lastConversationScreen;
 }
 
-ManagedWeakReference<CreatureObject* > ConversationSessionImplementation::getNPC() {
+ManagedWeakReference<SceneObject* > ConversationSessionImplementation::getNPC() {
 	// server/zone/objects/player/sessions/ConversationSession.idl():  		return npc;
 	return npc;
 }
@@ -272,7 +274,7 @@ void ConversationSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* 
 	}
 }
 
-ManagedWeakReference<CreatureObject* > ConversationSessionAdapter::getNPC() {
+ManagedWeakReference<SceneObject* > ConversationSessionAdapter::getNPC() {
 	return (static_cast<ConversationSession*>(stub))->getNPC();
 }
 
@@ -356,7 +358,7 @@ int ConversationSessionPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::toBinaryStream(&npc.value(), stream);
+	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&npc.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -381,8 +383,8 @@ bool ConversationSessionPOD::readObjectMember(ObjectInputStream* stream, const u
 
 	case 0x8bed8028: //ConversationSession.npc
 		{
-			ManagedWeakReference<CreatureObjectPOD* > _mnnpc;
-			TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::parseFromBinaryStream(&_mnnpc, stream);
+			ManagedWeakReference<SceneObjectPOD* > _mnnpc;
+			TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::parseFromBinaryStream(&_mnnpc, stream);
 			npc = std::move(_mnnpc);
 		}
 		return true;
@@ -415,7 +417,7 @@ void ConversationSessionPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<Reference<ConversationScreen* > >::toBinaryStream(&lastConversationScreen.value(), stream);
 
-	TypeInfo<ManagedWeakReference<CreatureObjectPOD* > >::toBinaryStream(&npc.value(), stream);
+	TypeInfo<ManagedWeakReference<SceneObjectPOD* > >::toBinaryStream(&npc.value(), stream);
 
 
 }

@@ -2,6 +2,7 @@ wooral = Creature:new {
 	objectName = "",
 	socialGroup = "selonian",
 	faction = "",
+	mobType = MOB_NPC,
 	level = 11,
 	chanceHit = 0.29,
 	damageMin = 120,
@@ -25,35 +26,16 @@ wooral = Creature:new {
 	optionsBitmask = AIENABLED + CONVERSABLE,
 	diet = HERBIVORE,
 
-	templates = {
-		"object/mobile/dressed_selonian_f_01.iff",
-		"object/mobile/dressed_selonian_f_02.iff",
-		"object/mobile/dressed_selonian_f_03.iff",
-		"object/mobile/dressed_selonian_f_04.iff",
-		"object/mobile/dressed_selonian_f_05.iff",
-		"object/mobile/dressed_selonian_f_06.iff",
-		"object/mobile/dressed_selonian_f_07.iff",
-		"object/mobile/dressed_selonian_f_08.iff",
-		"object/mobile/dressed_selonian_f_09.iff",
-		"object/mobile/dressed_selonian_f_10.iff",
-		"object/mobile/dressed_selonian_f_11.iff",
-		"object/mobile/dressed_selonian_f_12.iff",
-		"object/mobile/dressed_selonian_m_01.iff",
-		"object/mobile/dressed_selonian_m_02.iff",
-		"object/mobile/dressed_selonian_m_03.iff",
-		"object/mobile/dressed_selonian_m_04.iff",
-		"object/mobile/dressed_selonian_m_05.iff",
-		"object/mobile/dressed_selonian_m_06.iff",
-		"object/mobile/dressed_selonian_m_07.iff",
-		"object/mobile/dressed_selonian_m_08.iff",
-		"object/mobile/dressed_selonian_m_09.iff",
-		"object/mobile/dressed_selonian_m_10.iff",
-		"object/mobile/dressed_selonian_m_11.iff",
-		"object/mobile/dressed_selonian_m_12.iff"},
+	templates = {"selonian_male",
+				 "selonian_female"},
 	lootGroups = { },
 	weapons = { },
 	conversationTemplate = "sigrix_slix_mission_target_convotemplate",
-	attacks = { }
+	
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = { },
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(wooral, "wooral")

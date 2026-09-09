@@ -103,7 +103,7 @@ public:
 
 	int getAttributePrecision(const String& attributeName);
 
-	String getAttributeTitle(const String& attributeName);
+	String getAttributeGroup(const String& attributeName);
 
 	bool getAttributeHidden(const String& attributeName);
 
@@ -188,7 +188,7 @@ public:
 
 	int getAttributePrecision(const String& attributeName);
 
-	String getAttributeTitle(const String& attributeName);
+	String getAttributeGroup(const String& attributeName);
 
 	bool getAttributeHidden(const String& attributeName);
 
@@ -262,7 +262,7 @@ public:
 
 	int getAttributePrecision(const String& attributeName);
 
-	String getAttributeTitle(const String& attributeName);
+	String getAttributeGroup(const String& attributeName);
 
 	bool getAttributeHidden(const String& attributeName);
 
@@ -318,7 +318,7 @@ public:
 	int addProperty(lua_State *L);
 	int getAttributeValue(lua_State *L);
 	int getAttributePrecision(lua_State *L);
-	int getAttributeTitle(lua_State *L);
+	int getAttributeGroup(lua_State *L);
 	int getAttributeHidden(lua_State *L);
 	int setPropertyToHidden(lua_State *L);
 	int getPropertyCount(lua_State *L);

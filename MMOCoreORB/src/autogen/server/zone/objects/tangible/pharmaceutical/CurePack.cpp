@@ -394,7 +394,7 @@ void CurePackImplementation::updateCraftingValues(CraftingValues* values, bool f
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  		setUseCount(values.getCurrentValue("charges"));
 	setUseCount(values->getCurrentValue("charges"));
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  	}
-	if (values->hasProperty("area")){
+	if (values->hasExperimentalAttribute("area")){
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  			area = values.getCurrentValue("area");
 	area = values->getCurrentValue("area");
 }
@@ -450,8 +450,8 @@ void CurePackImplementation::fillAttributeList(AttributeListMessage* msg, Creatu
 	String eff = "@obj_attr_n:dot_type_";
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  		msg.insertAttribute("examine_dot_cure", eff + CreatureState.instance().getSpecialName(state));
 	msg->insertAttribute("examine_dot_cure", eff + CreatureState::instance()->getSpecialName(state));
-	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  		msg.insertAttribute("examine_dot_cure_power", effectiveness);
-	msg->insertAttribute("examine_dot_cure_power", effectiveness);
+	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  		msg.insertAttribute("examine_dot_cure_power", Math.getPrecision(effectiveness, 0));
+	msg->insertAttribute("examine_dot_cure_power", Math::getPrecision(effectiveness, 0));
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  		}
 	if (isArea()){
 	// server/zone/objects/tangible/pharmaceutical/CurePack.idl():  			msg.insertAttribute("examine_heal_area", Math.getPrecision(area, 0));

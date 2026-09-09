@@ -69,55 +69,55 @@ class DnaComponent : public Component {
 public:
 	DnaComponent();
 
-	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
+	void setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	int getCleverness();
+	float getCleverness();
 
 	void setLevel(int value);
 
 	int getLevel();
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	int getEndurance();
+	float getEndurance();
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	int getFierceness();
+	float getFierceness();
 
-	void setPower(int value);
+	void setPower(float value);
 
-	int getPower();
+	float getPower();
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	int getIntellect();
+	float getIntellect();
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	int getCourage();
+	float getCourage();
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	int getDependency();
+	float getDependability();
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	int getDexterity();
+	float getDexterity();
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	int getForititude();
+	float getFortitude();
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
-	int getHardiness();
+	float getHardiness();
 
 	void setEnergy(float value);
 
@@ -231,9 +231,13 @@ protected:
 
 	int intelligence;
 
+	int intellect;
+
 	int courage;
 
 	int dependency;
+
+	int dependability;
 
 	int dexterity;
 
@@ -280,55 +284,55 @@ public:
 
 	DnaComponentImplementation(DummyConstructorParameter* param);
 
-	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
+	void setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	int getCleverness();
+	float getCleverness();
 
 	void setLevel(int value);
 
 	int getLevel();
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	int getEndurance();
+	float getEndurance();
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	int getFierceness();
+	float getFierceness();
 
-	void setPower(int value);
+	void setPower(float value);
 
-	int getPower();
+	float getPower();
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	int getIntellect();
+	float getIntellect();
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	int getCourage();
+	float getCourage();
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	int getDependency();
+	float getDependability();
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	int getDexterity();
+	float getDexterity();
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	int getForititude();
+	float getFortitude();
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
-	int getHardiness();
+	float getHardiness();
 
 	void setEnergy(float value);
 
@@ -445,55 +449,55 @@ public:
 
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
-	void setStats(int cle, int end, int fie, int pow, int ite, int cou, int dep, int dex, int frt, int har);
+	void setStats(float clever, float endur, float fierc, float pow, float intel, float cour, float depend, float dext, float fort, float hardi);
 
-	void setSpecialResist(int type);
+	void setSpecialResist(unsigned int type);
 
-	bool isSpecialResist(int type);
+	bool isSpecialResist(unsigned int type);
 
-	void setCleverness(int value);
+	void setCleverness(float value);
 
-	int getCleverness();
+	float getCleverness();
 
 	void setLevel(int value);
 
 	int getLevel();
 
-	void setEndurance(int value);
+	void setEndurance(float value);
 
-	int getEndurance();
+	float getEndurance();
 
-	void setFierceness(int value);
+	void setFierceness(float value);
 
-	int getFierceness();
+	float getFierceness();
 
-	void setPower(int value);
+	void setPower(float value);
 
-	int getPower();
+	float getPower();
 
-	void setIntellect(int value);
+	void setIntellect(float value);
 
-	int getIntellect();
+	float getIntellect();
 
-	void setCourage(int value);
+	void setCourage(float value);
 
-	int getCourage();
+	float getCourage();
 
-	void setDependency(int value);
+	void setDependability(float value);
 
-	int getDependency();
+	float getDependability();
 
-	void setDexterity(int value);
+	void setDexterity(float value);
 
-	int getDexterity();
+	float getDexterity();
 
-	void setFortitude(int value);
+	void setFortitude(float value);
 
-	int getForititude();
+	float getFortitude();
 
-	void setHardiness(int value);
+	void setHardiness(float value);
 
-	int getHardiness();
+	float getHardiness();
 
 	void setEnergy(float value);
 
@@ -606,9 +610,13 @@ public:
 
 	Optional<int> intelligence;
 
+	Optional<int> intellect;
+
 	Optional<int> courage;
 
 	Optional<int> dependency;
+
+	Optional<int> dependability;
 
 	Optional<int> dexterity;
 

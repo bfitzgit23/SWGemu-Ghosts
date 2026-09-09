@@ -58,12 +58,14 @@ int BountyHunterDroidMenuComponent::handleObjectMenuSelect(SceneObject* droidObj
 			return 0;
 		}
 	} else if (isSeekerDroid(droidObject)) {
-		if ((selectedID == 138 || selectedID == 137) && droidIsInPlayerInventory(droidObject, player)) {
-			performDroidAction(BountyHunterDroid::FINDTARGET, droidObject, player);
-			return 0;
-		} else if (selectedID == 136 && droidIsInPlayerInventory(droidObject, player)) {
-			performDroidAction(BountyHunterDroid::FINDANDTRACKTARGET, droidObject, player);
-			return 0;
+		if (droidIsInPlayerInventory(droidObject, player)) {
+			if (selectedID == 138 || selectedID == 137) {
+				performDroidAction(BountyHunterDroid::FINDTARGET, droidObject, player);
+				return 0;
+			} else if (selectedID == 136) {
+				performDroidAction(BountyHunterDroid::FINDANDTRACKTARGET, droidObject, player);
+				return 0;
+			}
 		}
 	}
 
@@ -71,11 +73,11 @@ int BountyHunterDroidMenuComponent::handleObjectMenuSelect(SceneObject* droidObj
 }
 
 bool BountyHunterDroidMenuComponent::playerCanUseTrack(CreatureObject* player) const {
-	return player->hasSkill("combat_bountyhunter_investigation_03") || player->hasSkill("combat_meleebountyhunter_investigation_03");
+	return player->hasSkill("combat_bountyhunter_investigation_03");
 }
 
 bool BountyHunterDroidMenuComponent::playerCanUseDroids(CreatureObject* player) const {
-	return player->hasSkill("combat_bountyhunter_investigation_01") || player->hasSkill("combat_meleebountyhunter_investigation_01");
+	return player->hasSkill("combat_bountyhunter_investigation_01");
 }
 
 bool BountyHunterDroidMenuComponent::isProbeDroid(SceneObject* droidObject) const {

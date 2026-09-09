@@ -44,6 +44,8 @@ using namespace server::zone::objects::creature;
 
 #include "templates/tangible/CharacterBuilderMenuNode.h"
 
+#include "engine/lua/LuaObject.h"
+
 #include "server/zone/objects/tangible/terminal/Terminal.h"
 
 namespace server {
@@ -99,6 +101,8 @@ public:
 	void grantGlowyBadges(CreatureObject* player);
 
 	void grantJediInitiate(CreatureObject* player);
+
+	void giveDnaTestingSet(CreatureObject* player, const String& testName);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -181,6 +185,12 @@ public:
 
 	void grantJediInitiate(CreatureObject* player);
 
+	void giveDnaTestingSet(CreatureObject* player, const String& testName);
+
+private:
+	void readDnaTable(LuaObject* dnaSetTable, CreatureObject* player, const String& testName);
+
+public:
 	WeakReference<CharacterBuilderTerminal*> _this;
 
 	operator const CharacterBuilderTerminal*();
@@ -238,6 +248,8 @@ public:
 	void grantGlowyBadges(CreatureObject* player);
 
 	void grantJediInitiate(CreatureObject* player);
+
+	void giveDnaTestingSet(CreatureObject* player, const String& testName);
 
 };
 

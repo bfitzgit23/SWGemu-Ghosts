@@ -208,7 +208,7 @@ int PetControlObserverImplementation::notifyObserverEvent(unsigned int eventType
 	// server/zone/objects/intangible/PetControlObserver.idl():  		PetControlDevice strongRef = petControlDevice;
 	ManagedReference<PetControlDevice* > strongRef = petControlDevice;
 	// server/zone/objects/intangible/PetControlObserver.idl():  		return 
-	if (strongRef != NULL){
+	if (strongRef){
 	// server/zone/objects/intangible/PetControlObserver.idl():  			CreatureObject creature = (CreatureObject) observable;
 	ManagedReference<CreatureObject* > creature = dynamic_cast<CreatureObject*>(observable);
 	// server/zone/objects/intangible/PetControlObserver.idl():  			strongRef.cancelSpawnObject(creature);

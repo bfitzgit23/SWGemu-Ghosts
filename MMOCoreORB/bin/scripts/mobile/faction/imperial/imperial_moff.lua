@@ -2,6 +2,7 @@ imperial_moff = Creature:new {
 	objectName = "",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
+	mobType = MOB_NPC,
 	customName = "an Imperial Moff",
 	socialGroup = "imperial",
 	faction = "imperial",
@@ -32,23 +33,23 @@ imperial_moff = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "color_crystals", chance = 100000},
-				{group = "junk", chance = 6650000},
-				{group = "rifles", chance = 550000},
-				{group = "pistols", chance = 550000},
-				{group = "melee_weapons", chance = 550000},
-				{group = "carbines", chance = 550000},
-				{group = "clothing_attachments", chance = 25000},
-				{group = "armor_attachments", chance = 25000},
-				{group = "wearables_common", chance = 1000000}
+				{group = "imperial_officer_tier_1", chance = 10000000}
 			}
 		}
 	},
-	weapons = {"imperial_weapons_heavy"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "imperial_carbine",
+	secondaryWeapon = "imperial_pistol",
 	conversationTemplate = "",
 	reactionStf = "@npc_reaction/military",
 	personalityStf = "@hireling/hireling_military",
-	attacks = merge(riflemanmaster,carbineermaster,brawlermaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = merge(carbineermaster,marksmanmaster),
+	secondaryAttacks = merge(pistoleermaster,marksmanmaster)
 }
 
 CreatureTemplates:addCreatureTemplate(imperial_moff, "imperial_moff")

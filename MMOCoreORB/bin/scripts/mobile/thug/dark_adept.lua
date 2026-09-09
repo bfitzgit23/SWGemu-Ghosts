@@ -2,17 +2,18 @@ dark_adept = Creature:new {
 	objectName = "@mob/creature_names:dark_adept",
 	randomNameType = NAME_GENERIC,
 	randomNameTag = true,
-	socialGroup = "",
+	mobType = MOB_NPC,
+	socialGroup = "dark_jedi",
 	faction = "",
-	level = 375,
-	chanceHit = 50.0,
-	damageMin = 2500,
-	damageMax = 4000,
+	level = 140,
+	chanceHit = 4.75,
+	damageMin = 945,
+	damageMax = 1600,
 	baseXp = 13178,
-	baseHAM = 175000,
-	baseHAMmax = 200000,
-	armor = 3,
-	resists = {80,80,80,80,80,80,80,80,50},
+	baseHAM = 50000,
+	baseHAMmax = 61000,
+	armor = 2,
+	resists = {80,80,80,80,80,80,80,80,-1},
 	meatType = "",
 	meatAmount = 0,
 	hideType = "",
@@ -31,40 +32,21 @@ dark_adept = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "holocron_dark", chance = 2000000},
-				{group = "holocron_light", chance = 2000000},
-				{group = "power_crystals", chance = 1000000},
-				{group = "armor_attachments", chance = 2000000},
-				{group = "clothing_attachments", chance = 2000000},
-				{group = "dark_jedi_common", chance = 1000000}
-			},
-			lootChance = 10000000
-		},
-		{
-			groups = {
-				{group = "tierone", chance = 1500000},
-				{group = "tiertwo", chance = 3500000},
-				{group = "tierthree", chance = 2500000},
-				{group = "tierdiamond", chance = 2500000},
-			},
-			lootChance = 5000000
-		},
-		{
-			groups = {
-				{group = "vehicledeedsrare", chance = 10000000},
-			},
-			lootChance = 500000
-		},
-		{
-			groups = {
-				{group = "nge_all", chance = 10000000},
-			},
-			lootChance = 10000000
+				{group = "dark_jedi_tier_4", chance = 10000000}
+			}
 		}
 	},
-	weapons = {"dark_jedi_weapons_gen4"},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "dark_jedi_weapons_gen2",
+	secondaryWeapon = "dark_jedi_weapons_ranged",
 	conversationTemplate = "",
-	attacks = merge(lightsabermaster,forcewielder,forcepowermaster)
+
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = lightsabermaster,
+	secondaryAttacks = forcepowermaster
 }
 
 CreatureTemplates:addCreatureTemplate(dark_adept, "dark_adept")

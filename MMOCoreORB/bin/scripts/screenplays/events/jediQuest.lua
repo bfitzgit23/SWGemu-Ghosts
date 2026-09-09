@@ -10,4 +10,4 @@ jediQuest = ScreenPlay:new {
 	screenplayName = jediQuest,
 }
 
-registerScreenPlay("jediQuest", true)
+registerScreenPlay("jediQuest", false)

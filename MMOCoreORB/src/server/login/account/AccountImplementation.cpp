@@ -6,8 +6,12 @@
 #include "../objects.h"
 #include "server/login/account/Account.h"
 #include "../objects/GalaxyBanEntry.h"
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif // WITH_SWGREALMS_API
 
 AccountImplementation::AccountImplementation() {
+	created = 0;
 	initializeTransientMembers();
 }
 
@@ -16,10 +20,8 @@ void AccountImplementation::initializeTransientMembers() {
 	accountID = 0;
 	stationID = 0;
 	adminLevel = 0;
-	created = 0;
 	banExpires = 0;
 	banAdmin = 0;
-	lastLogin = 0;
 }
 
 void AccountImplementation::updateFromDatabase() {
@@ -31,7 +33,6 @@ void AccountImplementation::updateFromDatabase() {
 }
 
 Reference<GalaxyAccountInfo*> AccountImplementation::getGalaxyAccountInfo(const String& galaxyName) {
-
 	Reference<GalaxyAccountInfo*> info = galaxyAccountInfo.get(galaxyName);
 
 	if(info == nullptr) {
@@ -47,6 +48,7 @@ void AccountImplementation::addGalaxyBan(GalaxyBanEntry* ban, uint32 galaxy) {
 	galaxyBans.put(galaxy, ban);
 }
 
+#ifndef WITH_SWGREALMS_API
 void AccountImplementation::updateAccount() {
 	StringBuffer query;
 	query << "SELECT a.active, a.admin_level, "
@@ -55,7 +57,7 @@ void AccountImplementation::updateAccount() {
 			<< "IFNULL((SELECT b.issuer_id FROM account_bans b WHERE b.account_id = a.account_id AND b.expires > UNIX_TIMESTAMP() ORDER BY b.expires DESC LIMIT 1), 0) "
 			<< "FROM accounts a WHERE a.account_id = '" << accountID << "' LIMIT 1;";
 
-	Reference<ResultSet*> result = ServerDatabase::instance()->executeQuery(query);
+	UniqueReference<ResultSet*> result(ServerDatabase::instance()->executeQuery(query));
 
 	if (result->next()) {
 		setActive(result->getBoolean(0));
@@ -65,28 +67,35 @@ void AccountImplementation::updateAccount() {
 		setBanExpires(result->getUnsignedInt(3));
 		setBanAdmin(result->getUnsignedInt(4));
 	}
-	StringBuffer query1;
-	query1 << "SELECT UNIX_TIMESTAMP(timestamp) FROM account_log WHERE account_id = '" << accountID << "' ORDER BY UNIX_TIMESTAMP(timestamp) DESC LIMIT 1;";
-
-	Reference<ResultSet*> result1 = ServerDatabase::instance()->executeQuery(query1.toString());
-
-	if (result1->next())
-		setLastLogin(result1->getUnsignedInt(0));
 }
+#else // WITH_SWGREALMS_API
+void AccountImplementation::updateAccount() {
+	String errorMessage;
+	auto swgRealmsAPI = SWGRealmsAPI::instance();
+
+	if (swgRealmsAPI != nullptr && swgRealmsAPI->getAccountBanStatusBlocking(accountID, _this.getReferenceUnsafeStaticCast(), errorMessage)) {
+		return;
+	}
+
+	// API Failed
+	error() << "SWGRealms API getAccountBanStatusBlocking failed for accountID " << accountID << ": " << errorMessage << " (fail-closed, NOT falling back to MySQL)";
+}
+#endif // WITH_SWGREALMS_API
 
 void AccountImplementation::updateCharacters() {
 	characterList = new CharacterList(getAccountID(), getUsername());
 }
 
+#ifndef WITH_SWGREALMS_API
 void AccountImplementation::updateGalaxyBans() {
 	StringBuffer query;
 	query << "SELECT * FROM galaxy_bans as gb WHERE account_id=" << getAccountID() << " and expires > UNIX_TIMESTAMP()";
 
-	Reference<ResultSet*> results = ServerDatabase::instance()->executeQuery(query);
+	UniqueReference<ResultSet*> results(ServerDatabase::instance()->executeQuery(query));
 
 	galaxyBans.removeAll();
 
-	while(results->next()) {
+	while (results->next()) {
 		Reference<GalaxyBanEntry*> entry = new GalaxyBanEntry();
 
 		entry->setAccountID(results->getUnsignedInt(1));
@@ -103,23 +112,50 @@ void AccountImplementation::updateGalaxyBans() {
 		galaxyBans.put(entry->getGalaxyID(), entry);
 	}
 }
+#else // WITH_SWGREALMS_API
+void AccountImplementation::updateGalaxyBans() {
+	String errorMessage;
+	auto swgRealmsAPI = SWGRealmsAPI::instance();
 
-bool AccountImplementation::isBanned() {
+	if (swgRealmsAPI != nullptr && swgRealmsAPI->getGalaxyBansBlocking(accountID, galaxyBans, errorMessage)) {
+		return;
+	}
+
+	// API Failed - fail closed
+	error() << "SWGRealms API getGalaxyBansBlocking failed for accountID " << accountID << ": " << errorMessage;
+}
+#endif // WITH_SWGREALMS_API
+
+bool AccountImplementation::isBanned() const {
 	return banExpires > time(0);
 }
 
+const GalaxyBanEntry* AccountImplementation::getGalaxyBan(const uint32 galaxy) const {
+	return galaxyBans.get(galaxy);
+}
+
 GalaxyBanEntry* AccountImplementation::getGalaxyBan(const uint32 galaxy) {
-	if(galaxyBans.contains(galaxy))
-		return galaxyBans.get(galaxy);
+	return galaxyBans.get(galaxy);
+}
+
+const CharacterListEntry* AccountImplementation::getCharacterBan(const uint32 galaxy, const String& name) const {
+	for (int i = 0; i < characterList->size(); ++i) {
+		const CharacterListEntry* entry = &characterList->get(i);
+
+		if (entry->getFirstName() == name &&
+				entry->getGalaxyID() == galaxy &&
+				entry->isBanned())
+			return entry;
+	}
 
 	return nullptr;
 }
 
 CharacterListEntry* AccountImplementation::getCharacterBan(const uint32 galaxy, const String& name) {
-	for(int i = 0; i < characterList->size(); ++i) {
+	for (int i = 0; i < characterList->size(); ++i) {
 		CharacterListEntry* entry = &characterList->get(i);
 
-		if(entry->getFirstName() == name &&
+		if (entry->getFirstName() == name &&
 				entry->getGalaxyID() == galaxy &&
 				entry->isBanned())
 			return entry;
@@ -129,13 +165,13 @@ CharacterListEntry* AccountImplementation::getCharacterBan(const uint32 galaxy, 
 }
 
 CharacterList* AccountImplementation::getCharacterList() {
-	if(characterList == nullptr)
+	if (characterList == nullptr)
 		updateCharacters();
 
 	return characterList;
 }
 
-uint32 AccountImplementation::getAgeInDays() {
+uint32 AccountImplementation::getAgeInDays() const {
 	if (created == 0) {
 		throw Exception("Account Object has created set as 0 in getAgeInDays");
 	}
@@ -146,17 +182,22 @@ uint32 AccountImplementation::getAgeInDays() {
 	return ageSecs / 24 / 60 / 60;
 }
 
-bool AccountImplementation::isSqlLoaded() {
+bool AccountImplementation::isSqlLoaded() const {
 	return (accountID || stationID || adminLevel || created);
 }
 
-uint32 AccountImplementation::getLastLoginInDays() {
-	if (lastLogin == 0) {
-		throw Exception("Account Object has lastLogin set as 0 in getLastLoginInDays");
+void AccountImplementation::setAccountDataValidUntil(Time& validUntil) {
+	accountDataValidUntil = validUntil;
+}
+
+Time* AccountImplementation::getAccountDataValidUntil() const {
+	return const_cast<Time*>(&accountDataValidUntil);
+}
+
+bool AccountImplementation::isAccountDataStale() {
+	if (accountDataValidUntil.getTime() == 0) {
+		return true;
 	}
 
-	Time currentTime;
-	Time lastLoginTime(getLastLogin());
-	uint32 lastLoginSecs = currentTime.getTime() - lastLoginTime.getTime();
-	return lastLoginSecs / 24 / 60 / 60;
+	return accountDataValidUntil.isPast();
 }

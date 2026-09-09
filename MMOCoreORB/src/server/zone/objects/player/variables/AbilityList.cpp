@@ -30,6 +30,34 @@ bool AbilityList::contains(const String& element) const {
 	return false;
 }
 
+int AbilityList::deduplicateAbilities() {
+	Locker locker(getLock());
+	SortedVector<String> uniqueAbilityNames;
+	int duplicatesRemoved = 0;
+
+	for (int i = 0; i < vector.size();) {
+		Ability* ability = vector.get(i);
+
+		if (ability == nullptr) {
+			++i;
+			continue;
+		}
+
+		String abilityName = ability->getAbilityName().toLowerCase();
+
+		if (uniqueAbilityNames.contains(abilityName)) {
+			vector.remove(i);
+			++duplicatesRemoved;
+			continue;
+		}
+
+		uniqueAbilityNames.put(abilityName);
+		++i;
+	}
+
+	return duplicatesRemoved;
+}
+
 void AbilityList::insertToMessage(BaseMessage* msg) const {
 	ReadLocker locker(getLock());
 

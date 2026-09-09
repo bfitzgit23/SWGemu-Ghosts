@@ -4,8 +4,6 @@
 
 #include "FactoryHopperObserver.h"
 
-#include "server/zone/objects/installation/factory/FactoryObject.h"
-
 /*
  *	FactoryHopperObserverStub
  */
@@ -210,7 +208,7 @@ int FactoryHopperObserverImplementation::notifyObserverEvent(unsigned int eventT
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		FactoryObject strongRef = factory;
 	ManagedReference<FactoryObject* > strongRef = factory;
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		if 
-	if (strongRef == NULL)	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  			return 0;
+	if (!strongRef)	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  			return 0;
 	return 0;
 	// server/zone/objects/installation/factory/FactoryHopperObserver.idl():  		return 
 	if (eventType == ObserverEventType::OPENCONTAINER){

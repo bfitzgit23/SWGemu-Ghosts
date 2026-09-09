@@ -10,13 +10,13 @@
 
 #include "server/zone/objects/scene/SceneObject.h"
 
-#include "server/zone/QuadTreeEntry.h"
+#include "server/zone/TreeEntry.h"
 
 /*
  *	LairObjectStub
  */
 
-enum {RPC_GETNUMBEROFPLAYERSINRANGE__ = 764880985,RPC_GETDESPAWNONNOPLAYERSINRANGE__,RPC_SETDESPAWNONNOPLAYERSINRANGE__BOOL_,RPC_NOTIFYINSERT__QUADTREEENTRY_,RPC_NOTIFYDISSAPEAR__QUADTREEENTRY_,RPC_ACTIVATEDESPAWNEVENT__,RPC_CLEARDESPAWNEVENT__,RPC_ISLAIROBJECT__};
+enum {RPC_GETNUMBEROFPLAYERSINRANGE__ = 764880985,RPC_GETDESPAWNONNOPLAYERSINRANGE__,RPC_ISREPOPULATED__,RPC_SETDESPAWNONNOPLAYERSINRANGE__BOOL_,RPC_SETLAIRREPOPULATED__BOOL_,RPC_NOTIFYINSERT__TREEENTRY_,RPC_ACTIVATEDESPAWNEVENT__,RPC_CLEARDESPAWNEVENT__,RPC_ISLAIROBJECT__};
 
 LairObject::LairObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	LairObjectImplementation* _implementation = new LairObjectImplementation();
@@ -62,6 +62,20 @@ bool LairObject::getDespawnOnNoPlayersInRange() const {
 	}
 }
 
+bool LairObject::isRepopulated() const {
+	LairObjectImplementation* _implementation = static_cast<LairObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISREPOPULATED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isRepopulated();
+	}
+}
+
 void LairObject::setDespawnOnNoPlayersInRange(bool b) {
 	LairObjectImplementation* _implementation = static_cast<LairObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -78,13 +92,29 @@ void LairObject::setDespawnOnNoPlayersInRange(bool b) {
 	}
 }
 
-void LairObject::notifyInsert(QuadTreeEntry* entry) {
+void LairObject::setLairRepopulated(bool repop) {
 	LairObjectImplementation* _implementation = static_cast<LairObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_NOTIFYINSERT__QUADTREEENTRY_);
+		DistributedMethod method(this, RPC_SETLAIRREPOPULATED__BOOL_);
+		method.addBooleanParameter(repop);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setLairRepopulated(repop);
+	}
+}
+
+void LairObject::notifyInsert(TreeEntry* entry) {
+	LairObjectImplementation* _implementation = static_cast<LairObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_NOTIFYINSERT__TREEENTRY_);
 		method.addObjectParameter(entry);
 
 		method.executeWithVoidReturn();
@@ -93,16 +123,11 @@ void LairObject::notifyInsert(QuadTreeEntry* entry) {
 	}
 }
 
-void LairObject::notifyDissapear(QuadTreeEntry* entry) {
+void LairObject::notifyDissapear(TreeEntry* entry) {
 	LairObjectImplementation* _implementation = static_cast<LairObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_NOTIFYDISSAPEAR__QUADTREEENTRY_);
-		method.addObjectParameter(entry);
-
-		method.executeWithVoidReturn();
 	} else {
 		_implementation->notifyDissapear(entry);
 	}
@@ -264,6 +289,10 @@ bool LairObjectImplementation::readObjectMember(ObjectInputStream* stream, const
 		TypeInfo<bool >::parseFromBinaryStream(&despawnOnNoPlayersInRange, stream);
 		return true;
 
+	case 0xac7d0d5a: //LairObject.repopulated
+		TypeInfo<bool >::parseFromBinaryStream(&repopulated, stream);
+		return true;
+
 	}
 
 	return false;
@@ -291,6 +320,15 @@ int LairObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xac7d0d5a; //LairObject.repopulated
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&repopulated, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -300,6 +338,8 @@ void LairObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	nlohmann::json thisObject = nlohmann::json::object();
 	thisObject["despawnOnNoPlayersInRange"] = despawnOnNoPlayersInRange;
+
+	thisObject["repopulated"] = repopulated;
 
 	j["LairObject"] = thisObject;
 }
@@ -315,6 +355,8 @@ LairObjectImplementation::LairObjectImplementation() {
 	TangibleObjectImplementation::closeobjects->setNoDuplicateInsertPlan();
 	// server/zone/objects/tangible/LairObject.idl():  		despawnOnNoPlayersInRange = false;
 	despawnOnNoPlayersInRange = false;
+	// server/zone/objects/tangible/LairObject.idl():  		repopulated = false;
+	repopulated = false;
 }
 
 int LairObjectImplementation::getNumberOfPlayersInRange() {
@@ -327,12 +369,22 @@ bool LairObjectImplementation::getDespawnOnNoPlayersInRange() const{
 	return despawnOnNoPlayersInRange;
 }
 
+bool LairObjectImplementation::isRepopulated() const{
+	// server/zone/objects/tangible/LairObject.idl():  		return repopulated;
+	return repopulated;
+}
+
 void LairObjectImplementation::setDespawnOnNoPlayersInRange(bool b) {
 	// server/zone/objects/tangible/LairObject.idl():  		despawnOnNoPlayersInRange = b;
 	despawnOnNoPlayersInRange = b;
 }
 
-void LairObjectImplementation::notifyInsert(QuadTreeEntry* entry) {
+void LairObjectImplementation::setLairRepopulated(bool repop) {
+	// server/zone/objects/tangible/LairObject.idl():  		repopulated = repop;
+	repopulated = repop;
+}
+
+void LairObjectImplementation::notifyInsert(TreeEntry* entry) {
 	// server/zone/objects/tangible/LairObject.idl():  		SceneObject obj = (SceneObject) entry;
 	ManagedReference<SceneObject* > obj = dynamic_cast<SceneObject*>(entry);
 	// server/zone/objects/tangible/LairObject.idl():  		if 
@@ -352,31 +404,10 @@ void LairObjectImplementation::notifyInsert(QuadTreeEntry* entry) {
 }
 }
 
-void LairObjectImplementation::notifyDissapear(QuadTreeEntry* entry) {
-	// server/zone/objects/tangible/LairObject.idl():  		SceneObject obj = (SceneObject) entry;
-	ManagedReference<SceneObject* > obj = dynamic_cast<SceneObject*>(entry);
-	// server/zone/objects/tangible/LairObject.idl():  		if 
-	if (obj == _this.getReferenceUnsafeStaticCast())	// server/zone/objects/tangible/LairObject.idl():  			return;
-	return;
-	// server/zone/objects/tangible/LairObject.idl():  	}
-	if (obj->isPlayerCreature()){
-	// server/zone/objects/tangible/LairObject.idl():  			CreatureObject creo = (CreatureObject) obj;
-	ManagedReference<CreatureObject* > creo = dynamic_cast<CreatureObject*>(obj.get());
-	// server/zone/objects/tangible/LairObject.idl():  		}
-	if (!creo->isInvisible()){
-	// server/zone/objects/tangible/LairObject.idl():  				int val = numberOfPlayersInRange.decrement();
-	int val = (&numberOfPlayersInRange)->decrement();
-	// server/zone/objects/tangible/LairObject.idl():  			}
-	if (val <= 0 && despawnOnNoPlayersInRange)	// server/zone/objects/tangible/LairObject.idl():  					activateDespawnEvent();
-	activateDespawnEvent();
-}
-}
-}
-
 void LairObjectImplementation::activateDespawnEvent() {
 	Reference<DespawnLairOnPlayerDisappear*> _ref0;
 	// server/zone/objects/tangible/LairObject.idl():  		despawnEvent 
-	if (despawnEvent != NULL)	// server/zone/objects/tangible/LairObject.idl():  			return;
+	if (despawnEvent)	// server/zone/objects/tangible/LairObject.idl():  			return;
 	return;
 	// server/zone/objects/tangible/LairObject.idl():  		despawnEvent = new DespawnLairOnPlayerDisappear(this);
 	despawnEvent = _ref0 = new DespawnLairOnPlayerDisappear(_this.getReferenceUnsafeStaticCast());
@@ -386,7 +417,7 @@ void LairObjectImplementation::activateDespawnEvent() {
 
 void LairObjectImplementation::clearDespawnEvent() {
 	// server/zone/objects/tangible/LairObject.idl():  		despawnEvent.
-	if (despawnEvent == NULL)	// server/zone/objects/tangible/LairObject.idl():  			return;
+	if (!despawnEvent)	// server/zone/objects/tangible/LairObject.idl():  			return;
 	return;
 	// server/zone/objects/tangible/LairObject.idl():  		despawnEvent.cancel();
 	despawnEvent->cancel();
@@ -428,6 +459,13 @@ void LairObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISREPOPULATED__:
+		{
+			
+			bool _m_res = isRepopulated();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_SETDESPAWNONNOPLAYERSINRANGE__BOOL_:
 		{
 			bool b = inv->getBooleanParameter();
@@ -436,19 +474,19 @@ void LairObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_NOTIFYINSERT__QUADTREEENTRY_:
+	case RPC_SETLAIRREPOPULATED__BOOL_:
 		{
-			QuadTreeEntry* entry = static_cast<QuadTreeEntry*>(inv->getObjectParameter());
+			bool repop = inv->getBooleanParameter();
 			
-			notifyInsert(entry);
+			setLairRepopulated(repop);
 			
 		}
 		break;
-	case RPC_NOTIFYDISSAPEAR__QUADTREEENTRY_:
+	case RPC_NOTIFYINSERT__TREEENTRY_:
 		{
-			QuadTreeEntry* entry = static_cast<QuadTreeEntry*>(inv->getObjectParameter());
+			TreeEntry* entry = static_cast<TreeEntry*>(inv->getObjectParameter());
 			
-			notifyDissapear(entry);
+			notifyInsert(entry);
 			
 		}
 		break;
@@ -486,16 +524,20 @@ bool LairObjectAdapter::getDespawnOnNoPlayersInRange() const {
 	return (static_cast<LairObject*>(stub))->getDespawnOnNoPlayersInRange();
 }
 
+bool LairObjectAdapter::isRepopulated() const {
+	return (static_cast<LairObject*>(stub))->isRepopulated();
+}
+
 void LairObjectAdapter::setDespawnOnNoPlayersInRange(bool b) {
 	(static_cast<LairObject*>(stub))->setDespawnOnNoPlayersInRange(b);
 }
 
-void LairObjectAdapter::notifyInsert(QuadTreeEntry* entry) {
-	(static_cast<LairObject*>(stub))->notifyInsert(entry);
+void LairObjectAdapter::setLairRepopulated(bool repop) {
+	(static_cast<LairObject*>(stub))->setLairRepopulated(repop);
 }
 
-void LairObjectAdapter::notifyDissapear(QuadTreeEntry* entry) {
-	(static_cast<LairObject*>(stub))->notifyDissapear(entry);
+void LairObjectAdapter::notifyInsert(TreeEntry* entry) {
+	(static_cast<LairObject*>(stub))->notifyInsert(entry);
 }
 
 void LairObjectAdapter::activateDespawnEvent() {
@@ -569,6 +611,9 @@ void LairObjectPOD::writeJSON(nlohmann::json& j) {
 	if (despawnOnNoPlayersInRange)
 		thisObject["despawnOnNoPlayersInRange"] = despawnOnNoPlayersInRange.value();
 
+	if (repopulated)
+		thisObject["repopulated"] = repopulated.value();
+
 	j["LairObject"] = thisObject;
 }
 
@@ -597,6 +642,17 @@ int LairObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (repopulated) {
+	_nameHashCode = 0xac7d0d5a; //LairObject.repopulated
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&repopulated.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -611,6 +667,14 @@ bool LairObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 			bool _mndespawnOnNoPlayersInRange;
 			TypeInfo<bool >::parseFromBinaryStream(&_mndespawnOnNoPlayersInRange, stream);
 			despawnOnNoPlayersInRange = std::move(_mndespawnOnNoPlayersInRange);
+		}
+		return true;
+
+	case 0xac7d0d5a: //LairObject.repopulated
+		{
+			bool _mnrepopulated;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnrepopulated, stream);
+			repopulated = std::move(_mnrepopulated);
 		}
 		return true;
 
@@ -641,6 +705,8 @@ void LairObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TangibleObjectPOD::writeObjectCompact(stream);
 
 	TypeInfo<bool >::toBinaryStream(&despawnOnNoPlayersInRange.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&repopulated.value(), stream);
 
 
 }

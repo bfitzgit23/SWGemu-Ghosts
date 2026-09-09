@@ -40,6 +40,8 @@ class SceneObjectPOD;
 
 using namespace server::zone::objects::scene;
 
+#include "server/zone/objects/creature/CreatureObject.h"
+
 #include "engine/util/Facade.h"
 
 #include "system/util/SortedVector.h"
@@ -68,8 +70,6 @@ public:
 
 	unsigned long long getTradeTargetPlayer();
 
-	bool isTryingToTrade();
-
 	bool hasVerifiedTrade();
 
 	void setAcceptedTrade(bool val);
@@ -79,6 +79,8 @@ public:
 	void setTradeTargetPlayer(unsigned long long val);
 
 	void setVerifiedTrade(bool val);
+
+	void clearTradeContainer();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -138,8 +140,6 @@ public:
 
 	unsigned long long getTradeTargetPlayer();
 
-	bool isTryingToTrade();
-
 	bool hasVerifiedTrade();
 
 	void setAcceptedTrade(bool val);
@@ -149,6 +149,8 @@ public:
 	void setTradeTargetPlayer(unsigned long long val);
 
 	void setVerifiedTrade(bool val);
+
+	void clearTradeContainer();
 
 	WeakReference<TradeSession*> _this;
 
@@ -205,8 +207,6 @@ public:
 
 	unsigned long long getTradeTargetPlayer();
 
-	bool isTryingToTrade();
-
 	bool hasVerifiedTrade();
 
 	void setAcceptedTrade(bool val);
@@ -216,6 +216,8 @@ public:
 	void setTradeTargetPlayer(unsigned long long val);
 
 	void setVerifiedTrade(bool val);
+
+	void clearTradeContainer();
 
 };
 

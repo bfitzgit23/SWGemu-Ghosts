@@ -1,7 +1,8 @@
 jedi_grand_master_trainer = Creature:new {
-	objectName = "@mob/creature_names:trainer_jedi",
+	objectName = "",
+	customName = "Grand Jedi Master Trainer",
 	randomNameType = NAME_GENERIC,
-	randomNameTag = true,
+	randomNameTag = false,
 	planetMapCategory = "trainer_jedi",
 	faction = "",
 	level = 100,
@@ -31,8 +32,8 @@ jedi_grand_master_trainer = Creature:new {
 	},
 	lootGroups = {},
 	weapons = {},
-	conversationTemplate = "trainer_grand_jedi_master_convotemplate",
-	trainerType = "trainer_jedi_light_full",
+	conversationTemplate = "grandJediMasterTrainerConvoTemplate",
+	trainerType = "trainer_jedi_grand_master",
 	attacks = {}
 }
 

@@ -123,7 +123,7 @@ bool Consumable::isAttributeEffect() const {
 	}
 }
 
-bool Consumable::isDrink() {
+bool Consumable::isDrink() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -137,7 +137,7 @@ bool Consumable::isDrink() {
 	}
 }
 
-bool Consumable::isFood() {
+bool Consumable::isFood() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -151,7 +151,7 @@ bool Consumable::isFood() {
 	}
 }
 
-bool Consumable::isForagedFood() {
+bool Consumable::isForagedFood() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -165,7 +165,7 @@ bool Consumable::isForagedFood() {
 	}
 }
 
-bool Consumable::isSpice() {
+bool Consumable::isSpice() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -193,7 +193,7 @@ bool Consumable::isConsumable() {
 	}
 }
 
-int Consumable::getDuration() {
+int Consumable::getDuration() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -207,7 +207,7 @@ int Consumable::getDuration() {
 	}
 }
 
-String Consumable::getSpeciesRestriction() {
+String Consumable::getSpeciesRestriction() const {
 	ConsumableImplementation* _implementation = static_cast<ConsumableImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -345,6 +345,18 @@ bool ConsumableImplementation::readObjectMember(ObjectInputStream* stream, const
 		TypeInfo<int >::parseFromBinaryStream(&nutrition, stream);
 		return true;
 
+	case 0x2c0d1dd2: //Consumable.newNutrition
+		TypeInfo<float >::parseFromBinaryStream(&newNutrition, stream);
+		return true;
+
+	case 0xe0f66d24: //Consumable.nutritionMin
+		TypeInfo<float >::parseFromBinaryStream(&nutritionMin, stream);
+		return true;
+
+	case 0x3c29b8b4: //Consumable.nutritionMax
+		TypeInfo<float >::parseFromBinaryStream(&nutritionMax, stream);
+		return true;
+
 	case 0xa36d5c4d: //Consumable.effectType
 		TypeInfo<int >::parseFromBinaryStream(&effectType, stream);
 		return true;
@@ -367,14 +379,6 @@ bool ConsumableImplementation::readObjectMember(ObjectInputStream* stream, const
 
 	case 0x919e61b6: //Consumable.flavorMax
 		TypeInfo<int >::parseFromBinaryStream(&flavorMax, stream);
-		return true;
-
-	case 0xe0f66d24: //Consumable.nutritionMin
-		TypeInfo<int >::parseFromBinaryStream(&nutritionMin, stream);
-		return true;
-
-	case 0x3c29b8b4: //Consumable.nutritionMax
-		TypeInfo<int >::parseFromBinaryStream(&nutritionMax, stream);
 		return true;
 
 	case 0x487009d3: //Consumable.quantityMin
@@ -454,6 +458,33 @@ int ConsumableImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x2c0d1dd2; //Consumable.newNutrition
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&newNutrition, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xe0f66d24; //Consumable.nutritionMin
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&nutritionMin, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x3c29b8b4; //Consumable.nutritionMax
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&nutritionMax, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0xa36d5c4d; //Consumable.effectType
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -504,24 +535,6 @@ int ConsumableImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&flavorMax, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xe0f66d24; //Consumable.nutritionMin
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&nutritionMin, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x3c29b8b4; //Consumable.nutritionMax
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&nutritionMax, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -612,6 +625,12 @@ void ConsumableImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["nutrition"] = nutrition;
 
+	thisObject["newNutrition"] = newNutrition;
+
+	thisObject["nutritionMin"] = nutritionMin;
+
+	thisObject["nutritionMax"] = nutritionMax;
+
 	thisObject["effectType"] = effectType;
 
 	thisObject["eventTypes"] = eventTypes;
@@ -623,10 +642,6 @@ void ConsumableImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["flavorMin"] = flavorMin;
 
 	thisObject["flavorMax"] = flavorMax;
-
-	thisObject["nutritionMin"] = nutritionMin;
-
-	thisObject["nutritionMax"] = nutritionMax;
 
 	thisObject["quantityMin"] = quantityMin;
 
@@ -659,6 +674,12 @@ ConsumableImplementation::ConsumableImplementation() {
 	duration = 30;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		filling = 0;
 	filling = 0;
+	// server/zone/objects/tangible/consumable/Consumable.idl():  		nutrition = 0;
+	nutrition = 0;
+	// server/zone/objects/tangible/consumable/Consumable.idl():  		nutritionMin = 1.f;
+	nutritionMin = 1.f;
+	// server/zone/objects/tangible/consumable/Consumable.idl():  		nutritionMax = 1.f;
+	nutritionMax = 1.f;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		effectType = EFFECT_ATTRIBUTE;
 	effectType = EFFECT_ATTRIBUTE;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		fillingMin = 1;
@@ -669,10 +690,6 @@ ConsumableImplementation::ConsumableImplementation() {
 	flavorMin = 1;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		flavorMax = 1;
 	flavorMax = 1;
-	// server/zone/objects/tangible/consumable/Consumable.idl():  		nutritionMin = 1;
-	nutritionMin = 1;
-	// server/zone/objects/tangible/consumable/Consumable.idl():  		nutritionMax = 1;
-	nutritionMax = 1;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		quantityMin = 1;
 	quantityMin = 1;
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		quantityMax = 1;
@@ -695,22 +712,22 @@ bool ConsumableImplementation::isAttributeEffect() const{
 	return (effectType == EFFECT_ATTRIBUTE);
 }
 
-bool ConsumableImplementation::isDrink() {
+bool ConsumableImplementation::isDrink() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return (consumableType == DRINK);
 	return (consumableType == DRINK);
 }
 
-bool ConsumableImplementation::isFood() {
+bool ConsumableImplementation::isFood() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return (consumableType == FOOD);
 	return (consumableType == FOOD);
 }
 
-bool ConsumableImplementation::isForagedFood() {
+bool ConsumableImplementation::isForagedFood() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return (foragedFood == 1);
 	return (foragedFood == 1);
 }
 
-bool ConsumableImplementation::isSpice() {
+bool ConsumableImplementation::isSpice() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return (isSpiceEffect() && isFood());
 	return (isSpiceEffect() && isFood());
 }
@@ -720,12 +737,12 @@ bool ConsumableImplementation::isConsumable() {
 	return true;
 }
 
-int ConsumableImplementation::getDuration() {
+int ConsumableImplementation::getDuration() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return duration;
 	return duration;
 }
 
-String ConsumableImplementation::getSpeciesRestriction() {
+String ConsumableImplementation::getSpeciesRestriction() const{
 	// server/zone/objects/tangible/consumable/Consumable.idl():  		return speciesRestriction;
 	return speciesRestriction;
 }
@@ -847,19 +864,19 @@ bool ConsumableAdapter::isAttributeEffect() const {
 	return (static_cast<Consumable*>(stub))->isAttributeEffect();
 }
 
-bool ConsumableAdapter::isDrink() {
+bool ConsumableAdapter::isDrink() const {
 	return (static_cast<Consumable*>(stub))->isDrink();
 }
 
-bool ConsumableAdapter::isFood() {
+bool ConsumableAdapter::isFood() const {
 	return (static_cast<Consumable*>(stub))->isFood();
 }
 
-bool ConsumableAdapter::isForagedFood() {
+bool ConsumableAdapter::isForagedFood() const {
 	return (static_cast<Consumable*>(stub))->isForagedFood();
 }
 
-bool ConsumableAdapter::isSpice() {
+bool ConsumableAdapter::isSpice() const {
 	return (static_cast<Consumable*>(stub))->isSpice();
 }
 
@@ -867,11 +884,11 @@ bool ConsumableAdapter::isConsumable() {
 	return (static_cast<Consumable*>(stub))->isConsumable();
 }
 
-int ConsumableAdapter::getDuration() {
+int ConsumableAdapter::getDuration() const {
 	return (static_cast<Consumable*>(stub))->getDuration();
 }
 
-String ConsumableAdapter::getSpeciesRestriction() {
+String ConsumableAdapter::getSpeciesRestriction() const {
 	return (static_cast<Consumable*>(stub))->getSpeciesRestriction();
 }
 
@@ -940,6 +957,15 @@ void ConsumablePOD::writeJSON(nlohmann::json& j) {
 	if (nutrition)
 		thisObject["nutrition"] = nutrition.value();
 
+	if (newNutrition)
+		thisObject["newNutrition"] = newNutrition.value();
+
+	if (nutritionMin)
+		thisObject["nutritionMin"] = nutritionMin.value();
+
+	if (nutritionMax)
+		thisObject["nutritionMax"] = nutritionMax.value();
+
 	if (effectType)
 		thisObject["effectType"] = effectType.value();
 
@@ -957,12 +983,6 @@ void ConsumablePOD::writeJSON(nlohmann::json& j) {
 
 	if (flavorMax)
 		thisObject["flavorMax"] = flavorMax.value();
-
-	if (nutritionMin)
-		thisObject["nutritionMin"] = nutritionMin.value();
-
-	if (nutritionMax)
-		thisObject["nutritionMax"] = nutritionMax.value();
 
 	if (quantityMin)
 		thisObject["quantityMin"] = quantityMin.value();
@@ -1038,6 +1058,39 @@ int ConsumablePOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (newNutrition) {
+	_nameHashCode = 0x2c0d1dd2; //Consumable.newNutrition
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&newNutrition.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (nutritionMin) {
+	_nameHashCode = 0xe0f66d24; //Consumable.nutritionMin
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&nutritionMin.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (nutritionMax) {
+	_nameHashCode = 0x3c29b8b4; //Consumable.nutritionMax
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&nutritionMax.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (effectType) {
 	_nameHashCode = 0xa36d5c4d; //Consumable.effectType
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1099,28 +1152,6 @@ int ConsumablePOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&flavorMax.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (nutritionMin) {
-	_nameHashCode = 0xe0f66d24; //Consumable.nutritionMin
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&nutritionMin.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (nutritionMax) {
-	_nameHashCode = 0x3c29b8b4; //Consumable.nutritionMax
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&nutritionMax.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1247,6 +1278,30 @@ bool ConsumablePOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 		}
 		return true;
 
+	case 0x2c0d1dd2: //Consumable.newNutrition
+		{
+			float _mnnewNutrition;
+			TypeInfo<float >::parseFromBinaryStream(&_mnnewNutrition, stream);
+			newNutrition = std::move(_mnnewNutrition);
+		}
+		return true;
+
+	case 0xe0f66d24: //Consumable.nutritionMin
+		{
+			float _mnnutritionMin;
+			TypeInfo<float >::parseFromBinaryStream(&_mnnutritionMin, stream);
+			nutritionMin = std::move(_mnnutritionMin);
+		}
+		return true;
+
+	case 0x3c29b8b4: //Consumable.nutritionMax
+		{
+			float _mnnutritionMax;
+			TypeInfo<float >::parseFromBinaryStream(&_mnnutritionMax, stream);
+			nutritionMax = std::move(_mnnutritionMax);
+		}
+		return true;
+
 	case 0xa36d5c4d: //Consumable.effectType
 		{
 			int _mneffectType;
@@ -1292,22 +1347,6 @@ bool ConsumablePOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 			int _mnflavorMax;
 			TypeInfo<int >::parseFromBinaryStream(&_mnflavorMax, stream);
 			flavorMax = std::move(_mnflavorMax);
-		}
-		return true;
-
-	case 0xe0f66d24: //Consumable.nutritionMin
-		{
-			int _mnnutritionMin;
-			TypeInfo<int >::parseFromBinaryStream(&_mnnutritionMin, stream);
-			nutritionMin = std::move(_mnnutritionMin);
-		}
-		return true;
-
-	case 0x3c29b8b4: //Consumable.nutritionMax
-		{
-			int _mnnutritionMax;
-			TypeInfo<int >::parseFromBinaryStream(&_mnnutritionMax, stream);
-			nutritionMax = std::move(_mnnutritionMax);
 		}
 		return true;
 
@@ -1407,6 +1446,12 @@ void ConsumablePOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<int >::toBinaryStream(&nutrition.value(), stream);
 
+	TypeInfo<float >::toBinaryStream(&newNutrition.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&nutritionMin.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&nutritionMax.value(), stream);
+
 	TypeInfo<int >::toBinaryStream(&effectType.value(), stream);
 
 	TypeInfo<Vector<int> >::toBinaryStream(&eventTypes.value(), stream);
@@ -1418,10 +1463,6 @@ void ConsumablePOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<int >::toBinaryStream(&flavorMin.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&flavorMax.value(), stream);
-
-	TypeInfo<int >::toBinaryStream(&nutritionMin.value(), stream);
-
-	TypeInfo<int >::toBinaryStream(&nutritionMax.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&quantityMin.value(), stream);
 

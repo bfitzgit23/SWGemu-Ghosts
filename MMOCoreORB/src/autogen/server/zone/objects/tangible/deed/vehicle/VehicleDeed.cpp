@@ -289,8 +289,8 @@ VehicleDeedImplementation::VehicleDeedImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/tangible/deed/vehicle/VehicleDeed.idl():  		Logger.setLoggingName("VehicleDeed");
 	Logger::setLoggingName("VehicleDeed");
-	// server/zone/objects/tangible/deed/vehicle/VehicleDeed.idl():  		hitPoints = 25000;
-	hitPoints = 25000;
+	// server/zone/objects/tangible/deed/vehicle/VehicleDeed.idl():  		hitPoints = 1500;
+	hitPoints = 1500;
 }
 
 bool VehicleDeedImplementation::isVehicleDeedObject() {

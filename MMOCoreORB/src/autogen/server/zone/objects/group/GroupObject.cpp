@@ -6,15 +6,15 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
-#include "server/chat/room/ChatRoom.h"
+#include "server/zone/objects/ship/ShipObject.h"
 
-#include "server/zone/objects/group/tasks/UpdateNearestMissionForGroupTask.h"
+#include "server/chat/room/ChatRoom.h"
 
 /*
  *	GroupObjectStub
  */
 
-enum {RPC_SENDBASELINESTO__SCENEOBJECT_ = 1552788934,RPC_UPDATEPVPSTATUSNEARCREATURE__CREATUREOBJECT_,RPC_SENDSYSTEMMESSAGE__STRING_BOOL_,RPC_ADDMEMBER__CREATUREOBJECT_,RPC_REMOVEMEMBER__CREATUREOBJECT_,RPC_DISBAND__,RPC_MAKELEADER__CREATUREOBJECT_,RPC_HASMEMBER__CREATUREOBJECT_,RPC_HASMEMBER__LONG_,RPC_STARTCHATROOM__CREATUREOBJECT_,RPC_DESTROYCHATROOM__,RPC_GETGROUPHARVESTMODIFIER__CREATUREOBJECT_,RPC_CALCGROUPLEVEL__,RPC_GETGROUPLEVEL__,RPC_GETCHATROOM__,RPC_GETGROUPSIZE__,RPC_GETNUMBEROFPLAYERMEMBERS__,RPC_GETGROUPMEMBER__INT_,RPC_INITIALIZELEADER__CREATUREOBJECT_,RPC_GETLEADER__,RPC_ISGROUPOBJECT__,RPC_HASSQUADLEADER__,RPC_ADDGROUPMODIFIERS__,RPC_REMOVEGROUPMODIFIERS__,RPC_ISOTHERMEMBERPLAYINGMUSIC__CREATUREOBJECT_,RPC_GETBANDSONG__,RPC_SETBANDSONG__STRING_,RPC_GETLOOTRULE__,RPC_SETLOOTRULE__INT_,RPC_GETMASTERLOOTERID__,RPC_SETMASTERLOOTERID__LONG_,RPC_CHECKMASTERLOOTER__CREATUREOBJECT_,RPC_SCHEDULEUPDATENEARESTMISSIONFORGROUP__INT_,RPC_UPDATELOOTRULES__};
+enum {RPC_SENDBASELINESTO__SCENEOBJECT_ = 1552788934,RPC_UPDATEPVPSTATUSNEARCREATURE__CREATUREOBJECT_,RPC_SENDSYSTEMMESSAGE__STRING_BOOL_,RPC_ADDMEMBER__CREATUREOBJECT_BOOL_,RPC_REMOVEMEMBER__CREATUREOBJECT_,RPC_UPDATEMEMBERSHIP__CREATUREOBJECT_SHIPOBJECT_,RPC_DISBAND__,RPC_MAKELEADER__CREATUREOBJECT_,RPC_HASMEMBER__CREATUREOBJECT_,RPC_HASMEMBER__LONG_,RPC_STARTCHATROOM__CREATUREOBJECT_,RPC_DESTROYCHATROOM__,RPC_GETGROUPHARVESTMODIFIER__CREATUREOBJECT_,RPC_CALCULATEGROUPLEVEL__,RPC_GETGROUPLEVEL__BOOL_,RPC_GETFACTIONPETLEVEL__,RPC_GETCHATROOM__,RPC_GETGROUPSIZE__,RPC_GETNUMBEROFPLAYERMEMBERS__,RPC_GETGROUPMEMBER__INT_,RPC_GETLEADER__,RPC_INITIALIZELEADER__CREATUREOBJECT_CREATUREOBJECT_,RPC_ISGROUPOBJECT__,RPC_HASSQUADLEADER__,RPC_ADDGROUPMODIFIERS__,RPC_REMOVEGROUPMODIFIERS__,RPC_ISOTHERMEMBERPLAYINGMUSIC__CREATUREOBJECT_,RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_,RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_,RPC_GETLOOTRULE__,RPC_SETLOOTRULE__INT_,RPC_GETMASTERLOOTERID__,RPC_SETMASTERLOOTERID__LONG_,RPC_CHECKMASTERLOOTER__CREATUREOBJECT_,RPC_SCHEDULEUPDATENEARESTMISSIONFORGROUP__INT_,RPC_UPDATELOOTRULES__};
 
 GroupObject::GroupObject() : SceneObject(DummyConstructorParameter::instance()) {
 	GroupObjectImplementation* _implementation = new GroupObjectImplementation();
@@ -118,18 +118,20 @@ void GroupObject::sendSystemMessage(StringIdChatParameter& param, CreatureObject
 	}
 }
 
-void GroupObject::addMember(CreatureObject* newMember) {
+void GroupObject::addMember(CreatureObject* newMember, bool notify) {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ADDMEMBER__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_ADDMEMBER__CREATUREOBJECT_BOOL_);
 		method.addObjectParameter(newMember);
+		method.addBooleanParameter(notify);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->addMember(newMember);
+		assert(this->isLockedByCurrentThread());
+		_implementation->addMember(newMember, notify);
 	}
 }
 
@@ -146,6 +148,23 @@ void GroupObject::removeMember(CreatureObject* member) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->removeMember(member);
+	}
+}
+
+void GroupObject::updateMemberShip(CreatureObject* member, ShipObject* ship) {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_UPDATEMEMBERSHIP__CREATUREOBJECT_SHIPOBJECT_);
+		method.addObjectParameter(member);
+		method.addObjectParameter(ship);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->updateMemberShip(member, ship);
 	}
 }
 
@@ -175,6 +194,7 @@ void GroupObject::makeLeader(CreatureObject* player) {
 
 		method.executeWithVoidReturn();
 	} else {
+		assert(this->isLockedByCurrentThread());
 		_implementation->makeLeader(player);
 	}
 }
@@ -255,31 +275,46 @@ float GroupObject::getGroupHarvestModifier(CreatureObject* player) {
 	}
 }
 
-void GroupObject::calcGroupLevel() {
+void GroupObject::calculateGroupLevel() {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CALCGROUPLEVEL__);
+		DistributedMethod method(this, RPC_CALCULATEGROUPLEVEL__);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->calcGroupLevel();
+		_implementation->calculateGroupLevel();
 	}
 }
 
-int GroupObject::getGroupLevel() const {
+int GroupObject::getGroupLevel(bool includeFactionPets) const {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETGROUPLEVEL__);
+		DistributedMethod method(this, RPC_GETGROUPLEVEL__BOOL_);
+		method.addBooleanParameter(includeFactionPets);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getGroupLevel();
+		return _implementation->getGroupLevel(includeFactionPets);
+	}
+}
+
+int GroupObject::getFactionPetLevel() const {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETFACTIONPETLEVEL__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getFactionPetLevel();
 	}
 }
 
@@ -340,21 +375,6 @@ Reference<CreatureObject* > GroupObject::getGroupMember(int index) {
 	}
 }
 
-void GroupObject::initializeLeader(CreatureObject* player) {
-	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_INITIALIZELEADER__CREATUREOBJECT_);
-		method.addObjectParameter(player);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->initializeLeader(player);
-	}
-}
-
 Reference<CreatureObject* > GroupObject::getLeader() {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -369,6 +389,33 @@ Reference<CreatureObject* > GroupObject::getLeader() {
 	}
 }
 
+bool GroupObject::initializeLeader(CreatureObject* leader, CreatureObject* member) {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INITIALIZELEADER__CREATUREOBJECT_CREATUREOBJECT_);
+		method.addObjectParameter(leader);
+		method.addObjectParameter(member);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		return _implementation->initializeLeader(leader, member);
+	}
+}
+
+unsigned long long GroupObject::getLeaderID() {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getLeaderID();
+	}
+}
+
 GroupList* GroupObject::getGroupList() {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -376,6 +423,16 @@ GroupList* GroupObject::getGroupList() {
 
 	} else {
 		return _implementation->getGroupList();
+	}
+}
+
+const DeltaVectorMap<unsigned long long, unsigned long long>* GroupObject::getGroupShips() {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getGroupShips();
 	}
 }
 
@@ -451,35 +508,39 @@ bool GroupObject::isOtherMemberPlayingMusic(CreatureObject* player) {
 	}
 }
 
-String GroupObject::getBandSong() const {
-	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETBANDSONG__);
-
-		String _return_getBandSong;
-		method.executeWithAsciiReturn(_return_getBandSong);
-		return _return_getBandSong;
-	} else {
-		return _implementation->getBandSong();
-	}
-}
-
-void GroupObject::setBandSong(const String& song) {
+void GroupObject::addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient) {
 	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETBANDSONG__STRING_);
-		method.addAsciiParameter(song);
+		DistributedMethod method(this, RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_);
+		method.addUnsignedLongParameter(missionOwnerID);
+		method.addUnsignedLongParameter(objectID);
+		method.addBooleanParameter(notifyClient);
 
 		method.executeWithVoidReturn();
 	} else {
 		assert(this->isLockedByCurrentThread());
-		_implementation->setBandSong(song);
+		_implementation->addSpaceMissionObject(missionOwnerID, objectID, notifyClient);
+	}
+}
+
+void GroupObject::removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient) {
+	GroupObjectImplementation* _implementation = static_cast<GroupObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_);
+		method.addUnsignedLongParameter(missionOwnerID);
+		method.addUnsignedLongParameter(objectID);
+		method.addBooleanParameter(notifyClient);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->removeSpaceMissionObject(missionOwnerID, objectID, notifyClient);
 	}
 }
 
@@ -702,6 +763,10 @@ bool GroupObjectImplementation::readObjectMember(ObjectInputStream* stream, cons
 		TypeInfo<GroupList >::parseFromBinaryStream(&groupMembers, stream);
 		return true;
 
+	case 0xd4068d3d: //GroupObject.groupMemberShips
+		TypeInfo<DeltaVectorMap<unsigned long long, unsigned long long> >::parseFromBinaryStream(&groupMemberShips, stream);
+		return true;
+
 	case 0x3586cfbc: //GroupObject.chatRoom
 		TypeInfo<ManagedReference<ChatRoom* > >::parseFromBinaryStream(&chatRoom, stream);
 		return true;
@@ -710,8 +775,8 @@ bool GroupObjectImplementation::readObjectMember(ObjectInputStream* stream, cons
 		TypeInfo<int >::parseFromBinaryStream(&groupLevel, stream);
 		return true;
 
-	case 0x68fdca98: //GroupObject.bandSong
-		TypeInfo<String >::parseFromBinaryStream(&bandSong, stream);
+	case 0x243f30e: //GroupObject.factionPetLevel
+		TypeInfo<int >::parseFromBinaryStream(&factionPetLevel, stream);
 		return true;
 
 	case 0x48661f7e: //GroupObject.lootRule
@@ -749,6 +814,15 @@ int GroupObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xd4068d3d; //GroupObject.groupMemberShips
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<DeltaVectorMap<unsigned long long, unsigned long long> >::toBinaryStream(&groupMemberShips, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0x3586cfbc; //GroupObject.chatRoom
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -767,11 +841,11 @@ int GroupObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x68fdca98; //GroupObject.bandSong
+	_nameHashCode = 0x243f30e; //GroupObject.factionPetLevel
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<String >::toBinaryStream(&bandSong, stream);
+	TypeInfo<int >::toBinaryStream(&factionPetLevel, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -804,11 +878,13 @@ void GroupObjectImplementation::writeJSON(nlohmann::json& j) {
 	nlohmann::json thisObject = nlohmann::json::object();
 	thisObject["groupMembers"] = groupMembers;
 
+	thisObject["groupMemberShips"] = groupMemberShips;
+
 	thisObject["chatRoom"] = chatRoom;
 
 	thisObject["groupLevel"] = groupLevel;
 
-	thisObject["bandSong"] = bandSong;
+	thisObject["factionPetLevel"] = factionPetLevel;
 
 	thisObject["lootRule"] = lootRule;
 
@@ -821,21 +897,30 @@ GroupObjectImplementation::GroupObjectImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/group/GroupObject.idl():  		groupLevel = 0;
 	groupLevel = 0;
+	// server/zone/objects/group/GroupObject.idl():  		factionPetLevel = 0;
+	factionPetLevel = 0;
 	// server/zone/objects/group/GroupObject.idl():  		Logger.setLoggingName("GroupObject");
 	Logger::setLoggingName("GroupObject");
 	// server/zone/objects/group/GroupObject.idl():  		chatRoom = null;
 	chatRoom = NULL;
-	// server/zone/objects/group/GroupObject.idl():  		bandSong = "";
-	bandSong = "";
 	// server/zone/objects/group/GroupObject.idl():  		lootRule = GroupManager.FREEFORALL;
 	lootRule = GroupManager::FREEFORALL;
 	// server/zone/objects/group/GroupObject.idl():  		masterLooterID = 0;
 	masterLooterID = 0;
 }
 
-int GroupObjectImplementation::getGroupLevel() const{
-	// server/zone/objects/group/GroupObject.idl():  		return groupLevel;
+int GroupObjectImplementation::getGroupLevel(bool includeFactionPets) const{
+	// server/zone/objects/group/GroupObject.idl():  			return groupLevel - factionPetLevel;
+	if (includeFactionPets)	// server/zone/objects/group/GroupObject.idl():  			return groupLevel;
 	return groupLevel;
+
+	else 	// server/zone/objects/group/GroupObject.idl():  			return groupLevel - factionPetLevel;
+	return groupLevel - factionPetLevel;
+}
+
+int GroupObjectImplementation::getFactionPetLevel() const{
+	// server/zone/objects/group/GroupObject.idl():  		return factionPetLevel;
+	return factionPetLevel;
 }
 
 ChatRoom* GroupObjectImplementation::getChatRoom() const{
@@ -851,11 +936,6 @@ int GroupObjectImplementation::getGroupSize() {
 Reference<CreatureObject* > GroupObjectImplementation::getGroupMember(int index) {
 	// server/zone/objects/group/GroupObject.idl():  		return groupMembers.getSafe(index);
 	return (&groupMembers)->getSafe(index);
-}
-
-void GroupObjectImplementation::initializeLeader(CreatureObject* player) {
-	// server/zone/objects/group/GroupObject.idl():  		groupMembers.add(player);
-	(&groupMembers)->add(player);
 }
 
 Reference<CreatureObject* > GroupObjectImplementation::getLeader() {
@@ -876,19 +956,14 @@ GroupList* GroupObjectImplementation::getGroupList() {
 	return (&groupMembers);
 }
 
+const DeltaVectorMap<unsigned long long, unsigned long long>* GroupObjectImplementation::getGroupShips() {
+	// server/zone/objects/group/GroupObject.idl():  		return groupMemberShips;
+	return (&groupMemberShips);
+}
+
 bool GroupObjectImplementation::isGroupObject() {
 	// server/zone/objects/group/GroupObject.idl():  		return true;
 	return true;
-}
-
-String GroupObjectImplementation::getBandSong() const{
-	// server/zone/objects/group/GroupObject.idl():  		return bandSong;
-	return bandSong;
-}
-
-void GroupObjectImplementation::setBandSong(const String& song) {
-	// server/zone/objects/group/GroupObject.idl():  		bandSong = song;
-	bandSong = song;
 }
 
 int GroupObjectImplementation::getLootRule() const{
@@ -956,11 +1031,12 @@ void GroupObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_ADDMEMBER__CREATUREOBJECT_:
+	case RPC_ADDMEMBER__CREATUREOBJECT_BOOL_:
 		{
 			CreatureObject* newMember = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool notify = inv->getBooleanParameter();
 			
-			addMember(newMember);
+			addMember(newMember, notify);
 			
 		}
 		break;
@@ -969,6 +1045,15 @@ void GroupObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			CreatureObject* member = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			removeMember(member);
+			
+		}
+		break;
+	case RPC_UPDATEMEMBERSHIP__CREATUREOBJECT_SHIPOBJECT_:
+		{
+			CreatureObject* member = static_cast<CreatureObject*>(inv->getObjectParameter());
+			ShipObject* ship = static_cast<ShipObject*>(inv->getObjectParameter());
+			
+			updateMemberShip(member, ship);
 			
 		}
 		break;
@@ -1026,17 +1111,25 @@ void GroupObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_CALCGROUPLEVEL__:
+	case RPC_CALCULATEGROUPLEVEL__:
 		{
 			
-			calcGroupLevel();
+			calculateGroupLevel();
 			
 		}
 		break;
-	case RPC_GETGROUPLEVEL__:
+	case RPC_GETGROUPLEVEL__BOOL_:
+		{
+			bool includeFactionPets = inv->getBooleanParameter();
+			
+			int _m_res = getGroupLevel(includeFactionPets);
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETFACTIONPETLEVEL__:
 		{
 			
-			int _m_res = getGroupLevel();
+			int _m_res = getFactionPetLevel();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -1069,19 +1162,20 @@ void GroupObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
-	case RPC_INITIALIZELEADER__CREATUREOBJECT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			initializeLeader(player);
-			
-		}
-		break;
 	case RPC_GETLEADER__:
 		{
 			
 			DistributedObject* _m_res = getLeader();
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_INITIALIZELEADER__CREATUREOBJECT_CREATUREOBJECT_:
+		{
+			CreatureObject* leader = static_cast<CreatureObject*>(inv->getObjectParameter());
+			CreatureObject* member = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			bool _m_res = initializeLeader(leader, member);
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_ISGROUPOBJECT__:
@@ -1120,18 +1214,23 @@ void GroupObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_GETBANDSONG__:
+	case RPC_ADDSPACEMISSIONOBJECT__LONG_LONG_BOOL_:
 		{
+			unsigned long long missionOwnerID = inv->getUnsignedLongParameter();
+			unsigned long long objectID = inv->getUnsignedLongParameter();
+			bool notifyClient = inv->getBooleanParameter();
 			
-			String _m_res = getBandSong();
-			resp->insertAscii(_m_res);
+			addSpaceMissionObject(missionOwnerID, objectID, notifyClient);
+			
 		}
 		break;
-	case RPC_SETBANDSONG__STRING_:
+	case RPC_REMOVESPACEMISSIONOBJECT__LONG_LONG_BOOL_:
 		{
-			 String song; inv->getAsciiParameter(song);
+			unsigned long long missionOwnerID = inv->getUnsignedLongParameter();
+			unsigned long long objectID = inv->getUnsignedLongParameter();
+			bool notifyClient = inv->getBooleanParameter();
 			
-			setBandSong(song);
+			removeSpaceMissionObject(missionOwnerID, objectID, notifyClient);
 			
 		}
 		break;
@@ -1205,12 +1304,16 @@ void GroupObjectAdapter::sendSystemMessage(const String& fullPath, bool sendLead
 	(static_cast<GroupObject*>(stub))->sendSystemMessage(fullPath, sendLeader);
 }
 
-void GroupObjectAdapter::addMember(CreatureObject* newMember) {
-	(static_cast<GroupObject*>(stub))->addMember(newMember);
+void GroupObjectAdapter::addMember(CreatureObject* newMember, bool notify) {
+	(static_cast<GroupObject*>(stub))->addMember(newMember, notify);
 }
 
 void GroupObjectAdapter::removeMember(CreatureObject* member) {
 	(static_cast<GroupObject*>(stub))->removeMember(member);
+}
+
+void GroupObjectAdapter::updateMemberShip(CreatureObject* member, ShipObject* ship) {
+	(static_cast<GroupObject*>(stub))->updateMemberShip(member, ship);
 }
 
 void GroupObjectAdapter::disband() {
@@ -1241,12 +1344,16 @@ float GroupObjectAdapter::getGroupHarvestModifier(CreatureObject* player) {
 	return (static_cast<GroupObject*>(stub))->getGroupHarvestModifier(player);
 }
 
-void GroupObjectAdapter::calcGroupLevel() {
-	(static_cast<GroupObject*>(stub))->calcGroupLevel();
+void GroupObjectAdapter::calculateGroupLevel() {
+	(static_cast<GroupObject*>(stub))->calculateGroupLevel();
 }
 
-int GroupObjectAdapter::getGroupLevel() const {
-	return (static_cast<GroupObject*>(stub))->getGroupLevel();
+int GroupObjectAdapter::getGroupLevel(bool includeFactionPets) const {
+	return (static_cast<GroupObject*>(stub))->getGroupLevel(includeFactionPets);
+}
+
+int GroupObjectAdapter::getFactionPetLevel() const {
+	return (static_cast<GroupObject*>(stub))->getFactionPetLevel();
 }
 
 ChatRoom* GroupObjectAdapter::getChatRoom() const {
@@ -1265,12 +1372,12 @@ Reference<CreatureObject* > GroupObjectAdapter::getGroupMember(int index) {
 	return (static_cast<GroupObject*>(stub))->getGroupMember(index);
 }
 
-void GroupObjectAdapter::initializeLeader(CreatureObject* player) {
-	(static_cast<GroupObject*>(stub))->initializeLeader(player);
-}
-
 Reference<CreatureObject* > GroupObjectAdapter::getLeader() {
 	return (static_cast<GroupObject*>(stub))->getLeader();
+}
+
+bool GroupObjectAdapter::initializeLeader(CreatureObject* leader, CreatureObject* member) {
+	return (static_cast<GroupObject*>(stub))->initializeLeader(leader, member);
 }
 
 bool GroupObjectAdapter::isGroupObject() {
@@ -1293,12 +1400,12 @@ bool GroupObjectAdapter::isOtherMemberPlayingMusic(CreatureObject* player) {
 	return (static_cast<GroupObject*>(stub))->isOtherMemberPlayingMusic(player);
 }
 
-String GroupObjectAdapter::getBandSong() const {
-	return (static_cast<GroupObject*>(stub))->getBandSong();
+void GroupObjectAdapter::addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient) {
+	(static_cast<GroupObject*>(stub))->addSpaceMissionObject(missionOwnerID, objectID, notifyClient);
 }
 
-void GroupObjectAdapter::setBandSong(const String& song) {
-	(static_cast<GroupObject*>(stub))->setBandSong(song);
+void GroupObjectAdapter::removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient) {
+	(static_cast<GroupObject*>(stub))->removeSpaceMissionObject(missionOwnerID, objectID, notifyClient);
 }
 
 int GroupObjectAdapter::getLootRule() const {
@@ -1388,14 +1495,17 @@ void GroupObjectPOD::writeJSON(nlohmann::json& j) {
 	if (groupMembers)
 		thisObject["groupMembers"] = groupMembers.value();
 
+	if (groupMemberShips)
+		thisObject["groupMemberShips"] = groupMemberShips.value();
+
 	if (chatRoom)
 		thisObject["chatRoom"] = chatRoom.value();
 
 	if (groupLevel)
 		thisObject["groupLevel"] = groupLevel.value();
 
-	if (bandSong)
-		thisObject["bandSong"] = bandSong.value();
+	if (factionPetLevel)
+		thisObject["factionPetLevel"] = factionPetLevel.value();
 
 	if (lootRule)
 		thisObject["lootRule"] = lootRule.value();
@@ -1431,6 +1541,17 @@ int GroupObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (groupMemberShips) {
+	_nameHashCode = 0xd4068d3d; //GroupObject.groupMemberShips
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<DeltaVectorMap<unsigned long long, unsigned long long> >::toBinaryStream(&groupMemberShips.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (chatRoom) {
 	_nameHashCode = 0x3586cfbc; //GroupObject.chatRoom
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1453,12 +1574,12 @@ int GroupObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (bandSong) {
-	_nameHashCode = 0x68fdca98; //GroupObject.bandSong
+	if (factionPetLevel) {
+	_nameHashCode = 0x243f30e; //GroupObject.factionPetLevel
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<String >::toBinaryStream(&bandSong.value(), stream);
+	TypeInfo<int >::toBinaryStream(&factionPetLevel.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1503,6 +1624,14 @@ bool GroupObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32& n
 		}
 		return true;
 
+	case 0xd4068d3d: //GroupObject.groupMemberShips
+		{
+			DeltaVectorMap<unsigned long long, unsigned long long> _mngroupMemberShips;
+			TypeInfo<DeltaVectorMap<unsigned long long, unsigned long long> >::parseFromBinaryStream(&_mngroupMemberShips, stream);
+			groupMemberShips = std::move(_mngroupMemberShips);
+		}
+		return true;
+
 	case 0x3586cfbc: //GroupObject.chatRoom
 		{
 			ManagedReference<ChatRoomPOD* > _mnchatRoom;
@@ -1519,11 +1648,11 @@ bool GroupObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32& n
 		}
 		return true;
 
-	case 0x68fdca98: //GroupObject.bandSong
+	case 0x243f30e: //GroupObject.factionPetLevel
 		{
-			String _mnbandSong;
-			TypeInfo<String >::parseFromBinaryStream(&_mnbandSong, stream);
-			bandSong = std::move(_mnbandSong);
+			int _mnfactionPetLevel;
+			TypeInfo<int >::parseFromBinaryStream(&_mnfactionPetLevel, stream);
+			factionPetLevel = std::move(_mnfactionPetLevel);
 		}
 		return true;
 
@@ -1571,11 +1700,13 @@ void GroupObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<GroupList >::toBinaryStream(&groupMembers.value(), stream);
 
+	TypeInfo<DeltaVectorMap<unsigned long long, unsigned long long> >::toBinaryStream(&groupMemberShips.value(), stream);
+
 	TypeInfo<ManagedReference<ChatRoomPOD* > >::toBinaryStream(&chatRoom.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&groupLevel.value(), stream);
 
-	TypeInfo<String >::toBinaryStream(&bandSong.value(), stream);
+	TypeInfo<int >::toBinaryStream(&factionPetLevel.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&lootRule.value(), stream);
 

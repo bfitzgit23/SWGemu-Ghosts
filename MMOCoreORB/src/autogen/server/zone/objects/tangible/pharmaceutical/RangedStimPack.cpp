@@ -384,7 +384,7 @@ void RangedStimPackImplementation::updateCraftingValues(CraftingValues* values, 
 	// server/zone/objects/tangible/pharmaceutical/RangedStimPack.idl():  		range = values.getCurrentValue("range");
 	range = values->getCurrentValue("range");
 	// server/zone/objects/tangible/pharmaceutical/RangedStimPack.idl():  	}
-	if (values->hasProperty("area")){
+	if (values->hasExperimentalAttribute("area")){
 	// server/zone/objects/tangible/pharmaceutical/RangedStimPack.idl():  			area = values.getCurrentValue("area");
 	area = values->getCurrentValue("area");
 }

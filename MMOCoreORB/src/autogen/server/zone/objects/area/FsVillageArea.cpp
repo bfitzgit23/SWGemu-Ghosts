@@ -183,10 +183,10 @@ void FsVillageAreaImplementation::writeJSON(nlohmann::json& j) {
 
 FsVillageAreaImplementation::FsVillageAreaImplementation() : ActiveAreaImplementation() {
 	_initializeImplementation();
-	// server/zone/objects/area/FsVillageArea.idl():  		super.noBuildArea = true;
-	ActiveAreaImplementation::noBuildArea = true;
-	// server/zone/objects/area/FsVillageArea.idl():  		super.noSpawnArea = true;
-	ActiveAreaImplementation::noSpawnArea = true;
+	// server/zone/objects/area/FsVillageArea.idl():  		super.addAreaFlag(ActiveArea.NOBUILDZONEAREA);
+	ActiveAreaImplementation::addAreaFlag(ActiveArea::NOBUILDZONEAREA);
+	// server/zone/objects/area/FsVillageArea.idl():  		super.addAreaFlag(ActiveArea.NOSPAWNAREA);
+	ActiveAreaImplementation::addAreaFlag(ActiveArea::NOSPAWNAREA);
 }
 
 /*

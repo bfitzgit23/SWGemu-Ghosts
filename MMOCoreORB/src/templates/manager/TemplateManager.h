@@ -18,6 +18,8 @@
 #include "templates/slots/ArrangementDescriptor.h"
 #include "templates/manager/PlanetMapCategoryList.h"
 #include "templates/manager/PlanetMapCategory.h"
+#include "templates/manager/PlanetMapSubCategoryList.h"
+#include "templates/manager/PlanetMapSubCategory.h"
 #include "templates/manager/PortalLayoutMap.h"
 
 class TemplateCRCMap;
@@ -37,6 +39,7 @@ class TemplateManager : public Singleton<TemplateManager>, public Logger, public
 	InteriorMap* interiorMap;
 
 	PlanetMapCategoryList planetMapCategoryList;
+	PlanetMapSubCategoryList planetMapSubCategoryList;
 
 	SynchronizedVectorMap<String, Reference<StructureFootprint*> > structureFootprints;
 
@@ -55,6 +58,11 @@ public:
 	static Lua* luaTemplatesInstance;
 	static AtomicInteger loadedTemplatesCount;
 	static int ERROR_CODE;
+
+#ifdef PLATFORM_WIN
+#undef NO_ERROR
+#endif
+
 	enum TEMPLATE_ERROR_CODE { NO_ERROR = 0, GENERAL_ERROR, NO_TRE_PATH, NO_TRE_FILES,
 		LOAD_TRES_ERROR, SLOT_DEFINITION_FILE_NOT_FOUND,
 		ASSETCUSTOMIZATIONMANAGER_FILE_NOT_FOUND,
@@ -95,7 +103,7 @@ public:
 
 	void addTemplate(uint32 key, const String& fullName, LuaObject* templateData);
 
-	String getTemplateFile(uint32 key) const;
+	const String& getTemplateFile(uint32 key) const;
 
 	SharedObjectTemplate* getTemplate(uint32 key) const;
 
@@ -126,6 +134,7 @@ public:
 
 	void addClientTemplate(uint32 crc, const String& templateName);
 
+	// Primary Planet Map Categories
 	const PlanetMapCategory* getPlanetMapCategoryByName(const String& name) const {
 		return planetMapCategoryList.get(name);
 	}
@@ -139,6 +148,28 @@ public:
 
 		while (iterator.hasNext()) {
 			const Reference<PlanetMapCategory*>& cat = iterator.getNextValue();
+
+			if (cat->getIndex() == index)
+				return cat.get();
+		}
+
+		return nullptr;
+	}
+
+	// Planet Map Sub Categories
+	const PlanetMapSubCategory* getPlanetMapSubCategoryByName(const String& name) const {
+		return planetMapSubCategoryList.get(name);
+	}
+
+	const PlanetMapSubCategory* getPlanetMapSubCategoryByCrc(int crc) const {
+		return planetMapSubCategoryList.get(crc);
+	}
+
+	const PlanetMapSubCategory* getPlanetMapSubCategoryById(int index) const {
+		auto iterator = planetMapSubCategoryList.iterator();
+
+		while (iterator.hasNext()) {
+			const Reference<PlanetMapSubCategory*>& cat = iterator.getNextValue();
 
 			if (cat->getIndex() == index)
 				return cat.get();

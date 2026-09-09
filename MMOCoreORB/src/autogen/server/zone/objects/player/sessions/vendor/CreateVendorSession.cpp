@@ -10,7 +10,7 @@
  *	CreateVendorSessionStub
  */
 
-enum {RPC_INITIALIZESESSION__ = 3279166334,RPC_CANCELSESSION__,RPC_CLEARSESSION__,RPC_HANDLEVENDORSELECTION__BYTE_,RPC_CREATEVENDOR__STRING_,RPC_RANDOMIZEVENDORLOOKS__CREATUREOBJECT_,};
+enum {RPC_INITIALIZESESSION__ = 3279166334,RPC_CANCELSESSION__,RPC_CLEARSESSION__,RPC_HANDLEVENDORSELECTION__BYTE_,RPC_CREATEVENDOR__STRING_};
 
 CreateVendorSession::CreateVendorSession(CreatureObject* play) : Facade(DummyConstructorParameter::instance()) {
 	CreateVendorSessionImplementation* _implementation = new CreateVendorSessionImplementation(play);
@@ -97,21 +97,6 @@ void CreateVendorSession::createVendor(String& name) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->createVendor(name);
-	}
-}
-
-void CreateVendorSession::randomizeVendorLooks(CreatureObject* vendor) {
-	CreateVendorSessionImplementation* _implementation = static_cast<CreateVendorSessionImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_RANDOMIZEVENDORLOOKS__CREATUREOBJECT_);
-		method.addObjectParameter(vendor);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->randomizeVendorLooks(vendor);
 	}
 }
 
@@ -401,14 +386,6 @@ void CreateVendorSessionAdapter::invokeMethod(uint32 methid, DistributedMethod* 
 			
 		}
 		break;
-	case RPC_RANDOMIZEVENDORLOOKS__CREATUREOBJECT_:
-		{
-			CreatureObject* vendor = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			randomizeVendorLooks(vendor);
-			
-		}
-		break;
 	default:
 		FacadeAdapter::invokeMethod(methid, inv);
 	}
@@ -432,10 +409,6 @@ void CreateVendorSessionAdapter::handleVendorSelection(byte menuID) {
 
 void CreateVendorSessionAdapter::createVendor(String& name) {
 	(static_cast<CreateVendorSession*>(stub))->createVendor(name);
-}
-
-void CreateVendorSessionAdapter::randomizeVendorLooks(CreatureObject* vendor) {
-	(static_cast<CreateVendorSession*>(stub))->randomizeVendorLooks(vendor);
 }
 
 /*

@@ -8,7 +8,7 @@
  *	ScreenPlayObserverStub
  */
 
-enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 1468633181,RPC_SETSCREENPLAY__STRING_,RPC_SETSCREENKEY__STRING_,RPC_GETSCREENPLAY__,RPC_GETSCREENKEY__};
+enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 1468633181,RPC_STOREFLOATVALUE__STRING_FLOAT_,RPC_SETSCREENPLAY__STRING_,RPC_SETSCREENKEY__STRING_,RPC_GETSCREENPLAY__,RPC_GETSCREENKEY__,RPC_GETFLOATVALUE__LONG_};
 
 ScreenPlayObserver::ScreenPlayObserver() : Observer(DummyConstructorParameter::instance()) {
 	ScreenPlayObserverImplementation* _implementation = new ScreenPlayObserverImplementation();
@@ -41,6 +41,22 @@ int ScreenPlayObserver::notifyObserverEvent(unsigned int eventType, Observable* 
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->notifyObserverEvent(eventType, observable, arg1, arg2);
+	}
+}
+
+void ScreenPlayObserver::storeFloatValue(const String& dataKey, float dataVal) {
+	ScreenPlayObserverImplementation* _implementation = static_cast<ScreenPlayObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_STOREFLOATVALUE__STRING_FLOAT_);
+		method.addAsciiParameter(dataKey);
+		method.addFloatParameter(dataVal);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->storeFloatValue(dataKey, dataVal);
 	}
 }
 
@@ -103,6 +119,21 @@ String ScreenPlayObserver::getScreenKey() {
 		return _return_getScreenKey;
 	} else {
 		return _implementation->getScreenKey();
+	}
+}
+
+float ScreenPlayObserver::getFloatValue(unsigned long long dataKey) {
+	ScreenPlayObserverImplementation* _implementation = static_cast<ScreenPlayObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETFLOATVALUE__LONG_);
+		method.addUnsignedLongParameter(dataKey);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getFloatValue(dataKey);
 	}
 }
 
@@ -224,6 +255,10 @@ bool ScreenPlayObserverImplementation::readObjectMember(ObjectInputStream* strea
 		TypeInfo<String >::parseFromBinaryStream(&key, stream);
 		return true;
 
+	case 0xbd967ee2: //ScreenPlayObserver.floatData
+		TypeInfo<VectorMap<unsigned long long, float> >::parseFromBinaryStream(&floatData, stream);
+		return true;
+
 	}
 
 	return false;
@@ -260,6 +295,15 @@ int ScreenPlayObserverImplementation::writeObjectMembers(ObjectOutputStream* str
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xbd967ee2; //ScreenPlayObserver.floatData
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<VectorMap<unsigned long long, float> >::toBinaryStream(&floatData, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -272,6 +316,8 @@ void ScreenPlayObserverImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["key"] = key;
 
+	thisObject["floatData"] = floatData;
+
 	j["ScreenPlayObserver"] = thisObject;
 }
 
@@ -279,6 +325,10 @@ ScreenPlayObserverImplementation::ScreenPlayObserverImplementation() {
 	_initializeImplementation();
 	// server/zone/managers/director/ScreenPlayObserver.idl():  		play = "";
 	play = "";
+	// server/zone/managers/director/ScreenPlayObserver.idl():  		key = "";
+	key = "";
+	// server/zone/managers/director/ScreenPlayObserver.idl():  		floatData.setNoDuplicateInsertPlan();
+	(&floatData)->setNoDuplicateInsertPlan();
 }
 
 void ScreenPlayObserverImplementation::setScreenPlay(const String& screen) {
@@ -299,6 +349,11 @@ String ScreenPlayObserverImplementation::getScreenPlay() {
 String ScreenPlayObserverImplementation::getScreenKey() {
 	// server/zone/managers/director/ScreenPlayObserver.idl():  		return key;
 	return key;
+}
+
+float ScreenPlayObserverImplementation::getFloatValue(unsigned long long dataKey) {
+	// server/zone/managers/director/ScreenPlayObserver.idl():  		return floatData.get(dataKey);
+	return (&floatData)->get(dataKey);
 }
 
 /*
@@ -325,6 +380,15 @@ void ScreenPlayObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			
 			int _m_res = notifyObserverEvent(eventType, observable, arg1, arg2);
 			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_STOREFLOATVALUE__STRING_FLOAT_:
+		{
+			 String dataKey; inv->getAsciiParameter(dataKey);
+			float dataVal = inv->getFloatParameter();
+			
+			storeFloatValue(dataKey, dataVal);
+			
 		}
 		break;
 	case RPC_SETSCREENPLAY__STRING_:
@@ -357,6 +421,14 @@ void ScreenPlayObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 			resp->insertAscii(_m_res);
 		}
 		break;
+	case RPC_GETFLOATVALUE__LONG_:
+		{
+			unsigned long long dataKey = inv->getUnsignedLongParameter();
+			
+			float _m_res = getFloatValue(dataKey);
+			resp->insertFloat(_m_res);
+		}
+		break;
 	default:
 		ObserverAdapter::invokeMethod(methid, inv);
 	}
@@ -364,6 +436,10 @@ void ScreenPlayObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* i
 
 int ScreenPlayObserverAdapter::notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2) {
 	return (static_cast<ScreenPlayObserver*>(stub))->notifyObserverEvent(eventType, observable, arg1, arg2);
+}
+
+void ScreenPlayObserverAdapter::storeFloatValue(const String& dataKey, float dataVal) {
+	(static_cast<ScreenPlayObserver*>(stub))->storeFloatValue(dataKey, dataVal);
 }
 
 void ScreenPlayObserverAdapter::setScreenPlay(const String& screen) {
@@ -380,6 +456,10 @@ String ScreenPlayObserverAdapter::getScreenPlay() {
 
 String ScreenPlayObserverAdapter::getScreenKey() {
 	return (static_cast<ScreenPlayObserver*>(stub))->getScreenKey();
+}
+
+float ScreenPlayObserverAdapter::getFloatValue(unsigned long long dataKey) {
+	return (static_cast<ScreenPlayObserver*>(stub))->getFloatValue(dataKey);
 }
 
 /*
@@ -421,6 +501,185 @@ DistributedObjectAdapter* ScreenPlayObserverHelper::createAdapter(DistributedObj
 	return adapter;
 }
 
+const char LuaScreenPlayObserver::className[] = "LuaScreenPlayObserver";
+
+Luna<LuaScreenPlayObserver>::RegType LuaScreenPlayObserver::Register[] = {
+	{ "_setObject", &LuaScreenPlayObserver::_setObject },
+	{ "_getObject", &LuaScreenPlayObserver::_getObject },
+	{ "notifyObserverEvent", &LuaScreenPlayObserver::notifyObserverEvent },
+	{ "storeFloatValue", &LuaScreenPlayObserver::storeFloatValue },
+	{ "setScreenPlay", &LuaScreenPlayObserver::setScreenPlay },
+	{ "setScreenKey", &LuaScreenPlayObserver::setScreenKey },
+	{ "getScreenPlay", &LuaScreenPlayObserver::getScreenPlay },
+	{ "getScreenKey", &LuaScreenPlayObserver::getScreenKey },
+	{ "getFloatValue", &LuaScreenPlayObserver::getFloatValue },
+	{ 0, 0 }
+};
+
+LuaScreenPlayObserver::LuaScreenPlayObserver(lua_State *L) {
+	realObject = static_cast<ScreenPlayObserver*>(lua_touserdata(L, 1));
+}
+
+LuaScreenPlayObserver::~LuaScreenPlayObserver() {
+}
+
+int LuaScreenPlayObserver::_setObject(lua_State* L) {
+	realObject = static_cast<ScreenPlayObserver*>(lua_touserdata(L, -1));
+
+	return 0;
+}
+
+int LuaScreenPlayObserver::_getObject(lua_State* L) {
+	lua_pushlightuserdata(L, realObject.get());
+
+	return 1;
+}
+
+int LuaScreenPlayObserver::notifyObserverEvent(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (lua_isuserdata(L, -2)) {
+			if (lua_isuserdata(L, -3)) {
+				if (lua_isnumber(L, -4)) {
+					if (parameterCount == 4) {
+						unsigned int eventType = lua_tointeger(L, -4);
+						Observable* observable = static_cast<Observable*>(lua_touserdata(L, -3));
+						ManagedObject* arg1 = static_cast<ManagedObject*>(lua_touserdata(L, -2));
+						long long arg2 = lua_tointeger(L, -1);
+
+						int result = realObject->notifyObserverEvent(eventType, observable, arg1, arg2);
+
+						lua_pushinteger(L, result);
+						return 1;
+					} else {
+						throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:notifyObserverEvent(integer, userdata, userdata, integer)'");
+					}
+				} else {
+					throw LuaCallbackException(L, "invalid argument at 3 for lua method 'ScreenPlayObserver:notifyObserverEvent(integer, userdata, userdata, integer)'");
+				}
+			} else {
+				throw LuaCallbackException(L, "invalid argument at 2 for lua method 'ScreenPlayObserver:notifyObserverEvent(integer, userdata, userdata, integer)'");
+			}
+		} else {
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'ScreenPlayObserver:notifyObserverEvent(integer, userdata, userdata, integer)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ScreenPlayObserver:notifyObserverEvent(integer, userdata, userdata, integer)'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::storeFloatValue(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (lua_isstring(L, -2)) {
+			if (parameterCount == 2) {
+				const String dataKey = lua_tostring(L, -2);
+				float dataVal = lua_tonumber(L, -1);
+
+				realObject->storeFloatValue(dataKey, dataVal);
+
+				return 0;
+			} else {
+				throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:storeFloatValue(string, number)'");
+			}
+		} else {
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'ScreenPlayObserver:storeFloatValue(string, number)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ScreenPlayObserver:storeFloatValue(string, number)'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::setScreenPlay(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isstring(L, -1)) {
+		if (parameterCount == 1) {
+			const String screen = lua_tostring(L, -1);
+
+			realObject->setScreenPlay(screen);
+
+			return 0;
+		} else {
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:setScreenPlay(string)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ScreenPlayObserver:setScreenPlay(string)'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::setScreenKey(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isstring(L, -1)) {
+		if (parameterCount == 1) {
+			const String screenKey = lua_tostring(L, -1);
+
+			realObject->setScreenKey(screenKey);
+
+			return 0;
+		} else {
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:setScreenKey(string)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ScreenPlayObserver:setScreenKey(string)'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::getScreenPlay(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (parameterCount == 0) {
+		String result = realObject->getScreenPlay();
+
+		lua_pushstring(L, result.toCharArray());
+		return 1;
+	} else {
+		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:getScreenPlay()'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::getScreenKey(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (parameterCount == 0) {
+		String result = realObject->getScreenKey();
+
+		lua_pushstring(L, result.toCharArray());
+		return 1;
+	} else {
+		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:getScreenKey()'");
+	}
+	return 0;
+}
+
+int LuaScreenPlayObserver::getFloatValue(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (parameterCount == 1) {
+			unsigned long long dataKey = lua_tointeger(L, -1);
+
+			float result = realObject->getFloatValue(dataKey);
+
+			lua_pushnumber(L, result);
+			return 1;
+		} else {
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ScreenPlayObserver:getFloatValue(integer)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ScreenPlayObserver:getFloatValue(integer)'");
+	}
+	return 0;
+}
+
 /*
  *	ScreenPlayObserverPOD
  */
@@ -442,6 +701,9 @@ void ScreenPlayObserverPOD::writeJSON(nlohmann::json& j) {
 
 	if (key)
 		thisObject["key"] = key.value();
+
+	if (floatData)
+		thisObject["floatData"] = floatData.value();
 
 	j["ScreenPlayObserver"] = thisObject;
 }
@@ -482,6 +744,17 @@ int ScreenPlayObserverPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (floatData) {
+	_nameHashCode = 0xbd967ee2; //ScreenPlayObserver.floatData
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<VectorMap<unsigned long long, float> >::toBinaryStream(&floatData.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -504,6 +777,14 @@ bool ScreenPlayObserverPOD::readObjectMember(ObjectInputStream* stream, const ui
 			String _mnkey;
 			TypeInfo<String >::parseFromBinaryStream(&_mnkey, stream);
 			key = std::move(_mnkey);
+		}
+		return true;
+
+	case 0xbd967ee2: //ScreenPlayObserver.floatData
+		{
+			VectorMap<unsigned long long, float> _mnfloatData;
+			TypeInfo<VectorMap<unsigned long long, float> >::parseFromBinaryStream(&_mnfloatData, stream);
+			floatData = std::move(_mnfloatData);
 		}
 		return true;
 
@@ -536,6 +817,8 @@ void ScreenPlayObserverPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<String >::toBinaryStream(&play.value(), stream);
 
 	TypeInfo<String >::toBinaryStream(&key.value(), stream);
+
+	TypeInfo<VectorMap<unsigned long long, float> >::toBinaryStream(&floatData.value(), stream);
 
 
 }

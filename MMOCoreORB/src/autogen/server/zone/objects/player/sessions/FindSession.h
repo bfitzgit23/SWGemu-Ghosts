@@ -84,7 +84,7 @@ public:
 
 	WaypointObject* addWaypoint(float x, float y, const String& name);
 
-	void findPlanetaryObject(String& maplocationtype);
+	void findPlanetaryObject(const String& mapCategory, const String& mapSubCategory);
 
 	void clearWaypoint();
 
@@ -136,7 +136,7 @@ public:
 
 	WaypointObject* addWaypoint(float x, float y, const String& name);
 
-	void findPlanetaryObject(String& maplocationtype);
+	void findPlanetaryObject(const String& mapCategory, const String& mapSubCategory);
 
 	void clearWaypoint();
 

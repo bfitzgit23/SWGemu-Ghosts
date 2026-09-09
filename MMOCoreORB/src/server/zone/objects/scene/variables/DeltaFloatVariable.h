@@ -9,7 +9,10 @@
 #define DELTAFLOATVARIABLE_H_
 
 #include "DeltaBasicVariable.h"
+
 #include "server/zone/packets/DeltaMessage.h"
+
+#include "server/zone/objects/scene/SceneObject.h"
 
 template<int BaselineName, uint8 Type, int DeltaID>
 class DeltaFloatVariable : public DeltaBasicVariable<float> {
@@ -18,6 +21,16 @@ public:
 		set(newValue);
 
 		if (broadcastStandalone) {
+			broadcastStandaloneDeltaMessage(obj);
+		}
+	}
+
+	void update(int newValue, bool broadcastStandalone = false, SceneObject* obj = NULL, DeltaMessage* message = NULL) {
+		set(newValue);
+
+		if (message) {
+			addToDeltaMessage(message);
+		} else if (broadcastStandalone) {
 			broadcastStandaloneDeltaMessage(obj);
 		}
 	}

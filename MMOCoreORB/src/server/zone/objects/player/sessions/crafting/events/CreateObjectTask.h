@@ -5,6 +5,8 @@
 #ifndef CREATEOBJECTTASK_H_
 #define CREATEOBJECTTASK_H_
 
+#include "server/zone/objects/transaction/TransactionLog.h"
+
 class CreateObjectTask : public Task {
 
 	ManagedReference<CraftingTool*> craftingTool;
@@ -25,25 +27,33 @@ public:
 
 		craftingTool->setCountdownTimer(0, true);
 
-		ManagedReference<TangibleObject*> prototype = craftingTool->getPrototype();
+		auto prototype = craftingTool->getPrototype();
 
 		if (prototype == nullptr || practice) {
 			craftingTool->removeAllContainerObjects();
 			craftingTool->setReady();
+
+			if (practice && prototype != nullptr)
+				crafter->notifyObservers(ObserverEventType::PROTOTYPECREATED, prototype, 1);
+
 			return;
 		}
 
 		ObjectManager* objectManager = crafter->getZoneServer()->getObjectManager();
 		objectManager->persistSceneObjectsRecursively(prototype, 1);
 
-		ManagedReference<SceneObject*> inventory = crafter->getSlottedObject("inventory");
+		ManagedReference<SceneObject*> inventory = crafter->getInventory();
 
-		if (inventory != nullptr && craftingTool->isASubChildOf(crafter) && !inventory->isContainerFullRecursive()) {
+		// The check for space in the players inventory has to be done here instead of in isContainerFullRecursive due to the object being in the crafting tool already.
+		if (inventory != nullptr && craftingTool->isASubChildOf(crafter) && !(inventory->getContainerVolumeLimit() <= (inventory->getCountableObjectsRecursive()))) {
+			TransactionLog trx(crafter, inventory, prototype, TrxCode::CRAFTINGSESSION);
 
 			if (inventory->transferObject(prototype, -1, true)) {
 				crafter->sendSystemMessage("@system_msg:prototype_transferred");
+
 				crafter->notifyObservers(ObserverEventType::PROTOTYPECREATED, prototype, 0);
 				craftingTool->setReady();
+
 				return;
 			}
 		}

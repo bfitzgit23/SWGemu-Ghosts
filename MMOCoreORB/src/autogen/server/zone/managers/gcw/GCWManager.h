@@ -71,22 +71,6 @@ using namespace server::zone::objects::structure;
 namespace server {
 namespace zone {
 namespace objects {
-namespace building {
-
-class BuildingObject;
-
-class BuildingObjectPOD;
-
-} // namespace building
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::building;
-
-namespace server {
-namespace zone {
-namespace objects {
 namespace installation {
 
 class InstallationObject;
@@ -168,19 +152,9 @@ class DeedPOD;
 
 using namespace server::zone::objects::tangible::deed;
 
-namespace server {
-namespace zone {
-namespace managers {
-namespace gcw {
+#include "server/zone/objects/building/BuildingObject.h"
 
-class TerminalSpawn;
-
-} // namespace gcw
-} // namespace managers
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::managers::gcw;
+#include "server/zone/managers/gcw/TerminalSpawn.h"
 
 #include "server/zone/objects/building/components/DestructibleBuildingDataComponent.h"
 
@@ -197,6 +171,8 @@ using namespace server::zone::managers::gcw;
 #include "system/util/Vector.h"
 
 #include "system/util/VectorMap.h"
+
+#include "engine/util/u3d/Vector3.h"
 
 #include "system/util/HashTable.h"
 
@@ -225,6 +201,10 @@ public:
 
 	static const int STATICFACTIONBASE = 2;
 
+	static const int HACKALARM = 1;
+
+	static const int DESTRUCTALARM = 2;
+
 	GCWManager(Zone* zne);
 
 	Zone* getZone();
@@ -237,13 +217,13 @@ public:
 
 	void stop();
 
-	void performGCWTasks(bool initial);
+	void performGCWTasks();
 
 	bool canPlaceMoreBases(CreatureObject* creature);
 
-	int getBaseCount(CreatureObject* creature);
+	int getBaseCount(CreatureObject* creature, bool pvpOnly = false);
 
-	bool hasTooManyBasesNearby(int x, int y);
+	bool hasTooManyBasesNearby(float x, float y);
 
 	void registerGCWBase(BuildingObject* building, bool initializeBase);
 
@@ -254,6 +234,12 @@ public:
 	void addScanner(BuildingObject* building, SceneObject* scanner);
 
 	void addTurret(BuildingObject* building, SceneObject* turret);
+
+	void addBaseAlarm(BuildingObject* building, SceneObject* alarm);
+
+	unsigned long long spawnSecurityPatrol(BuildingObject* building, String& patrol, Vector3& location, unsigned long long parentID, float direction, bool stationary = false, bool attackable = true);
+
+	void spawnBaseSecurityPatrols(BuildingObject* building);
 
 	void startVulnerability(BuildingObject* building);
 
@@ -281,15 +267,21 @@ public:
 
 	bool isFacilityRebooting(BuildingObject* building);
 
+	bool isPlanetCapped();
+
 	bool canUseTerminals(CreatureObject* creature, BuildingObject* building, SceneObject* terminal);
 
 	bool areOpposingFactions(int faction1, int faction2);
+
+	bool isProperFactionStatus(CreatureObject* creature);
 
 	void awardSlicingXP(CreatureObject* creature, const String& xpType, int value);
 
 	void sendJamUplinkMenu(CreatureObject* creature, BuildingObject* building, TangibleObject* uplinkTerminal);
 
 	void verifyUplinkBand(CreatureObject* creature, BuildingObject* building, int band, TangibleObject* uplinkTerminal);
+
+	void renewUplinkBand(BuildingObject* building);
 
 	bool canStartSlice(CreatureObject* creature, TangibleObject* terminal);
 
@@ -307,7 +299,7 @@ public:
 
 	void handlePowerRegulatorSwitch(CreatureObject* creature, TangibleObject* powerRegulator, int indx);
 
-	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature);
+	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature, bool force = false);
 
 	void doBaseDestruction(StructureObject* structure);
 
@@ -333,9 +325,13 @@ public:
 
 	void notifyTurretDestruction(BuildingObject* building, InstallationObject* turret);
 
-	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* turret);
+	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* minefield);
+
+	void notifyScannerDestruction(BuildingObject* building, InstallationObject* scanner);
 
 	void sendSelectDeedToDonate(BuildingObject* building, CreatureObject* creature);
+
+	void sendSelectMineToDonate(InstallationObject* installation, CreatureObject* player);
 
 	void performDefenseDonation(BuildingObject* building, CreatureObject* creature, unsigned long long deedOID);
 
@@ -345,13 +341,27 @@ public:
 
 	float getGCWDiscount(CreatureObject* creature);
 
-	void runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+	bool runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+
+	void startContrabandScanSession(AiAgent* scanner, CreatureObject* player, bool enforced);
+
+	void performCheckWildContrabandScanTask();
+
+	int countContrabandItems(CreatureObject* player);
+
+	void activateBaseAlarms(BuildingObject* building, int alarmType);
+
+	void deactivateBaseAlarms(BuildingObject* building);
 
 	int isStrongholdCity(String& city);
 
 	int getMaxBasesPerPlayer();
 
-	bool isPlanetCapped();
+	int getBasePlacementDelay();
+
+	bool canPlaceGcwBaseInCombat();
+
+	bool allowPveBasePlacement();
 
 	int getImperialBaseCount();
 
@@ -369,6 +379,20 @@ public:
 
 	int getWinningFactionDifficultyScaling() const;
 
+	int getCrackdownPlayerScanCooldown() const;
+
+	int getCrackdownScannerCooldown() const;
+
+	int getCrackdownContrabandFineCredits() const;
+
+	int getCrackdownContrabandFineFactionPoints() const;
+
+	int getWildScanInterval() const;
+
+	int getWildScanLoginDelay() const;
+
+	int getWildScanChance() const;
+
 	int getGCWXPBonus() const;
 
 	int getPointValue(const String& templateString);
@@ -383,6 +407,8 @@ public:
 
 	bool shouldSpawnDefenses() const;
 
+	bool shouldSpawnBaseAlarms() const;
+
 	int getInitialVulnerabilityDelay() const;
 
 	int getTurretAutoFireTimeout() const;
@@ -392,6 +418,10 @@ public:
 	int getOvertCooldown() const;
 
 	int getResetTimer() const;
+
+	int getCrackdownScansEnabled() const;
+
+	String getCrackdownInfo(CreatureObject* player) const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -426,6 +456,10 @@ public:
 
 	static const int STATICFACTIONBASE = 2;
 
+	static const int HACKALARM = 1;
+
+	static const int DESTRUCTALARM = 2;
+
 private:
 	ManagedReference<Zone* > zone;
 
@@ -448,6 +482,8 @@ protected:
 
 	Vector<int> difficultyScalingThresholds;
 
+	Vector<String> planetsWithWildScans;
+
 	HashTable<int, float> racialPenaltyMap;
 
 private:
@@ -462,6 +498,24 @@ private:
 	int winningFaction;
 
 	int winnerDifficultyScaling;
+
+	bool crackdownScansEnabled;
+
+	bool crackdownScanPrivilegedPlayers;
+
+	int wildScanInterval;
+
+	int wildScanLoginDelay;
+
+	int wildScanChance;
+
+	int crackdownPlayerScanCooldown;
+
+	int crackdownScannerCooldown;
+
+	int crackdownContrabandFineCredits;
+
+	int crackdownContrabandFineFactionPoints;
 
 public:
 	unsigned long long gcwCheckTimer;
@@ -482,15 +536,29 @@ public:
 
 	int destructionTimer;
 
-	int maxBases;
+	int maxBasesPerPlanet;
+
+	int maxBasesPerPlayer;
+
+	int basePlacementDelay;
+
+	bool placeInCombat;
+
+	bool allowPveBases;
+
+	bool allowBaseComplex;
+
+	int baseComplexSize;
+
+	int nearbyBaseDistance;
+
+	int donationCooldown;
 
 	int overtCooldown;
 
 	int reactivationTimer;
 
 	int turretAutoFireTimeout;
-
-	int maxBasesPerPlayer;
 
 	int bonusXP;
 
@@ -499,6 +567,8 @@ public:
 	int loserBonus;
 
 	bool spawnDefenses;
+
+	bool spawnBaseAlarms;
 
 	int initialVulnerabilityDelay;
 
@@ -512,6 +582,8 @@ protected:
 	Vector<String> imperialStrongholds;
 
 	Vector<String> rebelStrongholds;
+
+	VectorMap<String, Reference<Vector<String>*> > squadFormations;
 
 public:
 	GCWManagerImplementation(Zone* zne);
@@ -528,17 +600,21 @@ public:
 
 	void stop();
 
-	void performGCWTasks(bool initial);
+	void performGCWTasks();
 
 private:
+	void verifyMinefields(BuildingObject* building);
+
+	void verifyScanners(BuildingObject* building);
+
 	void verifyTurrets(BuildingObject* building);
 
 public:
 	bool canPlaceMoreBases(CreatureObject* creature);
 
-	int getBaseCount(CreatureObject* creature);
+	int getBaseCount(CreatureObject* creature, bool pvpOnly = false);
 
-	bool hasTooManyBasesNearby(int x, int y);
+	bool hasTooManyBasesNearby(float x, float y);
 
 	void registerGCWBase(BuildingObject* building, bool initializeBase);
 
@@ -553,6 +629,12 @@ public:
 	void addScanner(BuildingObject* building, SceneObject* scanner);
 
 	void addTurret(BuildingObject* building, SceneObject* turret);
+
+	void addBaseAlarm(BuildingObject* building, SceneObject* alarm);
+
+	unsigned long long spawnSecurityPatrol(BuildingObject* building, String& patrol, Vector3& location, unsigned long long parentID, float direction, bool stationary = false, bool attackable = true);
+
+	void spawnBaseSecurityPatrols(BuildingObject* building);
 
 	void startVulnerability(BuildingObject* building);
 
@@ -592,6 +674,8 @@ public:
 
 	bool isFacilityRebooting(BuildingObject* building);
 
+	bool isPlanetCapped();
+
 private:
 	DestructibleBuildingDataComponent* getDestructibleBuildingData(BuildingObject* building);
 
@@ -600,16 +684,16 @@ public:
 
 	bool areOpposingFactions(int faction1, int faction2);
 
+	bool isProperFactionStatus(CreatureObject* creature);
+
 	void awardSlicingXP(CreatureObject* creature, const String& xpType, int value);
 
 	void sendJamUplinkMenu(CreatureObject* creature, BuildingObject* building, TangibleObject* uplinkTerminal);
 
 	void verifyUplinkBand(CreatureObject* creature, BuildingObject* building, int band, TangibleObject* uplinkTerminal);
 
-private:
 	void renewUplinkBand(BuildingObject* building);
 
-public:
 	bool canStartSlice(CreatureObject* creature, TangibleObject* terminal);
 
 	void completeSecuritySlice(CreatureObject* creature, TangibleObject* securityTerminal);
@@ -638,7 +722,7 @@ private:
 	void flipPowerSwitch(BuildingObject* building, Vector<bool>& switchStates, int flipSwitch);
 
 public:
-	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature);
+	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature, bool force = false);
 
 	void doBaseDestruction(StructureObject* structure);
 
@@ -664,18 +748,24 @@ public:
 
 	void notifyTurretDestruction(BuildingObject* building, InstallationObject* turret);
 
-	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* turret);
+	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* minefield);
+
+	void notifyScannerDestruction(BuildingObject* building, InstallationObject* scanner);
 
 	void sendSelectDeedToDonate(BuildingObject* building, CreatureObject* creature);
+
+	void sendSelectMineToDonate(InstallationObject* installation, CreatureObject* player);
 
 	void performDefenseDonation(BuildingObject* building, CreatureObject* creature, unsigned long long deedOID);
 
 private:
 	void performDonateMinefield(BuildingObject* building, CreatureObject* creature, Deed* deed);
 
+	void performDonateScanner(BuildingObject* building, CreatureObject* creature, Deed* deed);
+
 	void performDonateTurret(BuildingObject* building, CreatureObject* creature, Deed* deed);
 
-	unsigned long long addChildInstallationFromDeed(BuildingObject* building, ChildObject* child, CreatureObject* creature, Deed* deed);
+	unsigned long long addChildInstallationFromDeed(BuildingObject* building, const ChildObject* child, CreatureObject* creature, Deed* deed);
 
 public:
 	void sendTurretAttackListTo(CreatureObject* creature, SceneObject* turretControlTerminal);
@@ -692,7 +782,19 @@ private:
 public:
 	float getGCWDiscount(CreatureObject* creature);
 
-	void runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+	bool runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+
+	void startContrabandScanSession(AiAgent* scanner, CreatureObject* player, bool enforced);
+
+	void performCheckWildContrabandScanTask();
+
+private:
+	bool isContraband(SceneObject* item);
+
+	int countContrabandItemsInContainer(SceneObject* container);
+
+public:
+	int countContrabandItems(CreatureObject* player);
 
 private:
 	void spawnBaseTerminals(BuildingObject* building);
@@ -700,6 +802,10 @@ private:
 	void despawnBaseTerminals(BuildingObject* building);
 
 public:
+	void activateBaseAlarms(BuildingObject* building, int alarmType);
+
+	void deactivateBaseAlarms(BuildingObject* building);
+
 	int isStrongholdCity(String& city);
 
 protected:
@@ -738,7 +844,11 @@ protected:
 public:
 	int getMaxBasesPerPlayer();
 
-	bool isPlanetCapped();
+	int getBasePlacementDelay();
+
+	bool canPlaceGcwBaseInCombat();
+
+	bool allowPveBasePlacement();
 
 	int getImperialBaseCount();
 
@@ -759,10 +869,26 @@ private:
 
 	void updateWinningFaction();
 
+	void spawnGcwControlBanners();
+
 public:
 	unsigned int getWinningFaction() const;
 
 	int getWinningFactionDifficultyScaling() const;
+
+	int getCrackdownPlayerScanCooldown() const;
+
+	int getCrackdownScannerCooldown() const;
+
+	int getCrackdownContrabandFineCredits() const;
+
+	int getCrackdownContrabandFineFactionPoints() const;
+
+	int getWildScanInterval() const;
+
+	int getWildScanLoginDelay() const;
+
+	int getWildScanChance() const;
 
 	int getGCWXPBonus() const;
 
@@ -778,6 +904,8 @@ public:
 
 	bool shouldSpawnDefenses() const;
 
+	bool shouldSpawnBaseAlarms() const;
+
 	int getInitialVulnerabilityDelay() const;
 
 	int getTurretAutoFireTimeout() const;
@@ -787,6 +915,10 @@ public:
 	int getOvertCooldown() const;
 
 	int getResetTimer() const;
+
+	int getCrackdownScansEnabled() const;
+
+	String getCrackdownInfo(CreatureObject* player) const;
 
 	WeakReference<GCWManager*> _this;
 
@@ -841,13 +973,13 @@ public:
 
 	void stop();
 
-	void performGCWTasks(bool initial);
+	void performGCWTasks();
 
 	bool canPlaceMoreBases(CreatureObject* creature);
 
-	int getBaseCount(CreatureObject* creature);
+	int getBaseCount(CreatureObject* creature, bool pvpOnly);
 
-	bool hasTooManyBasesNearby(int x, int y);
+	bool hasTooManyBasesNearby(float x, float y);
 
 	void registerGCWBase(BuildingObject* building, bool initializeBase);
 
@@ -858,6 +990,12 @@ public:
 	void addScanner(BuildingObject* building, SceneObject* scanner);
 
 	void addTurret(BuildingObject* building, SceneObject* turret);
+
+	void addBaseAlarm(BuildingObject* building, SceneObject* alarm);
+
+	unsigned long long spawnSecurityPatrol(BuildingObject* building, String& patrol, Vector3& location, unsigned long long parentID, float direction, bool stationary, bool attackable);
+
+	void spawnBaseSecurityPatrols(BuildingObject* building);
 
 	void startVulnerability(BuildingObject* building);
 
@@ -885,15 +1023,21 @@ public:
 
 	bool isFacilityRebooting(BuildingObject* building);
 
+	bool isPlanetCapped();
+
 	bool canUseTerminals(CreatureObject* creature, BuildingObject* building, SceneObject* terminal);
 
 	bool areOpposingFactions(int faction1, int faction2);
+
+	bool isProperFactionStatus(CreatureObject* creature);
 
 	void awardSlicingXP(CreatureObject* creature, const String& xpType, int value);
 
 	void sendJamUplinkMenu(CreatureObject* creature, BuildingObject* building, TangibleObject* uplinkTerminal);
 
 	void verifyUplinkBand(CreatureObject* creature, BuildingObject* building, int band, TangibleObject* uplinkTerminal);
+
+	void renewUplinkBand(BuildingObject* building);
 
 	bool canStartSlice(CreatureObject* creature, TangibleObject* terminal);
 
@@ -911,7 +1055,7 @@ public:
 
 	void handlePowerRegulatorSwitch(CreatureObject* creature, TangibleObject* powerRegulator, int indx);
 
-	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature);
+	void scheduleBaseDestruction(BuildingObject* building, CreatureObject* creature, bool force);
 
 	void doBaseDestruction(StructureObject* structure);
 
@@ -935,9 +1079,13 @@ public:
 
 	void notifyTurretDestruction(BuildingObject* building, InstallationObject* turret);
 
-	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* turret);
+	void notifyMinefieldDestruction(BuildingObject* building, InstallationObject* minefield);
+
+	void notifyScannerDestruction(BuildingObject* building, InstallationObject* scanner);
 
 	void sendSelectDeedToDonate(BuildingObject* building, CreatureObject* creature);
+
+	void sendSelectMineToDonate(InstallationObject* installation, CreatureObject* player);
 
 	void performDefenseDonation(BuildingObject* building, CreatureObject* creature, unsigned long long deedOID);
 
@@ -947,13 +1095,27 @@ public:
 
 	float getGCWDiscount(CreatureObject* creature);
 
-	void runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+	bool runCrackdownScan(AiAgent* scanner, CreatureObject* player);
+
+	void startContrabandScanSession(AiAgent* scanner, CreatureObject* player, bool enforced);
+
+	void performCheckWildContrabandScanTask();
+
+	int countContrabandItems(CreatureObject* player);
+
+	void activateBaseAlarms(BuildingObject* building, int alarmType);
+
+	void deactivateBaseAlarms(BuildingObject* building);
 
 	int isStrongholdCity(String& city);
 
 	int getMaxBasesPerPlayer();
 
-	bool isPlanetCapped();
+	int getBasePlacementDelay();
+
+	bool canPlaceGcwBaseInCombat();
+
+	bool allowPveBasePlacement();
 
 	int getImperialBaseCount();
 

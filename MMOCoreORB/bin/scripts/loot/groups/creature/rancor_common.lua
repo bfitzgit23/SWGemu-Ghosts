@@ -5,10 +5,11 @@ rancor_common = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{itemTemplate = "rancor_bile", weight = 2500000},
-		{itemTemplate = "rancor_hides", weight = 2500000},
-		{itemTemplate = "rancor_padded_armor_segment", weight = 2500000},
-		{itemTemplate = "rancor_tooth", weight = 2500000}
+		{itemTemplate = "rancor_bile", weight = 2250000},
+		{itemTemplate = "rancor_hides", weight = 2250000},
+		{itemTemplate = "rancor_padded_armor_segment", weight = 2250000},
+		{itemTemplate = "rancor_tooth", weight = 2250000},
+		{groupTemplate = "ghosts_armor_parts", weight = 1000000}
 	}
 }
 

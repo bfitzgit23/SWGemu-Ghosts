@@ -42,6 +42,8 @@
 
 #include "system/lang/ref/Reference.h"
 
+#include "system/lang/Time.h"
+
 namespace server {
 namespace login {
 namespace account {
@@ -76,21 +78,21 @@ public:
 
 	bool isActive();
 
-	unsigned int getAccountID();
+	unsigned int getAccountID() const;
 
 	Reference<GalaxyAccountInfo* > getGalaxyAccountInfo(const String& galaxyName);
 
 	GalaxyAccountInfoMap* getGalaxyAccountInfo();
 
-	unsigned int getStationID();
+	unsigned int getStationID() const;
 
-	unsigned int getAdminLevel();
+	unsigned int getAdminLevel() const;
 
-	String getUsername();
+	String getUsername() const;
 
-	String getSalt();
+	String getSalt() const;
 
-	unsigned int getTimeCreated();
+	unsigned int getTimeCreated() const;
 
 	void updateFromDatabase();
 
@@ -100,13 +102,15 @@ public:
 
 	void updateGalaxyBans();
 
-	unsigned int getBanExpires();
+	unsigned int getBanExpires() const;
 
-	String getBanReason();
+	String getBanReason() const;
 
-	bool isBanned();
+	bool isBanned() const;
 
 	CharacterList* getCharacterList();
+
+	const GalaxyBanEntry* getGalaxyBan(unsigned const int galaxy) const;
 
 	GalaxyBanEntry* getGalaxyBan(unsigned const int galaxy);
 
@@ -114,17 +118,23 @@ public:
 
 	void removeGalaxyBan(unsigned const int galaxy);
 
+	const CharacterListEntry* getCharacterBan(unsigned const int galaxy, const String& name) const;
+
 	CharacterListEntry* getCharacterBan(unsigned const int galaxy, const String& name);
 
-	unsigned int getAgeInDays();
+	unsigned int getAgeInDays() const;
 
-	bool isSqlLoaded();
+	bool isSqlLoaded() const;
 
-	unsigned int getLastLoginInDays();
+	void setSessionId(const String& newSessionId);
 
-	void setLastLogin(unsigned int seconds);
+	String getSessionId();
 
-	unsigned int getLastLogin();
+	void setAccountDataValidUntil(Time& validUntil);
+
+	Time* getAccountDataValidUntil() const;
+
+	bool isAccountDataStale();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -177,7 +187,9 @@ protected:
 
 	unsigned int banAdmin;
 
-	unsigned int lastLogin;
+	String sessionId;
+
+	Time accountDataValidUntil;
 
 public:
 	AccountImplementation();
@@ -210,21 +222,21 @@ public:
 
 	bool isActive();
 
-	unsigned int getAccountID();
+	unsigned int getAccountID() const;
 
 	Reference<GalaxyAccountInfo* > getGalaxyAccountInfo(const String& galaxyName);
 
 	GalaxyAccountInfoMap* getGalaxyAccountInfo();
 
-	unsigned int getStationID();
+	unsigned int getStationID() const;
 
-	unsigned int getAdminLevel();
+	unsigned int getAdminLevel() const;
 
-	String getUsername();
+	String getUsername() const;
 
-	String getSalt();
+	String getSalt() const;
 
-	unsigned int getTimeCreated();
+	unsigned int getTimeCreated() const;
 
 	void updateFromDatabase();
 
@@ -234,13 +246,15 @@ public:
 
 	void updateGalaxyBans();
 
-	unsigned int getBanExpires();
+	unsigned int getBanExpires() const;
 
-	String getBanReason();
+	String getBanReason() const;
 
-	bool isBanned();
+	bool isBanned() const;
 
 	CharacterList* getCharacterList();
+
+	const GalaxyBanEntry* getGalaxyBan(unsigned const int galaxy) const;
 
 	GalaxyBanEntry* getGalaxyBan(unsigned const int galaxy);
 
@@ -248,17 +262,23 @@ public:
 
 	void removeGalaxyBan(unsigned const int galaxy);
 
+	const CharacterListEntry* getCharacterBan(unsigned const int galaxy, const String& name) const;
+
 	CharacterListEntry* getCharacterBan(unsigned const int galaxy, const String& name);
 
-	unsigned int getAgeInDays();
+	unsigned int getAgeInDays() const;
 
-	bool isSqlLoaded();
+	bool isSqlLoaded() const;
 
-	unsigned int getLastLoginInDays();
+	void setSessionId(const String& newSessionId);
 
-	void setLastLogin(unsigned int seconds);
+	String getSessionId();
 
-	unsigned int getLastLogin();
+	void setAccountDataValidUntil(Time& validUntil);
+
+	Time* getAccountDataValidUntil() const;
+
+	bool isAccountDataStale();
 
 	WeakReference<Account*> _this;
 
@@ -326,21 +346,15 @@ public:
 
 	unsigned int getBanAdmin();
 
-	void setTimeCreated(unsigned int seconds);
+	unsigned int getStationID() const;
 
-	bool isActive();
+	unsigned int getAdminLevel() const;
 
-	unsigned int getAccountID();
+	String getUsername() const;
 
-	unsigned int getStationID();
+	String getSalt() const;
 
-	unsigned int getAdminLevel();
-
-	String getUsername();
-
-	String getSalt();
-
-	unsigned int getTimeCreated();
+	unsigned int getTimeCreated() const;
 
 	void updateFromDatabase();
 
@@ -350,19 +364,19 @@ public:
 
 	void updateGalaxyBans();
 
-	unsigned int getBanExpires();
+	unsigned int getBanExpires() const;
 
-	String getBanReason();
+	String getBanReason() const;
 
-	bool isBanned();
+	bool isBanned() const;
 
 	void removeGalaxyBan(unsigned const int galaxy);
 
-	bool isSqlLoaded();
+	bool isSqlLoaded() const;
 
-	void setLastLogin(unsigned int seconds);
+	void setSessionId(const String& newSessionId);
 
-	unsigned int getLastLogin();
+	String getSessionId();
 
 };
 
@@ -397,6 +411,8 @@ namespace account {
 
 class AccountPOD : public ManagedObjectPOD {
 public:
+	Optional<unsigned int> created;
+
 	Optional<GalaxyAccountInfoMap> galaxyAccountInfo;
 
 	String _className;

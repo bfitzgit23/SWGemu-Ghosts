@@ -12,7 +12,7 @@
  *	DelayedBuffStub
  */
 
-enum {RPC_ACTIVATE__,RPC_DEACTIVATE__,RPC_USECHARGE__,RPC_SETUSESREMAINING__INT_,};
+enum {RPC_ACTIVATE__,RPC_DEACTIVATE__,RPC_USECHARGE__,RPC_SETUSESREMAINING__INT_,RPC_INITIALIZEBUFFOBSERVERS__,};
 
 DelayedBuff::DelayedBuff(CreatureObject* creo, unsigned int buffcrc, int effectCount) : Buff(DummyConstructorParameter::instance()) {
 	DelayedBuffImplementation* _implementation = new DelayedBuffImplementation(creo, buffcrc, effectCount);
@@ -99,6 +99,21 @@ void DelayedBuff::setUsesRemaining(int uses) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setUsesRemaining(uses);
+	}
+}
+
+void DelayedBuff::initializeBuffObservers() {
+	DelayedBuffImplementation* _implementation = static_cast<DelayedBuffImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INITIALIZEBUFFOBSERVERS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->initializeBuffObservers();
 	}
 }
 
@@ -220,10 +235,6 @@ bool DelayedBuffImplementation::readObjectMember(ObjectInputStream* stream, cons
 		TypeInfo<ManagedReference<CreatureObject* > >::parseFromBinaryStream(&player, stream);
 		return true;
 
-	case 0xddfc9753: //DelayedBuff.observer
-		TypeInfo<ManagedReference<DelayedBuffObserver* > >::parseFromBinaryStream(&observer, stream);
-		return true;
-
 	case 0xa623be3d: //DelayedBuff.eventTypes
 		TypeInfo<Vector<int> >::parseFromBinaryStream(&eventTypes, stream);
 		return true;
@@ -264,15 +275,6 @@ int DelayedBuffImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xddfc9753; //DelayedBuff.observer
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<DelayedBuffObserver* > >::toBinaryStream(&observer, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0xa623be3d; //DelayedBuff.eventTypes
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -294,8 +296,6 @@ void DelayedBuffImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["player"] = player;
 
-	thisObject["observer"] = observer;
-
 	thisObject["eventTypes"] = eventTypes;
 
 	j["DelayedBuff"] = thisObject;
@@ -313,8 +313,6 @@ void DelayedBuffImplementation::init(Vector<int>* events) {
 	ManagedReference<DelayedBuffObserver*> _ref0;
 	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		observer = new DelayedBuffObserver(this);
 	observer = _ref0 = new DelayedBuffObserver(_this.getReferenceUnsafeStaticCast());
-	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		ObjectManager.instance().persistObject(observer, 1, "buffs");
-	ObjectManager::instance()->persistObject(observer, 1, "buffs");
 	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -363,7 +361,23 @@ void DelayedBuffImplementation::setUsesRemaining(int uses) {
 }
 }
 
+void DelayedBuffImplementation::initializeBuffObservers() {
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		addObservers();
+	addObservers();
+}
+
 void DelayedBuffImplementation::addObservers() {
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		if 
+	if (!player){
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  			return;
+	return;
+}
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		for(
+	if (!observer){
+	ManagedReference<DelayedBuffObserver*> _ref0;
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  			observer = new DelayedBuffObserver(this);
+	observer = _ref0 = new DelayedBuffObserver(_this.getReferenceUnsafeStaticCast());
+}
 	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -375,6 +389,11 @@ void DelayedBuffImplementation::addObservers() {
 }
 
 void DelayedBuffImplementation::dropObservers() {
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		for(
+	if (!player || !observer){
+	// server/zone/objects/creature/buffs/DelayedBuff.idl():  			return;
+	return;
+}
 	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		}
 	for (	// server/zone/objects/creature/buffs/DelayedBuff.idl():  		for(int i = 0;
 	int i = 0;
@@ -429,6 +448,13 @@ void DelayedBuffAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_INITIALIZEBUFFOBSERVERS__:
+		{
+			
+			initializeBuffObservers();
+			
+		}
+		break;
 	default:
 		BuffAdapter::invokeMethod(methid, inv);
 	}
@@ -448,6 +474,10 @@ void DelayedBuffAdapter::useCharge() {
 
 void DelayedBuffAdapter::setUsesRemaining(int uses) {
 	(static_cast<DelayedBuff*>(stub))->setUsesRemaining(uses);
+}
+
+void DelayedBuffAdapter::initializeBuffObservers() {
+	(static_cast<DelayedBuff*>(stub))->initializeBuffObservers();
 }
 
 /*
@@ -511,9 +541,6 @@ void DelayedBuffPOD::writeJSON(nlohmann::json& j) {
 	if (player)
 		thisObject["player"] = player.value();
 
-	if (observer)
-		thisObject["observer"] = observer.value();
-
 	if (eventTypes)
 		thisObject["eventTypes"] = eventTypes.value();
 
@@ -556,17 +583,6 @@ int DelayedBuffPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (observer) {
-	_nameHashCode = 0xddfc9753; //DelayedBuff.observer
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<ManagedReference<DelayedBuffObserverPOD* > >::toBinaryStream(&observer.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (eventTypes) {
 	_nameHashCode = 0xa623be3d; //DelayedBuff.eventTypes
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -600,14 +616,6 @@ bool DelayedBuffPOD::readObjectMember(ObjectInputStream* stream, const uint32& n
 			ManagedReference<CreatureObjectPOD* > _mnplayer;
 			TypeInfo<ManagedReference<CreatureObjectPOD* > >::parseFromBinaryStream(&_mnplayer, stream);
 			player = std::move(_mnplayer);
-		}
-		return true;
-
-	case 0xddfc9753: //DelayedBuff.observer
-		{
-			ManagedReference<DelayedBuffObserverPOD* > _mnobserver;
-			TypeInfo<ManagedReference<DelayedBuffObserverPOD* > >::parseFromBinaryStream(&_mnobserver, stream);
-			observer = std::move(_mnobserver);
 		}
 		return true;
 
@@ -648,8 +656,6 @@ void DelayedBuffPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<int >::toBinaryStream(&usesRemaining.value(), stream);
 
 	TypeInfo<ManagedReference<CreatureObjectPOD* > >::toBinaryStream(&player.value(), stream);
-
-	TypeInfo<ManagedReference<DelayedBuffObserverPOD* > >::toBinaryStream(&observer.value(), stream);
 
 	TypeInfo<Vector<int> >::toBinaryStream(&eventTypes.value(), stream);
 

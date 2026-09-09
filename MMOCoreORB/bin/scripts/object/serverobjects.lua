@@ -40,9 +40,6 @@
 --gives permission to release a modified version without this exception; 
 --this exception also makes it possible to release a modified version 
 
--- Custom content
-includeFile("../custom_scripts/object/serverobjects.lua")
-
 --Children folder includes
 includeFile("battlefield_marker/serverobjects.lua")
 includeFile("building/serverobjects.lua")
@@ -83,6 +80,12 @@ includeFile("mission_recon_area.lua")
 includeFile("sarlacc_area.lua")
 includeFile("spawn_area.lua")
 includeFile("fs_village_area.lua")
-
---New Content
+includeFile("space_active_area.lua")
+includeFile("space_spawn_area.lua")
+includeFile("space_region_area.lua")
+includeFile("nebula_area.lua")
+-- New content (custom_content registry - restored, was lost in move to Desktop)
 includeFile("custom_content/serverobjects.lua")
+
+-- Custom content - Loads last to allow for overrides
+includeFile("../custom_scripts/object/serverobjects.lua")

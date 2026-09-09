@@ -4,13 +4,11 @@
 
 #include "SpawnObserver.h"
 
-#include "server/zone/objects/creature/CreatureObject.h"
-
 /*
  *	SpawnObserverStub
  */
 
-enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 3101886807,RPC_SETDIFFICULTY__INT_,RPC_SETSIZE__FLOAT_,RPC_GETLAIRTEMPLATENAME__,RPC_GETBABIESSPAWNED__,RPC_ISSPAWNOBSERVER__,RPC_ISLAIROBSERVER__,RPC_ISDESTROYMISSIONLAIROBSERVER__,RPC_ISTHEATERSPAWNOBSERVER__,RPC_ISDYNAMICSPAWNOBSERVER__,RPC_DESPAWNSPAWNS__};
+enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 3101886807,RPC_SETDIFFICULTY__INT_,RPC_SETSIZE__FLOAT_,RPC_GETLAIRTEMPLATENAME__,RPC_GETDIFFICULTYLEVEL__,RPC_GETBABIESSPAWNED__,RPC_ISSPAWNOBSERVER__,RPC_ISLAIROBSERVER__,RPC_ISDESTROYMISSIONLAIROBSERVER__,RPC_ISTHEATERSPAWNOBSERVER__,RPC_ISDYNAMICSPAWNOBSERVER__,RPC_ISSPACESPAWNOBSERVER__,RPC_DESPAWNSPAWNS__};
 
 SpawnObserver::SpawnObserver() : Observer(DummyConstructorParameter::instance()) {
 	SpawnObserverImplementation* _implementation = new SpawnObserverImplementation();
@@ -99,6 +97,20 @@ String SpawnObserver::getLairTemplateName() {
 		return _return_getLairTemplateName;
 	} else {
 		return _implementation->getLairTemplateName();
+	}
+}
+
+int SpawnObserver::getDifficultyLevel() {
+	SpawnObserverImplementation* _implementation = static_cast<SpawnObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETDIFFICULTYLEVEL__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getDifficultyLevel();
 	}
 }
 
@@ -193,6 +205,20 @@ bool SpawnObserver::isDynamicSpawnObserver() {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isDynamicSpawnObserver();
+	}
+}
+
+bool SpawnObserver::isSpaceSpawnObserver() {
+	SpawnObserverImplementation* _implementation = static_cast<SpawnObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPACESPAWNOBSERVER__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSpaceSpawnObserver();
 	}
 }
 
@@ -433,6 +459,11 @@ String SpawnObserverImplementation::getLairTemplateName() {
 	return lairTemplate->getName();
 }
 
+int SpawnObserverImplementation::getDifficultyLevel() {
+	// server/zone/managers/creature/SpawnObserver.idl():  		return difficulty;
+	return difficulty;
+}
+
 SynchronizedVector<ManagedReference<CreatureObject* > >* SpawnObserverImplementation::getSpawnedCreatures() {
 	// server/zone/managers/creature/SpawnObserver.idl():  		return spawnedCreatures;
 	return (&spawnedCreatures);
@@ -464,6 +495,11 @@ bool SpawnObserverImplementation::isTheaterSpawnObserver() {
 }
 
 bool SpawnObserverImplementation::isDynamicSpawnObserver() {
+	// server/zone/managers/creature/SpawnObserver.idl():  		return false;
+	return false;
+}
+
+bool SpawnObserverImplementation::isSpaceSpawnObserver() {
 	// server/zone/managers/creature/SpawnObserver.idl():  		return false;
 	return false;
 }
@@ -517,6 +553,13 @@ void SpawnObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertAscii(_m_res);
 		}
 		break;
+	case RPC_GETDIFFICULTYLEVEL__:
+		{
+			
+			int _m_res = getDifficultyLevel();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	case RPC_GETBABIESSPAWNED__:
 		{
 			
@@ -559,6 +602,13 @@ void SpawnObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISSPACESPAWNOBSERVER__:
+		{
+			
+			bool _m_res = isSpaceSpawnObserver();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_DESPAWNSPAWNS__:
 		{
 			
@@ -587,6 +637,10 @@ String SpawnObserverAdapter::getLairTemplateName() {
 	return (static_cast<SpawnObserver*>(stub))->getLairTemplateName();
 }
 
+int SpawnObserverAdapter::getDifficultyLevel() {
+	return (static_cast<SpawnObserver*>(stub))->getDifficultyLevel();
+}
+
 int SpawnObserverAdapter::getBabiesSpawned() {
 	return (static_cast<SpawnObserver*>(stub))->getBabiesSpawned();
 }
@@ -609,6 +663,10 @@ bool SpawnObserverAdapter::isTheaterSpawnObserver() {
 
 bool SpawnObserverAdapter::isDynamicSpawnObserver() {
 	return (static_cast<SpawnObserver*>(stub))->isDynamicSpawnObserver();
+}
+
+bool SpawnObserverAdapter::isSpaceSpawnObserver() {
+	return (static_cast<SpawnObserver*>(stub))->isSpaceSpawnObserver();
 }
 
 void SpawnObserverAdapter::despawnSpawns() {

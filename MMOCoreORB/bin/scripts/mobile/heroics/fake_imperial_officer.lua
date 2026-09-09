@@ -1,0 +1,37 @@
+fake_imperial_officer = Creature:new {
+	customName = "Imperial Officer",
+	randomNameType = NAME_GENERIC_TAG,
+	socialGroup = "townsperson",
+	faction = "",
+	level = 30,
+	chanceHit = 1.0,
+	damageMin = 200,
+	damageMax = 400,
+	baseXp = 1500,
+	baseHAM = 30000,
+	baseHAMmax = 35000,
+	armor = 1,
+	resists = {50,50,50,50,50,50,50,50,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	scale = 1.0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation",
+	attacks = merge(brawlermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(fake_imperial_officer, "fake_imperial_officer")

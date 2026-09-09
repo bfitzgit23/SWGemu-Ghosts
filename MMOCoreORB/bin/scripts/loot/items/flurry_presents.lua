@@ -3,7 +3,7 @@
 flurry_presents = {
 	minimumLevel = 0,
 	maximumLevel = 0,
-	customObjectName = "Flurry Gift",
+	customObjectName = "SWG GOTOR Gift",
 	directObjectTemplate = "object/tangible/item/loot_crates/xmas_crate.iff",
 	craftingValues = {
 	},

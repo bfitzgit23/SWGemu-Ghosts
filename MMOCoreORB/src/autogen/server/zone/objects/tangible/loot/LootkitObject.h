@@ -92,6 +92,8 @@ public:
 
 	int canAddObject(SceneObject* object, int containmentType, String& errorDescription);
 
+	bool isContainerObject();
+
 	int notifyObjectInserted(SceneObject* object);
 
 	int notifyObjectRemoved(SceneObject* object);
@@ -149,6 +151,8 @@ public:
 	void initializeTransientMembers();
 
 	int canAddObject(SceneObject* object, int containmentType, String& errorDescription);
+
+	bool isContainerObject();
 
 	int notifyObjectInserted(SceneObject* object);
 
@@ -217,6 +221,8 @@ public:
 	void initializeTransientMembers();
 
 	int canAddObject(SceneObject* object, int containmentType, String& errorDescription);
+
+	bool isContainerObject();
 
 	int notifyObjectInserted(SceneObject* object);
 

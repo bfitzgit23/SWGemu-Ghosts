@@ -133,9 +133,9 @@ namespace auction {
 
 class AuctionManager : public ManagedService {
 public:
-	static const int MAXBAZAARPRICE = 1000000;
+	static const int MAXBAZAARPRICE = 20000;
 
-	static const int MAXSALES = 100;
+	static const int MAXSALES = 25;
 
 	static const int SALESFEE = 20;
 
@@ -145,7 +145,7 @@ public:
 
 	static const int ITEMSPERPAGE = 100;
 
-	static const int VENDOREXPIREPERIOD = 7776000;
+	static const int VENDOREXPIREPERIOD = 2592000;
 
 	static const int COMMODITYEXPIREPERIOD = 604800;
 
@@ -181,7 +181,7 @@ public:
 
 	void initialize();
 
-	void addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium, bool isRelist = false);
+	void addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium);
 
 	AuctionItem* createVendorItem(CreatureObject* player, SceneObject* objectToSell, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium);
 
@@ -217,6 +217,8 @@ public:
 
 	String getVendorUID(SceneObject* vendor);
 
+	Logger* getLogger();
+
 	void updateVendorUID(SceneObject* vendor, const String& oldUID, const String& newUID);
 
 	void updateVendorSearch(SceneObject* vendor, bool enabled);
@@ -227,7 +229,7 @@ public:
 
 	void expireAuction(AuctionItem* item);
 
-	void deleteExpiredSale(AuctionItem* item);
+	void deleteExpiredSale(AuctionItem* item, bool sendMail = true);
 
 	bool isMarketEnabled();
 
@@ -281,9 +283,9 @@ protected:
 	VectorMap<ManagedReference<SceneObject* >, String> pendingOldUIDUpdates;
 
 public:
-	static const int MAXBAZAARPRICE = 1000000;
+	static const int MAXBAZAARPRICE = 20000;
 
-	static const int MAXSALES = 100;
+	static const int MAXSALES = 25;
 
 	static const int SALESFEE = 20;
 
@@ -293,7 +295,7 @@ public:
 
 	static const int ITEMSPERPAGE = 100;
 
-	static const int VENDOREXPIREPERIOD = 7776000;
+	static const int VENDOREXPIREPERIOD = 2592000;
 
 	static const int COMMODITYEXPIREPERIOD = 604800;
 
@@ -335,7 +337,7 @@ public:
 
 	void initialize();
 
-	void addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium, bool isRelist = false);
+	void addSaleItem(CreatureObject* player, unsigned long long objectid, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium);
 
 	AuctionItem* createVendorItem(CreatureObject* player, SceneObject* objectToSell, SceneObject* vendor, const UnicodeString& description, int price, unsigned int duration, bool auction, bool premium);
 
@@ -381,6 +383,8 @@ private:
 public:
 	String getVendorUID(SceneObject* vendor);
 
+	Logger* getLogger();
+
 	void updateVendorUID(SceneObject* vendor, const String& oldUID, const String& newUID);
 
 	void updateVendorSearch(SceneObject* vendor, bool enabled);
@@ -391,7 +395,7 @@ public:
 
 	void expireAuction(AuctionItem* item);
 
-	void deleteExpiredSale(AuctionItem* item);
+	void deleteExpiredSale(AuctionItem* item, bool sendMail = true);
 
 	bool isMarketEnabled();
 
@@ -486,7 +490,7 @@ public:
 
 	void expireAuction(AuctionItem* item);
 
-	void deleteExpiredSale(AuctionItem* item);
+	void deleteExpiredSale(AuctionItem* item, bool sendMail);
 
 	bool isMarketEnabled();
 

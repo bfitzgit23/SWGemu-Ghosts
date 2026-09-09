@@ -83,6 +83,10 @@ public:
 
 	bool isRegion();
 
+	bool isSpawnAreaObject();
+
+	bool isPlayerCity();
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -132,6 +136,10 @@ public:
 	void notifyExit(SceneObject* object);
 
 	bool isRegion();
+
+	bool isSpawnAreaObject();
+
+	bool isPlayerCity();
 
 	WeakReference<Region*> _this;
 
@@ -192,6 +200,10 @@ public:
 	void notifyExit(SceneObject* object);
 
 	bool isRegion();
+
+	bool isSpawnAreaObject();
+
+	bool isPlayerCity();
 
 };
 

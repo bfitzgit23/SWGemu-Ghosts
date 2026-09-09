@@ -29,7 +29,6 @@ mutated_rancor_sith = Creature:new {
 
 	templates = {"object/mobile/beast_master/shared_bm_mutated_rancor_sith.iff"},
 	lootGroups = {
-	},
 		{
 			groups = {
 				{group = "tierone", chance = 1500000},
@@ -47,7 +46,7 @@ mutated_rancor_sith = Creature:new {
 				{group = "tierdiamond", chance = 2500000},
 			},
 			lootChance = 10000000
-		}
+		},
 		{
 			groups = {
 				{group = "holocron_dark", chance = 5000000},

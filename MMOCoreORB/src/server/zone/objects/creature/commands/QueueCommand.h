@@ -36,6 +36,8 @@ protected:
 	bool admin;
 
 	uint32 cooldown; // in msec
+	String cooldownString;
+	String cooldownName;
 
 	float defaultTime;
 
@@ -50,6 +52,7 @@ protected:
 public:
 	QueueCommand(const String& skillname, ZoneProcessServer* serv);
 
+	const static int NOCOMBATQUEUE = -1;
 	const static int IMMEDIATE = 0;
 	const static int FRONT = 1;
 	const static int NORMAL = 2;
@@ -72,7 +75,6 @@ public:
 	const static int NOSTACKJEDIBUFF = 15;
 	const static int ALREADYAFFECTEDJEDIPOWER = 16;
 
-
 	virtual ~QueueCommand() {
 	}
 
@@ -80,6 +82,11 @@ public:
 	 * Checks each invalid locomotion with the player's current locomotion
 	 */
 	bool checkInvalidLocomotions(CreatureObject* creature) const;
+
+	/*
+	*	Checks cell access for the player creature if the target is in a cell
+	*/
+	bool playerEntryCheck(CreatureObject* creature, TangibleObject* target) const;
 
 	void onStateFail(CreatureObject* creature, uint32 actioncntr) const;
 	void onLocomotionFail(CreatureObject* creature, uint32 actioncntr) const;
@@ -130,6 +137,10 @@ public:
 	 */
 	bool checkStateMask(CreatureObject* creature) const {
 		return (creature->getStateBitmask() & stateMask) == 0;
+	}
+
+	bool checkSpaceStates(CreatureObject* creature) const {
+		return (creature->isPilotingShip() || creature->isInShipStation());
 	}
 
 	/**
@@ -195,8 +206,14 @@ public:
 	inline void setCharacterAbility(const String& ability) {
 		characterAbility = ability;
 
-		if(ability == "admin")
+		if(ability == "admin") {
 			admin = true;
+
+			// Allow config to potentially override admin cmd cooldown
+			if (cooldown == 0) {
+				setCooldown(0);
+			}
+		}
 	}
 
 	inline void setDefaultPriority(const String& priority) {
@@ -234,11 +251,15 @@ public:
 		return targetType;
 	}
 
+	inline String getName() const {
+		return name;
+	}
+
 	inline uint32 getNameCRC() const {
 		return nameCRC;
 	}
 
-	inline float getMaxRange() const {
+	inline virtual float getMaxRange() const {
 		return maxRangeToTarget;
 	}
 
@@ -272,23 +293,23 @@ public:
 		return addToQueue;
 	}
 
-	virtual bool isCombatCommand() {
+	virtual bool isCombatCommand() const {
 		return false;
 	}
 
-	virtual bool isForceHealCommand() {
+	virtual bool isForceHealCommand() const {
 		return false;
 	}
 
-	virtual bool isJediQueueCommand() {
+	virtual bool isJediQueueCommand() const {
 		return false;
 	}
 
-	virtual bool isJediCombatCommand() {
+	virtual bool isJediCombatCommand() const {
 		return false;
 	}
 
-	bool isJediCommand() {
+	bool isJediCommand() const {
 		return (isForceHealCommand() || isJediQueueCommand() || isJediCombatCommand());
 	}
 
@@ -296,9 +317,9 @@ public:
 		return skillMods.size();
 	}
 
-	inline int getSkillMod(int index, String& skillMod) {
+	inline int getSkillMod(int index, String& skillMod) const {
 		skillMod = skillMods.elementAt(index).getKey();
-		return skillMods.get(skillMod);
+		return skillMods.elementAt(index).getValue();
 	}
 
 	inline int getCommandGroup() const {
@@ -308,24 +329,96 @@ public:
 	void addSkillMod(const String& skillMod, const int value) {
 		skillMods.put(skillMod, value);
 	}
-	
+
 	bool isWearingArmor(CreatureObject* creo) const {
-		/*for (int i = 0; i < creo->getSlottedObjectsSize(); ++i) {
+		for (int i = 0; i < creo->getSlottedObjectsSize(); ++i) {
 			SceneObject* item = creo->getSlottedObject(i);
 			if (item != nullptr && item->isArmorObject())
 				return true;
-		}*/
+		}
 
 		return false;
 	}
 
-	virtual void handleBuff(SceneObject* creature, ManagedObject* object, int64 param) {
+	void setCooldownString(String msg) {
+		cooldownString = msg;
+	}
+
+	String getCooldownString() const {
+		return cooldownString;
+	}
+
+	void setCooldownName(String name) {
+		cooldownName = name;
+	}
+
+	String getCooldownName() const {
+		return cooldownName;
+	}
+
+	void setCooldown(int cooldownMili) {
+		cooldown = Math::max(0, ConfigManager::instance()->getInt("Core3.CommandCooldown." + name, cooldownMili));
+
+		if (cooldown > 0 && cooldownName.isEmpty()) {
+			cooldownName = "command_" + name;
+		}
+
+		if (cooldownMili == 0 && cooldown > 0) {
+			info(true) << "setCooldown(" << cooldownMili << "): cooldown=" << cooldown << "; cooldownName=" << cooldownName;
+		}
+	}
+
+	inline int getCooldown() const {
+		return cooldown;
+	}
+
+	bool checkCooldown(CreatureObject* creo) const;
+
+	virtual void handleBuff(SceneObject* creature, ManagedObject* object, int64 param) const {
 	}
 
 	int doCommonMedicalCommandChecks(CreatureObject* creature) const;
 
 	void checkForTef(CreatureObject* creature, CreatureObject* target) const;
-	void checkCmTef(CreatureObject* creature, CreatureObject* target) const;
+
+	String toStringData() const {
+		StringBuffer buf;
+		buf << "QueueCommand(" << name
+			<< ", nameCRC=" << nameCRC
+			<< ", stateMask=" << stateMask
+			<< ", targetType=" << targetType
+			<< ", maxRangeToTarget=" << maxRangeToTarget
+			<< ", disabled=" << disabled
+			<< ", addToQueue=" << addToQueue
+			<< ", admin=" << admin
+			<< ", cooldown=" << cooldown
+			<< ", cooldownString=\"" << cooldownString << "\""
+			<< ", defaultTime=" << defaultTime
+			<< ", characterAbility=" << characterAbility
+			<< ", defaultPriority=" << defaultPriority
+			<< ", commandGroup=" << commandGroup
+			<< ", invalidLocomotion=[";
+
+		for (int i = 0; i < invalidLocomotion.size(); ++i) {
+			if (i) {
+				buf << ", ";
+			}
+			buf << invalidLocomotion.get(i);
+		}
+
+		buf << "], skillMods=[";
+
+		for (int i = 0; i < skillMods.size(); ++i) {
+			if (i) {
+				buf << ", ";
+			}
+			buf << skillMods.get(i);
+		}
+
+		buf << "])";
+
+		return buf.toString();
+	}
 };
 
 

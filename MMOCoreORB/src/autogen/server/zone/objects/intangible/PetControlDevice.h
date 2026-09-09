@@ -104,6 +104,8 @@ class PetControlObserverPOD;
 
 using namespace server::zone::objects::intangible;
 
+#include "gmock/gmock.h"
+
 #include "server/zone/objects/creature/ai/PatrolPointsVector.h"
 
 #include "server/zone/objects/creature/ai/PatrolPoint.h"
@@ -127,7 +129,7 @@ public:
 
 	void storeObject(CreatureObject* player, bool force = false);
 
-	void callObject(CreatureObject* player);
+	void callObject(CreatureObject* player, bool initialCall = false);
 
 	void spawnObject(CreatureObject* player);
 
@@ -200,11 +202,15 @@ public:
 
 	void setLastCommand(unsigned int c);
 
-	unsigned int getLastCommand() const;
+	virtual unsigned int getLastCommand();
+
+	void setLastCommander(SceneObject* commander);
+
+	ManagedWeakReference<SceneObject* > getLastCommander();
 
 	void setLastCommandTarget(SceneObject* target);
 
-	ManagedWeakReference<SceneObject* > getLastCommandTarget();
+	virtual ManagedWeakReference<SceneObject* > getLastCommandTarget();
 
 	String getFutureName() const;
 
@@ -257,6 +263,10 @@ public:
 	bool isFriend(unsigned long long playerID);
 
 	void toggleFriend(unsigned long long playerID);
+
+	int getDataStorageCapacity();
+
+	String getRequiredAstromechCert();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -305,6 +315,8 @@ protected:
 
 	unsigned int lastCommand;
 
+	ManagedWeakReference<SceneObject* > lastCommander;
+
 	ManagedWeakReference<SceneObject* > lastCommandTarget;
 
 	String futureName;
@@ -332,7 +344,7 @@ public:
 
 	void storeObject(CreatureObject* player, bool force = false);
 
-	void callObject(CreatureObject* player);
+	void callObject(CreatureObject* player, bool initialCall = false);
 
 	void spawnObject(CreatureObject* player);
 
@@ -405,11 +417,15 @@ public:
 
 	void setLastCommand(unsigned int c);
 
-	unsigned int getLastCommand() const;
+	virtual unsigned int getLastCommand();
+
+	void setLastCommander(SceneObject* commander);
+
+	ManagedWeakReference<SceneObject* > getLastCommander();
 
 	void setLastCommandTarget(SceneObject* target);
 
-	ManagedWeakReference<SceneObject* > getLastCommandTarget();
+	virtual ManagedWeakReference<SceneObject* > getLastCommandTarget();
 
 	String getFutureName() const;
 
@@ -463,6 +479,10 @@ public:
 
 	void toggleFriend(unsigned long long playerID);
 
+	int getDataStorageCapacity();
+
+	String getRequiredAstromechCert();
+
 	WeakReference<PetControlDevice*> _this;
 
 	operator const PetControlDevice*();
@@ -509,7 +529,7 @@ public:
 
 	void storeObject(CreatureObject* player, bool force);
 
-	void callObject(CreatureObject* player);
+	void callObject(CreatureObject* player, bool initialCall);
 
 	void spawnObject(CreatureObject* player);
 
@@ -547,7 +567,7 @@ public:
 
 	void setLastCommand(unsigned int c);
 
-	unsigned int getLastCommand() const;
+	unsigned int getLastCommand();
 
 	String getFutureName() const;
 
@@ -593,6 +613,10 @@ public:
 
 	void toggleFriend(unsigned long long playerID);
 
+	int getDataStorageCapacity();
+
+	String getRequiredAstromechCert();
+
 };
 
 class PetControlDeviceHelper : public DistributedObjectClassHelper, public Singleton<PetControlDeviceHelper> {
@@ -612,6 +636,38 @@ public:
 	DistributedObjectAdapter* createAdapter(DistributedObjectStub* obj);
 
 	friend class Singleton<PetControlDeviceHelper>;
+};
+
+class MockPetControlDevice : public PetControlDevice {
+public:
+
+	MOCK_METHOD0(getLastCommand,unsigned int());
+	MOCK_METHOD0(getLastCommandTarget,ManagedWeakReference<SceneObject* >());
+	MOCK_METHOD2(isInRange,bool(SceneObject* obj, float range));
+	MOCK_METHOD1(getSlottedObjects,void(VectorMap<String, ManagedReference<SceneObject* > >& objects));
+	MOCK_METHOD1(getDistanceTo,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo3d,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo,float(Coordinate* coordinate));
+	MOCK_METHOD1(getDistanceTo3d,float(Coordinate* coordinate));
+	MOCK_METHOD0(getZone,Zone*());
+	MOCK_METHOD0(getZoneUnsafe,Zone*());
+	MOCK_METHOD1(getSlottedObject,Reference<SceneObject* >(const String& slot));
+	MOCK_METHOD0(getInventory,Reference<SceneObject* >());
+	MOCK_METHOD0(getDatapad,Reference<SceneObject* >());
+	MOCK_METHOD1(isFacingObject,bool(SceneObject* obj));
+	MOCK_METHOD0(getParent,ManagedWeakReference<SceneObject* >());
+	MOCK_METHOD0(asCreatureObject,CreatureObject*());
+	MOCK_METHOD0(asAiAgent,AiAgent*());
+	MOCK_METHOD0(asShipAiAgent,ShipAiAgent*());
+	MOCK_METHOD0(asShipObject,ShipObject*());
+	MOCK_METHOD0(asSpaceStationObject,SpaceStationObject*());
+	MOCK_METHOD0(asCapitalShipObject,CapitalShipObject*());
+	MOCK_METHOD0(asPobShip,PobShipObject*());
+	MOCK_METHOD0(asMultiPassengerShip,MultiPassengerShipObject*());
+	MOCK_METHOD0(asFighterShip,FighterShipObject*());
+	MOCK_METHOD0(asTangibleObject,TangibleObject*());
+	MOCK_METHOD0(getTemplateRadius,float());
+
 };
 
 } // namespace intangible
@@ -647,6 +703,8 @@ public:
 	Optional<unsigned int> trainingCommand;
 
 	Optional<unsigned int> lastCommand;
+
+	Optional<ManagedWeakReference<SceneObjectPOD* >> lastCommander;
 
 	Optional<ManagedWeakReference<SceneObjectPOD* >> lastCommandTarget;
 

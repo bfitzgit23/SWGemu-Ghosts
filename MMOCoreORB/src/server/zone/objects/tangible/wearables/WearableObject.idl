@@ -16,14 +16,12 @@ include system.util.VectorMap;
 class WearableObject extends TangibleObject {
 	protected int socketCount;
 	protected boolean socketsGenerated;
-
-	// TODO: remove this backwards compatibility fix at next wipe. Only usedSocketCount variable should be used.
-	protected boolean objectCreatedPreUsedSocketCountFix;
 	protected int usedSocketCount;
 
 	protected int modsNotInSockets;
 
 	public static final int MAXSOCKETS = 8;
+	public static final int MIN_SOCKET_MOD = 60;
 
 	@dereferenced
 	protected VectorMap<string, int> wearableSkillMods;
@@ -31,7 +29,6 @@ class WearableObject extends TangibleObject {
 	public WearableObject() {
 		socketsGenerated = false;
 		socketCount = 0;
-		objectCreatedPreUsedSocketCountFix = true;
 		usedSocketCount = 0;
 		modsNotInSockets = 0;
 		wearableSkillMods.setAllowOverwriteInsertPlan();
@@ -54,6 +51,8 @@ class WearableObject extends TangibleObject {
 	@local
 	public native void updateCraftingValues(CraftingValues values, boolean initialUpdate);
 
+	@preLocked
+	@arg1preLocked
 	public native void applyAttachment(CreatureObject player, Attachment attachment);
 
 	@read
@@ -69,17 +68,14 @@ class WearableObject extends TangibleObject {
 	@dirty
 	public native boolean isEquipped();
 
-	@dirty
+	@read
 	public int getMaxSockets() {
 		return socketCount;
 	}
 
-	@dirty
-	public native int socketsUsed();
-
-	@dirty
-	public int socketsLeft() {
-		return getMaxSockets() - socketsUsed();
+	@read
+	public int getRemainingSockets() {
+		return socketCount - usedSocketCount;
 	}
 
 	private native void generateSockets(CraftingValues craftingValues);
@@ -98,7 +94,7 @@ class WearableObject extends TangibleObject {
 	}
 
 	public abstract void addSkillMod(final int skillType, final string skillMod, int value, boolean notifyClient = true) {
-		if (wearableSkillMods.size() <= 8) {
+		if (wearableSkillMods.size() <= 6) {
 			wearableSkillMods.put(skillMod, value);
 			modsNotInSockets++;
 		}
@@ -112,10 +108,5 @@ class WearableObject extends TangibleObject {
 		}
 		socketCount = maxSockets;
 		socketsGenerated = true;
-	}
-
-	public void setSockets(int count)
-	{
-		socketCount = count;
 	}
 }

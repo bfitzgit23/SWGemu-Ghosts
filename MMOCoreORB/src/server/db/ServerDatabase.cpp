@@ -2,6 +2,7 @@
 				Copyright <SWGEmu>
 		See file COPYING for copying conditions.*/
 
+#ifndef WITH_SWGREALMS_API
 #include "ServerDatabase.h"
 
 #include "conf/ConfigManager.h"
@@ -11,27 +12,27 @@ Vector<Database*>* ServerDatabase::databases = nullptr;
 AtomicInteger ServerDatabase::currentDB;
 
 ServerDatabase::ServerDatabase(ConfigManager* configManager) {
-	setLoggingName("ServerDatabase");
-
 	const String& dbHost = configManager->getDBHost();
 	const String& dbUser = configManager->getDBUser();
 	const String& dbPass = configManager->getDBPass();
 	const String& dbName = configManager->getDBName();
 	const int     dbPort = configManager->getDBPort();
 
+	setLoggingName("ServerDatabase " + dbHost + ":" + String::valueOf(dbPort));
+
 	databases = new Vector<Database*>();
 
 	const static int DEFAULT_SERVERDATABASE_INSTANCES = configManager->getInt("Core3.DBInstances", 1);
 
 	for (int i = 0; i < DEFAULT_SERVERDATABASE_INSTANCES; ++i) {
-		Database* db = new server::db::mysql::MySqlDatabase(String("ServerDatabase" + String::valueOf(i)), dbHost);
+		Database* db = new server::db::mysql::MySqlDatabase(String("MySqlDatabase" + String::valueOf(i)), dbHost);
 		db->connect(dbName, dbUser, dbPass, dbPort);
 
 		databases->add(db);
 	}
 
 	try {
-		Reference<ResultSet*> result = instance()->executeQuery("SELECT `schema_version` FROM `db_metadata`;");
+		UniqueReference<ResultSet*> result(instance()->executeQuery("SELECT `schema_version` FROM `db_metadata`;"));
 
 		if (result != nullptr && result->next())
 			dbSchemaVersion = result->getInt(0);
@@ -40,7 +41,7 @@ ServerDatabase::ServerDatabase(ConfigManager* configManager) {
 
 		String createTable = "CREATE TABLE `db_metadata` AS SELECT 1000 as `schema_version`;";
 		try {
-			Reference<ResultSet*> result = instance()->executeQuery(createTable);
+			UniqueReference<ResultSet*> result(instance()->executeQuery(createTable));
 		} catch (const Exception& e) {
 			error("Failed to create db_metadata table, please manually create in mysql: " + createTable);
 		}
@@ -52,9 +53,7 @@ ServerDatabase::ServerDatabase(ConfigManager* configManager) {
 }
 
 ServerDatabase::~ServerDatabase() {
-	while (!databases->isEmpty()) {
-		Database* db = databases->remove(0);
-
+	for (auto db : *databases) {
 		delete db;
 	}
 
@@ -69,16 +68,17 @@ void ServerDatabase::alterDatabase(int nextSchemaVersion, const String& alterSql
 	String updateVersionSql = "UPDATE `db_metadata` SET `schema_version` = " + String::valueOf(nextSchemaVersion);
 
 	try {
-		Reference<ResultSet*> result = instance()->executeQuery(alterSql);
+		UniqueReference<ResultSet*> result(instance()->executeQuery(alterSql));
 
 		if (result != nullptr) {
 			result = instance()->executeQuery(updateVersionSql);
 			dbSchemaVersion = nextSchemaVersion;
-			info("Upgraded mysql database schema to version " + String::valueOf(dbSchemaVersion), true);
+
+			info(true) << "Upgraded mysql database schema to version " << dbSchemaVersion;
 		}
-	} catch (Exception& e) {
+	} catch (const Exception& e) {
 		error(e.getMessage());
-		error("Failed to update database schema, please manually execute: " + alterSql + " " + updateVersionSql);
+		error() << "Failed to update database schema, please manually execute: " << alterSql << " " << updateVersionSql;
 	}
 }
 
@@ -115,4 +115,38 @@ void ServerDatabase::updateDatabaseSchema() {
 		"ALTER TABLE `session_stats`"
 		" ADD COLUMN `uptime` INT(11) DEFAULT '-1' AFTER `timestamp`;"
 	);
+
+	alterDatabase(1004,
+		"ALTER TABLE `sessions`"
+		" MODIFY `session_id` CHAR(255) NOT NULL;"
+	);
+
+	alterDatabase(1005,
+		"CREATE TABLE `galaxy_access` ("
+		"`account_id` int(10) NOT NULL DEFAULT '0'"
+		",`galaxy_id` int(5) NOT NULL"
+		",`expires` datetime DEFAULT NULL"
+		",PRIMARY KEY (`account_id`,`galaxy_id`)"
+		") ENGINE=MyISAM DEFAULT CHARSET=latin1;"
+	);
+
+	alterDatabase(1006,
+		"ALTER TABLE `session_stats` MODIFY COLUMN `ip` VARCHAR(64);"
+	);
+
+	alterDatabase(1007,
+		"ALTER TABLE `sessions` MODIFY COLUMN `ip` VARCHAR(64);"
+	);
+
+	alterDatabase(1008,
+		"ALTER TABLE `account_log` MODIFY COLUMN `ip_address` VARCHAR(64);"
+	);
+
+	// Ghosts: keep one current account/IP record per galaxy so login/logout
+	// updates do not continually create duplicate account_ips rows.
+	alterDatabase(1009,
+		"ALTER TABLE `account_ips`"
+		" ADD UNIQUE KEY `uniq_account_galaxy_ip` (`account_id`,`galaxy_id`,`ip`);"
+	);
 }
+#endif // !WITH_SWGREALMS_API

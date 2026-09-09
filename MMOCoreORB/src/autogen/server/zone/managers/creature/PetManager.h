@@ -127,6 +127,10 @@ public:
 
 	static const int DROIDPET = 2;
 
+	static const int HELPERDROIDPET = 3;
+
+	static const int FLIGHTCOMPUTER = 4;
+
 	static const short INVALIDCREATURE = 0x00;
 
 	static const short TOOSMALL = 0x01;
@@ -181,6 +185,8 @@ public:
 
 	unsigned static const int CLEARPATROLPOINTS;
 
+	static const int TOTALCOMMANDS = 23;
+
 	PetManager(ZoneServer* server);
 
 	void initialize();
@@ -231,7 +237,7 @@ public:
 	/**
 	 * Returns whether the pet has the given message trained for the command
 	 */
-	bool isTrainedCommand(PetControlDevice* petControlDevice, unsigned int command, const String& msg);
+	int getTrainedCommandNum(PetControlDevice* petControlDevice, const String& msg);
 
 	/**
 	 * @pre { destructor and destructedObject locked }
@@ -291,6 +297,10 @@ public:
 
 	static const int DROIDPET = 2;
 
+	static const int HELPERDROIDPET = 3;
+
+	static const int FLIGHTCOMPUTER = 4;
+
 	static const short INVALIDCREATURE = 0x00;
 
 	static const short TOOSMALL = 0x01;
@@ -344,6 +354,8 @@ public:
 	unsigned static const int GETPATROLPOINT;
 
 	unsigned static const int CLEARPATROLPOINTS;
+
+	static const int TOTALCOMMANDS = 23;
 
 	PetManagerImplementation(ZoneServer* server);
 
@@ -410,7 +422,7 @@ public:
 	/**
 	 * Returns whether the pet has the given message trained for the command
 	 */
-	bool isTrainedCommand(PetControlDevice* petControlDevice, unsigned int command, const String& msg);
+	int getTrainedCommandNum(PetControlDevice* petControlDevice, const String& msg);
 
 	/**
 	 * @pre { destructor and destructedObject locked }

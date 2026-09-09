@@ -515,8 +515,7 @@ end
 function TutorialScreenPlay:setupTrooperPathing(pMobile)
 	createEvent(45000, "TutorialScreenPlay", "doRoomElevenTrooperPathing", pMobile, "")
 	createObserver(DESTINATIONREACHED, "TutorialScreenPlay", "trooperDestReached", pMobile)
-	AiAgent(pMobile):setAiTemplate("manualescortwalk") -- Don't move unless patrol point is added to list, walking speed
-	AiAgent(pMobile):setFollowState(4) -- Patrolling
+	AiAgent(pMobile):setMovementState(AI_PATROLLING)
 end
 
 -- Triggered any time a player changes between cells, sets previous room complete as they move to a new one
@@ -650,7 +649,7 @@ function TutorialScreenPlay:handleRoomOne(pPlayer)
 		createObserver(CHAT, "TutorialScreenPlay", "chatEvent", pPlayer)
 
 	elseif (curStep == 4) then -- Holocron tutorial
-		CreatureObject(pPlayer):sendOpenHolocronToPageMessage()
+		CreatureObject(pPlayer):sendOpenHolocronToPageMessage("WelcomeToSWG")
 		createObserver(NEWBIETUTORIALHOLOCRON, "TutorialScreenPlay", "holocronEvent", pPlayer)
 		CreatureObject(pPlayer):sendNewbieTutorialRequest("closeHolocron")
 
@@ -1444,10 +1443,11 @@ function TutorialScreenPlay:doStartPanic(pPanicNpc)
 
 	self:doPanicYelling(pPanicNpc)
 
-	AiAgent(pPanicNpc):setAiTemplate("manualescort") -- Don't move unless patrol point is added to list, walking speed
-	AiAgent(pPanicNpc):setFollowState(4) -- Patrolling
+	AiAgent(pPanicNpc):addObjectFlag(AI_NOAIAGGRO)
+	AiAgent(pPanicNpc):addObjectFlag(AI_ESCORT)
+	AiAgent(pPanicNpc):addObjectFlag(AI_STATIONARY) -- Don't move unless patrol point is added to list, walking speed
+	AiAgent(pPanicNpc):setMovementState(AI_PATROLLING)
 	AiAgent(pPanicNpc):stopWaiting()
-	AiAgent(pPanicNpc):setWait(0)
 	AiAgent(pPanicNpc):setNextPosition(47.1, -7, -51.5, cellID)
 	AiAgent(pPanicNpc):executeBehavior()
 end
@@ -1487,8 +1487,9 @@ function TutorialScreenPlay:handleRoomSeven(pPlayer)
 	for i = 1, 3, 1 do
 		local celebID = readData(playerID .. ":tutorial:roomSevenNervousGuy" .. i)
 		local pCeleb = getSceneObject(celebID)
+
 		if (pCeleb ~= nil) then
-			createEvent(getRandomNumber(5,10) * 1000, "TutorialScreenPlay", "doNervousGuySpeak", pCeleb, "")
+			createEvent(getRandomNumber(5, 10) * 1000, "TutorialScreenPlay", "doNervousGuySpeak", pCeleb, "")
 		end
 	end
 
@@ -1517,11 +1518,11 @@ function TutorialScreenPlay:doNervousGuySpeak(pGuy)
 	end
 
 	-- Throttle messages so they dont always occur every iteration
-	if (self:isInRoom(pPlayer, "r7") and getRandomNumber(1,20) > 10) then
+	if (self:isInRoom(pPlayer, "r7") and getRandomNumber(1, 20) > 10) then
 		spatialChat(pGuy, "@newbie_tutorial/newbie_convo:nervous_guy" .. getRandomNumber(1,5))
 	end
 
-	createEvent(getRandomNumber(20,30) * 1000, "TutorialScreenPlay", "doNervousGuySpeak", pGuy, "")
+	createEvent(getRandomNumber(20, 30) * 1000, "TutorialScreenPlay", "doNervousGuySpeak", pGuy, "")
 end
 
 -- Hallway with debris blocking path, must be destroyed
@@ -1936,7 +1937,6 @@ function TutorialScreenPlay:doRoomElevenTrooperPathing(pMobile)
 	local cellID = SceneObject(pCell):getObjectID()
 
 	AiAgent(pMobile):stopWaiting()
-	AiAgent(pMobile):setWait(0)
 	AiAgent(pMobile):setNextPosition(nextLoc[1], nextLoc[2], nextLoc[3], cellID)
 	AiAgent(pMobile):executeBehavior()
 end
@@ -2009,13 +2009,7 @@ function TutorialScreenPlay:getTutorialBuilding(pPlayer)
 		return nil
 	end
 
-	local pCell = SceneObject(pPlayer):getParent()
-
-	if (pCell == nil) then
-		return nil
-	end
-
-	return SceneObject(pCell):getParent()
+	return SceneObject(pPlayer):getRootParent()
 end
 
 -- Marks a room complete, if hud elements were enabled in that room, ensures they are enabled
@@ -2039,7 +2033,7 @@ end
 
 -- Checks if room is complete
 function TutorialScreenPlay:isRoomComplete(pPlayer, roomName)
-	if (pPlayer == nil) then
+	if (pPlayer == nil or roonName == nil or roomName == "") then
 		return false
 	end
 
@@ -2048,7 +2042,7 @@ end
 
 -- Checks if player is in a room
 function TutorialScreenPlay:isInRoom(pPlayer, roomName)
-	if (pPlayer == nil) then
+	if (pPlayer == nil or roonName == nil or roomName == "") then
 		return false
 	end
 
@@ -2060,17 +2054,17 @@ function TutorialScreenPlay:isInRoom(pPlayer, roomName)
 
 	local pBuilding = self:getTutorialBuilding(pPlayer)
 
-	if (pBuilding == nil) then
+	if (pBuilding == nil or not SceneObject(pBuilding):isBuildingObject()) then
 		return false
 	end
 
-	local pCellByName = BuildingObject(pBuilding):getNamedCell(roomName)
+	local pCell = BuildingObject(pBuilding):getNamedCell(roomName)
 
-	if (pCellByName == nil) then
+	if (pCell == nil or not SceneObject(pCell):isCellObject()) then
 		return false
 	end
 
-	return (SceneObject(pCellByName):getObjectID() == playerCellID)
+	return (SceneObject(pCell):getObjectID() == playerCellID)
 end
 
 -- Gives a player permission to a group

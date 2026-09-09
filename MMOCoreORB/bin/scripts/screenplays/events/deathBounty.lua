@@ -4,4 +4,4 @@ deathBounty = ScreenPlay:new {
 	screenplayName = deathBounty,
 }
 
-registerScreenPlay("deathBounty", true)
+registerScreenPlay("deathBounty", false)

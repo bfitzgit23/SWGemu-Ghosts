@@ -249,7 +249,7 @@ namespace sys {
 				return value;
 			}
 
-			len -= ret - 1;
+			len -= ret;
 
 			auto ret2 = snprintf(&buf[ret], len, ".%09ld", ts.tv_nsec);
 			if (ret2 < 0 || ret2 >= len)

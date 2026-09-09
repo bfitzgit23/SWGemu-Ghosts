@@ -12,7 +12,7 @@
  *	GeneticComponentStub
  */
 
-enum {RPC_SETSPECIALRESIST__INT_ = 245972379,RPC_ISSPECIALRESIST__INT_,RPC_SETSTATS__INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_,RPC_GETCLEVERNESS__,RPC_GETENDURANCE__,RPC_GETFIERCENESS__,RPC_GETPOWER__,RPC_GETINTELLIGENCE__,RPC_GETCOURAGE__,RPC_GETDEPENDENCY__,RPC_GETDEXTERITY__,RPC_GETFORTITUDE__,RPC_GETHARDINESS__,RPC_SETLEVEL__INT_,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETBLAST__,RPC_GETCOLD__,RPC_GETHEAT__,RPC_GETELECTRICAL__,RPC_GETACID__,RPC_GETSTUN__,RPC_GETSABER__,RPC_GETSPECIAL1__,RPC_GETSPECIAL2__,RPC_GETARMOR__,RPC_GETHIT__,RPC_GETSPEED__,RPC_GETMINDAMAGE__,RPC_GETMAXDAMAGE__,RPC_GETHEALTH__,RPC_GETMIND__,RPC_GETACTION__,RPC_GETLEVEL__,RPC_GETRANGED__,RPC_GETFOCUS__,RPC_GETWILLPOWER__,RPC_GETSTRENGTH__,RPC_GETCONSTITUTION__,RPC_GETQUICKNESS__,RPC_GETSTAMINA__,RPC_SETWILLPOWER__INT_,RPC_SETFOCUS__INT_,RPC_SETSTAMINA__INT_,RPC_SETSTRENGTH__INT_,RPC_SETQUICKNESS__INT_,RPC_SETCONSTITUTION__INT_,RPC_SETCLEVERNESS__INT_,RPC_SETENDURANCE__INT_,RPC_SETFIERCENESS__INT_,RPC_SETPOWER__INT_,RPC_SETINTELLECT__INT_,RPC_SETCOURAGE__INT_,RPC_SETDEPENDENCY__INT_,RPC_SETDEXTERITY__INT_,RPC_SETFORTITUDE__INT_,RPC_SETHARDINESS__INT_,RPC_SETENERGY__FLOAT_,RPC_SETBLAST__FLOAT_,RPC_SETCOLD__FLOAT_,RPC_SETHEAT__FLOAT_,RPC_SETELECTRIC__FLOAT_,RPC_SETACID__FLOAT_,RPC_SETSTUN__FLOAT_,RPC_SETSABER__FLOAT_,RPC_SETARMORRATING__INT_,RPC_SETKINETIC__FLOAT_,RPC_SETSPECIALATTACKONE__STRING_,RPC_SETSPECIALATTACKTWO__STRING_,RPC_SETRANGED__BOOL_,RPC_SETQUALITY__INT_,RPC_GETQUALITY__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CONVERTSPECIALATTACK__STRING_,RPC_RESISTVALUE__FLOAT_,};
+enum {RPC_SETSPECIALRESIST__INT_ = 245972379,RPC_ISSPECIALRESIST__INT_,RPC_SETSTATS__INT_INT_INT_INT_INT_INT_INT_INT_INT_INT_,RPC_GETCLEVERNESS__,RPC_GETENDURANCE__,RPC_GETFIERCENESS__,RPC_GETPOWER__,RPC_GETINTELLECT__,RPC_GETCOURAGE__,RPC_GETDEPENDABILITY__,RPC_GETDEXTERITY__,RPC_GETFORTITUDE__,RPC_GETHARDINESS__,RPC_SETLEVEL__INT_,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETBLAST__,RPC_GETCOLD__,RPC_GETHEAT__,RPC_GETELECTRICAL__,RPC_GETACID__,RPC_GETSTUN__,RPC_GETSABER__,RPC_GETSPECIAL1__,RPC_GETSPECIAL2__,RPC_GETARMOR__,RPC_GETHIT__,RPC_GETSPEED__,RPC_GETMINDAMAGE__,RPC_GETMAXDAMAGE__,RPC_GETHEALTH__,RPC_GETMIND__,RPC_GETACTION__,RPC_GETLEVEL__,RPC_GETRANGED__,RPC_GETFOCUS__,RPC_GETWILLPOWER__,RPC_GETSTRENGTH__,RPC_GETCONSTITUTION__,RPC_GETQUICKNESS__,RPC_GETSTAMINA__,RPC_SETWILLPOWER__INT_,RPC_SETFOCUS__INT_,RPC_SETSTAMINA__INT_,RPC_SETSTRENGTH__INT_,RPC_SETQUICKNESS__INT_,RPC_SETCONSTITUTION__INT_,RPC_SETCLEVERNESS__FLOAT_,RPC_SETENDURANCE__FLOAT_,RPC_SETFIERCENESS__FLOAT_,RPC_SETPOWER__FLOAT_,RPC_SETINTELLECT__FLOAT_,RPC_SETCOURAGE__FLOAT_,RPC_SETDEPENDABILITY__FLOAT_,RPC_SETDEXTERITY__FLOAT_,RPC_SETFORTITUDE__FLOAT_,RPC_SETHARDINESS__FLOAT_,RPC_SETENERGY__FLOAT_,RPC_SETBLAST__FLOAT_,RPC_SETCOLD__FLOAT_,RPC_SETHEAT__FLOAT_,RPC_SETELECTRIC__FLOAT_,RPC_SETACID__FLOAT_,RPC_SETSTUN__FLOAT_,RPC_SETSABER__FLOAT_,RPC_SETARMORRATING__INT_,RPC_SETKINETIC__FLOAT_,RPC_SETSPECIALATTACKONE__STRING_,RPC_SETSPECIALATTACKTWO__STRING_,RPC_SETRANGED__BOOL_,RPC_SETQUALITY__INT_,RPC_GETQUALITY__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_CONVERTSPECIALATTACK__STRING_,RPC_RESISTVALUE__FLOAT_,};
 
 GeneticComponent::GeneticComponent() : Component(DummyConstructorParameter::instance()) {
 	GeneticComponentImplementation* _implementation = new GeneticComponentImplementation();
@@ -30,14 +30,14 @@ GeneticComponent::~GeneticComponent() {
 
 
 
-void GeneticComponent::setSpecialResist(int type) {
+void GeneticComponent::setSpecialResist(unsigned int type) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_SETSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -45,14 +45,14 @@ void GeneticComponent::setSpecialResist(int type) {
 	}
 }
 
-bool GeneticComponent::isSpecialResist(int type) {
+bool GeneticComponent::isSpecialResist(unsigned int type) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_ISSPECIALRESIST__INT_);
-		method.addSignedIntParameter(type);
+		method.addUnsignedIntParameter(type);
 
 		return method.executeWithBooleanReturn();
 	} else {
@@ -140,17 +140,17 @@ int GeneticComponent::getPower() {
 	}
 }
 
-int GeneticComponent::getIntelligence() {
+int GeneticComponent::getIntellect() {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETINTELLIGENCE__);
+		DistributedMethod method(this, RPC_GETINTELLECT__);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getIntelligence();
+		return _implementation->getIntellect();
 	}
 }
 
@@ -168,17 +168,17 @@ int GeneticComponent::getCourage() {
 	}
 }
 
-int GeneticComponent::getDependency() {
+int GeneticComponent::getDependability() {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETDEPENDENCY__);
+		DistributedMethod method(this, RPC_GETDEPENDABILITY__);
 
 		return method.executeWithSignedIntReturn();
 	} else {
-		return _implementation->getDependency();
+		return _implementation->getDependability();
 	}
 }
 
@@ -711,14 +711,14 @@ void GeneticComponent::setConstitution(int value) {
 	}
 }
 
-void GeneticComponent::setCleverness(int value) {
+void GeneticComponent::setCleverness(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCLEVERNESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETCLEVERNESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -726,14 +726,14 @@ void GeneticComponent::setCleverness(int value) {
 	}
 }
 
-void GeneticComponent::setEndurance(int value) {
+void GeneticComponent::setEndurance(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETENDURANCE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETENDURANCE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -741,14 +741,14 @@ void GeneticComponent::setEndurance(int value) {
 	}
 }
 
-void GeneticComponent::setFierceness(int value) {
+void GeneticComponent::setFierceness(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETFIERCENESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETFIERCENESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -756,14 +756,14 @@ void GeneticComponent::setFierceness(int value) {
 	}
 }
 
-void GeneticComponent::setPower(int value) {
+void GeneticComponent::setPower(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETPOWER__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETPOWER__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -771,14 +771,14 @@ void GeneticComponent::setPower(int value) {
 	}
 }
 
-void GeneticComponent::setIntellect(int value) {
+void GeneticComponent::setIntellect(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETINTELLECT__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETINTELLECT__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -786,14 +786,14 @@ void GeneticComponent::setIntellect(int value) {
 	}
 }
 
-void GeneticComponent::setCourage(int value) {
+void GeneticComponent::setCourage(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETCOURAGE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETCOURAGE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -801,29 +801,29 @@ void GeneticComponent::setCourage(int value) {
 	}
 }
 
-void GeneticComponent::setDependency(int value) {
+void GeneticComponent::setDependability(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETDEPENDENCY__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETDEPENDABILITY__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->setDependency(value);
+		_implementation->setDependability(value);
 	}
 }
 
-void GeneticComponent::setDexterity(int value) {
+void GeneticComponent::setDexterity(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETDEXTERITY__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETDEXTERITY__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -831,14 +831,14 @@ void GeneticComponent::setDexterity(int value) {
 	}
 }
 
-void GeneticComponent::setFortitude(int value) {
+void GeneticComponent::setFortitude(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETFORTITUDE__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETFORTITUDE__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -846,14 +846,14 @@ void GeneticComponent::setFortitude(int value) {
 	}
 }
 
-void GeneticComponent::setHardiness(int value) {
+void GeneticComponent::setHardiness(float value) {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_SETHARDINESS__INT_);
-		method.addSignedIntParameter(value);
+		DistributedMethod method(this, RPC_SETHARDINESS__FLOAT_);
+		method.addFloatParameter(value);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -1163,7 +1163,7 @@ void GeneticComponent::resetResists(CraftingValues* values) {
 	}
 }
 
-int GeneticComponent::getEffectiveArmor() {
+float GeneticComponent::getEffectiveArmor() {
 	GeneticComponentImplementation* _implementation = static_cast<GeneticComponentImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -1284,43 +1284,43 @@ bool GeneticComponentImplementation::readObjectMember(ObjectInputStream* stream,
 
 	switch(nameHashCode) {
 	case 0x7278be62: //GeneticComponent.cleverness
-		TypeInfo<int >::parseFromBinaryStream(&cleverness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&cleverness, stream);
 		return true;
 
 	case 0x4e1cc05e: //GeneticComponent.endurance
-		TypeInfo<int >::parseFromBinaryStream(&endurance, stream);
+		TypeInfo<float >::parseFromBinaryStream(&endurance, stream);
 		return true;
 
 	case 0xd534362b: //GeneticComponent.fierceness
-		TypeInfo<int >::parseFromBinaryStream(&fierceness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&fierceness, stream);
 		return true;
 
 	case 0x938c0c: //GeneticComponent.power
-		TypeInfo<int >::parseFromBinaryStream(&power, stream);
+		TypeInfo<float >::parseFromBinaryStream(&power, stream);
 		return true;
 
-	case 0xd0f31507: //GeneticComponent.intelligence
-		TypeInfo<int >::parseFromBinaryStream(&intelligence, stream);
+	case 0x38f72d8c: //GeneticComponent.intellect
+		TypeInfo<float >::parseFromBinaryStream(&intellect, stream);
 		return true;
 
 	case 0xe7b461fd: //GeneticComponent.courage
-		TypeInfo<int >::parseFromBinaryStream(&courage, stream);
+		TypeInfo<float >::parseFromBinaryStream(&courage, stream);
 		return true;
 
-	case 0x44d0c271: //GeneticComponent.dependency
-		TypeInfo<int >::parseFromBinaryStream(&dependency, stream);
+	case 0x738c316a: //GeneticComponent.dependability
+		TypeInfo<float >::parseFromBinaryStream(&dependability, stream);
 		return true;
 
 	case 0x8757b6c4: //GeneticComponent.dexterity
-		TypeInfo<int >::parseFromBinaryStream(&dexterity, stream);
+		TypeInfo<float >::parseFromBinaryStream(&dexterity, stream);
 		return true;
 
 	case 0x355c15db: //GeneticComponent.fortitude
-		TypeInfo<int >::parseFromBinaryStream(&fortitude, stream);
+		TypeInfo<float >::parseFromBinaryStream(&fortitude, stream);
 		return true;
 
 	case 0xff30367d: //GeneticComponent.hardiness
-		TypeInfo<int >::parseFromBinaryStream(&hardiness, stream);
+		TypeInfo<float >::parseFromBinaryStream(&hardiness, stream);
 		return true;
 
 	case 0x78bc711: //GeneticComponent.special1
@@ -1461,7 +1461,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&cleverness, stream);
+	TypeInfo<float >::toBinaryStream(&cleverness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1470,7 +1470,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&endurance, stream);
+	TypeInfo<float >::toBinaryStream(&endurance, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1479,7 +1479,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fierceness, stream);
+	TypeInfo<float >::toBinaryStream(&fierceness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1488,16 +1488,16 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&power, stream);
+	TypeInfo<float >::toBinaryStream(&power, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xd0f31507; //GeneticComponent.intelligence
+	_nameHashCode = 0x38f72d8c; //GeneticComponent.intellect
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&intelligence, stream);
+	TypeInfo<float >::toBinaryStream(&intellect, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1506,16 +1506,16 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&courage, stream);
+	TypeInfo<float >::toBinaryStream(&courage, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x44d0c271; //GeneticComponent.dependency
+	_nameHashCode = 0x738c316a; //GeneticComponent.dependability
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dependency, stream);
+	TypeInfo<float >::toBinaryStream(&dependability, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1524,7 +1524,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dexterity, stream);
+	TypeInfo<float >::toBinaryStream(&dexterity, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1533,7 +1533,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fortitude, stream);
+	TypeInfo<float >::toBinaryStream(&fortitude, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1542,7 +1542,7 @@ int GeneticComponentImplementation::writeObjectMembers(ObjectOutputStream* strea
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&hardiness, stream);
+	TypeInfo<float >::toBinaryStream(&hardiness, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1824,11 +1824,11 @@ void GeneticComponentImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["power"] = power;
 
-	thisObject["intelligence"] = intelligence;
+	thisObject["intellect"] = intellect;
 
 	thisObject["courage"] = courage;
 
-	thisObject["dependency"] = dependency;
+	thisObject["dependability"] = dependability;
 
 	thisObject["dexterity"] = dexterity;
 
@@ -1901,26 +1901,26 @@ GeneticComponentImplementation::GeneticComponentImplementation() {
 	_initializeImplementation();
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		Logger.setLoggingName("GeneticComponent");
 	Logger::setLoggingName("GeneticComponent");
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		cleverness = 0;
-	cleverness = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		endurance = 0;
-	endurance = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fierceness = 0;
-	fierceness = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		power = 0;
-	power = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intelligence = 0;
-	intelligence = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		courage = 0;
-	courage = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependency = 0;
-	dependency = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dexterity = 0;
-	dexterity = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fortitude = 0;
-	fortitude = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hardiness = 0;
-	hardiness = 0;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fortitude = 0.f;
+	fortitude = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hardiness = 0.f;
+	hardiness = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dexterity = 0.f;
+	dexterity = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		endurance = 0.f;
+	endurance = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intellect = 0.f;
+	intellect = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		cleverness = 0.f;
+	cleverness = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependability = 0.f;
+	dependability = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		courage = 0.f;
+	courage = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fierceness = 0.f;
+	fierceness = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		power = 0.f;
+	power = 0.f;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		willPower = 0;
 	willPower = 0;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		constitution = 0;
@@ -1943,24 +1943,24 @@ GeneticComponentImplementation::GeneticComponentImplementation() {
 	quality = 7;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		armorRating = 0;
 	armorRating = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		kinResist = 0;
-	kinResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		energyResist = 0;
-	energyResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		blastResist = 0;
-	blastResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		coldResist = 0;
-	coldResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		heatResist = 0;
-	heatResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		elecResist = 0;
-	elecResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		acidResist = 0;
-	acidResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		stunResist = 0;
-	stunResist = 0;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		saberResist = -1;
-	saberResist = -1;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		kinResist = 0.f;
+	kinResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		energyResist = 0.f;
+	energyResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		blastResist = 0.f;
+	blastResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		coldResist = 0.f;
+	coldResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		heatResist = 0.f;
+	heatResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		elecResist = 0.f;
+	elecResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		acidResist = 0.f;
+	acidResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		stunResist = 0.f;
+	stunResist = 0.f;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		saberResist = -1.f;
+	saberResist = -1.f;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		level = 1;
 	level = 1;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		health = 10;
@@ -1969,8 +1969,8 @@ GeneticComponentImplementation::GeneticComponentImplementation() {
 	action = 10;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		mind = 10;
 	mind = 10;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hit = 0;
-	hit = 0;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hit = 0.f;
+	hit = 0.f;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		speed = 0;
 	speed = 0;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		minDam = 1;
@@ -1990,12 +1990,12 @@ void GeneticComponentImplementation::setStats(int cle, int end, int fie, int pow
 	fierceness = fie;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		power = pow;
 	power = pow;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intelligence = ite;
-	intelligence = ite;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intellect = ite;
+	intellect = ite;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		courage = cou;
 	courage = cou;
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependency = dep;
-	dependency = dep;
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependability = dep;
+	dependability = dep;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fortitude = frt;
 	fortitude = frt;
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hardiness = har;
@@ -2024,9 +2024,9 @@ int GeneticComponentImplementation::getPower() {
 	return power;
 }
 
-int GeneticComponentImplementation::getIntelligence() {
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		return intelligence;
-	return intelligence;
+int GeneticComponentImplementation::getIntellect() {
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		return intellect;
+	return intellect;
 }
 
 int GeneticComponentImplementation::getCourage() {
@@ -2034,9 +2034,9 @@ int GeneticComponentImplementation::getCourage() {
 	return courage;
 }
 
-int GeneticComponentImplementation::getDependency() {
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		return dependency;
-	return dependency;
+int GeneticComponentImplementation::getDependability() {
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		return dependability;
+	return dependability;
 }
 
 int GeneticComponentImplementation::getDexterity() {
@@ -2224,52 +2224,52 @@ void GeneticComponentImplementation::setConstitution(int value) {
 	constitution = value;
 }
 
-void GeneticComponentImplementation::setCleverness(int value) {
+void GeneticComponentImplementation::setCleverness(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		cleverness = value;
 	cleverness = value;
 }
 
-void GeneticComponentImplementation::setEndurance(int value) {
+void GeneticComponentImplementation::setEndurance(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		endurance = value;
 	endurance = value;
 }
 
-void GeneticComponentImplementation::setFierceness(int value) {
+void GeneticComponentImplementation::setFierceness(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fierceness = value;
 	fierceness = value;
 }
 
-void GeneticComponentImplementation::setPower(int value) {
+void GeneticComponentImplementation::setPower(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		power = value;
 	power = value;
 }
 
-void GeneticComponentImplementation::setIntellect(int value) {
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intelligence = value;
-	intelligence = value;
+void GeneticComponentImplementation::setIntellect(float value) {
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		intellect = value;
+	intellect = value;
 }
 
-void GeneticComponentImplementation::setCourage(int value) {
+void GeneticComponentImplementation::setCourage(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		courage = value;
 	courage = value;
 }
 
-void GeneticComponentImplementation::setDependency(int value) {
-	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependency = value;
-	dependency = value;
+void GeneticComponentImplementation::setDependability(float value) {
+	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dependability = value;
+	dependability = value;
 }
 
-void GeneticComponentImplementation::setDexterity(int value) {
+void GeneticComponentImplementation::setDexterity(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		dexterity = value;
 	dexterity = value;
 }
 
-void GeneticComponentImplementation::setFortitude(int value) {
+void GeneticComponentImplementation::setFortitude(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		fortitude = value;
 	fortitude = value;
 }
 
-void GeneticComponentImplementation::setHardiness(int value) {
+void GeneticComponentImplementation::setHardiness(float value) {
 	// server/zone/objects/tangible/component/genetic/GeneticComponent.idl():  		hardiness = value;
 	hardiness = value;
 }
@@ -2366,7 +2366,7 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 	switch (methid) {
 	case RPC_SETSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			setSpecialResist(type);
 			
@@ -2374,7 +2374,7 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 		break;
 	case RPC_ISSPECIALRESIST__INT_:
 		{
-			int type = inv->getSignedIntParameter();
+			unsigned int type = inv->getUnsignedIntParameter();
 			
 			bool _m_res = isSpecialResist(type);
 			resp->insertBoolean(_m_res);
@@ -2425,10 +2425,10 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETINTELLIGENCE__:
+	case RPC_GETINTELLECT__:
 		{
 			
-			int _m_res = getIntelligence();
+			int _m_res = getIntellect();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -2439,10 +2439,10 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETDEPENDENCY__:
+	case RPC_GETDEPENDABILITY__:
 		{
 			
-			int _m_res = getDependency();
+			int _m_res = getDependability();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -2712,81 +2712,81 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			
 		}
 		break;
-	case RPC_SETCLEVERNESS__INT_:
+	case RPC_SETCLEVERNESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setCleverness(value);
 			
 		}
 		break;
-	case RPC_SETENDURANCE__INT_:
+	case RPC_SETENDURANCE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setEndurance(value);
 			
 		}
 		break;
-	case RPC_SETFIERCENESS__INT_:
+	case RPC_SETFIERCENESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setFierceness(value);
 			
 		}
 		break;
-	case RPC_SETPOWER__INT_:
+	case RPC_SETPOWER__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setPower(value);
 			
 		}
 		break;
-	case RPC_SETINTELLECT__INT_:
+	case RPC_SETINTELLECT__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setIntellect(value);
 			
 		}
 		break;
-	case RPC_SETCOURAGE__INT_:
+	case RPC_SETCOURAGE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setCourage(value);
 			
 		}
 		break;
-	case RPC_SETDEPENDENCY__INT_:
+	case RPC_SETDEPENDABILITY__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
-			setDependency(value);
+			setDependability(value);
 			
 		}
 		break;
-	case RPC_SETDEXTERITY__INT_:
+	case RPC_SETDEXTERITY__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setDexterity(value);
 			
 		}
 		break;
-	case RPC_SETFORTITUDE__INT_:
+	case RPC_SETFORTITUDE__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setFortitude(value);
 			
 		}
 		break;
-	case RPC_SETHARDINESS__INT_:
+	case RPC_SETHARDINESS__FLOAT_:
 		{
-			int value = inv->getSignedIntParameter();
+			float value = inv->getFloatParameter();
 			
 			setHardiness(value);
 			
@@ -2939,11 +2939,11 @@ void GeneticComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 	}
 }
 
-void GeneticComponentAdapter::setSpecialResist(int type) {
+void GeneticComponentAdapter::setSpecialResist(unsigned int type) {
 	(static_cast<GeneticComponent*>(stub))->setSpecialResist(type);
 }
 
-bool GeneticComponentAdapter::isSpecialResist(int type) {
+bool GeneticComponentAdapter::isSpecialResist(unsigned int type) {
 	return (static_cast<GeneticComponent*>(stub))->isSpecialResist(type);
 }
 
@@ -2967,16 +2967,16 @@ int GeneticComponentAdapter::getPower() {
 	return (static_cast<GeneticComponent*>(stub))->getPower();
 }
 
-int GeneticComponentAdapter::getIntelligence() {
-	return (static_cast<GeneticComponent*>(stub))->getIntelligence();
+int GeneticComponentAdapter::getIntellect() {
+	return (static_cast<GeneticComponent*>(stub))->getIntellect();
 }
 
 int GeneticComponentAdapter::getCourage() {
 	return (static_cast<GeneticComponent*>(stub))->getCourage();
 }
 
-int GeneticComponentAdapter::getDependency() {
-	return (static_cast<GeneticComponent*>(stub))->getDependency();
+int GeneticComponentAdapter::getDependability() {
+	return (static_cast<GeneticComponent*>(stub))->getDependability();
 }
 
 int GeneticComponentAdapter::getDexterity() {
@@ -3127,43 +3127,43 @@ void GeneticComponentAdapter::setConstitution(int value) {
 	(static_cast<GeneticComponent*>(stub))->setConstitution(value);
 }
 
-void GeneticComponentAdapter::setCleverness(int value) {
+void GeneticComponentAdapter::setCleverness(float value) {
 	(static_cast<GeneticComponent*>(stub))->setCleverness(value);
 }
 
-void GeneticComponentAdapter::setEndurance(int value) {
+void GeneticComponentAdapter::setEndurance(float value) {
 	(static_cast<GeneticComponent*>(stub))->setEndurance(value);
 }
 
-void GeneticComponentAdapter::setFierceness(int value) {
+void GeneticComponentAdapter::setFierceness(float value) {
 	(static_cast<GeneticComponent*>(stub))->setFierceness(value);
 }
 
-void GeneticComponentAdapter::setPower(int value) {
+void GeneticComponentAdapter::setPower(float value) {
 	(static_cast<GeneticComponent*>(stub))->setPower(value);
 }
 
-void GeneticComponentAdapter::setIntellect(int value) {
+void GeneticComponentAdapter::setIntellect(float value) {
 	(static_cast<GeneticComponent*>(stub))->setIntellect(value);
 }
 
-void GeneticComponentAdapter::setCourage(int value) {
+void GeneticComponentAdapter::setCourage(float value) {
 	(static_cast<GeneticComponent*>(stub))->setCourage(value);
 }
 
-void GeneticComponentAdapter::setDependency(int value) {
-	(static_cast<GeneticComponent*>(stub))->setDependency(value);
+void GeneticComponentAdapter::setDependability(float value) {
+	(static_cast<GeneticComponent*>(stub))->setDependability(value);
 }
 
-void GeneticComponentAdapter::setDexterity(int value) {
+void GeneticComponentAdapter::setDexterity(float value) {
 	(static_cast<GeneticComponent*>(stub))->setDexterity(value);
 }
 
-void GeneticComponentAdapter::setFortitude(int value) {
+void GeneticComponentAdapter::setFortitude(float value) {
 	(static_cast<GeneticComponent*>(stub))->setFortitude(value);
 }
 
-void GeneticComponentAdapter::setHardiness(int value) {
+void GeneticComponentAdapter::setHardiness(float value) {
 	(static_cast<GeneticComponent*>(stub))->setHardiness(value);
 }
 
@@ -3307,14 +3307,14 @@ void GeneticComponentPOD::writeJSON(nlohmann::json& j) {
 	if (power)
 		thisObject["power"] = power.value();
 
-	if (intelligence)
-		thisObject["intelligence"] = intelligence.value();
+	if (intellect)
+		thisObject["intellect"] = intellect.value();
 
 	if (courage)
 		thisObject["courage"] = courage.value();
 
-	if (dependency)
-		thisObject["dependency"] = dependency.value();
+	if (dependability)
+		thisObject["dependability"] = dependability.value();
 
 	if (dexterity)
 		thisObject["dexterity"] = dexterity.value();
@@ -3434,7 +3434,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&cleverness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&cleverness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3445,7 +3445,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&endurance.value(), stream);
+	TypeInfo<float >::toBinaryStream(&endurance.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3456,7 +3456,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fierceness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fierceness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3467,18 +3467,18 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&power.value(), stream);
+	TypeInfo<float >::toBinaryStream(&power.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 	}
 
-	if (intelligence) {
-	_nameHashCode = 0xd0f31507; //GeneticComponent.intelligence
+	if (intellect) {
+	_nameHashCode = 0x38f72d8c; //GeneticComponent.intellect
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&intelligence.value(), stream);
+	TypeInfo<float >::toBinaryStream(&intellect.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3489,18 +3489,18 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&courage.value(), stream);
+	TypeInfo<float >::toBinaryStream(&courage.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 	}
 
-	if (dependency) {
-	_nameHashCode = 0x44d0c271; //GeneticComponent.dependency
+	if (dependability) {
+	_nameHashCode = 0x738c316a; //GeneticComponent.dependability
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dependability.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3511,7 +3511,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&dexterity.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dexterity.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3522,7 +3522,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&fortitude.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fortitude.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3533,7 +3533,7 @@ int GeneticComponentPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&hardiness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&hardiness.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3869,80 +3869,80 @@ bool GeneticComponentPOD::readObjectMember(ObjectInputStream* stream, const uint
 	switch(nameHashCode) {
 	case 0x7278be62: //GeneticComponent.cleverness
 		{
-			int _mncleverness;
-			TypeInfo<int >::parseFromBinaryStream(&_mncleverness, stream);
+			float _mncleverness;
+			TypeInfo<float >::parseFromBinaryStream(&_mncleverness, stream);
 			cleverness = std::move(_mncleverness);
 		}
 		return true;
 
 	case 0x4e1cc05e: //GeneticComponent.endurance
 		{
-			int _mnendurance;
-			TypeInfo<int >::parseFromBinaryStream(&_mnendurance, stream);
+			float _mnendurance;
+			TypeInfo<float >::parseFromBinaryStream(&_mnendurance, stream);
 			endurance = std::move(_mnendurance);
 		}
 		return true;
 
 	case 0xd534362b: //GeneticComponent.fierceness
 		{
-			int _mnfierceness;
-			TypeInfo<int >::parseFromBinaryStream(&_mnfierceness, stream);
+			float _mnfierceness;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfierceness, stream);
 			fierceness = std::move(_mnfierceness);
 		}
 		return true;
 
 	case 0x938c0c: //GeneticComponent.power
 		{
-			int _mnpower;
-			TypeInfo<int >::parseFromBinaryStream(&_mnpower, stream);
+			float _mnpower;
+			TypeInfo<float >::parseFromBinaryStream(&_mnpower, stream);
 			power = std::move(_mnpower);
 		}
 		return true;
 
-	case 0xd0f31507: //GeneticComponent.intelligence
+	case 0x38f72d8c: //GeneticComponent.intellect
 		{
-			int _mnintelligence;
-			TypeInfo<int >::parseFromBinaryStream(&_mnintelligence, stream);
-			intelligence = std::move(_mnintelligence);
+			float _mnintellect;
+			TypeInfo<float >::parseFromBinaryStream(&_mnintellect, stream);
+			intellect = std::move(_mnintellect);
 		}
 		return true;
 
 	case 0xe7b461fd: //GeneticComponent.courage
 		{
-			int _mncourage;
-			TypeInfo<int >::parseFromBinaryStream(&_mncourage, stream);
+			float _mncourage;
+			TypeInfo<float >::parseFromBinaryStream(&_mncourage, stream);
 			courage = std::move(_mncourage);
 		}
 		return true;
 
-	case 0x44d0c271: //GeneticComponent.dependency
+	case 0x738c316a: //GeneticComponent.dependability
 		{
-			int _mndependency;
-			TypeInfo<int >::parseFromBinaryStream(&_mndependency, stream);
-			dependency = std::move(_mndependency);
+			float _mndependability;
+			TypeInfo<float >::parseFromBinaryStream(&_mndependability, stream);
+			dependability = std::move(_mndependability);
 		}
 		return true;
 
 	case 0x8757b6c4: //GeneticComponent.dexterity
 		{
-			int _mndexterity;
-			TypeInfo<int >::parseFromBinaryStream(&_mndexterity, stream);
+			float _mndexterity;
+			TypeInfo<float >::parseFromBinaryStream(&_mndexterity, stream);
 			dexterity = std::move(_mndexterity);
 		}
 		return true;
 
 	case 0x355c15db: //GeneticComponent.fortitude
 		{
-			int _mnfortitude;
-			TypeInfo<int >::parseFromBinaryStream(&_mnfortitude, stream);
+			float _mnfortitude;
+			TypeInfo<float >::parseFromBinaryStream(&_mnfortitude, stream);
 			fortitude = std::move(_mnfortitude);
 		}
 		return true;
 
 	case 0xff30367d: //GeneticComponent.hardiness
 		{
-			int _mnhardiness;
-			TypeInfo<int >::parseFromBinaryStream(&_mnhardiness, stream);
+			float _mnhardiness;
+			TypeInfo<float >::parseFromBinaryStream(&_mnhardiness, stream);
 			hardiness = std::move(_mnhardiness);
 		}
 		return true;
@@ -4205,25 +4205,25 @@ void GeneticComponentPOD::readObject(ObjectInputStream* stream) {
 void GeneticComponentPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	ComponentPOD::writeObjectCompact(stream);
 
-	TypeInfo<int >::toBinaryStream(&cleverness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&cleverness.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&endurance.value(), stream);
+	TypeInfo<float >::toBinaryStream(&endurance.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&fierceness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fierceness.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&power.value(), stream);
+	TypeInfo<float >::toBinaryStream(&power.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&intelligence.value(), stream);
+	TypeInfo<float >::toBinaryStream(&intellect.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&courage.value(), stream);
+	TypeInfo<float >::toBinaryStream(&courage.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&dependency.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dependability.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&dexterity.value(), stream);
+	TypeInfo<float >::toBinaryStream(&dexterity.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&fortitude.value(), stream);
+	TypeInfo<float >::toBinaryStream(&fortitude.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&hardiness.value(), stream);
+	TypeInfo<float >::toBinaryStream(&hardiness.value(), stream);
 
 	TypeInfo<String >::toBinaryStream(&special1.value(), stream);
 

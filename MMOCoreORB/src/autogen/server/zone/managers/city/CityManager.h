@@ -83,22 +83,6 @@ using namespace server::zone::objects::scene;
 namespace server {
 namespace zone {
 namespace objects {
-namespace region {
-
-class CityRegion;
-
-class CityRegionPOD;
-
-} // namespace region
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::region;
-
-namespace server {
-namespace zone {
-namespace objects {
 namespace waypoint {
 
 class WaypointObject;
@@ -127,6 +111,8 @@ class StructureObjectPOD;
 } // namespace server
 
 using namespace server::zone::objects::structure;
+
+#include "server/zone/objects/region/CityRegion.h"
 
 #include "server/chat/StringIdChatParameter.h"
 

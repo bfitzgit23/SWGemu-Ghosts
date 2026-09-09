@@ -43,18 +43,19 @@
 object_building_faction_perk_hq_hq_s01_imp_pvp = object_building_faction_perk_hq_shared_hq_s01_imp_pvp:new {
 	lotSize = 0,
 	containerComponent = "GCWBaseContainerComponent",
-	zoneComponent = "StructureZoneComponent",
+	groundZoneComponent = "StructureZoneComponent",
 	maintenanceCost = 0,
 	baseMaintenanceRate = 0,
 	faction = "imperial",
 	pvpFaction = "imperial",
 	pvpStatusBitmask = OVERT,
 	dataObjectComponent = "DestructibleBuildingDataComponent",
-  allowedZones = {"chandrila", "corellia", "coruscant", "dantooine", "dathomir", "endor", "geonosis", "hoth", "hutta", "jakku", "kaas", "kashyyyk", "korriban", "lok", "mandalore", "mustafar", "naboo", "rori", "taanab", "talus", "tatooine", "yavin4"},
+	allowedZones = {"dantooine", "naboo", "rori","tatooine", "corellia", "lok", "talus"},
 	constructionMarker = "object/building/player/construction/construction_player_house_generic_medium_style_01.iff",
 	length = 7,
 	width = 6,
-	planetMapCategory = "imperial_hq",
+	planetMapCategory = "imperial",
+	planetMapSubCategory = "sf_imperial_forward_base",
 	alwaysPublic = 1,
 	factionBaseType = 1,
 
@@ -82,7 +83,9 @@ object_building_faction_perk_hq_hq_s01_imp_pvp = object_building_faction_perk_hq
 		{ templateFile = "object/installation/faction_perk/turret/tower_lg.iff", x = -17, z = 0, y = 10, ox = 0, oy = -0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
 		{ templateFile = "object/installation/faction_perk/turret/tower_lg.iff", x = 17, z = 0, y = 10, ox = 0, oy = 0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
 
-		{ templateFile = "object/installation/faction_perk/minefield/field_1x1.iff", x = 0, z = 0, y = 15, ox = 0, oy = 0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
+		{ templateFile = "object/installation/faction_perk/covert_detector/detector_32m.iff", x = 0, z = 0, y = 18, ox = 0, oy = 0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
+		{ templateFile = "object/installation/faction_perk/minefield/field_1x1.iff", x = 3.5, z = 0, y = 10, ox = 0, oy = 0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
+		{ templateFile = "object/installation/faction_perk/minefield/field_1x1.iff", x = -3.5, z = 0, y = 10, ox = 0, oy = 0, oz = 0, ow = 1, cellid = -1, containmentType = -1 },
 
 		{ templateFile = "object/tangible/terminal/terminal_hq_turret_control.iff", x = 0.1, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 3, containmentType = -1 },
 		{ templateFile = "object/tangible/terminal/terminal_hq_turret_control.iff", x = -1.18, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 3, containmentType = -1 },
@@ -90,16 +93,33 @@ object_building_faction_perk_hq_hq_s01_imp_pvp = object_building_faction_perk_hq
 		{ templateFile = "object/tangible/terminal/terminal_mission_imperial.iff", x = 4, z = 0.13, y = -5.89, ox = 0, oy = 0, oz = 0, ow = 1, cellid = 5, containmentType = -1 },
 
 		{ templateFile = "object/tangible/terminal/terminal_hq_imperial.iff", x = 0, z = 0, y = -6, ox = 0, oy = 0, oz = 0, ow = 1, cellid = 3, containmentType = -1 },
+
+		-- Base Alarms
+		{ templateFile = "object/tangible/faction_perk/faction_base_item/alarm_hack.iff", x = -6, z = 2.8, y = 3, ow = 0.005, ox = 0.707, oy = 0.707, oz = 0.005, cellid = 2, containmentType = -1 },
+		{ templateFile = "object/tangible/faction_perk/faction_base_item/alarm_hack_no_sound.iff", x = 0, z = 3.2, y = 2.5, ow = 0.700, ox = -0.700, oy = 0.04, oz = -0.04, cellid = 3, containmentType = -1 },
+		{ templateFile = "object/tangible/faction_perk/faction_base_item/alarm_destruct.iff", x = -5, z = 3.1, y = 3, ow = 0, ox = 0, oy = 0, oz = 1, cellid = 2, containmentType = -1 },
+		{ templateFile = "object/tangible/faction_perk/faction_base_item/alarm_destruct.iff", x = 0, z = 3.6, y = -2, ow = 0, ox = 0, oy = 0, oz = 1, cellid = 3, containmentType = -1 },
 	},
 
 	childCreatureObjects = {
+		{ mobile = "imperial_recruiter", x = -3.9, z = 0.13, y = -3.47, cellid = 6, containmentType = -1, respawn = 60, heading = -4.71},
 
-		{ mobile = "fbase_imperial_exterminator", x = -4.8, z = 0, y = 1.4, cellid = 2, respawn = 300, containmentType = -1, heading = 0},
-		{ mobile = "fbase_storm_commando", x = 3.6, z = 0, y = 1.8, cellid = 4, respawn = 300, containmentType = -1, heading = 4.71 },
-		{ mobile = "fbase_stormtrooper_medic", x = -3.8, z = 0, y = -2.3, cellid = 6, respawn = 300, containmentType = -1, heading = 3.14},
-		{ mobile = "fbase_dark_trooper", x = -0.1, z = 0, y = -2.8, cellid = 3, respawn = 300, containmentType = -1, heading = 0},
-		{ mobile = "fbase_stormtrooper_captain", x = 3.5, z = 0, y = -4, cellid = 5, respawn = 300, containmentType = -1, heading = 4.71 },
-		{ mobile = "imperial_recruiter", x = -1, z = 0, y = -5.5, cellid = 3, containmentType = -1, respawn = 60, heading = 0},
+		{ mobile = "fbase_command_security_guard_hard", x = 4.34, z = 0.13, y = 1.88, cellid = 4, respawn = 300, containmentType = -1, heading = 0},
+		{ mobile = "fbase_command_security_guard_hard", x = 2.6, z = 0, y = 0.75, cellid = 4, respawn = 300, containmentType = -1, heading = 4.71 },
+		{ mobile = "fbase_stormtrooper_captain", x = 3.4, z = 0.13, y = -3.3, cellid = 5, respawn = 300, containmentType = -1, heading = 4.71 },
+		{ mobile = "fbase_stormtrooper_medic", x = -0.9, z = 0.13, y = -5.1, cellid = 3, respawn = 300, containmentType = -1, heading = 0},
+		{ mobile = "fbase_dark_trooper", x = 0.9, z = 0.13, y = -5.1, cellid = 3, respawn = 300, containmentType = -1, heading = 0},
+	},
+
+	securityPatrols = {
+		{patrol = "imperial_small_1", x = 9.7, z = 0, y = 10.8, heading = 0},
+		{patrol = "imperial_small_1", x = -9.7, z = 0, y = 10.8, heading = 0},
+		{patrol = "imperial_small_1", x = 0, z = 0, y = -19.7, heading = 0},
+		{patrol = "imperial_small_1", x = -10.8, z = 0, y = -1.7, heading = 0},
+		{patrol = "imperial_small_1", x = 12.6, z = 0, y = -0.7, heading = 0},
+
+		{patrol = "imperial_large_1", x = -25.7, z = 0, y = 33.5, heading = 0},
+		{patrol = "imperial_large_1", x = 25.7, z = 0, y = 33.5, heading = 0},
 	},
 }
 

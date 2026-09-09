@@ -86,6 +86,8 @@ public:
 
 	void setUsesRemaining(int uses);
 
+	void initializeBuffObservers();
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -137,6 +139,8 @@ public:
 	void useCharge();
 
 	void setUsesRemaining(int uses);
+
+	void initializeBuffObservers();
 
 private:
 	void addObservers();
@@ -196,6 +200,8 @@ public:
 
 	void setUsesRemaining(int uses);
 
+	void initializeBuffObservers();
+
 };
 
 class DelayedBuffHelper : public DistributedObjectClassHelper, public Singleton<DelayedBuffHelper> {
@@ -236,8 +242,6 @@ public:
 	Optional<int> usesRemaining;
 
 	Optional<ManagedReference<CreatureObjectPOD* >> player;
-
-	Optional<ManagedReference<DelayedBuffObserverPOD* >> observer;
 
 	Optional<Vector<int>> eventTypes;
 

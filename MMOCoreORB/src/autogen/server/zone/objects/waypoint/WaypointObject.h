@@ -71,6 +71,10 @@ public:
 
 	static const byte COLOR_PURPLE;
 
+	static const byte COLOR_WHITE2;
+
+	static const byte COLOR_SPACE;
+
 	static const int SPECIALTYPE_FIND = 1;
 
 	static const int SPECIALTYPE_FINDFRIEND = 2;
@@ -123,7 +127,7 @@ public:
 
 	byte getColor() const;
 
-	String getDetailedDescription();
+	String getDetailedDescription() const;
 
 	void setDetailedDescription(const String& desc);
 
@@ -185,6 +189,10 @@ public:
 
 	static const byte COLOR_PURPLE;
 
+	static const byte COLOR_WHITE2;
+
+	static const byte COLOR_SPACE;
+
 	static const int SPECIALTYPE_FIND = 1;
 
 	static const int SPECIALTYPE_FINDFRIEND = 2;
@@ -239,7 +247,7 @@ public:
 
 	byte getColor() const;
 
-	String getDetailedDescription();
+	String getDetailedDescription() const;
 
 	void setDetailedDescription(const String& desc);
 
@@ -311,7 +319,7 @@ public:
 
 	byte getColor() const;
 
-	String getDetailedDescription();
+	String getDetailedDescription() const;
 
 	void setDetailedDescription(const String& desc);
 

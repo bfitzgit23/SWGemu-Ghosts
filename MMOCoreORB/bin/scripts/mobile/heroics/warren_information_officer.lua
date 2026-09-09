@@ -1,0 +1,37 @@
+warren_information_officer = Creature:new {
+	customName = "Warren Information Officer",
+	randomNameType = NAME_GENERIC_TAG,
+	socialGroup = "townsperson",
+	faction = "",
+	level = 25,
+	chanceHit = 1.0,
+	damageMin = 100,
+	damageMax = 200,
+	baseXp = 800,
+	baseHAM = 20000,
+	baseHAMmax = 24000,
+	armor = 1,
+	resists = {50,50,50,50,50,50,50,50,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	scale = 1.0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation",
+	attacks = merge(brawlermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(warren_information_officer, "warren_information_officer")

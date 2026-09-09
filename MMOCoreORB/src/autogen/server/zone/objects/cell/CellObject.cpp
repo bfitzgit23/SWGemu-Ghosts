@@ -8,11 +8,13 @@
 
 #include "server/zone/objects/building/BuildingObject.h"
 
+#include "server/zone/objects/ship/PobShipObject.h"
+
 /*
  *	CellObjectStub
  */
 
-enum {RPC_SETALLOWENTRYPERMISSIONGROUP__STRING_,RPC_NOTIFYLOADFROMDATABASE__,RPC_ONCONTAINERLOADED__,RPC_HASFORCELOADOBJECT__,RPC_ONBUILDINGINSERTEDTOZONE__BUILDINGOBJECT_,RPC_SENDCONTAINEROBJECTSTO__SCENEOBJECT_BOOL_,RPC_SENDPERMISSIONSTO__CREATUREOBJECT_BOOL_,RPC_CANADDOBJECT__SCENEOBJECT_INT_STRING_,RPC_TRANSFEROBJECT__SCENEOBJECT_INT_BOOL_BOOL_BOOL_,RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_GETCURRENTNUMBEROFPLAYERITEMS__,RPC_GETCURRENTNUMBEROFPLAYERVENDORS__,RPC_DESTROYALLPLAYERITEMS__,RPC_GETCELLNUMBER__,RPC_SETCELLNUMBER__INT_,RPC_ISCELLOBJECT__};
+enum {RPC_SETALLOWENTRYPERMISSIONGROUP__STRING_,RPC_NOTIFYLOADFROMDATABASE__,RPC_ONCONTAINERLOADED__,RPC_HASFORCELOADOBJECT__,RPC_ONBUILDINGINSERTEDTOZONE__BUILDINGOBJECT_,RPC_ONSHIPINSERTEDTOZONE__POBSHIPOBJECT_,RPC_SENDCONTAINEROBJECTSTO__SCENEOBJECT_BOOL_,RPC_SENDPERMISSIONSTO__CREATUREOBJECT_BOOL_,RPC_CANADDOBJECT__SCENEOBJECT_INT_STRING_,RPC_TRANSFEROBJECT__SCENEOBJECT_INT_BOOL_BOOL_BOOL_,RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_GETCURRENTNUMBEROFPLAYERITEMS__,RPC_DESTROYALLPLAYERITEMS__,RPC_GETCELLNUMBER__,RPC_SETCELLNUMBER__INT_,RPC_GETCELLFIREVARIABLE__,RPC_SETCELLFIREVARIABLE__FLOAT_,RPC_ISCELLOBJECT__};
 
 CellObject::CellObject() : SceneObject(DummyConstructorParameter::instance()) {
 	CellObjectImplementation* _implementation = new CellObjectImplementation();
@@ -113,6 +115,21 @@ void CellObject::onBuildingInsertedToZone(BuildingObject* building) {
 	}
 }
 
+void CellObject::onShipInsertedToZone(PobShipObject* pobShip) {
+	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ONSHIPINSERTEDTOZONE__POBSHIPOBJECT_);
+		method.addObjectParameter(pobShip);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->onShipInsertedToZone(pobShip);
+	}
+}
+
 void CellObject::sendContainerObjectsTo(SceneObject* player, bool forceLoad) {
 	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -181,20 +198,21 @@ bool CellObject::transferObject(SceneObject* object, int containmentType, bool n
 	}
 }
 
-bool CellObject::removeObject(SceneObject* object, SceneObject* destination, bool notifyClient) {
+bool CellObject::removeObject(SceneObject* object, SceneObject* destination, bool notifyClient, bool nullifyParent) {
 	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_);
+		DistributedMethod method(this, RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_BOOL_);
 		method.addObjectParameter(object);
 		method.addObjectParameter(destination);
 		method.addBooleanParameter(notifyClient);
+		method.addBooleanParameter(nullifyParent);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->removeObject(object, destination, notifyClient);
+		return _implementation->removeObject(object, destination, notifyClient, nullifyParent);
 	}
 }
 
@@ -241,20 +259,6 @@ int CellObject::getCurrentNumberOfPlayerItems() {
 	}
 }
 
-int CellObject::getCurrentNumberOfPlayerVendors() {
-	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETCURRENTNUMBEROFPLAYERVENDORS__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getCurrentNumberOfPlayerVendors();
-	}
-}
-
 void CellObject::destroyAllPlayerItems() {
 	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -296,6 +300,36 @@ void CellObject::setCellNumber(int number) {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		_implementation->setCellNumber(number);
+	}
+}
+
+float CellObject::getCellFireVariable() const {
+	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCELLFIREVARIABLE__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getCellFireVariable();
+	}
+}
+
+void CellObject::setCellFireVariable(float damageVar) {
+	CellObjectImplementation* _implementation = static_cast<CellObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETCELLFIREVARIABLE__FLOAT_);
+		method.addFloatParameter(damageVar);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setCellFireVariable(damageVar);
 	}
 }
 
@@ -431,6 +465,10 @@ bool CellObjectImplementation::readObjectMember(ObjectInputStream* stream, const
 		TypeInfo<AtomicInteger >::parseFromBinaryStream(&forceLoadObjectCount, stream);
 		return true;
 
+	case 0x2c927772: //CellObject.cellFireVariable
+		TypeInfo<float >::parseFromBinaryStream(&cellFireVariable, stream);
+		return true;
+
 	}
 
 	return false;
@@ -467,6 +505,15 @@ int CellObjectImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x2c927772; //CellObject.cellFireVariable
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&cellFireVariable, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -479,6 +526,8 @@ void CellObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["forceLoadObjectCount"] = forceLoadObjectCount;
 
+	thisObject["cellFireVariable"] = cellFireVariable;
+
 	j["CellObject"] = thisObject;
 }
 
@@ -488,6 +537,8 @@ CellObjectImplementation::CellObjectImplementation() {
 	Logger::setLoggingName("CellObject");
 	// server/zone/objects/cell/CellObject.idl():  		cellNumber = 0;
 	cellNumber = 0;
+	// server/zone/objects/cell/CellObject.idl():  		cellFireVariable = 0;
+	cellFireVariable = 0;
 	// server/zone/objects/cell/CellObject.idl():  		forceLoadObjectCount.set(0);
 	(&forceLoadObjectCount)->set(0);
 }
@@ -514,6 +565,11 @@ int CellObjectImplementation::getCellNumber() const{
 void CellObjectImplementation::setCellNumber(int number) {
 	// server/zone/objects/cell/CellObject.idl():  		cellNumber = number;
 	cellNumber = number;
+}
+
+float CellObjectImplementation::getCellFireVariable() const{
+	// server/zone/objects/cell/CellObject.idl():  		return cellFireVariable;
+	return cellFireVariable;
 }
 
 bool CellObjectImplementation::isCellObject() {
@@ -573,6 +629,14 @@ void CellObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_ONSHIPINSERTEDTOZONE__POBSHIPOBJECT_:
+		{
+			PobShipObject* pobShip = static_cast<PobShipObject*>(inv->getObjectParameter());
+			
+			onShipInsertedToZone(pobShip);
+			
+		}
+		break;
 	case RPC_SENDCONTAINEROBJECTSTO__SCENEOBJECT_BOOL_:
 		{
 			SceneObject* player = static_cast<SceneObject*>(inv->getObjectParameter());
@@ -613,13 +677,14 @@ void CellObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_:
+	case RPC_REMOVEOBJECT__SCENEOBJECT_SCENEOBJECT_BOOL_BOOL_:
 		{
 			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
 			SceneObject* destination = static_cast<SceneObject*>(inv->getObjectParameter());
 			bool notifyClient = inv->getBooleanParameter();
+			bool nullifyParent = inv->getBooleanParameter();
 			
-			bool _m_res = removeObject(object, destination, notifyClient);
+			bool _m_res = removeObject(object, destination, notifyClient, nullifyParent);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -645,13 +710,6 @@ void CellObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETCURRENTNUMBEROFPLAYERVENDORS__:
-		{
-			
-			int _m_res = getCurrentNumberOfPlayerVendors();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
 	case RPC_DESTROYALLPLAYERITEMS__:
 		{
 			
@@ -671,6 +729,21 @@ void CellObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int number = inv->getSignedIntParameter();
 			
 			setCellNumber(number);
+			
+		}
+		break;
+	case RPC_GETCELLFIREVARIABLE__:
+		{
+			
+			float _m_res = getCellFireVariable();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_SETCELLFIREVARIABLE__FLOAT_:
+		{
+			float damageVar = inv->getFloatParameter();
+			
+			setCellFireVariable(damageVar);
 			
 		}
 		break;
@@ -706,6 +779,10 @@ void CellObjectAdapter::onBuildingInsertedToZone(BuildingObject* building) {
 	(static_cast<CellObject*>(stub))->onBuildingInsertedToZone(building);
 }
 
+void CellObjectAdapter::onShipInsertedToZone(PobShipObject* pobShip) {
+	(static_cast<CellObject*>(stub))->onShipInsertedToZone(pobShip);
+}
+
 void CellObjectAdapter::sendContainerObjectsTo(SceneObject* player, bool forceLoad) {
 	(static_cast<CellObject*>(stub))->sendContainerObjectsTo(player, forceLoad);
 }
@@ -722,8 +799,8 @@ bool CellObjectAdapter::transferObject(SceneObject* object, int containmentType,
 	return (static_cast<CellObject*>(stub))->transferObject(object, containmentType, notifyClient, allowOverflow, notifyRoot);
 }
 
-bool CellObjectAdapter::removeObject(SceneObject* object, SceneObject* destination, bool notifyClient) {
-	return (static_cast<CellObject*>(stub))->removeObject(object, destination, notifyClient);
+bool CellObjectAdapter::removeObject(SceneObject* object, SceneObject* destination, bool notifyClient, bool nullifyParent) {
+	return (static_cast<CellObject*>(stub))->removeObject(object, destination, notifyClient, nullifyParent);
 }
 
 void CellObjectAdapter::initializeTransientMembers() {
@@ -738,10 +815,6 @@ int CellObjectAdapter::getCurrentNumberOfPlayerItems() {
 	return (static_cast<CellObject*>(stub))->getCurrentNumberOfPlayerItems();
 }
 
-int CellObjectAdapter::getCurrentNumberOfPlayerVendors() {
-	return (static_cast<CellObject*>(stub))->getCurrentNumberOfPlayerVendors();
-}
-
 void CellObjectAdapter::destroyAllPlayerItems() {
 	(static_cast<CellObject*>(stub))->destroyAllPlayerItems();
 }
@@ -752,6 +825,14 @@ int CellObjectAdapter::getCellNumber() const {
 
 void CellObjectAdapter::setCellNumber(int number) {
 	(static_cast<CellObject*>(stub))->setCellNumber(number);
+}
+
+float CellObjectAdapter::getCellFireVariable() const {
+	return (static_cast<CellObject*>(stub))->getCellFireVariable();
+}
+
+void CellObjectAdapter::setCellFireVariable(float damageVar) {
+	(static_cast<CellObject*>(stub))->setCellFireVariable(damageVar);
 }
 
 bool CellObjectAdapter::isCellObject() {
@@ -808,6 +889,7 @@ Luna<LuaCellObject>::RegType LuaCellObject::Register[] = {
 	{ "onContainerLoaded", &LuaCellObject::onContainerLoaded },
 	{ "hasForceLoadObject", &LuaCellObject::hasForceLoadObject },
 	{ "onBuildingInsertedToZone", &LuaCellObject::onBuildingInsertedToZone },
+	{ "onShipInsertedToZone", &LuaCellObject::onShipInsertedToZone },
 	{ "sendContainerObjectsTo", &LuaCellObject::sendContainerObjectsTo },
 	{ "sendPermissionsTo", &LuaCellObject::sendPermissionsTo },
 	{ "canAddObject", &LuaCellObject::canAddObject },
@@ -816,10 +898,11 @@ Luna<LuaCellObject>::RegType LuaCellObject::Register[] = {
 	{ "initializeTransientMembers", &LuaCellObject::initializeTransientMembers },
 	{ "sendBaselinesTo", &LuaCellObject::sendBaselinesTo },
 	{ "getCurrentNumberOfPlayerItems", &LuaCellObject::getCurrentNumberOfPlayerItems },
-	{ "getCurrentNumberOfPlayerVendors", &LuaCellObject::getCurrentNumberOfPlayerVendors },
 	{ "destroyAllPlayerItems", &LuaCellObject::destroyAllPlayerItems },
 	{ "getCellNumber", &LuaCellObject::getCellNumber },
 	{ "setCellNumber", &LuaCellObject::setCellNumber },
+	{ "getCellFireVariable", &LuaCellObject::getCellFireVariable },
+	{ "setCellFireVariable", &LuaCellObject::setCellFireVariable },
 	{ "isCellObject", &LuaCellObject::isCellObject },
 	{ 0, 0 }
 };
@@ -938,6 +1021,25 @@ int LuaCellObject::onBuildingInsertedToZone(lua_State *L) {
 		}
 	} else {
 		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'CellObject:onBuildingInsertedToZone(userdata)'");
+	}
+	return 0;
+}
+
+int LuaCellObject::onShipInsertedToZone(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isuserdata(L, -1)) {
+		if (parameterCount == 1) {
+			PobShipObject* pobShip = static_cast<PobShipObject*>(lua_touserdata(L, -1));
+
+			realObject->onShipInsertedToZone(pobShip);
+
+			return 0;
+		} else {
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:onShipInsertedToZone(userdata)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'CellObject:onShipInsertedToZone(userdata)'");
 	}
 	return 0;
 }
@@ -1064,28 +1166,33 @@ int LuaCellObject::removeObject(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
 	if (lua_isboolean(L, -1)) {
-		if (lua_isuserdata(L, -2)) {
+		if (lua_isboolean(L, -2)) {
 			if (lua_isuserdata(L, -3)) {
-				if (parameterCount == 3) {
-					SceneObject* object = static_cast<SceneObject*>(lua_touserdata(L, -3));
-					SceneObject* destination = static_cast<SceneObject*>(lua_touserdata(L, -2));
-					bool notifyClient = lua_toboolean(L, -1);
+				if (lua_isuserdata(L, -4)) {
+					if (parameterCount == 4) {
+						SceneObject* object = static_cast<SceneObject*>(lua_touserdata(L, -4));
+						SceneObject* destination = static_cast<SceneObject*>(lua_touserdata(L, -3));
+						bool notifyClient = lua_toboolean(L, -2);
+						bool nullifyParent = lua_toboolean(L, -1);
 
-					bool result = realObject->removeObject(object, destination, notifyClient);
+						bool result = realObject->removeObject(object, destination, notifyClient, nullifyParent);
 
-					lua_pushboolean(L, result);
-					return 1;
+						lua_pushboolean(L, result);
+						return 1;
+					} else {
+						throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:removeObject(userdata, userdata, boolean, boolean)'");
+					}
 				} else {
-					throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:removeObject(userdata, userdata, boolean)'");
+					throw LuaCallbackException(L, "invalid argument at 3 for lua method 'CellObject:removeObject(userdata, userdata, boolean, boolean)'");
 				}
 			} else {
-				throw LuaCallbackException(L, "invalid argument at 2 for lua method 'CellObject:removeObject(userdata, userdata, boolean)'");
+				throw LuaCallbackException(L, "invalid argument at 2 for lua method 'CellObject:removeObject(userdata, userdata, boolean, boolean)'");
 			}
 		} else {
-			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'CellObject:removeObject(userdata, userdata, boolean)'");
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'CellObject:removeObject(userdata, userdata, boolean, boolean)'");
 		}
 	} else {
-		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'CellObject:removeObject(userdata, userdata, boolean)'");
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'CellObject:removeObject(userdata, userdata, boolean, boolean)'");
 	}
 	return 0;
 }
@@ -1132,20 +1239,6 @@ int LuaCellObject::getCurrentNumberOfPlayerItems(lua_State *L) {
 		return 1;
 	} else {
 		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:getCurrentNumberOfPlayerItems()'");
-	}
-	return 0;
-}
-
-int LuaCellObject::getCurrentNumberOfPlayerVendors(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (parameterCount == 0) {
-		int result = realObject->getCurrentNumberOfPlayerVendors();
-
-		lua_pushinteger(L, result);
-		return 1;
-	} else {
-		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:getCurrentNumberOfPlayerVendors()'");
 	}
 	return 0;
 }
@@ -1198,6 +1291,41 @@ int LuaCellObject::setCellNumber(lua_State *L) {
 	return 0;
 }
 
+int LuaCellObject::getCellFireVariable(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (parameterCount == 0) {
+		float result = realObject->getCellFireVariable();
+
+		lua_pushnumber(L, result);
+		return 1;
+	} else {
+		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:getCellFireVariable()'");
+	}
+	return 0;
+}
+
+int LuaCellObject::setCellFireVariable(lua_State *L) {
+	int parameterCount = lua_gettop(L) - 1;
+	
+	if (lua_isnumber(L, -1)) {
+		if (parameterCount == 1) {
+			float damageVar = lua_tonumber(L, -1);
+
+			Locker _guard(realObject);
+
+			realObject->setCellFireVariable(damageVar);
+
+			return 0;
+		} else {
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'CellObject:setCellFireVariable(number)'");
+		}
+	} else {
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'CellObject:setCellFireVariable(number)'");
+	}
+	return 0;
+}
+
 int LuaCellObject::isCellObject(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
@@ -1234,6 +1362,9 @@ void CellObjectPOD::writeJSON(nlohmann::json& j) {
 
 	if (forceLoadObjectCount)
 		thisObject["forceLoadObjectCount"] = forceLoadObjectCount.value();
+
+	if (cellFireVariable)
+		thisObject["cellFireVariable"] = cellFireVariable.value();
 
 	j["CellObject"] = thisObject;
 }
@@ -1274,6 +1405,17 @@ int CellObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (cellFireVariable) {
+	_nameHashCode = 0x2c927772; //CellObject.cellFireVariable
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<float >::toBinaryStream(&cellFireVariable.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -1296,6 +1438,14 @@ bool CellObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 			AtomicInteger _mnforceLoadObjectCount;
 			TypeInfo<AtomicInteger >::parseFromBinaryStream(&_mnforceLoadObjectCount, stream);
 			forceLoadObjectCount = std::move(_mnforceLoadObjectCount);
+		}
+		return true;
+
+	case 0x2c927772: //CellObject.cellFireVariable
+		{
+			float _mncellFireVariable;
+			TypeInfo<float >::parseFromBinaryStream(&_mncellFireVariable, stream);
+			cellFireVariable = std::move(_mncellFireVariable);
 		}
 		return true;
 
@@ -1328,6 +1478,8 @@ void CellObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<int >::toBinaryStream(&cellNumber.value(), stream);
 
 	TypeInfo<AtomicInteger >::toBinaryStream(&forceLoadObjectCount.value(), stream);
+
+	TypeInfo<float >::toBinaryStream(&cellFireVariable.value(), stream);
 
 
 }

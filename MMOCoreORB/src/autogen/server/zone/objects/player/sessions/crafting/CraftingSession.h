@@ -320,6 +320,11 @@ public:
 
 private:
 	/**
+	 * Validate the session, make sure crafting station still nearby if needed etc.
+	 */
+	bool validateSession();
+
+	/**
 	 * Sends the packets and creates the objects to start
 	 * the crafting session
 	 */

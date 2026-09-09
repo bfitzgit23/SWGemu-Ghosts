@@ -46,6 +46,8 @@ using namespace server::zone::objects::creature;
 
 #include "server/zone/managers/director/DirectorManager.h"
 
+#include "server/zone/objects/scene/SceneObject.h"
+
 #include "server/zone/objects/creature/conversation/ConversationObserver.h"
 
 namespace server {
@@ -58,9 +60,9 @@ class LuaConversationObserver : public ConversationObserver {
 public:
 	LuaConversationObserver(unsigned int convoTemplateCRC);
 
-	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, CreatureObject* conversingNPC);
+	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, SceneObject* conversingNPC);
 
-	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
+	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -96,9 +98,9 @@ public:
 
 	LuaConversationObserverImplementation(DummyConstructorParameter* param);
 
-	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, CreatureObject* conversingNPC);
+	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, SceneObject* conversingNPC);
 
-	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
+	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
 
 	WeakReference<LuaConversationObserver*> _this;
 

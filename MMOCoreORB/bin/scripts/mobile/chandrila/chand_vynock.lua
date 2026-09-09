@@ -1,0 +1,36 @@
+chand_vynock = Creature:new {
+	customName = "a Vynock",
+	socialGroup = "vynock",
+	faction = "",
+	level = 25,
+	chanceHit = 0.4,
+	damageMin = 160,
+	damageMax = 380,
+	baseXp = 350,
+	baseHAM = 8200,
+	baseHAMmax = 9400,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "meat_carnivore",
+	meatAmount = 350,
+	hideType = "hide_leathery",
+	hideAmount = 300,
+	boneType = "bone_mammal",
+	boneAmount = 250,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = ATTACKABLE,
+	creatureBitmask = PACK,
+	optionsBitmask = AIENABLED,
+	diet = CARNIVORE,
+	scale = 1.4,
+
+	templates = {"object/mobile/vynock.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(chand_vynock, "chand_vynock")

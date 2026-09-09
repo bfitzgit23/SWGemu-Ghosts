@@ -4,7 +4,7 @@ axkvaMinEntryWay = ScreenPlay:new {
   screenplayName = "axkvaMinEntryWay"
 }
 
-registerScreenPlay("axkvaMinEntryWay", true)
+registerScreenPlay("axkvaMinEntryWay", false) -- Disabled: entrance terminal object template is absent.
 
 function axkvaMinEntryWay:start()
   if (isZoneEnabled("dathomir")) then

@@ -12,7 +12,7 @@
  *	BuffStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 837587754,RPC_NOTIFYLOADFROMDATABASE__,RPC_LOADBUFFDURATIONEVENT__CREATUREOBJECT_,RPC_INIT__,RPC_SENDTO__CREATUREOBJECT_,RPC_SENDDESTROYTO__CREATUREOBJECT_,RPC_ACTIVATE__BOOL_,RPC_DEACTIVATE__BOOL_,RPC_ACTIVATE__,RPC_DEACTIVATE__,RPC_CHECKRENEW__,RPC_APPLYATTRIBUTEMODIFIERS__,RPC_APPLYSKILLMODIFIERS__,RPC_APPLYSTATES__,RPC_APPLYALLMODIFIERS__,RPC_REMOVEATTRIBUTEMODIFIERS__,RPC_REMOVESKILLMODIFIERS__,RPC_REMOVESTATES__,RPC_REMOVEALLMODIFIERS__,RPC_CLEARBUFFEVENT__,RPC_SETBUFFEVENTNULL__,RPC_SCHEDULEBUFFEVENT__,RPC_RENEW__FLOAT_,RPC_PARSEATTRIBUTEMODIFIERSTRING__STRING_,RPC_PARSESKILLMODIFIERSTRING__STRING_,RPC_GETATTRIBUTEMODIFIERSTRING__,RPC_GETSKILLMODIFIERSTRING__,RPC_GETTIMELEFT__,RPC_SETATTRIBUTEMODIFIER__BYTE_INT_,RPC_SETSKILLMODIFIER__STRING_INT_,RPC_ADDSTATE__LONG_,RPC_SETSPEEDMULTIPLIERMOD__FLOAT_,RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_,RPC_GETSPEEDMULTIPLIERMOD__,RPC_GETACCELERATIONMULTIPLIERMOD__,RPC_SETFILLATTRIBUTESONBUFF__BOOL_,RPC_GETBUFFNAME__,RPC_GETBUFFCRC__,RPC_GETBUFFDURATION__,RPC_GETBUFFTYPE__,RPC_GETATTRIBUTEMODIFIERVALUE__BYTE_,RPC_GETSKILLMODIFIERVALUE__STRING_,RPC_ISACTIVE__,RPC_ISSPICEBUFF__,RPC_ISATTRIBUTEBUFF__,RPC_SETSPAMCOLOR__BYTE_,RPC_SETBROADCASTSPAM__BOOL_,RPC_SETSTARTFLYTEXT__STRING_STRING_BYTE_BYTE_BYTE_,RPC_SETENDFLYTEXT__STRING_STRING_BYTE_BYTE_BYTE_,RPC_ADDSECONDARYBUFFCRC__LONG_,RPC_COMPARETO__BUFF_,RPC_HASMODS__,RPC_SETMODSAPPLIED__BOOL_,RPC_REMOVEONCLEARBUFFS__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 837587754,RPC_NOTIFYLOADFROMDATABASE__,RPC_LOADBUFFDURATIONEVENT__CREATUREOBJECT_,RPC_INITIALIZEBUFFOBSERVERS__,RPC_INIT__,RPC_SENDTO__CREATUREOBJECT_,RPC_SENDDESTROYTO__CREATUREOBJECT_,RPC_ACTIVATE__BOOL_,RPC_DEACTIVATE__BOOL_,RPC_ACTIVATE__,RPC_DEACTIVATE__,RPC_CHECKRENEW__,RPC_APPLYATTRIBUTEMODIFIERS__,RPC_APPLYSKILLMODIFIERS__,RPC_APPLYSTATES__,RPC_APPLYALLMODIFIERS__,RPC_REMOVEATTRIBUTEMODIFIERS__,RPC_REMOVESKILLMODIFIERS__,RPC_REMOVESTATES__,RPC_REMOVEALLMODIFIERS__,RPC_CLEARBUFFEVENT__,RPC_SETBUFFEVENTNULL__,RPC_SCHEDULEBUFFEVENT__,RPC_RENEW__FLOAT_,RPC_PARSEATTRIBUTEMODIFIERSTRING__STRING_,RPC_PARSESKILLMODIFIERSTRING__STRING_,RPC_GETATTRIBUTEMODIFIERSTRING__,RPC_GETSKILLMODIFIERSTRING__,RPC_GETTIMELEFT__,RPC_SETATTRIBUTEMODIFIER__BYTE_INT_,RPC_SETSKILLMODIFIER__STRING_INT_,RPC_ADDSTATE__LONG_,RPC_SETSPEEDMULTIPLIERMOD__FLOAT_,RPC_SETACCELERATIONMULTIPLIERMOD__FLOAT_,RPC_GETSPEEDMULTIPLIERMOD__,RPC_GETACCELERATIONMULTIPLIERMOD__,RPC_SETFILLATTRIBUTESONBUFF__BOOL_,RPC_GETBUFFNAME__,RPC_GETBUFFCRC__,RPC_GETBUFFDURATION__,RPC_GETBUFFTYPE__,RPC_GETATTRIBUTEMODIFIERVALUE__BYTE_,RPC_GETSKILLMODIFIERVALUE__STRING_,RPC_ISACTIVE__,RPC_ISSPICEBUFF__,RPC_ISATTRIBUTEBUFF__,RPC_SETSPAMCOLOR__BYTE_,RPC_SETBROADCASTSPAM__BOOL_,RPC_SETSTARTFLYTEXT__STRING_STRING_BYTE_BYTE_BYTE_,RPC_SETENDFLYTEXT__STRING_STRING_BYTE_BYTE_BYTE_,RPC_ADDSECONDARYBUFFCRC__LONG_,RPC_HASMODS__,RPC_SETMODSAPPLIED__BOOL_,RPC_REMOVEONCLEARBUFFS__,RPC_ISTRAPBUFF__};
 
 Buff::Buff(CreatureObject* creo, unsigned int buffcrc, float duration, int bufftype, unsigned long long secondaryCRC) : ManagedObject(DummyConstructorParameter::instance()) {
 	BuffImplementation* _implementation = new BuffImplementation(creo, buffcrc, duration, bufftype, secondaryCRC);
@@ -70,6 +70,21 @@ void Buff::loadBuffDurationEvent(CreatureObject* creo) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->loadBuffDurationEvent(creo);
+	}
+}
+
+void Buff::initializeBuffObservers() {
+	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INITIALIZEBUFFOBSERVERS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->initializeBuffObservers();
 	}
 }
 
@@ -177,7 +192,7 @@ void Buff::deactivate() {
 	}
 }
 
-bool Buff::checkRenew() {
+bool Buff::checkRenew() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -191,8 +206,8 @@ bool Buff::checkRenew() {
 	}
 }
 
-VectorMap<String, int>* Buff::getSkillModifiers() {
-	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
+const VectorMap<String, int>* Buff::getSkillModifiers() const {
+	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -408,7 +423,7 @@ void Buff::parseSkillModifierString(const String& modifierstring) {
 	}
 }
 
-String Buff::getAttributeModifierString() {
+String Buff::getAttributeModifierString() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -424,7 +439,7 @@ String Buff::getAttributeModifierString() {
 	}
 }
 
-String Buff::getSkillModifierString() {
+String Buff::getSkillModifierString() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -440,7 +455,7 @@ String Buff::getSkillModifierString() {
 	}
 }
 
-float Buff::getTimeLeft() {
+float Buff::getTimeLeft() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -536,7 +551,7 @@ void Buff::setAccelerationMultiplierMod(float multiplier) {
 	}
 }
 
-float Buff::getSpeedMultiplierMod() {
+float Buff::getSpeedMultiplierMod() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -550,7 +565,7 @@ float Buff::getSpeedMultiplierMod() {
 	}
 }
 
-float Buff::getAccelerationMultiplierMod() {
+float Buff::getAccelerationMultiplierMod() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -638,8 +653,8 @@ int Buff::getBuffType() const {
 	}
 }
 
-VectorMap<byte, int>* Buff::getAttributeModifiers() {
-	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementation());
+const VectorMap<byte, int>* Buff::getAttributeModifiers() const {
+	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
@@ -648,7 +663,7 @@ VectorMap<byte, int>* Buff::getAttributeModifiers() {
 	}
 }
 
-int Buff::getAttributeModifierValue(byte attribute) {
+int Buff::getAttributeModifierValue(byte attribute) const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -663,7 +678,7 @@ int Buff::getAttributeModifierValue(byte attribute) {
 	}
 }
 
-int Buff::getSkillModifierValue(const String& modname) {
+int Buff::getSkillModifierValue(const String& modname) const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -678,7 +693,7 @@ int Buff::getSkillModifierValue(const String& modname) {
 	}
 }
 
-bool Buff::isActive() {
+bool Buff::isActive() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -852,7 +867,7 @@ void Buff::addSecondaryBuffCRC(unsigned long long secondaryCRC) {
 	}
 }
 
-Time Buff::getTimeApplied() {
+Time Buff::getTimeApplied() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -862,22 +877,17 @@ Time Buff::getTimeApplied() {
 	}
 }
 
-int Buff::compareTo(Buff* obj) {
+int Buff::compareTo(const Buff* obj) const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_COMPARETO__BUFF_);
-		method.addObjectParameter(obj);
-
-		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->compareTo(obj);
 	}
 }
 
-Vector<unsigned long long>* Buff::getSecondaryBuffCRCs() {
+const Vector<unsigned long long>* Buff::getSecondaryBuffCRCs() const {
 	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
@@ -928,6 +938,20 @@ bool Buff::removeOnClearBuffs() const {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->removeOnClearBuffs();
+	}
+}
+
+bool Buff::isTrapBuff() const {
+	BuffImplementation* _implementation = static_cast<BuffImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISTRAPBUFF__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isTrapBuff();
 	}
 }
 
@@ -1536,6 +1560,9 @@ BuffImplementation::BuffImplementation(CreatureObject* creo, unsigned int buffcr
 	init();
 }
 
+void BuffImplementation::initializeBuffObservers() {
+}
+
 void BuffImplementation::activate() {
 	// server/zone/objects/creature/buffs/Buff.idl():  		activate(true);
 	activate(true);
@@ -1546,12 +1573,12 @@ void BuffImplementation::deactivate() {
 	deactivate(true);
 }
 
-bool BuffImplementation::checkRenew() {
+bool BuffImplementation::checkRenew() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		return false;
 	return false;
 }
 
-VectorMap<String, int>* BuffImplementation::getSkillModifiers() {
+const VectorMap<String, int>* BuffImplementation::getSkillModifiers() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		return skillModifiers;
 	return (&skillModifiers);
 }
@@ -1589,7 +1616,7 @@ void BuffImplementation::setAccelerationMultiplierMod(float multiplier) {
 	setSkillModifier("private_acceleration_multiplier", multiplier * 100);
 }
 
-float BuffImplementation::getSpeedMultiplierMod() {
+float BuffImplementation::getSpeedMultiplierMod() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		int speed = getSkillModifierValue("private_speed_multiplier");
 	int speed = getSkillModifierValue("private_speed_multiplier");
 	// server/zone/objects/creature/buffs/Buff.idl():  		float multiplier = speed / 100.0;
@@ -1598,7 +1625,7 @@ float BuffImplementation::getSpeedMultiplierMod() {
 	return multiplier;
 }
 
-float BuffImplementation::getAccelerationMultiplierMod() {
+float BuffImplementation::getAccelerationMultiplierMod() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		int acceleration = getSkillModifierValue("private_acceleration_multiplier");
 	int acceleration = getSkillModifierValue("private_acceleration_multiplier");
 	// server/zone/objects/creature/buffs/Buff.idl():  		float multiplier = acceleration / 100.0;
@@ -1632,25 +1659,19 @@ int BuffImplementation::getBuffType() const{
 	return buffType;
 }
 
-VectorMap<byte, int>* BuffImplementation::getAttributeModifiers() {
+const VectorMap<byte, int>* BuffImplementation::getAttributeModifiers() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		return attributeModifiers;
 	return (&attributeModifiers);
 }
 
-int BuffImplementation::getAttributeModifierValue(byte attribute) {
-	// server/zone/objects/creature/buffs/Buff.idl():  		return 
-	if ((&attributeModifiers)->contains(attribute))	// server/zone/objects/creature/buffs/Buff.idl():  			return attributeModifiers.get(attribute);
+int BuffImplementation::getAttributeModifierValue(byte attribute) const{
+	// server/zone/objects/creature/buffs/Buff.idl():  		return attributeModifiers.get(attribute);
 	return (&attributeModifiers)->get(attribute);
-	// server/zone/objects/creature/buffs/Buff.idl():  		return 0;
-	return 0;
 }
 
-int BuffImplementation::getSkillModifierValue(const String& modname) {
-	// server/zone/objects/creature/buffs/Buff.idl():  		return 
-	if ((&skillModifiers)->contains(modname))	// server/zone/objects/creature/buffs/Buff.idl():  			return skillModifiers.get(modname);
+int BuffImplementation::getSkillModifierValue(const String& modname) const{
+	// server/zone/objects/creature/buffs/Buff.idl():  		return skillModifiers.get(modname);
 	return (&skillModifiers)->get(modname);
-	// server/zone/objects/creature/buffs/Buff.idl():  		return 0;
-	return 0;
 }
 
 bool BuffImplementation::isSpiceBuff() const{
@@ -1669,7 +1690,7 @@ void BuffImplementation::addSecondaryBuffCRC(unsigned long long secondaryCRC) {
 	(&secondaryBuffCRCs)->add(secondaryCRC);
 }
 
-Vector<unsigned long long>* BuffImplementation::getSecondaryBuffCRCs() {
+const Vector<unsigned long long>* BuffImplementation::getSecondaryBuffCRCs() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		return secondaryBuffCRCs;
 	return (&secondaryBuffCRCs);
 }
@@ -1687,6 +1708,11 @@ void BuffImplementation::setModsApplied(bool applied) {
 bool BuffImplementation::removeOnClearBuffs() const{
 	// server/zone/objects/creature/buffs/Buff.idl():  		return true;
 	return true;
+}
+
+bool BuffImplementation::isTrapBuff() const{
+	// server/zone/objects/creature/buffs/Buff.idl():  		return false;
+	return false;
 }
 
 /*
@@ -1723,6 +1749,13 @@ void BuffAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			CreatureObject* creo = static_cast<CreatureObject*>(inv->getObjectParameter());
 			
 			loadBuffDurationEvent(creo);
+			
+		}
+		break;
+	case RPC_INITIALIZEBUFFOBSERVERS__:
+		{
+			
+			initializeBuffObservers();
 			
 		}
 		break;
@@ -2085,14 +2118,6 @@ void BuffAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_COMPARETO__BUFF_:
-		{
-			Buff* obj = static_cast<Buff*>(inv->getObjectParameter());
-			
-			int _m_res = compareTo(obj);
-			resp->insertSignedInt(_m_res);
-		}
-		break;
 	case RPC_HASMODS__:
 		{
 			
@@ -2115,6 +2140,13 @@ void BuffAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISTRAPBUFF__:
+		{
+			
+			bool _m_res = isTrapBuff();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	default:
 		ManagedObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -2130,6 +2162,10 @@ void BuffAdapter::notifyLoadFromDatabase() {
 
 void BuffAdapter::loadBuffDurationEvent(CreatureObject* creo) {
 	(static_cast<Buff*>(stub))->loadBuffDurationEvent(creo);
+}
+
+void BuffAdapter::initializeBuffObservers() {
+	(static_cast<Buff*>(stub))->initializeBuffObservers();
 }
 
 void BuffAdapter::init() {
@@ -2160,7 +2196,7 @@ void BuffAdapter::deactivate() {
 	(static_cast<Buff*>(stub))->deactivate();
 }
 
-bool BuffAdapter::checkRenew() {
+bool BuffAdapter::checkRenew() const {
 	return (static_cast<Buff*>(stub))->checkRenew();
 }
 
@@ -2220,15 +2256,15 @@ void BuffAdapter::parseSkillModifierString(const String& modifierstring) {
 	(static_cast<Buff*>(stub))->parseSkillModifierString(modifierstring);
 }
 
-String BuffAdapter::getAttributeModifierString() {
+String BuffAdapter::getAttributeModifierString() const {
 	return (static_cast<Buff*>(stub))->getAttributeModifierString();
 }
 
-String BuffAdapter::getSkillModifierString() {
+String BuffAdapter::getSkillModifierString() const {
 	return (static_cast<Buff*>(stub))->getSkillModifierString();
 }
 
-float BuffAdapter::getTimeLeft() {
+float BuffAdapter::getTimeLeft() const {
 	return (static_cast<Buff*>(stub))->getTimeLeft();
 }
 
@@ -2252,11 +2288,11 @@ void BuffAdapter::setAccelerationMultiplierMod(float multiplier) {
 	(static_cast<Buff*>(stub))->setAccelerationMultiplierMod(multiplier);
 }
 
-float BuffAdapter::getSpeedMultiplierMod() {
+float BuffAdapter::getSpeedMultiplierMod() const {
 	return (static_cast<Buff*>(stub))->getSpeedMultiplierMod();
 }
 
-float BuffAdapter::getAccelerationMultiplierMod() {
+float BuffAdapter::getAccelerationMultiplierMod() const {
 	return (static_cast<Buff*>(stub))->getAccelerationMultiplierMod();
 }
 
@@ -2280,15 +2316,15 @@ int BuffAdapter::getBuffType() const {
 	return (static_cast<Buff*>(stub))->getBuffType();
 }
 
-int BuffAdapter::getAttributeModifierValue(byte attribute) {
+int BuffAdapter::getAttributeModifierValue(byte attribute) const {
 	return (static_cast<Buff*>(stub))->getAttributeModifierValue(attribute);
 }
 
-int BuffAdapter::getSkillModifierValue(const String& modname) {
+int BuffAdapter::getSkillModifierValue(const String& modname) const {
 	return (static_cast<Buff*>(stub))->getSkillModifierValue(modname);
 }
 
-bool BuffAdapter::isActive() {
+bool BuffAdapter::isActive() const {
 	return (static_cast<Buff*>(stub))->isActive();
 }
 
@@ -2320,10 +2356,6 @@ void BuffAdapter::addSecondaryBuffCRC(unsigned long long secondaryCRC) {
 	(static_cast<Buff*>(stub))->addSecondaryBuffCRC(secondaryCRC);
 }
 
-int BuffAdapter::compareTo(Buff* obj) {
-	return (static_cast<Buff*>(stub))->compareTo(obj);
-}
-
 bool BuffAdapter::hasMods() const {
 	return (static_cast<Buff*>(stub))->hasMods();
 }
@@ -2334,6 +2366,10 @@ void BuffAdapter::setModsApplied(bool applied) {
 
 bool BuffAdapter::removeOnClearBuffs() const {
 	return (static_cast<Buff*>(stub))->removeOnClearBuffs();
+}
+
+bool BuffAdapter::isTrapBuff() const {
+	return (static_cast<Buff*>(stub))->isTrapBuff();
 }
 
 /*

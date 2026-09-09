@@ -56,6 +56,22 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+namespace server {
+namespace zone {
+namespace objects {
+namespace scene {
+
+class SceneObject;
+
+class SceneObjectPOD;
+
+} // namespace scene
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::scene;
+
 #include "engine/util/Facade.h"
 
 namespace server {
@@ -66,13 +82,13 @@ namespace sessions {
 
 class ConversationSession : public Facade {
 public:
-	ConversationSession(CreatureObject* conversingCreature);
+	ConversationSession(SceneObject* conversingCreature);
 
 	void setLastConversationScreen(ConversationScreen* screen);
 
 	ConversationScreen* getLastConversationScreen();
 
-	ManagedWeakReference<CreatureObject* > getNPC();
+	ManagedWeakReference<SceneObject* > getNPC();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -105,10 +121,10 @@ class ConversationSessionImplementation : public FacadeImplementation {
 protected:
 	Reference<ConversationScreen* > lastConversationScreen;
 
-	ManagedWeakReference<CreatureObject* > npc;
+	ManagedWeakReference<SceneObject* > npc;
 
 public:
-	ConversationSessionImplementation(CreatureObject* conversingCreature);
+	ConversationSessionImplementation(SceneObject* conversingCreature);
 
 	ConversationSessionImplementation(DummyConstructorParameter* param);
 
@@ -116,7 +132,7 @@ public:
 
 	ConversationScreen* getLastConversationScreen();
 
-	ManagedWeakReference<CreatureObject* > getNPC();
+	ManagedWeakReference<SceneObject* > getNPC();
 
 	WeakReference<ConversationSession*> _this;
 
@@ -161,7 +177,7 @@ public:
 
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
-	ManagedWeakReference<CreatureObject* > getNPC();
+	ManagedWeakReference<SceneObject* > getNPC();
 
 };
 
@@ -202,7 +218,7 @@ class ConversationSessionPOD : public FacadePOD {
 public:
 	Optional<Reference<ConversationScreen* >> lastConversationScreen;
 
-	Optional<ManagedWeakReference<CreatureObjectPOD* >> npc;
+	Optional<ManagedWeakReference<SceneObjectPOD* >> npc;
 
 	String _className;
 	ConversationSessionPOD();

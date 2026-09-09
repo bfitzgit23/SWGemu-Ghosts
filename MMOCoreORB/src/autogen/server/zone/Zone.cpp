@@ -4,9 +4,7 @@
 
 #include "Zone.h"
 
-#include "server/zone/QuadTree.h"
-
-#include "server/zone/QuadTreeEntry.h"
+#include "server/zone/TreeEntry.h"
 
 #include "server/zone/ZoneProcessServer.h"
 
@@ -16,21 +14,25 @@
 
 #include "server/zone/managers/planet/PlanetManager.h"
 
+#include "server/zone/managers/space/SpaceManager.h"
+
 #include "server/zone/managers/creature/CreatureManager.h"
 
 #include "server/zone/managers/gcw/GCWManager.h"
 
 #include "server/zone/objects/tangible/TangibleObject.h"
 
-#include "server/zone/objects/region/CityRegion.h"
-
 #include "server/zone/objects/pathfinding/NavArea.h"
+
+#include "server/zone/ActiveAreaQuadTree.h"
+
+#include "server/zone/ActiveAreaOctree.h"
 
 /*
  *	ZoneStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 2833757774,RPC_FINALIZE__,RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_,RPC_INITIALIZEPRIVATEDATA__,RPC_CREATECONTAINERCOMPONENT__,RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_,RPC_STARTMANAGERS__,RPC_STOPMANAGERS__,RPC_CLEARZONE__,RPC_GETHEIGHT__FLOAT_FLOAT_,RPC_GETHEIGHTNOCACHE__FLOAT_FLOAT_,RPC_ADDSCENEOBJECT__SCENEOBJECT_,RPC_ADDCITYREGIONTOUPDATE__CITYREGION_,RPC_UPDATECITYREGIONS__,RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_,RPC_DROPSCENEOBJECT__SCENEOBJECT_,RPC_GETPLANETMANAGER__,RPC_GETZONESERVER__,RPC_GETCREATUREMANAGER__,RPC_GETGCWMANAGER__,RPC_GETGALACTICTIME__,RPC_HASMANAGERSSTARTED__,RPC_ISZONECLEARED__,RPC_GETSPAWNEDAIAGENTS__,RPC_GETMINX__,RPC_GETMAXX__,RPC_GETMINY__,RPC_GETMAXY__,RPC_GETBOUNDINGRADIUS__,RPC_REGISTEROBJECTWITHPLANETARYMAP__SCENEOBJECT_,RPC_UNREGISTEROBJECTWITHPLANETARYMAP__SCENEOBJECT_,RPC_OBJECTISVALIDPLANETARYMAPPERFORMANCELOCATION__SCENEOBJECT_,RPC_ISOBJECTREGISTEREDWITHPLANETARYMAP__SCENEOBJECT_,RPC_UPDATEPLANETARYMAPICON__SCENEOBJECT_BYTE_,RPC_GETZONENAME__,RPC_GETZONECRC__,RPC_SETPLANETCHATROOM__CHATROOM_,RPC_GETPLANETCHATROOM__};
+enum {RPC_CREATECONTAINERCOMPONENT__ = 2833757774,RPC_INITIALIZEPRIVATEDATA__,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_FINALIZE__,RPC_STARTMANAGERS__,RPC_STOPMANAGERS__,RPC_CLEARZONE__,RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_,RPC_ADDSCENEOBJECT__SCENEOBJECT_,RPC_DROPSCENEOBJECT__SCENEOBJECT_,RPC_GETHEIGHT__FLOAT_FLOAT_,RPC_GETHEIGHTNOCACHE__FLOAT_FLOAT_,RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_STRING_,RPC_REGISTEROBJECTWITHPLANETARYMAP__SCENEOBJECT_,RPC_UNREGISTEROBJECTWITHPLANETARYMAP__SCENEOBJECT_,RPC_OBJECTISVALIDPLANETARYMAPPERFORMANCELOCATION__SCENEOBJECT_,RPC_ISOBJECTREGISTEREDWITHPLANETARYMAP__SCENEOBJECT_,RPC_UPDATEPLANETARYMAPICON__SCENEOBJECT_BYTE_,RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_,RPC_GETMINX__,RPC_GETMAXX__,RPC_GETMINY__,RPC_GETMAXY__,RPC_UPDATECITYREGIONS__,RPC_GETCREATUREMANAGER__,RPC_GETPLANETMANAGER__,RPC_GETSPACEMANAGER__,RPC_ADDCITYREGIONTOUPDATE__CITYREGION_,RPC_GETBOUNDINGRADIUS__,RPC_GETZONEOBJECTRANGE__,RPC_INCREMENTSPAWNEDAGENTS__,RPC_DECREMENTSPAWNEDAGENTS__,RPC_GETZONENAME__,RPC_GETZONECRC__,RPC_GETZONESERVER__,RPC_GETGCWMANAGER__,RPC_GETGALACTICTIME__,RPC_HASMANAGERSSTARTED__,RPC_ISZONECLEARED__,RPC_GETSPAWNEDAIAGENTS__,RPC_SETPLANETCHATROOM__CHATROOM_,RPC_GETPLANETCHATROOM__,RPC_ISGROUNDZONE__,RPC_ISSPACEZONE__,};
 
 Zone::Zone(ZoneProcessServer* processor, const String& zoneName) : SceneObject(DummyConstructorParameter::instance()) {
 	ZoneImplementation* _implementation = new ZoneImplementation(processor, zoneName);
@@ -49,33 +51,17 @@ Zone::~Zone() {
 
 
 
-void Zone::initializeTransientMembers() {
+void Zone::createContainerComponent() {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_INITIALIZETRANSIENTMEMBERS__);
+		DistributedMethod method(this, RPC_CREATECONTAINERCOMPONENT__);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->initializeTransientMembers();
-	}
-}
-
-Reference<SceneObject* > Zone::getNearestPlanetaryObject(SceneObject* object, const String& mapObjectLocationType) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_);
-		method.addObjectParameter(object);
-		method.addAsciiParameter(mapObjectLocationType);
-
-		return static_cast<SceneObject*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getNearestPlanetaryObject(object, mapObjectLocationType);
+		_implementation->createContainerComponent();
 	}
 }
 
@@ -93,172 +79,17 @@ void Zone::initializePrivateData() {
 	}
 }
 
-QuadTree* Zone::getRegionTree() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getRegionTree();
-	}
-}
-
-int Zone::getInRangeSolidObjects(float x, float y, float range, SortedVector<ManagedReference<QuadTreeEntry* > >* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeSolidObjects(x, y, range, objects, readLockZone);
-	}
-}
-
-int Zone::getInRangeObjects(float x, float y, float range, SortedVector<ManagedReference<QuadTreeEntry* > >* objects, bool readLockZone, bool includeBuildingObjects) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeObjects(x, y, range, objects, readLockZone, includeBuildingObjects);
-	}
-}
-
-int Zone::getInRangeObjects(float x, float y, float range, InRangeObjectsVector* objects, bool readLockZone, bool includeBuildingObjects) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeObjects(x, y, range, objects, readLockZone, includeBuildingObjects);
-	}
-}
-
-void Zone::createContainerComponent() {
+void Zone::initializeTransientMembers() {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CREATECONTAINERCOMPONENT__);
+		DistributedMethod method(this, RPC_INITIALIZETRANSIENTMEMBERS__);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->createContainerComponent();
-	}
-}
-
-int Zone::getInRangeActiveAreas(float x, float y, SortedVector<ManagedReference<ActiveArea* > >* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeActiveAreas(x, y, objects, readLockZone);
-	}
-}
-
-int Zone::getInRangeActiveAreas(float x, float y, ActiveAreasVector* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeActiveAreas(x, y, objects, readLockZone);
-	}
-}
-
-int Zone::getInRangeNavMeshes(float x, float y, SortedVector<ManagedReference<NavArea* > >* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeNavMeshes(x, y, objects, readLockZone);
-	}
-}
-
-int Zone::getInRangeActiveAreas(float x, float y, float range, SortedVector<ManagedReference<ActiveArea* > >* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeActiveAreas(x, y, range, objects, readLockZone);
-	}
-}
-
-int Zone::getInRangeActiveAreas(float x, float y, float range, ActiveAreasVector* objects, bool readLockZone) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getInRangeActiveAreas(x, y, range, objects, readLockZone);
-	}
-}
-
-SortedVector<ManagedReference<SceneObject* > > Zone::getPlanetaryObjectList(const String& mapObjectLocationType) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getPlanetaryObjectList(mapObjectLocationType);
-	}
-}
-
-void Zone::insert(QuadTreeEntry* entry) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		_implementation->insert(entry);
-	}
-}
-
-void Zone::remove(QuadTreeEntry* entry) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		_implementation->remove(entry);
-	}
-}
-
-void Zone::update(QuadTreeEntry* entry) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		_implementation->update(entry);
-	}
-}
-
-void Zone::inRange(QuadTreeEntry* entry, float range) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		_implementation->inRange(entry, range);
-	}
-}
-
-void Zone::updateActiveAreas(TangibleObject* tano) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_);
-		method.addObjectParameter(tano);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->updateActiveAreas(tano);
+		_implementation->initializeTransientMembers();
 	}
 }
 
@@ -304,6 +135,155 @@ void Zone::clearZone() {
 	}
 }
 
+void Zone::insert(TreeEntry* entry) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->insert(entry);
+	}
+}
+
+void Zone::remove(TreeEntry* entry) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->remove(entry);
+	}
+}
+
+void Zone::update(TreeEntry* entry) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->update(entry);
+	}
+}
+
+void Zone::inRange(TreeEntry* entry, float range) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->inRange(entry, range);
+	}
+}
+
+void Zone::updateActiveAreas(TangibleObject* tano) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_);
+		method.addObjectParameter(tano);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->updateActiveAreas(tano);
+	}
+}
+
+void Zone::addSceneObject(SceneObject* object) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDSCENEOBJECT__SCENEOBJECT_);
+		method.addObjectParameter(object);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		assert((object == NULL) || object->isLockedByCurrentThread());
+		_implementation->addSceneObject(object);
+	}
+}
+
+void Zone::dropSceneObject(SceneObject* object) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DROPSCENEOBJECT__SCENEOBJECT_);
+		method.addObjectParameter(object);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		assert((object == NULL) || object->isLockedByCurrentThread());
+		_implementation->dropSceneObject(object);
+	}
+}
+
+int Zone::getInRangeSolidObjects(float x, float z, float y, float range, SortedVector<ManagedReference<TreeEntry* > >* objects, bool readLockZone) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangeSolidObjects(x, z, y, range, objects, readLockZone);
+	}
+}
+
+int Zone::getInRangeObjects(float x, float z, float y, float range, SortedVector<ManagedReference<TreeEntry* > >* objects, bool readLockZone, bool includeBuildingObjects) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangeObjects(x, z, y, range, objects, readLockZone, includeBuildingObjects);
+	}
+}
+
+int Zone::getInRangeObjects(float x, float z, float y, float range, InRangeObjectsVector* objects, bool readLockZone, bool includeBuildingObjects) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangeObjects(x, z, y, range, objects, readLockZone, includeBuildingObjects);
+	}
+}
+
+int Zone::getInRangePlayers(float x, float z, float y, float range, SortedVector<ManagedReference<TreeEntry* > >* objects) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangePlayers(x, z, y, range, objects);
+	}
+}
+
+int Zone::getInRangeActiveAreas(float x, float z, float y, SortedVector<ManagedReference<ActiveArea* > >* objects, bool readLockZone) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangeActiveAreas(x, z, y, objects, readLockZone);
+	}
+}
+
+int Zone::getInRangeActiveAreas(float x, float z, float y, ActiveAreasVector* objects, bool readLockZone) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getInRangeActiveAreas(x, z, y, objects, readLockZone);
+	}
+}
+
 float Zone::getHeight(float x, float y) {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -336,273 +316,40 @@ float Zone::getHeightNoCache(float x, float y) {
 	}
 }
 
-void Zone::addSceneObject(SceneObject* object) {
+Reference<SceneObject* > Zone::getNearestPlanetaryObject(SceneObject* object, const String& mapCategory, const String& mapSubCategory) {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ADDSCENEOBJECT__SCENEOBJECT_);
+		DistributedMethod method(this, RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_STRING_);
 		method.addObjectParameter(object);
+		method.addAsciiParameter(mapCategory);
+		method.addAsciiParameter(mapSubCategory);
 
-		method.executeWithVoidReturn();
+		return static_cast<SceneObject*>(method.executeWithObjectReturn());
 	} else {
-		assert(this->isLockedByCurrentThread());
-		assert((object == NULL) || object->isLockedByCurrentThread());
-		_implementation->addSceneObject(object);
+		return _implementation->getNearestPlanetaryObject(object, mapCategory, mapSubCategory);
 	}
 }
 
-void Zone::addCityRegionToUpdate(CityRegion* city) {
+int Zone::getInRangeNavMeshes(float x, float y, SortedVector<ManagedReference<NavArea* > >* objects, bool readLockZone) {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ADDCITYREGIONTOUPDATE__CITYREGION_);
-		method.addObjectParameter(city);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->addCityRegionToUpdate(city);
-	}
-}
-
-void Zone::updateCityRegions() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_UPDATECITYREGIONS__);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->updateCityRegions();
-	}
-}
-
-void Zone::sendMapLocationsTo(CreatureObject* player) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_);
-		method.addObjectParameter(player);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->sendMapLocationsTo(player);
-	}
-}
-
-void Zone::dropSceneObject(SceneObject* object) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_DROPSCENEOBJECT__SCENEOBJECT_);
-		method.addObjectParameter(object);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		assert((object == NULL) || object->isLockedByCurrentThread());
-		_implementation->dropSceneObject(object);
-	}
-}
-
-PlanetManager* Zone::getPlanetManager() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETPLANETMANAGER__);
-
-		return static_cast<PlanetManager*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getPlanetManager();
-	}
-}
-
-ZoneServer* Zone::getZoneServer() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETZONESERVER__);
-
-		return static_cast<ZoneServer*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getZoneServer();
-	}
-}
-
-CreatureManager* Zone::getCreatureManager() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETCREATUREMANAGER__);
-
-		return static_cast<CreatureManager*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getCreatureManager();
-	}
-}
-
-GCWManager* Zone::getGCWManager() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETGCWMANAGER__);
-
-		return static_cast<GCWManager*>(method.executeWithObjectReturn());
-	} else {
-		return _implementation->getGCWManager();
-	}
-}
-
-unsigned long long Zone::getGalacticTime() const {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETGALACTICTIME__);
-
-		return method.executeWithUnsignedLongReturn();
-	} else {
-		return _implementation->getGalacticTime();
-	}
-}
-
-bool Zone::hasManagersStarted() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_HASMANAGERSSTARTED__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->hasManagersStarted();
-	}
-}
-
-bool Zone::isZoneCleared() const {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISZONECLEARED__);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isZoneCleared();
-	}
-}
-
-int Zone::getSpawnedAiAgents() const {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETSPAWNEDAIAGENTS__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getSpawnedAiAgents();
-	}
-}
-
-float Zone::getMinX() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMINX__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getMinX();
-	}
-}
-
-float Zone::getMaxX() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMAXX__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getMaxX();
-	}
-}
-
-float Zone::getMinY() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMINY__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getMinY();
-	}
-}
-
-float Zone::getMaxY() {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMAXY__);
-
-		return method.executeWithFloatReturn();
-	} else {
-		return _implementation->getMaxY();
-	}
-}
-
-bool Zone::isWithinBoundaries(const Vector3& position) {
-	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->isWithinBoundaries(position);
+		return _implementation->getInRangeNavMeshes(x, y, objects, readLockZone);
 	}
 }
 
-float Zone::getBoundingRadius() {
+SortedVector<ManagedReference<SceneObject* > > Zone::getPlanetaryObjectList(const String& mapObjectLocationType) {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_GETBOUNDINGRADIUS__);
-
-		return method.executeWithFloatReturn();
 	} else {
-		return _implementation->getBoundingRadius();
+		return _implementation->getPlanetaryObjectList(mapObjectLocationType);
 	}
 }
 
@@ -682,6 +429,234 @@ void Zone::updatePlanetaryMapIcon(SceneObject* object, byte icon) {
 	}
 }
 
+void Zone::sendMapLocationsTo(CreatureObject* player) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_);
+		method.addObjectParameter(player);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->sendMapLocationsTo(player);
+	}
+}
+
+float Zone::getMinX() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETMINX__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getMinX();
+	}
+}
+
+float Zone::getMaxX() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETMAXX__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getMaxX();
+	}
+}
+
+float Zone::getMinY() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETMINY__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getMinY();
+	}
+}
+
+float Zone::getMaxY() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETMAXY__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getMaxY();
+	}
+}
+
+void Zone::updateCityRegions() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_UPDATECITYREGIONS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->updateCityRegions();
+	}
+}
+
+CreatureManager* Zone::getCreatureManager() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCREATUREMANAGER__);
+
+		return static_cast<CreatureManager*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCreatureManager();
+	}
+}
+
+PlanetManager* Zone::getPlanetManager() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETPLANETMANAGER__);
+
+		return static_cast<PlanetManager*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getPlanetManager();
+	}
+}
+
+SpaceManager* Zone::getSpaceManager() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPACEMANAGER__);
+
+		return static_cast<SpaceManager*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getSpaceManager();
+	}
+}
+
+ActiveAreaQuadTree* Zone::getActiveAreaTree() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getActiveAreaTree();
+	}
+}
+
+void Zone::addCityRegionToUpdate(CityRegion* city) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDCITYREGIONTOUPDATE__CITYREGION_);
+		method.addObjectParameter(city);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addCityRegionToUpdate(city);
+	}
+}
+
+ActiveAreaOctree* Zone::getActiveAreaOctree() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getActiveAreaOctree();
+	}
+}
+
+bool Zone::isWithinBoundaries(const Vector3& position) {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->isWithinBoundaries(position);
+	}
+}
+
+float Zone::getBoundingRadius() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETBOUNDINGRADIUS__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getBoundingRadius();
+	}
+}
+
+float Zone::getZoneObjectRange() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETZONEOBJECTRANGE__);
+
+		return method.executeWithFloatReturn();
+	} else {
+		return _implementation->getZoneObjectRange();
+	}
+}
+
+void Zone::incrementSpawnedAgents() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_INCREMENTSPAWNEDAGENTS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->incrementSpawnedAgents();
+	}
+}
+
+void Zone::decrementSpawnedAgents() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DECREMENTSPAWNEDAGENTS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->decrementSpawnedAgents();
+	}
+}
+
 String Zone::getZoneName() {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -712,6 +687,90 @@ unsigned int Zone::getZoneCRC() {
 	}
 }
 
+ZoneServer* Zone::getZoneServer() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETZONESERVER__);
+
+		return static_cast<ZoneServer*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getZoneServer();
+	}
+}
+
+GCWManager* Zone::getGCWManager() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETGCWMANAGER__);
+
+		return static_cast<GCWManager*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getGCWManager();
+	}
+}
+
+unsigned long long Zone::getGalacticTime() const {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETGALACTICTIME__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getGalacticTime();
+	}
+}
+
+bool Zone::hasManagersStarted() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASMANAGERSSTARTED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasManagersStarted();
+	}
+}
+
+bool Zone::isZoneCleared() const {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISZONECLEARED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isZoneCleared();
+	}
+}
+
+int Zone::getSpawnedAiAgents() const {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPAWNEDAIAGENTS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getSpawnedAiAgents();
+	}
+}
+
 void Zone::setPlanetChatRoom(ChatRoom* room) {
 	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -738,6 +797,44 @@ ChatRoom* Zone::getPlanetChatRoom() {
 		return static_cast<ChatRoom*>(method.executeWithObjectReturn());
 	} else {
 		return _implementation->getPlanetChatRoom();
+	}
+}
+
+bool Zone::isGroundZone() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISGROUNDZONE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isGroundZone();
+	}
+}
+
+bool Zone::isSpaceZone() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISSPACEZONE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isSpaceZone();
+	}
+}
+
+ShipObjectTimerTask* Zone::getTimerTask() {
+	ZoneImplementation* _implementation = static_cast<ZoneImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->getTimerTask();
 	}
 }
 
@@ -849,24 +946,16 @@ bool ZoneImplementation::readObjectMember(ObjectInputStream* stream, const uint3
 		return true;
 
 	switch(nameHashCode) {
+	case 0x883bb6d6: //Zone.spawnedAiAgents
+		TypeInfo<AtomicInteger >::parseFromBinaryStream(&spawnedAiAgents, stream);
+		return true;
+
 	case 0xa762ac22: //Zone.zoneName
 		TypeInfo<String >::parseFromBinaryStream(&zoneName, stream);
 		return true;
 
 	case 0xd9ac1ed3: //Zone.zoneCRC
 		TypeInfo<unsigned int >::parseFromBinaryStream(&zoneCRC, stream);
-		return true;
-
-	case 0x7b0557ae: //Zone.regionTree
-		TypeInfo<QuadTreeReference >::parseFromBinaryStream(&regionTree, stream);
-		return true;
-
-	case 0x623385b4: //Zone.quadTree
-		TypeInfo<QuadTreeReference >::parseFromBinaryStream(&quadTree, stream);
-		return true;
-
-	case 0x883bb6d6: //Zone.spawnedAiAgents
-		TypeInfo<AtomicInteger >::parseFromBinaryStream(&spawnedAiAgents, stream);
 		return true;
 
 	}
@@ -887,6 +976,15 @@ int ZoneImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	_nameHashCode = 0x883bb6d6; //Zone.spawnedAiAgents
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0xa762ac22; //Zone.zoneName
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -905,50 +1003,66 @@ int ZoneImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x7b0557ae; //Zone.regionTree
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<QuadTreeReference >::toBinaryStream(&regionTree, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x623385b4; //Zone.quadTree
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<QuadTreeReference >::toBinaryStream(&quadTree, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x883bb6d6; //Zone.spawnedAiAgents
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 
 	return _count;
 }
 
-QuadTree* ZoneImplementation::getRegionTree() {
-	// server/zone/Zone.idl():  		return regionTree.get();
-	return (&regionTree)->get();
-}
-
-void ZoneImplementation::addCityRegionToUpdate(CityRegion* city) {
-	// server/zone/Zone.idl():  		cityRegionUpdateVector.put(city);
-	(&cityRegionUpdateVector)->put(city);
+CreatureManager* ZoneImplementation::getCreatureManager() {
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
 }
 
 PlanetManager* ZoneImplementation::getPlanetManager() {
-	// server/zone/Zone.idl():  		return planetManager;
-	return planetManager;
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
+}
+
+SpaceManager* ZoneImplementation::getSpaceManager() {
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
+}
+
+ActiveAreaQuadTree* ZoneImplementation::getActiveAreaTree() {
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
+}
+
+void ZoneImplementation::addCityRegionToUpdate(CityRegion* city) {
+}
+
+ActiveAreaOctree* ZoneImplementation::getActiveAreaOctree() {
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
+}
+
+void ZoneImplementation::setZoneName(const String& n) {
+	// server/zone/Zone.idl():  		zoneName = n;
+	zoneName = n;
+}
+
+void ZoneImplementation::setZoneCRC(unsigned int zoneCrc) {
+	// server/zone/Zone.idl():  		zoneCRC = zoneCrc;
+	zoneCRC = zoneCrc;
+}
+
+void ZoneImplementation::setZoneProcessServer(ZoneProcessServer* procServer) {
+	// server/zone/Zone.idl():  		processor = procServer;
+	processor = procServer;
+}
+
+void ZoneImplementation::setZoneServer(ZoneServer* zoneServ) {
+	// server/zone/Zone.idl():  		server = zoneServ;
+	server = zoneServ;
+}
+
+String ZoneImplementation::getZoneName() {
+	// server/zone/Zone.idl():  		return zoneName;
+	return zoneName;
+}
+
+unsigned int ZoneImplementation::getZoneCRC() {
+	// server/zone/Zone.idl():  		return zoneCRC;
+	return zoneCRC;
 }
 
 ZoneServer* ZoneImplementation::getZoneServer() {
@@ -956,14 +1070,9 @@ ZoneServer* ZoneImplementation::getZoneServer() {
 	return server;
 }
 
-CreatureManager* ZoneImplementation::getCreatureManager() {
-	// server/zone/Zone.idl():  		return creatureManager;
-	return creatureManager;
-}
-
 GCWManager* ZoneImplementation::getGCWManager() {
-	// server/zone/Zone.idl():  		return planetManager.getGCWManager();
-	return planetManager->getGCWManager();
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
 }
 
 unsigned long long ZoneImplementation::getGalacticTime() const{
@@ -986,16 +1095,6 @@ int ZoneImplementation::getSpawnedAiAgents() const{
 	return (&spawnedAiAgents)->get();
 }
 
-String ZoneImplementation::getZoneName() {
-	// server/zone/Zone.idl():  		return zoneName;
-	return zoneName;
-}
-
-unsigned int ZoneImplementation::getZoneCRC() {
-	// server/zone/Zone.idl():  		return zoneCRC;
-	return zoneCRC;
-}
-
 void ZoneImplementation::setPlanetChatRoom(ChatRoom* room) {
 	// server/zone/Zone.idl():  		planetChatRoom = room;
 	planetChatRoom = room;
@@ -1004,6 +1103,21 @@ void ZoneImplementation::setPlanetChatRoom(ChatRoom* room) {
 ChatRoom* ZoneImplementation::getPlanetChatRoom() {
 	// server/zone/Zone.idl():  		return planetChatRoom;
 	return planetChatRoom;
+}
+
+bool ZoneImplementation::isGroundZone() {
+	// server/zone/Zone.idl():  		return false;
+	return false;
+}
+
+bool ZoneImplementation::isSpaceZone() {
+	// server/zone/Zone.idl():  		return false;
+	return false;
+}
+
+ShipObjectTimerTask* ZoneImplementation::getTimerTask() {
+	// server/zone/Zone.idl():  		return null;
+	return NULL;
 }
 
 /*
@@ -1021,6 +1135,20 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 	DOBMessage* resp = inv->getInvocationMessage();
 
 	switch (methid) {
+	case RPC_CREATECONTAINERCOMPONENT__:
+		{
+			
+			createContainerComponent();
+			
+		}
+		break;
+	case RPC_INITIALIZEPRIVATEDATA__:
+		{
+			
+			initializePrivateData();
+			
+		}
+		break;
 	case RPC_INITIALIZETRANSIENTMEMBERS__:
 		{
 			
@@ -1032,37 +1160,6 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			finalize();
-			
-		}
-		break;
-	case RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_:
-		{
-			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
-			 String mapObjectLocationType; inv->getAsciiParameter(mapObjectLocationType);
-			
-			DistributedObject* _m_res = getNearestPlanetaryObject(object, mapObjectLocationType);
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
-	case RPC_INITIALIZEPRIVATEDATA__:
-		{
-			
-			initializePrivateData();
-			
-		}
-		break;
-	case RPC_CREATECONTAINERCOMPONENT__:
-		{
-			
-			createContainerComponent();
-			
-		}
-		break;
-	case RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_:
-		{
-			TangibleObject* tano = static_cast<TangibleObject*>(inv->getObjectParameter());
-			
-			updateActiveAreas(tano);
 			
 		}
 		break;
@@ -1087,6 +1184,30 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_UPDATEACTIVEAREAS__TANGIBLEOBJECT_:
+		{
+			TangibleObject* tano = static_cast<TangibleObject*>(inv->getObjectParameter());
+			
+			updateActiveAreas(tano);
+			
+		}
+		break;
+	case RPC_ADDSCENEOBJECT__SCENEOBJECT_:
+		{
+			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
+			
+			addSceneObject(object);
+			
+		}
+		break;
+	case RPC_DROPSCENEOBJECT__SCENEOBJECT_:
+		{
+			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
+			
+			dropSceneObject(object);
+			
+		}
+		break;
 	case RPC_GETHEIGHT__FLOAT_FLOAT_:
 		{
 			float x = inv->getFloatParameter();
@@ -1105,134 +1226,14 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertFloat(_m_res);
 		}
 		break;
-	case RPC_ADDSCENEOBJECT__SCENEOBJECT_:
+	case RPC_GETNEARESTPLANETARYOBJECT__SCENEOBJECT_STRING_STRING_:
 		{
 			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
+			 String mapCategory; inv->getAsciiParameter(mapCategory);
+			 String mapSubCategory; inv->getAsciiParameter(mapSubCategory);
 			
-			addSceneObject(object);
-			
-		}
-		break;
-	case RPC_ADDCITYREGIONTOUPDATE__CITYREGION_:
-		{
-			CityRegion* city = static_cast<CityRegion*>(inv->getObjectParameter());
-			
-			addCityRegionToUpdate(city);
-			
-		}
-		break;
-	case RPC_UPDATECITYREGIONS__:
-		{
-			
-			updateCityRegions();
-			
-		}
-		break;
-	case RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_:
-		{
-			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			sendMapLocationsTo(player);
-			
-		}
-		break;
-	case RPC_DROPSCENEOBJECT__SCENEOBJECT_:
-		{
-			SceneObject* object = static_cast<SceneObject*>(inv->getObjectParameter());
-			
-			dropSceneObject(object);
-			
-		}
-		break;
-	case RPC_GETPLANETMANAGER__:
-		{
-			
-			DistributedObject* _m_res = getPlanetManager();
+			DistributedObject* _m_res = getNearestPlanetaryObject(object, mapCategory, mapSubCategory);
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
-	case RPC_GETZONESERVER__:
-		{
-			
-			DistributedObject* _m_res = getZoneServer();
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
-	case RPC_GETCREATUREMANAGER__:
-		{
-			
-			DistributedObject* _m_res = getCreatureManager();
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
-	case RPC_GETGCWMANAGER__:
-		{
-			
-			DistributedObject* _m_res = getGCWManager();
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
-		}
-		break;
-	case RPC_GETGALACTICTIME__:
-		{
-			
-			unsigned long long _m_res = getGalacticTime();
-			resp->insertLong(_m_res);
-		}
-		break;
-	case RPC_HASMANAGERSSTARTED__:
-		{
-			
-			bool _m_res = hasManagersStarted();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_ISZONECLEARED__:
-		{
-			
-			bool _m_res = isZoneCleared();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_GETSPAWNEDAIAGENTS__:
-		{
-			
-			int _m_res = getSpawnedAiAgents();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETMINX__:
-		{
-			
-			float _m_res = getMinX();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETMAXX__:
-		{
-			
-			float _m_res = getMaxX();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETMINY__:
-		{
-			
-			float _m_res = getMinY();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETMAXY__:
-		{
-			
-			float _m_res = getMaxY();
-			resp->insertFloat(_m_res);
-		}
-		break;
-	case RPC_GETBOUNDINGRADIUS__:
-		{
-			
-			float _m_res = getBoundingRadius();
-			resp->insertFloat(_m_res);
 		}
 		break;
 	case RPC_REGISTEROBJECTWITHPLANETARYMAP__SCENEOBJECT_:
@@ -1276,6 +1277,106 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_SENDMAPLOCATIONSTO__CREATUREOBJECT_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			sendMapLocationsTo(player);
+			
+		}
+		break;
+	case RPC_GETMINX__:
+		{
+			
+			float _m_res = getMinX();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETMAXX__:
+		{
+			
+			float _m_res = getMaxX();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETMINY__:
+		{
+			
+			float _m_res = getMinY();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETMAXY__:
+		{
+			
+			float _m_res = getMaxY();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_UPDATECITYREGIONS__:
+		{
+			
+			updateCityRegions();
+			
+		}
+		break;
+	case RPC_GETCREATUREMANAGER__:
+		{
+			
+			DistributedObject* _m_res = getCreatureManager();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETPLANETMANAGER__:
+		{
+			
+			DistributedObject* _m_res = getPlanetManager();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETSPACEMANAGER__:
+		{
+			
+			DistributedObject* _m_res = getSpaceManager();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_ADDCITYREGIONTOUPDATE__CITYREGION_:
+		{
+			CityRegion* city = static_cast<CityRegion*>(inv->getObjectParameter());
+			
+			addCityRegionToUpdate(city);
+			
+		}
+		break;
+	case RPC_GETBOUNDINGRADIUS__:
+		{
+			
+			float _m_res = getBoundingRadius();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_GETZONEOBJECTRANGE__:
+		{
+			
+			float _m_res = getZoneObjectRange();
+			resp->insertFloat(_m_res);
+		}
+		break;
+	case RPC_INCREMENTSPAWNEDAGENTS__:
+		{
+			
+			incrementSpawnedAgents();
+			
+		}
+		break;
+	case RPC_DECREMENTSPAWNEDAGENTS__:
+		{
+			
+			decrementSpawnedAgents();
+			
+		}
+		break;
 	case RPC_GETZONENAME__:
 		{
 			
@@ -1288,6 +1389,48 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			unsigned int _m_res = getZoneCRC();
 			resp->insertInt(_m_res);
+		}
+		break;
+	case RPC_GETZONESERVER__:
+		{
+			
+			DistributedObject* _m_res = getZoneServer();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETGCWMANAGER__:
+		{
+			
+			DistributedObject* _m_res = getGCWManager();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETGALACTICTIME__:
+		{
+			
+			unsigned long long _m_res = getGalacticTime();
+			resp->insertLong(_m_res);
+		}
+		break;
+	case RPC_HASMANAGERSSTARTED__:
+		{
+			
+			bool _m_res = hasManagersStarted();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISZONECLEARED__:
+		{
+			
+			bool _m_res = isZoneCleared();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_GETSPAWNEDAIAGENTS__:
+		{
+			
+			int _m_res = getSpawnedAiAgents();
+			resp->insertSignedInt(_m_res);
 		}
 		break;
 	case RPC_SETPLANETCHATROOM__CHATROOM_:
@@ -1305,9 +1448,31 @@ void ZoneAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
+	case RPC_ISGROUNDZONE__:
+		{
+			
+			bool _m_res = isGroundZone();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISSPACEZONE__:
+		{
+			
+			bool _m_res = isSpaceZone();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	default:
 		SceneObjectAdapter::invokeMethod(methid, inv);
 	}
+}
+
+void ZoneAdapter::createContainerComponent() {
+	(static_cast<Zone*>(stub))->createContainerComponent();
+}
+
+void ZoneAdapter::initializePrivateData() {
+	(static_cast<Zone*>(stub))->initializePrivateData();
 }
 
 void ZoneAdapter::initializeTransientMembers() {
@@ -1316,22 +1481,6 @@ void ZoneAdapter::initializeTransientMembers() {
 
 void ZoneAdapter::finalize() {
 	(static_cast<Zone*>(stub))->finalize();
-}
-
-Reference<SceneObject* > ZoneAdapter::getNearestPlanetaryObject(SceneObject* object, const String& mapObjectLocationType) {
-	return (static_cast<Zone*>(stub))->getNearestPlanetaryObject(object, mapObjectLocationType);
-}
-
-void ZoneAdapter::initializePrivateData() {
-	(static_cast<Zone*>(stub))->initializePrivateData();
-}
-
-void ZoneAdapter::createContainerComponent() {
-	(static_cast<Zone*>(stub))->createContainerComponent();
-}
-
-void ZoneAdapter::updateActiveAreas(TangibleObject* tano) {
-	(static_cast<Zone*>(stub))->updateActiveAreas(tano);
 }
 
 void ZoneAdapter::startManagers() {
@@ -1346,6 +1495,18 @@ void ZoneAdapter::clearZone() {
 	(static_cast<Zone*>(stub))->clearZone();
 }
 
+void ZoneAdapter::updateActiveAreas(TangibleObject* tano) {
+	(static_cast<Zone*>(stub))->updateActiveAreas(tano);
+}
+
+void ZoneAdapter::addSceneObject(SceneObject* object) {
+	(static_cast<Zone*>(stub))->addSceneObject(object);
+}
+
+void ZoneAdapter::dropSceneObject(SceneObject* object) {
+	(static_cast<Zone*>(stub))->dropSceneObject(object);
+}
+
 float ZoneAdapter::getHeight(float x, float y) {
 	return (static_cast<Zone*>(stub))->getHeight(x, y);
 }
@@ -1354,76 +1515,8 @@ float ZoneAdapter::getHeightNoCache(float x, float y) {
 	return (static_cast<Zone*>(stub))->getHeightNoCache(x, y);
 }
 
-void ZoneAdapter::addSceneObject(SceneObject* object) {
-	(static_cast<Zone*>(stub))->addSceneObject(object);
-}
-
-void ZoneAdapter::addCityRegionToUpdate(CityRegion* city) {
-	(static_cast<Zone*>(stub))->addCityRegionToUpdate(city);
-}
-
-void ZoneAdapter::updateCityRegions() {
-	(static_cast<Zone*>(stub))->updateCityRegions();
-}
-
-void ZoneAdapter::sendMapLocationsTo(CreatureObject* player) {
-	(static_cast<Zone*>(stub))->sendMapLocationsTo(player);
-}
-
-void ZoneAdapter::dropSceneObject(SceneObject* object) {
-	(static_cast<Zone*>(stub))->dropSceneObject(object);
-}
-
-PlanetManager* ZoneAdapter::getPlanetManager() {
-	return (static_cast<Zone*>(stub))->getPlanetManager();
-}
-
-ZoneServer* ZoneAdapter::getZoneServer() {
-	return (static_cast<Zone*>(stub))->getZoneServer();
-}
-
-CreatureManager* ZoneAdapter::getCreatureManager() {
-	return (static_cast<Zone*>(stub))->getCreatureManager();
-}
-
-GCWManager* ZoneAdapter::getGCWManager() {
-	return (static_cast<Zone*>(stub))->getGCWManager();
-}
-
-unsigned long long ZoneAdapter::getGalacticTime() const {
-	return (static_cast<Zone*>(stub))->getGalacticTime();
-}
-
-bool ZoneAdapter::hasManagersStarted() {
-	return (static_cast<Zone*>(stub))->hasManagersStarted();
-}
-
-bool ZoneAdapter::isZoneCleared() const {
-	return (static_cast<Zone*>(stub))->isZoneCleared();
-}
-
-int ZoneAdapter::getSpawnedAiAgents() const {
-	return (static_cast<Zone*>(stub))->getSpawnedAiAgents();
-}
-
-float ZoneAdapter::getMinX() {
-	return (static_cast<Zone*>(stub))->getMinX();
-}
-
-float ZoneAdapter::getMaxX() {
-	return (static_cast<Zone*>(stub))->getMaxX();
-}
-
-float ZoneAdapter::getMinY() {
-	return (static_cast<Zone*>(stub))->getMinY();
-}
-
-float ZoneAdapter::getMaxY() {
-	return (static_cast<Zone*>(stub))->getMaxY();
-}
-
-float ZoneAdapter::getBoundingRadius() {
-	return (static_cast<Zone*>(stub))->getBoundingRadius();
+Reference<SceneObject* > ZoneAdapter::getNearestPlanetaryObject(SceneObject* object, const String& mapCategory, const String& mapSubCategory) {
+	return (static_cast<Zone*>(stub))->getNearestPlanetaryObject(object, mapCategory, mapSubCategory);
 }
 
 void ZoneAdapter::registerObjectWithPlanetaryMap(SceneObject* object) {
@@ -1446,6 +1539,62 @@ void ZoneAdapter::updatePlanetaryMapIcon(SceneObject* object, byte icon) {
 	(static_cast<Zone*>(stub))->updatePlanetaryMapIcon(object, icon);
 }
 
+void ZoneAdapter::sendMapLocationsTo(CreatureObject* player) {
+	(static_cast<Zone*>(stub))->sendMapLocationsTo(player);
+}
+
+float ZoneAdapter::getMinX() {
+	return (static_cast<Zone*>(stub))->getMinX();
+}
+
+float ZoneAdapter::getMaxX() {
+	return (static_cast<Zone*>(stub))->getMaxX();
+}
+
+float ZoneAdapter::getMinY() {
+	return (static_cast<Zone*>(stub))->getMinY();
+}
+
+float ZoneAdapter::getMaxY() {
+	return (static_cast<Zone*>(stub))->getMaxY();
+}
+
+void ZoneAdapter::updateCityRegions() {
+	(static_cast<Zone*>(stub))->updateCityRegions();
+}
+
+CreatureManager* ZoneAdapter::getCreatureManager() {
+	return (static_cast<Zone*>(stub))->getCreatureManager();
+}
+
+PlanetManager* ZoneAdapter::getPlanetManager() {
+	return (static_cast<Zone*>(stub))->getPlanetManager();
+}
+
+SpaceManager* ZoneAdapter::getSpaceManager() {
+	return (static_cast<Zone*>(stub))->getSpaceManager();
+}
+
+void ZoneAdapter::addCityRegionToUpdate(CityRegion* city) {
+	(static_cast<Zone*>(stub))->addCityRegionToUpdate(city);
+}
+
+float ZoneAdapter::getBoundingRadius() {
+	return (static_cast<Zone*>(stub))->getBoundingRadius();
+}
+
+float ZoneAdapter::getZoneObjectRange() {
+	return (static_cast<Zone*>(stub))->getZoneObjectRange();
+}
+
+void ZoneAdapter::incrementSpawnedAgents() {
+	(static_cast<Zone*>(stub))->incrementSpawnedAgents();
+}
+
+void ZoneAdapter::decrementSpawnedAgents() {
+	(static_cast<Zone*>(stub))->decrementSpawnedAgents();
+}
+
 String ZoneAdapter::getZoneName() {
 	return (static_cast<Zone*>(stub))->getZoneName();
 }
@@ -1454,12 +1603,44 @@ unsigned int ZoneAdapter::getZoneCRC() {
 	return (static_cast<Zone*>(stub))->getZoneCRC();
 }
 
+ZoneServer* ZoneAdapter::getZoneServer() {
+	return (static_cast<Zone*>(stub))->getZoneServer();
+}
+
+GCWManager* ZoneAdapter::getGCWManager() {
+	return (static_cast<Zone*>(stub))->getGCWManager();
+}
+
+unsigned long long ZoneAdapter::getGalacticTime() const {
+	return (static_cast<Zone*>(stub))->getGalacticTime();
+}
+
+bool ZoneAdapter::hasManagersStarted() {
+	return (static_cast<Zone*>(stub))->hasManagersStarted();
+}
+
+bool ZoneAdapter::isZoneCleared() const {
+	return (static_cast<Zone*>(stub))->isZoneCleared();
+}
+
+int ZoneAdapter::getSpawnedAiAgents() const {
+	return (static_cast<Zone*>(stub))->getSpawnedAiAgents();
+}
+
 void ZoneAdapter::setPlanetChatRoom(ChatRoom* room) {
 	(static_cast<Zone*>(stub))->setPlanetChatRoom(room);
 }
 
 ChatRoom* ZoneAdapter::getPlanetChatRoom() {
 	return (static_cast<Zone*>(stub))->getPlanetChatRoom();
+}
+
+bool ZoneAdapter::isGroundZone() {
+	return (static_cast<Zone*>(stub))->isGroundZone();
+}
+
+bool ZoneAdapter::isSpaceZone() {
+	return (static_cast<Zone*>(stub))->isSpaceZone();
 }
 
 /*
@@ -1527,6 +1708,17 @@ int ZonePOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	if (spawnedAiAgents) {
+	_nameHashCode = 0x883bb6d6; //Zone.spawnedAiAgents
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (zoneName) {
 	_nameHashCode = 0xa762ac22; //Zone.zoneName
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1549,39 +1741,6 @@ int ZonePOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (regionTree) {
-	_nameHashCode = 0x7b0557ae; //Zone.regionTree
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<QuadTreeReference >::toBinaryStream(&regionTree.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (quadTree) {
-	_nameHashCode = 0x623385b4; //Zone.quadTree
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<QuadTreeReference >::toBinaryStream(&quadTree.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (spawnedAiAgents) {
-	_nameHashCode = 0x883bb6d6; //Zone.spawnedAiAgents
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 
 	return _count;
 }
@@ -1591,6 +1750,14 @@ bool ZonePOD::readObjectMember(ObjectInputStream* stream, const uint32& nameHash
 		return true;
 
 	switch(nameHashCode) {
+	case 0x883bb6d6: //Zone.spawnedAiAgents
+		{
+			AtomicInteger _mnspawnedAiAgents;
+			TypeInfo<AtomicInteger >::parseFromBinaryStream(&_mnspawnedAiAgents, stream);
+			spawnedAiAgents = std::move(_mnspawnedAiAgents);
+		}
+		return true;
+
 	case 0xa762ac22: //Zone.zoneName
 		{
 			String _mnzoneName;
@@ -1604,30 +1771,6 @@ bool ZonePOD::readObjectMember(ObjectInputStream* stream, const uint32& nameHash
 			unsigned int _mnzoneCRC;
 			TypeInfo<unsigned int >::parseFromBinaryStream(&_mnzoneCRC, stream);
 			zoneCRC = std::move(_mnzoneCRC);
-		}
-		return true;
-
-	case 0x7b0557ae: //Zone.regionTree
-		{
-			QuadTreeReference _mnregionTree;
-			TypeInfo<QuadTreeReference >::parseFromBinaryStream(&_mnregionTree, stream);
-			regionTree = std::move(_mnregionTree);
-		}
-		return true;
-
-	case 0x623385b4: //Zone.quadTree
-		{
-			QuadTreeReference _mnquadTree;
-			TypeInfo<QuadTreeReference >::parseFromBinaryStream(&_mnquadTree, stream);
-			quadTree = std::move(_mnquadTree);
-		}
-		return true;
-
-	case 0x883bb6d6: //Zone.spawnedAiAgents
-		{
-			AtomicInteger _mnspawnedAiAgents;
-			TypeInfo<AtomicInteger >::parseFromBinaryStream(&_mnspawnedAiAgents, stream);
-			spawnedAiAgents = std::move(_mnspawnedAiAgents);
 		}
 		return true;
 
@@ -1657,15 +1800,11 @@ void ZonePOD::readObject(ObjectInputStream* stream) {
 void ZonePOD::writeObjectCompact(ObjectOutputStream* stream) {
 	SceneObjectPOD::writeObjectCompact(stream);
 
+	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents.value(), stream);
+
 	TypeInfo<String >::toBinaryStream(&zoneName.value(), stream);
 
 	TypeInfo<unsigned int >::toBinaryStream(&zoneCRC.value(), stream);
-
-	TypeInfo<QuadTreeReference >::toBinaryStream(&regionTree.value(), stream);
-
-	TypeInfo<QuadTreeReference >::toBinaryStream(&quadTree.value(), stream);
-
-	TypeInfo<AtomicInteger >::toBinaryStream(&spawnedAiAgents.value(), stream);
 
 
 }

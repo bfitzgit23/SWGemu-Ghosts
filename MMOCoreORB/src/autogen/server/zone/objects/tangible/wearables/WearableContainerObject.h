@@ -54,6 +54,10 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+#include "server/zone/objects/manufactureschematic/craftingvalues/CraftingValues.h"
+
+#include "server/zone/objects/tangible/attachment/Attachment.h"
+
 #include "system/util/VectorMap.h"
 
 #include "server/zone/objects/tangible/Container.h"
@@ -66,6 +70,12 @@ namespace wearables {
 
 class WearableContainerObject : public Container {
 public:
+	static const int MAXSOCKETS = 4;
+
+	static const int MIN_SOCKET_MOD = 60;
+
+	static const bool ALLOW_SEA;
+
 	WearableContainerObject();
 
 	void initializeTransientMembers();
@@ -79,6 +89,8 @@ public:
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
+	void updateCraftingValues(CraftingValues* values, bool initialUpdate);
+
 	void addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	void applySkillModsTo(CreatureObject* creature) const;
@@ -90,6 +102,10 @@ public:
 	bool isEquipped();
 
 	bool isWearableContainerObject();
+
+	int getRemainingSockets() const;
+
+	void setMaxSockets(int maxSockets);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -120,6 +136,22 @@ namespace wearables {
 
 class WearableContainerObjectImplementation : public ContainerImplementation {
 protected:
+	int socketCount;
+
+	bool socketsGenerated;
+
+	int usedSocketCount;
+
+	int modsNotInSockets;
+
+public:
+	static const int MAXSOCKETS = 4;
+
+	static const int MIN_SOCKET_MOD = 60;
+
+	static const bool ALLOW_SEA;
+
+protected:
 	VectorMap<String, int> wearableSkillMods;
 
 public:
@@ -138,6 +170,8 @@ public:
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
+	void updateCraftingValues(CraftingValues* values, bool initialUpdate);
+
 	virtual void addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient = true);
 
 	virtual void applySkillModsTo(CreatureObject* creature) const;
@@ -149,6 +183,14 @@ public:
 	bool isEquipped();
 
 	bool isWearableContainerObject();
+
+	int getRemainingSockets() const;
+
+private:
+	void generateSockets(CraftingValues* craftingValues);
+
+public:
+	void setMaxSockets(int maxSockets);
 
 	WeakReference<WearableContainerObject*> _this;
 
@@ -206,6 +248,10 @@ public:
 
 	bool isWearableContainerObject();
 
+	int getRemainingSockets() const;
+
+	void setMaxSockets(int maxSockets);
+
 };
 
 class WearableContainerObjectHelper : public DistributedObjectClassHelper, public Singleton<WearableContainerObjectHelper> {
@@ -243,6 +289,14 @@ namespace wearables {
 
 class WearableContainerObjectPOD : public ContainerPOD {
 public:
+	Optional<int> socketCount;
+
+	Optional<bool> socketsGenerated;
+
+	Optional<int> usedSocketCount;
+
+	Optional<int> modsNotInSockets;
+
 	Optional<VectorMap<String, int>> wearableSkillMods;
 
 	String _className;

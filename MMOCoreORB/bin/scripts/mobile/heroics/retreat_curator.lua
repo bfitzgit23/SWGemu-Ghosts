@@ -1,0 +1,37 @@
+retreat_curator = Creature:new {
+	customName = "Retreat Curator",
+	randomNameType = NAME_GENERIC_TAG,
+	socialGroup = "townsperson",
+	faction = "",
+	level = 20,
+	chanceHit = 1.0,
+	damageMin = 50,
+	damageMax = 100,
+	baseXp = 500,
+	baseHAM = 15000,
+	baseHAMmax = 18000,
+	armor = 1,
+	resists = {50,50,50,50,50,50,50,50,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	scale = 1.0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "conversation",
+	attacks = merge(brawlermaster,marksmanmaster)
+}
+
+CreatureTemplates:addCreatureTemplate(retreat_curator, "retreat_curator")

@@ -26,7 +26,7 @@ end
 --Boba Fett Spawn Scene Objects
 ---------------------------
 function boba_fett_dungeonScreenplay:spawnSceneObjects()
-				spawnSceneObject("endor", "object/tangible/terminal/terminal_quad_screen.iff", -40.4491, 0.61331, 29.3437, 14200816, 1, 0, 0, 0)
+				spawnSceneObject("endor", "object/tangible/terminal/terminal_bank.iff", -40.4491, 0.61331, 29.3437, 14200816, 1, 0, 0, 0)
 end
 -----------------------
 --Boba Fett Has Spawned

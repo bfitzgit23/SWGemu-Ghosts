@@ -2,6 +2,7 @@ tempest_rill = Creature:new {
 	objectName = "@mob/creature_names:rill_tempest",
 	socialGroup = "rill",
 	faction = "",
+	mobType = MOB_CARNIVORE,
 	level = 9,
 	chanceHit = 0.28,
 	damageMin = 90,
@@ -29,11 +30,18 @@ tempest_rill = Creature:new {
 	hues = { 24, 25, 26, 27, 28, 29, 30, 31 },
 	controlDeviceTemplate = "object/intangible/pet/dune_lizard_hue.iff",
 	scale = 0.7,
-	lootGroups = {},
-	weapons = {},
+	lootGroups = {{groups = {{group = "junk", chance = 6000000}, {group = "wearables_common", chance = 1500000}, {group = "armor_all", chance = 1500000}, {group = "melee_weapons", chance = 1000000}}, lootChance = 3500000}},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "unarmed",
+	secondaryWeapon = "none",
 	conversationTemplate = "",
-	attacks = {
-	}
+	
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = {},
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(tempest_rill, "tempest_rill")

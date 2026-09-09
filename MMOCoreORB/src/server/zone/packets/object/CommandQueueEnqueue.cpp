@@ -31,23 +31,24 @@ void CommandQueueEnqueueCallback::run() {
 	if (player == nullptr)
 		return;
 
-	//ObjectController* objectController = server->getZoneServer()->getObjectController();
 	Time* commandCooldown = client->getCommandSpamCooldown();
 	int commandCount = client->getCommandCount();
 	uint64 miliDifference = commandCooldown->miliDifference();
 
 	if (commandCount >= 5 && miliDifference < 1000) {
-		//creature->clearQueueAction(actioncntr);
 		player->clearQueueAction(actionCount);
-		//player->sendSystemMessage("Please stop spamming commands");
+
+		player->debug() << "command spam detected";
 	} else {
 		ObjectController* objectController = server->getObjectController();
+		int priority = QueueCommand::NOCOMBATQUEUE;
 
-		if (objectController) {
+		if (objectController != nullptr) {
 			const QueueCommand* queueCommand = objectController->getQueueCommand(actionCRC);
 
-			if (queueCommand) {
+			if (queueCommand != nullptr) {
 				actionName = queueCommand->getQueueCommandName().toCharArray();
+				priority = queueCommand->getDefaultPriority();
 			}
 		}
 
@@ -58,7 +59,7 @@ void CommandQueueEnqueueCallback::run() {
 			commandCooldown->updateToCurrentTime();
 		}
 
-		player->enqueueCommand(actionCRC, actionCount, targetID, arguments, -1, actionCount&0x3FFFFFFF);
+		player->enqueueCommand(actionCRC, actionCount, targetID, arguments, priority, actionCount&0x3FFFFFFF);
 	}
 }
 

@@ -153,22 +153,9 @@ object_tangible_terminal_terminal_gcw_publish_gift = object_tangible_terminal_sh
 			"Light Jedi Enclave (5,000 Credits)", "light_enclave_travel",
 			"Dark Jedi Enclave (5,000 Credits)", "dark_enclave_travel",
 		   },
-		 	"Fix For Broken Jedi FRS Unlocks",
-		   {
-			"Light Jedi FRS Unlock (Fix For Broken Light FRS Members)", "frs_light_side",
-			"Dark Jedi FRS Unlock (Fix For Broken Dark FRS Members)", "frs_dark_side",
-		   },
-		 	"Unlock Jedi 10,000,000 Credits",
-		   {
-			"Unlocking Jedi Requires (10,000,000 Credits)", "unlock_jedi_initiate",
-		   },
 		 	"Master Politician",
 		   {
 			"Master Politician Requires (1,000,000 Credits)", "citypolitician",
-		   },
-		 	"Recalculate Force",
-		   {
-			"Recalculate's Jedi's Force pool (24 hour cool down)", "recalculateforce",
 		   },
 		 	"Recalculate Skills",
 		   {
@@ -208,7 +195,7 @@ object_tangible_terminal_terminal_gcw_publish_gift = object_tangible_terminal_sh
            	--"Intas Minor (5,000 Credits)", "pc_intas_travel", 
             "Lafayette (5,000 Credits)", "pc_lafayette_travel",
             "Avalon Prime (5,000 Credits)", "pc_avalon_travel",
-	    "Flurrys Haven (5,000 Credits)", "pc_flurrys haven_travel",
+	    "SWG GOTOR Haven (5,000 Credits)", "pc_flurrys haven_travel",
 	    "Sanitarium (5,000 Credits)", "pc_sanitarium_travel",
 	    "Cry More Noobs (5,000 Credits)", "pc_crymorenoobs_travel"
           },

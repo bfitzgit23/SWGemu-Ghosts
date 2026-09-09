@@ -21,7 +21,7 @@ jedi_trainer_combined = Creature:new {
 	pvpBitmask          = NONE,
 	creatureBitmask     = NONE,
 	optionsBitmask      = CONVERSABLE,
-	templates           = { "object/mobile/shared_dressed_fs_village_oldman.iff" },
+	templates           = { "object/mobile/dressed_fs_village_oldman.iff" },
 	attacks             = {},
 	conversationTemplate = "jediTrainerConvoTemplate",
 

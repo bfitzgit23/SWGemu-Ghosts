@@ -16,7 +16,7 @@
  *	WeaponObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDCONTAINERTO__CREATUREOBJECT_,RPC_NOTIFYLOADFROMDATABASE__,RPC_CREATECHILDOBJECTS__,RPC_ISCERTIFIEDFOR__CREATUREOBJECT_,RPC_SETCERTIFIED__BOOL_,RPC_GETATTACKTYPE__,RPC_SETATTACKTYPE__INT_,RPC_ISCERTIFIED__,RPC_ISEQUIPPED__,RPC_GETPOINTBLANKACCURACY__BOOL_,RPC_SETPOINTBLANKACCURACY__INT_,RPC_GETPOINTBLANKRANGE__BOOL_,RPC_GETIDEALRANGE__BOOL_,RPC_SETIDEALRANGE__INT_,RPC_GETMAXRANGE__BOOL_,RPC_SETMAXRANGE__INT_,RPC_GETIDEALACCURACY__BOOL_,RPC_SETIDEALACCURACY__INT_,RPC_SETARMORPIERCING__INT_,RPC_GETARMORPIERCING__,RPC_GETMAXRANGEACCURACY__BOOL_,RPC_SETMAXRANGEACCURACY__INT_,RPC_GETATTACKSPEED__BOOL_,RPC_SETATTACKSPEED__FLOAT_,RPC_GETMAXDAMAGE__BOOL_,RPC_SETMAXDAMAGE__FLOAT_,RPC_GETMINDAMAGE__BOOL_,RPC_SETMINDAMAGE__FLOAT_,RPC_GETWOUNDSRATIO__BOOL_,RPC_SETWOUNDSRATIO__FLOAT_,RPC_GETDAMAGERADIUS__BOOL_,RPC_SETDAMAGERADIUS__FLOAT_,RPC_GETHEALTHATTACKCOST__BOOL_,RPC_SETHEALTHATTACKCOST__INT_,RPC_GETACTIONATTACKCOST__BOOL_,RPC_SETACTIONATTACKCOST__INT_,RPC_GETMINDATTACKCOST__BOOL_,RPC_SETMINDATTACKCOST__INT_,RPC_GETFORCECOST__,RPC_SETFORCECOST__FLOAT_,RPC_GETBLADECOLOR__,RPC_SETBLADECOLOR__INT_,RPC_GETDAMAGETYPE__,RPC_GETXPTYPE__,RPC_GETDECONSTRUCTIONTEMPLATE__,RPC_GETNUMBEROFDOTS__,RPC_GETDOTTYPE__INT_,RPC_GETDOTATTRIBUTE__INT_,RPC_GETDOTSTRENGTH__INT_,RPC_GETDOTDURATION__INT_,RPC_GETDOTPOTENCY__INT_,RPC_GETDOTUSES__INT_,RPC_ADDDOTTYPE__INT_,RPC_ADDDOTATTRIBUTE__INT_,RPC_ADDDOTSTRENGTH__INT_,RPC_ADDDOTDURATION__INT_,RPC_ADDDOTPOTENCY__INT_,RPC_ADDDOTUSES__INT_,RPC_SETDOTUSES__INT_INT_,RPC_REMOVEDOT__INT_,RPC_CLEARDOTS__,RPC_GETWEAPONTYPE__,RPC_ISUNARMEDWEAPON__,RPC_ISMELEEWEAPON__,RPC_ISRANGEDWEAPON__,RPC_ISRIFLEWEAPON__,RPC_ISTHROWNWEAPON__,RPC_ISHEAVYWEAPON__,RPC_ISSPECIALHEAVYWEAPON__,RPC_ISLIGHTNINGRIFLE__,RPC_ISFLAMETHROWER__,RPC_ISHEAVYACIDRIFLE__,RPC_ISCARBINEWEAPON__,RPC_ISPISTOLWEAPON__,RPC_ISONEHANDMELEEWEAPON__,RPC_ISPOLEARMWEAPONOBJECT__,RPC_ISTWOHANDMELEEWEAPON__,RPC_ISMINEWEAPON__,RPC_ISJEDIWEAPON__,RPC_ISJEDIONEHANDEDWEAPON__,RPC_ISJEDITWOHANDEDWEAPON__,RPC_ISJEDIPOLEARMWEAPON__,RPC_GETWEAPONBITMASK__,RPC_ISWEAPONOBJECT__,RPC_HASPOWERUP__,RPC_APPLYPOWERUP__CREATUREOBJECT_POWERUPOBJECT_,RPC_REMOVEPOWERUP__,RPC_DECREASEPOWERUPUSES__CREATUREOBJECT_,RPC_REPAIRATTEMPT__INT_,RPC_DECAY__CREATUREOBJECT_,RPC_SETDAMAGESLICE__FLOAT_,RPC_SETSPEEDSLICE__FLOAT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDCONTAINERTO__CREATUREOBJECT_,RPC_NOTIFYLOADFROMDATABASE__,RPC_CREATECHILDOBJECTS__,RPC_ISCERTIFIEDFOR__CREATUREOBJECT_,RPC_SETCERTIFIED__BOOL_,RPC_GETATTACKTYPE__,RPC_SETATTACKTYPE__INT_,RPC_ISCERTIFIED__,RPC_ISEQUIPPED__,RPC_GETPOINTBLANKACCURACY__BOOL_,RPC_SETPOINTBLANKACCURACY__INT_,RPC_GETPOINTBLANKRANGE__BOOL_,RPC_GETPOINTBLANKRANGE__,RPC_GETIDEALRANGE__BOOL_,RPC_GETIDEALRANGE__,RPC_SETIDEALRANGE__INT_,RPC_GETMAXRANGE__BOOL_,RPC_GETMAXRANGE__,RPC_SETMAXRANGE__INT_,RPC_GETIDEALACCURACY__BOOL_,RPC_SETIDEALACCURACY__INT_,RPC_GETARMORPIERCING__,RPC_GETMAXRANGEACCURACY__BOOL_,RPC_SETMAXRANGEACCURACY__INT_,RPC_GETATTACKSPEED__BOOL_,RPC_SETATTACKSPEED__FLOAT_,RPC_GETMAXDAMAGE__BOOL_,RPC_SETMAXDAMAGE__FLOAT_,RPC_GETMINDAMAGE__BOOL_,RPC_SETMINDAMAGE__FLOAT_,RPC_GETWOUNDSRATIO__BOOL_,RPC_SETWOUNDSRATIO__FLOAT_,RPC_GETDAMAGERADIUS__BOOL_,RPC_SETDAMAGERADIUS__FLOAT_,RPC_GETHEALTHATTACKCOST__BOOL_,RPC_SETHEALTHATTACKCOST__INT_,RPC_GETACTIONATTACKCOST__BOOL_,RPC_SETACTIONATTACKCOST__INT_,RPC_GETMINDATTACKCOST__BOOL_,RPC_SETMINDATTACKCOST__INT_,RPC_GETFORCECOST__,RPC_SETFORCECOST__FLOAT_,RPC_GETBLADECOLOR__,RPC_SETBLADECOLOR__INT_,RPC_GETDAMAGETYPE__,RPC_GETXPTYPE__,RPC_GETNUMBEROFDOTS__,RPC_GETDOTTYPE__INT_,RPC_GETDOTATTRIBUTE__INT_,RPC_GETDOTSTRENGTH__INT_,RPC_GETDOTDURATION__INT_,RPC_GETDOTPOTENCY__INT_,RPC_GETDOTUSES__INT_,RPC_ADDDOTTYPE__INT_,RPC_ADDDOTATTRIBUTE__INT_,RPC_ADDDOTSTRENGTH__INT_,RPC_ADDDOTDURATION__INT_,RPC_ADDDOTPOTENCY__INT_,RPC_ADDDOTUSES__INT_,RPC_SETDOTUSES__INT_INT_,RPC_CLEARDOTS__,RPC_GETWEAPONTYPE__,RPC_ISUNARMEDWEAPON__,RPC_ISMELEEWEAPON__,RPC_ISRANGEDWEAPON__,RPC_ISRIFLEWEAPON__,RPC_ISTHROWNWEAPON__,RPC_ISHEAVYWEAPON__,RPC_ISSPECIALHEAVYWEAPON__,RPC_ISLIGHTNINGRIFLE__,RPC_ISFLAMETHROWER__,RPC_ISHEAVYACIDRIFLE__,RPC_ISCARBINEWEAPON__,RPC_ISPISTOLWEAPON__,RPC_ISONEHANDMELEEWEAPON__,RPC_ISPOLEARMWEAPONOBJECT__,RPC_ISTWOHANDMELEEWEAPON__,RPC_ISMINEWEAPON__,RPC_ISJEDIWEAPON__,RPC_ISJEDIONEHANDEDWEAPON__,RPC_ISJEDITWOHANDEDWEAPON__,RPC_ISJEDIPOLEARMWEAPON__,RPC_GETWEAPONBITMASK__,RPC_ISWEAPONOBJECT__,RPC_HASPOWERUP__,RPC_APPLYPOWERUP__CREATUREOBJECT_POWERUPOBJECT_,RPC_REMOVEPOWERUP__,RPC_DECREASEPOWERUPUSES__CREATUREOBJECT_,RPC_REPAIRATTEMPT__INT_,RPC_DECAY__CREATUREOBJECT_,RPC_SETDAMAGESLICE__FLOAT_,RPC_SETSPEEDSLICE__FLOAT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_GETTOTALWEARABLESKILLMODS__};
 
 WeaponObject::WeaponObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	WeaponObjectImplementation* _implementation = new WeaponObjectImplementation();
@@ -339,6 +339,20 @@ int WeaponObject::getPointBlankRange(bool withPup) const {
 	}
 }
 
+int WeaponObject::getPointBlankRange() const {
+	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETPOINTBLANKRANGE__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getPointBlankRange();
+	}
+}
+
 int WeaponObject::getIdealRange(bool withPup) const {
 	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -351,6 +365,20 @@ int WeaponObject::getIdealRange(bool withPup) const {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getIdealRange(withPup);
+	}
+}
+
+int WeaponObject::getIdealRange() const {
+	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETIDEALRANGE__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getIdealRange();
 	}
 }
 
@@ -381,6 +409,20 @@ int WeaponObject::getMaxRange(bool withPup) const {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getMaxRange(withPup);
+	}
+}
+
+int WeaponObject::getMaxRange() const {
+	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETMAXRANGE__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getMaxRange();
 	}
 }
 
@@ -426,21 +468,6 @@ void WeaponObject::setIdealAccuracy(int value) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->setIdealAccuracy(value);
-	}
-}
-
-void WeaponObject::setArmorPiercing(int value) {
-	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETARMORPIERCING__INT_);
-		method.addSignedIntParameter(value);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->setArmorPiercing(value);
 	}
 }
 
@@ -816,22 +843,6 @@ String WeaponObject::getXpType() const {
 	}
 }
 
-String WeaponObject::getDeconstructionTemplate() const {
-	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETDECONSTRUCTIONTEMPLATE__);
-
-		String _return_getDeconstructionTemplate;
-		method.executeWithAsciiReturn(_return_getDeconstructionTemplate);
-		return _return_getDeconstructionTemplate;
-	} else {
-		return _implementation->getDeconstructionTemplate();
-	}
-}
-
 int WeaponObject::getNumberOfDots() const {
 	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1042,23 +1053,8 @@ void WeaponObject::setDotUses(int u, int index) {
 	}
 }
 
-void WeaponObject::removeDot(int index) {
-	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_REMOVEDOT__INT_);
-		method.addSignedIntParameter(index);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->removeDot(index);
-	}
-}
-
 void WeaponObject::clearDots() {
-	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementation());
+	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
@@ -1071,7 +1067,7 @@ void WeaponObject::clearDots() {
 	}
 }
 
-String WeaponObject::getWeaponType() {
+String WeaponObject::getWeaponType() const {
 	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1425,7 +1421,7 @@ bool WeaponObject::applyPowerup(CreatureObject* player, PowerupObject* pup) {
 	}
 }
 
-PowerupObject* WeaponObject::removePowerup() {
+Reference<PowerupObject* > WeaponObject::removePowerup() {
 	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1571,6 +1567,20 @@ const VectorMap<String, int>* WeaponObject::getWearableSkillMods() const {
 
 	} else {
 		return _implementation->getWearableSkillMods();
+	}
+}
+
+int WeaponObject::getTotalWearableSkillMods() const {
+	WeaponObjectImplementation* _implementation = static_cast<WeaponObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETTOTALWEARABLESKILLMODS__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getTotalWearableSkillMods();
 	}
 }
 
@@ -2320,9 +2330,24 @@ void WeaponObjectImplementation::setPointBlankAccuracy(int value) {
 	pointBlankAccuracy = value;
 }
 
+int WeaponObjectImplementation::getPointBlankRange() const{
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return getPointBlankRange(true);
+	return getPointBlankRange(true);
+}
+
+int WeaponObjectImplementation::getIdealRange() const{
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return getIdealRange(true);
+	return getIdealRange(true);
+}
+
 void WeaponObjectImplementation::setIdealRange(int value) {
 	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		idealRange = value;
 	idealRange = value;
+}
+
+int WeaponObjectImplementation::getMaxRange() const{
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return getMaxRange(true);
+	return getMaxRange(true);
 }
 
 void WeaponObjectImplementation::setMaxRange(int value) {
@@ -2333,11 +2358,6 @@ void WeaponObjectImplementation::setMaxRange(int value) {
 void WeaponObjectImplementation::setIdealAccuracy(int value) {
 	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		idealAccuracy = value;
 	idealAccuracy = value;
-}
-
-void WeaponObjectImplementation::setArmorPiercing(int value) {
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():   armorPiercing = value;
-	armorPiercing = value;
 }
 
 int WeaponObjectImplementation::getArmorPiercing() const{
@@ -2420,11 +2440,6 @@ String WeaponObjectImplementation::getXpType() const{
 	return weaponTemplate->getXpType();
 }
 
-String WeaponObjectImplementation::getDeconstructionTemplate() const{
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return weaponTemplate.getDeconstructionTemplate();
-	return weaponTemplate->getDeconstructionTemplate();
-}
-
 int WeaponObjectImplementation::getNumberOfDots() const{
 	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return dotType.size();
 	return (&dotType)->size();
@@ -2495,19 +2510,19 @@ void WeaponObjectImplementation::setDotUses(int u, int index) {
 	(&dotUses)->elementAt(index) = u;
 }
 
-void WeaponObjectImplementation::removeDot(int index) {
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotType.remove(index);
-	(&dotType)->remove(index);
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotAttribute.remove(index);
-	(&dotAttribute)->remove(index);
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotStrength.remove(index);
-	(&dotStrength)->remove(index);
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotDuration.remove(index);
-	(&dotDuration)->remove(index);
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotPotency.remove(index);
-	(&dotPotency)->remove(index);
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotUses.remove(index);
-	(&dotUses)->remove(index);
+void WeaponObjectImplementation::clearDots() {
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotType.removeAll();
+	(&dotType)->removeAll();
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotAttribute.removeAll();
+	(&dotAttribute)->removeAll();
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotStrength.removeAll();
+	(&dotStrength)->removeAll();
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotDuration.removeAll();
+	(&dotDuration)->removeAll();
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotPotency.removeAll();
+	(&dotPotency)->removeAll();
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		dotUses.removeAll();
+	(&dotUses)->removeAll();
 }
 
 bool WeaponObjectImplementation::isUnarmedWeapon() const{
@@ -2551,8 +2566,8 @@ bool WeaponObjectImplementation::isLightningRifle() const{
 }
 
 bool WeaponObjectImplementation::isFlameThrower() const{
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/heavy/som_republic_flamer.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/heavy/som_lava_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_rebel.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_imperial.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_pulse_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_particle_beam.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_mandalorian.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_cr1_blast_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_void.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_corellian.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_som_lava_cannon.iff") || weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_carbonite_cold_rifle.iff");
-	return weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/heavy/som_republic_flamer.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/heavy/som_lava_cannon.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_rebel.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_pvp_imperial.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_pulse_cannon.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_particle_beam.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_mandalorian.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_cr1_blast_cannon.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_void.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_ep3_loot_corellian.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_som_lava_cannon.iff") || weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_carbonite_cold_rifle.iff");
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return weaponTemplate.isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff");
+	return weaponTemplate->isDerivedFrom("object/weapon/ranged/rifle/rifle_flame_thrower.iff");
 }
 
 bool WeaponObjectImplementation::isHeavyAcidRifle() const{
@@ -2621,8 +2636,8 @@ bool WeaponObjectImplementation::isWeaponObject() {
 }
 
 bool WeaponObjectImplementation::hasPowerup() const{
-	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return powerupObject != null;
-	return powerupObject != NULL;
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return powerupObject;
+	return powerupObject;
 }
 
 void WeaponObjectImplementation::setDamageSlice(float value) {
@@ -2649,6 +2664,11 @@ void WeaponObjectImplementation::addSkillMod(const int skillType, const String& 
 const VectorMap<String, int>* WeaponObjectImplementation::getWearableSkillMods() const{
 	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return wearableSkillMods;
 	return (&wearableSkillMods);
+}
+
+int WeaponObjectImplementation::getTotalWearableSkillMods() const{
+	// server/zone/objects/tangible/weapon/WeaponObject.idl():  		return wearableSkillMods.size();
+	return (&wearableSkillMods)->size();
 }
 
 /*
@@ -2772,11 +2792,25 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETPOINTBLANKRANGE__:
+		{
+			
+			int _m_res = getPointBlankRange();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	case RPC_GETIDEALRANGE__BOOL_:
 		{
 			bool withPup = inv->getBooleanParameter();
 			
 			int _m_res = getIdealRange(withPup);
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETIDEALRANGE__:
+		{
+			
+			int _m_res = getIdealRange();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -2793,6 +2827,13 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			bool withPup = inv->getBooleanParameter();
 			
 			int _m_res = getMaxRange(withPup);
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_GETMAXRANGE__:
+		{
+			
+			int _m_res = getMaxRange();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -2817,14 +2858,6 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int value = inv->getSignedIntParameter();
 			
 			setIdealAccuracy(value);
-			
-		}
-		break;
-	case RPC_SETARMORPIERCING__INT_:
-		{
-			int value = inv->getSignedIntParameter();
-			
-			setArmorPiercing(value);
 			
 		}
 		break;
@@ -3023,13 +3056,6 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertAscii(_m_res);
 		}
 		break;
-	case RPC_GETDECONSTRUCTIONTEMPLATE__:
-		{
-			
-			String _m_res = getDeconstructionTemplate();
-			resp->insertAscii(_m_res);
-		}
-		break;
 	case RPC_GETNUMBEROFDOTS__:
 		{
 			
@@ -3139,14 +3165,6 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			int index = inv->getSignedIntParameter();
 			
 			setDotUses(u, index);
-			
-		}
-		break;
-	case RPC_REMOVEDOT__INT_:
-		{
-			int index = inv->getSignedIntParameter();
-			
-			removeDot(index);
 			
 		}
 		break;
@@ -3408,6 +3426,13 @@ void WeaponObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_GETTOTALWEARABLESKILLMODS__:
+		{
+			
+			int _m_res = getTotalWearableSkillMods();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	default:
 		TangibleObjectAdapter::invokeMethod(methid, inv);
 	}
@@ -3469,8 +3494,16 @@ int WeaponObjectAdapter::getPointBlankRange(bool withPup) const {
 	return (static_cast<WeaponObject*>(stub))->getPointBlankRange(withPup);
 }
 
+int WeaponObjectAdapter::getPointBlankRange() const {
+	return (static_cast<WeaponObject*>(stub))->getPointBlankRange();
+}
+
 int WeaponObjectAdapter::getIdealRange(bool withPup) const {
 	return (static_cast<WeaponObject*>(stub))->getIdealRange(withPup);
+}
+
+int WeaponObjectAdapter::getIdealRange() const {
+	return (static_cast<WeaponObject*>(stub))->getIdealRange();
 }
 
 void WeaponObjectAdapter::setIdealRange(int value) {
@@ -3479,6 +3512,10 @@ void WeaponObjectAdapter::setIdealRange(int value) {
 
 int WeaponObjectAdapter::getMaxRange(bool withPup) const {
 	return (static_cast<WeaponObject*>(stub))->getMaxRange(withPup);
+}
+
+int WeaponObjectAdapter::getMaxRange() const {
+	return (static_cast<WeaponObject*>(stub))->getMaxRange();
 }
 
 void WeaponObjectAdapter::setMaxRange(int value) {
@@ -3491,10 +3528,6 @@ int WeaponObjectAdapter::getIdealAccuracy(bool withPup) const {
 
 void WeaponObjectAdapter::setIdealAccuracy(int value) {
 	(static_cast<WeaponObject*>(stub))->setIdealAccuracy(value);
-}
-
-void WeaponObjectAdapter::setArmorPiercing(int value) {
-	(static_cast<WeaponObject*>(stub))->setArmorPiercing(value);
 }
 
 int WeaponObjectAdapter::getArmorPiercing() const {
@@ -3597,10 +3630,6 @@ String WeaponObjectAdapter::getXpType() const {
 	return (static_cast<WeaponObject*>(stub))->getXpType();
 }
 
-String WeaponObjectAdapter::getDeconstructionTemplate() const {
-	return (static_cast<WeaponObject*>(stub))->getDeconstructionTemplate();
-}
-
 int WeaponObjectAdapter::getNumberOfDots() const {
 	return (static_cast<WeaponObject*>(stub))->getNumberOfDots();
 }
@@ -3657,15 +3686,11 @@ void WeaponObjectAdapter::setDotUses(int u, int index) {
 	(static_cast<WeaponObject*>(stub))->setDotUses(u, index);
 }
 
-void WeaponObjectAdapter::removeDot(int index) {
-	(static_cast<WeaponObject*>(stub))->removeDot(index);
-}
-
 void WeaponObjectAdapter::clearDots() {
 	(static_cast<WeaponObject*>(stub))->clearDots();
 }
 
-String WeaponObjectAdapter::getWeaponType() {
+String WeaponObjectAdapter::getWeaponType() const {
 	return (static_cast<WeaponObject*>(stub))->getWeaponType();
 }
 
@@ -3765,7 +3790,7 @@ bool WeaponObjectAdapter::applyPowerup(CreatureObject* player, PowerupObject* pu
 	return (static_cast<WeaponObject*>(stub))->applyPowerup(player, pup);
 }
 
-PowerupObject* WeaponObjectAdapter::removePowerup() {
+Reference<PowerupObject* > WeaponObjectAdapter::removePowerup() {
 	return (static_cast<WeaponObject*>(stub))->removePowerup();
 }
 
@@ -3799,6 +3824,10 @@ void WeaponObjectAdapter::removeSkillModsFrom(CreatureObject* creature) {
 
 void WeaponObjectAdapter::addSkillMod(const int skillType, const String& skillMod, int value, bool notifyClient) {
 	(static_cast<WeaponObject*>(stub))->addSkillMod(skillType, skillMod, value, notifyClient);
+}
+
+int WeaponObjectAdapter::getTotalWearableSkillMods() const {
+	return (static_cast<WeaponObject*>(stub))->getTotalWearableSkillMods();
 }
 
 /*

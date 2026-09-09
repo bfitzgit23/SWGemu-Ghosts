@@ -64,6 +64,14 @@ function VillageJediManagerCommon.isVillageEligible(pPlayer)
 		return false
 	end
 
+	-- Ghosts: the village is a training hub, not the jedi unlock method.  Any
+	-- player already on a force path (holocron unlock or grey jedi) may use
+	-- the village and its trainers; the vanilla intro path also still works.
+	local creature = CreatureObject(pPlayer)
+	if (creature:hasSkill("force_title_jedi_novice") or creature:hasSkill("combat_jedi_novice")) then
+		return true
+	end
+
 	return VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS) and QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)
 end
 

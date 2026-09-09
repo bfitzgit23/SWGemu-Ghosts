@@ -9,6 +9,7 @@ WorldBossSpawner = ScreenPlay:new {
 	numReferencePoints = 29,
 	secondsToDespawn = 18000, 
 	secondsToRespawn = 21600, 
+	minimumDistance = 250,
 	maxRadius = 2000,
 	randomVariance = 1800,
 
@@ -87,7 +88,7 @@ function WorldBossSpawner:respawnBoss(pOldBoss)
 		local counter = 1
 			
 		while (not isZoneEnabled(zone) and counter <= 11) do
-			referencePoint = getRandomNumber(0, self.numReferencePoints - 1)
+			referencePoint = getRandomNumber(1, self.numReferencePoints)
 			zone = BossSpawnPoint[referencePoint].planetName
 				
 			if (counter == 11) then
@@ -109,7 +110,7 @@ function WorldBossSpawner:respawnBoss(pOldBoss)
 	local spawnPoint = getSpawnPoint(zone, xPos, yPos, self.minimumDistance, self.maxRadius, false)
 		
 	if (spawnPoint == nil) then
-			spawnPoint = { spawnerX, getTerrainHeight(pSpawner, xPos, yPos), yPos }
+		spawnPoint = { xPos, getTerrainHeight(pSpawner, xPos, yPos), yPos }
 	end
 
 	local pBoss = spawnMobile(zone, bossTemplate, 0, spawnPoint[1], spawnPoint[2], spawnPoint[3], getRandomNumber(360) - 180, 0)
@@ -184,7 +185,7 @@ function WorldBossSpawner:despawnBoss(pBoss)
 	SceneObject(pBoss):destroyObjectFromWorld()
 	deleteStringData(SceneObject(pBoss):getObjectID() .. ":name")
 	deleteStringData(SceneObject(pBoss):getObjectID() .. ":zone")
-	createEvent(2 * 1000, "WorldBossSpawner", "respawnBoss", pNewBoss, "")
+	createEvent(2 * 1000, "WorldBossSpawner", "respawnBoss", nil, "")
 	return 1
 end
 

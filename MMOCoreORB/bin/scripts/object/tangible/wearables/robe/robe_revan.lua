@@ -194,6 +194,10 @@ object_tangible_wearables_robe_robe_revan = object_tangible_wearables_robe_share
 		{"jedi_force_power_max",      500},
 	},
 
+	jediRobe = true,
+	objectMenuComponent = "RobeObjectMenuComponent",
+	attributeListComponent = "JediRobeAttributeListComponent",
+
 	numberExperimentalProperties = {1, 1, 1, 1},
 	experimentalProperties = {"XX", "XX", "XX", "XX"},
 	experimentalWeights = {1, 1, 1, 1},

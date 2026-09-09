@@ -6,11 +6,13 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
+#include "server/zone/packets/scene/AttributeListMessage.h"
+
 /*
  *	PharmaceuticalObjectStub
  */
 
-enum {RPC_GETMEDICINEUSEREQUIRED__ = 1290907145,RPC_GETRANGE__CREATUREOBJECT_,RPC_ISAREA__,RPC_GETAREA__,RPC_ISPHARMACEUTICALOBJECT__,RPC_ISSTIMPACK__,RPC_ISPETSTIMPACK__,RPC_ISDROIDREPAIRKIT__,RPC_ISRANGEDSTIMPACK__,RPC_ISENHANCEPACK__,RPC_ISWOUNDPACK__,RPC_ISDROIDRECONSTRUCTIONKIT__,RPC_ISCUREPACK__,RPC_ISSTATEPACK__,RPC_ISREVIVEPACK__,RPC_ISVITALITYPACK__};
+enum {RPC_GETMEDICINEUSEREQUIRED__,RPC_GETRANGE__CREATUREOBJECT_,RPC_ISAREA__,RPC_GETAREA__,RPC_ISPHARMACEUTICALOBJECT__,RPC_ISSTIMPACK__,RPC_ISPETSTIMPACK__,RPC_ISDROIDREPAIRKIT__,RPC_ISRANGEDSTIMPACK__,RPC_ISENHANCEPACK__,RPC_ISWOUNDPACK__,RPC_ISDROIDRECONSTRUCTIONKIT__,RPC_ISCUREPACK__,RPC_ISSTATEPACK__,RPC_ISREVIVEPACK__,RPC_ISVITALITYPACK__};
 
 PharmaceuticalObject::PharmaceuticalObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	PharmaceuticalObjectImplementation* _implementation = new PharmaceuticalObjectImplementation();
@@ -27,6 +29,16 @@ PharmaceuticalObject::~PharmaceuticalObject() {
 }
 
 
+
+void PharmaceuticalObject::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
+	PharmaceuticalObjectImplementation* _implementation = static_cast<PharmaceuticalObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->fillAttributeList(msg, object);
+	}
+}
 
 int PharmaceuticalObject::getMedicineUseRequired() {
 	PharmaceuticalObjectImplementation* _implementation = static_cast<PharmaceuticalObjectImplementation*>(_getImplementationForRead());
@@ -413,6 +425,17 @@ PharmaceuticalObjectImplementation::PharmaceuticalObjectImplementation() {
 	setLoggingName("PharmaceuticalObject");
 	// server/zone/objects/tangible/pharmaceutical/PharmaceuticalObject.idl():  		medicineUseRequired = 0;
 	medicineUseRequired = 0;
+}
+
+void PharmaceuticalObjectImplementation::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
+	// server/zone/objects/tangible/pharmaceutical/PharmaceuticalObject.idl():  		msg.insertAttribute("volume", 1);
+	msg->insertAttribute("volume", 1);
+	// server/zone/objects/tangible/pharmaceutical/PharmaceuticalObject.idl():  		msg.insertAttribute("counter_uses_remaining", super.getUseCount());
+	msg->insertAttribute("counter_uses_remaining", TangibleObjectImplementation::getUseCount());
+	// server/zone/objects/tangible/pharmaceutical/PharmaceuticalObject.idl():  		msg.insertAttribute("crafter", super.getCraftersName());
+	msg->insertAttribute("crafter", TangibleObjectImplementation::getCraftersName());
+	// server/zone/objects/tangible/pharmaceutical/PharmaceuticalObject.idl():  		msg.insertAttribute("serial_number", super.getSerialNumber());
+	msg->insertAttribute("serial_number", TangibleObjectImplementation::getSerialNumber());
 }
 
 int PharmaceuticalObjectImplementation::getMedicineUseRequired() {

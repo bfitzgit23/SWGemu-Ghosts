@@ -16,7 +16,7 @@
  *	CreatureStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 4015475806,RPC_ISCREATURE__,RPC_GETDNASTATE__,RPC_GETDNASAMPLECOUNT__,RPC_INCDNASAMPLECOUNT__,RPC_ISCAMOUFLAGED__CREATUREOBJECT_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SCHEDULEDESPAWN__,RPC_HASORGANICS__,RPC_HASMILK__,RPC_HASDNA__,RPC_CANHARVESTME__CREATUREOBJECT_,RPC_CANDROIDHARVESTME__CREATUREOBJECT_CREATUREOBJECT_,RPC_HASSKILLTOHARVESTME__CREATUREOBJECT_,RPC_CANTAMEME__CREATUREOBJECT_,RPC_GETCHANCETOTAME__CREATUREOBJECT_,RPC_CANMILKME__CREATUREOBJECT_,RPC_CANCOLLECTDNA__CREATUREOBJECT_,RPC_HASSKILLTOSAMPLEME__CREATUREOBJECT_,RPC_ADDALREADYHARVESTED__CREATUREOBJECT_,RPC_SETMILKSTATE__SHORT_,RPC_SETDNASTATE__SHORT_,RPC_NOTIFYDESPAWN__ZONE_,RPC_SETPETLEVEL__INT_,RPC_ISVICIOUS__,RPC_ISBABY__,RPC_SETBABY__BOOL_,RPC_GETTAME__,RPC_GETMEATTYPE__,RPC_GETBONETYPE__,RPC_GETHIDETYPE__,RPC_GETMILKTYPE__,RPC_GETMILK__,RPC_GETHIDEMAX__,RPC_GETBONEMAX__,RPC_GETMEATMAX__,RPC_GETBASEXP__,RPC_GETCONTROLDEVICETEMPLATE__,RPC_ISMOUNT__,RPC_GETADULTLEVEL__,RPC_GETPASSENGERCAPACITY__,RPC_GETPASSENGERSEATNAME__,RPC_HASOPENSEAT__,RPC_GETOPENSEAT__,RPC_SLOTPASSENGER__CREATUREOBJECT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 4015475806,RPC_ISCREATURE__,RPC_GETDNASTATE__,RPC_GETDNASAMPLECOUNT__,RPC_INCDNASAMPLECOUNT__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_HASORGANICS__,RPC_HASMILK__,RPC_HASDNA__,RPC_CANHARVESTME__CREATUREOBJECT_,RPC_CANDROIDHARVESTME__CREATUREOBJECT_CREATUREOBJECT_,RPC_HASSKILLTOHARVESTME__CREATUREOBJECT_,RPC_CANTAMEME__CREATUREOBJECT_,RPC_GETCHANCETOTAME__CREATUREOBJECT_,RPC_CANMILKME__CREATUREOBJECT_,RPC_CANCOLLECTDNA__CREATUREOBJECT_,RPC_HASSKILLTOSAMPLEME__CREATUREOBJECT_,RPC_ADDALREADYHARVESTED__CREATUREOBJECT_,RPC_SETMILKSTATE__SHORT_,RPC_SETDNASTATE__SHORT_,RPC_NOTIFYDESPAWN__ZONE_,RPC_SETPETLEVEL__INT_,RPC_ISVICIOUS__,RPC_ISBABY__,RPC_SETBABY__BOOL_,RPC_GETTAME__,RPC_GETMEATTYPE__,RPC_GETBONETYPE__,RPC_GETHIDETYPE__,RPC_GETMILKTYPE__,RPC_GETMILK__,RPC_GETHIDEMAX__,RPC_GETBONEMAX__,RPC_GETMEATMAX__,RPC_GETBASEXP__,RPC_GETCONTROLDEVICETEMPLATE__,RPC_ISMOUNT__,RPC_GETADULTLEVEL__,RPC_HASBEENMILKED__};
 
 Creature::Creature() : AiAgent(DummyConstructorParameter::instance()) {
 	CreatureImplementation* _implementation = new CreatureImplementation();
@@ -105,21 +105,6 @@ void Creature::incDnaSampleCount() {
 	}
 }
 
-bool Creature::isCamouflaged(CreatureObject* target) {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISCAMOUFLAGED__CREATUREOBJECT_);
-		method.addObjectParameter(target);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isCamouflaged(target);
-	}
-}
-
 void Creature::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -165,20 +150,6 @@ void Creature::loadTemplateDataForBaby(CreatureTemplate* templateData) {
 
 	} else {
 		_implementation->loadTemplateDataForBaby(templateData);
-	}
-}
-
-void Creature::scheduleDespawn() {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SCHEDULEDESPAWN__);
-
-		method.executeWithVoidReturn();
-	} else {
-		_implementation->scheduleDespawn();
 	}
 }
 
@@ -671,76 +642,17 @@ int Creature::getAdultLevel() {
 	}
 }
 
-int Creature::getPassengerCapacity() {
+bool Creature::hasBeenMilked() const {
 	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETPASSENGERCAPACITY__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getPassengerCapacity();
-	}
-}
-
-String Creature::getPassengerSeatName() {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETPASSENGERSEATNAME__);
-
-		String _return_getPassengerSeatName;
-		method.executeWithAsciiReturn(_return_getPassengerSeatName);
-		return _return_getPassengerSeatName;
-	} else {
-		return _implementation->getPassengerSeatName();
-	}
-}
-
-bool Creature::hasOpenSeat() {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_HASOPENSEAT__);
+		DistributedMethod method(this, RPC_HASBEENMILKED__);
 
 		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->hasOpenSeat();
-	}
-}
-
-int Creature::getOpenSeat() {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETOPENSEAT__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getOpenSeat();
-	}
-}
-
-bool Creature::slotPassenger(CreatureObject* passenger) {
-	CreatureImplementation* _implementation = static_cast<CreatureImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SLOTPASSENGER__CREATUREOBJECT_);
-		method.addObjectParameter(passenger);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->slotPassenger(passenger);
+		return _implementation->hasBeenMilked();
 	}
 }
 
@@ -975,11 +887,6 @@ void CreatureImplementation::incDnaSampleCount() {
 	dnaSampleCount ++;
 }
 
-bool CreatureImplementation::isCamouflaged(CreatureObject* target) {
-	// server/zone/objects/creature/ai/Creature.idl():  		return isAggressiveTo(target) && (isScentMasked(target) || isConcealed(target));
-	return isAggressiveTo(target) && (isScentMasked(target) || isConcealed(target));
-}
-
 bool CreatureImplementation::isBaby() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return baby;
 	return baby;
@@ -992,7 +899,7 @@ void CreatureImplementation::setBaby(bool bab) {
 
 float CreatureImplementation::getTame() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getTame();
 	return AiAgentImplementation::npcTemplate->getTame();
@@ -1000,7 +907,7 @@ float CreatureImplementation::getTame() {
 
 String CreatureImplementation::getMeatType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMeatType();
 	return AiAgentImplementation::npcTemplate->getMeatType();
@@ -1008,7 +915,7 @@ String CreatureImplementation::getMeatType() {
 
 String CreatureImplementation::getBoneType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getBoneType();
 	return AiAgentImplementation::npcTemplate->getBoneType();
@@ -1016,7 +923,7 @@ String CreatureImplementation::getBoneType() {
 
 String CreatureImplementation::getHideType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getHideType();
 	return AiAgentImplementation::npcTemplate->getHideType();
@@ -1024,7 +931,7 @@ String CreatureImplementation::getHideType() {
 
 String CreatureImplementation::getMilkType() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMilkType();
 	return AiAgentImplementation::npcTemplate->getMilkType();
@@ -1032,7 +939,7 @@ String CreatureImplementation::getMilkType() {
 
 float CreatureImplementation::getMilk() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getMilk();
 	return AiAgentImplementation::npcTemplate->getMilk();
@@ -1040,7 +947,7 @@ float CreatureImplementation::getMilk() {
 
 float CreatureImplementation::getHideMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getHideMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getHideMax() / 10);
@@ -1052,7 +959,7 @@ float CreatureImplementation::getHideMax() {
 
 float CreatureImplementation::getBoneMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getBoneMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getBoneMax() / 10);
@@ -1064,7 +971,7 @@ float CreatureImplementation::getBoneMax() {
 
 float CreatureImplementation::getMeatMax() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == NULL || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getMeatMax();
 	if (isBaby())	// server/zone/objects/creature/ai/Creature.idl():  			return (super.npcTemplate.getMeatMax() / 10);
@@ -1076,7 +983,7 @@ float CreatureImplementation::getMeatMax() {
 
 int CreatureImplementation::getBaseXp() {
 	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
 	return 0;
 	// server/zone/objects/creature/ai/Creature.idl():  			return super.npcTemplate.getBaseXp();
 	if (isBaby() || isEventMob())	// server/zone/objects/creature/ai/Creature.idl():  			return 0;
@@ -1088,23 +995,10 @@ int CreatureImplementation::getBaseXp() {
 
 String CreatureImplementation::getControlDeviceTemplate() {
 	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
+	if (!AiAgentImplementation::npcTemplate)	// server/zone/objects/creature/ai/Creature.idl():  			return "";
 	return "";
 	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getControlDeviceTemplate();
 	return AiAgentImplementation::npcTemplate->getControlDeviceTemplate();
-}
-
-int CreatureImplementation::getAdultLevel() {
-	// server/zone/objects/creature/ai/Creature.idl():  		if 
-	if (AiAgentImplementation::petDeed.getForUpdate() != NULL){
-	// server/zone/objects/creature/ai/Creature.idl():  			return super.petDeed.getLevel();
-	return AiAgentImplementation::petDeed.getForUpdate()->getLevel();
-}
-	// server/zone/objects/creature/ai/Creature.idl():  		return 
-	if (AiAgentImplementation::npcTemplate == NULL)	// server/zone/objects/creature/ai/Creature.idl():  			return super.getLevel();
-	return AiAgentImplementation::getLevel();
-	// server/zone/objects/creature/ai/Creature.idl():  		return super.npcTemplate.getLevel();
-	return AiAgentImplementation::npcTemplate->getLevel();
 }
 
 /*
@@ -1157,14 +1051,6 @@ void CreatureAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_ISCAMOUFLAGED__CREATUREOBJECT_:
-		{
-			CreatureObject* target = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			bool _m_res = isCamouflaged(target);
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -1172,13 +1058,6 @@ void CreatureAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			int _m_res = handleObjectMenuSelect(player, selectedID);
 			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_SCHEDULEDESPAWN__:
-		{
-			
-			scheduleDespawn();
-			
 		}
 		break;
 	case RPC_HASORGANICS__:
@@ -1420,39 +1299,10 @@ void CreatureAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETPASSENGERCAPACITY__:
+	case RPC_HASBEENMILKED__:
 		{
 			
-			int _m_res = getPassengerCapacity();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETPASSENGERSEATNAME__:
-		{
-			
-			String _m_res = getPassengerSeatName();
-			resp->insertAscii(_m_res);
-		}
-		break;
-	case RPC_HASOPENSEAT__:
-		{
-			
-			bool _m_res = hasOpenSeat();
-			resp->insertBoolean(_m_res);
-		}
-		break;
-	case RPC_GETOPENSEAT__:
-		{
-			
-			int _m_res = getOpenSeat();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_SLOTPASSENGER__CREATUREOBJECT_:
-		{
-			CreatureObject* passenger = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			bool _m_res = slotPassenger(passenger);
+			bool _m_res = hasBeenMilked();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -1481,16 +1331,8 @@ void CreatureAdapter::incDnaSampleCount() {
 	(static_cast<Creature*>(stub))->incDnaSampleCount();
 }
 
-bool CreatureAdapter::isCamouflaged(CreatureObject* target) {
-	return (static_cast<Creature*>(stub))->isCamouflaged(target);
-}
-
 int CreatureAdapter::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
 	return (static_cast<Creature*>(stub))->handleObjectMenuSelect(player, selectedID);
-}
-
-void CreatureAdapter::scheduleDespawn() {
-	(static_cast<Creature*>(stub))->scheduleDespawn();
 }
 
 bool CreatureAdapter::hasOrganics() {
@@ -1621,24 +1463,8 @@ int CreatureAdapter::getAdultLevel() {
 	return (static_cast<Creature*>(stub))->getAdultLevel();
 }
 
-int CreatureAdapter::getPassengerCapacity() {
-	return (static_cast<Creature*>(stub))->getPassengerCapacity();
-}
-
-String CreatureAdapter::getPassengerSeatName() {
-	return (static_cast<Creature*>(stub))->getPassengerSeatName();
-}
-
-bool CreatureAdapter::hasOpenSeat() {
-	return (static_cast<Creature*>(stub))->hasOpenSeat();
-}
-
-int CreatureAdapter::getOpenSeat() {
-	return (static_cast<Creature*>(stub))->getOpenSeat();
-}
-
-bool CreatureAdapter::slotPassenger(CreatureObject* passenger) {
-	return (static_cast<Creature*>(stub))->slotPassenger(passenger);
+bool CreatureAdapter::hasBeenMilked() const {
+	return (static_cast<Creature*>(stub))->hasBeenMilked();
 }
 
 /*

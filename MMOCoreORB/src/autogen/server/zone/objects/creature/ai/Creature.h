@@ -117,8 +117,6 @@ public:
 
 	void incDnaSampleCount();
 
-	bool isCamouflaged(CreatureObject* target);
-
 	void fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player);
 
 	/**
@@ -134,8 +132,6 @@ public:
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	void loadTemplateDataForBaby(CreatureTemplate* templateData);
-
-	void scheduleDespawn();
 
 	bool hasOrganics();
 
@@ -203,15 +199,7 @@ public:
 
 	int getAdultLevel();
 
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
+	bool hasBeenMilked() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -272,8 +260,6 @@ public:
 
 	void incDnaSampleCount();
 
-	bool isCamouflaged(CreatureObject* target);
-
 	void fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player);
 
 	/**
@@ -289,8 +275,6 @@ public:
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	void loadTemplateDataForBaby(CreatureTemplate* templateData);
-
-	void scheduleDespawn();
 
 	bool hasOrganics();
 
@@ -358,15 +342,7 @@ public:
 
 	int getAdultLevel();
 
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
+	bool hasBeenMilked() const;
 
 	WeakReference<Creature*> _this;
 
@@ -422,11 +398,7 @@ public:
 
 	void incDnaSampleCount();
 
-	bool isCamouflaged(CreatureObject* target);
-
 	int handleObjectMenuSelect(CreatureObject* player, byte selectedID);
-
-	void scheduleDespawn();
 
 	bool hasOrganics();
 
@@ -492,15 +464,7 @@ public:
 
 	int getAdultLevel();
 
-	int getPassengerCapacity();
-
-	String getPassengerSeatName();
-
-	bool hasOpenSeat();
-
-	int getOpenSeat();
-
-	bool slotPassenger(CreatureObject* passenger);
+	bool hasBeenMilked() const;
 
 };
 

@@ -513,6 +513,25 @@ object_tangible_deed_vehicle_deed_shared_vehicle_deed_base = SharedTangibleObjec
 
 ObjectTemplates:addClientTemplate(object_tangible_deed_vehicle_deed_shared_vehicle_deed_base, "object/tangible/deed/vehicle_deed/shared_vehicle_deed_base.iff")
 
+-- Shared client templates used by the custom mount deeds enabled server-side.
+local customVehicleDeedTemplates = {
+	"grievous_wheel_bike_deed",
+	"air2_swoop_deed", "fg_8t8_podracer_deed", "geonosian_speeder_deed",
+	"koro2_speeder_deed", "landspeeder_organa_deed", "mechno_chair_deed",
+	"pod_racer_balta_podracer_deed", "pod_racer_ipg_longtail_deed",
+	"senate_pod_deed", "tcg_hk47_jetpack_deed",
+	"tcg_merr_sonn_jt12_jetpack_deed", "tcg_republic_gunship_deed",
+	"xj6_air_speeder_deed"
+}
+
+for _, templateName in ipairs(customVehicleDeedTemplates) do
+	local template = SharedTangibleObjectTemplate:new {
+		clientTemplateFileName = "object/tangible/deed/vehicle_deed/shared_" .. templateName .. ".iff"
+	}
+	_G["object_tangible_deed_vehicle_deed_shared_" .. templateName] = template
+	ObjectTemplates:addClientTemplate(template, template.clientTemplateFileName)
+end
+
 object_tangible_deed_vehicle_deed_shared_vehicular_prototype_bike_deed = SharedTangibleObjectTemplate:new {
 	clientTemplateFileName = "object/tangible/deed/vehicle_deed/shared_vehicular_prototype_bike_deed.iff"
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups

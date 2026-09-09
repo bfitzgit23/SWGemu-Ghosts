@@ -27,6 +27,8 @@ namespace server {
 
 				bool autoRegistration;
 
+				bool enableSessionId;
+
 				uint32 maxOnlineCharacters;
 
 				String dbSecret;
@@ -39,11 +41,17 @@ namespace server {
 
 				void loginAccount(LoginClient* client, Message* packet);
 
-				Account* validateAccountCredentials(LoginClient* client, const String& username, const String& password);
+				bool loginFinalize(LoginClient* client, ManagedReference<Account*> account);
 
-				Account* createAccount(const String& username, const String& password, String& passwordStored);
+#ifdef WITH_SWGREALMS_API
+				void loginApprovedAccount(LoginClient* client, ManagedReference<Account*> account);
+#else // !WITH_SWGREALMS_API
+				Reference<Account*> validateAccountCredentials(LoginClient* client, const String& username, const String& password);
+
+				Reference<Account*> createAccount(const String& username, const String& password, String& passwordStored);
 
 				void updateHash(const String& username, const String& password);
+#endif // WITH_SWGREALMS_API
 
 				//These lookup an account on the mysql database...
 				//Account* lookupAccount(uint32 accountID);
@@ -73,14 +81,20 @@ namespace server {
 					return autoRegistration;
 				}
 
-				static ManagedReference<Account*> getAccount(uint32 accountID, bool forceSqlUpdate = false);
+#ifndef WITH_SWGREALMS_API
+				static void expireSession(Reference<Account*> account, const String& sessionID);
+#endif
 
-				static ManagedReference<Account*> getAccount(const String& accountName, bool forceSqlUpdate = false);
+				static Reference<Account*> getAccount(uint32 accountID, bool forceSqlUpdate = false);
 
-				static ManagedReference<Account*> getAccount(uint32 accountID, String& passwordStored, bool forceSqlUpdate = false);
+				static Reference<Account*> getAccount(const String& accountName, bool forceSqlUpdate = false);
+
+#ifndef WITH_SWGREALMS_API
+				static Reference<Account*> getAccount(uint32 accountID, String& passwordStored, bool forceSqlUpdate = false);
 
 			private:
-				static ManagedReference<Account*> getAccount(String query, String& passwordStored, bool forceSqlUpdate = false);
+				static Reference<Account*> getAccount(String query, String& passwordStored, bool forceSqlUpdate = false);
+#endif // !WITH_SWGREALMS_API
 			};
 		}
 	}

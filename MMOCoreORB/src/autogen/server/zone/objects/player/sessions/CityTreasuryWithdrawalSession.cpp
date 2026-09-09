@@ -326,7 +326,7 @@ int CityTreasuryWithdrawalSessionImplementation::cancelSession() {
 	// server/zone/objects/player/sessions/CityTreasuryWithdrawalSession.idl():  		CreatureObject creature = creatureObject;
 	ManagedReference<CreatureObject* > creature = creatureObject;
 	// server/zone/objects/player/sessions/CityTreasuryWithdrawalSession.idl():  		return 
-	if (creature != NULL)	// server/zone/objects/player/sessions/CityTreasuryWithdrawalSession.idl():  			creature.dropActiveSession(SessionFacadeType.CITYWITHDRAW);
+	if (creature)	// server/zone/objects/player/sessions/CityTreasuryWithdrawalSession.idl():  			creature.dropActiveSession(SessionFacadeType.CITYWITHDRAW);
 	creature->dropActiveSession(SessionFacadeType::CITYWITHDRAW);
 	// server/zone/objects/player/sessions/CityTreasuryWithdrawalSession.idl():  		return 0;
 	return 0;

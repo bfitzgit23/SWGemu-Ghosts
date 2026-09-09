@@ -2,6 +2,7 @@ worrt = Creature:new {
 	objectName = "@mob/creature_names:worrt",
 	socialGroup = "worrt",
 	faction = "",
+	mobType = MOB_CARNIVORE,
 	level = 6,
 	chanceHit = 0.25,
 	damageMin = 50,
@@ -28,11 +29,18 @@ worrt = Creature:new {
 	templates = {"object/mobile/worrt_hue.iff"},
 	hues = { 0, 1, 2, 3, 4, 5, 6, 7 },
 	controlDeviceTemplate = "object/intangible/pet/worrt_hue.iff",
-	lootGroups = {},
-	weapons = {},
+	lootGroups = {{groups = {{group = "junk", chance = 7000000}, {group = "wearables_common", chance = 1500000}, {group = "armor_all", chance = 1000000}, {group = "melee_weapons", chance = 500000}}, lootChance = 3000000}},
+
+	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
+	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
+	primaryWeapon = "unarmed",
+	secondaryWeapon = "none",
 	conversationTemplate = "",
-	attacks = {
-	}
+	
+	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
+	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets
+	primaryAttacks = {},
+	secondaryAttacks = { }
 }
 
 CreatureTemplates:addCreatureTemplate(worrt, "worrt")

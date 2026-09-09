@@ -24,9 +24,13 @@
 #endif
 #include "engine/util/json_utils.h"
 
+#include "gmock/gmock.h"
+
 #include "engine/core/ManagedObject.h"
 
 #include "engine/util/u3d/Vector3.h"
+
+#include "engine/log/Logger.h"
 
 namespace server {
 namespace zone {
@@ -47,10 +51,18 @@ public:
 	void setAreaCenter(float x, float y);
 
 	/**
+	 * Set the area center.
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 * @paran z the z coordinate.
+	 */
+	void setAreaCenter(float x, float z, float y);
+
+	/**
 	 * Get the area center.
 	 * @return the area center.
 	 */
-	Vector3 getAreaCenter();
+	Vector3 getAreaCenter() const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
@@ -58,26 +70,35 @@ public:
 	 * @param y the y coordinate.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	bool containsPoint(float x, float y);
+	bool containsPoint(float x, float y) const;
+
+	/**
+	 * Check if the coordinate is within the area shape.
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 * @param z the z coordinate.
+	 * @return true if the coordinate is within the area shape.
+	 */
+	bool containsPoint(float x, float z, float y) const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
 	 * @param point the point to check if it is within the area shape.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	bool containsPoint(const Vector3& point);
+	virtual bool containsPoint(const Vector3& point) const;
 
 	/**
 	 * Get the minimum radius of a circle bounding the area shape.
 	 * @return the minimum bonding radius.
 	 */
-	float getRadius();
+	float getRadius() const;
 
 	/**
 	 * Generate a random position within the area.
 	 * @return a random position within the area.
 	 */
-	Vector3 getRandomPosition();
+	Vector3 getRandomPosition() const;
 
 	/**
 	 * Generate a random position within the area with the supplied origin and radius as limits.
@@ -86,38 +107,56 @@ public:
 	 * @param maxDistance the maximum distance from the origin.
 	 * @return a random position within the area.
 	 */
-	Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance);
+	Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) const;
+
+	float getWidth() const;
+
+	float getHeight() const;
+
+	float getLength() const;
 
 	/**
 	 * Check if this is a circular area shape.
 	 * @return true if it is a circular area shape.
 	 */
-	bool isCircularAreaShape();
+	bool isCircularAreaShape() const;
 
 	/**
 	 * Check if this is a rectangular area shape.
 	 * @return true if it is a rectangular area shape.
 	 */
-	bool isRectangularAreaShape();
+	bool isRectangularAreaShape() const;
 
 	/**
 	 * Check if this is a ring area shape.
 	 * @return true if it is a ring area shape.
 	 */
-	bool isRingAreaShape();
+	bool isRingAreaShape() const;
+
+	/**
+	 * Check if this is a cuboid area shape.
+	 * @return true if it is a cuboid area shape.
+	 */
+	bool isCuboidAreaShape() const;
+
+	/**
+	 * Check if this is a sphere area shape.
+	 * @return true if it is a sphere area shape.
+	 */
+	bool isSphereAreaShape() const;
 
 	/**
 	 * Check if this area shape intersects with the supplied area shape.
 	 * @param areaShape the area shape to check for intersections with.
 	 * @return true if the area shapes intersects each other.
 	 */
-	bool intersectsWith(AreaShape* areaShape);
+	bool intersectsWith(AreaShape* areaShape) const;
 
 	/**
 	 * Get the area of the areaShape.
 	 * @return the area of the area shape.
 	 */
-	float getArea();
+	float getArea() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -146,7 +185,7 @@ namespace objects {
 namespace area {
 namespace areashapes {
 
-class AreaShapeImplementation : public ManagedObjectImplementation {
+class AreaShapeImplementation : public ManagedObjectImplementation, public Logger {
 protected:
 	/** The center coordinate of the area. */
 	Vector3 areaCenter;
@@ -164,10 +203,18 @@ public:
 	void setAreaCenter(float x, float y);
 
 	/**
+	 * Set the area center.
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 * @paran z the z coordinate.
+	 */
+	void setAreaCenter(float x, float z, float y);
+
+	/**
 	 * Get the area center.
 	 * @return the area center.
 	 */
-	Vector3 getAreaCenter();
+	Vector3 getAreaCenter() const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
@@ -175,26 +222,35 @@ public:
 	 * @param y the y coordinate.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	virtual bool containsPoint(float x, float y);
+	virtual bool containsPoint(float x, float y) const;
+
+	/**
+	 * Check if the coordinate is within the area shape.
+	 * @param x the x coordinate.
+	 * @param y the y coordinate.
+	 * @param z the z coordinate.
+	 * @return true if the coordinate is within the area shape.
+	 */
+	virtual bool containsPoint(float x, float z, float y) const;
 
 	/**
 	 * Check if the coordinate is within the area shape.
 	 * @param point the point to check if it is within the area shape.
 	 * @return true if the coordinate is within the area shape.
 	 */
-	virtual bool containsPoint(const Vector3& point);
+	virtual bool containsPoint(const Vector3& point) const;
 
 	/**
 	 * Get the minimum radius of a circle bounding the area shape.
 	 * @return the minimum bonding radius.
 	 */
-	virtual float getRadius();
+	virtual float getRadius() const;
 
 	/**
 	 * Generate a random position within the area.
 	 * @return a random position within the area.
 	 */
-	virtual Vector3 getRandomPosition();
+	virtual Vector3 getRandomPosition() const;
 
 	/**
 	 * Generate a random position within the area with the supplied origin and radius as limits.
@@ -203,38 +259,56 @@ public:
 	 * @param maxDistance the maximum distance from the origin.
 	 * @return a random position within the area.
 	 */
-	virtual Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance);
+	virtual Vector3 getRandomPosition(const Vector3& origin, float minDistance, float maxDistance) const;
+
+	virtual float getWidth() const;
+
+	virtual float getHeight() const;
+
+	virtual float getLength() const;
 
 	/**
 	 * Check if this is a circular area shape.
 	 * @return true if it is a circular area shape.
 	 */
-	virtual bool isCircularAreaShape();
+	virtual bool isCircularAreaShape() const;
 
 	/**
 	 * Check if this is a rectangular area shape.
 	 * @return true if it is a rectangular area shape.
 	 */
-	virtual bool isRectangularAreaShape();
+	virtual bool isRectangularAreaShape() const;
 
 	/**
 	 * Check if this is a ring area shape.
 	 * @return true if it is a ring area shape.
 	 */
-	virtual bool isRingAreaShape();
+	virtual bool isRingAreaShape() const;
+
+	/**
+	 * Check if this is a cuboid area shape.
+	 * @return true if it is a cuboid area shape.
+	 */
+	virtual bool isCuboidAreaShape() const;
+
+	/**
+	 * Check if this is a sphere area shape.
+	 * @return true if it is a sphere area shape.
+	 */
+	virtual bool isSphereAreaShape() const;
 
 	/**
 	 * Check if this area shape intersects with the supplied area shape.
 	 * @param areaShape the area shape to check for intersections with.
 	 * @return true if the area shapes intersects each other.
 	 */
-	virtual bool intersectsWith(AreaShape* areaShape);
+	virtual bool intersectsWith(AreaShape* areaShape) const;
 
 	/**
 	 * Get the area of the areaShape.
 	 * @return the area of the area shape.
 	 */
-	virtual float getArea();
+	virtual float getArea() const;
 
 	WeakReference<AreaShape*> _this;
 
@@ -281,19 +355,33 @@ public:
 
 	void setAreaCenter(float x, float y);
 
-	bool containsPoint(float x, float y);
+	void setAreaCenter(float x, float z, float y);
 
-	float getRadius();
+	bool containsPoint(float x, float y) const;
 
-	bool isCircularAreaShape();
+	bool containsPoint(float x, float z, float y) const;
 
-	bool isRectangularAreaShape();
+	float getRadius() const;
 
-	bool isRingAreaShape();
+	float getWidth() const;
 
-	bool intersectsWith(AreaShape* areaShape);
+	float getHeight() const;
 
-	float getArea();
+	float getLength() const;
+
+	bool isCircularAreaShape() const;
+
+	bool isRectangularAreaShape() const;
+
+	bool isRingAreaShape() const;
+
+	bool isCuboidAreaShape() const;
+
+	bool isSphereAreaShape() const;
+
+	bool intersectsWith(AreaShape* areaShape) const;
+
+	float getArea() const;
 
 };
 
@@ -314,6 +402,13 @@ public:
 	DistributedObjectAdapter* createAdapter(DistributedObjectStub* obj);
 
 	friend class Singleton<AreaShapeHelper>;
+};
+
+class MockAreaShape : public AreaShape {
+public:
+
+	MOCK_METHOD1(containsPoint,bool(const Vector3& point));
+
 };
 
 } // namespace areashapes

@@ -6,19 +6,19 @@
 
 #include "server/zone/objects/creature/CreatureObject.h"
 
-#include "server/zone/objects/area/ActiveArea.h"
+#include "server/zone/objects/tangible/tool/repair/RepairTool.h"
 
-#include "server/zone/objects/factorycrate/FactoryCrate.h"
+#include "server/zone/objects/area/ActiveArea.h"
 
 #include "server/zone/objects/tangible/threat/ThreatMap.h"
 
-#include "server/zone/objects/tangible/tool/repair/RepairTool.h"
+#include "server/zone/objects/factorycrate/FactoryCrate.h"
 
 /*
  *	TangibleObjectStub
  */
 
-enum {RPC_INITIALIZEMEMBERS__ = 3335659148,RPC_ADDTEMPLATESKILLMODS__TANGIBLEOBJECT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVESKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVEALLSKILLMODSOFTYPE__INT_BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_NOTIFYLOADFROMDATABASE__,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SYNCHRONIZEDUILISTEN__CREATUREOBJECT_INT_,RPC_SYNCHRONIZEDUISTOPLISTEN__CREATUREOBJECT_INT_,RPC_SETDEFENDER__SCENEOBJECT_,RPC_ADDDEFENDER__SCENEOBJECT_,RPC_REMOVEDEFENDER__SCENEOBJECT_,RPC_REMOVEDEFENDERS__,RPC_SETCOMBATSTATE__,RPC_SETUSECOUNT__INT_BOOL_,RPC_DECREASEUSECOUNT__INT_BOOL_,RPC_SETCOUNTDOWNTIMER__INT_BOOL_,RPC_CLEARCOMBATSTATE__BOOL_,RPC_HASDEFENDER__SCENEOBJECT_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_,RPC_ISAGGRESSIVETO__CREATUREOBJECT_,RPC_ISHEALABLEBY__CREATUREOBJECT_,RPC_SENDPVPSTATUSTO__CREATUREOBJECT_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_STRING_BOOL_BOOL_,RPC_HEALDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_,RPC_SETCONDITIONDAMAGE__FLOAT_BOOL_,RPC_ADDVISIBLECOMPONENT__INT_BOOL_,RPC_REMOVEVISIBLECOMPONENT__INT_BOOL_,RPC_REMOVEALLVISIBLECOMPONENTS__BOOL_,RPC_HASVISIBLECOMPONENT__INT_,RPC_SETCUSTOMIZATIONVARIABLE__BYTE_SHORT_BOOL_,RPC_SETCUSTOMIZATIONVARIABLE__STRING_SHORT_BOOL_,RPC_SETOPTIONSBITMASK__INT_BOOL_,RPC_SETOPTIONBIT__INT_BOOL_,RPC_CLEAROPTIONBIT__INT_BOOL_,RPC_NOTIFYOBJECTDESTRUCTIONOBSERVERS__TANGIBLEOBJECT_INT_BOOL_,RPC_DROPFROMDEFENDERLISTS__,RPC_GETOBJECTVISIBLE__,RPC_ISKILLER__,RPC_ISTICKETCOLLECTOR__,RPC_ISTICKETOBJECT__,RPC_ISFSPUZZLEPACK__,RPC_ISPLANTOBJECT__,RPC_ISCONSUMABLE__,RPC_GETUSECOUNT__,RPC_GETMAXCONDITION__,RPC_SETMAXCONDITION__INT_BOOL_,RPC_GETCONDITIONDAMAGE__,RPC_GETVOLUME__,RPC_SETCOMPLEXITY__FLOAT_,RPC_GETCOMPLEXITY__,RPC_GETOPTIONSBITMASK__,RPC_ADDMAGICBIT__BOOL_,RPC_REMOVEMAGICBIT__BOOL_,RPC_GETLEVEL__,RPC_GETISCRAFTEDENHANCEDITEM__,RPC_GETPVPSTATUSBITMASK__,RPC_ISTANGIBLEOBJECT__,RPC_GETCUSTOMIZATIONSTRING__STRING_,RPC_GETMAINDEFENDER__,RPC_ISDESTROYED__,RPC_SETFACTION__INT_,RPC_GETFACTION__,RPC_ISREBEL__,RPC_ISIMPERIAL__,RPC_ISNEUTRAL__,RPC_GETFACTIONSTATUS__,RPC_SETFACTIONSTATUS__INT_,RPC_GETFUTUREFACTIONSTATUS__,RPC_SETFUTUREFACTIONSTATUS__INT_,RPC_ISSLICEABLE__,RPC_ISSLICED__,RPC_SETSLICEABLE__BOOL_,RPC_SETSLICED__BOOL_,RPC_SETCUSTOMIZATIONSTRING__STRING_,RPC_SETISCRAFTEDENHANCEDITEM__BOOL_,RPC_SETPVPSTATUSBITMASK__INT_BOOL_,RPC_SETPVPSTATUSBIT__INT_BOOL_,RPC_CLEARPVPSTATUSBIT__INT_BOOL_,RPC_SETCRAFTERSNAME__STRING_,RPC_GETCRAFTERSNAME__,RPC_SETJUNKDEALERNEEDED__INT_,RPC_GETJUNKDEALERNEEDED__,RPC_SETJUNKVALUE__INT_,RPC_GETJUNKVALUE__,RPC_SETSERIALNUMBER__STRING_,RPC_SETLEVEL__INT_BOOL_,RPC_GETSERIALNUMBER__,RPC_CREATEFACTORYCRATE__INT_BOOL_,RPC_CANREPAIR__CREATUREOBJECT_,RPC_REPAIR__CREATUREOBJECT_REPAIRTOOL_,RPC_REPAIRATTEMPT__INT_,RPC_ISBROKEN__,RPC_GETHITCHANCE__,RPC_BROADCASTPVPSTATUSBITMASK__,RPC_ADDACTIVEAREA__ACTIVEAREA_,RPC_DROPACTIVEAREA__ACTIVEAREA_,RPC_HASACTIVEAREA__ACTIVEAREA_,RPC_HASACTIVEAREA__LONG_,RPC_GETACTIVEAREASSIZE__,RPC_GETACTIVEREGION__,RPC_HASANTIDECAYKIT__,RPC_APPLYANTIDECAYKIT__CREATUREOBJECT_SCENEOBJECT_,RPC_REMOVEANTIDECAYKIT__,RPC_ISCITYSTREETLAMP__,RPC_ISCITYSTATUE__,RPC_ISCITYFOUNTAIN__,RPC_ISINVISIBLE__,RPC_SETINVISIBLE__BOOL_,RPC_ISCUSTOMINGREDIENT__,RPC_SETLUASTRINGDATA__STRING_STRING_,RPC_DELETELUASTRINGDATA__STRING_,RPC_GETLUASTRINGDATA__STRING_,RPC_SETDISABLED__BOOL_,RPC_ISDISABLED__,RPC_ISINNAVMESH__,RPC_SETCONTROLDEVICE__CONTROLDEVICE_,RPC_GETCONTROLDEVICE__};
+enum {RPC_INITIALIZEMEMBERS__ = 3335659148,RPC_ADDTEMPLATESKILLMODS__TANGIBLEOBJECT_,RPC_REMOVETEMPLATESKILLMODS__TANGIBLEOBJECT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVESKILLMOD__INT_STRING_INT_BOOL_,RPC_REMOVEALLSKILLMODSOFTYPE__INT_BOOL_,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_NOTIFYLOADFROMDATABASE__,RPC_SETCUSTOMOBJECTNAME__UNICODESTRING_BOOL_,RPC_SENDBASELINESTO__SCENEOBJECT_,RPC_SENDTO__SCENEOBJECT_BOOL_BOOL_,RPC_SYNCHRONIZEDUILISTEN__CREATUREOBJECT_INT_,RPC_SYNCHRONIZEDUISTOPLISTEN__CREATUREOBJECT_INT_,RPC_REMOVEOUTOFRANGEOBJECTS__,RPC_SETDEFENDER__SCENEOBJECT_,RPC_ADDDEFENDER__SCENEOBJECT_,RPC_REMOVEDEFENDER__SCENEOBJECT_,RPC_REMOVEDEFENDERS__,RPC_SETCOMBATSTATE__,RPC_SETUSECOUNT__INT_BOOL_,RPC_DECREASEUSECOUNT__INT_BOOL_,RPC_SETCOUNTDOWNTIMER__INT_BOOL_,RPC_CLEARCOMBATSTATE__BOOL_,RPC_ISATTACKABLEBY__CREATUREOBJECT_,RPC_ISATTACKABLEBY__TANGIBLEOBJECT_,RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_,RPC_ISAGGRESSIVE__TANGIBLEOBJECT_,RPC_ISHEALABLEBY__CREATUREOBJECT_,RPC_SENDPVPSTATUSTO__CREATUREOBJECT_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_BOOL_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_STRING_BOOL_BOOL_,RPC_HEALDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_,RPC_SETCONDITIONDAMAGE__FLOAT_BOOL_,RPC_ADDVISIBLECOMPONENT__INT_BOOL_,RPC_REMOVEVISIBLECOMPONENT__INT_BOOL_,RPC_REMOVEALLVISIBLECOMPONENTS__BOOL_,RPC_HASVISIBLECOMPONENT__INT_,RPC_SETCUSTOMIZATIONVARIABLE__BYTE_SHORT_BOOL_,RPC_SETCUSTOMIZATIONVARIABLE__STRING_SHORT_BOOL_,RPC_SETOPTIONSBITMASK__INT_BOOL_,RPC_SETOPTIONBIT__INT_BOOL_,RPC_CLEAROPTIONBIT__INT_BOOL_,RPC_NOTIFYOBJECTDESTRUCTIONOBSERVERS__TANGIBLEOBJECT_INT_BOOL_,RPC_DROPFROMDEFENDERLISTS__,RPC_GETOBJECTVISIBLE__,RPC_ISKILLER__,RPC_ISTICKETCOLLECTOR__,RPC_ISTICKETOBJECT__,RPC_ISFSPUZZLEPACK__,RPC_ISPLANTOBJECT__,RPC_ISCONSUMABLE__,RPC_GETUSECOUNT__,RPC_GETMAXCONDITION__,RPC_SETMAXCONDITION__INT_BOOL_,RPC_GETCONDITIONDAMAGE__,RPC_GETUNMITIGATEDDAMAGE__,RPC_ADDUNMITIGATEDDAMAGE__FLOAT_,RPC_GETVOLUME__,RPC_SETCOMPLEXITY__FLOAT_,RPC_GETCOMPLEXITY__,RPC_GETOPTIONSBITMASK__,RPC_ADDMAGICBIT__BOOL_,RPC_REMOVEMAGICBIT__BOOL_,RPC_GETLEVEL__,RPC_GETISCRAFTEDENHANCEDITEM__,RPC_GETPVPSTATUSBITMASK__,RPC_ISTANGIBLEOBJECT__,RPC_GETCUSTOMIZATIONSTRING__STRING_,RPC_HASDEFENDERS__,RPC_GETMAINDEFENDER__,RPC_ISDESTROYED__,RPC_SETFACTION__INT_,RPC_GETFACTION__,RPC_ISREBEL__,RPC_ISIMPERIAL__,RPC_ISNEUTRAL__,RPC_GETFACTIONSTATUS__,RPC_SETFACTIONSTATUS__INT_,RPC_GETFUTUREFACTIONSTATUS__,RPC_SETFUTUREFACTIONSTATUS__INT_,RPC_ISSLICEABLE__,RPC_ISSLICED__,RPC_SETSLICEABLE__BOOL_,RPC_SETSLICED__BOOL_,RPC_ISINSURABLE__,RPC_ISJEDIROBE__,RPC_ISUNIONRING__,RPC_SETUNIONRING__BOOL_,RPC_SETCUSTOMIZATIONSTRING__STRING_,RPC_SETISCRAFTEDENHANCEDITEM__BOOL_,RPC_SETPVPSTATUSBITMASK__INT_BOOL_,RPC_SETPVPSTATUSBIT__INT_BOOL_,RPC_CLEARPVPSTATUSBIT__INT_BOOL_,RPC_SETCRAFTERSNAME__STRING_,RPC_SETCRAFTERSID__LONG_,RPC_GETCRAFTERSNAME__,RPC_GETCRAFTERSID__,RPC_SETJUNKDEALERNEEDED__INT_,RPC_GETJUNKDEALERNEEDED__,RPC_SETJUNKVALUE__INT_,RPC_GETJUNKVALUE__,RPC_SETSERIALNUMBER__STRING_,RPC_SETLEVEL__INT_BOOL_,RPC_GETSERIALNUMBER__,RPC_CREATEFACTORYCRATE__INT_STRING_BOOL_,RPC_CANREPAIR__CREATUREOBJECT_,RPC_REPAIR__CREATUREOBJECT_REPAIRTOOL_,RPC_REPAIRATTEMPT__INT_,RPC_ISBROKEN__,RPC_GETHITCHANCE__,RPC_BROADCASTPVPSTATUSBITMASK__,RPC_ADDACTIVEAREA__ACTIVEAREA_,RPC_DROPACTIVEAREA__ACTIVEAREA_,RPC_HASACTIVEAREA__ACTIVEAREA_,RPC_HASACTIVEAREA__LONG_,RPC_ISINNOCOMBATAREA__,RPC_SETINNOCOMBATAREA__BOOL_,RPC_GETACTIVEAREASSIZE__,RPC_GETACTIVEREGION__,RPC_GETCELL__INT_,RPC_GETCELL__STRING_,RPC_ISNOTRADE__,RPC_HASANTIDECAYKIT__,RPC_GETANTIDECAYKITOBJECTID__,RPC_APPLYANTIDECAYKIT__CREATUREOBJECT_SCENEOBJECT_,RPC_REMOVEANTIDECAYKIT__,RPC_REFRESHPAINT__,RPC_DESTROYOBJECTFROMDATABASE__BOOL_,RPC_ISCITYSTREETLAMP__,RPC_ISCITYSTATUE__,RPC_ISCITYFOUNTAIN__,RPC_ISINVISIBLE__,RPC_SETINVISIBLE__BOOL_,RPC_ISCUSTOMINGREDIENT__,RPC_SETLUASTRINGDATA__STRING_STRING_,RPC_DELETELUASTRINGDATA__STRING_,RPC_GETLUASTRINGDATA__STRING_,RPC_SETDISABLED__BOOL_,RPC_ISDISABLED__,RPC_ISINNAVMESH__,RPC_ISVENDOR__,RPC_ISINVULNERABLE__,RPC_ISDESTROYING__};
 
 TangibleObject::TangibleObject() : SceneObject(DummyConstructorParameter::instance()) {
 	TangibleObjectImplementation* _implementation = new TangibleObjectImplementation();
@@ -61,7 +61,24 @@ void TangibleObject::addTemplateSkillMods(TangibleObject* targetObject) const {
 
 		method.executeWithVoidReturn();
 	} else {
+		assert((targetObject == NULL) || targetObject->isLockedByCurrentThread());
 		_implementation->addTemplateSkillMods(targetObject);
+	}
+}
+
+void TangibleObject::removeTemplateSkillMods(TangibleObject* tangibleObject) const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVETEMPLATESKILLMODS__TANGIBLEOBJECT_);
+		method.addObjectParameter(tangibleObject);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert((tangibleObject == NULL) || tangibleObject->isLockedByCurrentThread());
+		_implementation->removeTemplateSkillMods(tangibleObject);
 	}
 }
 
@@ -144,16 +161,6 @@ void TangibleObject::removeAllSkillModsOfType(const int skillType, bool notifyCl
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->removeAllSkillModsOfType(skillType, notifyClient);
-	}
-}
-
-void TangibleObject::removeTemplateSkillMods(TangibleObject* tangibleObject) {
-	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		_implementation->removeTemplateSkillMods(tangibleObject);
 	}
 }
 
@@ -263,6 +270,16 @@ void TangibleObject::sendTo(SceneObject* player, bool doClose, bool forceLoadCon
 	}
 }
 
+void TangibleObject::notifyInsert(TreeEntry* entry) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->notifyInsert(entry);
+	}
+}
+
 void TangibleObject::synchronizedUIListen(CreatureObject* player, int value) {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -292,6 +309,21 @@ void TangibleObject::synchronizedUIStopListen(CreatureObject* player, int value)
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->synchronizedUIStopListen(player, value);
+	}
+}
+
+void TangibleObject::removeOutOfRangeObjects() {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEOUTOFRANGEOBJECTS__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->removeOutOfRangeObjects();
 	}
 }
 
@@ -449,17 +481,13 @@ void TangibleObject::clearCombatState(bool clearDefenders) {
 	}
 }
 
-bool TangibleObject::hasDefender(SceneObject* defender) {
+bool TangibleObject::hasDefender(const SceneObject* defender) const {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
+		throw ObjectNotLocalException(this);
 
-		DistributedMethod method(this, RPC_HASDEFENDER__SCENEOBJECT_);
-		method.addObjectParameter(defender);
-
-		return method.executeWithBooleanReturn();
 	} else {
+		assert(this->isLockedByCurrentThread());
 		return _implementation->hasDefender(defender);
 	}
 }
@@ -494,18 +522,33 @@ bool TangibleObject::isAttackableBy(TangibleObject* object) {
 	}
 }
 
-bool TangibleObject::isAggressiveTo(CreatureObject* object) {
+bool TangibleObject::isAggressiveTo(TangibleObject* object) {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_ISAGGRESSIVETO__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_);
 		method.addObjectParameter(object);
 
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isAggressiveTo(object);
+	}
+}
+
+bool TangibleObject::isAggressive(TangibleObject* object) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISAGGRESSIVE__TANGIBLEOBJECT_);
+		method.addObjectParameter(object);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isAggressive(object);
 	}
 }
 
@@ -979,6 +1022,36 @@ int TangibleObject::getConditionDamage() const {
 	}
 }
 
+int TangibleObject::getUnmitigatedDamage() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETUNMITIGATEDDAMAGE__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getUnmitigatedDamage();
+	}
+}
+
+void TangibleObject::addUnmitigatedDamage(float damage) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDUNMITIGATEDDAMAGE__FLOAT_);
+		method.addFloatParameter(damage);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->addUnmitigatedDamage(damage);
+	}
+}
+
 int TangibleObject::getVolume() const {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1144,6 +1217,20 @@ const DeltaVector<ManagedReference<SceneObject* > >* TangibleObject::getDefender
 
 	} else {
 		return _implementation->getDefenderList();
+	}
+}
+
+bool TangibleObject::hasDefenders() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_HASDEFENDERS__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->hasDefenders();
 	}
 }
 
@@ -1382,6 +1469,63 @@ void TangibleObject::setSliced(bool slice) {
 	}
 }
 
+bool TangibleObject::isInsurable() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINSURABLE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isInsurable();
+	}
+}
+
+bool TangibleObject::isJediRobe() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISJEDIROBE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isJediRobe();
+	}
+}
+
+bool TangibleObject::isUnionRing() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISUNIONRING__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isUnionRing();
+	}
+}
+
+void TangibleObject::setUnionRing(bool val) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETUNIONRING__BOOL_);
+		method.addBooleanParameter(val);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setUnionRing(val);
+	}
+}
+
 void TangibleObject::setCustomizationString(const String& vars) {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -1475,6 +1619,21 @@ void TangibleObject::setCraftersName(String& name) {
 	}
 }
 
+void TangibleObject::setCraftersID(unsigned long long crafterOID) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETCRAFTERSID__LONG_);
+		method.addUnsignedLongParameter(crafterOID);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setCraftersID(crafterOID);
+	}
+}
+
 String TangibleObject::getCraftersName() {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1488,6 +1647,20 @@ String TangibleObject::getCraftersName() {
 		return _return_getCraftersName;
 	} else {
 		return _implementation->getCraftersName();
+	}
+}
+
+unsigned long long TangibleObject::getCraftersID() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCRAFTERSID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getCraftersID();
 	}
 }
 
@@ -1535,7 +1708,7 @@ void TangibleObject::setJunkValue(int jValue) {
 	}
 }
 
-int TangibleObject::getJunkValue() {
+int TangibleObject::getJunkValue() const {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1607,19 +1780,20 @@ ThreatMap* TangibleObject::getThreatMap() {
 	}
 }
 
-Reference<FactoryCrate* > TangibleObject::createFactoryCrate(int maxSize, bool insertSelf) {
+Reference<FactoryCrate* > TangibleObject::createFactoryCrate(int maxSize, String& type, bool insertSelf) {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CREATEFACTORYCRATE__INT_BOOL_);
+		DistributedMethod method(this, RPC_CREATEFACTORYCRATE__INT_STRING_BOOL_);
 		method.addSignedIntParameter(maxSize);
+		method.addAsciiParameter(type);
 		method.addBooleanParameter(insertSelf);
 
 		return static_cast<FactoryCrate*>(method.executeWithObjectReturn());
 	} else {
-		return _implementation->createFactoryCrate(maxSize, insertSelf);
+		return _implementation->createFactoryCrate(maxSize, type, insertSelf);
 	}
 }
 
@@ -1773,6 +1947,36 @@ bool TangibleObject::hasActiveArea(unsigned long long objectid) {
 	}
 }
 
+bool TangibleObject::isInNoCombatArea() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINNOCOMBATAREA__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isInNoCombatArea();
+	}
+}
+
+void TangibleObject::setInNoCombatArea(bool val) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETINNOCOMBATAREA__BOOL_);
+		method.addBooleanParameter(val);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->setInNoCombatArea(val);
+	}
+}
+
 SortedVector<ManagedReference<ActiveArea* > >* TangibleObject::getActiveAreas() {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1811,6 +2015,50 @@ Reference<ActiveArea* > TangibleObject::getActiveRegion() {
 	}
 }
 
+CellObject* TangibleObject::getCell(int idx) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCELL__INT_);
+		method.addSignedIntParameter(idx);
+
+		return static_cast<CellObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCell(idx);
+	}
+}
+
+CellObject* TangibleObject::getCell(const String& name) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETCELL__STRING_);
+		method.addAsciiParameter(name);
+
+		return static_cast<CellObject*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getCell(name);
+	}
+}
+
+bool TangibleObject::isNoTrade() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISNOTRADE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isNoTrade();
+	}
+}
+
 bool TangibleObject::hasAntiDecayKit() const {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -1822,6 +2070,20 @@ bool TangibleObject::hasAntiDecayKit() const {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->hasAntiDecayKit();
+	}
+}
+
+unsigned long long TangibleObject::getAntiDecayKitObjectID() const {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETANTIDECAYKITOBJECTID__);
+
+		return method.executeWithUnsignedLongReturn();
+	} else {
+		return _implementation->getAntiDecayKitObjectID();
 	}
 }
 
@@ -1854,6 +2116,36 @@ SceneObject* TangibleObject::removeAntiDecayKit() {
 	} else {
 		assert(this->isLockedByCurrentThread());
 		return _implementation->removeAntiDecayKit();
+	}
+}
+
+void TangibleObject::refreshPaint() {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REFRESHPAINT__);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert(this->isLockedByCurrentThread());
+		_implementation->refreshPaint();
+	}
+}
+
+void TangibleObject::destroyObjectFromDatabase(bool destroyContainedObjects) {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_DESTROYOBJECTFROMDATABASE__BOOL_);
+		method.addBooleanParameter(destroyContainedObjects);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->destroyObjectFromDatabase(destroyContainedObjects);
 	}
 }
 
@@ -2036,33 +2328,45 @@ bool TangibleObject::isInNavMesh() {
 	}
 }
 
-void TangibleObject::setControlDevice(ControlDevice* device) {
-	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementation());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_SETCONTROLDEVICE__CONTROLDEVICE_);
-		method.addObjectParameter(device);
-
-		method.executeWithVoidReturn();
-	} else {
-		assert(this->isLockedByCurrentThread());
-		_implementation->setControlDevice(device);
-	}
-}
-
-ManagedWeakReference<ControlDevice* > TangibleObject::getControlDevice() const {
+bool TangibleObject::isVendor() {
 	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETCONTROLDEVICE__);
+		DistributedMethod method(this, RPC_ISVENDOR__);
 
-		return static_cast<ControlDevice*>(method.executeWithObjectReturn());
+		return method.executeWithBooleanReturn();
 	} else {
-		return _implementation->getControlDevice();
+		return _implementation->isVendor();
+	}
+}
+
+bool TangibleObject::isInvulnerable() {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISINVULNERABLE__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isInvulnerable();
+	}
+}
+
+bool TangibleObject::isDestroying() {
+	TangibleObjectImplementation* _implementation = static_cast<TangibleObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISDESTROYING__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isDestroying();
 	}
 }
 
@@ -2212,6 +2516,10 @@ bool TangibleObjectImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<CustomizationVariables >::parseFromBinaryStream(&customizationVariables, stream);
 		return true;
 
+	case 0x446e9ce1: //TangibleObject.unmitigatedDamage
+		TypeInfo<int >::parseFromBinaryStream(&unmitigatedDamage, stream);
+		return true;
+
 	case 0xa4a80d3: //TangibleObject.conditionDamage
 		TypeInfo<float >::parseFromBinaryStream(&conditionDamage, stream);
 		return true;
@@ -2256,6 +2564,10 @@ bool TangibleObjectImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<String >::parseFromBinaryStream(&craftersName, stream);
 		return true;
 
+	case 0x2673c744: //TangibleObject.craftersID
+		TypeInfo<unsigned long long >::parseFromBinaryStream(&craftersID, stream);
+		return true;
+
 	case 0xa090b45c: //TangibleObject.junkDealerNeeded
 		TypeInfo<int >::parseFromBinaryStream(&junkDealerNeeded, stream);
 		return true;
@@ -2288,8 +2600,16 @@ bool TangibleObjectImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<ManagedReference<SceneObject* > >::parseFromBinaryStream(&antiDecayKitObject, stream);
 		return true;
 
-	case 0xf501a0c3: //TangibleObject.controlDevice
-		TypeInfo<ManagedWeakReference<ControlDevice* > >::parseFromBinaryStream(&controlDevice, stream);
+	case 0xa8aa51: //TangibleObject.insurable
+		TypeInfo<bool >::parseFromBinaryStream(&insurable, stream);
+		return true;
+
+	case 0x407b9075: //TangibleObject.jediRobe
+		TypeInfo<bool >::parseFromBinaryStream(&jediRobe, stream);
+		return true;
+
+	case 0x3bc3bd92: //TangibleObject.unionRing
+		TypeInfo<bool >::parseFromBinaryStream(&unionRing, stream);
 		return true;
 
 	}
@@ -2387,6 +2707,15 @@ int TangibleObjectImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<CustomizationVariables >::toBinaryStream(&customizationVariables, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x446e9ce1; //TangibleObject.unmitigatedDamage
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&unmitigatedDamage, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2490,6 +2819,15 @@ int TangibleObjectImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x2673c744; //TangibleObject.craftersID
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned long long >::toBinaryStream(&craftersID, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 	_nameHashCode = 0xa090b45c; //TangibleObject.junkDealerNeeded
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -2562,11 +2900,29 @@ int TangibleObjectImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0xf501a0c3; //TangibleObject.controlDevice
+	_nameHashCode = 0xa8aa51; //TangibleObject.insurable
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<ControlDevice* > >::toBinaryStream(&controlDevice, stream);
+	TypeInfo<bool >::toBinaryStream(&insurable, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x407b9075; //TangibleObject.jediRobe
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&jediRobe, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0x3bc3bd92; //TangibleObject.unionRing
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&unionRing, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2597,6 +2953,8 @@ void TangibleObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["customizationVariables"] = customizationVariables;
 
+	thisObject["unmitigatedDamage"] = unmitigatedDamage;
+
 	thisObject["conditionDamage"] = conditionDamage;
 
 	thisObject["maxCondition"] = maxCondition;
@@ -2619,6 +2977,8 @@ void TangibleObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["craftersName"] = craftersName;
 
+	thisObject["craftersID"] = craftersID;
+
 	thisObject["junkDealerNeeded"] = junkDealerNeeded;
 
 	thisObject["junkValue"] = junkValue;
@@ -2635,7 +2995,11 @@ void TangibleObjectImplementation::writeJSON(nlohmann::json& j) {
 
 	thisObject["antiDecayKitObject"] = antiDecayKitObject;
 
-	thisObject["controlDevice"] = controlDevice;
+	thisObject["insurable"] = insurable;
+
+	thisObject["jediRobe"] = jediRobe;
+
+	thisObject["unionRing"] = unionRing;
 
 	j["TangibleObject"] = thisObject;
 }
@@ -2650,8 +3014,14 @@ TangibleObjectImplementation::TangibleObjectImplementation() {
 	invisible = false;
 	// server/zone/objects/tangible/TangibleObject.idl():  		antiDecayKitObject = null;
 	antiDecayKitObject = NULL;
-	// server/zone/objects/tangible/TangibleObject.idl():  		luaStringData.setNoDuplicateInsertPlan();
-	(&luaStringData)->setNoDuplicateInsertPlan();
+	// server/zone/objects/tangible/TangibleObject.idl():  		insurable = true;
+	insurable = true;
+	// server/zone/objects/tangible/TangibleObject.idl():  		jediRobe = false;
+	jediRobe = false;
+	// server/zone/objects/tangible/TangibleObject.idl():  		unionRing = false;
+	unionRing = false;
+	// server/zone/objects/tangible/TangibleObject.idl():  		luaStringData.setAllowOverwriteInsertPlan();
+	(&luaStringData)->setAllowOverwriteInsertPlan();
 }
 
 void TangibleObjectImplementation::initializeMembers() {
@@ -2669,12 +3039,16 @@ void TangibleObjectImplementation::initializeMembers() {
 	complexity = 100.f;
 	// server/zone/objects/tangible/TangibleObject.idl():  		volume = 1;
 	volume = 1;
+	// server/zone/objects/tangible/TangibleObject.idl():  		craftersID = 0;
+	craftersID = 0;
 	// server/zone/objects/tangible/TangibleObject.idl():  		objectVisible = 1;
 	objectVisible = 1;
 	// server/zone/objects/tangible/TangibleObject.idl():  		useCount = 1;
 	useCount = 1;
 	// server/zone/objects/tangible/TangibleObject.idl():  		conditionDamage = 0;
 	conditionDamage = 0;
+	// server/zone/objects/tangible/TangibleObject.idl():  		unmitigatedDamage = 0;
+	unmitigatedDamage = 0;
 	// server/zone/objects/tangible/TangibleObject.idl():  		sliceable = false;
 	sliceable = false;
 	// server/zone/objects/tangible/TangibleObject.idl():  		sliced = false;
@@ -2687,8 +3061,6 @@ void TangibleObjectImplementation::initializeMembers() {
 	junkDealerNeeded = 0;
 	// server/zone/objects/tangible/TangibleObject.idl():  		junkValue = 0;
 	junkValue = 0;
-	// server/zone/objects/tangible/TangibleObject.idl():  		controlDevice = null;
-	controlDevice = NULL;
 }
 
 void TangibleObjectImplementation::applySkillModsTo(CreatureObject* creature) const{
@@ -2715,7 +3087,7 @@ void TangibleObjectImplementation::clearCombatState(bool clearDefenders) {
 	removeDefenders();
 }
 
-bool TangibleObjectImplementation::hasDefender(SceneObject* defender) {
+bool TangibleObjectImplementation::hasDefender(const SceneObject* defender) const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		}
 	for (	// server/zone/objects/tangible/TangibleObject.idl():  		for (int i = 0;
 	int i = 0;
@@ -2729,7 +3101,12 @@ bool TangibleObjectImplementation::hasDefender(SceneObject* defender) {
 	return false;
 }
 
-bool TangibleObjectImplementation::isAggressiveTo(CreatureObject* object) {
+bool TangibleObjectImplementation::isAggressiveTo(TangibleObject* object) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		return false;
+	return false;
+}
+
+bool TangibleObjectImplementation::isAggressive(TangibleObject* object) {
 	// server/zone/objects/tangible/TangibleObject.idl():  		return false;
 	return false;
 }
@@ -2799,6 +3176,16 @@ int TangibleObjectImplementation::getConditionDamage() const{
 	return (int) conditionDamage;
 }
 
+int TangibleObjectImplementation::getUnmitigatedDamage() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return unmitigatedDamage;
+	return unmitigatedDamage;
+}
+
+void TangibleObjectImplementation::addUnmitigatedDamage(float damage) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		unmitigatedDamage += (int)damage;
+	unmitigatedDamage += (int) damage;
+}
+
 int TangibleObjectImplementation::getVolume() const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		return volume;
 	return volume;
@@ -2859,6 +3246,11 @@ void TangibleObjectImplementation::getCustomizationString(String& variables) con
 const DeltaVector<ManagedReference<SceneObject* > >* TangibleObjectImplementation::getDefenderList() const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		return defenderList;
 	return (&defenderList);
+}
+
+bool TangibleObjectImplementation::hasDefenders() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return defenderList.size() > 0;
+	return (&defenderList)->size() > 0;
 }
 
 const AutoDeltaSet<int>* TangibleObjectImplementation::getVisibleComponents() const{
@@ -2948,6 +3340,26 @@ void TangibleObjectImplementation::setSliced(bool slice) {
 	sliced = slice;
 }
 
+bool TangibleObjectImplementation::isInsurable() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return insurable;
+	return insurable;
+}
+
+bool TangibleObjectImplementation::isJediRobe() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return jediRobe;
+	return jediRobe;
+}
+
+bool TangibleObjectImplementation::isUnionRing() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return unionRing;
+	return unionRing;
+}
+
+void TangibleObjectImplementation::setUnionRing(bool val) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		unionRing = val;
+	unionRing = val;
+}
+
 void TangibleObjectImplementation::setCustomizationString(const String& vars) {
 	// server/zone/objects/tangible/TangibleObject.idl():  		customizationVariables.parseFromClientString(vars);
 	(&customizationVariables)->parseFromClientString(vars);
@@ -2958,9 +3370,19 @@ void TangibleObjectImplementation::setCraftersName(String& name) {
 	craftersName = name;
 }
 
+void TangibleObjectImplementation::setCraftersID(unsigned long long crafterOID) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		craftersID = crafterOID;
+	craftersID = crafterOID;
+}
+
 String TangibleObjectImplementation::getCraftersName() {
 	// server/zone/objects/tangible/TangibleObject.idl():  		return craftersName;
 	return craftersName;
+}
+
+unsigned long long TangibleObjectImplementation::getCraftersID() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return craftersID;
+	return craftersID;
 }
 
 void TangibleObjectImplementation::setJunkDealerNeeded(int jdNeeded) {
@@ -2978,7 +3400,7 @@ void TangibleObjectImplementation::setJunkValue(int jValue) {
 	junkValue = jValue;
 }
 
-int TangibleObjectImplementation::getJunkValue() {
+int TangibleObjectImplementation::getJunkValue() const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		return junkValue;
 	return junkValue;
 }
@@ -3024,6 +3446,13 @@ float TangibleObjectImplementation::getHitChance() const{
 }
 
 void TangibleObjectImplementation::dropActiveArea(ActiveArea* area) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		synchronized 
+	if (area->isNoCombatArea()){
+	// server/zone/objects/tangible/TangibleObject.idl():  			inNoCombatArea = false;
+	inNoCombatArea = false;
+	// server/zone/objects/tangible/TangibleObject.idl():  			broadcastPvpStatusBitmask();
+	broadcastPvpStatusBitmask();
+}
 	// server/zone/objects/tangible/TangibleObject.idl():  		}
 {
 	Locker _locker(SceneObjectImplementation::getContainerLock());
@@ -3063,6 +3492,16 @@ bool TangibleObjectImplementation::hasActiveArea(unsigned long long objectid) {
 	return false;
 }
 
+bool TangibleObjectImplementation::isInNoCombatArea() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return inNoCombatArea;
+	return inNoCombatArea;
+}
+
+void TangibleObjectImplementation::setInNoCombatArea(bool val) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		inNoCombatArea = val;
+	inNoCombatArea = val;
+}
+
 SortedVector<ManagedReference<ActiveArea* > >* TangibleObjectImplementation::getActiveAreas() {
 	// server/zone/objects/tangible/TangibleObject.idl():  		return activeAreas;
 	return (&activeAreas);
@@ -3095,9 +3534,39 @@ i ++) {
 	return NULL;
 }
 
+CellObject* TangibleObjectImplementation::getCell(int idx) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		return null;
+	return NULL;
+}
+
+CellObject* TangibleObjectImplementation::getCell(const String& name) {
+	// server/zone/objects/tangible/TangibleObject.idl():  		return null;
+	return NULL;
+}
+
+bool TangibleObjectImplementation::isNoTrade() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return 
+	if (antiDecayKitObject){
+	// server/zone/objects/tangible/TangibleObject.idl():  			return antiDecayKitObject.isNoTrade() || super.isNoTrade();
+	return antiDecayKitObject->isNoTrade() || SceneObjectImplementation::isNoTrade();
+}
+	// server/zone/objects/tangible/TangibleObject.idl():  		return super.isNoTrade();
+	return SceneObjectImplementation::isNoTrade();
+}
+
 bool TangibleObjectImplementation::hasAntiDecayKit() const{
-	// server/zone/objects/tangible/TangibleObject.idl():  		return antiDecayKitObject != null;
-	return antiDecayKitObject != NULL;
+	// server/zone/objects/tangible/TangibleObject.idl():  		return antiDecayKitObject;
+	return antiDecayKitObject;
+}
+
+unsigned long long TangibleObjectImplementation::getAntiDecayKitObjectID() const{
+	// server/zone/objects/tangible/TangibleObject.idl():  		return 
+	if (!hasAntiDecayKit()){
+	// server/zone/objects/tangible/TangibleObject.idl():  		 return 0;
+	return 0;
+}
+	// server/zone/objects/tangible/TangibleObject.idl():  		return antiDecayKitObject.getObjectID();
+	return antiDecayKitObject->getObjectID();
 }
 
 void TangibleObjectImplementation::applyAntiDecayKit(CreatureObject* player, SceneObject* adk) {
@@ -3105,8 +3574,10 @@ void TangibleObjectImplementation::applyAntiDecayKit(CreatureObject* player, Sce
 	if (!hasAntiDecayKit()){
 	// server/zone/objects/tangible/TangibleObject.idl():  			antiDecayKitObject = adk;
 	antiDecayKitObject = adk;
+	// server/zone/objects/tangible/TangibleObject.idl():  			SceneObject parent = adk.getParent();
+	ManagedReference<SceneObject* > parent = adk->getParent();
 	// server/zone/objects/tangible/TangibleObject.idl():  			sendAttributeListTo(
-	if (adk->getParent() != NULL)	// server/zone/objects/tangible/TangibleObject.idl():  				adk.destroyObjectFromWorld(true);
+	if (parent)	// server/zone/objects/tangible/TangibleObject.idl():  				adk.destroyObjectFromWorld(true);
 	adk->destroyObjectFromWorld(true);
 	// server/zone/objects/tangible/TangibleObject.idl():  			sendAttributeListTo(player);
 	sendAttributeListTo(player);
@@ -3127,6 +3598,9 @@ SceneObject* TangibleObjectImplementation::removeAntiDecayKit() {
 	return NULL;
 }
 
+void TangibleObjectImplementation::refreshPaint() {
+}
+
 bool TangibleObjectImplementation::isInvisible() const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		return invisible;
 	return invisible;
@@ -3143,11 +3617,7 @@ bool TangibleObjectImplementation::isCustomIngredient() {
 }
 
 void TangibleObjectImplementation::setLuaStringData(const String& key, const String& data) {
-	// server/zone/objects/tangible/TangibleObject.idl():  			luaStringData.put(key, data);
-	if ((&luaStringData)->contains(key))	// server/zone/objects/tangible/TangibleObject.idl():  			luaStringData.get(key) = data;
-	(&luaStringData)->get(key) = data;
-
-	else 	// server/zone/objects/tangible/TangibleObject.idl():  			luaStringData.put(key, data);
+	// server/zone/objects/tangible/TangibleObject.idl():  		luaStringData.put(key, data);
 	(&luaStringData)->put(key, data);
 }
 
@@ -3159,16 +3629,6 @@ void TangibleObjectImplementation::deleteLuaStringData(const String& key) {
 String TangibleObjectImplementation::getLuaStringData(const String& key) const{
 	// server/zone/objects/tangible/TangibleObject.idl():  		return luaStringData.get(key);
 	return (&luaStringData)->get(key);
-}
-
-void TangibleObjectImplementation::setControlDevice(ControlDevice* device) {
-	// server/zone/objects/tangible/TangibleObject.idl():  		controlDevice = device;
-	controlDevice = device;
-}
-
-ManagedWeakReference<ControlDevice* > TangibleObjectImplementation::getControlDevice() const{
-	// server/zone/objects/tangible/TangibleObject.idl():  		return controlDevice;
-	return controlDevice;
 }
 
 /*
@@ -3198,6 +3658,14 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			TangibleObject* targetObject = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
 			addTemplateSkillMods(targetObject);
+			
+		}
+		break;
+	case RPC_REMOVETEMPLATESKILLMODS__TANGIBLEOBJECT_:
+		{
+			TangibleObject* tangibleObject = static_cast<TangibleObject*>(inv->getObjectParameter());
+			
+			removeTemplateSkillMods(tangibleObject);
 			
 		}
 		break;
@@ -3307,6 +3775,13 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_REMOVEOUTOFRANGEOBJECTS__:
+		{
+			
+			removeOutOfRangeObjects();
+			
+		}
+		break;
 	case RPC_SETDEFENDER__SCENEOBJECT_:
 		{
 			SceneObject* defender = static_cast<SceneObject*>(inv->getObjectParameter());
@@ -3380,14 +3855,6 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
-	case RPC_HASDEFENDER__SCENEOBJECT_:
-		{
-			SceneObject* defender = static_cast<SceneObject*>(inv->getObjectParameter());
-			
-			bool _m_res = hasDefender(defender);
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_ISATTACKABLEBY__CREATUREOBJECT_:
 		{
 			CreatureObject* object = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -3404,11 +3871,19 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_ISAGGRESSIVETO__CREATUREOBJECT_:
+	case RPC_ISAGGRESSIVETO__TANGIBLEOBJECT_:
 		{
-			CreatureObject* object = static_cast<CreatureObject*>(inv->getObjectParameter());
+			TangibleObject* object = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
 			bool _m_res = isAggressiveTo(object);
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISAGGRESSIVE__TANGIBLEOBJECT_:
+		{
+			TangibleObject* object = static_cast<TangibleObject*>(inv->getObjectParameter());
+			
+			bool _m_res = isAggressive(object);
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -3652,6 +4127,21 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETUNMITIGATEDDAMAGE__:
+		{
+			
+			int _m_res = getUnmitigatedDamage();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
+	case RPC_ADDUNMITIGATEDDAMAGE__FLOAT_:
+		{
+			float damage = inv->getFloatParameter();
+			
+			addUnmitigatedDamage(damage);
+			
+		}
+		break;
 	case RPC_GETVOLUME__:
 		{
 			
@@ -3731,6 +4221,13 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			getCustomizationString(variables);
 			
+		}
+		break;
+	case RPC_HASDEFENDERS__:
+		{
+			
+			bool _m_res = hasDefenders();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	case RPC_GETMAINDEFENDER__:
@@ -3843,6 +4340,35 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_ISINSURABLE__:
+		{
+			
+			bool _m_res = isInsurable();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISJEDIROBE__:
+		{
+			
+			bool _m_res = isJediRobe();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISUNIONRING__:
+		{
+			
+			bool _m_res = isUnionRing();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_SETUNIONRING__BOOL_:
+		{
+			bool val = inv->getBooleanParameter();
+			
+			setUnionRing(val);
+			
+		}
+		break;
 	case RPC_SETCUSTOMIZATIONSTRING__STRING_:
 		{
 			 String vars; inv->getAsciiParameter(vars);
@@ -3894,11 +4420,26 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_SETCRAFTERSID__LONG_:
+		{
+			unsigned long long crafterOID = inv->getUnsignedLongParameter();
+			
+			setCraftersID(crafterOID);
+			
+		}
+		break;
 	case RPC_GETCRAFTERSNAME__:
 		{
 			
 			String _m_res = getCraftersName();
 			resp->insertAscii(_m_res);
+		}
+		break;
+	case RPC_GETCRAFTERSID__:
+		{
+			
+			unsigned long long _m_res = getCraftersID();
+			resp->insertLong(_m_res);
 		}
 		break;
 	case RPC_SETJUNKDEALERNEEDED__INT_:
@@ -3955,12 +4496,13 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertAscii(_m_res);
 		}
 		break;
-	case RPC_CREATEFACTORYCRATE__INT_BOOL_:
+	case RPC_CREATEFACTORYCRATE__INT_STRING_BOOL_:
 		{
 			int maxSize = inv->getSignedIntParameter();
+			String type; inv->getAsciiParameter(type);
 			bool insertSelf = inv->getBooleanParameter();
 			
-			DistributedObject* _m_res = createFactoryCrate(maxSize, insertSelf);
+			DistributedObject* _m_res = createFactoryCrate(maxSize, type, insertSelf);
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
@@ -4042,6 +4584,21 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_ISINNOCOMBATAREA__:
+		{
+			
+			bool _m_res = isInNoCombatArea();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_SETINNOCOMBATAREA__BOOL_:
+		{
+			bool val = inv->getBooleanParameter();
+			
+			setInNoCombatArea(val);
+			
+		}
+		break;
 	case RPC_GETACTIVEAREASSIZE__:
 		{
 			
@@ -4056,11 +4613,41 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
 		}
 		break;
+	case RPC_GETCELL__INT_:
+		{
+			int idx = inv->getSignedIntParameter();
+			
+			DistributedObject* _m_res = getCell(idx);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETCELL__STRING_:
+		{
+			 String name; inv->getAsciiParameter(name);
+			
+			DistributedObject* _m_res = getCell(name);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_ISNOTRADE__:
+		{
+			
+			bool _m_res = isNoTrade();
+			resp->insertBoolean(_m_res);
+		}
+		break;
 	case RPC_HASANTIDECAYKIT__:
 		{
 			
 			bool _m_res = hasAntiDecayKit();
 			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_GETANTIDECAYKITOBJECTID__:
+		{
+			
+			unsigned long long _m_res = getAntiDecayKitObjectID();
+			resp->insertLong(_m_res);
 		}
 		break;
 	case RPC_APPLYANTIDECAYKIT__CREATUREOBJECT_SCENEOBJECT_:
@@ -4077,6 +4664,21 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 			DistributedObject* _m_res = removeAntiDecayKit();
 			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_REFRESHPAINT__:
+		{
+			
+			refreshPaint();
+			
+		}
+		break;
+	case RPC_DESTROYOBJECTFROMDATABASE__BOOL_:
+		{
+			bool destroyContainedObjects = inv->getBooleanParameter();
+			
+			destroyObjectFromDatabase(destroyContainedObjects);
+			
 		}
 		break;
 	case RPC_ISCITYSTREETLAMP__:
@@ -4169,19 +4771,25 @@ void TangibleObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_SETCONTROLDEVICE__CONTROLDEVICE_:
+	case RPC_ISVENDOR__:
 		{
-			ControlDevice* device = static_cast<ControlDevice*>(inv->getObjectParameter());
 			
-			setControlDevice(device);
-			
+			bool _m_res = isVendor();
+			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_GETCONTROLDEVICE__:
+	case RPC_ISINVULNERABLE__:
 		{
 			
-			DistributedObject* _m_res = getControlDevice().get();
-			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+			bool _m_res = isInvulnerable();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISDESTROYING__:
+		{
+			
+			bool _m_res = isDestroying();
+			resp->insertBoolean(_m_res);
 		}
 		break;
 	default:
@@ -4195,6 +4803,10 @@ void TangibleObjectAdapter::initializeMembers() {
 
 void TangibleObjectAdapter::addTemplateSkillMods(TangibleObject* targetObject) const {
 	(static_cast<TangibleObject*>(stub))->addTemplateSkillMods(targetObject);
+}
+
+void TangibleObjectAdapter::removeTemplateSkillMods(TangibleObject* tangibleObject) const {
+	(static_cast<TangibleObject*>(stub))->removeTemplateSkillMods(tangibleObject);
 }
 
 void TangibleObjectAdapter::applySkillModsTo(CreatureObject* creature) const {
@@ -4245,6 +4857,10 @@ void TangibleObjectAdapter::synchronizedUIStopListen(CreatureObject* player, int
 	(static_cast<TangibleObject*>(stub))->synchronizedUIStopListen(player, value);
 }
 
+void TangibleObjectAdapter::removeOutOfRangeObjects() {
+	(static_cast<TangibleObject*>(stub))->removeOutOfRangeObjects();
+}
+
 void TangibleObjectAdapter::setDefender(SceneObject* defender) {
 	(static_cast<TangibleObject*>(stub))->setDefender(defender);
 }
@@ -4281,10 +4897,6 @@ void TangibleObjectAdapter::clearCombatState(bool clearDefenders) {
 	(static_cast<TangibleObject*>(stub))->clearCombatState(clearDefenders);
 }
 
-bool TangibleObjectAdapter::hasDefender(SceneObject* defender) {
-	return (static_cast<TangibleObject*>(stub))->hasDefender(defender);
-}
-
 bool TangibleObjectAdapter::isAttackableBy(CreatureObject* object) {
 	return (static_cast<TangibleObject*>(stub))->isAttackableBy(object);
 }
@@ -4293,8 +4905,12 @@ bool TangibleObjectAdapter::isAttackableBy(TangibleObject* object) {
 	return (static_cast<TangibleObject*>(stub))->isAttackableBy(object);
 }
 
-bool TangibleObjectAdapter::isAggressiveTo(CreatureObject* object) {
+bool TangibleObjectAdapter::isAggressiveTo(TangibleObject* object) {
 	return (static_cast<TangibleObject*>(stub))->isAggressiveTo(object);
+}
+
+bool TangibleObjectAdapter::isAggressive(TangibleObject* object) {
+	return (static_cast<TangibleObject*>(stub))->isAggressive(object);
 }
 
 bool TangibleObjectAdapter::isHealableBy(CreatureObject* object) {
@@ -4409,6 +5025,14 @@ int TangibleObjectAdapter::getConditionDamage() const {
 	return (static_cast<TangibleObject*>(stub))->getConditionDamage();
 }
 
+int TangibleObjectAdapter::getUnmitigatedDamage() const {
+	return (static_cast<TangibleObject*>(stub))->getUnmitigatedDamage();
+}
+
+void TangibleObjectAdapter::addUnmitigatedDamage(float damage) {
+	(static_cast<TangibleObject*>(stub))->addUnmitigatedDamage(damage);
+}
+
 int TangibleObjectAdapter::getVolume() const {
 	return (static_cast<TangibleObject*>(stub))->getVolume();
 }
@@ -4451,6 +5075,10 @@ bool TangibleObjectAdapter::isTangibleObject() {
 
 void TangibleObjectAdapter::getCustomizationString(String& variables) const {
 	(static_cast<TangibleObject*>(stub))->getCustomizationString(variables);
+}
+
+bool TangibleObjectAdapter::hasDefenders() const {
+	return (static_cast<TangibleObject*>(stub))->hasDefenders();
 }
 
 SceneObject* TangibleObjectAdapter::getMainDefender() const {
@@ -4513,6 +5141,22 @@ void TangibleObjectAdapter::setSliced(bool slice) {
 	(static_cast<TangibleObject*>(stub))->setSliced(slice);
 }
 
+bool TangibleObjectAdapter::isInsurable() const {
+	return (static_cast<TangibleObject*>(stub))->isInsurable();
+}
+
+bool TangibleObjectAdapter::isJediRobe() const {
+	return (static_cast<TangibleObject*>(stub))->isJediRobe();
+}
+
+bool TangibleObjectAdapter::isUnionRing() const {
+	return (static_cast<TangibleObject*>(stub))->isUnionRing();
+}
+
+void TangibleObjectAdapter::setUnionRing(bool val) {
+	(static_cast<TangibleObject*>(stub))->setUnionRing(val);
+}
+
 void TangibleObjectAdapter::setCustomizationString(const String& vars) {
 	(static_cast<TangibleObject*>(stub))->setCustomizationString(vars);
 }
@@ -4537,8 +5181,16 @@ void TangibleObjectAdapter::setCraftersName(String& name) {
 	(static_cast<TangibleObject*>(stub))->setCraftersName(name);
 }
 
+void TangibleObjectAdapter::setCraftersID(unsigned long long crafterOID) {
+	(static_cast<TangibleObject*>(stub))->setCraftersID(crafterOID);
+}
+
 String TangibleObjectAdapter::getCraftersName() {
 	return (static_cast<TangibleObject*>(stub))->getCraftersName();
+}
+
+unsigned long long TangibleObjectAdapter::getCraftersID() const {
+	return (static_cast<TangibleObject*>(stub))->getCraftersID();
 }
 
 void TangibleObjectAdapter::setJunkDealerNeeded(int jdNeeded) {
@@ -4553,7 +5205,7 @@ void TangibleObjectAdapter::setJunkValue(int jValue) {
 	(static_cast<TangibleObject*>(stub))->setJunkValue(jValue);
 }
 
-int TangibleObjectAdapter::getJunkValue() {
+int TangibleObjectAdapter::getJunkValue() const {
 	return (static_cast<TangibleObject*>(stub))->getJunkValue();
 }
 
@@ -4569,8 +5221,8 @@ String TangibleObjectAdapter::getSerialNumber() {
 	return (static_cast<TangibleObject*>(stub))->getSerialNumber();
 }
 
-Reference<FactoryCrate* > TangibleObjectAdapter::createFactoryCrate(int maxSize, bool insertSelf) {
-	return (static_cast<TangibleObject*>(stub))->createFactoryCrate(maxSize, insertSelf);
+Reference<FactoryCrate* > TangibleObjectAdapter::createFactoryCrate(int maxSize, String& type, bool insertSelf) {
+	return (static_cast<TangibleObject*>(stub))->createFactoryCrate(maxSize, type, insertSelf);
 }
 
 bool TangibleObjectAdapter::canRepair(CreatureObject* player) {
@@ -4613,6 +5265,14 @@ bool TangibleObjectAdapter::hasActiveArea(unsigned long long objectid) {
 	return (static_cast<TangibleObject*>(stub))->hasActiveArea(objectid);
 }
 
+bool TangibleObjectAdapter::isInNoCombatArea() const {
+	return (static_cast<TangibleObject*>(stub))->isInNoCombatArea();
+}
+
+void TangibleObjectAdapter::setInNoCombatArea(bool val) {
+	(static_cast<TangibleObject*>(stub))->setInNoCombatArea(val);
+}
+
 int TangibleObjectAdapter::getActiveAreasSize() const {
 	return (static_cast<TangibleObject*>(stub))->getActiveAreasSize();
 }
@@ -4621,8 +5281,24 @@ Reference<ActiveArea* > TangibleObjectAdapter::getActiveRegion() {
 	return (static_cast<TangibleObject*>(stub))->getActiveRegion();
 }
 
+CellObject* TangibleObjectAdapter::getCell(int idx) {
+	return (static_cast<TangibleObject*>(stub))->getCell(idx);
+}
+
+CellObject* TangibleObjectAdapter::getCell(const String& name) {
+	return (static_cast<TangibleObject*>(stub))->getCell(name);
+}
+
+bool TangibleObjectAdapter::isNoTrade() const {
+	return (static_cast<TangibleObject*>(stub))->isNoTrade();
+}
+
 bool TangibleObjectAdapter::hasAntiDecayKit() const {
 	return (static_cast<TangibleObject*>(stub))->hasAntiDecayKit();
+}
+
+unsigned long long TangibleObjectAdapter::getAntiDecayKitObjectID() const {
+	return (static_cast<TangibleObject*>(stub))->getAntiDecayKitObjectID();
 }
 
 void TangibleObjectAdapter::applyAntiDecayKit(CreatureObject* player, SceneObject* adk) {
@@ -4631,6 +5307,14 @@ void TangibleObjectAdapter::applyAntiDecayKit(CreatureObject* player, SceneObjec
 
 SceneObject* TangibleObjectAdapter::removeAntiDecayKit() {
 	return (static_cast<TangibleObject*>(stub))->removeAntiDecayKit();
+}
+
+void TangibleObjectAdapter::refreshPaint() {
+	(static_cast<TangibleObject*>(stub))->refreshPaint();
+}
+
+void TangibleObjectAdapter::destroyObjectFromDatabase(bool destroyContainedObjects) {
+	(static_cast<TangibleObject*>(stub))->destroyObjectFromDatabase(destroyContainedObjects);
 }
 
 bool TangibleObjectAdapter::isCityStreetLamp() const {
@@ -4681,12 +5365,16 @@ bool TangibleObjectAdapter::isInNavMesh() {
 	return (static_cast<TangibleObject*>(stub))->isInNavMesh();
 }
 
-void TangibleObjectAdapter::setControlDevice(ControlDevice* device) {
-	(static_cast<TangibleObject*>(stub))->setControlDevice(device);
+bool TangibleObjectAdapter::isVendor() {
+	return (static_cast<TangibleObject*>(stub))->isVendor();
 }
 
-ManagedWeakReference<ControlDevice* > TangibleObjectAdapter::getControlDevice() const {
-	return (static_cast<TangibleObject*>(stub))->getControlDevice();
+bool TangibleObjectAdapter::isInvulnerable() {
+	return (static_cast<TangibleObject*>(stub))->isInvulnerable();
+}
+
+bool TangibleObjectAdapter::isDestroying() {
+	return (static_cast<TangibleObject*>(stub))->isDestroying();
 }
 
 /*
@@ -4772,6 +5460,9 @@ void TangibleObjectPOD::writeJSON(nlohmann::json& j) {
 	if (customizationVariables)
 		thisObject["customizationVariables"] = customizationVariables.value();
 
+	if (unmitigatedDamage)
+		thisObject["unmitigatedDamage"] = unmitigatedDamage.value();
+
 	if (conditionDamage)
 		thisObject["conditionDamage"] = conditionDamage.value();
 
@@ -4805,6 +5496,9 @@ void TangibleObjectPOD::writeJSON(nlohmann::json& j) {
 	if (craftersName)
 		thisObject["craftersName"] = craftersName.value();
 
+	if (craftersID)
+		thisObject["craftersID"] = craftersID.value();
+
 	if (junkDealerNeeded)
 		thisObject["junkDealerNeeded"] = junkDealerNeeded.value();
 
@@ -4829,8 +5523,14 @@ void TangibleObjectPOD::writeJSON(nlohmann::json& j) {
 	if (antiDecayKitObject)
 		thisObject["antiDecayKitObject"] = antiDecayKitObject.value();
 
-	if (controlDevice)
-		thisObject["controlDevice"] = controlDevice.value();
+	if (insurable)
+		thisObject["insurable"] = insurable.value();
+
+	if (jediRobe)
+		thisObject["jediRobe"] = jediRobe.value();
+
+	if (unionRing)
+		thisObject["unionRing"] = unionRing.value();
 
 	j["TangibleObject"] = thisObject;
 }
@@ -4943,6 +5643,17 @@ int TangibleObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<CustomizationVariables >::toBinaryStream(&customizationVariables.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (unmitigatedDamage) {
+	_nameHashCode = 0x446e9ce1; //TangibleObject.unmitigatedDamage
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<int >::toBinaryStream(&unmitigatedDamage.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -5069,6 +5780,17 @@ int TangibleObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (craftersID) {
+	_nameHashCode = 0x2673c744; //TangibleObject.craftersID
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned long long >::toBinaryStream(&craftersID.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (junkDealerNeeded) {
 	_nameHashCode = 0xa090b45c; //TangibleObject.junkDealerNeeded
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -5157,12 +5879,34 @@ int TangibleObjectPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (controlDevice) {
-	_nameHashCode = 0xf501a0c3; //TangibleObject.controlDevice
+	if (insurable) {
+	_nameHashCode = 0xa8aa51; //TangibleObject.insurable
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<ManagedWeakReference<ControlDevicePOD* > >::toBinaryStream(&controlDevice.value(), stream);
+	TypeInfo<bool >::toBinaryStream(&insurable.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (jediRobe) {
+	_nameHashCode = 0x407b9075; //TangibleObject.jediRobe
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&jediRobe.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (unionRing) {
+	_nameHashCode = 0x3bc3bd92; //TangibleObject.unionRing
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&unionRing.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -5246,6 +5990,14 @@ bool TangibleObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32
 			CustomizationVariables _mncustomizationVariables;
 			TypeInfo<CustomizationVariables >::parseFromBinaryStream(&_mncustomizationVariables, stream);
 			customizationVariables = std::move(_mncustomizationVariables);
+		}
+		return true;
+
+	case 0x446e9ce1: //TangibleObject.unmitigatedDamage
+		{
+			int _mnunmitigatedDamage;
+			TypeInfo<int >::parseFromBinaryStream(&_mnunmitigatedDamage, stream);
+			unmitigatedDamage = std::move(_mnunmitigatedDamage);
 		}
 		return true;
 
@@ -5337,6 +6089,14 @@ bool TangibleObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
+	case 0x2673c744: //TangibleObject.craftersID
+		{
+			unsigned long long _mncraftersID;
+			TypeInfo<unsigned long long >::parseFromBinaryStream(&_mncraftersID, stream);
+			craftersID = std::move(_mncraftersID);
+		}
+		return true;
+
 	case 0xa090b45c: //TangibleObject.junkDealerNeeded
 		{
 			int _mnjunkDealerNeeded;
@@ -5401,11 +6161,27 @@ bool TangibleObjectPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
-	case 0xf501a0c3: //TangibleObject.controlDevice
+	case 0xa8aa51: //TangibleObject.insurable
 		{
-			ManagedWeakReference<ControlDevicePOD* > _mncontrolDevice;
-			TypeInfo<ManagedWeakReference<ControlDevicePOD* > >::parseFromBinaryStream(&_mncontrolDevice, stream);
-			controlDevice = std::move(_mncontrolDevice);
+			bool _mninsurable;
+			TypeInfo<bool >::parseFromBinaryStream(&_mninsurable, stream);
+			insurable = std::move(_mninsurable);
+		}
+		return true;
+
+	case 0x407b9075: //TangibleObject.jediRobe
+		{
+			bool _mnjediRobe;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnjediRobe, stream);
+			jediRobe = std::move(_mnjediRobe);
+		}
+		return true;
+
+	case 0x3bc3bd92: //TangibleObject.unionRing
+		{
+			bool _mnunionRing;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnunionRing, stream);
+			unionRing = std::move(_mnunionRing);
 		}
 		return true;
 
@@ -5453,6 +6229,8 @@ void TangibleObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<CustomizationVariables >::toBinaryStream(&customizationVariables.value(), stream);
 
+	TypeInfo<int >::toBinaryStream(&unmitigatedDamage.value(), stream);
+
 	TypeInfo<float >::toBinaryStream(&conditionDamage.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&maxCondition.value(), stream);
@@ -5475,6 +6253,8 @@ void TangibleObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<String >::toBinaryStream(&craftersName.value(), stream);
 
+	TypeInfo<unsigned long long >::toBinaryStream(&craftersID.value(), stream);
+
 	TypeInfo<int >::toBinaryStream(&junkDealerNeeded.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&junkValue.value(), stream);
@@ -5491,7 +6271,11 @@ void TangibleObjectPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<ManagedReference<SceneObjectPOD* > >::toBinaryStream(&antiDecayKitObject.value(), stream);
 
-	TypeInfo<ManagedWeakReference<ControlDevicePOD* > >::toBinaryStream(&controlDevice.value(), stream);
+	TypeInfo<bool >::toBinaryStream(&insurable.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&jediRobe.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&unionRing.value(), stream);
 
 
 }

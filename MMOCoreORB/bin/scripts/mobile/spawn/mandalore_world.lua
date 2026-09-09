@@ -3,21 +3,21 @@
 mandalore_world = {
 	mobile = {
 		-- Named NPCs (Bosses)
-		{"MandaloreTheResurrector", 300, -1, -1, -1, 100, 5},
-		{"DarthCaedus", 300, -1, -1, -1, 100, 5},
-		{"TorVizsla", 300, -1, -1, -1, 100, 8},
-		{"ToborroTheHutt", 300, -1, -1, -1, 100, 8},
+		{"mandalore_the_resurrector", 300, -1, -1, -1, 100, 5},
+		{"darth_caedus", 300, -1, -1, -1, 100, 5},
+		{"tor_vizsla", 300, -1, -1, -1, 100, 8},
+		{"toborro_the_hutt", 300, -1, -1, -1, 100, 8},
 		
 		-- Clan members
-		{"TaungWarrior", 300, -1, -1, -1, 100, 15},
-		{"DextonClanHunter", 300, -1, -1, -1, 100, 18},
-		{"BralorClanMercenary", 300, -1, -1, -1, 100, 18},
-		{"VizslaLoyalist", 300, -1, -1, -1, 100, 18},
-		{"PykeSyndicateCriminal", 300, -1, -1, -1, 100, 18},
+		{"taung_warrior", 300, -1, -1, -1, 100, 15},
+		{"dexton_clan_hunter", 300, -1, -1, -1, 100, 18},
+		{"bralor_clan_mercenary", 300, -1, -1, -1, 100, 18},
+		{"vizsla_loyalist", 300, -1, -1, -1, 100, 18},
+		{"pyke_syndicate_criminal", 300, -1, -1, -1, 100, 18},
 		
 		-- Combat units
 		{"deathwatch_sbd", 300, -1, -1, -1, 100, 15},
-		{"DarthCaedusFollower", 300, -1, -1, -1, 100, 15},
+		{"darth_caedus_follower", 300, -1, -1, -1, 100, 15},
 		
 		-- Creatures
 		{"narglatch_bruiser", 300, -1, -1, -1, 100, 20},

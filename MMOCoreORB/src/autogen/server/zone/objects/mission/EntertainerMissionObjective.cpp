@@ -14,7 +14,7 @@
  *	EntertainerMissionObjectiveStub
  */
 
-enum {RPC_FINALIZE__ = 1470878905,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__,RPC_SETISENTERTAINING__BOOL_,RPC_CLEARLOCATIONACTIVEAREAANDOBSERVERS__,RPC_NOTIFYOBSERVEREVENT__MISSIONOBSERVER_INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_STARTCOMPLETETASK__,};
+enum {RPC_FINALIZE__ = 1470878905,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__,RPC_SETISENTERTAINING__BOOL_,RPC_CLEARLOCATIONACTIVEAREAANDOBSERVERS__,RPC_NOTIFYOBSERVEREVENT__MISSIONOBSERVER_INT_OBSERVABLE_MANAGEDOBJECT_LONG_,RPC_STARTCOMPLETETASK__};
 
 EntertainerMissionObjective::EntertainerMissionObjective(MissionObject* mission) : MissionObjective(DummyConstructorParameter::instance()) {
 	EntertainerMissionObjectiveImplementation* _implementation = new EntertainerMissionObjectiveImplementation(mission);
@@ -147,16 +147,6 @@ void EntertainerMissionObjective::startCompleteTask() {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->startCompleteTask();
-	}
-}
-
-Vector3 EntertainerMissionObjective::getEndPosition() {
-	EntertainerMissionObjectiveImplementation* _implementation = static_cast<EntertainerMissionObjectiveImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getEndPosition();
 	}
 }
 

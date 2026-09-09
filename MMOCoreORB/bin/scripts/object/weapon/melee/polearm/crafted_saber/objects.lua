@@ -356,6 +356,34 @@ object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5 =
 
 ObjectTemplates:addClientTemplate(object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5, "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen5.iff")
 
+object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen7_exar_kun = SharedWeaponObjectTemplate:new {
+	clientTemplateFileName = "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen7_exar_kun.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen7_exar_kun, "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen7_exar_kun.iff")
+
+local ghostsHighGenerationPolearmSabers = {
+	"sword_lightsaber_polearm_gen6",
+	"sword_lightsaber_polearm_gen6_exar_kun",
+	"sword_lightsaber_polearm_gen6_single_blade",
+	"sword_lightsaber_polearm_pvp_bf_gen6",
+	"sword_lightsaber_polearm_gen7",
+	"sword_lightsaber_polearm_gen7_single_blade",
+	"sword_lightsaber_polearm_pvp_bf_gen7",
+	"sword_lightsaber_polearm_gen8",
+	"sword_lightsaber_polearm_gen8_single_blade",
+	"sword_lightsaber_polearm_gen8exar_kun",
+	"sword_lightsaber_polearm_pvp_bf_gen8",
+}
+
+for _, templateName in ipairs(ghostsHighGenerationPolearmSabers) do
+	local variableName = "object_weapon_melee_polearm_crafted_saber_shared_" .. templateName
+	local templatePath = "object/weapon/melee/polearm/crafted_saber/shared_" .. templateName .. ".iff"
+	local template = SharedWeaponObjectTemplate:new { clientTemplateFileName = templatePath }
+	_G[variableName] = template
+	ObjectTemplates:addClientTemplate(template, templatePath)
+end
+
 object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_s1 = SharedWeaponObjectTemplate:new {
 	clientTemplateFileName = "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_s1.iff"
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
@@ -985,20 +1013,3 @@ object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_s2_gen
 }
 
 ObjectTemplates:addClientTemplate(object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_s2_gen4, "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_s2_gen4.iff")
-
-object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5_exar_kun = SharedWeaponObjectTemplate:new {
-clientTemplateFileName = "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen5_exar_kun.iff"
-}
-
-ObjectTemplates: addClientTemplate(object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5_exar_kun, "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen5_exar_kun.iff")
-
-
-
-
-
-
-object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5_single_blade = SharedWeaponObjectTemplate:new {
-clientTemplateFileName = "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen5_single_blade.iff"
-}
-
-ObjectTemplates: addClientTemplate(object_weapon_melee_polearm_crafted_saber_shared_sword_lightsaber_polearm_gen5_single_blade, "object/weapon/melee/polearm/crafted_saber/shared_sword_lightsaber_polearm_gen5_single_blade.iff")

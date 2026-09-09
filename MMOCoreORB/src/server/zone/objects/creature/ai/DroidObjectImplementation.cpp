@@ -6,12 +6,14 @@
 #include "server/zone/objects/intangible/PetControlDevice.h"
 #include "server/zone/packets/object/ObjectMenuResponse.h"
 #include "server/zone/packets/object/StartNpcConversation.h"
+#include "server/zone/managers/conversation/ConversationManager.h"
 #include "templates/customization/AssetCustomizationManagerTemplate.h"
 #include "server/zone/objects/tangible/tool/CraftingTool.h"
 #include "server/zone/objects/tangible/components/droid/BaseDroidModuleComponent.h"
 #include "server/zone/objects/tangible/components/droid/DroidCraftingModuleDataComponent.h"
 #include "server/zone/objects/tangible/components/droid/DroidPersonalityModuleDataComponent.h"
 #include "server/zone/objects/tangible/components/droid/DroidMaintenanceModuleDataComponent.h"
+#include "server/zone/objects/tangible/components/droid/DroidDataStorageModuleDataComponent.h"
 #include "server/zone/objects/structure/StructureObject.h"
 #include "server/zone/objects/creature/conversation/ConversationObserver.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
@@ -26,7 +28,7 @@ void DroidObjectImplementation::fillAttributeList(AttributeListMessage* msg, Cre
 
 	ManagedReference<ControlDevice*> device = getControlDevice().get();
 
-	if (device != nullptr && device->isASubChildOf(object)) {
+	if (device != nullptr && object != nullptr && device->isASubChildOf(object)) {
 		float percentPower = ((float)power / (float)MAX_POWER) * 100.0;
 		msg->insertAttribute("@obj_attr_n:battery_power", String::valueOf((int)percentPower) + "%");
 
@@ -37,9 +39,11 @@ void DroidObjectImplementation::fillAttributeList(AttributeListMessage* msg, Cre
 		for (int i = 0; i < modules.size(); i++) {
 			auto& module = modules.get(i);
 
-			if (module != nullptr) {
-				module->fillAttributeList(msg, object);
+			if (module == nullptr) {
+				continue;
 			}
+
+			module->fillAttributeList(msg, _this.getReferenceUnsafeStaticCast());
 		}
 	}
 }
@@ -115,7 +119,8 @@ void DroidObjectImplementation::notifyInsertToZone(Zone* zone) {
 
 			for (int i = 0; i< variables.size(); ++i) {
 				String varkey = variables.elementAt(i).getKey();
-				if (varkey.contains("color")) {
+
+				if (varkey != "/private/index_color_0" && varkey.contains("color")) {
 					setCustomizationVariable(varkey, paintCount - 1, true); // Palette values 3,2,1,0 are grey->white
 				}
 			}
@@ -238,7 +243,7 @@ void DroidObjectImplementation::initDroidModules() {
 
 void DroidObjectImplementation::initDroidWeapons() {
 	//Set weapon stats
-	WeaponObject* weapon = getSlottedObject("default_weapon").castTo<WeaponObject*>();
+	WeaponObject* weapon = getDefaultWeapon();
 
 	if (weapon != nullptr) {
 		Locker locker(weapon);
@@ -247,11 +252,14 @@ void DroidObjectImplementation::initDroidWeapons() {
 		weapon->setAttackSpeed(getAttackSpeed());
 	}
 
-	if (readyWeapon != nullptr) {
-		Locker locker(readyWeapon);
-		readyWeapon->setMinDamage(getDamageMin());
-		readyWeapon->setMaxDamage(getDamageMax());
-		readyWeapon->setAttackSpeed(getAttackSpeed());
+	ManagedReference<WeaponObject*> primaryWeap = getPrimaryWeapon();
+
+	if (primaryWeap != nullptr && primaryWeap != weapon) {
+		Locker locker(primaryWeap);
+
+		primaryWeap->setMinDamage(getDamageMin());
+		primaryWeap->setMaxDamage(getDamageMax());
+		primaryWeap->setAttackSpeed(getAttackSpeed());
 	}
 }
 
@@ -266,6 +274,11 @@ CraftingStation* DroidObjectImplementation::getCraftingStation(int type) {
 				CraftingStation* craftingStation = craftingModule->getCraftingStation();
 
 				if (craftingStation != nullptr) {
+					if (craftingStation->getDroidParent().get() == nullptr) {
+						Locker lock(craftingStation);
+						craftingStation->setDroidParent(_this.getReferenceUnsafeStaticCast());
+					}
+
 					// case here to check each type
 					if (craftingModule->validCraftingType(type) || (type == CraftingTool::JEDI && craftingModule->isWeaponDroidGeneric())) {
 						return craftingStation;
@@ -278,7 +291,7 @@ CraftingStation* DroidObjectImplementation::getCraftingStation(int type) {
 	return nullptr;
 }
 
-String DroidObjectImplementation::getPersonalityBase() {
+String DroidObjectImplementation::getPersonalityBase() const {
 	for (int i = 0; i < modules.size(); i++) {
 		auto module = modules.get(i).castTo<DroidPersonalityModuleDataComponent*>();
 
@@ -363,6 +376,18 @@ bool DroidObjectImplementation::isCombatDroid() {
 	// inante comabt ability, regardless of module installed
 	if (getSpecies() == PROBOT || getSpecies() == DZ70)
 		return true;
+
+	return false;
+}
+
+bool DroidObjectImplementation::isBombDroid() {
+	for (int i = 0; i < modules.size(); i++) {
+		auto& module = modules.get(i);
+
+		if (module->isDetonationModule()) {
+			return true;
+		}
+	}
 
 	return false;
 }
@@ -476,7 +501,7 @@ bool DroidObjectImplementation::sendConversationStartTo(SceneObject* player) {
 	broadcastNextPositionUpdate(&current);
 
 	CreatureObject* playerCreature = cast<CreatureObject*>(player);
-	StartNpcConversation* conv = new StartNpcConversation(playerCreature, getObjectID(), "");
+	StartNpcConversation* conv = new StartNpcConversation(playerCreature, getObjectID(), 0, "");
 	player->sendMessage(conv);
 
 	SortedVector<ManagedReference<Observer*> > observers = getObservers(ObserverEventType::STARTCONVERSATION);

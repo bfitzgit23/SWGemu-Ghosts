@@ -340,7 +340,7 @@ private:
 
 	int handleNpcTargetReceivesDamage(ManagedObject* arg1);
 
-	void handlePlayerKilled(ManagedObject* arg1);
+	void handlePlayerKilled(ManagedObject* arg1, unsigned long long destructedID);
 
 public:
 	Vector3 getEndPosition();

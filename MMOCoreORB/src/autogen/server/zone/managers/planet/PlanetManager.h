@@ -53,6 +53,22 @@ namespace zone {
 namespace objects {
 namespace region {
 
+class Region;
+
+class RegionPOD;
+
+} // namespace region
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::region;
+
+namespace server {
+namespace zone {
+namespace objects {
+namespace region {
+
 class CityRegion;
 
 class CityRegionPOD;
@@ -166,6 +182,8 @@ using namespace server::zone;
 
 #include "server/zone/objects/pathfinding/NavArea.h"
 
+#include "server/zone/objects/building/BuildingObject.h"
+
 #include "engine/core/ManagedService.h"
 
 #include "engine/log/Logger.h"
@@ -191,6 +209,12 @@ public:
 
 	PlanetManager(Zone* planet, ZoneProcessServer* srv);
 
+	Vector3 getJtlLaunchLocations();
+
+	void loadRegions();
+
+	void readRegionObject(LuaObject& luaObject);
+
 	void addNavArea(const String& name, NavArea* area);
 
 	NavArea* getNavArea(const String& name);
@@ -201,7 +225,7 @@ public:
 
 	void initialize();
 
-	void loadClientRegions(LuaObject* outposts);
+	void buildCityNavMeshes();
 
 	void loadClientPoiData();
 
@@ -213,7 +237,7 @@ public:
 	 * @param range The maximum range to search within.
 	 * @return Returns a PlanetTravelPoint or NULL if not found in range
 	 */
-	PlanetTravelPoint* getNearestPlanetTravelPoint(SceneObject* object, float range = 16000.0);
+	PlanetTravelPoint* getNearestPlanetTravelPoint(SceneObject* object, float range = 16000.0, bool interplanetaryOnly = false);
 
 	PlanetTravelPoint* getRandomStarport();
 
@@ -223,9 +247,30 @@ public:
 	 * @param range The maximum range to search within.
 	 * @return Returns a PlanetTravelPoint or NULL if not found in range
 	 */
-	PlanetTravelPoint* getNearestPlanetTravelPoint(const Vector3& position, float range = 16000.0);
+	PlanetTravelPoint* getNearestPlanetTravelPoint(const Vector3& position, float range = 16000.0, bool interplanetaryOnly = false);
 
-	bool isSpawningPermittedAt(float x, float y, float margin = 0);
+	/**
+	 * Get a random spawn point on the planet.
+	 * The spawn point will be checked to be a valid spawn point through no spawn areas, water, buildings etc.
+	 * @return Returns a valid spawn point.
+	 */
+	Vector3 getRandomSpawnPoint();
+
+	/**
+	 * Get a spawn point that is "in sight" for the supplied creature.
+	 * The spawn point will be randomly generated in an arc in front of the creature. The creature heading direction willl be the center of the arc.
+	 * The spawn point will be checked to be unobstructed by any buildings and to be a valid spawn point. 10 tries will be made with the minimum distance + 20 m.
+	 * If no suitable spawn point has been foun the minimum distance will be increased with 10 m and 10 new tries will be made. This will continue until the
+	 * maximum distance is reached. If no suitable spawn point has been found after all tries the creature position will be returned.
+	 * @param creature the creature that the spaawn point should be in sight for.
+	 * @param minDistance the minimum spawn point distance from thee creature.
+	 * @param maxDistance the maximum spawn point distance from thee creature.
+	 * @param angle the half angle of the spawn arc.
+	 * @return a spawn position.
+	 */
+	Vector3 getInSightSpawnPoint(CreatureObject* creature, float minDistance, float maxDistance, float angle);
+
+	bool isSpawningPermittedAt(float x, float y, float margin, bool isWorldSpawnArea = false);
 
 	bool isBuildingPermittedAt(float x, float y, SceneObject* objectTryingToBuild = NULL, float margin = 0, bool checkFootprint = true);
 
@@ -234,6 +279,8 @@ public:
 	Reference<SceneObject* > findObjectTooCloseToDecoration(float x, float y, float margin);
 
 	bool isInRangeWithPoi(float x, float y, float range);
+
+	Reference<SceneObject* > findObjectInNoBuildZone(float x, float y, float extraMargin, bool checkFootprint = true);
 
 	bool isInObjectsNoBuildZone(float x, float y, float extraMargin, bool checkFootprint = true);
 
@@ -266,21 +313,33 @@ public:
 
 	TerrainManager* getTerrainManager();
 
-	int getRegionCount();
+	int getCityRegionCount();
 
 	int getNumberOfCities();
 
 	void increaseNumberOfCities();
 
-	CityRegion* getRegion(int index);
+	CityRegion* getCityRegion(int index);
 
-	CityRegion* getRegion(const String& region);
+	CityRegion* getCityRegion(const String& region);
 
-	CityRegion* getRegionAt(float x, float y);
+	CityRegion* getCityRegionAt(float x, float y);
 
-	void addRegion(CityRegion* region);
+	Region* getRegion(int index);
+
+	Region* getRegion(const String& region);
+
+	Region* getRegionAt(float x, float y);
+
+	void addCityRegion(CityRegion* region);
+
+	void addRegion(Region* region);
+
+	void dropCityRegion(const String& region);
 
 	void dropRegion(const String& region);
+
+	bool hasCityRegion(const String& name);
 
 	bool hasRegion(const String& name);
 
@@ -289,6 +348,8 @@ public:
 	void removePerformanceLocation(SceneObject* obj);
 
 	MissionTargetMap* getPerformanceLocations();
+
+	String getJtlZoneName();
 
 	/**
 	 * Checks to see if the point is an existing planet travel point.
@@ -350,6 +411,8 @@ public:
 
 	int destroyAllEventObjects();
 
+	BuildingObject* getSkippedTutorialBuilding() const;
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -386,6 +449,10 @@ protected:
 	TravelFare travelFares;
 
 	Reference<PlanetTravelPointList* > planetTravelPointList;
+
+	String jtlZoneName;
+
+	Vector3 jtlLaunchLocation;
 
 	int shuttleportAwayTime;
 
@@ -427,10 +494,14 @@ protected:
 
 	SynchronizedSortedVector<unsigned long long> spawnedEventStructures;
 
+	ManagedReference<BuildingObject* > skippedTutorial;
+
 public:
 	PlanetManagerImplementation(Zone* planet, ZoneProcessServer* srv);
 
 	PlanetManagerImplementation(DummyConstructorParameter* param);
+
+	Vector3 getJtlLaunchLocations();
 
 private:
 	Reference<SceneObject* > loadSnapshotObject(WorldSnapshotNode* node, WorldSnapshotIff* wsiff, int& totalObjects);
@@ -441,9 +512,17 @@ private:
 
 	void loadPlanetObjects(LuaObject* lua);
 
+public:
+	void loadRegions();
+
+	void readRegionObject(LuaObject& luaObject);
+
+private:
 	void loadBadgeAreas(LuaObject* lua);
 
-	void loadNavAreas(LuaObject* lua);
+	void buildRegionNavAreas();
+
+	void loadJTLData(LuaObject* lua);
 
 public:
 	void addNavArea(const String& name, NavArea* area);
@@ -462,7 +541,7 @@ public:
 
 	virtual void initialize();
 
-	void loadClientRegions(LuaObject* outposts);
+	void buildCityNavMeshes();
 
 	void loadClientPoiData();
 
@@ -474,7 +553,7 @@ public:
 	 * @param range The maximum range to search within.
 	 * @return Returns a PlanetTravelPoint or NULL if not found in range
 	 */
-	PlanetTravelPoint* getNearestPlanetTravelPoint(SceneObject* object, float range = 16000.0);
+	PlanetTravelPoint* getNearestPlanetTravelPoint(SceneObject* object, float range = 16000.0, bool interplanetaryOnly = false);
 
 	PlanetTravelPoint* getRandomStarport();
 
@@ -484,9 +563,34 @@ public:
 	 * @param range The maximum range to search within.
 	 * @return Returns a PlanetTravelPoint or NULL if not found in range
 	 */
-	PlanetTravelPoint* getNearestPlanetTravelPoint(const Vector3& position, float range = 16000.0);
+	PlanetTravelPoint* getNearestPlanetTravelPoint(const Vector3& position, float range = 16000.0, bool interplanetaryOnly = false);
 
-	bool isSpawningPermittedAt(float x, float y, float margin = 0);
+	/**
+	 * Get a random spawn point on the planet.
+	 * The spawn point will be checked to be a valid spawn point through no spawn areas, water, buildings etc.
+	 * @return Returns a valid spawn point.
+	 */
+	Vector3 getRandomSpawnPoint();
+
+	/**
+	 * Get a spawn point that is "in sight" for the supplied creature.
+	 * The spawn point will be randomly generated in an arc in front of the creature. The creature heading direction willl be the center of the arc.
+	 * The spawn point will be checked to be unobstructed by any buildings and to be a valid spawn point. 10 tries will be made with the minimum distance + 20 m.
+	 * If no suitable spawn point has been foun the minimum distance will be increased with 10 m and 10 new tries will be made. This will continue until the
+	 * maximum distance is reached. If no suitable spawn point has been found after all tries the creature position will be returned.
+	 * @param creature the creature that the spaawn point should be in sight for.
+	 * @param minDistance the minimum spawn point distance from thee creature.
+	 * @param maxDistance the maximum spawn point distance from thee creature.
+	 * @param angle the half angle of the spawn arc.
+	 * @return a spawn position.
+	 */
+	Vector3 getInSightSpawnPoint(CreatureObject* creature, float minDistance, float maxDistance, float angle);
+
+private:
+	bool noInterferingObjects(CreatureObject* creature, const Vector3& position);
+
+public:
+	bool isSpawningPermittedAt(float x, float y, float margin, bool isWorldSpawnArea = false);
 
 	bool isBuildingPermittedAt(float x, float y, SceneObject* objectTryingToBuild = NULL, float margin = 0, bool checkFootprint = true);
 
@@ -495,6 +599,8 @@ public:
 	Reference<SceneObject* > findObjectTooCloseToDecoration(float x, float y, float margin);
 
 	bool isInRangeWithPoi(float x, float y, float range);
+
+	Reference<SceneObject* > findObjectInNoBuildZone(float x, float y, float extraMargin, bool checkFootprint = true);
 
 	bool isInObjectsNoBuildZone(float x, float y, float extraMargin, bool checkFootprint = true);
 
@@ -527,21 +633,33 @@ public:
 
 	TerrainManager* getTerrainManager();
 
-	int getRegionCount();
+	int getCityRegionCount();
 
 	int getNumberOfCities();
 
 	void increaseNumberOfCities();
 
-	CityRegion* getRegion(int index);
+	CityRegion* getCityRegion(int index);
 
-	CityRegion* getRegion(const String& region);
+	CityRegion* getCityRegion(const String& region);
 
-	CityRegion* getRegionAt(float x, float y);
+	CityRegion* getCityRegionAt(float x, float y);
 
-	void addRegion(CityRegion* region);
+	Region* getRegion(int index);
+
+	Region* getRegion(const String& region);
+
+	Region* getRegionAt(float x, float y);
+
+	void addCityRegion(CityRegion* region);
+
+	void addRegion(Region* region);
+
+	void dropCityRegion(const String& region);
 
 	void dropRegion(const String& region);
+
+	bool hasCityRegion(const String& name);
 
 	bool hasRegion(const String& name);
 
@@ -550,6 +668,8 @@ public:
 	void removePerformanceLocation(SceneObject* obj);
 
 	MissionTargetMap* getPerformanceLocations();
+
+	String getJtlZoneName();
 
 	/**
 	 * Checks to see if the point is an existing planet travel point.
@@ -610,6 +730,8 @@ public:
 	int destroyEventObject(unsigned long long objectID);
 
 	int destroyAllEventObjects();
+
+	BuildingObject* getSkippedTutorialBuilding() const;
 
 	WeakReference<PlanetManager*> _this;
 
@@ -668,7 +790,7 @@ public:
 
 	void start();
 
-	bool isSpawningPermittedAt(float x, float y, float margin);
+	bool isSpawningPermittedAt(float x, float y, float margin, bool isWorldSpawnArea);
 
 	bool isBuildingPermittedAt(float x, float y, SceneObject* objectTryingToBuild, float margin, bool checkFootprint);
 
@@ -677,6 +799,8 @@ public:
 	Reference<SceneObject* > findObjectTooCloseToDecoration(float x, float y, float margin);
 
 	bool isInRangeWithPoi(float x, float y, float range);
+
+	Reference<SceneObject* > findObjectInNoBuildZone(float x, float y, float extraMargin, bool checkFootprint);
 
 	bool isInObjectsNoBuildZone(float x, float y, float extraMargin, bool checkFootprint);
 
@@ -694,27 +818,41 @@ public:
 
 	GCWManager* getGCWManager();
 
-	int getRegionCount();
+	int getCityRegionCount();
 
 	int getNumberOfCities();
 
 	void increaseNumberOfCities();
 
-	CityRegion* getRegion(int index);
+	CityRegion* getCityRegion(int index);
 
-	CityRegion* getRegion(const String& region);
+	CityRegion* getCityRegion(const String& region);
 
-	CityRegion* getRegionAt(float x, float y);
+	CityRegion* getCityRegionAt(float x, float y);
 
-	void addRegion(CityRegion* region);
+	Region* getRegion(int index);
+
+	Region* getRegion(const String& region);
+
+	Region* getRegionAt(float x, float y);
+
+	void addCityRegion(CityRegion* region);
+
+	void addRegion(Region* region);
+
+	void dropCityRegion(const String& region);
 
 	void dropRegion(const String& region);
+
+	bool hasCityRegion(const String& name);
 
 	bool hasRegion(const String& name);
 
 	void addPerformanceLocation(SceneObject* obj);
 
 	void removePerformanceLocation(SceneObject* obj);
+
+	String getJtlZoneName();
 
 	bool isExistingPlanetTravelPoint(const String& pointName);
 
@@ -741,6 +879,8 @@ public:
 	int destroyEventObject(unsigned long long objectID);
 
 	int destroyAllEventObjects();
+
+	BuildingObject* getSkippedTutorialBuilding() const;
 
 };
 

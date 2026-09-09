@@ -24,6 +24,36 @@
 #endif
 #include "engine/util/json_utils.h"
 
+namespace server {
+namespace zone {
+namespace packets {
+namespace scene {
+
+class AttributeListMessage;
+
+} // namespace scene
+} // namespace packets
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::packets::scene;
+
+namespace server {
+namespace zone {
+namespace objects {
+namespace creature {
+
+class CreatureObject;
+
+class CreatureObjectPOD;
+
+} // namespace creature
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::creature;
+
 #include "templates/SharedObjectTemplate.h"
 
 #include "server/zone/objects/scene/variables/ContainerPermissions.h"
@@ -49,15 +79,25 @@ public:
 	 */
 	void loadTemplateData(SharedObjectTemplate* templateData);
 
-	bool isIntangibleObject();
-
 	void sendBaselinesTo(SceneObject* player);
+
+	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	void updateStatus(int newStatus, bool notifyClient = true);
 
+	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+
+	void setDataSize(float dataSize, bool notifyClient);
+
+	void setItemIdentifier(const String& itemName, bool notifyClient);
+
 	unsigned int getStatus() const;
 
-	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+	float getDataSize() const;
+
+	String getItemIdentifier() const;
+
+	bool isIntangibleObject();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -88,6 +128,10 @@ class IntangibleObjectImplementation : public SceneObjectImplementation {
 protected:
 	unsigned int status;
 
+	float datapadSize;
+
+	String itemIdentifier;
+
 public:
 	IntangibleObjectImplementation();
 
@@ -105,15 +149,25 @@ public:
 	 */
 	void loadTemplateData(SharedObjectTemplate* templateData);
 
-	bool isIntangibleObject();
-
 	void sendBaselinesTo(SceneObject* player);
+
+	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
 
 	void updateStatus(int newStatus, bool notifyClient = true);
 
+	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+
+	void setDataSize(float dataSize, bool notifyClient);
+
+	void setItemIdentifier(const String& itemName, bool notifyClient);
+
 	unsigned int getStatus() const;
 
-	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+	float getDataSize() const;
+
+	String getItemIdentifier() const;
+
+	bool isIntangibleObject();
 
 	WeakReference<IntangibleObject*> _this;
 
@@ -161,15 +215,23 @@ public:
 
 	void initializeTransientMembers();
 
-	bool isIntangibleObject();
-
 	void sendBaselinesTo(SceneObject* player);
 
 	void updateStatus(int newStatus, bool notifyClient);
 
+	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+
+	void setDataSize(float dataSize, bool notifyClient);
+
+	void setItemIdentifier(const String& itemName, bool notifyClient);
+
 	unsigned int getStatus() const;
 
-	void setCustomObjectName(const UnicodeString& name, bool notifyClient);
+	float getDataSize() const;
+
+	String getItemIdentifier() const;
+
+	bool isIntangibleObject();
 
 };
 
@@ -207,6 +269,10 @@ namespace intangible {
 class IntangibleObjectPOD : public SceneObjectPOD {
 public:
 	Optional<unsigned int> status;
+
+	Optional<float> datapadSize;
+
+	Optional<String> itemIdentifier;
 
 	String _className;
 	IntangibleObjectPOD();

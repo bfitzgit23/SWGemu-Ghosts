@@ -10,8 +10,6 @@
 
 #include "server/zone/packets/scene/AttributeListMessage.h"
 
-#include "server/zone/objects/tangible/components/droid/BaseDroidModuleComponent.h"
-
 #include "server/zone/Zone.h"
 
 #include "server/zone/objects/scene/SceneObject.h"
@@ -20,7 +18,7 @@
  *	DroidObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 2655348246,RPC_ISDROIDOBJECT__,RPC_GETMAXIMUMHAM__,RPC_SETMAXIMUMHAM__INT_,RPC_SETATTACKSPEED__FLOAT_,RPC_ISCAMOUFLAGED__CREATUREOBJECT_,RPC_HASPOWER__,RPC_USEPOWER__INT_,RPC_RUNMODULEPOWERDRAIN__,RPC_REFRESHPAINT__,RPC_RECHARGEFROMBATTERY__CREATUREOBJECT_,RPC_RECHARGEFROMDROID__,RPC_RECHARGEOTHERDROID__DROIDOBJECT_,RPC_HANDLELOWPOWER__,RPC_ISPOWERDROID__,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETELECTRICITY__,RPC_GETSTUN__,RPC_GETBLAST__,RPC_GETHEAT__,RPC_GETCOLD__,RPC_GETACID__,RPC_GETLIGHTSABER__,RPC_GETCHANCEHIT__,RPC_ISMERCHANTBARKER__,RPC_GETPERSONALITYSTF__,RPC_ISADVANCEDMODEL__,RPC_ISCOMBATDROID__,RPC_ISTRAPDROID__,RPC_HASSTORAGE__,RPC_ISMAINTENANCEDROID__,RPC_SENDCONVERSATIONSTARTTO__SCENEOBJECT_,RPC_HASREACTIONCHATMESSAGES__,RPC_GETREACTIONSTF__,RPC_GETHAMMAXIMUM__,RPC_GETHAMBASE__,RPC_GETDAMAGEMIN__,RPC_GETDAMAGEMAX__,RPC_GETATTACKSPEED__,RPC_CALCULATEATTACKSPEED__INT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 2655348246,RPC_ISDROIDOBJECT__,RPC_GETMAXIMUMHAM__,RPC_SETMAXIMUMHAM__INT_,RPC_SETATTACKSPEED__FLOAT_,RPC_HASPOWER__,RPC_USEPOWER__INT_,RPC_RUNMODULEPOWERDRAIN__,RPC_REFRESHPAINT__,RPC_RECHARGEFROMBATTERY__CREATUREOBJECT_,RPC_RECHARGEFROMDROID__,RPC_RECHARGEOTHERDROID__DROIDOBJECT_,RPC_HANDLELOWPOWER__,RPC_ISPOWERDROID__,RPC_GETPERSONALITYBASE__,RPC_GETKINETIC__,RPC_GETENERGY__,RPC_GETELECTRICITY__,RPC_GETSTUN__,RPC_GETBLAST__,RPC_GETHEAT__,RPC_GETCOLD__,RPC_GETACID__,RPC_GETLIGHTSABER__,RPC_GETCHANCEHIT__,RPC_ISMERCHANTBARKER__,RPC_GETPERSONALITYSTF__,RPC_ISADVANCEDMODEL__,RPC_ISCOMBATDROID__,RPC_ISBOMBDROID__,RPC_ISTRAPDROID__,RPC_HASSTORAGE__,RPC_ISMAINTENANCEDROID__,RPC_SENDCONVERSATIONSTARTTO__SCENEOBJECT_,RPC_HASREACTIONCHATMESSAGES__,RPC_GETREACTIONSTF__,RPC_GETHAMMAXIMUM__,RPC_GETHAMBASE__,RPC_GETDAMAGEMIN__,RPC_GETDAMAGEMAX__,RPC_GETATTACKSPEED__,RPC_CALCULATEATTACKSPEED__INT_};
 
 DroidObject::DroidObject() : AiAgent(DummyConstructorParameter::instance()) {
 	DroidObjectImplementation* _implementation = new DroidObjectImplementation();
@@ -149,21 +147,6 @@ void DroidObject::setAttackSpeed(float f) {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->setAttackSpeed(f);
-	}
-}
-
-bool DroidObject::isCamouflaged(CreatureObject* target) {
-	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_ISCAMOUFLAGED__CREATUREOBJECT_);
-		method.addObjectParameter(target);
-
-		return method.executeWithBooleanReturn();
-	} else {
-		return _implementation->isCamouflaged(target);
 	}
 }
 
@@ -335,11 +318,17 @@ CraftingStation* DroidObject::getCraftingStation(int type) {
 	}
 }
 
-String DroidObject::getPersonalityBase() {
-	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementation());
+String DroidObject::getPersonalityBase() const {
+	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
 
+		DistributedMethod method(this, RPC_GETPERSONALITYBASE__);
+
+		String _return_getPersonalityBase;
+		method.executeWithAsciiReturn(_return_getPersonalityBase);
+		return _return_getPersonalityBase;
 	} else {
 		return _implementation->getPersonalityBase();
 	}
@@ -672,6 +661,20 @@ bool DroidObject::isCombatDroid() {
 	}
 }
 
+bool DroidObject::isBombDroid() {
+	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ISBOMBDROID__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->isBombDroid();
+	}
+}
+
 bool DroidObject::isTrapDroid() {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -764,7 +767,7 @@ bool DroidObject::hasReactionChatMessages() {
 	}
 }
 
-String DroidObject::getReactionStf() {
+String DroidObject::getReactionStf() const {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -780,7 +783,7 @@ String DroidObject::getReactionStf() {
 	}
 }
 
-int DroidObject::getHamMaximum() {
+int DroidObject::getHamMaximum() const {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -794,7 +797,7 @@ int DroidObject::getHamMaximum() {
 	}
 }
 
-int DroidObject::getHamBase() {
+int DroidObject::getHamBase() const {
 	DroidObjectImplementation* _implementation = static_cast<DroidObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1187,11 +1190,6 @@ void DroidObjectImplementation::setAttackSpeed(float f) {
 	attackSpeed = f;
 }
 
-bool DroidObjectImplementation::isCamouflaged(CreatureObject* target) {
-	// server/zone/objects/creature/ai/DroidObject.idl():  		return isAggressiveTo(target) && isConcealed(target);
-	return isAggressiveTo(target) && isConcealed(target);
-}
-
 bool DroidObjectImplementation::hasPower() {
 	// server/zone/objects/creature/ai/DroidObject.idl():  		return power > 0;
 	return power > 0;
@@ -1387,7 +1385,7 @@ bool DroidObjectImplementation::hasReactionChatMessages() {
 	return getPersonalityBase() != "" || AiAgentImplementation::hasReactionChatMessages();
 }
 
-String DroidObjectImplementation::getReactionStf() {
+String DroidObjectImplementation::getReactionStf() const{
 	// server/zone/objects/creature/ai/DroidObject.idl():  		return 
 	if (getPersonalityBase() != "")	// server/zone/objects/creature/ai/DroidObject.idl():  			return getPersonalityBase();
 	return getPersonalityBase();
@@ -1395,12 +1393,12 @@ String DroidObjectImplementation::getReactionStf() {
 	return AiAgentImplementation::getReactionStf();
 }
 
-int DroidObjectImplementation::getHamMaximum() {
+int DroidObjectImplementation::getHamMaximum() const{
 	// server/zone/objects/creature/ai/DroidObject.idl():  		return maximumHam;
 	return maximumHam;
 }
 
-int DroidObjectImplementation::getHamBase() {
+int DroidObjectImplementation::getHamBase() const{
 	// server/zone/objects/creature/ai/DroidObject.idl():  		return maximumHam;
 	return maximumHam;
 }
@@ -1489,14 +1487,6 @@ void DroidObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_ISCAMOUFLAGED__CREATUREOBJECT_:
-		{
-			CreatureObject* target = static_cast<CreatureObject*>(inv->getObjectParameter());
-			
-			bool _m_res = isCamouflaged(target);
-			resp->insertBoolean(_m_res);
-		}
-		break;
 	case RPC_HASPOWER__:
 		{
 			
@@ -1561,6 +1551,13 @@ void DroidObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 			bool _m_res = isPowerDroid();
 			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_GETPERSONALITYBASE__:
+		{
+			
+			String _m_res = getPersonalityBase();
+			resp->insertAscii(_m_res);
 		}
 		break;
 	case RPC_GETKINETIC__:
@@ -1658,6 +1655,13 @@ void DroidObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		{
 			
 			bool _m_res = isCombatDroid();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_ISBOMBDROID__:
+		{
+			
+			bool _m_res = isBombDroid();
 			resp->insertBoolean(_m_res);
 		}
 		break;
@@ -1772,10 +1776,6 @@ void DroidObjectAdapter::setAttackSpeed(float f) {
 	(static_cast<DroidObject*>(stub))->setAttackSpeed(f);
 }
 
-bool DroidObjectAdapter::isCamouflaged(CreatureObject* target) {
-	return (static_cast<DroidObject*>(stub))->isCamouflaged(target);
-}
-
 bool DroidObjectAdapter::hasPower() {
 	return (static_cast<DroidObject*>(stub))->hasPower();
 }
@@ -1810,6 +1810,10 @@ void DroidObjectAdapter::handleLowPower() {
 
 bool DroidObjectAdapter::isPowerDroid() {
 	return (static_cast<DroidObject*>(stub))->isPowerDroid();
+}
+
+String DroidObjectAdapter::getPersonalityBase() const {
+	return (static_cast<DroidObject*>(stub))->getPersonalityBase();
 }
 
 float DroidObjectAdapter::getKinetic() {
@@ -1868,6 +1872,10 @@ bool DroidObjectAdapter::isCombatDroid() {
 	return (static_cast<DroidObject*>(stub))->isCombatDroid();
 }
 
+bool DroidObjectAdapter::isBombDroid() {
+	return (static_cast<DroidObject*>(stub))->isBombDroid();
+}
+
 bool DroidObjectAdapter::isTrapDroid() {
 	return (static_cast<DroidObject*>(stub))->isTrapDroid();
 }
@@ -1888,15 +1896,15 @@ bool DroidObjectAdapter::hasReactionChatMessages() {
 	return (static_cast<DroidObject*>(stub))->hasReactionChatMessages();
 }
 
-String DroidObjectAdapter::getReactionStf() {
+String DroidObjectAdapter::getReactionStf() const {
 	return (static_cast<DroidObject*>(stub))->getReactionStf();
 }
 
-int DroidObjectAdapter::getHamMaximum() {
+int DroidObjectAdapter::getHamMaximum() const {
 	return (static_cast<DroidObject*>(stub))->getHamMaximum();
 }
 
-int DroidObjectAdapter::getHamBase() {
+int DroidObjectAdapter::getHamBase() const {
 	return (static_cast<DroidObject*>(stub))->getHamBase();
 }
 

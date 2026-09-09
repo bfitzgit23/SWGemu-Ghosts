@@ -40,31 +40,116 @@
 --this exception also makes it possible to release a modified version
 --which carries forward this exception.
 
---Determines how often exceptional and legendary items can drop.
-yellowChance = 10 -- 1 in 1,000
-exceptionalChance = 20 --1 in 100,000
-legendaryChance = 50 --1 in 1,000,000
---yellowChance = 50 --1 in 50 for testing
---exceptionalChance = 100 --1 in 100 for testing
---legendaryChance = 1000 --1 in 1000 for testing
+--Chance divisor for attribute bonus modifiers
+levelChance = 10
 
---Determines how much of an increase in the base stats will be applied to the object.
-yellowModifier = 1.5
-exceptionalModifier = 2.5
-legendaryModifier = 5.0
+--Chance dividend for attribute bonus modifiers
+baseChance = 10
+yellowChance = 25
+exceptionalChance = 50
+legendaryChance = 75
+
+--Multiplier values for bonus modifiers
+baseModifier = 1
+yellowModifier = 2
+exceptionalModifier = 8
+legendaryModifier = 9
 
 --The chance for random skill mods to be on looted weapons/wearables
-skillModChance = 50 -- 1 in 500
+skillModChance = 25 -- 1 in 1000
+
+-- Dot Distribution chance by DOT type. They must equate to 1.0
+poisonDotChance = 0.50
+diseaseDotChance = 0.35
+fireDotChance = 0.15
+
+-- Dot Distribution chance by HAM type. They must equate to 1.0
+healthDotChance = 0.50
+actionDotChance = 0.35
+mindDotChance = 0.15
 
 -- Value ranges for random dots on looted weapons (chance is set individually on the loot items)
 randomDotAttribute = {0, 8} -- See CreatureAttributes.h in src for numbers.
-randomDotStrength = {10, 200} -- Set for disease. Fire will be x1.5, poison x2.
-randomDotDuration = {30, 240} -- Set for poison. Fire will be x1.5, disease x5.
-randomDotPotency = {1, 100}
-randomDotUses = {250, 9999}
+randomDotStrength = {10, 100} -- poison x1.5, disease x0.5
+randomDotDuration = {30, 120} -- disease x4.0, fire x1.5
+randomDotPotency = {1, 50}
+randomDotUses = {250, 4999}
 
 -- Modifier applied to min/max junk values found in loot item lua
 junkValueModifier = 5;
+
+lootableArmorAttachmentStatMods = {
+	"aim",
+	"alert",
+	"berserk",
+	"blind_defense",
+	"block",
+	"camouflage",
+	"carbine_accuracy",
+	"carbine_aim",
+	"carbine_hit_while_moving",
+	"carbine_speed",
+	"combat_bleeding_defense",
+	"counterattack",
+	"cover",
+	"dizzy_defense",
+	"dodge",
+	"droid_find_chance",
+	"droid_find_speed",
+	"droid_track_chance",
+	"droid_track_speed",
+	"foraging",
+	"group_slope_move",
+	"heavy_rifle_lightning_accuracy",
+	"heavy_rifle_lightning_speed",
+	"heavyweapon_accuracy",
+	"heavyweapon_speed",
+	"intimidate",
+	"intimidate_defense",
+	"keep_creature",
+	"knockdown_defense",
+	"melee_defense",
+	"onehandmelee_accuracy",
+	"onehandmelee_damage",
+	"onehandmelee_speed",
+	"pistol_accuracy",
+	"pistol_aim",
+	"pistol_hit_while_moving",
+	"pistol_speed",
+	"pistol_accuracy_while_standing",
+	"polearm_accuracy",
+	"polearm_speed",
+	"posture_change_down_defense",
+	"posture_change_up_defense",
+	"ranged_defense",
+	"rescue",
+	"resistance_bleeding",
+	"resistance_disease",
+	"resistance_fire",
+	"resistance_poison",
+	"rifle_accuracy",
+	"rifle_aim",
+	"rifle_hit_while_moving",
+	"rifle_speed",
+	"slope_move",
+	"steadyaim",
+	"stored_pets",
+	"stun_defense",
+	"take_cover",
+	"tame_aggro",
+	"tame_bonus",
+	"tame_non_aggro",
+	"thrown_accuracy",
+	"thrown_speed",
+	"twohandmelee_accuracy",
+	"twohandmelee_damage",
+	"twohandmelee_speed",
+	"unarmed_accuracy",
+	"unarmed_damage",
+	"unarmed_speed",
+	"volley",
+	"warcry"
+}
 
 lootableArmorAttachmentStatMods = {
 --"force_experimentation",
@@ -971,7 +1056,7 @@ lootableHeavyWeaponStatMods = {
 jediCrystalStats = {
 	lightsaber_module_force_crystal = {
 		minDamage = 0,
-		maxDamage = 250,
+		maxDamage = 200,
 		minHitpoints = 700,
 		maxHitpoints = 1400,
 		minHealthSac = 0,

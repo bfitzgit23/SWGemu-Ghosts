@@ -1,0 +1,2 @@
+-- Compatibility alias for older includes that still reference `mobile/hutta`.
+-- The live Nal Hutta mobile loader is already included from `mobile/serverobjects.lua`.

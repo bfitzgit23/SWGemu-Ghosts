@@ -12,7 +12,7 @@
  *	ControlDeviceStub
  */
 
-enum {RPC_UPDATETODATABASEALLOBJECTS__BOOL_ = 1886410738,RPC_STOREOBJECT__CREATUREOBJECT_BOOL_,RPC_GENERATEOBJECT__CREATUREOBJECT_,RPC_CALLOBJECT__CREATUREOBJECT_,RPC_CANBETRADEDTO__CREATUREOBJECT_CREATUREOBJECT_INT_,RPC_SETCONTROLLEDOBJECT__TANGIBLEOBJECT_,RPC_GETCONTROLLEDOBJECT__,RPC_ISCONTROLDEVICE__};
+enum {RPC_UPDATETODATABASEALLOBJECTS__BOOL_ = 1886410738,RPC_STOREOBJECT__CREATUREOBJECT_BOOL_,RPC_GENERATEOBJECT__CREATUREOBJECT_,RPC_CALLOBJECT__CREATUREOBJECT_BOOL_,RPC_CANBETRADEDTO__CREATUREOBJECT_CREATUREOBJECT_INT_,RPC_SETCONTROLLEDOBJECT__TANGIBLEOBJECT_,RPC_GETCONTROLLEDOBJECT__,RPC_ISCONTROLDEVICE__};
 
 ControlDevice::ControlDevice() : IntangibleObject(DummyConstructorParameter::instance()) {
 	ControlDeviceImplementation* _implementation = new ControlDeviceImplementation();
@@ -76,18 +76,19 @@ void ControlDevice::generateObject(CreatureObject* player) {
 	}
 }
 
-void ControlDevice::callObject(CreatureObject* player) {
+void ControlDevice::callObject(CreatureObject* player, bool initialCall) {
 	ControlDeviceImplementation* _implementation = static_cast<ControlDeviceImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CALLOBJECT__CREATUREOBJECT_);
+		DistributedMethod method(this, RPC_CALLOBJECT__CREATUREOBJECT_BOOL_);
 		method.addObjectParameter(player);
+		method.addBooleanParameter(initialCall);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->callObject(player);
+		_implementation->callObject(player, initialCall);
 	}
 }
 
@@ -330,7 +331,7 @@ void ControlDeviceImplementation::updateToDatabaseAllObjects(bool startTask) {
 	// server/zone/objects/intangible/ControlDevice.idl():  		TangibleObject obj = controlledObject;
 	ManagedReference<TangibleObject* > obj = controlledObject;
 	// server/zone/objects/intangible/ControlDevice.idl():  		}
-	if (obj != NULL){
+	if (obj){
 	// server/zone/objects/intangible/ControlDevice.idl():  			obj.updateToDatabaseWithoutChildren();
 	obj->updateToDatabaseWithoutChildren();
 	// server/zone/objects/intangible/ControlDevice.idl():  			super.updateToDatabaseAllObjects(startTask);
@@ -353,7 +354,7 @@ void ControlDeviceImplementation::generateObject(CreatureObject* player) {
 	Logger::error("called generateObject on an abstract method");
 }
 
-void ControlDeviceImplementation::callObject(CreatureObject* player) {
+void ControlDeviceImplementation::callObject(CreatureObject* player, bool initialCall) {
 	// server/zone/objects/intangible/ControlDevice.idl():  		Logger.error("called callObject on an abstract method");
 	Logger::error("called callObject on an abstract method");
 }
@@ -422,11 +423,12 @@ void ControlDeviceAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_CALLOBJECT__CREATUREOBJECT_:
+	case RPC_CALLOBJECT__CREATUREOBJECT_BOOL_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			bool initialCall = inv->getBooleanParameter();
 			
-			callObject(player);
+			callObject(player, initialCall);
 			
 		}
 		break;
@@ -479,8 +481,8 @@ void ControlDeviceAdapter::generateObject(CreatureObject* player) {
 	(static_cast<ControlDevice*>(stub))->generateObject(player);
 }
 
-void ControlDeviceAdapter::callObject(CreatureObject* player) {
-	(static_cast<ControlDevice*>(stub))->callObject(player);
+void ControlDeviceAdapter::callObject(CreatureObject* player, bool initialCall) {
+	(static_cast<ControlDevice*>(stub))->callObject(player, initialCall);
 }
 
 bool ControlDeviceAdapter::canBeTradedTo(CreatureObject* player, CreatureObject* receiver, int numberInTrade) {
@@ -638,18 +640,23 @@ int LuaControlDevice::generateObject(lua_State *L) {
 int LuaControlDevice::callObject(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
-	if (lua_isuserdata(L, -1)) {
-		if (parameterCount == 1) {
-			CreatureObject* player = static_cast<CreatureObject*>(lua_touserdata(L, -1));
+	if (lua_isboolean(L, -1)) {
+		if (lua_isuserdata(L, -2)) {
+			if (parameterCount == 2) {
+				CreatureObject* player = static_cast<CreatureObject*>(lua_touserdata(L, -2));
+				bool initialCall = lua_toboolean(L, -1);
 
-			realObject->callObject(player);
+				realObject->callObject(player, initialCall);
 
-			return 0;
+				return 0;
+			} else {
+				throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ControlDevice:callObject(userdata, boolean)'");
+			}
 		} else {
-			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'ControlDevice:callObject(userdata)'");
+			throw LuaCallbackException(L, "invalid argument at 1 for lua method 'ControlDevice:callObject(userdata, boolean)'");
 		}
 	} else {
-		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ControlDevice:callObject(userdata)'");
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'ControlDevice:callObject(userdata, boolean)'");
 	}
 	return 0;
 }

@@ -40,9 +40,15 @@ class SceneObjectPOD;
 
 using namespace server::zone::objects::scene;
 
+#include "engine/log/LoggerHelperStream.h"
+
 #include "server/zone/objects/scene/variables/StringId.h"
 
 #include "engine/core/ManagedObject.h"
+
+#include "engine/log/Logger.h"
+
+#include "system/lang/Time.h"
 
 namespace server {
 namespace zone {
@@ -65,7 +71,11 @@ public:
 
 	static const int RETRIEVED = 6;
 
+	static const int DELETED = 99;
+
 	AuctionItem(unsigned long long objectid);
+
+	void initializeTransientMembers();
 
 	/**
 	 * Compares object ids of this object with obj
@@ -77,6 +87,8 @@ public:
 	int compareTo(AuctionItem* obj);
 
 	void notifyLoadFromDatabase();
+
+	bool destroyAuctionItemFromDatabase(bool checkAuctionMap = true, bool deleteAuctionedObject = false);
 
 	void setVendorID(unsigned long long val);
 
@@ -119,6 +131,8 @@ public:
 	bool isAuction() const;
 
 	int getStatus() const;
+
+	String getStatusString() const;
 
 	unsigned long long getVendorID() const;
 
@@ -174,6 +188,16 @@ public:
 
 	bool isUpdated() const;
 
+	unsigned long long getObjectID() const;
+
+	LoggerHelperStream error() const;
+
+	LoggerHelperStream info(int forced = false) const;
+
+	LoggerHelperStream debug() const;
+
+	Time* getLastUpdateTime();
+
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
 
@@ -201,6 +225,8 @@ namespace auction {
 
 class AuctionItemImplementation : public ManagedObjectImplementation {
 protected:
+	Time lastUpdateTime;
+
 	unsigned long long vendorID;
 
 	unsigned long long auctionedItemObjectID;
@@ -260,9 +286,13 @@ public:
 
 	static const int RETRIEVED = 6;
 
+	static const int DELETED = 99;
+
 	AuctionItemImplementation(unsigned long long objectid);
 
 	AuctionItemImplementation(DummyConstructorParameter* param);
+
+	void initializeTransientMembers();
 
 	/**
 	 * Compares object ids of this object with obj
@@ -274,6 +304,8 @@ public:
 	int compareTo(AuctionItem* obj);
 
 	void notifyLoadFromDatabase();
+
+	bool destroyAuctionItemFromDatabase(bool checkAuctionMap = true, bool deleteAuctionedObject = false);
 
 	void setVendorID(unsigned long long val);
 
@@ -317,6 +349,8 @@ public:
 
 	int getStatus() const;
 
+	String getStatusString() const;
+
 	unsigned long long getVendorID() const;
 
 	unsigned long long getAuctionedItemObjectID() const;
@@ -349,6 +383,10 @@ public:
 
 	int getAuctionOptions() const;
 
+private:
+	Logger* getLogger() const;
+
+public:
 	bool isPremiumAuction() const;
 
 	bool isOwner(SceneObject* player) const;
@@ -370,6 +408,16 @@ public:
 	void setUpdated(bool val);
 
 	bool isUpdated() const;
+
+	unsigned long long getObjectID() const;
+
+	LoggerHelperStream error() const;
+
+	LoggerHelperStream info(int forced = false) const;
+
+	LoggerHelperStream debug() const;
+
+	Time* getLastUpdateTime();
 
 	WeakReference<AuctionItem*> _this;
 
@@ -415,9 +463,13 @@ public:
 
 	void invokeMethod(sys::uint32 methid, DistributedMethod* method);
 
+	void initializeTransientMembers();
+
 	int compareTo(AuctionItem* obj);
 
 	void notifyLoadFromDatabase();
+
+	bool destroyAuctionItemFromDatabase(bool checkAuctionMap, bool deleteAuctionedObject);
 
 	void setVendorID(unsigned long long val);
 
@@ -460,6 +512,8 @@ public:
 	bool isAuction() const;
 
 	int getStatus() const;
+
+	String getStatusString() const;
 
 	unsigned long long getVendorID() const;
 
@@ -515,6 +569,8 @@ public:
 
 	bool isUpdated() const;
 
+	unsigned long long getObjectID() const;
+
 };
 
 class AuctionItemHelper : public DistributedObjectClassHelper, public Singleton<AuctionItemHelper> {
@@ -550,6 +606,8 @@ namespace auction {
 
 class AuctionItemPOD : public ManagedObjectPOD {
 public:
+	Optional<Time> lastUpdateTime;
+
 	Optional<unsigned long long> vendorID;
 
 	Optional<unsigned long long> auctionedItemObjectID;

@@ -4,7 +4,7 @@ exarKunEntryWay = ScreenPlay:new {
   screenplayName = "exarKunEntryWay"
 }
 
-registerScreenPlay("exarKunEntryWay", true)
+registerScreenPlay("exarKunEntryWay", false) -- Disabled: entrance terminal object template is absent.
 
 function exarKunEntryWay:start()
   if (isZoneEnabled("yavin4")) then

@@ -20,6 +20,8 @@ public:
 	BuffList();
 	BuffList(const BuffList& bf);
 
+	BuffList& operator=(const BuffList& bf);
+
 	void sendTo(CreatureObject* player) const;
 	void sendDestroyTo(CreatureObject* player) const;
 
@@ -56,10 +58,7 @@ public:
 	Buff* getBuffByCRC(uint32 buffcrc) const {
 		Locker guard(&mutex);
 
-		if (buffList.contains(buffcrc))
-			return buffList.get(buffcrc);
-
-		return nullptr;
+		return buffList.get(buffcrc);
 	}
 
 	long long getModifierByName(const String& skillMod) const {
@@ -83,6 +82,20 @@ public:
 
 	inline bool hasSpice() const {
 		return spiceActive;
+	}
+
+	bool hasTrapBuff() const {
+		Locker guard(&mutex);
+
+		for (int i = 0; i < buffList.size(); i++) {
+			Buff* temp = buffList.get(i);
+
+			if (temp->isTrapBuff()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 };
 

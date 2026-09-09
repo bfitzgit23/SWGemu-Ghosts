@@ -82,6 +82,8 @@ using namespace server::zone::packets::object;
 
 #include "server/zone/packets/scene/AttributeListMessage.h"
 
+#include "templates/tangible/PowerupTemplate.h"
+
 #include "server/zone/objects/tangible/TangibleObject.h"
 
 namespace server {
@@ -92,6 +94,10 @@ namespace powerup {
 
 class PowerupObject : public TangibleObject {
 public:
+	static const float MAXPRIMARY;
+
+	static const float MAXSECONDARY;
+
 	PowerupObject();
 
 	bool isRanged() const;
@@ -122,6 +128,8 @@ public:
 	 * @param object player creature to which the message is sent
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
+
+	void addSecondaryStat(CraftingValues* values, PowerupTemplate* pupTemplate);
 
 	void updateCraftingValues(CraftingValues* values, bool firstUpdate);
 
@@ -156,9 +164,9 @@ namespace powerup {
 
 class PowerupObjectImplementation : public TangibleObjectImplementation {
 public:
-	static float MAXPRIMARY;
+	static const float MAXPRIMARY;
 
-	static float MAXSECONDARY;
+	static const float MAXSECONDARY;
 
 protected:
 	PowerupStatVector modifiers;
@@ -200,6 +208,8 @@ public:
 	 * @param object player creature to which the message is sent
 	 */
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* object);
+
+	void addSecondaryStat(CraftingValues* values, PowerupTemplate* pupTemplate);
 
 	void updateCraftingValues(CraftingValues* values, bool firstUpdate);
 
@@ -315,6 +325,7 @@ public:
 	int getPowerupStat(lua_State *L);
 	int addPowerupStat(lua_State *L);
 	int fillAttributeList(lua_State *L);
+	int addSecondaryStat(lua_State *L);
 	int updateCraftingValues(lua_State *L);
 	int fillWeaponAttributeList(lua_State *L);
 

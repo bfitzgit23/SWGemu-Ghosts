@@ -314,7 +314,7 @@ int MigrateStatsSessionImplementation::cancelSession() {
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  		CreatureObject creo = creature;
 	ManagedReference<CreatureObject* > creo = creature;
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  		return 
-	if (creo != NULL){
+	if (creo){
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  			creo.dropActiveSession(SessionFacadeType.MIGRATESTATS);
 	creo->dropActiveSession(SessionFacadeType::MIGRATESTATS);
 }
@@ -348,7 +348,7 @@ void MigrateStatsSessionImplementation::migrateStats() {
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  		CreatureObject creo = creature;
 	ManagedReference<CreatureObject* > creo = creature;
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  		for 
-	if (creo == NULL){
+	if (!creo){
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  			cancelSession();
 	cancelSession();
 	// server/zone/objects/player/sessions/MigrateStatsSession.idl():  			return;

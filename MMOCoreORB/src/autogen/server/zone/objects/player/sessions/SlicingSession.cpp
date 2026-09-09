@@ -379,18 +379,6 @@ bool SlicingSessionImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<bool >::parseFromBinaryStream(&usedClamp, stream);
 		return true;
 
-	case 0x9bb3e24: //SlicingSession.sliceOption
-		TypeInfo<byte >::parseFromBinaryStream(&sliceOption, stream);
-		return true;
-
-	case 0xcb4cfef7: //SlicingSession.selectSlice
-		TypeInfo<bool >::parseFromBinaryStream(&selectSlice, stream);
-		return true;
-
-	case 0xc107cefa: //SlicingSession.firstRun
-		TypeInfo<bool >::parseFromBinaryStream(&firstRun, stream);
-		return true;
-
 	case 0x331f459c: //SlicingSession.baseSlice
 		TypeInfo<bool >::parseFromBinaryStream(&baseSlice, stream);
 		return true;
@@ -489,33 +477,6 @@ int SlicingSessionImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
-	_nameHashCode = 0x9bb3e24; //SlicingSession.sliceOption
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<byte >::toBinaryStream(&sliceOption, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xcb4cfef7; //SlicingSession.selectSlice
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&selectSlice, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0xc107cefa; //SlicingSession.firstRun
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&firstRun, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
 	_nameHashCode = 0x331f459c; //SlicingSession.baseSlice
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
@@ -557,12 +518,6 @@ void SlicingSessionImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["usedNode"] = usedNode;
 
 	thisObject["usedClamp"] = usedClamp;
-
-	thisObject["sliceOption"] = sliceOption;
-
-	thisObject["selectSlice"] = selectSlice;
-
-	thisObject["firstRun"] = firstRun;
 
 	thisObject["baseSlice"] = baseSlice;
 
@@ -891,15 +846,6 @@ void SlicingSessionPOD::writeJSON(nlohmann::json& j) {
 	if (usedClamp)
 		thisObject["usedClamp"] = usedClamp.value();
 
-	if (sliceOption)
-		thisObject["sliceOption"] = sliceOption.value();
-
-	if (selectSlice)
-		thisObject["selectSlice"] = selectSlice.value();
-
-	if (firstRun)
-		thisObject["firstRun"] = firstRun.value();
-
 	if (baseSlice)
 		thisObject["baseSlice"] = baseSlice.value();
 
@@ -1011,39 +957,6 @@ int SlicingSessionPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
-	if (sliceOption) {
-	_nameHashCode = 0x9bb3e24; //SlicingSession.sliceOption
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<byte >::toBinaryStream(&sliceOption.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (selectSlice) {
-	_nameHashCode = 0xcb4cfef7; //SlicingSession.selectSlice
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&selectSlice.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (firstRun) {
-	_nameHashCode = 0xc107cefa; //SlicingSession.firstRun
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<bool >::toBinaryStream(&firstRun.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
 	if (baseSlice) {
 	_nameHashCode = 0x331f459c; //SlicingSession.baseSlice
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1139,30 +1052,6 @@ bool SlicingSessionPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
-	case 0x9bb3e24: //SlicingSession.sliceOption
-		{
-			byte _mnsliceOption;
-			TypeInfo<byte >::parseFromBinaryStream(&_mnsliceOption, stream);
-			sliceOption = std::move(_mnsliceOption);
-		}
-		return true;
-
-	case 0xcb4cfef7: //SlicingSession.selectSlice
-		{
-			bool _mnselectSlice;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnselectSlice, stream);
-			selectSlice = std::move(_mnselectSlice);
-		}
-		return true;
-
-	case 0xc107cefa: //SlicingSession.firstRun
-		{
-			bool _mnfirstRun;
-			TypeInfo<bool >::parseFromBinaryStream(&_mnfirstRun, stream);
-			firstRun = std::move(_mnfirstRun);
-		}
-		return true;
-
 	case 0x331f459c: //SlicingSession.baseSlice
 		{
 			bool _mnbaseSlice;
@@ -1220,12 +1109,6 @@ void SlicingSessionPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<bool >::toBinaryStream(&usedNode.value(), stream);
 
 	TypeInfo<bool >::toBinaryStream(&usedClamp.value(), stream);
-
-	TypeInfo<byte >::toBinaryStream(&sliceOption.value(), stream);
-
-	TypeInfo<bool >::toBinaryStream(&selectSlice.value(), stream);
-
-	TypeInfo<bool >::toBinaryStream(&firstRun.value(), stream);
 
 	TypeInfo<bool >::toBinaryStream(&baseSlice.value(), stream);
 

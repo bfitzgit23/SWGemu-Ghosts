@@ -40,6 +40,22 @@ class CreatureObjectPOD;
 
 using namespace server::zone::objects::creature;
 
+namespace server {
+namespace zone {
+namespace objects {
+namespace scene {
+
+class SceneObject;
+
+class SceneObjectPOD;
+
+} // namespace scene
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::scene;
+
 #include "server/zone/objects/creature/conversation/ConversationTemplate.h"
 
 #include "server/zone/objects/creature/conversation/ConversationScreen.h"
@@ -68,9 +84,9 @@ public:
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
 
-	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, CreatureObject* conversingNPC);
+	ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, SceneObject* conversingNPC);
 
-	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
+	ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
 
 	ConversationTemplate* getConversationTemplate();
 
@@ -121,7 +137,7 @@ private:
 	ConversationScreen* getConversationScreen(const String& screenName);
 
 protected:
-	virtual void createConversationSession(CreatureObject* conversingPlayer, CreatureObject* npc);
+	virtual void createConversationSession(CreatureObject* conversingPlayer, SceneObject* conversingNPC);
 
 	void registerScreenHandler(const String& screenId, ScreenHandler* screenHandler);
 
@@ -130,15 +146,15 @@ protected:
 	void createPositionObserver(CreatureObject* player);
 
 private:
-	void cancelConversationSession(CreatureObject* conversingPlayer, CreatureObject* npc, bool forceClose = false);
+	void cancelConversationSession(CreatureObject* conversingPlayer, SceneObject* conversingNPC, bool forceClose = false);
 
 public:
-	virtual ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, CreatureObject* conversingNPC);
+	virtual ConversationScreen* getNextConversationScreen(CreatureObject* conversingPlayer, int selectedOption, SceneObject* conversingNPC);
 
-	virtual ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
+	virtual ConversationScreen* runScreenHandlers(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen);
 
 private:
-	void sendConversationScreenToPlayer(CreatureObject* conversingPlayer, CreatureObject* conversingNPC, ConversationScreen* conversationScreen);
+	void sendConversationScreenToPlayer(CreatureObject* conversingPlayer, SceneObject* conversingNPC, ConversationScreen* conversationScreen);
 
 public:
 	ConversationTemplate* getConversationTemplate();

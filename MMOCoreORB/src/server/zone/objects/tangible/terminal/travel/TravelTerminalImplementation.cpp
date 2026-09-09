@@ -7,6 +7,8 @@
  */
 
 #include "server/zone/objects/tangible/terminal/travel/TravelTerminal.h"
+#include "server/zone/Zone.h"
+#include "server/zone/managers/planet/PlanetManager.h"
 #include "server/zone/packets/player/EnterTicketPurchaseModeMessage.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 
@@ -14,22 +16,26 @@ int TravelTerminalImplementation::handleObjectMenuSelect(CreatureObject* player,
 	if (selectedID != 20)
 		return 0;
 
-	Reference<PlanetTravelPoint*> ptp = getPlanetTravelPoint();
+	Reference<PlanetTravelPoint*> ptp = nullptr;
+	ManagedReference<SceneObject*> rootParent = getRootParent();
+	Zone* zone = getZone();
+
+	// A travel terminal inside a starport must resolve to an interplanetary
+	// travel point. Using the unrestricted nearest-point lookup here can bind
+	// the terminal to a nearby shuttleport after shuttle positions are updated.
+	if (zone != nullptr && rootParent != nullptr && rootParent->getObjectTemplate() != nullptr) {
+		const String& rootTemplate = rootParent->getObjectTemplate()->getFullTemplateString();
+
+		if (rootTemplate.contains("starport"))
+			ptp = zone->getPlanetManager()->getNearestPlanetTravelPoint(_this.getReferenceUnsafeStaticCast(), 16000.f, true);
+	}
+
+	if (ptp == nullptr)
+		ptp = getPlanetTravelPoint();
 
 	// Complain loudly if we failed to find a travel point for this terminal
 	if(ptp == nullptr) {
-		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + ") Could not determine related PlanetTravelPoint");
-		player->sendSystemMessage("@travel:terminal_error"); // Terminal is not properly configured.
-		return 0;
-	}
-
-	// Validate that the travel point has valid zone and name
-	String pointZone = ptp->getPointZone();
-	String pointName = ptp->getPointName();
-
-	if (pointZone.isEmpty() || pointName.isEmpty()) {
-		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + ") PlanetTravelPoint has empty zone or name: zone='" + pointZone + "' name='" + pointName + "'");
-		player->sendSystemMessage("@travel:terminal_error"); // Terminal is not properly configured.
+		error("TravelTerminalImplementation::handleObjectMenuSelect(" + String::valueOf(getObjectID()) + " Could not determine related PlanetTravelPoint");
 		return 0;
 	}
 

@@ -117,7 +117,33 @@ protected:
 
 	float durability;
 
+	float autoRepairPower;
+
+	float combatRating;
+
+	float detonationRating;
+
+	float harvestBonus;
+
+	float stimpackSpeed;
+
+	float stimpackCapacity;
+
+	float trapBonus;
+
 	bool surveyDroid;
+
+	bool autoRepairDroid;
+
+	bool combatDroid;
+
+	bool detonationDroid;
+
+	bool harvestDroid;
+
+	bool stimpackDroid;
+
+	bool trapDroid;
 
 public:
 	DroidComponentImplementation();
@@ -226,7 +252,33 @@ public:
 
 	Optional<float> durability;
 
+	Optional<float> autoRepairPower;
+
+	Optional<float> combatRating;
+
+	Optional<float> detonationRating;
+
+	Optional<float> harvestBonus;
+
+	Optional<float> stimpackSpeed;
+
+	Optional<float> stimpackCapacity;
+
+	Optional<float> trapBonus;
+
 	Optional<bool> surveyDroid;
+
+	Optional<bool> autoRepairDroid;
+
+	Optional<bool> combatDroid;
+
+	Optional<bool> detonationDroid;
+
+	Optional<bool> harvestDroid;
+
+	Optional<bool> stimpackDroid;
+
+	Optional<bool> trapDroid;
 
 	String _className;
 	DroidComponentPOD();

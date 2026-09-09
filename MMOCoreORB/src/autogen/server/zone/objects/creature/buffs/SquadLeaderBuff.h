@@ -106,7 +106,7 @@ public:
 
 	bool qualifiesForActivation();
 
-	bool checkRenew();
+	bool checkRenew() const;
 
 	void addObservers();
 
@@ -166,7 +166,7 @@ public:
 
 	bool qualifiesForActivation();
 
-	bool checkRenew();
+	bool checkRenew() const;
 
 	void addObservers();
 
@@ -226,7 +226,7 @@ public:
 
 	bool qualifiesForActivation();
 
-	bool checkRenew();
+	bool checkRenew() const;
 
 	void addObservers();
 
@@ -269,10 +269,6 @@ namespace buffs {
 
 class SquadLeaderBuffPOD : public BuffPOD {
 public:
-	Optional<ManagedReference<SquadLeaderBuffObserverPOD* >> playerObserver;
-
-	Optional<ManagedReference<SquadLeaderBuffObserverPOD* >> leaderObserver;
-
 	Optional<ManagedReference<CreatureObjectPOD* >> player;
 
 	Optional<ManagedReference<CreatureObjectPOD* >> leader;

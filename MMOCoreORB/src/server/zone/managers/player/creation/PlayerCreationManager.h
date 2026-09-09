@@ -9,6 +9,10 @@
 #include "engine/lua/Lua.h"
 #include "server/zone/packets/charcreation/ClientCreateCharacterCallback.h"
 
+#include "ProfessionDefaultsInfo.h"
+#include "RacialCreationData.h"
+#include "HairStyleInfo.h"
+
 namespace server {
 namespace zone {
 	class ZoneServer;
@@ -69,9 +73,6 @@ class PlayerCreationManager : public Singleton<PlayerCreationManager>, public Lo
 	int skillPoints;
 
 	bool freeGodMode;
-
-	mutable HashTable<uint32, Time> lastCreatedCharacter;
-	mutable Mutex charCountMutex;
 
 	void loadLuaConfig();
 	void loadRacialCreationData();

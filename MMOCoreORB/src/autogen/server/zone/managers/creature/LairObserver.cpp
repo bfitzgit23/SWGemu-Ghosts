@@ -4,15 +4,15 @@
 
 #include "LairObserver.h"
 
-#include "server/zone/objects/tangible/TangibleObject.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
 
-#include "server/zone/managers/creature/HealLairObserverEvent.h"
+#include "server/zone/objects/tangible/LairObject.h"
 
 /*
  *	LairObserverStub
  */
 
-enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 2459089691,RPC_NOTIFYDESTRUCTION__TANGIBLEOBJECT_TANGIBLEOBJECT_INT_,RPC_CHECKFORNEWSPAWNS__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_HEALLAIR__TANGIBLEOBJECT_TANGIBLEOBJECT_,RPC_CHECKFORHEAL__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_DOAGGRO__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_ISLAIROBSERVER__,RPC_GETLIVINGCREATURECOUNT__,RPC_GETMOBTYPE__,RPC_GETSPAWNNUMBER__};
+enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 2459089691,RPC_NOTIFYDESTRUCTION__TANGIBLEOBJECT_TANGIBLEOBJECT_INT_,RPC_CHECKFORHEAL__TANGIBLEOBJECT_BOOL_,RPC_CHECKFORNEWSPAWNS__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_CHECKFORBOSSSPAWN__TANGIBLEOBJECT_TANGIBLEOBJECT_,RPC_CHECKRESPAWN__LAIROBJECT_TANGIBLEOBJECT_,RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_,RPC_DOAGGRO__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_,RPC_REPOPULATELAIR__TANGIBLEOBJECT_,RPC_ISLAIROBSERVER__,RPC_GETLIVINGCREATURECOUNT__,RPC_GETMOBTYPE__,RPC_GETSPAWNNUMBER__};
 
 LairObserver::LairObserver() : SpawnObserver(DummyConstructorParameter::instance()) {
 	LairObserverImplementation* _implementation = new LairObserverImplementation();
@@ -65,6 +65,22 @@ void LairObserver::notifyDestruction(TangibleObject* lair, TangibleObject* attac
 	}
 }
 
+void LairObserver::checkForHeal(TangibleObject* lair, bool forceNewUpdate) {
+	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_CHECKFORHEAL__TANGIBLEOBJECT_BOOL_);
+		method.addObjectParameter(lair);
+		method.addBooleanParameter(forceNewUpdate);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->checkForHeal(lair, forceNewUpdate);
+	}
+}
+
 bool LairObserver::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
 	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -83,36 +99,56 @@ bool LairObserver::checkForNewSpawns(TangibleObject* lair, TangibleObject* attac
 	}
 }
 
-void LairObserver::healLair(TangibleObject* lair, TangibleObject* attacker) {
+void LairObserver::checkForBossSpawn(TangibleObject* lair, TangibleObject* attacker) {
 	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_HEALLAIR__TANGIBLEOBJECT_TANGIBLEOBJECT_);
+		DistributedMethod method(this, RPC_CHECKFORBOSSSPAWN__TANGIBLEOBJECT_TANGIBLEOBJECT_);
 		method.addObjectParameter(lair);
 		method.addObjectParameter(attacker);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->healLair(lair, attacker);
+		assert((lair == NULL) || lair->isLockedByCurrentThread());
+		_implementation->checkForBossSpawn(lair, attacker);
 	}
 }
 
-void LairObserver::checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate) {
+void LairObserver::checkRespawn(LairObject* lair, TangibleObject* attacker) {
 	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_CHECKFORHEAL__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_);
+		DistributedMethod method(this, RPC_CHECKRESPAWN__LAIROBJECT_TANGIBLEOBJECT_);
 		method.addObjectParameter(lair);
 		method.addObjectParameter(attacker);
-		method.addBooleanParameter(forceNewUpdate);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->checkForHeal(lair, attacker, forceNewUpdate);
+		assert((lair == NULL) || lair->isLockedByCurrentThread());
+		_implementation->checkRespawn(lair, attacker);
+	}
+}
+
+void LairObserver::spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive) {
+	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_);
+		method.addObjectParameter(lair);
+		method.addSignedIntParameter(spawnNumber);
+		method.addAsciiParameter(templateToSpawn);
+		method.addBooleanParameter(spawnPassive);
+
+		method.executeWithVoidReturn();
+	} else {
+		assert((lair == NULL) || lair->isLockedByCurrentThread());
+		_implementation->spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
 	}
 }
 
@@ -130,6 +166,21 @@ void LairObserver::doAggro(TangibleObject* lair, TangibleObject* attacker, bool 
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->doAggro(lair, attacker, allAttack);
+	}
+}
+
+void LairObserver::repopulateLair(TangibleObject* lair) {
+	LairObserverImplementation* _implementation = static_cast<LairObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REPOPULATELAIR__TANGIBLEOBJECT_);
+		method.addObjectParameter(lair);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->repopulateLair(lair);
 	}
 }
 
@@ -303,6 +354,14 @@ bool LairObserverImplementation::readObjectMember(ObjectInputStream* stream, con
 		TypeInfo<AtomicInteger >::parseFromBinaryStream(&spawnNumber, stream);
 		return true;
 
+	case 0x778475de: //LairObserver.bossesSpawned
+		TypeInfo<AtomicInteger >::parseFromBinaryStream(&bossesSpawned, stream);
+		return true;
+
+	case 0xf984da33: //LairObserver.scoutCreatureId
+		TypeInfo<unsigned long long >::parseFromBinaryStream(&scoutCreatureId, stream);
+		return true;
+
 	}
 
 	return false;
@@ -330,6 +389,24 @@ int LairObserverImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0x778475de; //LairObserver.bossesSpawned
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<AtomicInteger >::toBinaryStream(&bossesSpawned, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xf984da33; //LairObserver.scoutCreatureId
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned long long >::toBinaryStream(&scoutCreatureId, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -338,10 +415,12 @@ LairObserverImplementation::LairObserverImplementation() : SpawnObserverImplemen
 	_initializeImplementation();
 	// server/zone/managers/creature/LairObserver.idl():  		Logger.setLoggingName("LairObserver");
 	Logger::setLoggingName("LairObserver");
-	// server/zone/managers/creature/LairObserver.idl():  		healLairEvent = null;
-	healLairEvent = NULL;
 	// server/zone/managers/creature/LairObserver.idl():  		spawnNumber.set(0);
 	(&spawnNumber)->set(0);
+	// server/zone/managers/creature/LairObserver.idl():  		bossesSpawned.set(0);
+	(&bossesSpawned)->set(0);
+	// server/zone/managers/creature/LairObserver.idl():  		scoutCreatureId = 0;
+	scoutCreatureId = 0;
 }
 
 bool LairObserverImplementation::isLairObserver() {
@@ -395,6 +474,15 @@ void LairObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
+	case RPC_CHECKFORHEAL__TANGIBLEOBJECT_BOOL_:
+		{
+			TangibleObject* lair = static_cast<TangibleObject*>(inv->getObjectParameter());
+			bool forceNewUpdate = inv->getBooleanParameter();
+			
+			checkForHeal(lair, forceNewUpdate);
+			
+		}
+		break;
 	case RPC_CHECKFORNEWSPAWNS__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_:
 		{
 			TangibleObject* lair = static_cast<TangibleObject*>(inv->getObjectParameter());
@@ -405,22 +493,32 @@ void LairObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertBoolean(_m_res);
 		}
 		break;
-	case RPC_HEALLAIR__TANGIBLEOBJECT_TANGIBLEOBJECT_:
+	case RPC_CHECKFORBOSSSPAWN__TANGIBLEOBJECT_TANGIBLEOBJECT_:
 		{
 			TangibleObject* lair = static_cast<TangibleObject*>(inv->getObjectParameter());
 			TangibleObject* attacker = static_cast<TangibleObject*>(inv->getObjectParameter());
 			
-			healLair(lair, attacker);
+			checkForBossSpawn(lair, attacker);
 			
 		}
 		break;
-	case RPC_CHECKFORHEAL__TANGIBLEOBJECT_TANGIBLEOBJECT_BOOL_:
+	case RPC_CHECKRESPAWN__LAIROBJECT_TANGIBLEOBJECT_:
 		{
-			TangibleObject* lair = static_cast<TangibleObject*>(inv->getObjectParameter());
+			LairObject* lair = static_cast<LairObject*>(inv->getObjectParameter());
 			TangibleObject* attacker = static_cast<TangibleObject*>(inv->getObjectParameter());
-			bool forceNewUpdate = inv->getBooleanParameter();
 			
-			checkForHeal(lair, attacker, forceNewUpdate);
+			checkRespawn(lair, attacker);
+			
+		}
+		break;
+	case RPC_SPAWNLAIRMOBILE__LAIROBJECT_INT_STRING_BOOL_:
+		{
+			LairObject* lair = static_cast<LairObject*>(inv->getObjectParameter());
+			int spawnNumber = inv->getSignedIntParameter();
+			 String templateToSpawn; inv->getAsciiParameter(templateToSpawn);
+			bool spawnPassive = inv->getBooleanParameter();
+			
+			spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
 			
 		}
 		break;
@@ -431,6 +529,14 @@ void LairObserverAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			bool allAttack = inv->getBooleanParameter();
 			
 			doAggro(lair, attacker, allAttack);
+			
+		}
+		break;
+	case RPC_REPOPULATELAIR__TANGIBLEOBJECT_:
+		{
+			TangibleObject* lair = static_cast<TangibleObject*>(inv->getObjectParameter());
+			
+			repopulateLair(lair);
 			
 		}
 		break;
@@ -475,20 +581,32 @@ void LairObserverAdapter::notifyDestruction(TangibleObject* lair, TangibleObject
 	(static_cast<LairObserver*>(stub))->notifyDestruction(lair, attacker, condition);
 }
 
+void LairObserverAdapter::checkForHeal(TangibleObject* lair, bool forceNewUpdate) {
+	(static_cast<LairObserver*>(stub))->checkForHeal(lair, forceNewUpdate);
+}
+
 bool LairObserverAdapter::checkForNewSpawns(TangibleObject* lair, TangibleObject* attacker, bool forceSpawn) {
 	return (static_cast<LairObserver*>(stub))->checkForNewSpawns(lair, attacker, forceSpawn);
 }
 
-void LairObserverAdapter::healLair(TangibleObject* lair, TangibleObject* attacker) {
-	(static_cast<LairObserver*>(stub))->healLair(lair, attacker);
+void LairObserverAdapter::checkForBossSpawn(TangibleObject* lair, TangibleObject* attacker) {
+	(static_cast<LairObserver*>(stub))->checkForBossSpawn(lair, attacker);
 }
 
-void LairObserverAdapter::checkForHeal(TangibleObject* lair, TangibleObject* attacker, bool forceNewUpdate) {
-	(static_cast<LairObserver*>(stub))->checkForHeal(lair, attacker, forceNewUpdate);
+void LairObserverAdapter::checkRespawn(LairObject* lair, TangibleObject* attacker) {
+	(static_cast<LairObserver*>(stub))->checkRespawn(lair, attacker);
+}
+
+void LairObserverAdapter::spawnLairMobile(LairObject* lair, int spawnNumber, const String& templateToSpawn, bool spawnPassive) {
+	(static_cast<LairObserver*>(stub))->spawnLairMobile(lair, spawnNumber, templateToSpawn, spawnPassive);
 }
 
 void LairObserverAdapter::doAggro(TangibleObject* lair, TangibleObject* attacker, bool allAttack) {
 	(static_cast<LairObserver*>(stub))->doAggro(lair, attacker, allAttack);
+}
+
+void LairObserverAdapter::repopulateLair(TangibleObject* lair) {
+	(static_cast<LairObserver*>(stub))->repopulateLair(lair);
 }
 
 bool LairObserverAdapter::isLairObserver() {
@@ -582,6 +700,28 @@ int LairObserverPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (bossesSpawned) {
+	_nameHashCode = 0x778475de; //LairObserver.bossesSpawned
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<AtomicInteger >::toBinaryStream(&bossesSpawned.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
+	if (scoutCreatureId) {
+	_nameHashCode = 0xf984da33; //LairObserver.scoutCreatureId
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<unsigned long long >::toBinaryStream(&scoutCreatureId.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -596,6 +736,22 @@ bool LairObserverPOD::readObjectMember(ObjectInputStream* stream, const uint32& 
 			AtomicInteger _mnspawnNumber;
 			TypeInfo<AtomicInteger >::parseFromBinaryStream(&_mnspawnNumber, stream);
 			spawnNumber = std::move(_mnspawnNumber);
+		}
+		return true;
+
+	case 0x778475de: //LairObserver.bossesSpawned
+		{
+			AtomicInteger _mnbossesSpawned;
+			TypeInfo<AtomicInteger >::parseFromBinaryStream(&_mnbossesSpawned, stream);
+			bossesSpawned = std::move(_mnbossesSpawned);
+		}
+		return true;
+
+	case 0xf984da33: //LairObserver.scoutCreatureId
+		{
+			unsigned long long _mnscoutCreatureId;
+			TypeInfo<unsigned long long >::parseFromBinaryStream(&_mnscoutCreatureId, stream);
+			scoutCreatureId = std::move(_mnscoutCreatureId);
 		}
 		return true;
 
@@ -626,6 +782,10 @@ void LairObserverPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	SpawnObserverPOD::writeObjectCompact(stream);
 
 	TypeInfo<AtomicInteger >::toBinaryStream(&spawnNumber.value(), stream);
+
+	TypeInfo<AtomicInteger >::toBinaryStream(&bossesSpawned.value(), stream);
+
+	TypeInfo<unsigned long long >::toBinaryStream(&scoutCreatureId.value(), stream);
 
 
 }

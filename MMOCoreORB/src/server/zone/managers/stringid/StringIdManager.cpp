@@ -11,6 +11,7 @@
 #include "templates/manager/TemplateManager.h"
 #include "templates/manager/DataArchiveStore.h"
 #include "tre3/TreeArchive.h"
+#include "conf/ConfigManager.h"
 
 void StringIdManager::populateDatabase() {
 	int count = 0;
@@ -18,7 +19,7 @@ void StringIdManager::populateDatabase() {
 	TemplateManager::instance();
 	const TreeArchive* treeArchive = DataArchiveStore::instance()->getTreeArchive();
 
-	Vector<String>* files = treeArchive->getFilesAndSubDirectoryFiles("string/en");
+	UniqueReference<Vector<String>*> files(treeArchive->getFilesAndSubDirectoryFiles("string/en"));
 
 	if (files == nullptr) {
 		error("string/en directory missing");
@@ -30,30 +31,29 @@ void StringIdManager::populateDatabase() {
 	for (int i = 0; i < files->size(); ++i) {
 		String file = files->get(i);
 
-		ObjectInputStream* stream = TemplateManager::instance()->openTreFile(files->get(i));
+		UniqueReference<ObjectInputStream*> stream(TemplateManager::instance()->openTreFile(files->get(i)));
 
 		if (stream == nullptr) {
-			//error("could not open file " + files->get(i));
+			debug() << "could not open file " << files->get(i);
 
 			continue;
 		} else {
 			if (stream->size() > 4) {
-				//info("opening " + files->get(i), true);
+				debug() << "opening " << files->get(i);
 
 				StringFile stringFile;
 				if (!stringFile.load(stream)) {
-					delete stream;
-
 					error("could not parse " + files->get(i));
+
 					continue;
 				}
 
 				file = file.replaceFirst("string/en/","");
 				file = file.replaceFirst(".stf","");
 
-				const HashTable<String, UnicodeString>* hashTable = stringFile.getStringMap();
+				const auto& hashTable = stringFile.getStringMap();
 
-				HashTableIterator<String, UnicodeString> iterator = hashTable->iterator();
+				auto iterator = hashTable.iterator();
 
 				while (iterator.hasNext()) {
 					String name;
@@ -63,7 +63,7 @@ void StringIdManager::populateDatabase() {
 
 					String full = "@" + file + ":" + name;
 
-					//info("key = " + full + " value = " + value.toString(), true);
+					debug() << "key = " << full << " value = " << value;
 
 					ObjectOutputStream* data = new ObjectOutputStream();
 					value.toBinaryStream(data);
@@ -78,28 +78,24 @@ void StringIdManager::populateDatabase() {
 				}
 
 			}
-
-			delete stream;
 		}
 	}
 
-	delete files;
-
-	info("writing to the db " + String::valueOf(count) + " strings", true);
+	info(true) << "writing to the db " << count  << " strings";
 }
 
 StringIdManager::StringIdManager() : Logger("StringIdManager") {
 	databaseManager = ObjectDatabaseManager::instance();
 	bool fill = databaseManager->getDatabaseID("strings") == 0xFFFF;
+	bool autoReload = ConfigManager::instance()->getBool("Core3.TreManager.ReloadStrings", false);
 
 	stringsDatabase = databaseManager->loadLocalDatabase("strings", true);
 
-	if (fill || ServerCore::truncateDatabases() || ServerCore::hasArgument("reloadstrings"))
+	if (autoReload || fill || ServerCore::truncateDatabases() || ServerCore::hasArgument("reloadstrings")) {
 		populateDatabase();
+	}
 
 	ObjectDatabaseManager::instance()->commitLocalTransaction();
-
-	//info("test string = " + getStringId(STRING_HASHCODE("@city/city:city_expand_body")).toString(), true);
 }
 
 StringIdManager::~StringIdManager() {}

@@ -7,39 +7,37 @@
 
 #include "engine/engine.h"
 #include "system/lang/Function.h"
+#include "system/io/Pipe.h"
 
 #include "server/features/Features.h"
 
+#include "server/login/LoginServer.h"
+#ifdef WITH_SWGREALMS_API
+#include "server/login/SWGRealmsAPI.h"
+#endif // WITH_SWGREALMS_API
+#include "server/ping/PingServer.h"
+
 namespace server {
-	namespace zone{
+	namespace zone {
 		class ZoneServer;
 	}
 }
-
-using namespace server::zone;
-
-#include "server/login/LoginServer.h"
-#include "server/ping/PingServer.h"
 
 namespace conf {
 	class ConfigManager;
 }
 
-using namespace conf;
-
 class ServerDatabase;
 class MantisDatabase;
 class StatusServer;
 
+#ifdef WITH_REST_API
 namespace server {
- namespace web {
- 	 class WebServer;
- }
-
  namespace web3 {
  	class RESTServer;
  }
 }
+#endif // WITH_REST_API
 
 namespace engine {
 	namespace core {
@@ -47,31 +45,49 @@ namespace engine {
 	}
 }
 
-using namespace server::web;
-
 class ServerCore : public Core, public Logger {
-	ConfigManager* configManager;
+	Pipe consoleCommandPipe;
+	conf::ConfigManager* configManager;
+#ifndef WITH_SWGREALMS_API
 	ServerDatabase* database;
+#endif // !WITH_SWGREALMS_API
 	MantisDatabase* mantisDatabase;
 	DistributedObjectBroker* orb;
 	Reference<server::login::LoginServer*> loginServer;
 	Reference<StatusServer*> statusServer;
 	server::features::Features* features;
 	Reference<PingServer*> pingServer;
-	WebServer* webServer;
 	MetricsManager* metricsManager;
+#ifdef WITH_REST_API
 	server::web3::RESTServer* restServer;
+#endif // WITH_REST_API
+#ifdef WITH_SWGREALMS_API
+	Reference<server::login::SWGRealmsAPI*> swgRealmsAPI;
+#endif // WITH_SWGREALMS_API
 
 	Mutex shutdownBlockMutex;
 	Condition waitCondition;
 
+public:
 	enum CommandResult {
 		SUCCESS = 0,
 		ERROR = 1,
-		SHUTDOWN
+		SHUTDOWN,
+		NOTFOUND
 	};
 
-	VectorMap<String, Function<CommandResult(const String& arguments)>> consoleCommands;
+	enum ShutdownFlags {
+		DEFAULT   = 0,
+		FAST      = 1<<1,
+		DUMP_JSON = 1<<2,
+	};
+
+private:
+	ShutdownFlags nextShutdownFlags = ShutdownFlags::DEFAULT;
+
+	using CommandFunctionType = Function<CommandResult(const String & arguments)>;
+
+	VectorMap<String, CommandFunctionType> consoleCommands;
 
 	bool handleCmds;
 
@@ -81,6 +97,7 @@ class ServerCore : public Core, public Logger {
 	static ServerCore* instance;
 
 	void registerConsoleCommmands();
+	CommandResult processConsoleCommand(const String& commandString);
 
 public:
 	ServerCore(bool truncateDatabases, const SortedVector<String>& args);
@@ -94,9 +111,10 @@ public:
 	void run() override;
 
 	void shutdown();
+	void queueConsoleCommand(const String& commandString);
 	void handleCommands();
 	void processConfig();
-	void signalShutdown();
+	void signalShutdown(ShutdownFlags flags = ShutdownFlags::DEFAULT);
 
 	// getters
 	static server::zone::ZoneServer* getZoneServer() {
@@ -119,7 +137,9 @@ public:
 		return arguments.contains(arg);
 	}
 
+#ifndef WITH_SWGREALMS_API
 	static int getSchemaVersion();
+#endif // !WITH_SWGREALMS_API
 };
 
 #endif /*SERVERCORE_H_*/

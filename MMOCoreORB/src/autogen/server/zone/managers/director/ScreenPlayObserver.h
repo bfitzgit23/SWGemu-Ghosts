@@ -24,11 +24,19 @@
 #endif
 #include "engine/util/json_utils.h"
 
+#include "engine/lua/Luna.h"
+
+#include "engine/log/Logger.h"
+
+#include "engine/lua/Lua.h"
+
 #include "engine/core/ManagedObject.h"
 
 #include "engine/util/Observer.h"
 
 #include "engine/util/Observable.h"
+
+#include "system/util/VectorMap.h"
 
 namespace server {
 namespace zone {
@@ -41,6 +49,8 @@ public:
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
 
+	void storeFloatValue(const String& dataKey, float dataVal);
+
 	void setScreenPlay(const String& screen);
 
 	void setScreenKey(const String& screenKey);
@@ -48,6 +58,8 @@ public:
 	String getScreenPlay();
 
 	String getScreenKey();
+
+	float getFloatValue(unsigned long long dataKey);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -74,11 +86,13 @@ namespace zone {
 namespace managers {
 namespace director {
 
-class ScreenPlayObserverImplementation : public ObserverImplementation {
+class ScreenPlayObserverImplementation : public ObserverImplementation, public Logger {
 protected:
 	String play;
 
 	String key;
+
+	VectorMap<unsigned long long, float> floatData;
 
 public:
 	ScreenPlayObserverImplementation();
@@ -87,6 +101,8 @@ public:
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
 
+	void storeFloatValue(const String& dataKey, float dataVal);
+
 	void setScreenPlay(const String& screen);
 
 	void setScreenKey(const String& screenKey);
@@ -94,6 +110,8 @@ public:
 	String getScreenPlay();
 
 	String getScreenKey();
+
+	float getFloatValue(unsigned long long dataKey);
 
 	WeakReference<ScreenPlayObserver*> _this;
 
@@ -141,6 +159,8 @@ public:
 
 	int notifyObserverEvent(unsigned int eventType, Observable* observable, ManagedObject* arg1, long long arg2);
 
+	void storeFloatValue(const String& dataKey, float dataVal);
+
 	void setScreenPlay(const String& screen);
 
 	void setScreenKey(const String& screenKey);
@@ -148,6 +168,8 @@ public:
 	String getScreenPlay();
 
 	String getScreenKey();
+
+	float getFloatValue(unsigned long long dataKey);
 
 };
 
@@ -170,6 +192,27 @@ public:
 	friend class Singleton<ScreenPlayObserverHelper>;
 };
 
+class LuaScreenPlayObserver {
+public:
+	static const char className[];
+	static Luna<LuaScreenPlayObserver>::RegType Register[];
+
+	LuaScreenPlayObserver(lua_State *L);
+	virtual ~LuaScreenPlayObserver();
+
+	int _setObject(lua_State *L);
+	int _getObject(lua_State *L);
+	int notifyObserverEvent(lua_State *L);
+	int storeFloatValue(lua_State *L);
+	int setScreenPlay(lua_State *L);
+	int setScreenKey(lua_State *L);
+	int getScreenPlay(lua_State *L);
+	int getScreenKey(lua_State *L);
+	int getFloatValue(lua_State *L);
+
+	Reference<ScreenPlayObserver*> realObject;
+};
+
 } // namespace director
 } // namespace managers
 } // namespace zone
@@ -187,6 +230,8 @@ public:
 	Optional<String> play;
 
 	Optional<String> key;
+
+	Optional<VectorMap<unsigned long long, float>> floatData;
 
 	String _className;
 	ScreenPlayObserverPOD();

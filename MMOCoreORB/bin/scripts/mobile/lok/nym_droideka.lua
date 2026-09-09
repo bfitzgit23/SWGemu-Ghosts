@@ -2,6 +2,7 @@ nym_droideka = Creature:new {
 	objectName = "@mob/creature_names:nym_droideka_strong",
 	socialGroup = "nym",
 	faction = "nym",
+	mobType = MOB_DROID,
 	level = 45,
 	chanceHit = 0.47,
 	damageMin = 360,
@@ -18,7 +19,7 @@ nym_droideka = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0.0,
+	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
@@ -29,13 +30,7 @@ nym_droideka = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "junk", chance = 4000000},
-				{group = "wearables_uncommon", chance = 2000000},
-				{group = "nyms_common", chance = 1000000},
-				{group = "nyms_rare", chance = 500000},
-				{group = "pistols", chance = 1000000},
-				{group = "carbines", chance = 1000000},
-				{group = "tailor_components", chance = 500000}
+				{group = "nym_tier_2", chance = 10000000}
 			}
 		}
 	},

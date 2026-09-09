@@ -161,6 +161,8 @@ public:
 
 	void setOwner(CreatureObject* player);
 
+	void setGeneratedObject(TangibleObject* object);
+
 	ManagedWeakReference<CreatureObject* > getOwner() const;
 
 	ManagedWeakReference<TangibleObject* > getGeneratedObject() const;
@@ -255,7 +257,13 @@ public:
 
 	void parseChildObjects(SceneObject* parent);
 
+private:
+	void createNpcActorPerk(CreatureObject* player);
+
+public:
 	void setOwner(CreatureObject* player);
+
+	void setGeneratedObject(TangibleObject* object);
 
 	ManagedWeakReference<CreatureObject* > getOwner() const;
 
@@ -324,6 +332,8 @@ public:
 	void parseChildObjects(SceneObject* parent);
 
 	void setOwner(CreatureObject* player);
+
+	void setGeneratedObject(TangibleObject* object);
 
 	ManagedWeakReference<CreatureObject* > getOwner() const;
 

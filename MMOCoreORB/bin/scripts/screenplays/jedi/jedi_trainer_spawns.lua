@@ -14,23 +14,25 @@ function JediTrainerSpawns:start()
 end
 
 function JediTrainerSpawns:doSpawn(pPlayer, params)
-    -- Prevent duplicate trainers from spawning every restart / reload.
-    if readStringSharedMemory("JediTrainerSpawnsSpawned") == "1" then
-        return 0
+    -- YAVIN 4 — Grand Jedi Master Trainer (Light Enclave)
+    if isZoneEnabled("yavin4") then
+        spawnMobile("yavin4", "jedi_grand_master_trainer", 0, -5575,
+            getWorldFloor(-5575, 4905, "yavin4"), 4905, 0, 0)
+
+        -- YAVIN 4 — Dark Jedi Lord Trainer (Dark Enclave)
+        spawnMobile("yavin4", "jedi_dark_lord_trainer", 0, 5085,
+            getWorldFloor(5085, 308, "yavin4"), 308, 0, 0)
     end
 
-    -- YAVIN 4 — Grand Jedi Master Trainer (Light Enclave)
-    spawnMobile("yavin4", "jedi_grand_master_trainer", 0, -5575, 0, 4905, 0, 0)
+    if isZoneEnabled("corellia") then
+        -- CORELLIA — Grand Jedi Master Trainer
+        spawnMobile("corellia", "jedi_grand_master_trainer", 0, -171,
+            getWorldFloor(-171, -4724, "corellia"), -4724, 0, 0)
 
-    -- YAVIN 4 — Dark Jedi Lord Trainer (Dark Enclave)
-    spawnMobile("yavin4", "jedi_dark_lord_trainer", 0, 5085, 0, 308, 0, 0)
+        -- CORELLIA — Dark Jedi Lord Trainer
+        spawnMobile("corellia", "jedi_dark_lord_trainer", 0, -171,
+            getWorldFloor(-171, -4730, "corellia"), -4730, 0, 0)
+    end
 
-    -- CORELLIA — Grand Jedi Master Trainer
-    spawnMobile("corellia", "jedi_grand_master_trainer", 0, -171, 0, -4724, 0, 0)
-
-    -- CORELLIA — Dark Jedi Lord Trainer
-    spawnMobile("corellia", "jedi_dark_lord_trainer", 0, -171, 0, -4730, 0, 0)
-
-    writeStringSharedMemory("JediTrainerSpawnsSpawned", "1")
     return 0
 end

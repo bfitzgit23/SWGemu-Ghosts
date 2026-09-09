@@ -1,62 +1,14 @@
 -- Dromund Kaas (Kaas) Spawn Groups
 
 kaas_world = {
-	lairSpawns = {
-		{
-			lairTemplateName = "kaas_kell_dragon_lair",
-			spawnLimit = -1,
-			minDifficulty = 150,
-			maxDifficulty = 200,
-			numberToSpawn = 15,
-			weighting = 15,
-			size = 25,
-		},
-		{
-			lairTemplateName = "kaas_gundark_lair",
-			spawnLimit = -1,
-			minDifficulty = 120,
-			maxDifficulty = 150,
-			numberToSpawn = 15,
-			weighting = 20,
-			size = 25,
-		},
-		{
-			lairTemplateName = "kaas_sleen_lair",
-			spawnLimit = -1,
-			minDifficulty = 80,
-			maxDifficulty = 110,
-			numberToSpawn = 15,
-			weighting = 25,
-			size = 25,
-		},
-		{
-			lairTemplateName = "kaas_vine_cat_lair",
-			spawnLimit = -1,
-			minDifficulty = 50,
-			maxDifficulty = 80,
-			numberToSpawn = 15,
-			weighting = 30,
-			size = 25,
-		},
-		{
-			lairTemplateName = "kaas_mailoc_lair",
-			spawnLimit = -1,
-			minDifficulty = 40,
-			maxDifficulty = 70,
-			numberToSpawn = 15,
-			weighting = 25,
-			size = 25,
-		},
-	},
-	
 	mobile = {
 		-- Dangerous creatures
 		{"kell_dragon", 300, -1, -1, -1, 100, 15},
-		{"kaas_gundark", 300, -1, -1, -1, 100, 20},
-		{"kaas_sleen", 300, -1, -1, -1, 100, 25},
-		{"kaas_vine_cat", 300, -1, -1, -1, 100, 30},
-		{"kaas_mailoc", 300, -1, -1, -1, 100, 25},
-		{"kaas_ysalamiri", 300, -1, -1, -1, 100, 15},
+		{"gundark", 300, -1, -1, -1, 100, 20},
+		{"sleen", 300, -1, -1, -1, 100, 25},
+		{"vine_cat", 300, -1, -1, -1, 100, 30},
+		{"mailoc", 300, -1, -1, -1, 100, 25},
+		{"ysalamiri", 300, -1, -1, -1, 100, 15},
 		
 		-- Sith/Force creatures
 		{"sith_ghost", 300, -1, -1, -1, 100, 15},

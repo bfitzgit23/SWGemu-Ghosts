@@ -12,7 +12,7 @@
  *	ComponentStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3918114691,RPC_ISCOMPONENT__,RPC_GENERATELOOTSTATS__STRING_INT_,RPC_COMPARE__COMPONENT_,RPC_HASKEY__STRING_,RPC_ADDPROPERTY__STRING_FLOAT_INT_STRING_BOOL_,RPC_GETATTRIBUTEVALUE__STRING_,RPC_GETATTRIBUTEPRECISION__STRING_,RPC_GETATTRIBUTETITLE__STRING_,RPC_GETATTRIBUTEHIDDEN__STRING_,RPC_SETPROPERTYTOHIDDEN__STRING_,RPC_ADDPROPERTY__STRING_FLOAT_INT_STRING_,RPC_GETPROPERTYCOUNT__,RPC_GETPROPERTY__INT_,RPC_CHANGEATTRIBUTEVALUE__STRING_FLOAT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3918114691,RPC_ISCOMPONENT__,RPC_GENERATELOOTSTATS__STRING_INT_,RPC_COMPARE__COMPONENT_,RPC_HASKEY__STRING_,RPC_ADDPROPERTY__STRING_FLOAT_INT_STRING_BOOL_,RPC_GETATTRIBUTEVALUE__STRING_,RPC_GETATTRIBUTEPRECISION__STRING_,RPC_GETATTRIBUTEGROUP__STRING_,RPC_GETATTRIBUTEHIDDEN__STRING_,RPC_SETPROPERTYTOHIDDEN__STRING_,RPC_ADDPROPERTY__STRING_FLOAT_INT_STRING_,RPC_GETPROPERTYCOUNT__,RPC_GETPROPERTY__INT_,RPC_CHANGEATTRIBUTEVALUE__STRING_FLOAT_};
 
 Component::Component() : TangibleObject(DummyConstructorParameter::instance()) {
 	ComponentImplementation* _implementation = new ComponentImplementation();
@@ -183,20 +183,20 @@ int Component::getAttributePrecision(const String& attributeName) {
 	}
 }
 
-String Component::getAttributeTitle(const String& attributeName) {
+String Component::getAttributeGroup(const String& attributeName) {
 	ComponentImplementation* _implementation = static_cast<ComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_GETATTRIBUTETITLE__STRING_);
+		DistributedMethod method(this, RPC_GETATTRIBUTEGROUP__STRING_);
 		method.addAsciiParameter(attributeName);
 
-		String _return_getAttributeTitle;
-		method.executeWithAsciiReturn(_return_getAttributeTitle);
-		return _return_getAttributeTitle;
+		String _return_getAttributeGroup;
+		method.executeWithAsciiReturn(_return_getAttributeGroup);
+		return _return_getAttributeGroup;
 	} else {
-		return _implementation->getAttributeTitle(attributeName);
+		return _implementation->getAttributeGroup(attributeName);
 	}
 }
 
@@ -614,11 +614,11 @@ void ComponentAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETATTRIBUTETITLE__STRING_:
+	case RPC_GETATTRIBUTEGROUP__STRING_:
 		{
 			 String attributeName; inv->getAsciiParameter(attributeName);
 			
-			String _m_res = getAttributeTitle(attributeName);
+			String _m_res = getAttributeGroup(attributeName);
 			resp->insertAscii(_m_res);
 		}
 		break;
@@ -710,8 +710,8 @@ int ComponentAdapter::getAttributePrecision(const String& attributeName) {
 	return (static_cast<Component*>(stub))->getAttributePrecision(attributeName);
 }
 
-String ComponentAdapter::getAttributeTitle(const String& attributeName) {
-	return (static_cast<Component*>(stub))->getAttributeTitle(attributeName);
+String ComponentAdapter::getAttributeGroup(const String& attributeName) {
+	return (static_cast<Component*>(stub))->getAttributeGroup(attributeName);
 }
 
 bool ComponentAdapter::getAttributeHidden(const String& attributeName) {
@@ -793,7 +793,7 @@ Luna<LuaComponent>::RegType LuaComponent::Register[] = {
 	{ "addProperty", &LuaComponent::addProperty },
 	{ "getAttributeValue", &LuaComponent::getAttributeValue },
 	{ "getAttributePrecision", &LuaComponent::getAttributePrecision },
-	{ "getAttributeTitle", &LuaComponent::getAttributeTitle },
+	{ "getAttributeGroup", &LuaComponent::getAttributeGroup },
 	{ "getAttributeHidden", &LuaComponent::getAttributeHidden },
 	{ "setPropertyToHidden", &LuaComponent::setPropertyToHidden },
 	{ "getPropertyCount", &LuaComponent::getPropertyCount },
@@ -1084,22 +1084,22 @@ int LuaComponent::getAttributePrecision(lua_State *L) {
 	return 0;
 }
 
-int LuaComponent::getAttributeTitle(lua_State *L) {
+int LuaComponent::getAttributeGroup(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
 	if (lua_isstring(L, -1)) {
 		if (parameterCount == 1) {
 			const String attributeName = lua_tostring(L, -1);
 
-			String result = realObject->getAttributeTitle(attributeName);
+			String result = realObject->getAttributeGroup(attributeName);
 
 			lua_pushstring(L, result.toCharArray());
 			return 1;
 		} else {
-			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'Component:getAttributeTitle(string)'");
+			throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'Component:getAttributeGroup(string)'");
 		}
 	} else {
-		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'Component:getAttributeTitle(string)'");
+		throw LuaCallbackException(L, "invalid argument at 0 for lua method 'Component:getAttributeGroup(string)'");
 	}
 	return 0;
 }

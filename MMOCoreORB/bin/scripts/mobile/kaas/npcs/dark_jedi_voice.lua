@@ -1,0 +1,35 @@
+dark_jedi_voice = Creature:new {
+	customName = "A Dark Side Voice",
+	socialGroup = "townsperson",
+	faction = "",
+	level = 1,
+	chanceHit = 0.1,
+	damageMin = 5,
+	damageMax = 10,
+	baseXp = 10,
+	baseHAM = 1000,
+	baseHAMmax = 1000,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/hologram/human_male.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(dark_jedi_voice, "dark_jedi_voice")

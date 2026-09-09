@@ -12,10 +12,12 @@
 #include "server/db/ServerDatabase.h"
 #include "server/ServerCore.h"
 
-class OnlineZoneClientMap : public HashTable<uint32, Vector<Reference<ZoneClientSession*> > >, Logger {
+class OnlineZoneClientMap : public HashTable<uint32, Vector<Reference<ZoneClientSession*> > >, private Logger {
 protected:
 	HashTable<String, Reference<SortedVector<uint32>*> > ip_list;
 	ReadWriteLock mutex;
+
+	using self_table_type = HashTable<uint32, Vector<Reference<ZoneClientSession*> > >;
 
 public:
 	OnlineZoneClientMap() {
@@ -40,7 +42,9 @@ public:
 			onlineCount = account_list->size();
 		}
 
+#ifndef WITH_SWGREALMS_API
 		insertLogEntry(accountId, galaxyId, ip, 0, onlineCount);
+#endif // !WITH_SWGREALMS_API
 
 		if (onlineCount >= ConfigManager::instance()->getInt("Core3.LogOnlineCount", 3)) {
 			String delim = " ";
@@ -68,14 +72,16 @@ public:
 			onlineCount = account_list->size();
 		}
 
+#ifndef WITH_SWGREALMS_API
 		insertLogEntry(accountId, galaxyId, ip, 1, onlineCount);
+#endif // !WITH_SWGREALMS_API
 
 		if (account_list != nullptr && account_list->size() == 0)
 			ip_list.remove(ip);
 	}
 
 	SortedVector<uint32> getAccountsLoggedIn(const String& ip) {
-		mutex.rlock();
+		ReadLocker locker(&mutex);
 
 		SortedVector<uint32> ret;
 		Reference<SortedVector<uint32>*> account_list = ip_list.get(ip);
@@ -83,16 +89,15 @@ public:
 		if (account_list != nullptr)
 			ret.addAll(*account_list);
 
-		mutex.runlock();
-
 		return ret;
 	}
 
-	int getDistinctIps() {
+	int getDistinctIps() const {
 		return ip_list.size();
 	}
 
 private:
+#ifndef WITH_SWGREALMS_API
 	void insertLogEntry(uint32 accountId, int galaxyId, const String& ipAddress, int logout, int onlineCount) {
 		StringBuffer query;
 
@@ -103,20 +108,26 @@ private:
 				<< ", '" << ipAddress << "'"
 				<< ", " << logout
 				<< ", " << onlineCount
-				<< ");";
+				<< ") ON DUPLICATE KEY UPDATE "
+				<< "galaxy_id = VALUES(galaxy_id), "
+				<< "logout = VALUES(logout), "
+				<< "online_count = VALUES(online_count), "
+				<< "timestamp = CURRENT_TIMESTAMP;";
 		else
 			query << "insert into account_ips (account_id, ip, logout) values"
 				<< "(" << accountId
 				<< ", '" << ipAddress << "'"
 				<< ", " << logout
-				<< ");";
+				<< ") ON DUPLICATE KEY UPDATE "
+				<< "logout = VALUES(logout), timestamp = CURRENT_TIMESTAMP;";
 
 		try {
 			ServerDatabase::instance()->executeStatement(query);
-		} catch(DatabaseException& e) {
+		} catch (const DatabaseException& e) {
 			error(e.getMessage());
 		}
 	}
+#endif // !WITH_SWGREALMS_API
 };
 
 #endif /* ONLINEZONECLIENTMAP_H_ */

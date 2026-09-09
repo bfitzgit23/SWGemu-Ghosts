@@ -148,50 +148,14 @@ createTrainerConversationTemplate("weaponsmithTrainerConvoTemplate", "trainer_we
 
 createTrainerConversationTemplate("fsTrainerConvoTemplate", "trainer_fs")
 createTrainerConversationTemplate("jediTrainerConvoTemplate", "trainer_jedi")
+createTrainerConversationTemplate("grandJediMasterTrainerConvoTemplate", "trainer_jedi_grand_master")
+createTrainerConversationTemplate("darkJediLordTrainerConvoTemplate", "trainer_jedi_dark_lord")
+
+-- Ghosts: grey jedi village trainers (Aurilia). Their creature templates
+-- reference these conversation template names but they were never created,
+-- so the trainers were CONVERSABLE-but-silent. Each trains its own tier's
+-- force_rank_gray skill list as defined in trainerData.lua.
 createTrainerConversationTemplate("combatjedigrayTrainerConvoTemplate", "trainer_combatjedigray")
 createTrainerConversationTemplate("combatjedigrayelderTrainerConvoTemplate", "trainer_combatjedigrayelder")
 createTrainerConversationTemplate("combatjedigrayelderrankTrainerConvoTemplate", "trainer_combatjedigrayelderrank")
 createTrainerConversationTemplate("combatjedigrayelderrankcouncilTrainerConvoTemplate", "trainer_combatjedigrayelderrankcouncil")
-
-trainer_dark_jedi_lord_convotemplate = ConvoTemplate:new {
-	initialScreen = "intro",
-	templateType = "Lua",
-	luaClassHandler = "trainer_conv_handler",
-	screens = {}
-}
-
-intro = ConvoScreen:new {
-	id = "intro",
-	leftDialog = "@skill_teacher:trainer_dark_jedi_lord",
-	stopConversation = "false",
-	options = {
-		{"@skill_teacher:opt1_1", "msg2_1"},
-		{"@skill_teacher:opt1_2", "msg2_2"},
-		{"@skill_teacher:opt1_3", "msg2_3"},
-		{"@skill_teacher:opt1_4", "msg2_4"},
-	}
-}
-trainer_dark_jedi_lord_convotemplate:addScreen(intro)
-
-addConversationTemplate("trainer_dark_jedi_lord_convotemplate", trainer_dark_jedi_lord_convotemplate)
-trainer_grand_jedi_master_convotemplate = ConvoTemplate:new {
-	initialScreen = "intro",
-	templateType = "Lua",
-	luaClassHandler = "trainer_conv_handler",
-	screens = {}
-}
-
-intro = ConvoScreen:new {
-	id = "intro",
-	leftDialog = "@skill_teacher:trainer_grand_jedi_master",
-	stopConversation = "false",
-	options = {
-		{"@skill_teacher:opt1_1", "msg2_1"},
-		{"@skill_teacher:opt1_2", "msg2_2"},
-		{"@skill_teacher:opt1_3", "msg2_3"},
-		{"@skill_teacher:opt1_4", "msg2_4"},
-	}
-}
-trainer_grand_jedi_master_convotemplate:addScreen(intro)
-
-addConversationTemplate("trainer_grand_jedi_master_convotemplate", trainer_grand_jedi_master_convotemplate)

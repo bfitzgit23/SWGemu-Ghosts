@@ -10,7 +10,7 @@
  *	DynamicSpawnObserverStub
  */
 
-enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 606947208,RPC_SPAWNINITIALMOBILES__SCENEOBJECT_,RPC_ISTHEATERSPAWNOBSERVER__,RPC_ISDYNAMICSPAWNOBSERVER__};
+enum {RPC_NOTIFYOBSERVEREVENT__INT_OBSERVABLE_MANAGEDOBJECT_LONG_ = 606947208,RPC_SPAWNINITIALMOBILES__SCENEOBJECT_,RPC_ISTHEATERSPAWNOBSERVER__,RPC_ISDYNAMICSPAWNOBSERVER__,RPC_SETHERDOBSERVER__CREATUREHERDOBSERVER_,RPC_GETHERDOBSERVER__};
 
 DynamicSpawnObserver::DynamicSpawnObserver() : SpawnObserver(DummyConstructorParameter::instance()) {
 	DynamicSpawnObserverImplementation* _implementation = new DynamicSpawnObserverImplementation();
@@ -87,6 +87,35 @@ bool DynamicSpawnObserver::isDynamicSpawnObserver() {
 		return method.executeWithBooleanReturn();
 	} else {
 		return _implementation->isDynamicSpawnObserver();
+	}
+}
+
+void DynamicSpawnObserver::setHerdObserver(CreatureHerdObserver* observer) {
+	DynamicSpawnObserverImplementation* _implementation = static_cast<DynamicSpawnObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_SETHERDOBSERVER__CREATUREHERDOBSERVER_);
+		method.addObjectParameter(observer);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->setHerdObserver(observer);
+	}
+}
+
+CreatureHerdObserver* DynamicSpawnObserver::getHerdObserver() {
+	DynamicSpawnObserverImplementation* _implementation = static_cast<DynamicSpawnObserverImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETHERDOBSERVER__);
+
+		return static_cast<CreatureHerdObserver*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getHerdObserver();
 	}
 }
 
@@ -200,6 +229,10 @@ bool DynamicSpawnObserverImplementation::readObjectMember(ObjectInputStream* str
 		return true;
 
 	switch(nameHashCode) {
+	case 0xf5f7bfca: //DynamicSpawnObserver.herdObserver
+		TypeInfo<ManagedWeakReference<CreatureHerdObserver* > >::parseFromBinaryStream(&herdObserver, stream);
+		return true;
+
 	}
 
 	return false;
@@ -218,6 +251,15 @@ int DynamicSpawnObserverImplementation::writeObjectMembers(ObjectOutputStream* s
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	_nameHashCode = 0xf5f7bfca; //DynamicSpawnObserver.herdObserver
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<CreatureHerdObserver* > >::toBinaryStream(&herdObserver, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -236,6 +278,11 @@ bool DynamicSpawnObserverImplementation::isTheaterSpawnObserver() {
 bool DynamicSpawnObserverImplementation::isDynamicSpawnObserver() {
 	// server/zone/managers/creature/DynamicSpawnObserver.idl():  		return super.lairTemplate.getBuildingType() == LairTemplate.NONE;
 	return SpawnObserverImplementation::lairTemplate->getBuildingType() == LairTemplate::NONE;
+}
+
+void DynamicSpawnObserverImplementation::setHerdObserver(CreatureHerdObserver* observer) {
+	// server/zone/managers/creature/DynamicSpawnObserver.idl():  		herdObserver = observer;
+	herdObserver = observer;
 }
 
 /*
@@ -286,6 +333,21 @@ void DynamicSpawnObserverAdapter::invokeMethod(uint32 methid, DistributedMethod*
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_SETHERDOBSERVER__CREATUREHERDOBSERVER_:
+		{
+			CreatureHerdObserver* observer = static_cast<CreatureHerdObserver*>(inv->getObjectParameter());
+			
+			setHerdObserver(observer);
+			
+		}
+		break;
+	case RPC_GETHERDOBSERVER__:
+		{
+			
+			DistributedObject* _m_res = getHerdObserver();
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
 	default:
 		SpawnObserverAdapter::invokeMethod(methid, inv);
 	}
@@ -305,6 +367,14 @@ bool DynamicSpawnObserverAdapter::isTheaterSpawnObserver() {
 
 bool DynamicSpawnObserverAdapter::isDynamicSpawnObserver() {
 	return (static_cast<DynamicSpawnObserver*>(stub))->isDynamicSpawnObserver();
+}
+
+void DynamicSpawnObserverAdapter::setHerdObserver(CreatureHerdObserver* observer) {
+	(static_cast<DynamicSpawnObserver*>(stub))->setHerdObserver(observer);
+}
+
+CreatureHerdObserver* DynamicSpawnObserverAdapter::getHerdObserver() {
+	return (static_cast<DynamicSpawnObserver*>(stub))->getHerdObserver();
 }
 
 /*
@@ -371,6 +441,17 @@ int DynamicSpawnObserverPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	uint32 _nameHashCode;
 	int _offset;
 	uint32 _totalSize;
+	if (herdObserver) {
+	_nameHashCode = 0xf5f7bfca; //DynamicSpawnObserver.herdObserver
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<ManagedWeakReference<CreatureHerdObserverPOD* > >::toBinaryStream(&herdObserver.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -380,6 +461,14 @@ bool DynamicSpawnObserverPOD::readObjectMember(ObjectInputStream* stream, const 
 		return true;
 
 	switch(nameHashCode) {
+	case 0xf5f7bfca: //DynamicSpawnObserver.herdObserver
+		{
+			ManagedWeakReference<CreatureHerdObserverPOD* > _mnherdObserver;
+			TypeInfo<ManagedWeakReference<CreatureHerdObserverPOD* > >::parseFromBinaryStream(&_mnherdObserver, stream);
+			herdObserver = std::move(_mnherdObserver);
+		}
+		return true;
+
 	}
 
 	return false;
@@ -405,6 +494,8 @@ void DynamicSpawnObserverPOD::readObject(ObjectInputStream* stream) {
 
 void DynamicSpawnObserverPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	SpawnObserverPOD::writeObjectCompact(stream);
+
+	TypeInfo<ManagedWeakReference<CreatureHerdObserverPOD* > >::toBinaryStream(&herdObserver.value(), stream);
 
 
 }

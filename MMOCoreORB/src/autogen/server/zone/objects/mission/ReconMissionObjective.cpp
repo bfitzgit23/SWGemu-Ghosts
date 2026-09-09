@@ -12,7 +12,7 @@
  *	ReconMissionObjectiveStub
  */
 
-enum {RPC_FINALIZE__ = 1869515498,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__,};
+enum {RPC_FINALIZE__ = 1869515498,RPC_INITIALIZETRANSIENTMEMBERS__,RPC_ACTIVATE__,RPC_ABORT__,RPC_COMPLETE__};
 
 ReconMissionObjective::ReconMissionObjective(MissionObject* mission) : MissionObjective(DummyConstructorParameter::instance()) {
 	ReconMissionObjectiveImplementation* _implementation = new ReconMissionObjectiveImplementation(mission);
@@ -84,16 +84,6 @@ void ReconMissionObjective::complete() {
 		method.executeWithVoidReturn();
 	} else {
 		_implementation->complete();
-	}
-}
-
-Vector3 ReconMissionObjective::getEndPosition() {
-	ReconMissionObjectiveImplementation* _implementation = static_cast<ReconMissionObjectiveImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		throw ObjectNotLocalException(this);
-
-	} else {
-		return _implementation->getEndPosition();
 	}
 }
 

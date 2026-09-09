@@ -1,0 +1,35 @@
+elan_sleazebaggano = Creature:new {
+	customName = "Elan Sleazebaggano",
+	socialGroup = "townsperson",
+	faction = "",
+	level = 15,
+	chanceHit = 0.1,
+	damageMin = 10,
+	damageMax = 30,
+	baseXp = 50,
+	baseHAM = 2000,
+	baseHAMmax = 2500,
+	armor = 0,
+	resists = {0,0,0,0,0,0,0,-1,-1},
+	meatType = "",
+	meatAmount = 0,
+	hideType = "",
+	hideAmount = 0,
+	boneType = "",
+	boneAmount = 0,
+	milk = 0,
+	tamingChance = 0,
+	ferocity = 0,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
+	diet = HERBIVORE,
+
+	templates = {"object/mobile/dressed_commoner_fat_human_female_01.iff"},
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "",
+	attacks = {}
+}
+
+CreatureTemplates:addCreatureTemplate(elan_sleazebaggano, "elan_sleazebaggano")

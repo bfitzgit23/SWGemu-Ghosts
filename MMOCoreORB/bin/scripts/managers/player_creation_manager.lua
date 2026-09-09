@@ -1,11 +1,11 @@
 --Should all created players start with God Mode? 1 = yes, 0 = no
 freeGodMode = 0;
 --How many cash credits new characters start with after creating a character (changed during test phase, normal value is 100)
-startingCash = 10000
+startingCash = 500000
 --startingCash = 100000
 --How many bank credits new characters start with after creating a character (changed during test phase, normal value is 1000)
-startingBank = 250000
---startingBank = 250000
+startingBank = 500000
+--startingBank = 100000
 --How many skill points a new characters start with
 skillPoints = 250
 
@@ -35,9 +35,11 @@ survivalKnife = "object/weapon/melee/knife/knife_survival.iff"
 
 genericTool = "object/tangible/crafting/station/generic_tool.iff"
 
+unitool = "object/tangible/survey_tool/survey_tool_all.iff"
+
 foodTool = "object/tangible/crafting/station/food_tool.iff"
 
-mineralTool = "object/tangible/survey_tool/survey_tool_mineral.iff"
+mineralTool = "object/tangible/survey_tool/survey_tool_inorganic.iff"
 
 chemicalTool = "object/tangible/survey_tool/survey_tool_liquid.iff"
 
@@ -45,30 +47,20 @@ slitherhorn = "object/tangible/instrument/slitherhorn.iff"
 
 marojMelon = "object/tangible/food/foraged/foraged_fruit_s1.iff"
 
-SwoopBike = "object/tangible/deed/vehicle_deed/speederbike_swoop_deed.iff"
+jediHolocron = "object/tangible/jedi/jedi_holocron_light.iff"
 
-robe = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
+swoop = "object/tangible/deed/vehicle_deed/speederbike_swoop_deed.iff"
 
-saber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_s9_training.iff"
-
-jediTool = "object/tangible/crafting/station/jedi_tool.iff"
-
-jediCrystal = "object/tangible/component/weapon/lightsaber/lightsaber_module_force_crystal.iff"
-
-gasTool = "object/tangible/survey_tool/survey_tool_gas.iff"
-
-stim = "object/tangible/medicine/crafted/crafted_stimpack_sm_s1_a.iff"
-
-barcSpeeder = "object/tangible/deed/vehicle_deed/barc_speeder_rebel_deed.iff"
+padawanRobe = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
 
 professionSpecificItems = {
 	combat_brawler = { brawlerOneHander, brawlerTwoHander, brawlerPolearm },
 	combat_marksman = { marksmanPistol, marksmanCarbine, marksmanRifle },
-	crafting_artisan = { genericTool, mineralTool, chemicalTool },
-	combat_jedi = { genericTool, mineralTool, chemicalTool, gasTool, jediTool, jediCrystal, stim, saber },
+	crafting_artisan = { genericTool, mineralTool, chemicalTool,unitool },
+	combat_jedi = { padawanRobe },
 	outdoors_scout = { genericTool },
-	science_medic = { foodTool, chemicalTool, mineralTool },
+	science_medic = { foodTool },
 	social_entertainer = { slitherhorn }
 }
 
-commonStartingItems = { survivalKnife, barcSpeeder, stim, stim, stim }
+commonStartingItems = { jediHolocron, survivalKnife, swoop }

@@ -16,7 +16,10 @@ end
 function TaanabPandathScreenPlay:spawnSceneObjects()
 
 	--outside starport
-	spawnSceneObject("taanab", "object/tangible/travel/travel_terminal/shared_travel_terminal.iff", 2112.0, 45.0, 5400.0, 0, 0)
+	-- Use the registered server-side TravelTerminal template.  The old path
+	-- referenced a shared/client template and therefore could not provide the
+	-- ticket-purchase radial or EnterTicketPurchaseModeMessage.
+	spawnSceneObject("taanab", "object/tangible/terminal/terminal_travel.iff", 2112.0, 45.0, 5400.0, 0, 0)
 
 end
 

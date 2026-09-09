@@ -618,7 +618,7 @@ int PlayerManagementSessionImplementation::cancelSession() {
 	// server/zone/objects/player/sessions/admin/PlayerManagementSession.idl():  		CreatureObject adm = admin;
 	ManagedReference<CreatureObject* > adm = admin;
 	// server/zone/objects/player/sessions/admin/PlayerManagementSession.idl():  		clearSession(
-	if (adm != NULL)	// server/zone/objects/player/sessions/admin/PlayerManagementSession.idl():  			adm.dropActiveSession(SessionFacadeType.PLAYERMANAGEMENT);
+	if (adm)	// server/zone/objects/player/sessions/admin/PlayerManagementSession.idl():  			adm.dropActiveSession(SessionFacadeType.PLAYERMANAGEMENT);
 	adm->dropActiveSession(SessionFacadeType::PLAYERMANAGEMENT);
 	// server/zone/objects/player/sessions/admin/PlayerManagementSession.idl():  		clearSession();
 	clearSession();

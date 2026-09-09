@@ -27,6 +27,22 @@
 namespace server {
 namespace zone {
 namespace objects {
+namespace tangible {
+
+class TangibleObject;
+
+class TangibleObjectPOD;
+
+} // namespace tangible
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::tangible;
+
+namespace server {
+namespace zone {
+namespace objects {
 namespace creature {
 
 class CreatureObject;
@@ -159,8 +175,6 @@ public:
 
 	void initializeTransientMembers();
 
-	String getCurrentSpawnName();
-
 	/**
 	 * Destroys this object from database
 	 * @pre { this is locked }
@@ -181,7 +195,7 @@ public:
 
 	void updateResourceContainerQuantity(ResourceContainer* container, int newQuantity, bool notifyClient = true);
 
-	void setOperating(bool operating, bool notifyClient = true);
+	void setActive(bool value, bool notifyClient = true);
 
 	void activateUiSync();
 
@@ -218,19 +232,9 @@ public:
 
 	ResourceContainer* getContainerFromHopper(ResourceSpawn* spawn);
 
-	int getResourceContainerCountFromHopper();
-
-	ResourceContainer* getContainerFromHopperByIndex(int index);
-
 	unsigned long long getActiveResourceSpawnID();
 
 	float getActualRate();
-
-	void quickRetrieveAllResources(CreatureObject* player);
-
-	void quickAddMaint(CreatureObject* player, float amount);
-
-	void quickAddPower(CreatureObject* player, float amount);
 
 	void broadcastToOperators(BasePacket* packet);
 
@@ -242,7 +246,7 @@ public:
 
 	bool isInstallationObject();
 
-	bool isOperating() const;
+	bool isActive() const;
 
 	int getInstallationType() const;
 
@@ -264,7 +268,7 @@ public:
 
 	void setExtractionRate(float rate);
 
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	/**
 	* Evaluates if this can be attacked by object
@@ -277,6 +281,8 @@ public:
 	void createChildObjects();
 
 	float getHitChance() const;
+
+	int getReceiverFlags() const;
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -307,7 +313,7 @@ class InstallationObjectImplementation : public StructureObjectImplementation {
 protected:
 	Reference<SyncrhonizedUiListenInstallationTask* > syncUiTask;
 
-	bool operating;
+	bool active;
 
 	SortedVector<ManagedReference<CreatureObject* > > operatorList;
 
@@ -338,8 +344,6 @@ public:
 
 	void initializeTransientMembers();
 
-	String getCurrentSpawnName();
-
 	/**
 	 * Destroys this object from database
 	 * @pre { this is locked }
@@ -360,7 +364,7 @@ public:
 
 	void updateResourceContainerQuantity(ResourceContainer* container, int newQuantity, bool notifyClient = true);
 
-	virtual void setOperating(bool operating, bool notifyClient = true);
+	virtual void setActive(bool value, bool notifyClient = true);
 
 	void activateUiSync();
 
@@ -397,19 +401,9 @@ public:
 
 	ResourceContainer* getContainerFromHopper(ResourceSpawn* spawn);
 
-	int getResourceContainerCountFromHopper();
-
-	ResourceContainer* getContainerFromHopperByIndex(int index);
-
 	unsigned long long getActiveResourceSpawnID();
 
 	float getActualRate();
-
-	void quickRetrieveAllResources(CreatureObject* player);
-
-	void quickAddMaint(CreatureObject* player, float amount);
-
-	void quickAddPower(CreatureObject* player, float amount);
 
 	void broadcastToOperators(BasePacket* packet);
 
@@ -421,7 +415,7 @@ public:
 
 	bool isInstallationObject();
 
-	bool isOperating() const;
+	bool isActive() const;
 
 	int getInstallationType() const;
 
@@ -443,7 +437,7 @@ public:
 
 	void setExtractionRate(float rate);
 
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	/**
 	* Evaluates if this can be attacked by object
@@ -453,9 +447,11 @@ public:
 	*/
 	bool isAttackableBy(CreatureObject* object);
 
-	void createChildObjects();
+	virtual void createChildObjects();
 
 	float getHitChance() const;
+
+	virtual int getReceiverFlags() const;
 
 	WeakReference<InstallationObject*> _this;
 
@@ -503,13 +499,11 @@ public:
 
 	void initializeTransientMembers();
 
-	String getCurrentSpawnName();
-
 	void destroyObjectFromDatabase(bool destroyContainedObjects);
 
 	void updateResourceContainerQuantity(ResourceContainer* container, int newQuantity, bool notifyClient);
 
-	void setOperating(bool operating, bool notifyClient);
+	void setActive(bool value, bool notifyClient);
 
 	void activateUiSync();
 
@@ -535,19 +529,9 @@ public:
 
 	ResourceContainer* getContainerFromHopper(ResourceSpawn* spawn);
 
-	int getResourceContainerCountFromHopper();
-
-	ResourceContainer* getContainerFromHopperByIndex(int index);
-
 	unsigned long long getActiveResourceSpawnID();
 
 	float getActualRate();
-
-	void quickRetrieveAllResources(CreatureObject* player);
-
-	void quickAddMaint(CreatureObject* player, float amount);
-
-	void quickAddPower(CreatureObject* player, float amount);
 
 	void addOperator(CreatureObject* player);
 
@@ -557,7 +541,7 @@ public:
 
 	bool isInstallationObject();
 
-	bool isOperating() const;
+	bool isActive() const;
 
 	int getInstallationType() const;
 
@@ -573,13 +557,15 @@ public:
 
 	bool isShuttleInstallation();
 
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	bool isAttackableBy(CreatureObject* object);
 
 	void createChildObjects();
 
 	float getHitChance() const;
+
+	int getReceiverFlags() const;
 
 };
 
@@ -616,7 +602,7 @@ namespace installation {
 
 class InstallationObjectPOD : public StructureObjectPOD {
 public:
-	Optional<bool> operating;
+	Optional<bool> active;
 
 	Optional<int> installationType;
 

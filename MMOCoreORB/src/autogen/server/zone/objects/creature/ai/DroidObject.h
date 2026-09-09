@@ -70,24 +70,6 @@ using namespace server::zone::packets::scene;
 
 namespace server {
 namespace zone {
-namespace objects {
-namespace tangible {
-namespace components {
-namespace droid {
-
-class BaseDroidModuleComponent;
-
-} // namespace droid
-} // namespace components
-} // namespace tangible
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::tangible::components::droid;
-
-namespace server {
-namespace zone {
 
 class Zone;
 
@@ -113,6 +95,8 @@ class SceneObjectPOD;
 } // namespace server
 
 using namespace server::zone::objects::scene;
+
+#include "server/zone/objects/tangible/components/droid/BaseDroidModuleComponent.h"
 
 #include "server/zone/objects/tangible/tool/CraftingStation.h"
 
@@ -189,10 +173,6 @@ public:
 
 	static const int PROBE_DROID = 0xE1;
 
-	static const int SPIDER_DROID = 0xDB;
-
-	static const int ROBODOG = 0x46;
-
 	DroidObject();
 
 	void initializeTransientMembers();
@@ -239,8 +219,6 @@ public:
 	void setMaximumHAM(int idx);
 
 	void setAttackSpeed(float f);
-
-	bool isCamouflaged(CreatureObject* target);
 
 	bool hasPower();
 
@@ -304,14 +282,14 @@ public:
 	void initDroidWeapons();
 
 	/**
-	 * Returns a crafting station of the given type if droid has the appropriate module. Returns nullptr otherwise.
+	 * Returns a crafting station of the given type if droid has the appropriate module. Returns NULL otherwise.
 	 */
 	CraftingStation* getCraftingStation(int type);
 
 	/**
 	 * Returns a reaction stf if the droid has a personality chip
 	 */
-	String getPersonalityBase();
+	String getPersonalityBase() const;
 
 	Reference<BaseDroidModuleComponent* > getModule(const String& name);
 
@@ -381,6 +359,8 @@ public:
 
 	bool isCombatDroid();
 
+	bool isBombDroid();
+
 	bool isTrapDroid();
 
 	bool hasStorage();
@@ -401,11 +381,11 @@ public:
 
 	bool hasReactionChatMessages();
 
-	String getReactionStf();
+	String getReactionStf() const;
 
-	int getHamMaximum();
+	int getHamMaximum() const;
 
-	int getHamBase();
+	int getHamBase() const;
 
 	int getDamageMin();
 
@@ -535,10 +515,6 @@ public:
 
 	static const int PROBE_DROID = 0xE1;
 
-	static const int SPIDER_DROID = 0xDB;
-
-	static const int ROBODOG = 0x46;
-
 protected:
 	int maximumHam;
 
@@ -597,8 +573,6 @@ public:
 	void setMaximumHAM(int idx);
 
 	void setAttackSpeed(float f);
-
-	bool isCamouflaged(CreatureObject* target);
 
 	bool hasPower();
 
@@ -662,14 +636,14 @@ public:
 	void initDroidWeapons();
 
 	/**
-	 * Returns a crafting station of the given type if droid has the appropriate module. Returns nullptr otherwise.
+	 * Returns a crafting station of the given type if droid has the appropriate module. Returns NULL otherwise.
 	 */
 	CraftingStation* getCraftingStation(int type);
 
 	/**
 	 * Returns a reaction stf if the droid has a personality chip
 	 */
-	String getPersonalityBase();
+	String getPersonalityBase() const;
 
 	Reference<BaseDroidModuleComponent* > getModule(const String& name);
 
@@ -739,6 +713,8 @@ public:
 
 	bool isCombatDroid();
 
+	bool isBombDroid();
+
 	bool isTrapDroid();
 
 	bool hasStorage();
@@ -759,11 +735,11 @@ public:
 
 	bool hasReactionChatMessages();
 
-	String getReactionStf();
+	String getReactionStf() const;
 
-	int getHamMaximum();
+	int getHamMaximum() const;
 
-	int getHamBase();
+	int getHamBase() const;
 
 	int getDamageMin();
 
@@ -827,8 +803,6 @@ public:
 
 	void setAttackSpeed(float f);
 
-	bool isCamouflaged(CreatureObject* target);
-
 	bool hasPower();
 
 	void usePower(int amount);
@@ -846,6 +820,8 @@ public:
 	void handleLowPower();
 
 	bool isPowerDroid();
+
+	String getPersonalityBase() const;
 
 	float getKinetic();
 
@@ -875,6 +851,8 @@ public:
 
 	bool isCombatDroid();
 
+	bool isBombDroid();
+
 	bool isTrapDroid();
 
 	bool hasStorage();
@@ -885,11 +863,11 @@ public:
 
 	bool hasReactionChatMessages();
 
-	String getReactionStf();
+	String getReactionStf() const;
 
-	int getHamMaximum();
+	int getHamMaximum() const;
 
-	int getHamBase();
+	int getHamBase() const;
 
 	int getDamageMin();
 

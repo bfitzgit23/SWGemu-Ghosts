@@ -3,6 +3,7 @@ mailoc = Creature:new {
 	customName = "a Mailoc",
 	socialGroup = "self",
 	faction = "",
+	mobType = MOB_HERBIVORE,
 	level = 100,
 	chanceHit = 0.23,
 	damageMin = 735,

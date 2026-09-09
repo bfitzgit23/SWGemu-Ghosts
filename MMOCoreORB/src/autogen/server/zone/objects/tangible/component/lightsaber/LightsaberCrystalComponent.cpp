@@ -12,7 +12,7 @@
  *	LightsaberCrystalComponentStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1088783342,RPC_NOTIFYLOADFROMDATABASE__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_HASPLAYERASPARENT__CREATUREOBJECT_,RPC_TUNECRYSTAL__CREATUREOBJECT_,RPC_UPDATECRYSTAL__INT_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_,RPC_GENERATECRYSTALSTATS__,RPC_VALIDATECRYSTALSTATS__,RPC_GETRANDOMIZEDSTAT__INT_INT_INT_,RPC_GETRANDOMIZEDSTAT__FLOAT_FLOAT_INT_,RPC_GETCRYSTALQUALITY__,RPC_GETDAMAGE__,RPC_GETMINIMUMDAMAGE__,RPC_GETMAXIMUMDAMAGE__,RPC_GETFORCECOST__,RPC_GETSACHEALTH__,RPC_GETATTACKSPEED__,RPC_GETSACACTION__,RPC_GETSACMIND__,RPC_GETWOUNDCHANCE__,RPC_GETITEMLEVEL__,RPC_GETOWNERID__,RPC_GETQUALITY__,RPC_SETQUALITY__INT_,RPC_GETCOLOR__,RPC_SETCOLOR__INT_,RPC_SETOWNERID__LONG_,RPC_SETITEMLEVEL__INT_,RPC_SETMINIMUMDAMAGE__INT_,RPC_SETMAXIMUMDAMAGE__INT_,RPC_SETFORCECOST__FLOAT_,RPC_SETSACHEALTH__INT_,RPC_SETSACACTION__INT_,RPC_SETSACMIND__INT_,RPC_SETATTACKSPEED__FLOAT_,RPC_SETWOUNDCHANCE__INT_,RPC_ISLIGHTSABERCRYSTALOBJECT__};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 1088783342,RPC_NOTIFYLOADFROMDATABASE__,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_HASPLAYERASPARENT__CREATUREOBJECT_,RPC_TUNECRYSTAL__CREATUREOBJECT_,RPC_UPDATECRYSTAL__INT_,RPC_INFLICTDAMAGE__TANGIBLEOBJECT_INT_FLOAT_BOOL_BOOL_,RPC_GENERATECRYSTALSTATS__,RPC_VALIDATECRYSTALSTATS__,RPC_GETRANDOMIZEDSTAT__INT_INT_INT_,RPC_GETRANDOMIZEDSTAT__FLOAT_FLOAT_INT_,RPC_GETCRYSTALQUALITY__,RPC_GETDAMAGE__,RPC_GETFORCECOST__,RPC_GETSACHEALTH__,RPC_GETATTACKSPEED__,RPC_GETSACACTION__,RPC_GETSACMIND__,RPC_GETWOUNDCHANCE__,RPC_GETOWNERID__,RPC_GETQUALITY__,RPC_SETQUALITY__INT_,RPC_GETCOLOR__,RPC_SETCOLOR__INT_,RPC_SETOWNERID__LONG_,RPC_SETITEMLEVEL__INT_,RPC_SETMINIMUMDAMAGE__INT_,RPC_SETMAXIMUMDAMAGE__INT_,RPC_SETFORCECOST__FLOAT_,RPC_SETSACHEALTH__INT_,RPC_SETSACACTION__INT_,RPC_SETSACMIND__INT_,RPC_SETATTACKSPEED__FLOAT_,RPC_SETWOUNDCHANCE__INT_,RPC_ISLIGHTSABERCRYSTALOBJECT__};
 
 LightsaberCrystalComponent::LightsaberCrystalComponent() : Component(DummyConstructorParameter::instance()) {
 	LightsaberCrystalComponentImplementation* _implementation = new LightsaberCrystalComponentImplementation();
@@ -258,34 +258,6 @@ int LightsaberCrystalComponent::getDamage() const {
 	}
 }
 
-int LightsaberCrystalComponent::getMinimumDamage() const {
-	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMINIMUMDAMAGE__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getMinimumDamage();
-	}
-}
-
-int LightsaberCrystalComponent::getMaximumDamage() const {
-	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETMAXIMUMDAMAGE__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getMaximumDamage();
-	}
-}
-
 float LightsaberCrystalComponent::getForceCost() const {
 	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
@@ -367,20 +339,6 @@ int LightsaberCrystalComponent::getWoundChance() const {
 		return method.executeWithSignedIntReturn();
 	} else {
 		return _implementation->getWoundChance();
-	}
-}
-
-int LightsaberCrystalComponent::getItemLevel() const {
-	LightsaberCrystalComponentImplementation* _implementation = static_cast<LightsaberCrystalComponentImplementation*>(_getImplementationForRead());
-	if (unlikely(_implementation == NULL)) {
-		if (!deployed)
-			throw ObjectNotDeployedException(this);
-
-		DistributedMethod method(this, RPC_GETITEMLEVEL__);
-
-		return method.executeWithSignedIntReturn();
-	} else {
-		return _implementation->getItemLevel();
 	}
 }
 
@@ -1040,16 +998,6 @@ int LightsaberCrystalComponentImplementation::getDamage() const{
 	return damage;
 }
 
-int LightsaberCrystalComponentImplementation::getMinimumDamage() const{
-	// server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.idl():  		return minimumDamage;
-	return minimumDamage;
-}
-
-int LightsaberCrystalComponentImplementation::getMaximumDamage() const{
-	// server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.idl():  		return maximumDamage;
-	return maximumDamage;
-}
-
 float LightsaberCrystalComponentImplementation::getForceCost() const{
 	// server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.idl():  		return floatForceCost;
 	return floatForceCost;
@@ -1078,11 +1026,6 @@ int LightsaberCrystalComponentImplementation::getSacMind() const{
 int LightsaberCrystalComponentImplementation::getWoundChance() const{
 	// server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.idl():  		return woundChance;
 	return woundChance;
-}
-
-int LightsaberCrystalComponentImplementation::getItemLevel() const{
-	// server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.idl():  		return itemLevel;
-	return itemLevel;
 }
 
 unsigned long long LightsaberCrystalComponentImplementation::getOwnerID() const{
@@ -1287,20 +1230,6 @@ void LightsaberCrystalComponentAdapter::invokeMethod(uint32 methid, DistributedM
 			resp->insertSignedInt(_m_res);
 		}
 		break;
-	case RPC_GETMINIMUMDAMAGE__:
-		{
-			
-			int _m_res = getMinimumDamage();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETMAXIMUMDAMAGE__:
-		{
-			
-			int _m_res = getMaximumDamage();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
 	case RPC_GETFORCECOST__:
 		{
 			
@@ -1340,13 +1269,6 @@ void LightsaberCrystalComponentAdapter::invokeMethod(uint32 methid, DistributedM
 		{
 			
 			int _m_res = getWoundChance();
-			resp->insertSignedInt(_m_res);
-		}
-		break;
-	case RPC_GETITEMLEVEL__:
-		{
-			
-			int _m_res = getItemLevel();
 			resp->insertSignedInt(_m_res);
 		}
 		break;
@@ -1531,14 +1453,6 @@ int LightsaberCrystalComponentAdapter::getDamage() const {
 	return (static_cast<LightsaberCrystalComponent*>(stub))->getDamage();
 }
 
-int LightsaberCrystalComponentAdapter::getMinimumDamage() const {
-	return (static_cast<LightsaberCrystalComponent*>(stub))->getMinimumDamage();
-}
-
-int LightsaberCrystalComponentAdapter::getMaximumDamage() const {
-	return (static_cast<LightsaberCrystalComponent*>(stub))->getMaximumDamage();
-}
-
 float LightsaberCrystalComponentAdapter::getForceCost() const {
 	return (static_cast<LightsaberCrystalComponent*>(stub))->getForceCost();
 }
@@ -1561,10 +1475,6 @@ int LightsaberCrystalComponentAdapter::getSacMind() const {
 
 int LightsaberCrystalComponentAdapter::getWoundChance() const {
 	return (static_cast<LightsaberCrystalComponent*>(stub))->getWoundChance();
-}
-
-int LightsaberCrystalComponentAdapter::getItemLevel() const {
-	return (static_cast<LightsaberCrystalComponent*>(stub))->getItemLevel();
 }
 
 unsigned long long LightsaberCrystalComponentAdapter::getOwnerID() const {
@@ -1684,7 +1594,7 @@ Luna<LuaLightsaberCrystalComponent>::RegType LuaLightsaberCrystalComponent::Regi
 	{ "addProperty", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::addProperty },
 	{ "getAttributeValue", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getAttributeValue },
 	{ "getAttributePrecision", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getAttributePrecision },
-	{ "getAttributeTitle", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getAttributeTitle },
+	{ "getAttributeGroup", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getAttributeGroup },
 	{ "getAttributeHidden", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getAttributeHidden },
 	{ "setPropertyToHidden", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::setPropertyToHidden },
 	{ "getPropertyCount", (int (LuaLightsaberCrystalComponent::*)(lua_State*)) &LuaComponent::getPropertyCount },
@@ -1707,15 +1617,12 @@ Luna<LuaLightsaberCrystalComponent>::RegType LuaLightsaberCrystalComponent::Regi
 	{ "getRandomizedStat", &LuaLightsaberCrystalComponent::getRandomizedStat },
 	{ "getCrystalQuality", &LuaLightsaberCrystalComponent::getCrystalQuality },
 	{ "getDamage", &LuaLightsaberCrystalComponent::getDamage },
-	{ "getMinimumDamage", &LuaLightsaberCrystalComponent::getMinimumDamage },
-	{ "getMaximumDamage", &LuaLightsaberCrystalComponent::getMaximumDamage },
 	{ "getForceCost", &LuaLightsaberCrystalComponent::getForceCost },
 	{ "getSacHealth", &LuaLightsaberCrystalComponent::getSacHealth },
 	{ "getAttackSpeed", &LuaLightsaberCrystalComponent::getAttackSpeed },
 	{ "getSacAction", &LuaLightsaberCrystalComponent::getSacAction },
 	{ "getSacMind", &LuaLightsaberCrystalComponent::getSacMind },
 	{ "getWoundChance", &LuaLightsaberCrystalComponent::getWoundChance },
-	{ "getItemLevel", &LuaLightsaberCrystalComponent::getItemLevel },
 	{ "getOwnerID", &LuaLightsaberCrystalComponent::getOwnerID },
 	{ "getQuality", &LuaLightsaberCrystalComponent::getQuality },
 	{ "setQuality", &LuaLightsaberCrystalComponent::setQuality },
@@ -2072,34 +1979,6 @@ int LuaLightsaberCrystalComponent::getDamage(lua_State *L) {
 	return 0;
 }
 
-int LuaLightsaberCrystalComponent::getMinimumDamage(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (parameterCount == 0) {
-		int result = realObject->getMinimumDamage();
-
-		lua_pushinteger(L, result);
-		return 1;
-	} else {
-		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'LightsaberCrystalComponent:getMinimumDamage()'");
-	}
-	return 0;
-}
-
-int LuaLightsaberCrystalComponent::getMaximumDamage(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (parameterCount == 0) {
-		int result = realObject->getMaximumDamage();
-
-		lua_pushinteger(L, result);
-		return 1;
-	} else {
-		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'LightsaberCrystalComponent:getMaximumDamage()'");
-	}
-	return 0;
-}
-
 int LuaLightsaberCrystalComponent::getForceCost(lua_State *L) {
 	int parameterCount = lua_gettop(L) - 1;
 	
@@ -2180,20 +2059,6 @@ int LuaLightsaberCrystalComponent::getWoundChance(lua_State *L) {
 		return 1;
 	} else {
 		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'LightsaberCrystalComponent:getWoundChance()'");
-	}
-	return 0;
-}
-
-int LuaLightsaberCrystalComponent::getItemLevel(lua_State *L) {
-	int parameterCount = lua_gettop(L) - 1;
-	
-	if (parameterCount == 0) {
-		int result = realObject->getItemLevel();
-
-		lua_pushinteger(L, result);
-		return 1;
-	} else {
-		throw LuaCallbackException(L, "invalid argument count " + String::valueOf(parameterCount) + " for lua method 'LightsaberCrystalComponent:getItemLevel()'");
 	}
 	return 0;
 }

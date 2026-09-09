@@ -104,6 +104,8 @@ public:
 
 	void loadTemplateData(SharedObjectTemplate* templateData);
 
+	void notifyLoadFromDatabase();
+
 	void fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player);
 
 	/**
@@ -140,6 +142,10 @@ public:
 	void createChildObjects();
 
 	void setEffectiveness(float newValue);
+
+	void setDroidParent(CreatureObject* parentCreO);
+
+	ManagedWeakReference<CreatureObject* > getDroidParent();
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -175,6 +181,9 @@ class CraftingStationImplementation : public ToolTangibleObjectImplementation {
 
 	int complexityLevel;
 
+protected:
+	ManagedWeakReference<CreatureObject* > droidParent;
+
 public:
 	CraftingStationImplementation();
 
@@ -183,6 +192,8 @@ public:
 	void initializeTransientMembers();
 
 	void loadTemplateData(SharedObjectTemplate* templateData);
+
+	void notifyLoadFromDatabase();
 
 	void fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player);
 
@@ -220,6 +231,10 @@ public:
 	void createChildObjects();
 
 	void setEffectiveness(float newValue);
+
+	void setDroidParent(CreatureObject* parentCreO);
+
+	ManagedWeakReference<CreatureObject* > getDroidParent();
 
 	WeakReference<CraftingStation*> _this;
 
@@ -267,6 +282,8 @@ public:
 
 	void initializeTransientMembers();
 
+	void notifyLoadFromDatabase();
+
 	int handleObjectMenuSelect(CreatureObject* player, byte selectedID);
 
 	void sendInputHopper(CreatureObject* player);
@@ -284,6 +301,10 @@ public:
 	void createChildObjects();
 
 	void setEffectiveness(float newValue);
+
+	void setDroidParent(CreatureObject* parentCreO);
+
+	ManagedWeakReference<CreatureObject* > getDroidParent();
 
 };
 
@@ -327,6 +348,8 @@ public:
 	Optional<float> effectiveness;
 
 	Optional<int> complexityLevel;
+
+	Optional<ManagedWeakReference<CreatureObjectPOD* >> droidParent;
 
 	String _className;
 	CraftingStationPOD();

@@ -17,25 +17,25 @@ namespace droid {
 class DroidAutoRepairModuleDataComponent : public BaseDroidModuleComponent {
 
 protected:
-	int autoRepairPower;
+	float autoRepairPower;
 	bool active;
 
 public:
 	DroidAutoRepairModuleDataComponent();
 	~DroidAutoRepairModuleDataComponent();
-	String getModuleName();
+	String getModuleName() const;
 	void initializeTransientMembers();
 	void fillAttributeList(AttributeListMessage* msg, CreatureObject* droid);
 	void fillObjectMenuResponse(SceneObject* droidObject, ObjectMenuResponse* menuResponse, CreatureObject* player);
 	int handleObjectMenuSelect(CreatureObject* player, byte selectedID, PetControlDevice* controller);
 	int getBatteryDrain();
 	void deactivate();
-	String toString();
+	String toString() const;
 	void onCall();
 	void onStore();
 	void updateCraftingValues(CraftingValues* values, bool firstUpdate);
 	bool isActive(){ return active; }
-	int getAutoRepairPower(){ return autoRepairPower; }
+	float getAutoRepairPower() { return autoRepairPower; }
 	virtual bool isStackable() { return true; }
 	virtual void addToStack(BaseDroidModuleComponent* other);
 	virtual void copy(BaseDroidModuleComponent* other);

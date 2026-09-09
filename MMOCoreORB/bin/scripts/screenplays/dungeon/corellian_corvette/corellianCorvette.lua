@@ -50,7 +50,9 @@ function CorellianCorvette:initialize()
 		local building = self.buildings[i]
 		for j = 1, #building.buildingIds, 1 do
 			local pCorvette = getSceneObject(building.buildingIds[j])
-			if pCorvette ~= nil and SceneObject(pCorvette):isBuildingObject() then
+			if pCorvette == nil or not SceneObject(pCorvette):isBuildingObject() then
+				printLuaError("CorellianCorvette:initialize tried using a corvette id that was nil or not a building: " .. building.buildingIds[j])
+			else
 				local corvetteID = SceneObject(pCorvette):getObjectID()
 				deleteData("corvetteActive:" .. corvetteID)
 				self:ejectAllPlayers(pCorvette)
@@ -416,8 +418,7 @@ function CorellianCorvette:setupBrokenDroid(pDroid)
 	createObserver(DESTINATIONREACHED, "CorellianCorvette", "repairDroidDestinationReached", pDroid)
 	SceneObject(pDroid):setContainerComponent("corvetteBrokenDroidContainerComponent")
 
-	AiAgent(pDroid):setAiTemplate("idlewait") -- Don't move unless patrol point is added to list
-	AiAgent(pDroid):setFollowState(4) -- Patrolling
+	AiAgent(pDroid):setMovementState(AI_PATROLLING)
 
 	writeData(corvetteID .. ":electricTrapEnabled", 1)
 end
@@ -539,8 +540,7 @@ function CorellianCorvette:setupPrisoner(pPrisoner)
 	end
 
 	createObserver(DESTINATIONREACHED, "CorellianCorvette", "prisonerDestinationReached", pPrisoner)
-	AiAgent(pPrisoner):setAiTemplate("idlewait") -- Don't move unless patrol point is added to list
-	AiAgent(pPrisoner):setFollowState(4) -- Patrolling
+	AiAgent(pPrisoner):setMovementState(AI_PATROLLING)
 
 	if (SceneObject(pPrisoner):getObjectName() == "prisoner") then
 		CreatureObject(pPrisoner):setOptionBit(CONVERSABLE)
@@ -880,8 +880,16 @@ function CorellianCorvette:transportPlayer(pPlayer)
 	local corvetteFaction = self:getBuildingFaction(pCorvette)
 	local factionCRC = self:getFactionCRC(corvetteFaction)
 
-	if (corvetteFaction ~= "neutral" and (not ThemeParkLogic:isInFaction(factionCRC, pPlayer) or ThemeParkLogic:isOnLeave(pPlayer) or TangibleObject(pPlayer):isChangingFactionStatus())) then
-		return
+	if (corvetteFaction ~= "neutral") then
+		local covertOvert = useCovertOvert()
+
+		if (covertOvert) then
+			if (not ThemeParkLogic:isInFaction(factionCRC, pPlayer) or not CreatureObject(pPlayer):isOvert() or TangibleObject(pPlayer):isChangingFactionStatus()) then
+				return
+			end
+		elseif (not ThemeParkLogic:isInFaction(factionCRC, pPlayer) or CreatureObject(pPlayer):isOnLeave() or TangibleObject(pPlayer):isChangingFactionStatus()) then
+			return
+		end
 	end
 
 	local pCell = BuildingObject(pCorvette):getCell(1)
@@ -891,6 +899,11 @@ function CorellianCorvette:transportPlayer(pPlayer)
 	end
 
 	local cellID = SceneObject(pCell):getObjectID()
+	local player = CreatureObject(pPlayer)
+
+	if (player:isRidingMount()) then
+		player:dismount()
+	end
 	SceneObject(pPlayer):switchZone("dungeon1", -42.9, 0, 0.1, cellID)
 end
 

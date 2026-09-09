@@ -59,7 +59,7 @@ object_tangible_inventory_shared_character_inventory = SharedTangibleObjectTempl
 	collisionMaterialFlags = 0,
 	collisionMaterialPassFlags = 0,
 	containerType = 2,
-	containerVolumeLimit = 80,
+	containerVolumeLimit = 200,
 	customizationVariableMapping = {},
 
 	detailedDescription = "@item_n:inventory",
@@ -931,3 +931,21 @@ object_tangible_inventory_shared_lightsaber_inventory_5 = SharedTangibleObjectTe
 }
 
 ObjectTemplates:addClientTemplate(object_tangible_inventory_shared_lightsaber_inventory_5, "object/tangible/inventory/shared_lightsaber_inventory_5.iff")
+
+object_tangible_inventory_shared_lightsaber_inventory_6 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/inventory/shared_lightsaber_inventory_6.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_tangible_inventory_shared_lightsaber_inventory_6, "object/tangible/inventory/shared_lightsaber_inventory_6.iff")
+
+object_tangible_inventory_shared_lightsaber_inventory_7 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/inventory/shared_lightsaber_inventory_7.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_tangible_inventory_shared_lightsaber_inventory_7, "object/tangible/inventory/shared_lightsaber_inventory_7.iff")
+
+object_tangible_inventory_shared_lightsaber_inventory_8 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/inventory/shared_lightsaber_inventory_8.iff"
+}
+
+ObjectTemplates:addClientTemplate(object_tangible_inventory_shared_lightsaber_inventory_8, "object/tangible/inventory/shared_lightsaber_inventory_8.iff")

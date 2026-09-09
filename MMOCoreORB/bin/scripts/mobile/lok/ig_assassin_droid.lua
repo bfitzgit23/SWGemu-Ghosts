@@ -2,6 +2,7 @@ ig_assassin_droid = Creature:new {
 	objectName = "@mob/creature_names:ig_assassin_droid",
 	socialGroup = "",
 	faction = "",
+	mobType = MOB_ANDROID,
 	level = 21,
 	chanceHit = 0.33,
 	damageMin = 220,
@@ -18,7 +19,7 @@ ig_assassin_droid = Creature:new {
 	boneType = "",
 	boneAmount = 0,
 	milk = 0,
-	tamingChance = 0.0,
+	tamingChance = 0,
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = KILLER + STALKER,
@@ -29,11 +30,7 @@ ig_assassin_droid = Creature:new {
 	lootGroups = {
 	     {
 			groups = {
-				{group = "junk", chance = 6500000},
-				{group = "nyms_common", chance = 1000000},
-				{group = "pistols", chance = 1000000},
-				{group = "carbines", chance = 1000000},
-				{group = "tailor_components", chance = 500000}
+				{group = "lok_droid_tier_1", chance = 10000000}
 			}
 		}
 	},

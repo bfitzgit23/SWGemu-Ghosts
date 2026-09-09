@@ -1,0 +1,5 @@
+includeFile("event/world_boss/corrupted_acklay_boss.lua")
+includeFile("event/world_boss/corrupted_deathsting_boss.lua")
+includeFile("event/world_boss/corrupted_geonosian_boss.lua")
+includeFile("event/world_boss/corrupted_rancor_boss.lua")
+includeFile("event/world_boss/corrupted_wampa_boss.lua")

@@ -45,7 +45,7 @@ void PsgArmorObject::initializeTransientMembers() {
 }
 
 bool PsgArmorObject::isPsgArmorObject() {
-	PsgArmorObjectImplementation* _implementation = static_cast<PsgArmorObjectImplementation*>(_getImplementation());
+	PsgArmorObjectImplementation* _implementation = static_cast<PsgArmorObjectImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);

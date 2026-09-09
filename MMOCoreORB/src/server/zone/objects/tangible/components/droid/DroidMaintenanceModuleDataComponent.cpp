@@ -2,6 +2,7 @@
  * 				Copyright <SWGEmu>
 		See file COPYING for copying conditions. */
 
+#include "server/zone/objects/structure/StructureObject.h"
 #include "DroidMaintenanceModuleDataComponent.h"
 #include "server/zone/ZoneServer.h"
 #include "server/zone/objects/tangible/component/droid/DroidComponent.h"
@@ -12,6 +13,7 @@
 #include "server/zone/objects/player/sessions/DroidMaintenanceSession.h"
 #include "server/zone/objects/creature/credits/CreditObject.h"
 #include "server/zone/Zone.h"
+#include "server/zone/objects/creature/ai/DroidObject.h"
 
 DroidMaintenanceModuleDataComponent::DroidMaintenanceModuleDataComponent() {
 	setLoggingName("DroidMaintenanceModule");
@@ -24,7 +26,7 @@ DroidMaintenanceModuleDataComponent::~DroidMaintenanceModuleDataComponent() {
 	// No op
 }
 
-String DroidMaintenanceModuleDataComponent::getModuleName() {
+String DroidMaintenanceModuleDataComponent::getModuleName() const {
 	return String("maintenance_module");
 }
 
@@ -211,22 +213,26 @@ void DroidMaintenanceModuleDataComponent::addToStack(BaseDroidModuleComponent* o
 
 }
 
-String DroidMaintenanceModuleDataComponent::toString(){
+String DroidMaintenanceModuleDataComponent::toString() const {
 	StringBuffer str;
 	str << getModuleName() << "\n";
 	str << "Number of Assigned Structures: " << assignedStructures.size() << "\n";
+
 	for (int i = 0; i < assignedStructures.size(); i++) {
 		uint64 objectID = assignedStructures.elementAt(i);
 		str << "\tStructure: " << objectID << "\n";
 	}
+
 	return str.toString();
 }
+
 bool DroidMaintenanceModuleDataComponent::isAssignedTo(uint64 structure) {
 	return assignedStructures.contains(structure);
 }
+
 bool DroidMaintenanceModuleDataComponent::assignStructure( uint64 objectID ){
 
-	if( !assignedStructures.contains( objectID ) && assignedStructures.size() <= maxStructures) {
+	if( !assignedStructures.contains( objectID ) && assignedStructures.size() < maxStructures) {
 		assignedStructures.add( objectID );
 		return true;
 	} else {
@@ -376,6 +382,8 @@ int DroidMaintenanceModuleDataComponent::writeObjectMembers(ObjectOutputStream* 
 	int _offset;
 	uint32 _totalSize;
 
+	int _varCount = writeClassNameMember(stream);
+
 	_name = "assignedStructures";
 	_name.toBinaryStream(stream);
 	_offset = stream->getOffset();
@@ -384,10 +392,13 @@ int DroidMaintenanceModuleDataComponent::writeObjectMembers(ObjectOutputStream* 
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 
-	return 1;
+	return _varCount + 1;
 }
 
 bool DroidMaintenanceModuleDataComponent::readObjectMember(ObjectInputStream* stream, const String& name) {
+
+	if (readClassNameMember(stream, name))
+		return true;
 
 	if (name == "assignedStructures") {
 		TypeInfo< Vector<unsigned long long> >::parseFromBinaryStream(&assignedStructures, stream);

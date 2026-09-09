@@ -14,6 +14,10 @@
 
 #include "server/zone/Zone.h"
 
+#include "server/zone/GroundZone.h"
+
+#include "server/zone/SpaceZone.h"
+
 #include "server/chat/ChatManager.h"
 
 #include "conf/ConfigManager.h"
@@ -46,6 +50,8 @@
 
 #include "server/zone/managers/creature/CreatureTemplateManager.h"
 
+#include "server/zone/managers/ship/ShipAgentTemplateManager.h"
+
 #include "server/zone/managers/creature/DnaManager.h"
 
 #include "server/zone/managers/creature/PetManager.h"
@@ -60,9 +66,15 @@
  *	ZoneServerStub
  */
 
-const float ZoneServer::CLOSEOBJECTRANGE = 512;
+const float ZoneServer::CLOSEOBJECTRANGE = 192;
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 969596319,RPC_INITIALIZE__,RPC_SHUTDOWN__,RPC_STARTMANAGERS__,RPC_STARTZONES__,RPC_STOPMANAGERS__,RPC_START__INT_INT_,RPC_STOP__,RPC_CLEARZONES__,RPC_TIMEDSHUTDOWN__INT_,RPC_ADDTOTALSENTPACKET__INT_,RPC_ADDTOTALRESENTPACKET__INT_,RPC_PRINTINFO__,RPC_GETINFO__,RPC_PRINTEVENTS__,RPC_GETOBJECT__LONG_BOOL_,RPC_CREATEOBJECT__INT_STRING_INT_,RPC_CREATEOBJECT__INT_INT_LONG_,RPC_CREATECLIENTOBJECT__INT_LONG_,RPC_UPDATEOBJECTTODATABASE__SCENEOBJECT_,RPC_UPDATEOBJECTTOSTATICDATABASE__SCENEOBJECT_,RPC_DESTROYOBJECTFROMDATABASE__LONG_,RPC_LOCK__BOOL_,RPC_UNLOCK__BOOL_,RPC_FIXSCHEDULER__,RPC_CHANGEUSERCAP__INT_,RPC_GETCONNECTIONCOUNT__,RPC_INCREASEONLINEPLAYERS__,RPC_DECREASEONLINEPLAYERS__,RPC_INCREASETOTALDELETEDPLAYERS__,RPC_GETGALAXYID__,RPC_GETGALAXYNAME__,RPC_SETGALAXYNAME__STRING_,RPC_ISSERVERLOCKED__,RPC_ISSERVERONLINE__,RPC_ISSERVEROFFLINE__,RPC_ISSERVERLOADING__,RPC_ISSERVERSHUTTINGDOWN__,RPC_GETSERVERCAP__,RPC_GETSERVERSTATE__,RPC_GETZONE__STRING_,RPC_GETZONE__INT_,RPC_GETZONECOUNT__,RPC_GETMAXPLAYERS__,RPC_GETTOTALPLAYERS__,RPC_GETDELETEDPLAYERS__,RPC_GETPLAYERMANAGER__,RPC_GETREACTIONMANAGER__,RPC_GETFRSMANAGER__,RPC_GETCHATMANAGER__,RPC_GETCITYMANAGER__,RPC_GETOBJECTCONTROLLER__,RPC_GETMISSIONMANAGER__,RPC_GETRADIALMANAGER__,RPC_GETGUILDMANAGER__,RPC_GETRESOURCEMANAGER__,RPC_GETCRAFTINGMANAGER__,RPC_GETLOOTMANAGER__,RPC_GETAUCTIONMANAGER__,RPC_GETPETMANAGER__,RPC_SETGALAXYID__INT_,RPC_SETSERVERSTATE__INT_,RPC_SETSHOULDDELETENAVAREAS__BOOL_,RPC_SHOULDDELETENAVAREAS__,RPC_SETSERVERSTATELOCKED__,RPC_SETSERVERSTATEONLINE__,RPC_SETSERVERSTATESHUTTINGDOWN__,RPC_LOADLOGINMESSAGE__,RPC_CHANGELOGINMESSAGE__STRING_,RPC_GETLOGINMESSAGE__};
+const float ZoneServer::SPACECLOSEOBJECTRANGE = 2048;
+
+const float ZoneServer::CAPITALSHIPRANGE = 8192;
+
+const float ZoneServer::SPACESTATIONRANGE = 32768;
+
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 969596319,RPC_INITIALIZE__,RPC_SHUTDOWN__,RPC_STARTMANAGERS__,RPC_STARTGROUNDZONES__,RPC_STARTSPACEZONES__,RPC_STOPMANAGERS__,RPC_START__INT_INT_,RPC_STOP__,RPC_CLEARZONES__,RPC_TIMEDSHUTDOWN__INT_INT_,RPC_ADDTOTALSENTPACKET__INT_,RPC_ADDTOTALRESENTPACKET__INT_,RPC_PRINTINFO__,RPC_GETINFO__,RPC_PRINTEVENTS__,RPC_GETOBJECT__LONG_BOOL_,RPC_CREATEOBJECT__INT_STRING_INT_,RPC_CREATEOBJECT__INT_INT_LONG_,RPC_CREATECLIENTOBJECT__INT_LONG_,RPC_UPDATEOBJECTTODATABASE__SCENEOBJECT_,RPC_UPDATEOBJECTTOSTATICDATABASE__SCENEOBJECT_,RPC_DESTROYOBJECTFROMDATABASE__LONG_,RPC_LOCK__BOOL_,RPC_UNLOCK__BOOL_,RPC_FIXSCHEDULER__,RPC_CHANGEUSERCAP__INT_,RPC_GETCONNECTIONCOUNT__,RPC_INCREASEONLINEPLAYERS__,RPC_DECREASEONLINEPLAYERS__,RPC_INCREASETOTALDELETEDPLAYERS__,RPC_GETGALAXYID__,RPC_GETGALAXYNAME__,RPC_SETGALAXYNAME__STRING_,RPC_ISSERVERLOCKED__,RPC_ISSERVERONLINE__,RPC_ISSERVEROFFLINE__,RPC_ISSERVERLOADING__,RPC_ISSERVERSHUTTINGDOWN__,RPC_GETSERVERCAP__,RPC_GETSERVERSTATE__,RPC_GETZONE__STRING_,RPC_GETZONE__INT_,RPC_GETZONECOUNT__,RPC_GETSPACEZONE__INT_,RPC_GETSPACEZONECOUNT__,RPC_GETMAXPLAYERS__,RPC_GETTOTALPLAYERS__,RPC_GETDELETEDPLAYERS__,RPC_GETPLAYERMANAGER__,RPC_GETREACTIONMANAGER__,RPC_GETFRSMANAGER__,RPC_GETCHATMANAGER__,RPC_GETCITYMANAGER__,RPC_GETOBJECTCONTROLLER__,RPC_GETMISSIONMANAGER__,RPC_GETRADIALMANAGER__,RPC_GETGUILDMANAGER__,RPC_GETRESOURCEMANAGER__,RPC_GETCRAFTINGMANAGER__,RPC_GETLOOTMANAGER__,RPC_GETAUCTIONMANAGER__,RPC_GETPETMANAGER__,RPC_SETGALAXYID__INT_,RPC_SETSERVERSTATE__INT_,RPC_SETSHOULDDELETENAVAREAS__BOOL_,RPC_SHOULDDELETENAVAREAS__,RPC_SETSERVERSTATELOCKED__,RPC_SETSERVERSTATEONLINE__,RPC_SETSERVERSTATESHUTTINGDOWN__,RPC_LOADLOGINMESSAGE__,RPC_CHANGELOGINMESSAGE__STRING_,RPC_GETLOGINMESSAGE__};
 
 ZoneServer::ZoneServer(ConfigManager* config) : ManagedService(DummyConstructorParameter::instance()) {
 	ZoneServerImplementation* _implementation = new ZoneServerImplementation(config);
@@ -147,17 +159,31 @@ void ZoneServer::startManagers() {
 	}
 }
 
-void ZoneServer::startZones() {
+void ZoneServer::startGroundZones() {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_STARTZONES__);
+		DistributedMethod method(this, RPC_STARTGROUNDZONES__);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->startZones();
+		_implementation->startGroundZones();
+	}
+}
+
+void ZoneServer::startSpaceZones() {
+	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_STARTSPACEZONES__);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->startSpaceZones();
 	}
 }
 
@@ -219,18 +245,19 @@ void ZoneServer::clearZones() {
 	}
 }
 
-void ZoneServer::timedShutdown(int minutes) {
+void ZoneServer::timedShutdown(int minutes, int flags) {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
-		DistributedMethod method(this, RPC_TIMEDSHUTDOWN__INT_);
+		DistributedMethod method(this, RPC_TIMEDSHUTDOWN__INT_INT_);
 		method.addSignedIntParameter(minutes);
+		method.addSignedIntParameter(flags);
 
 		method.executeWithVoidReturn();
 	} else {
-		_implementation->timedShutdown(minutes);
+		_implementation->timedShutdown(minutes, flags);
 	}
 }
 
@@ -264,14 +291,14 @@ bool ZoneServer::handleError(ZoneClientSession* client, Exception& e) {
 	}
 }
 
-void ZoneServer::addTotalSentPacket(int count) {
+void ZoneServer::addTotalSentPacket(unsigned int count) {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_ADDTOTALSENTPACKET__INT_);
-		method.addSignedIntParameter(count);
+		method.addUnsignedIntParameter(count);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -279,14 +306,14 @@ void ZoneServer::addTotalSentPacket(int count) {
 	}
 }
 
-void ZoneServer::addTotalResentPacket(int count) {
+void ZoneServer::addTotalResentPacket(unsigned int count) {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
 			throw ObjectNotDeployedException(this);
 
 		DistributedMethod method(this, RPC_ADDTOTALRESENTPACKET__INT_);
-		method.addSignedIntParameter(count);
+		method.addUnsignedIntParameter(count);
 
 		method.executeWithVoidReturn();
 	} else {
@@ -564,7 +591,7 @@ void ZoneServer::increaseTotalDeletedPlayers() {
 	}
 }
 
-int ZoneServer::getGalaxyID() {
+int ZoneServer::getGalaxyID() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -578,7 +605,7 @@ int ZoneServer::getGalaxyID() {
 	}
 }
 
-String ZoneServer::getGalaxyName() {
+String ZoneServer::getGalaxyName() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -609,7 +636,7 @@ void ZoneServer::setGalaxyName(const String& name) {
 	}
 }
 
-bool ZoneServer::isServerLocked() {
+bool ZoneServer::isServerLocked() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -623,7 +650,7 @@ bool ZoneServer::isServerLocked() {
 	}
 }
 
-bool ZoneServer::isServerOnline() {
+bool ZoneServer::isServerOnline() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -637,7 +664,7 @@ bool ZoneServer::isServerOnline() {
 	}
 }
 
-bool ZoneServer::isServerOffline() {
+bool ZoneServer::isServerOffline() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -651,7 +678,7 @@ bool ZoneServer::isServerOffline() {
 	}
 }
 
-bool ZoneServer::isServerLoading() {
+bool ZoneServer::isServerLoading() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -665,7 +692,7 @@ bool ZoneServer::isServerLoading() {
 	}
 }
 
-bool ZoneServer::isServerShuttingDown() {
+bool ZoneServer::isServerShuttingDown() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -679,7 +706,7 @@ bool ZoneServer::isServerShuttingDown() {
 	}
 }
 
-int ZoneServer::getServerCap() {
+int ZoneServer::getServerCap() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -693,7 +720,7 @@ int ZoneServer::getServerCap() {
 	}
 }
 
-int ZoneServer::getServerState() {
+int ZoneServer::getServerState() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -707,7 +734,7 @@ int ZoneServer::getServerState() {
 	}
 }
 
-Zone* ZoneServer::getZone(const String& terrainName) {
+Zone* ZoneServer::getZone(const String& terrainName) const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -737,7 +764,7 @@ Zone* ZoneServer::getZone(int idx) {
 	}
 }
 
-int ZoneServer::getZoneCount() {
+int ZoneServer::getZoneCount() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -751,7 +778,36 @@ int ZoneServer::getZoneCount() {
 	}
 }
 
-int ZoneServer::getMaxPlayers() {
+SpaceZone* ZoneServer::getSpaceZone(int idx) {
+	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPACEZONE__INT_);
+		method.addSignedIntParameter(idx);
+
+		return static_cast<SpaceZone*>(method.executeWithObjectReturn());
+	} else {
+		return _implementation->getSpaceZone(idx);
+	}
+}
+
+int ZoneServer::getSpaceZoneCount() const {
+	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GETSPACEZONECOUNT__);
+
+		return method.executeWithSignedIntReturn();
+	} else {
+		return _implementation->getSpaceZoneCount();
+	}
+}
+
+int ZoneServer::getMaxPlayers() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -765,7 +821,7 @@ int ZoneServer::getMaxPlayers() {
 	}
 }
 
-int ZoneServer::getTotalPlayers() {
+int ZoneServer::getTotalPlayers() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -779,7 +835,7 @@ int ZoneServer::getTotalPlayers() {
 	}
 }
 
-int ZoneServer::getDeletedPlayers() {
+int ZoneServer::getDeletedPlayers() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1074,7 +1130,7 @@ void ZoneServer::setShouldDeleteNavAreas(bool b) {
 	}
 }
 
-bool ZoneServer::shouldDeleteNavAreas() {
+bool ZoneServer::shouldDeleteNavAreas() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1159,7 +1215,7 @@ void ZoneServer::changeLoginMessage(const String& motd) {
 	}
 }
 
-String ZoneServer::getLoginMessage() {
+String ZoneServer::getLoginMessage() const {
 	ZoneServerImplementation* _implementation = static_cast<ZoneServerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		if (!deployed)
@@ -1193,7 +1249,13 @@ void ZoneServer::_setImplementation(DistributedObjectServant* servant) {
  *	ZoneServerImplementation
  */
 
-const float ZoneServerImplementation::CLOSEOBJECTRANGE = 512;
+const float ZoneServerImplementation::CLOSEOBJECTRANGE = 192;
+
+const float ZoneServerImplementation::SPACECLOSEOBJECTRANGE = 2048;
+
+const float ZoneServerImplementation::CAPITALSHIPRANGE = 8192;
+
+const float ZoneServerImplementation::SPACESTATIONRANGE = 32768;
 
 ZoneServerImplementation::ZoneServerImplementation(DummyConstructorParameter* param) : ManagedServiceImplementation(param) {
 	_initializeImplementation();
@@ -1312,7 +1374,7 @@ bool ZoneServerImplementation::readObjectMember(ObjectInputStream* stream, const
 		return true;
 
 	case 0x3b69de8: //ZoneServer.totalSentPackets
-		TypeInfo<int >::parseFromBinaryStream(&totalSentPackets, stream);
+		TypeInfo<unsigned long long >::parseFromBinaryStream(&totalSentPackets, stream);
 		return true;
 
 	case 0x1d75880a: //ZoneServer.serverCap
@@ -1320,7 +1382,7 @@ bool ZoneServerImplementation::readObjectMember(ObjectInputStream* stream, const
 		return true;
 
 	case 0xfc1cc451: //ZoneServer.totalResentPackets
-		TypeInfo<int >::parseFromBinaryStream(&totalResentPackets, stream);
+		TypeInfo<unsigned long long >::parseFromBinaryStream(&totalResentPackets, stream);
 		return true;
 
 	case 0x1124da92: //ZoneServer.currentPlayers
@@ -1498,7 +1560,7 @@ int ZoneServerImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&totalSentPackets, stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalSentPackets, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1516,7 +1578,7 @@ int ZoneServerImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&totalResentPackets, stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalResentPackets, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1609,12 +1671,12 @@ int ZoneServerImplementation::writeObjectMembers(ObjectOutputStream* stream) {
 void ZoneServerImplementation::fixScheduler() {
 }
 
-int ZoneServerImplementation::getGalaxyID() {
+int ZoneServerImplementation::getGalaxyID() const{
 	// server/zone/ZoneServer.idl():  		return galaxyID;
 	return galaxyID;
 }
 
-String ZoneServerImplementation::getGalaxyName() {
+String ZoneServerImplementation::getGalaxyName() const{
 	// server/zone/ZoneServer.idl():  		return galaxyName;
 	return galaxyName;
 }
@@ -1624,67 +1686,84 @@ void ZoneServerImplementation::setGalaxyName(const String& name) {
 	galaxyName = name;
 }
 
-bool ZoneServerImplementation::isServerLocked() {
+bool ZoneServerImplementation::isServerLocked() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get() == LOCKED;
 	return (&serverState)->get() == LOCKED;
 }
 
-bool ZoneServerImplementation::isServerOnline() {
+bool ZoneServerImplementation::isServerOnline() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get() == ONLINE;
 	return (&serverState)->get() == ONLINE;
 }
 
-bool ZoneServerImplementation::isServerOffline() {
+bool ZoneServerImplementation::isServerOffline() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get() == OFFLINE;
 	return (&serverState)->get() == OFFLINE;
 }
 
-bool ZoneServerImplementation::isServerLoading() {
+bool ZoneServerImplementation::isServerLoading() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get() == LOADING;
 	return (&serverState)->get() == LOADING;
 }
 
-bool ZoneServerImplementation::isServerShuttingDown() {
+bool ZoneServerImplementation::isServerShuttingDown() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get() == SHUTTINGDOWN;
 	return (&serverState)->get() == SHUTTINGDOWN;
 }
 
-int ZoneServerImplementation::getServerCap() {
+int ZoneServerImplementation::getServerCap() const{
 	// server/zone/ZoneServer.idl():  		return serverCap;
 	return serverCap;
 }
 
-int ZoneServerImplementation::getServerState() {
+int ZoneServerImplementation::getServerState() const{
 	// server/zone/ZoneServer.idl():  		return serverState.get();
 	return (&serverState)->get();
 }
 
-Zone* ZoneServerImplementation::getZone(const String& terrainName) {
-	// server/zone/ZoneServer.idl():  		return zones.get(terrainName);
-	return zones->get(terrainName);
-}
-
 Zone* ZoneServerImplementation::getZone(int idx) {
+	// server/zone/ZoneServer.idl():  		return 
+	if (!zones)	// server/zone/ZoneServer.idl():  			return null;
+	return NULL;
 	// server/zone/ZoneServer.idl():  		return zones.get(idx);
 	return zones->get(idx);
 }
 
-int ZoneServerImplementation::getZoneCount() {
+int ZoneServerImplementation::getZoneCount() const{
+	// server/zone/ZoneServer.idl():  		return 
+	if (!zones)	// server/zone/ZoneServer.idl():  			return 0;
+	return 0;
 	// server/zone/ZoneServer.idl():  		return zones.size();
 	return zones->size();
 }
 
-int ZoneServerImplementation::getMaxPlayers() {
+SpaceZone* ZoneServerImplementation::getSpaceZone(int idx) {
+	// server/zone/ZoneServer.idl():  		return 
+	if (!spaceZones)	// server/zone/ZoneServer.idl():  			return null;
+	return NULL;
+	// server/zone/ZoneServer.idl():  		return spaceZones.get(idx);
+	return spaceZones->get(idx);
+}
+
+int ZoneServerImplementation::getSpaceZoneCount() const{
+	// server/zone/ZoneServer.idl():  		return 
+	if (!spaceZones)	// server/zone/ZoneServer.idl():  			return 0;
+	return 0;
+	// server/zone/ZoneServer.idl():  		return spaceZones.size();
+	return spaceZones->size();
+}
+
+int ZoneServerImplementation::getMaxPlayers() const{
 	// server/zone/ZoneServer.idl():  		return maximumPlayers.get();
 	return (&maximumPlayers)->get();
 }
 
-int ZoneServerImplementation::getTotalPlayers() {
+int ZoneServerImplementation::getTotalPlayers() const{
 	// server/zone/ZoneServer.idl():  		return totalPlayers.get();
 	return (&totalPlayers)->get();
 }
 
-int ZoneServerImplementation::getDeletedPlayers() {
+int ZoneServerImplementation::getDeletedPlayers() const{
 	// server/zone/ZoneServer.idl():  		return totalDeletedPlayers.get();
 	return (&totalDeletedPlayers)->get();
 }
@@ -1794,7 +1873,7 @@ void ZoneServerImplementation::setShouldDeleteNavAreas(bool b) {
 	deleteNavAreas = b;
 }
 
-bool ZoneServerImplementation::shouldDeleteNavAreas() {
+bool ZoneServerImplementation::shouldDeleteNavAreas() const{
 	// server/zone/ZoneServer.idl():  		return deleteNavAreas;
 	return deleteNavAreas;
 }
@@ -1842,10 +1921,17 @@ void ZoneServerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_STARTZONES__:
+	case RPC_STARTGROUNDZONES__:
 		{
 			
-			startZones();
+			startGroundZones();
+			
+		}
+		break;
+	case RPC_STARTSPACEZONES__:
+		{
+			
+			startSpaceZones();
 			
 		}
 		break;
@@ -1879,17 +1965,18 @@ void ZoneServerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			
 		}
 		break;
-	case RPC_TIMEDSHUTDOWN__INT_:
+	case RPC_TIMEDSHUTDOWN__INT_INT_:
 		{
 			int minutes = inv->getSignedIntParameter();
+			int flags = inv->getSignedIntParameter();
 			
-			timedShutdown(minutes);
+			timedShutdown(minutes, flags);
 			
 		}
 		break;
 	case RPC_ADDTOTALSENTPACKET__INT_:
 		{
-			int count = inv->getSignedIntParameter();
+			unsigned int count = inv->getUnsignedIntParameter();
 			
 			addTotalSentPacket(count);
 			
@@ -1897,7 +1984,7 @@ void ZoneServerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 		break;
 	case RPC_ADDTOTALRESENTPACKET__INT_:
 		{
-			int count = inv->getSignedIntParameter();
+			unsigned int count = inv->getUnsignedIntParameter();
 			
 			addTotalResentPacket(count);
 			
@@ -2139,6 +2226,21 @@ void ZoneServerAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) {
 			resp->insertSignedInt(_m_res);
 		}
 		break;
+	case RPC_GETSPACEZONE__INT_:
+		{
+			int idx = inv->getSignedIntParameter();
+			
+			DistributedObject* _m_res = getSpaceZone(idx);
+			resp->insertLong(_m_res == NULL ? 0 : _m_res->_getObjectID());
+		}
+		break;
+	case RPC_GETSPACEZONECOUNT__:
+		{
+			
+			int _m_res = getSpaceZoneCount();
+			resp->insertSignedInt(_m_res);
+		}
+		break;
 	case RPC_GETMAXPLAYERS__:
 		{
 			
@@ -2353,8 +2455,12 @@ void ZoneServerAdapter::startManagers() {
 	(static_cast<ZoneServer*>(stub))->startManagers();
 }
 
-void ZoneServerAdapter::startZones() {
-	(static_cast<ZoneServer*>(stub))->startZones();
+void ZoneServerAdapter::startGroundZones() {
+	(static_cast<ZoneServer*>(stub))->startGroundZones();
+}
+
+void ZoneServerAdapter::startSpaceZones() {
+	(static_cast<ZoneServer*>(stub))->startSpaceZones();
 }
 
 void ZoneServerAdapter::stopManagers() {
@@ -2373,15 +2479,15 @@ void ZoneServerAdapter::clearZones() {
 	(static_cast<ZoneServer*>(stub))->clearZones();
 }
 
-void ZoneServerAdapter::timedShutdown(int minutes) {
-	(static_cast<ZoneServer*>(stub))->timedShutdown(minutes);
+void ZoneServerAdapter::timedShutdown(int minutes, int flags) {
+	(static_cast<ZoneServer*>(stub))->timedShutdown(minutes, flags);
 }
 
-void ZoneServerAdapter::addTotalSentPacket(int count) {
+void ZoneServerAdapter::addTotalSentPacket(unsigned int count) {
 	(static_cast<ZoneServer*>(stub))->addTotalSentPacket(count);
 }
 
-void ZoneServerAdapter::addTotalResentPacket(int count) {
+void ZoneServerAdapter::addTotalResentPacket(unsigned int count) {
 	(static_cast<ZoneServer*>(stub))->addTotalResentPacket(count);
 }
 
@@ -2457,11 +2563,11 @@ void ZoneServerAdapter::increaseTotalDeletedPlayers() {
 	(static_cast<ZoneServer*>(stub))->increaseTotalDeletedPlayers();
 }
 
-int ZoneServerAdapter::getGalaxyID() {
+int ZoneServerAdapter::getGalaxyID() const {
 	return (static_cast<ZoneServer*>(stub))->getGalaxyID();
 }
 
-String ZoneServerAdapter::getGalaxyName() {
+String ZoneServerAdapter::getGalaxyName() const {
 	return (static_cast<ZoneServer*>(stub))->getGalaxyName();
 }
 
@@ -2469,35 +2575,35 @@ void ZoneServerAdapter::setGalaxyName(const String& name) {
 	(static_cast<ZoneServer*>(stub))->setGalaxyName(name);
 }
 
-bool ZoneServerAdapter::isServerLocked() {
+bool ZoneServerAdapter::isServerLocked() const {
 	return (static_cast<ZoneServer*>(stub))->isServerLocked();
 }
 
-bool ZoneServerAdapter::isServerOnline() {
+bool ZoneServerAdapter::isServerOnline() const {
 	return (static_cast<ZoneServer*>(stub))->isServerOnline();
 }
 
-bool ZoneServerAdapter::isServerOffline() {
+bool ZoneServerAdapter::isServerOffline() const {
 	return (static_cast<ZoneServer*>(stub))->isServerOffline();
 }
 
-bool ZoneServerAdapter::isServerLoading() {
+bool ZoneServerAdapter::isServerLoading() const {
 	return (static_cast<ZoneServer*>(stub))->isServerLoading();
 }
 
-bool ZoneServerAdapter::isServerShuttingDown() {
+bool ZoneServerAdapter::isServerShuttingDown() const {
 	return (static_cast<ZoneServer*>(stub))->isServerShuttingDown();
 }
 
-int ZoneServerAdapter::getServerCap() {
+int ZoneServerAdapter::getServerCap() const {
 	return (static_cast<ZoneServer*>(stub))->getServerCap();
 }
 
-int ZoneServerAdapter::getServerState() {
+int ZoneServerAdapter::getServerState() const {
 	return (static_cast<ZoneServer*>(stub))->getServerState();
 }
 
-Zone* ZoneServerAdapter::getZone(const String& terrainName) {
+Zone* ZoneServerAdapter::getZone(const String& terrainName) const {
 	return (static_cast<ZoneServer*>(stub))->getZone(terrainName);
 }
 
@@ -2505,19 +2611,27 @@ Zone* ZoneServerAdapter::getZone(int idx) {
 	return (static_cast<ZoneServer*>(stub))->getZone(idx);
 }
 
-int ZoneServerAdapter::getZoneCount() {
+int ZoneServerAdapter::getZoneCount() const {
 	return (static_cast<ZoneServer*>(stub))->getZoneCount();
 }
 
-int ZoneServerAdapter::getMaxPlayers() {
+SpaceZone* ZoneServerAdapter::getSpaceZone(int idx) {
+	return (static_cast<ZoneServer*>(stub))->getSpaceZone(idx);
+}
+
+int ZoneServerAdapter::getSpaceZoneCount() const {
+	return (static_cast<ZoneServer*>(stub))->getSpaceZoneCount();
+}
+
+int ZoneServerAdapter::getMaxPlayers() const {
 	return (static_cast<ZoneServer*>(stub))->getMaxPlayers();
 }
 
-int ZoneServerAdapter::getTotalPlayers() {
+int ZoneServerAdapter::getTotalPlayers() const {
 	return (static_cast<ZoneServer*>(stub))->getTotalPlayers();
 }
 
-int ZoneServerAdapter::getDeletedPlayers() {
+int ZoneServerAdapter::getDeletedPlayers() const {
 	return (static_cast<ZoneServer*>(stub))->getDeletedPlayers();
 }
 
@@ -2589,7 +2703,7 @@ void ZoneServerAdapter::setShouldDeleteNavAreas(bool b) {
 	(static_cast<ZoneServer*>(stub))->setShouldDeleteNavAreas(b);
 }
 
-bool ZoneServerAdapter::shouldDeleteNavAreas() {
+bool ZoneServerAdapter::shouldDeleteNavAreas() const {
 	return (static_cast<ZoneServer*>(stub))->shouldDeleteNavAreas();
 }
 
@@ -2613,7 +2727,7 @@ void ZoneServerAdapter::changeLoginMessage(const String& motd) {
 	(static_cast<ZoneServer*>(stub))->changeLoginMessage(motd);
 }
 
-String ZoneServerAdapter::getLoginMessage() {
+String ZoneServerAdapter::getLoginMessage() const {
 	return (static_cast<ZoneServer*>(stub))->getLoginMessage();
 }
 
@@ -2829,7 +2943,7 @@ int ZoneServerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&totalSentPackets.value(), stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalSentPackets.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -2851,7 +2965,7 @@ int ZoneServerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
 	_offset = stream->getOffset();
 	stream->writeInt(0);
-	TypeInfo<int >::toBinaryStream(&totalResentPackets.value(), stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalResentPackets.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -3071,8 +3185,8 @@ bool ZoneServerPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 
 	case 0x3b69de8: //ZoneServer.totalSentPackets
 		{
-			int _mntotalSentPackets;
-			TypeInfo<int >::parseFromBinaryStream(&_mntotalSentPackets, stream);
+			unsigned long long _mntotalSentPackets;
+			TypeInfo<unsigned long long >::parseFromBinaryStream(&_mntotalSentPackets, stream);
 			totalSentPackets = std::move(_mntotalSentPackets);
 		}
 		return true;
@@ -3087,8 +3201,8 @@ bool ZoneServerPOD::readObjectMember(ObjectInputStream* stream, const uint32& na
 
 	case 0xfc1cc451: //ZoneServer.totalResentPackets
 		{
-			int _mntotalResentPackets;
-			TypeInfo<int >::parseFromBinaryStream(&_mntotalResentPackets, stream);
+			unsigned long long _mntotalResentPackets;
+			TypeInfo<unsigned long long >::parseFromBinaryStream(&_mntotalResentPackets, stream);
 			totalResentPackets = std::move(_mntotalResentPackets);
 		}
 		return true;
@@ -3217,11 +3331,11 @@ void ZoneServerPOD::writeObjectCompact(ObjectOutputStream* stream) {
 
 	TypeInfo<ManagedReference<PetManagerPOD* > >::toBinaryStream(&petManager.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&totalSentPackets.value(), stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalSentPackets.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&serverCap.value(), stream);
 
-	TypeInfo<int >::toBinaryStream(&totalResentPackets.value(), stream);
+	TypeInfo<unsigned long long >::toBinaryStream(&totalResentPackets.value(), stream);
 
 	TypeInfo<AtomicInteger >::toBinaryStream(&currentPlayers.value(), stream);
 

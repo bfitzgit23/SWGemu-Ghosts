@@ -101,7 +101,7 @@ class ManufactureSchematic extends IntangibleObject {
 
 		possibleSyncIssue = false;
 
-		manufactureLimit = 1000;
+		manufactureLimit = 10000;
 
 		ContainerPermissions permissions = super.getContainerPermissionsForUpdate();
 		permissions.setInheritPermissionsFromParent(true);
@@ -109,9 +109,9 @@ class ManufactureSchematic extends IntangibleObject {
 		permissions.clearDenyPermission("owner", ContainerPermissions.MOVECONTAINER);
 	}
 
-	public void initializeTransientMembers() {
-		super.initializeTransientMembers();
-	}
+	public native void initializeTransientMembers();
+
+	public abstract native void destroyObjectFromDatabase(boolean destroyContainedObjects = false);
 
 	/**
 	 * Fills the attribute list message options that are sent to player creature
@@ -338,4 +338,7 @@ class ManufactureSchematic extends IntangibleObject {
 
 	@dirty
 	public native int getLabratory();
+
+	@dirty
+	public native string getFactoryCrateType();
 }

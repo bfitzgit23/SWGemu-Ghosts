@@ -3,9 +3,20 @@
 
 cmake_minimum_required(VERSION 3.7.0 FATAL_ERROR)
 
-# Using g++ instead of clang due to linker compatibility issues
-set(CMAKE_C_COMPILER gcc)
-set(CMAKE_CXX_COMPILER g++)
+find_program(CLANGXX_EXECUTABLE_PATH NAMES clang++)
+
+if (CLANGXX_EXECUTABLE_PATH)
+	find_program(CMAKE_C_COMPILER clang)
+	find_program(CMAKE_CXX_COMPILER clang++)
+	message(STATUS "Found ${CMAKE_CXX_COMPILER} using clang compiler.")
+	set(LINKER_IS_LLD 1 CACHE INTERNAL "use lld linker")
+	find_program(LLD_EXECUTABLE_PATH NAMES ld.lld)
+	if (LLD_EXECUTABLE_PATH)
+		message(STATUS "Using DWARF4 format with linker ${LLD_EXECUTABLE_PATH}")
+		add_link_options(-fuse-ld=lld  -Wl,--gdb-index)
+		set(CMAKE_CXX_FLAGS_DEBUG "-gdwarf-4")
+    endif()
+endif()
 
 project(core3 CXX C)
 
@@ -42,14 +53,14 @@ option(BUILD_IDL "Generate idl c++ sources with cmake" ON)
 option(IDL_NOPRELOCKS "Disables all prelock annotations" OFF)
 option(ENABLE_CCACHE "Enables ccache search and usage" ON)
 option(RUN_GIT "Runs git log to dump last commit messages into rev.txt" OFF)
-option(COMPILE_TESTS "Enables mock generation in idlc and test compiling" OFF)
+option(COMPILE_TESTS "Enables mock generation in idlc and test compiling" ON)
 option(LOGIN_SERVER_EXTRA_PORTS "Enables login server with extra ports config" OFF)
 option(ENABLE_ASAN "Enables address sanitizer compiling" OFF)
 option(ENABLE_TSAN "Enables thread sanitizer compiling" OFF)
 option(ENABLE_UBSAN "Enables undefined behavior sanitizer compiling" OFF)
 option(ENABLE_NATIVE "Enables -march=native compiler option" ON)
 option(ENABLE_OMIT_FRAMEPOINTER "Enables -fno-omit-frame-pointer compiler option" ON)
-option(ENABLE_ERROR_ON_WARNINGS "Enables compiler option" ON)
+option(ENABLE_ERROR_ON_WARNINGS "Enables -Werror compiler option" ON)
 option(ENABLE_REST_SERVER "Enables REST API Server" OFF)
 option(ENABLE_SWGREALMS "Enables SWGRealms API support" OFF)
 option(ENABLE_ODB "Enables odb3 compiling" OFF)
@@ -58,6 +69,8 @@ option(ENABLE_BUILD_CLIENT "Enables core3client build" ON)
 option(ENABLE_JEMALLOC_LINK "Enables jemalloc linking if found" ON)
 option(ENABLE_MULTITHREADED_LINKER "Enables ld.gold/lld with --threads check and use" OFF)
 option(ENABLE_LOCKFREE_BCLIENT_BUFFERS "Enables lock free base client buffers, requires boost thread" OFF) #needs to match engine3
+option(ENABLE_DEV_MODE "Enables developer instrumentation, verbose tracing, and relaxed config validation" OFF)
+option(ENABLE_EXPORTED_SYMBOLS "Exports symbols so logged stack traces name functions instead of raw offsets" ON)
 option(DUMP_ALL_CMAKE_VARIABLES "Prints all cmake variables" OFF)
 
 # Set cmake paths
@@ -97,7 +110,15 @@ if (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
 	add_definitions(-DDEBUG_SHIP_AI)
 endif()
 
-if (ENABLE_SWGREALMS)
+if (ENABLE_DEV_MODE)
+    message(STATUS "Compiling with developer mode enabled")
+    add_definitions(-DWITH_DEV_MODE)
+endif()
+
+# SWGRealms API permanently disabled as of 2026-09-03: character deletion,
+# login, and account handling use the built-in SQL path only.
+# The option() is kept defined solely because src/CMakeLists.txt references it.
+if (ENABLE_SWGREALMS AND FALSE)
     message(STATUS "Compiling with SWGRealms API support")
     add_definitions(-DWITH_SWGREALMS_API)
 endif()
@@ -203,10 +224,10 @@ endif(IDL_NOPRELOCKS)
 if(COMPILE_TESTS)
 	set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-    # add_subdirectory(utils/googletest-release-1.10.0)  # DISABLED: directory does not exist
+    add_subdirectory(utils/googletest-release-1.13.0)
 
-    include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.10.0/googletest/include)
-    include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.10.0/googlemock/include)
+    include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.13.0/googletest/include)
+    include_directories(${CMAKE_SOURCE_DIR}/utils/googletest-release-1.13.0/googlemock/include)
 
 	enable_testing()
 
@@ -239,7 +260,18 @@ endif()
 
 if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Define global build gcc compatible flags to check and add if available
-    set(GCCEXTRAFLAGS -w)
+    set(GCCEXTRAFLAGS -Wall
+	-Wextra
+	-Wno-unused
+	-Wno-sign-compare
+	-Wno-multichar
+	-Wno-unused-parameter
+	-Wno-overloaded-virtual
+	-Wno-missing-declarations
+	-Wno-return-std-move
+	-Wno-implicit-fallthrough
+	-Wno-class-memaccess
+	-fcolor-diagnostics)
 
     foreach(flag_comp ${GCCEXTRAFLAGS})
 	CHECK_CXX_COMPILER_FLAG(${flag_comp} CxxFlag${flag_comp})
@@ -250,7 +282,7 @@ if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU
     endforeach(flag_comp)
 
     if (ENABLE_ERROR_ON_WARNINGS)
-	   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
+	   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
     endif(ENABLE_ERROR_ON_WARNINGS)
 
     if (ENABLE_ASAN)

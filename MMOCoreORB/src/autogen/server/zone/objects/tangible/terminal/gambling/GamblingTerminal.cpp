@@ -4,13 +4,7 @@
 
 #include "GamblingTerminal.h"
 
-#include "server/zone/objects/creature/CreatureObject.h"
-
 #include "server/zone/packets/object/ObjectMenuResponse.h"
-
-#include "server/zone/managers/minigames/GamblingBet.h"
-
-#include "server/zone/managers/minigames/events/GamblingEvent.h"
 
 #include "server/chat/StringIdChatParameter.h"
 
@@ -18,7 +12,7 @@
  *	GamblingTerminalStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3740544218,RPC_RESET__,RPC_GETFIRST__,RPC_GETSECOND__,RPC_GETTHIRD__,RPC_SETFIRST__INT_,RPC_SETSECOND__INT_,RPC_SETTHIRD__INT_,RPC_GETMINBET__,RPC_GETMAXBET__,RPC_GETSTATE__,RPC_SETSTATE__INT_,RPC_GETMACHINETYPE__,RPC_INCGAMECOUNT__,RPC_GETGAMECOUNT__,RPC_ISGONEEMPTY__,RPC_GETMACHINETYPETEXT__,RPC_GETTEXT__CREATUREOBJECT_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SETGAMBLINGREGION__STRING_,RPC_GETGAMBLINGREGION__,RPC_GAMERUNNING__,RPC_CHECKJOIN__CREATUREOBJECT_,RPC_JOINTERMINAL__CREATUREOBJECT_,RPC_LEAVETERMINAL__CREATUREOBJECT_,RPC_CLOSEMENU__CREATUREOBJECT_BOOL_,RPC_CLOSEALLMENUS__,RPC_STATUSUPDATE__CREATUREOBJECT_INT_,RPC_STATUSUPDATE__INT_,};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 3740544218,RPC_RESET__,RPC_GETFIRST__,RPC_GETSECOND__,RPC_GETTHIRD__,RPC_SETFIRST__INT_,RPC_SETSECOND__INT_,RPC_SETTHIRD__INT_,RPC_GETMINBET__,RPC_GETMAXBET__,RPC_GETSTATE__,RPC_SETSTATE__INT_,RPC_GETMACHINETYPE__,RPC_INCGAMECOUNT__,RPC_GETGAMECOUNT__,RPC_ISGONEEMPTY__,RPC_GETMACHINETYPETEXT__,RPC_GETTEXT__CREATUREOBJECT_,RPC_HANDLEOBJECTMENUSELECT__CREATUREOBJECT_BYTE_,RPC_SETGAMBLINGREGION__STRING_,RPC_GETGAMBLINGREGION__,RPC_GAMERUNNING__,RPC_BETTINGALLOWED__,RPC_REMOVEPLAYER__CREATUREOBJECT_,RPC_ADDPLAYERWINDOW__CREATUREOBJECT_INT_,RPC_CHECKJOIN__CREATUREOBJECT_,RPC_JOINTERMINAL__CREATUREOBJECT_,RPC_LEAVETERMINAL__CREATUREOBJECT_,RPC_CLOSEMENU__CREATUREOBJECT_BOOL_,RPC_CLOSEALLMENUS__,RPC_STATUSUPDATE__CREATUREOBJECT_INT_,RPC_STATUSUPDATE__INT_,};
 
 GamblingTerminal::GamblingTerminal() : Terminal(DummyConstructorParameter::instance()) {
 	GamblingTerminalImplementation* _implementation = new GamblingTerminalImplementation();
@@ -428,6 +422,51 @@ bool GamblingTerminal::gameRunning() {
 	}
 }
 
+bool GamblingTerminal::bettingAllowed() {
+	GamblingTerminalImplementation* _implementation = static_cast<GamblingTerminalImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_BETTINGALLOWED__);
+
+		return method.executeWithBooleanReturn();
+	} else {
+		return _implementation->bettingAllowed();
+	}
+}
+
+void GamblingTerminal::removePlayer(CreatureObject* player) {
+	GamblingTerminalImplementation* _implementation = static_cast<GamblingTerminalImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_REMOVEPLAYER__CREATUREOBJECT_);
+		method.addObjectParameter(player);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->removePlayer(player);
+	}
+}
+
+void GamblingTerminal::addPlayerWindow(CreatureObject* player, unsigned int boxID) {
+	GamblingTerminalImplementation* _implementation = static_cast<GamblingTerminalImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_ADDPLAYERWINDOW__CREATUREOBJECT_INT_);
+		method.addObjectParameter(player);
+		method.addUnsignedIntParameter(boxID);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->addPlayerWindow(player, boxID);
+	}
+}
+
 void GamblingTerminal::notifyOthers(CreatureObject* player, StringIdChatParameter* text) {
 	GamblingTerminalImplementation* _implementation = static_cast<GamblingTerminalImplementation*>(_getImplementation());
 	if (unlikely(_implementation == NULL)) {
@@ -672,10 +711,6 @@ bool GamblingTerminalImplementation::readObjectMember(ObjectInputStream* stream,
 		TypeInfo<int >::parseFromBinaryStream(&machineType, stream);
 		return true;
 
-	case 0x2f4416ad: //GamblingTerminal.playersWindows
-		TypeInfo<VectorMap<ManagedReference<CreatureObject* >, unsigned int> >::parseFromBinaryStream(&playersWindows, stream);
-		return true;
-
 	case 0x8a32e174: //GamblingTerminal.winnings
 		TypeInfo<VectorMap<ManagedReference<CreatureObject* >, int> >::parseFromBinaryStream(&winnings, stream);
 		return true;
@@ -740,15 +775,6 @@ int GamblingTerminalImplementation::writeObjectMembers(ObjectOutputStream* strea
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&machineType, stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-
-	_nameHashCode = 0x2f4416ad; //GamblingTerminal.playersWindows
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<VectorMap<ManagedReference<CreatureObject* >, unsigned int> >::toBinaryStream(&playersWindows, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -836,8 +862,6 @@ void GamblingTerminalImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["gamblingRegion"] = gamblingRegion;
 
 	thisObject["machineType"] = machineType;
-
-	thisObject["playersWindows"] = playersWindows;
 
 	thisObject["winnings"] = winnings;
 
@@ -1059,6 +1083,35 @@ bool GamblingTerminalImplementation::gameRunning() {
 	return state != NOGAMERUNNING;
 }
 
+bool GamblingTerminalImplementation::bettingAllowed() {
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  		}
+	if (machineType == ROULETTEMACHINE){
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  			return NOGAMERUNNING < state && state < WHEELSTART;
+	return NOGAMERUNNING < state && state < WHEELSTART;
+}
+
+	else 	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  		}
+	if (machineType == SLOTMACHINE){
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  			return state < GAMESTARTING;
+	return state < GAMESTARTING;
+}
+
+	else {
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  			return false;
+	return false;
+}
+}
+
+void GamblingTerminalImplementation::removePlayer(CreatureObject* player) {
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  		playersWindows.drop(player);
+	(&playersWindows)->drop(player);
+}
+
+void GamblingTerminalImplementation::addPlayerWindow(CreatureObject* player, unsigned int boxID) {
+	// server/zone/objects/tangible/terminal/gambling/GamblingTerminal.idl():  		playersWindows.put(player, boxID);
+	(&playersWindows)->put(player, boxID);
+}
+
 /*
  *	GamblingTerminalAdapter
  */
@@ -1236,6 +1289,30 @@ void GamblingTerminalAdapter::invokeMethod(uint32 methid, DistributedMethod* inv
 			resp->insertBoolean(_m_res);
 		}
 		break;
+	case RPC_BETTINGALLOWED__:
+		{
+			
+			bool _m_res = bettingAllowed();
+			resp->insertBoolean(_m_res);
+		}
+		break;
+	case RPC_REMOVEPLAYER__CREATUREOBJECT_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			
+			removePlayer(player);
+			
+		}
+		break;
+	case RPC_ADDPLAYERWINDOW__CREATUREOBJECT_INT_:
+		{
+			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
+			unsigned int boxID = inv->getUnsignedIntParameter();
+			
+			addPlayerWindow(player, boxID);
+			
+		}
+		break;
 	case RPC_CHECKJOIN__CREATUREOBJECT_:
 		{
 			CreatureObject* player = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -1386,6 +1463,18 @@ bool GamblingTerminalAdapter::gameRunning() {
 	return (static_cast<GamblingTerminal*>(stub))->gameRunning();
 }
 
+bool GamblingTerminalAdapter::bettingAllowed() {
+	return (static_cast<GamblingTerminal*>(stub))->bettingAllowed();
+}
+
+void GamblingTerminalAdapter::removePlayer(CreatureObject* player) {
+	(static_cast<GamblingTerminal*>(stub))->removePlayer(player);
+}
+
+void GamblingTerminalAdapter::addPlayerWindow(CreatureObject* player, unsigned int boxID) {
+	(static_cast<GamblingTerminal*>(stub))->addPlayerWindow(player, boxID);
+}
+
 bool GamblingTerminalAdapter::checkJoin(CreatureObject* player) {
 	return (static_cast<GamblingTerminal*>(stub))->checkJoin(player);
 }
@@ -1476,9 +1565,6 @@ void GamblingTerminalPOD::writeJSON(nlohmann::json& j) {
 	if (machineType)
 		thisObject["machineType"] = machineType.value();
 
-	if (playersWindows)
-		thisObject["playersWindows"] = playersWindows.value();
-
 	if (winnings)
 		thisObject["winnings"] = winnings.value();
 
@@ -1537,17 +1623,6 @@ int GamblingTerminalPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<int >::toBinaryStream(&machineType.value(), stream);
-	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
-	stream->writeInt(_offset, _totalSize);
-	_count++;
-	}
-
-	if (playersWindows) {
-	_nameHashCode = 0x2f4416ad; //GamblingTerminal.playersWindows
-	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
-	_offset = stream->getOffset();
-	stream->writeInt(0);
-	TypeInfo<VectorMap<ManagedReference<CreatureObjectPOD* >, unsigned int> >::toBinaryStream(&playersWindows.value(), stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1666,14 +1741,6 @@ bool GamblingTerminalPOD::readObjectMember(ObjectInputStream* stream, const uint
 		}
 		return true;
 
-	case 0x2f4416ad: //GamblingTerminal.playersWindows
-		{
-			VectorMap<ManagedReference<CreatureObjectPOD* >, unsigned int> _mnplayersWindows;
-			TypeInfo<VectorMap<ManagedReference<CreatureObjectPOD* >, unsigned int> >::parseFromBinaryStream(&_mnplayersWindows, stream);
-			playersWindows = std::move(_mnplayersWindows);
-		}
-		return true;
-
 	case 0x8a32e174: //GamblingTerminal.winnings
 		{
 			VectorMap<ManagedReference<CreatureObjectPOD* >, int> _mnwinnings;
@@ -1767,8 +1834,6 @@ void GamblingTerminalPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<String >::toBinaryStream(&gamblingRegion.value(), stream);
 
 	TypeInfo<int >::toBinaryStream(&machineType.value(), stream);
-
-	TypeInfo<VectorMap<ManagedReference<CreatureObjectPOD* >, unsigned int> >::toBinaryStream(&playersWindows.value(), stream);
 
 	TypeInfo<VectorMap<ManagedReference<CreatureObjectPOD* >, int> >::toBinaryStream(&winnings.value(), stream);
 

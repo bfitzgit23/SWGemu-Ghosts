@@ -37,22 +37,6 @@ using namespace server::chat;
 namespace server {
 namespace zone {
 namespace objects {
-namespace group {
-
-class GroupObject;
-
-class GroupObjectPOD;
-
-} // namespace group
-} // namespace objects
-} // namespace zone
-} // namespace server
-
-using namespace server::zone::objects::group;
-
-namespace server {
-namespace zone {
-namespace objects {
 namespace guild {
 
 class GuildObject;
@@ -210,6 +194,26 @@ class AuctionSearchTask;
 
 using namespace server::zone::managers::auction;
 
+namespace server {
+namespace zone {
+namespace objects {
+namespace tangible {
+
+class Instrument;
+
+class InstrumentPOD;
+
+} // namespace tangible
+} // namespace objects
+} // namespace zone
+} // namespace server
+
+using namespace server::zone::objects::tangible;
+
+#include "gmock/gmock.h"
+
+#include "server/zone/objects/group/GroupObject.h"
+
 #include "server/zone/objects/intangible/ControlDevice.h"
 
 #include "templates/SharedObjectTemplate.h"
@@ -222,7 +226,7 @@ using namespace server::zone::managers::auction;
 
 #include "server/zone/objects/scene/variables/DeltaVector.h"
 
-#include "server/zone/objects/creature/variables/CommandQueueActionVector.h"
+#include "server/zone/objects/scene/variables/DeltaSet.h"
 
 #include "server/zone/objects/creature/variables/SkillList.h"
 
@@ -242,11 +246,19 @@ using namespace server::zone::managers::auction;
 
 #include "system/util/SortedVector.h"
 
+#include "system/lang/ref/WeakReference.h"
+
 #include "engine/log/Logger.h"
 
 #include "server/zone/CloseObjectsVector.h"
 
-#include "server/zone/QuadTreeEntry.h"
+#include "server/zone/TreeEntry.h"
+
+#include "server/zone/objects/creature/CommandQueue.h"
+
+#include "server/zone/objects/ship/ShipObject.h"
+
+#include "system/lang/String.h"
 
 #include "server/zone/objects/tangible/TangibleObject.h"
 
@@ -279,7 +291,7 @@ public:
 
 	static const int MONCAL = 3;
 
-	static const int WOOKIE = 4;
+	static const int WOOKIEE = 4;
 
 	static const int BOTHAN = 5;
 
@@ -291,58 +303,6 @@ public:
 
 	static const int SULLUSTAN = 0x31;
 
-	static const int HUTT = 0x1f;
-
-	static const int NAUTOLAN = 0;
-
-	static const int TOGRUTA = 0;
-
-	static const int CHISS = 0;
-
-	static const int DEVARONIAN = 0x11;
-
-	static const int GRAN = 0x1c;
-
-	static const int ISHI_TIB = 0x20;
-
-	static const int NIGHTSISTER = 0;
-
-	static const int NIKTO = 0x2a;
-
-	static const int QUARREN = 0x2e;
-
-	static const int SMC = 0;
-
-	static const int WEEQUAY = 0x37;
-
-	static const int AQUALISH = 9;
-
-	static const int BITH = 0x0e;
-
-	static const int GOTAL = 0x1b;
-
-	static const int TALZ = 0x32;
-
-	static const int ABYSSIN = 8;
-
-	static const int ARCONA = 0x0a;
-
-	static const int CEREAN = 0;
-
-	static const int DUROS = 0x14;
-
-	static const int GUNGAN = 0x1d;
-
-	static const int IKTOTCHI = 0;
-
-	static const int JENET = 0;
-
-	static const int KEL_DOR = 0;
-
-	static const int KUBAZ = 0x27;
-
-	static const int SANYASSAN = 0x28;
-
 	static const int MALE = 0;
 
 	static const int FEMALE = 1;
@@ -350,6 +310,8 @@ public:
 	static const int CREOCOVTYPE = 2;
 
 	unsigned static const long long DEAD_TOO_LONG;
+
+	static const int CONVERSATION_MAX_DISTANCE = 7;
 
 	/**
 	 * CreatureObject constructor, used to initialized the object
@@ -378,7 +340,7 @@ public:
 	 */
 	void initializeTransientMembers();
 
-	void setCountdownTimer(unsigned int newCount, bool notifyClient = true);
+	void setIncapacitationTimer(unsigned int newCount, bool notifyClient = true);
 
 	/**
 	 * Sends a CommandQueueRemove ObjectControllerMessage to the owner client of this object
@@ -410,6 +372,23 @@ public:
 	void sendToOwner(bool doClose = true);
 
 	/**
+	 * Sends only the scene reset portion of sendToOwner (CmdStartScene, ParametersMessage, GuildBaselines)
+	 * Used during hyperspace to separate scene reset from object sends, giving the client
+	 * time to process the scene change before receiving SceneObjectCreate messages
+	 * @pre { this object is locked }
+	 * @post { this object is locked, owner received scene reset packets }
+	 */
+	void sendSceneResetToOwner();
+
+	/**
+	 * Sends only the scene objects portion of sendToOwner (rootParent, close objects, group)
+	 * Used after sendSceneResetToOwner with a delay to give the client time to process CmdStartScene
+	 * @pre { this object is locked }
+	 * @post { this object is locked, owner received scene objects }
+	 */
+	void sendObjectsToOwner(bool doClose = true);
+
+	/**
 	 * Sends a system message to the client of this object
 	 * @pre {}
 	 * @post { this object received the message }
@@ -432,7 +411,7 @@ public:
 	 */
 	void sendNewbieTutorialEnableHudElement(const String& ui, bool enable = true, float blinkCount = 0.0f);
 
-	void sendOpenHolocronToPageMessage();
+	void sendOpenHolocronToPageMessage(const String& page);
 
 	/**
 	 * Sends a system message to the client of this object
@@ -516,7 +495,7 @@ public:
 	 * @param newMultiplierMod new multiplier mod to set
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient = true);
+	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient = true, bool recalculateBuffs = true);
 
 	/**
 	 * Updates the speed multiplier base
@@ -534,7 +513,7 @@ public:
 	 * @param newMultiplierMod new multiplier mod to set
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient = true);
+	void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient = true, bool recalculateBuffs = true);
 
 	/**
 	 * Updates the turn scale mod
@@ -546,12 +525,32 @@ public:
 	void setTurnScale(float newMultiplierMod, bool notifyClient = true);
 
 	/**
+	 * Updates the walk speed
+	 * @pre { this object is locked }
+	 * @post { this object is locked }
+	 * @param value new value to set
+	 * @param notifyClient if set true the client will be updated with the changes
+	 */
+	void setWalkSpeed(float value, bool notifyClient = true);
+
+	/**
+	 * Updates the turn scale mod
+	 * @pre { this object is locked }
+	 * @post { this object is locked }
+	 * @param value new value to be set
+	 * @param notifyClient if set true the client will be updated with the changes
+	 */
+	void setWaterModPercent(float value, bool notifyClient = true);
+
+	/**
 	 * Updates the run speed
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 *
 	 */
 	void setRunSpeed(float newSpeed, bool notifyClient = true);
+
+	void updateRunSpeed();
 
 	void setCurrentSpeed(float newSpeed);
 
@@ -575,7 +574,7 @@ public:
 
 	int inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient = true, bool isCombatAction = false);
 
-	bool hasDamage(int attribute);
+	bool hasDamage(int attribute) const;
 
 	/**
 	 * Heals damage
@@ -667,13 +666,13 @@ public:
 	int notifyObjectRemoved(SceneObject* object);
 
 	/**
-	 * Updates the instrument id to the specified object id
+	 * Updates the performance type to the specified type
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified weapon id }
-	 * @param instrumentid the new instrument id
+	 * @post { this object is locked, this object has the specified index }
+	 * @param type the new performance type
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setInstrumentID(int instrumentid, bool notifyClient = true);
+	void setPerformanceType(int type, bool notifyClient = true);
 
 	/**
 	 * Updates listen id
@@ -681,13 +680,13 @@ public:
 	void setListenToID(unsigned long long id, bool notifyClient = true);
 
 	/**
-	 * Updates the preformance counter
+	 * Updates the preformance start time
 	 * @pre { this object is locked }
 	 * @post { this object is locked, this object has the counter updated }
 	 * @param counter new performance counter
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setPerformanceCounter(int counter, bool notifyClient = true);
+	void setPerformanceStartTime(int counter, bool notifyClient = true);
 
 	/**
 	 * Updates the preformance animation string
@@ -717,15 +716,6 @@ public:
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
 	void setTargetID(unsigned long long targetID, bool notifyClient = true);
-
-	/**
-	 * Updates the bank credits of this object
-	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified bank credits }
-	 * @param credits the new credits
-	 * @param notifyClient if set true the client will be updated with the changes
-	 */
-	void setBankCredits(int credits, bool notifyClient = true);
 
 	/**
 	 * Adds the buff to the creature, activating it and sending packets if it is a player.
@@ -772,13 +762,19 @@ public:
 
 	const WearablesDeltaVector* getWearablesDeltaVector() const;
 
-	void sendBuffsTo(CreatureObject* creature);
+	void sendBuffsTo(CreatureObject* creature) const;
 
-	BuffList* getBuffList();
+	const BuffList* getBuffList() const;
 
-	Buff* getBuff(unsigned int buffcrc);
+	Buff* getBuff(unsigned int buffcrc) const;
 
-	long long getSkillModFromBuffs(const String& skillMod);
+	long long getSkillModFromBuffs(const String& skillMod) const;
+
+	bool hasBuff(unsigned int buffcrc) const;
+
+	bool hasSpice() const;
+
+	bool hasTrapBuff() const;
 
 	int addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength = 0);
 
@@ -787,8 +783,6 @@ public:
 	void clearDots();
 
 	DamageOverTimeList* getDamageOverTimeList();
-
-	bool hasBuff(unsigned int buffcrc);
 
 	void notifySelfPositionUpdate();
 
@@ -804,15 +798,25 @@ public:
 
 	void addCashCredits(int credits, bool notifyClient = true);
 
+	void clearBankCredits(bool notifyClient = true);
+
+	void clearCashCredits(bool notifyClient = true);
+
+	void transferCredits(int cash, int bank, bool notifyClient = true);
+
 	CreditObject* getCreditObject();
 
 	void subtractBankCredits(int credits);
 
 	void subtractCashCredits(int credits);
 
+	bool subtractCredits(int credits);
+
 	bool verifyCashCredits(int credits);
 
 	bool verifyBankCredits(int credits);
+
+	bool verifyCredits(int credits);
 
 	bool isDancing();
 
@@ -823,29 +827,20 @@ public:
 	bool isEntertaining();
 
 	/**
-	 * Update the cash credits of this object
+	 * Sets the slope mod percent.
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified cash credits }
-	 * @param credits the new credits
+	 * @post { this object is locked, this object has the specified slope mod andgle & percent. }
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setCashCredits(int credits, bool notifyClient = true);
+	void updateSlopeMods(bool notifyClient = true);
 
 	/**
-	 * Sets the terrain negotiation variable, and updates it.
+	 * Sets the slope mod percent.
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified terrain negotiation }
-	 * @param terrain new terrain negotiation
+	 * @post { this object is locked, this object has the specified slope mod andgle & percent. }
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setTerrainNegotiation(float value, bool notifyClient = true);
-
-	/**
-	 * Updates the client with the players current terrain negotiation.
-	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified terrain negotiation }
-	 */
-	void updateTerrainNegotiation();
+	void updateWaterMod(bool notifyClient = true);
 
 	/**
 	 * Adds the specified skillbox to this object
@@ -979,6 +974,8 @@ public:
 	 */
 	void setAlternateAppearance(const String& appearanceTeamplate, bool notifyClient = true);
 
+	void setSpawnerID(unsigned long long spawnID);
+
 	/**
 	 * Cleares a state from the state bitmask
 	 * @pre { this object is locked }
@@ -986,6 +983,8 @@ public:
 	 * @param state state to clear
 	 */
 	bool clearState(unsigned long long state, bool notifyClient = true);
+
+	void clearSpaceStates();
 
 	void setControlDevice(ControlDevice* device);
 
@@ -1019,6 +1018,10 @@ public:
 
 	bool isHealableBy(CreatureObject* object);
 
+	bool healFactionChecks(CreatureObject* object, bool isPlayer);
+
+	bool isInvulnerable();
+
 	/**
 	 * Evaluates if the bounty hunter has a mission with the target.
 	 * @param target the target.
@@ -1027,12 +1030,35 @@ public:
 	bool hasBountyMissionFor(CreatureObject* target);
 
 	/**
+	 * DeltaVectorMap of objects of CreO and Group for JTL Misisons.
+	 * @param object ID of the mission object to add.
+	 */
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup = false);
+
+	/**
+	 * DeltaVectorMap of objects of CreO and Group for JTL Misisons.
+	 * @param object ID of the mission object to remove.
+	 */
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup = false);
+
+	void removeAllSpaceMissionObjects(bool notifyClient = false);
+
+	const DeltaSet<unsigned long long, unsigned long long>* getSpaceMissionObjects() const;
+
+	/**
 	 * sends the conversation list
 	 * @pre {this locked, player locked }
 	 * @post { this locked, player locked }
 	 * @return whether the conversation was started or not
 	 */
 	bool sendConversationStartTo(SceneObject* player);
+
+	/**
+	 * sends conversation end
+	 * @pre {this locked}
+	 * @post {this locked}
+	 */
+	bool stopConversation();
 
 	/**
 	 * sends the conversation list
@@ -1080,7 +1106,7 @@ public:
 	 * @post { }
 	 * @return returns true if its aggressive
 	 */
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	/**
 	 * Is called when this object is destroyed
@@ -1104,11 +1130,11 @@ public:
 	 */
 	void notifyLoadFromDatabase();
 
-	void notifyInsert(QuadTreeEntry* obj);
+	void notifyInsert(TreeEntry* obj);
 
-	void notifyDissapear(QuadTreeEntry* obj);
+	void notifyDissapear(TreeEntry* obj);
 
-	void notifyPositionUpdate(QuadTreeEntry* entry);
+	void notifyPositionUpdate(TreeEntry* entry);
 
 	/**
 	 * Destroys this object from database
@@ -1120,11 +1146,13 @@ public:
 
 	void setFactionRank(int rank, bool notifyClient = true);
 
-	String getFirstName();
+	String getFirstName() const;
+
+	String setFirstName(const String& newFirstName, bool skipVerify);
 
 	String setFirstName(const String& newFirstName);
 
-	String getLastName();
+	String getLastName() const;
 
 	String setLastName(const String& newLastName, bool skipVerify);
 
@@ -1150,7 +1178,7 @@ public:
 
 	void dismount();
 
-	float calculateBFRatio();
+	float calculateBFRatio() const;
 
 	void removeFeignedDeath();
 
@@ -1180,7 +1208,7 @@ public:
 
 	void setRootedState(int durationSeconds = 20);
 
-	bool setNextAttackDelay(unsigned int mod, int del);
+	bool setNextAttackDelay(CreatureObject* attacker, const String& command, unsigned int mod, int del);
 
 	void setMeditateState();
 
@@ -1192,39 +1220,43 @@ public:
 
 	void updateTimeOfDeath();
 
-	bool hasAttackDelay();
+	bool hasAttackDelay() const;
 
 	void removeAttackDelay();
 
-	bool hasIncapTimer();
+	bool hasIncapTimer() const;
 
 	CooldownTimerMap* getCooldownTimerMap();
 
-	bool hasSpice();
-
 	void updateLastSuccessfulCombatAction();
 
-	void updatePostureChangeDelay(unsigned long long delay);
+	void setPostureChangeDelay(unsigned long long delay);
 
-	bool checkPostureChangeDelay();
+	bool hasPostureChangeDelay() const;
+
+	void removePostureChangeDelay();
 
 	void updatePostureDownRecovery();
 
-	bool checkPostureDownRecovery();
+	bool checkPostureDownRecovery() const;
 
 	void updatePostureUpRecovery();
 
-	bool checkPostureUpRecovery();
+	bool checkPostureUpRecovery() const;
 
 	void updateKnockdownRecovery();
 
-	bool checkKnockdownRecovery();
+	bool checkKnockdownRecovery() const;
+
+	void setNextAllowedMoveTime(unsigned long long time);
+
+	bool isMovementAllowed() const;
 
 	void updateGroupMFDPositions();
 
 	void queueDizzyFallEvent();
 
-	bool hasDizzyEvent();
+	bool hasDizzyEvent() const;
 
 	void clearDizzyEvent();
 
@@ -1245,9 +1277,9 @@ public:
 
 	void updateCooldownTimer(const String& coooldownTimer, unsigned long long miliSecondsToAdd = 0);
 
-	bool checkCooldownRecovery(const String& cooldown);
+	bool checkCooldownRecovery(const String& cooldown) const;
 
-	Time* getCooldownTime(const String& cooldown);
+	const Time* getCooldownTime(const String& cooldown) const;
 
 	void addCooldown(const String& name, unsigned long long miliseconds);
 
@@ -1257,11 +1289,7 @@ public:
 
 	void doCombatAnimation(unsigned int animationCRC);
 
-	void activateQueueAction();
-
-	void activateImmediateAction();
-
-	UnicodeString getCreatureName();
+	UnicodeString getCreatureName() const;
 
 	bool isGrouped() const;
 
@@ -1287,9 +1315,9 @@ public:
 
 	const DeltaVector<int>* getEncumbrances() const;
 
-	byte getPosture() const;
+	virtual byte getPosture() const;
 
-	byte getLocomotion() const;
+	virtual byte getLocomotion() const;
 
 	byte getFactionRank() const;
 
@@ -1303,7 +1331,7 @@ public:
 
 	unsigned long long getStateBitmask() const;
 
-	bool hasState(unsigned long long state) const;
+	virtual bool hasState(unsigned long long state) const;
 
 	bool hasStates() const;
 
@@ -1317,11 +1345,9 @@ public:
 
 	float getSpeedMultiplierMod() const;
 
-	float getCurrentSpeed() const;
+	virtual float getCurrentSpeed() const;
 
 	SpeedMultiplierModChanges* getSpeedMultiplierModChanges();
-
-	CommandQueueActionVector* getCommandQueue();
 
 	int getCommandQueueSize() const;
 
@@ -1329,15 +1355,19 @@ public:
 
 	unsigned int incrementLastActionCounter();
 
-	unsigned int getLastActionCounter();
+	unsigned int getLastActionCounter() const;
 
-	float getRunSpeed() const;
+	float getSlopeModAngle() const;
+
+	float getSlopeModPercent() const;
+
+	float getRunSpeed();
+
+	float getWaterModPercent() const;
 
 	float getWalkSpeed() const;
 
 	float getTurnScale() const;
-
-	float getTerrainNegotiation() const;
 
 	float getRunAcceleration() const;
 
@@ -1350,6 +1380,8 @@ public:
 	unsigned long long getWeaponID() const;
 
 	Reference<WeaponObject* > getWeapon();
+
+	virtual WeaponObject* getDefaultWeapon();
 
 	ManagedWeakReference<GuildObject* > getGuildObject() const;
 
@@ -1371,25 +1403,21 @@ public:
 
 	byte getMoodID() const;
 
-	float getSlopeModPercent() const;
+	int getPerformanceStartTime() const;
 
-	int getPerformanceCounter() const;
-
-	int getInstrumentID() const;
+	int getPerformanceType() const;
 
 	byte getFrozen() const;
 
-	float getHeight() const;
+	bool isDroidSpecies() const;
 
-	bool isDroidSpecies();
+	bool isWalkerSpecies() const;
 
-	bool isWalkerSpecies();
+	bool isProbotSpecies() const;
 
-	bool isProbotSpecies();
+	bool hasEffectImmunity(byte effectType) const;
 
-	bool hasEffectImmunity(byte effectType);
-
-	bool hasDotImmunity(unsigned int dotType);
+	bool hasDotImmunity(unsigned int dotType) const;
 
 	int getSpecies() const;
 
@@ -1417,7 +1445,9 @@ public:
 
 	CreatureObject* asCreatureObject();
 
-	bool isNextActionPast();
+	Time* getNextActionTime();
+
+	bool isNextActionPast() const;
 
 	bool isSwimming() const;
 
@@ -1427,9 +1457,11 @@ public:
 
 	float getSwimHeight() const;
 
-	bool isIncapacitated() const;
+	unsigned long long getSpawnerID() const;
 
-	bool isDead() const;
+	virtual bool isIncapacitated() const;
+
+	virtual bool isDead() const;
 
 	bool isKnockedDown() const;
 
@@ -1441,11 +1473,13 @@ public:
 
 	bool isSitting() const;
 
+	bool isLyingDown() const;
+
 	bool isSkillAnimating() const;
 
 	bool isRallied() const;
 
-	bool isInCombat() const;
+	virtual bool isInCombat() const;
 
 	bool isDizzied() const;
 
@@ -1487,15 +1521,29 @@ public:
 
 	bool isInCover() const;
 
+	bool isPilotingShip() const;
+
+	bool isOnboardPobShip() const;
+
+	bool isInShipStation() const;
+
+	bool isPobShipOperator() const;
+
+	bool isShipGunner() const;
+
+	bool isWalking() const;
+
 	bool isRunning() const;
 
 	bool isNonPlayerCreatureObject();
 
 	bool isDroidObject();
 
+	bool isHelperDroidObject();
+
 	bool isPlayerCreature();
 
-	int getReceiverFlags();
+	int getReceiverFlags() const;
 
 	bool isInformantCreature();
 
@@ -1515,7 +1563,17 @@ public:
 
 	ReadWriteLock* getSkillModMutex();
 
-	float calculateCostAdjustment(byte stat, float baseCost);
+	float calculateCostAdjustment(byte stat, float baseCost) const;
+
+	float getSpeedModifier() const;
+
+	float getAccelerationModifier() const;
+
+	float getHeight(bool postureMod = false) const;
+
+	void sendSpeedAndAccelerationMods(SceneObject* player);
+
+	void broadcastSpeedAndAccelerationMods(bool sendSelf = true);
 
 	void updateSpeedAndAccelerationMods();
 
@@ -1557,7 +1615,21 @@ public:
 
 	void setAuctionSearchTask(AuctionSearchTask* task);
 
-	int getPassengerCapacity();
+	Instrument* getPlayableInstrument();
+
+	void setTradeTargetID(unsigned long long playerID);
+
+	unsigned long long getTradeTargetID();
+
+	bool checkInConversationRange(SceneObject* object);
+
+	void setQueueCommandDeltaTime(const String& commandName, const String& commandGroup);
+
+	unsigned long long getQueueCommandDeltaTime(const String& commandName);
+
+	float getOutOfRangeDistance(unsigned long long specialRangeObjectID = 0);
+
+	bool isMissionRangeObject(unsigned const long long& objectID);
 
 	DistributedObjectServant* _getImplementation();
 	DistributedObjectServant* _getImplementationForRead() const;
@@ -1588,7 +1660,7 @@ namespace creature {
 
 class CreatureObjectImplementation : public TangibleObjectImplementation {
 protected:
-	ManagedWeakReference<ZoneClientSession* > owner;
+	WeakReference<ZoneClientSession* > owner;
 
 	ManagedReference<CreditObject* > creditObject;
 
@@ -1640,7 +1712,7 @@ protected:
 
 	float currentSpeed;
 
-	float terrainNegotiation;
+	float waterModPercent;
 
 	float runAcceleration;
 
@@ -1676,13 +1748,21 @@ protected:
 
 	byte moodID;
 
-	int performanceCounter;
+	int performanceStartTime;
 
-	int instrumentID;
+	int performanceType;
 
 	DeltaVector<int> hamList;
 
 	DeltaVector<int> maxHamList;
+
+	DeltaSet<unsigned long long, unsigned long long> spaceMissionObjects;
+
+private:
+	Mutex missionRangeObjectsMutex;
+
+protected:
+	SortedVector<unsigned long long> missionRangeObjects;
 
 	byte frozen;
 
@@ -1694,9 +1774,7 @@ protected:
 
 	ReadWriteLock skillModMutex;
 
-	Reference<CommandQueueActionVector* > commandQueue;
-
-	Reference<CommandQueueActionVector* > immediateQueue;
+	Reference<CommandQueue* > commandQueue;
 
 	unsigned int lastActionCounter;
 
@@ -1734,9 +1812,13 @@ protected:
 
 	Time lastCombatActionTime;
 
+	Time nextAllowedMoveTime;
+
 	Vector3 lastCombatPosition;
 
 	String alternateAppearance;
+
+	unsigned long long spawnerID;
 
 public:
 	static const int HUMAN = 0;
@@ -1747,7 +1829,7 @@ public:
 
 	static const int MONCAL = 3;
 
-	static const int WOOKIE = 4;
+	static const int WOOKIEE = 4;
 
 	static const int BOTHAN = 5;
 
@@ -1759,58 +1841,6 @@ public:
 
 	static const int SULLUSTAN = 0x31;
 
-	static const int HUTT = 0x1f;
-
-	static const int NAUTOLAN = 0;
-
-	static const int TOGRUTA = 0;
-
-	static const int CHISS = 0;
-
-	static const int DEVARONIAN = 0x11;
-
-	static const int GRAN = 0x1c;
-
-	static const int ISHI_TIB = 0x20;
-
-	static const int NIGHTSISTER = 0;
-
-	static const int NIKTO = 0x2a;
-
-	static const int QUARREN = 0x2e;
-
-	static const int SMC = 0;
-
-	static const int WEEQUAY = 0x37;
-
-	static const int AQUALISH = 9;
-
-	static const int BITH = 0x0e;
-
-	static const int GOTAL = 0x1b;
-
-	static const int TALZ = 0x32;
-
-	static const int ABYSSIN = 8;
-
-	static const int ARCONA = 0x0a;
-
-	static const int CEREAN = 0;
-
-	static const int DUROS = 0x14;
-
-	static const int GUNGAN = 0x1d;
-
-	static const int IKTOTCHI = 0;
-
-	static const int JENET = 0;
-
-	static const int KEL_DOR = 0;
-
-	static const int KUBAZ = 0x27;
-
-	static const int SANYASSAN = 0x28;
-
 	static const int MALE = 0;
 
 	static const int FEMALE = 1;
@@ -1820,6 +1850,10 @@ public:
 	static float DEFAULTRUNSPEED;
 
 	unsigned static const long long DEAD_TOO_LONG;
+
+	unsigned long long tradeTargetID;
+
+	static const int CONVERSATION_MAX_DISTANCE = 7;
 
 	CreatureObjectImplementation();
 
@@ -1846,7 +1880,7 @@ public:
 	 */
 	void initializeTransientMembers();
 
-	virtual void setCountdownTimer(unsigned int newCount, bool notifyClient = true);
+	void setIncapacitationTimer(unsigned int newCount, bool notifyClient = true);
 
 	/**
 	 * Sends a CommandQueueRemove ObjectControllerMessage to the owner client of this object
@@ -1878,6 +1912,23 @@ public:
 	void sendToOwner(bool doClose = true);
 
 	/**
+	 * Sends only the scene reset portion of sendToOwner (CmdStartScene, ParametersMessage, GuildBaselines)
+	 * Used during hyperspace to separate scene reset from object sends, giving the client
+	 * time to process the scene change before receiving SceneObjectCreate messages
+	 * @pre { this object is locked }
+	 * @post { this object is locked, owner received scene reset packets }
+	 */
+	void sendSceneResetToOwner();
+
+	/**
+	 * Sends only the scene objects portion of sendToOwner (rootParent, close objects, group)
+	 * Used after sendSceneResetToOwner with a delay to give the client time to process CmdStartScene
+	 * @pre { this object is locked }
+	 * @post { this object is locked, owner received scene objects }
+	 */
+	void sendObjectsToOwner(bool doClose = true);
+
+	/**
 	 * Sends a system message to the client of this object
 	 * @pre {}
 	 * @post { this object received the message }
@@ -1900,7 +1951,7 @@ public:
 	 */
 	void sendNewbieTutorialEnableHudElement(const String& ui, bool enable = true, float blinkCount = 0.0f);
 
-	void sendOpenHolocronToPageMessage();
+	void sendOpenHolocronToPageMessage(const String& page);
 
 	/**
 	 * Sends a system message to the client of this object
@@ -1984,7 +2035,7 @@ public:
 	 * @param newMultiplierMod new multiplier mod to set
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient = true);
+	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient = true, bool recalculateBuffs = true);
 
 	/**
 	 * Updates the speed multiplier base
@@ -2002,7 +2053,7 @@ public:
 	 * @param newMultiplierMod new multiplier mod to set
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	virtual void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient = true);
+	virtual void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient = true, bool recalculateBuffs = true);
 
 	/**
 	 * Updates the turn scale mod
@@ -2014,12 +2065,32 @@ public:
 	virtual void setTurnScale(float newMultiplierMod, bool notifyClient = true);
 
 	/**
+	 * Updates the walk speed
+	 * @pre { this object is locked }
+	 * @post { this object is locked }
+	 * @param value new value to set
+	 * @param notifyClient if set true the client will be updated with the changes
+	 */
+	virtual void setWalkSpeed(float value, bool notifyClient = true);
+
+	/**
+	 * Updates the turn scale mod
+	 * @pre { this object is locked }
+	 * @post { this object is locked }
+	 * @param value new value to be set
+	 * @param notifyClient if set true the client will be updated with the changes
+	 */
+	virtual void setWaterModPercent(float value, bool notifyClient = true);
+
+	/**
 	 * Updates the run speed
 	 * @pre { this object is locked }
 	 * @post { this object is locked }
 	 *
 	 */
 	void setRunSpeed(float newSpeed, bool notifyClient = true);
+
+	void updateRunSpeed();
 
 	void setCurrentSpeed(float newSpeed);
 
@@ -2043,7 +2114,7 @@ public:
 
 	int inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient = true, bool isCombatAction = false);
 
-	bool hasDamage(int attribute);
+	bool hasDamage(int attribute) const;
 
 	/**
 	 * Heals damage
@@ -2135,13 +2206,13 @@ public:
 	int notifyObjectRemoved(SceneObject* object);
 
 	/**
-	 * Updates the instrument id to the specified object id
+	 * Updates the performance type to the specified type
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified weapon id }
-	 * @param instrumentid the new instrument id
+	 * @post { this object is locked, this object has the specified index }
+	 * @param type the new performance type
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setInstrumentID(int instrumentid, bool notifyClient = true);
+	void setPerformanceType(int type, bool notifyClient = true);
 
 	/**
 	 * Updates listen id
@@ -2149,13 +2220,13 @@ public:
 	void setListenToID(unsigned long long id, bool notifyClient = true);
 
 	/**
-	 * Updates the preformance counter
+	 * Updates the preformance start time
 	 * @pre { this object is locked }
 	 * @post { this object is locked, this object has the counter updated }
 	 * @param counter new performance counter
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setPerformanceCounter(int counter, bool notifyClient = true);
+	void setPerformanceStartTime(int counter, bool notifyClient = true);
 
 	/**
 	 * Updates the preformance animation string
@@ -2185,15 +2256,6 @@ public:
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
 	void setTargetID(unsigned long long targetID, bool notifyClient = true);
-
-	/**
-	 * Updates the bank credits of this object
-	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified bank credits }
-	 * @param credits the new credits
-	 * @param notifyClient if set true the client will be updated with the changes
-	 */
-	void setBankCredits(int credits, bool notifyClient = true);
 
 	/**
 	 * Adds the buff to the creature, activating it and sending packets if it is a player.
@@ -2240,13 +2302,19 @@ public:
 
 	const WearablesDeltaVector* getWearablesDeltaVector() const;
 
-	void sendBuffsTo(CreatureObject* creature);
+	void sendBuffsTo(CreatureObject* creature) const;
 
-	BuffList* getBuffList();
+	const BuffList* getBuffList() const;
 
-	Buff* getBuff(unsigned int buffcrc);
+	Buff* getBuff(unsigned int buffcrc) const;
 
-	long long getSkillModFromBuffs(const String& skillMod);
+	long long getSkillModFromBuffs(const String& skillMod) const;
+
+	bool hasBuff(unsigned int buffcrc) const;
+
+	bool hasSpice() const;
+
+	bool hasTrapBuff() const;
 
 	virtual int addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength = 0);
 
@@ -2255,8 +2323,6 @@ public:
 	void clearDots();
 
 	DamageOverTimeList* getDamageOverTimeList();
-
-	bool hasBuff(unsigned int buffcrc);
 
 	void notifySelfPositionUpdate();
 
@@ -2272,15 +2338,25 @@ public:
 
 	void addCashCredits(int credits, bool notifyClient = true);
 
+	void clearBankCredits(bool notifyClient = true);
+
+	void clearCashCredits(bool notifyClient = true);
+
+	void transferCredits(int cash, int bank, bool notifyClient = true);
+
 	CreditObject* getCreditObject();
 
 	void subtractBankCredits(int credits);
 
 	void subtractCashCredits(int credits);
 
+	bool subtractCredits(int credits);
+
 	bool verifyCashCredits(int credits);
 
 	bool verifyBankCredits(int credits);
+
+	bool verifyCredits(int credits);
 
 	bool isDancing();
 
@@ -2291,29 +2367,20 @@ public:
 	bool isEntertaining();
 
 	/**
-	 * Update the cash credits of this object
+	 * Sets the slope mod percent.
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified cash credits }
-	 * @param credits the new credits
+	 * @post { this object is locked, this object has the specified slope mod andgle & percent. }
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setCashCredits(int credits, bool notifyClient = true);
+	void updateSlopeMods(bool notifyClient = true);
 
 	/**
-	 * Sets the terrain negotiation variable, and updates it.
+	 * Sets the slope mod percent.
 	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified terrain negotiation }
-	 * @param terrain new terrain negotiation
+	 * @post { this object is locked, this object has the specified slope mod andgle & percent. }
 	 * @param notifyClient if set true the client will be updated with the changes
 	 */
-	void setTerrainNegotiation(float value, bool notifyClient = true);
-
-	/**
-	 * Updates the client with the players current terrain negotiation.
-	 * @pre { this object is locked }
-	 * @post { this object is locked, this object has the specified terrain negotiation }
-	 */
-	void updateTerrainNegotiation();
+	void updateWaterMod(bool notifyClient = true);
 
 	/**
 	 * Adds the specified skillbox to this object
@@ -2447,6 +2514,8 @@ public:
 	 */
 	void setAlternateAppearance(const String& appearanceTeamplate, bool notifyClient = true);
 
+	void setSpawnerID(unsigned long long spawnID);
+
 	/**
 	 * Cleares a state from the state bitmask
 	 * @pre { this object is locked }
@@ -2454,6 +2523,8 @@ public:
 	 * @param state state to clear
 	 */
 	bool clearState(unsigned long long state, bool notifyClient = true);
+
+	void clearSpaceStates();
 
 	void setControlDevice(ControlDevice* device);
 
@@ -2485,7 +2556,11 @@ public:
 
 	bool isAttackableBy(TangibleObject* object, bool bypassDeadCheck);
 
-	bool isHealableBy(CreatureObject* object);
+	virtual bool isHealableBy(CreatureObject* object);
+
+	bool healFactionChecks(CreatureObject* object, bool isPlayer);
+
+	virtual bool isInvulnerable();
 
 	/**
 	 * Evaluates if the bounty hunter has a mission with the target.
@@ -2495,12 +2570,35 @@ public:
 	bool hasBountyMissionFor(CreatureObject* target);
 
 	/**
+	 * DeltaVectorMap of objects of CreO and Group for JTL Misisons.
+	 * @param object ID of the mission object to add.
+	 */
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup = false);
+
+	/**
+	 * DeltaVectorMap of objects of CreO and Group for JTL Misisons.
+	 * @param object ID of the mission object to remove.
+	 */
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup = false);
+
+	void removeAllSpaceMissionObjects(bool notifyClient = false);
+
+	const DeltaSet<unsigned long long, unsigned long long>* getSpaceMissionObjects() const;
+
+	/**
 	 * sends the conversation list
 	 * @pre {this locked, player locked }
 	 * @post { this locked, player locked }
 	 * @return whether the conversation was started or not
 	 */
 	virtual bool sendConversationStartTo(SceneObject* player);
+
+	/**
+	 * sends conversation end
+	 * @pre {this locked}
+	 * @post {this locked}
+	 */
+	virtual bool stopConversation();
 
 	/**
 	 * sends the conversation list
@@ -2548,7 +2646,7 @@ public:
 	 * @post { }
 	 * @return returns true if its aggressive
 	 */
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	/**
 	 * Is called when this object is destroyed
@@ -2572,11 +2670,11 @@ public:
 	 */
 	void notifyLoadFromDatabase();
 
-	void notifyInsert(QuadTreeEntry* obj);
+	void notifyInsert(TreeEntry* obj);
 
-	void notifyDissapear(QuadTreeEntry* obj);
+	virtual void notifyDissapear(TreeEntry* obj);
 
-	void notifyPositionUpdate(QuadTreeEntry* entry);
+	void notifyPositionUpdate(TreeEntry* entry);
 
 	/**
 	 * Destroys this object from database
@@ -2588,11 +2686,13 @@ public:
 
 	void setFactionRank(int rank, bool notifyClient = true);
 
-	String getFirstName();
+	String getFirstName() const;
+
+	String setFirstName(const String& newFirstName, bool skipVerify);
 
 	String setFirstName(const String& newFirstName);
 
-	String getLastName();
+	String getLastName() const;
 
 	String setLastName(const String& newLastName, bool skipVerify);
 
@@ -2618,7 +2718,7 @@ public:
 
 	void dismount();
 
-	float calculateBFRatio();
+	float calculateBFRatio() const;
 
 	void removeFeignedDeath();
 
@@ -2648,7 +2748,7 @@ public:
 
 	void setRootedState(int durationSeconds = 20);
 
-	bool setNextAttackDelay(unsigned int mod, int del);
+	bool setNextAttackDelay(CreatureObject* attacker, const String& command, unsigned int mod, int del);
 
 	void setMeditateState();
 
@@ -2660,39 +2760,43 @@ public:
 
 	void updateTimeOfDeath();
 
-	bool hasAttackDelay();
+	bool hasAttackDelay() const;
 
 	void removeAttackDelay();
 
-	bool hasIncapTimer();
+	bool hasIncapTimer() const;
 
 	CooldownTimerMap* getCooldownTimerMap();
 
-	bool hasSpice();
-
 	void updateLastSuccessfulCombatAction();
 
-	void updatePostureChangeDelay(unsigned long long delay);
+	void setPostureChangeDelay(unsigned long long delay);
 
-	bool checkPostureChangeDelay();
+	bool hasPostureChangeDelay() const;
+
+	void removePostureChangeDelay();
 
 	void updatePostureDownRecovery();
 
-	bool checkPostureDownRecovery();
+	bool checkPostureDownRecovery() const;
 
 	void updatePostureUpRecovery();
 
-	bool checkPostureUpRecovery();
+	bool checkPostureUpRecovery() const;
 
 	void updateKnockdownRecovery();
 
-	bool checkKnockdownRecovery();
+	bool checkKnockdownRecovery() const;
+
+	void setNextAllowedMoveTime(unsigned long long time);
+
+	bool isMovementAllowed() const;
 
 	void updateGroupMFDPositions();
 
 	virtual void queueDizzyFallEvent();
 
-	bool hasDizzyEvent();
+	bool hasDizzyEvent() const;
 
 	void clearDizzyEvent();
 
@@ -2713,9 +2817,9 @@ public:
 
 	void updateCooldownTimer(const String& coooldownTimer, unsigned long long miliSecondsToAdd = 0);
 
-	bool checkCooldownRecovery(const String& cooldown);
+	bool checkCooldownRecovery(const String& cooldown) const;
 
-	Time* getCooldownTime(const String& cooldown);
+	const Time* getCooldownTime(const String& cooldown) const;
 
 	void addCooldown(const String& name, unsigned long long miliseconds);
 
@@ -2725,11 +2829,7 @@ public:
 
 	void doCombatAnimation(unsigned int animationCRC);
 
-	void activateQueueAction();
-
-	void activateImmediateAction();
-
-	UnicodeString getCreatureName();
+	UnicodeString getCreatureName() const;
 
 	bool isGrouped() const;
 
@@ -2755,9 +2855,9 @@ public:
 
 	const DeltaVector<int>* getEncumbrances() const;
 
-	byte getPosture() const;
+	virtual byte getPosture() const;
 
-	byte getLocomotion() const;
+	virtual byte getLocomotion() const;
 
 	byte getFactionRank() const;
 
@@ -2771,7 +2871,7 @@ public:
 
 	unsigned long long getStateBitmask() const;
 
-	bool hasState(unsigned long long state) const;
+	virtual bool hasState(unsigned long long state) const;
 
 	bool hasStates() const;
 
@@ -2785,11 +2885,9 @@ public:
 
 	float getSpeedMultiplierMod() const;
 
-	float getCurrentSpeed() const;
+	virtual float getCurrentSpeed() const;
 
 	SpeedMultiplierModChanges* getSpeedMultiplierModChanges();
-
-	CommandQueueActionVector* getCommandQueue();
 
 	int getCommandQueueSize() const;
 
@@ -2797,15 +2895,19 @@ public:
 
 	unsigned int incrementLastActionCounter();
 
-	unsigned int getLastActionCounter();
+	unsigned int getLastActionCounter() const;
 
-	float getRunSpeed() const;
+	float getSlopeModAngle() const;
+
+	float getSlopeModPercent() const;
+
+	float getRunSpeed();
+
+	float getWaterModPercent() const;
 
 	float getWalkSpeed() const;
 
 	float getTurnScale() const;
-
-	float getTerrainNegotiation() const;
 
 	float getRunAcceleration() const;
 
@@ -2818,6 +2920,8 @@ public:
 	unsigned long long getWeaponID() const;
 
 	Reference<WeaponObject* > getWeapon();
+
+	virtual WeaponObject* getDefaultWeapon();
 
 	ManagedWeakReference<GuildObject* > getGuildObject() const;
 
@@ -2839,25 +2943,21 @@ public:
 
 	byte getMoodID() const;
 
-	float getSlopeModPercent() const;
+	int getPerformanceStartTime() const;
 
-	int getPerformanceCounter() const;
-
-	int getInstrumentID() const;
+	int getPerformanceType() const;
 
 	byte getFrozen() const;
 
-	float getHeight() const;
+	bool isDroidSpecies() const;
 
-	bool isDroidSpecies();
+	bool isWalkerSpecies() const;
 
-	bool isWalkerSpecies();
+	bool isProbotSpecies() const;
 
-	bool isProbotSpecies();
+	virtual bool hasEffectImmunity(byte effectType) const;
 
-	bool hasEffectImmunity(byte effectType);
-
-	bool hasDotImmunity(unsigned int dotType);
+	virtual bool hasDotImmunity(unsigned int dotType) const;
 
 	virtual int getSpecies() const;
 
@@ -2885,7 +2985,9 @@ public:
 
 	CreatureObject* asCreatureObject();
 
-	bool isNextActionPast();
+	Time* getNextActionTime();
+
+	bool isNextActionPast() const;
 
 	bool isSwimming() const;
 
@@ -2895,9 +2997,11 @@ public:
 
 	float getSwimHeight() const;
 
-	bool isIncapacitated() const;
+	unsigned long long getSpawnerID() const;
 
-	bool isDead() const;
+	virtual bool isIncapacitated() const;
+
+	virtual bool isDead() const;
 
 	bool isKnockedDown() const;
 
@@ -2909,11 +3013,13 @@ public:
 
 	bool isSitting() const;
 
+	bool isLyingDown() const;
+
 	bool isSkillAnimating() const;
 
 	bool isRallied() const;
 
-	bool isInCombat() const;
+	virtual bool isInCombat() const;
 
 	bool isDizzied() const;
 
@@ -2955,15 +3061,29 @@ public:
 
 	bool isInCover() const;
 
+	bool isPilotingShip() const;
+
+	bool isOnboardPobShip() const;
+
+	bool isInShipStation() const;
+
+	bool isPobShipOperator() const;
+
+	bool isShipGunner() const;
+
+	bool isWalking() const;
+
 	bool isRunning() const;
 
 	virtual bool isNonPlayerCreatureObject();
 
 	virtual bool isDroidObject();
 
+	virtual bool isHelperDroidObject();
+
 	bool isPlayerCreature();
 
-	virtual int getReceiverFlags();
+	int getReceiverFlags() const;
 
 	virtual bool isInformantCreature();
 
@@ -2983,7 +3103,17 @@ public:
 
 	ReadWriteLock* getSkillModMutex();
 
-	float calculateCostAdjustment(byte stat, float baseCost);
+	float calculateCostAdjustment(byte stat, float baseCost) const;
+
+	float getSpeedModifier() const;
+
+	float getAccelerationModifier() const;
+
+	float getHeight(bool postureMod = false) const;
+
+	void sendSpeedAndAccelerationMods(SceneObject* player);
+
+	void broadcastSpeedAndAccelerationMods(bool sendSelf = true);
 
 	void updateSpeedAndAccelerationMods();
 
@@ -3025,7 +3155,21 @@ public:
 
 	void setAuctionSearchTask(AuctionSearchTask* task);
 
-	int getPassengerCapacity();
+	Instrument* getPlayableInstrument();
+
+	void setTradeTargetID(unsigned long long playerID);
+
+	unsigned long long getTradeTargetID();
+
+	bool checkInConversationRange(SceneObject* object);
+
+	void setQueueCommandDeltaTime(const String& commandName, const String& commandGroup);
+
+	unsigned long long getQueueCommandDeltaTime(const String& commandName);
+
+	virtual float getOutOfRangeDistance(unsigned long long specialRangeObjectID = 0);
+
+	bool isMissionRangeObject(unsigned const long long& objectID);
 
 	WeakReference<CreatureObject*> _this;
 
@@ -3077,7 +3221,7 @@ public:
 
 	void initializeTransientMembers();
 
-	void setCountdownTimer(unsigned int newCount, bool notifyClient);
+	void setIncapacitationTimer(unsigned int newCount, bool notifyClient);
 
 	void clearQueueAction(unsigned int actioncntr, float timer, unsigned int tab1, unsigned int tab2);
 
@@ -3087,6 +3231,10 @@ public:
 
 	void sendToOwner(bool doClose);
 
+	void sendSceneResetToOwner();
+
+	void sendObjectsToOwner(bool doClose);
+
 	void sendSystemMessage(const String& message);
 
 	void playMusicMessage(const String& file);
@@ -3095,7 +3243,7 @@ public:
 
 	void sendNewbieTutorialEnableHudElement(const String& ui, bool enable, float blinkCount);
 
-	void sendOpenHolocronToPageMessage();
+	void sendOpenHolocronToPageMessage(const String& page);
 
 	void sendSystemMessage(UnicodeString& message);
 
@@ -3121,15 +3269,21 @@ public:
 
 	void setAccelerationMultiplierBase(float newMultiplierBase, bool notifyClient);
 
-	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient);
+	void setAccelerationMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs);
 
 	void setSpeedMultiplierBase(float newMultiplierBase, bool notifyClient);
 
-	void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient);
+	void setSpeedMultiplierMod(float newMultiplierMod, bool notifyClient, bool recalculateBuffs);
 
 	void setTurnScale(float newMultiplierMod, bool notifyClient);
 
+	void setWalkSpeed(float value, bool notifyClient);
+
+	void setWaterModPercent(float value, bool notifyClient);
+
 	void setRunSpeed(float newSpeed, bool notifyClient);
+
+	void updateRunSpeed();
 
 	void setCurrentSpeed(float newSpeed);
 
@@ -3139,7 +3293,7 @@ public:
 
 	int inflictDamage(TangibleObject* attacker, int damageType, float damage, bool destroy, const String& xp, bool notifyClient, bool isCombatAction);
 
-	bool hasDamage(int attribute);
+	bool hasDamage(int attribute) const;
 
 	int healDamage(TangibleObject* healer, int damageType, int damage, bool notifyClient, bool notifyObservers);
 
@@ -3165,11 +3319,11 @@ public:
 
 	int notifyObjectRemoved(SceneObject* object);
 
-	void setInstrumentID(int instrumentid, bool notifyClient);
+	void setPerformanceType(int type, bool notifyClient);
 
 	void setListenToID(unsigned long long id, bool notifyClient);
 
-	void setPerformanceCounter(int counter, bool notifyClient);
+	void setPerformanceStartTime(int counter, bool notifyClient);
 
 	void setPerformanceAnimation(const String& animation, bool notifyClient);
 
@@ -3178,8 +3332,6 @@ public:
 	void addShockWounds(int shockToAdd, bool notiyClient, bool sendSpam);
 
 	void setTargetID(unsigned long long targetID, bool notifyClient);
-
-	void setBankCredits(int credits, bool notifyClient);
 
 	void addBuff(Buff* buff);
 
@@ -3199,19 +3351,23 @@ public:
 
 	void removeWearableObject(TangibleObject* object, bool notifyClient);
 
-	void sendBuffsTo(CreatureObject* creature);
+	void sendBuffsTo(CreatureObject* creature) const;
 
-	Buff* getBuff(unsigned int buffcrc);
+	Buff* getBuff(unsigned int buffcrc) const;
 
-	long long getSkillModFromBuffs(const String& skillMod);
+	long long getSkillModFromBuffs(const String& skillMod) const;
+
+	bool hasBuff(unsigned int buffcrc) const;
+
+	bool hasSpice() const;
+
+	bool hasTrapBuff() const;
 
 	int addDotState(CreatureObject* attacker, unsigned long long dotType, unsigned long long objectID, unsigned int strength, byte type, unsigned int duration, float potency, unsigned int defense, int secondaryStrength);
 
 	bool healDot(unsigned long long dotType, int reduction, bool sendMsg);
 
 	void clearDots();
-
-	bool hasBuff(unsigned int buffcrc);
 
 	void notifySelfPositionUpdate();
 
@@ -3227,15 +3383,25 @@ public:
 
 	void addCashCredits(int credits, bool notifyClient);
 
+	void clearBankCredits(bool notifyClient);
+
+	void clearCashCredits(bool notifyClient);
+
+	void transferCredits(int cash, int bank, bool notifyClient);
+
 	CreditObject* getCreditObject();
 
 	void subtractBankCredits(int credits);
 
 	void subtractCashCredits(int credits);
 
+	bool subtractCredits(int credits);
+
 	bool verifyCashCredits(int credits);
 
 	bool verifyBankCredits(int credits);
+
+	bool verifyCredits(int credits);
 
 	bool isDancing();
 
@@ -3245,11 +3411,9 @@ public:
 
 	bool isEntertaining();
 
-	void setCashCredits(int credits, bool notifyClient);
+	void updateSlopeMods(bool notifyClient);
 
-	void setTerrainNegotiation(float value, bool notifyClient);
-
-	void updateTerrainNegotiation();
+	void updateWaterMod(bool notifyClient);
 
 	void addSkill(const String& skill, bool notifyClient);
 
@@ -3281,7 +3445,11 @@ public:
 
 	void setAlternateAppearance(const String& appearanceTeamplate, bool notifyClient);
 
+	void setSpawnerID(unsigned long long spawnID);
+
 	bool clearState(unsigned long long state, bool notifyClient);
+
+	void clearSpaceStates();
 
 	void setControlDevice(ControlDevice* device);
 
@@ -3301,9 +3469,21 @@ public:
 
 	bool isHealableBy(CreatureObject* object);
 
+	bool healFactionChecks(CreatureObject* object, bool isPlayer);
+
+	bool isInvulnerable();
+
 	bool hasBountyMissionFor(CreatureObject* target);
 
+	void addSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup);
+
+	void removeSpaceMissionObject(unsigned long long missionOwnerID, unsigned long long objectID, bool notifyClient, bool notifyGroup);
+
+	void removeAllSpaceMissionObjects(bool notifyClient);
+
 	bool sendConversationStartTo(SceneObject* player);
+
+	bool stopConversation();
 
 	void selectConversationOption(int option, SceneObject* obj);
 
@@ -3313,7 +3493,7 @@ public:
 
 	void sendExecuteConsoleCommand(const String& command);
 
-	bool isAggressiveTo(CreatureObject* object);
+	bool isAggressiveTo(TangibleObject* object);
 
 	int notifyObjectDestructionObservers(TangibleObject* attacker, int condition, bool isCombatAction);
 
@@ -3325,11 +3505,13 @@ public:
 
 	void setFactionRank(int rank, bool notifyClient);
 
-	String getFirstName();
+	String getFirstName() const;
+
+	String setFirstName(const String& newFirstName, bool skipVerify);
 
 	String setFirstName(const String& newFirstName);
 
-	String getLastName();
+	String getLastName() const;
 
 	String setLastName(const String& newLastName, bool skipVerify);
 
@@ -3355,7 +3537,7 @@ public:
 
 	void dismount();
 
-	float calculateBFRatio();
+	float calculateBFRatio() const;
 
 	void removeFeignedDeath();
 
@@ -3385,7 +3567,7 @@ public:
 
 	void setRootedState(int durationSeconds);
 
-	bool setNextAttackDelay(unsigned int mod, int del);
+	bool setNextAttackDelay(CreatureObject* attacker, const String& command, unsigned int mod, int del);
 
 	void setMeditateState();
 
@@ -3397,37 +3579,41 @@ public:
 
 	void updateTimeOfDeath();
 
-	bool hasAttackDelay();
+	bool hasAttackDelay() const;
 
 	void removeAttackDelay();
 
-	bool hasIncapTimer();
-
-	bool hasSpice();
+	bool hasIncapTimer() const;
 
 	void updateLastSuccessfulCombatAction();
 
-	void updatePostureChangeDelay(unsigned long long delay);
+	void setPostureChangeDelay(unsigned long long delay);
 
-	bool checkPostureChangeDelay();
+	bool hasPostureChangeDelay() const;
+
+	void removePostureChangeDelay();
 
 	void updatePostureDownRecovery();
 
-	bool checkPostureDownRecovery();
+	bool checkPostureDownRecovery() const;
 
 	void updatePostureUpRecovery();
 
-	bool checkPostureUpRecovery();
+	bool checkPostureUpRecovery() const;
 
 	void updateKnockdownRecovery();
 
-	bool checkKnockdownRecovery();
+	bool checkKnockdownRecovery() const;
+
+	void setNextAllowedMoveTime(unsigned long long time);
+
+	bool isMovementAllowed() const;
 
 	void updateGroupMFDPositions();
 
 	void queueDizzyFallEvent();
 
-	bool hasDizzyEvent();
+	bool hasDizzyEvent() const;
 
 	void clearDizzyEvent();
 
@@ -3437,7 +3623,7 @@ public:
 
 	void updateCooldownTimer(const String& coooldownTimer, unsigned long long miliSecondsToAdd);
 
-	bool checkCooldownRecovery(const String& cooldown);
+	bool checkCooldownRecovery(const String& cooldown) const;
 
 	void addCooldown(const String& name, unsigned long long miliseconds);
 
@@ -3447,11 +3633,7 @@ public:
 
 	void doCombatAnimation(unsigned int animationCRC);
 
-	void activateQueueAction();
-
-	void activateImmediateAction();
-
-	UnicodeString getCreatureName();
+	UnicodeString getCreatureName() const;
 
 	bool isGrouped() const;
 
@@ -3507,15 +3689,17 @@ public:
 
 	unsigned int incrementLastActionCounter();
 
-	unsigned int getLastActionCounter();
+	unsigned int getLastActionCounter() const;
 
-	float getRunSpeed() const;
+	float getSlopeModAngle() const;
+
+	float getSlopeModPercent() const;
+
+	float getWaterModPercent() const;
 
 	float getWalkSpeed() const;
 
 	float getTurnScale() const;
-
-	float getTerrainNegotiation() const;
 
 	float getRunAcceleration() const;
 
@@ -3528,6 +3712,8 @@ public:
 	unsigned long long getWeaponID() const;
 
 	Reference<WeaponObject* > getWeapon();
+
+	WeaponObject* getDefaultWeapon();
 
 	ManagedWeakReference<GuildObject* > getGuildObject() const;
 
@@ -3549,25 +3735,21 @@ public:
 
 	byte getMoodID() const;
 
-	float getSlopeModPercent() const;
+	int getPerformanceStartTime() const;
 
-	int getPerformanceCounter() const;
-
-	int getInstrumentID() const;
+	int getPerformanceType() const;
 
 	byte getFrozen() const;
 
-	float getHeight() const;
+	bool isDroidSpecies() const;
 
-	bool isDroidSpecies();
+	bool isWalkerSpecies() const;
 
-	bool isWalkerSpecies();
+	bool isProbotSpecies() const;
 
-	bool isProbotSpecies();
+	bool hasEffectImmunity(byte effectType) const;
 
-	bool hasEffectImmunity(byte effectType);
-
-	bool hasDotImmunity(unsigned int dotType);
+	bool hasDotImmunity(unsigned int dotType) const;
 
 	int getSpecies() const;
 
@@ -3585,7 +3767,7 @@ public:
 
 	bool isCreatureObject();
 
-	bool isNextActionPast();
+	bool isNextActionPast() const;
 
 	bool isSwimming() const;
 
@@ -3594,6 +3776,8 @@ public:
 	ManagedWeakReference<ControlDevice* > getControlDevice() const;
 
 	float getSwimHeight() const;
+
+	unsigned long long getSpawnerID() const;
 
 	bool isIncapacitated() const;
 
@@ -3608,6 +3792,8 @@ public:
 	bool isStanding() const;
 
 	bool isSitting() const;
+
+	bool isLyingDown() const;
 
 	bool isSkillAnimating() const;
 
@@ -3655,15 +3841,29 @@ public:
 
 	bool isInCover() const;
 
+	bool isPilotingShip() const;
+
+	bool isOnboardPobShip() const;
+
+	bool isInShipStation() const;
+
+	bool isPobShipOperator() const;
+
+	bool isShipGunner() const;
+
+	bool isWalking() const;
+
 	bool isRunning() const;
 
 	bool isNonPlayerCreatureObject();
 
 	bool isDroidObject();
 
+	bool isHelperDroidObject();
+
 	bool isPlayerCreature();
 
-	int getReceiverFlags();
+	int getReceiverFlags() const;
 
 	bool isInformantCreature();
 
@@ -3681,7 +3881,13 @@ public:
 
 	String getAlternateAppearance() const;
 
-	float calculateCostAdjustment(byte stat, float baseCost);
+	float calculateCostAdjustment(byte stat, float baseCost) const;
+
+	float getSpeedModifier() const;
+
+	float getAccelerationModifier() const;
+
+	float getHeight(bool postureMod) const;
 
 	void updateSpeedAndAccelerationMods();
 
@@ -3713,7 +3919,17 @@ public:
 
 	int getHueValue() const;
 
-	int getPassengerCapacity();
+	void setTradeTargetID(unsigned long long playerID);
+
+	unsigned long long getTradeTargetID();
+
+	void setQueueCommandDeltaTime(const String& commandName, const String& commandGroup);
+
+	unsigned long long getQueueCommandDeltaTime(const String& commandName);
+
+	float getOutOfRangeDistance(unsigned long long specialRangeObjectID);
+
+	bool isMissionRangeObject(unsigned const long long& objectID);
 
 };
 
@@ -3734,6 +3950,48 @@ public:
 	DistributedObjectAdapter* createAdapter(DistributedObjectStub* obj);
 
 	friend class Singleton<CreatureObjectHelper>;
+};
+
+class MockCreatureObject : public CreatureObject {
+public:
+
+	MOCK_METHOD0(getPosture,byte());
+	MOCK_METHOD0(getLocomotion,byte());
+	MOCK_METHOD1(hasState,bool(unsigned long long state));
+	MOCK_METHOD0(getCurrentSpeed,float());
+	MOCK_METHOD0(getDefaultWeapon,WeaponObject*());
+	MOCK_METHOD0(isIncapacitated,bool());
+	MOCK_METHOD0(isDead,bool());
+	MOCK_METHOD0(isInCombat,bool());
+	MOCK_METHOD1(isAttackableBy,bool(CreatureObject* object));
+	MOCK_METHOD0(getLevel,int());
+	MOCK_METHOD0(isDestroyed,bool());
+	MOCK_METHOD0(getThreatMap,ThreatMap*());
+	MOCK_METHOD2(isInRange,bool(SceneObject* obj, float range));
+	MOCK_METHOD1(getSlottedObjects,void(VectorMap<String, ManagedReference<SceneObject* > >& objects));
+	MOCK_METHOD1(getDistanceTo,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo3d,float(SceneObject* object));
+	MOCK_METHOD1(getDistanceTo,float(Coordinate* coordinate));
+	MOCK_METHOD1(getDistanceTo3d,float(Coordinate* coordinate));
+	MOCK_METHOD0(getZone,Zone*());
+	MOCK_METHOD0(getZoneUnsafe,Zone*());
+	MOCK_METHOD1(getSlottedObject,Reference<SceneObject* >(const String& slot));
+	MOCK_METHOD0(getInventory,Reference<SceneObject* >());
+	MOCK_METHOD0(getDatapad,Reference<SceneObject* >());
+	MOCK_METHOD1(isFacingObject,bool(SceneObject* obj));
+	MOCK_METHOD0(getParent,ManagedWeakReference<SceneObject* >());
+	MOCK_METHOD0(asCreatureObject,CreatureObject*());
+	MOCK_METHOD0(asAiAgent,AiAgent*());
+	MOCK_METHOD0(asShipAiAgent,ShipAiAgent*());
+	MOCK_METHOD0(asShipObject,ShipObject*());
+	MOCK_METHOD0(asSpaceStationObject,SpaceStationObject*());
+	MOCK_METHOD0(asCapitalShipObject,CapitalShipObject*());
+	MOCK_METHOD0(asPobShip,PobShipObject*());
+	MOCK_METHOD0(asMultiPassengerShip,MultiPassengerShipObject*());
+	MOCK_METHOD0(asFighterShip,FighterShipObject*());
+	MOCK_METHOD0(asTangibleObject,TangibleObject*());
+	MOCK_METHOD0(getTemplateRadius,float());
+
 };
 
 } // namespace creature
@@ -3798,7 +4056,7 @@ public:
 
 	Optional<float> currentSpeed;
 
-	Optional<float> terrainNegotiation;
+	Optional<float> waterModPercent;
 
 	Optional<float> runAcceleration;
 
@@ -3834,9 +4092,9 @@ public:
 
 	Optional<byte> moodID;
 
-	Optional<int> performanceCounter;
+	Optional<int> performanceStartTime;
 
-	Optional<int> instrumentID;
+	Optional<int> performanceType;
 
 	Optional<DeltaVector<int>> hamList;
 

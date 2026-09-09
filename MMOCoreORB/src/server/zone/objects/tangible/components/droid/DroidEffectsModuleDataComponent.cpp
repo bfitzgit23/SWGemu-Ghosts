@@ -24,12 +24,15 @@ DroidEffectsModuleDataComponent::DroidEffectsModuleDataComponent() {
 	}
 
 }
+
 DroidEffectsModuleDataComponent::~DroidEffectsModuleDataComponent() {
 
 }
-String DroidEffectsModuleDataComponent::getModuleName() {
+
+String DroidEffectsModuleDataComponent::getModuleName() const {
 	return String("effects_module");
 }
+
 void DroidEffectsModuleDataComponent::initializeTransientMembers() {
 
 	// Pull module stat from parent sceno
@@ -250,7 +253,7 @@ void DroidEffectsModuleDataComponent::deactivate() {
 
 }
 
-String DroidEffectsModuleDataComponent::toString(){
+String DroidEffectsModuleDataComponent::toString() const {
 	return BaseDroidModuleComponent::toString();
 }
 
@@ -302,6 +305,8 @@ int DroidEffectsModuleDataComponent::writeObjectMembers(ObjectOutputStream* stre
 	int _offset;
 	uint32 _totalSize;
 
+	int _varCount = writeClassNameMember(stream);
+
 	_name = "installedEffects";
 	_name.toBinaryStream(stream);
 	_offset = stream->getOffset();
@@ -326,10 +331,13 @@ int DroidEffectsModuleDataComponent::writeObjectMembers(ObjectOutputStream* stre
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 
-	return 3;
+	return _varCount + 3;
 }
 
 bool DroidEffectsModuleDataComponent::readObjectMember(ObjectInputStream* stream, const String& name) {
+
+	if (readClassNameMember(stream, name))
+		return true;
 
 	if (name == "installedEffects") {
 		TypeInfo< VectorMap<String,String> >::parseFromBinaryStream(&installedEffects, stream);
