@@ -31,15 +31,15 @@ local function sendForceMessage(pCreature, msg)
 end
 
 local POINTS_PER_HOLOCRON = 1000
-local JEDI_STAGE_DELAY_SECONDS = 7 * 24 * 60 * 60
+local JEDI_STAGE_DELAY_SECONDS = 604800 -- Ghosts: 7-day padawan->knight training period
 local JEDI_DISCOVERY_SKILL_BOXES = 36
 local JEDI_DISCOVERY_HOLOCRON = "object/tangible/jedi/no_drop_jedi_holocron_light.iff"
 local DISCOVERY_RECEIVED = "received"
 local DISCOVERY_ACTIVATED = "activated"
 local DISCOVERY_UNLOCKED = "studies_unlocked"
 local PADAWAN_STUDIES_NEEDED = 10
-local KNIGHT_STUDIES_NEEDED = 50
-local MASTER_STUDIES_NEEDED = 150
+local KNIGHT_STUDIES_NEEDED = 10
+local MASTER_STUDIES_NEEDED = 20
 
 -- Each rank has its own counter.  The one-time migration converts saves made
 -- by the short-lived cumulative implementation without making players repeat
@@ -49,8 +49,10 @@ local function getTotalStudies(pCreature)
     if rsd(pCreature, "stage_counter_migrated") ~= "1" then
         local cumulative = tonumber(rsd(pCreature, "holocron_studies_total"))
         if cumulative ~= nil then
-            if status == "padawan" then
-                wsd(pCreature, "knight_holocrons_used", math.max(0, cumulative - PADAWAN_STUDIES_NEEDED))
+            -- Ghosts: if status is empty but cumulative data exists,
+            -- treat as padawan stage (first progression stage)
+            if status == "padawan" or status == "" then
+                wsd(pCreature, "holocrons_used", math.max(0, cumulative - PADAWAN_STUDIES_NEEDED))
             elseif status == "knight" then
                 wsd(pCreature, "master_holocrons_used", math.max(0, cumulative - KNIGHT_STUDIES_NEEDED))
             end
@@ -59,8 +61,11 @@ local function getTotalStudies(pCreature)
         wsd(pCreature, "holocron_studies_total", "")
     end
 
+    -- Ghosts fix: padawan-stage studies are written to "holocrons_used"
+    -- by setTotalStudies but were read from "knight_holocrons_used" here,
+    -- so every use showed 1/10 forever. Read the same key we write.
     if status == "padawan" then
-        return tonumber(rsd(pCreature, "knight_holocrons_used")) or 0
+        return tonumber(rsd(pCreature, "holocrons_used")) or 0
     elseif status == "knight" then
         return tonumber(rsd(pCreature, "master_holocrons_used")) or 0
     end
@@ -70,9 +75,8 @@ end
 local function setTotalStudies(pCreature, total)
     total = math.max(0, tonumber(total) or 0)
     local status = rsd(pCreature, "jedi_status")
-    if status == "padawan" then
-        wsd(pCreature, "knight_holocrons_used", total)
-    elseif status == "knight" then
+    -- Ghosts fix: padawan stage uses "holocrons_used" (same key getTotalStudies reads).
+    if status == "knight" then
         wsd(pCreature, "master_holocrons_used", total)
     else
         wsd(pCreature, "holocrons_used", total)
@@ -514,16 +518,16 @@ function holocron_dev_add_50_holocrons(pCreature, pTarget)
     elseif status == "padawan" then
         local newVal = math.min(total + 50, KNIGHT_STUDIES_NEEDED)
         setTotalStudies(pCreature, newVal)
-        CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[DEV] Knight holocrons set to " .. newVal .. "/50")
-        if newVal >= 50 then
+        CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[DEV] Knight holocrons set to " .. newVal .. "/10")
+        if newVal >= 10 then
             createEvent(500, "HolocronJedi", "showKnightUnlockPopup", pCreature, "")
         end
 
     elseif status == "knight" then
         local newVal = math.min(total + 50, MASTER_STUDIES_NEEDED)
         setTotalStudies(pCreature, newVal)
-        CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[DEV] Master holocrons set to " .. newVal .. "/150")
-        if newVal >= 150 then
+        CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[DEV] Master holocrons set to " .. newVal .. "/20")
+        if newVal >= 20 then
             createEvent(500, "HolocronJedi", "showMasterUnlockPopup", pCreature, "")
         end
 
@@ -612,7 +616,7 @@ function holocron_use_for_studies(pCreature, pTarget)
     elseif status == "padawan" then
         local knightUsed = totalStudies
 
-        if knightUsed >= 50 then
+        if knightUsed >= 10 then
             sendForceMessage(pCreature, "You have meditated upon enough holocrons. The Gatekeeper senses your growing power. Seek them out.")
             return
         end
@@ -620,25 +624,25 @@ function holocron_use_for_studies(pCreature, pTarget)
         knightUsed = knightUsed + 1
         setTotalStudies(pCreature, knightUsed)
         SceneObject(pTarget):destroyObjectFromWorld()
-        sendForceMessage(pCreature, "You meditate upon the holocron. Its secrets deepen your connection to the Force. (" .. knightUsed .. "/50 holocrons absorbed)")
+        sendForceMessage(pCreature, "You meditate upon the holocron. Its secrets deepen your connection to the Force. (" .. knightUsed .. "/10 holocrons absorbed)")
 
-        if knightUsed == 50 then
+        if knightUsed == 10 then
             sendForceMessage(pCreature, "Your studies are complete. The Gatekeeper has more to say. Speak to them when you are ready.")
 
 
             local alignment = rsd(pCreature, "jedi_alignment")
             if alignment == "dark" then
                 replaceEnclaveWaypoint(pCreature, "dark")
-                local mailBody = "You have absorbed the wisdom of fifty holocrons. The dark side has tested your resolve and found you worthy.\n\nThe time has come to face the trials of Dark Knighthood. Speak to the Gatekeeper again when you are ready."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The dark side has tested your resolve and found you worthy.\n\nThe time has come to face the trials of Dark Knighthood. Speak to the Gatekeeper again when you are ready."
                 sendMail("The Force", "The Path to Dark Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             elseif alignment == "light" then
                 -- Light alignment already chosen
                 replaceEnclaveWaypoint(pCreature, "light")
-                local mailBody = "You have absorbed the wisdom of fifty holocrons. The Force has tested your patience and found you worthy.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has tested your patience and found you worthy.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready."
                 sendMail("The Force", "The Path to Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             else
                 -- The Gatekeeper's moral assessment chooses one path later.
-                local mailBody = "You have absorbed the wisdom of fifty holocrons. The Force has found you ready.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready to choose your path."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has found you ready.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready to choose your path."
                 sendMail("The Force", "The Path to Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             end
 
@@ -649,7 +653,7 @@ function holocron_use_for_studies(pCreature, pTarget)
     elseif status == "knight" then
         local masterUsed = totalStudies
 
-        if masterUsed >= 150 then
+        if masterUsed >= 20 then
             sendForceMessage(pCreature, "You have absorbed all the holocron teachings you can. The Gatekeeper awaits.")
             return
         end
@@ -657,9 +661,9 @@ function holocron_use_for_studies(pCreature, pTarget)
         masterUsed = masterUsed + 1
         setTotalStudies(pCreature, masterUsed)
         SceneObject(pTarget):destroyObjectFromWorld()
-        sendForceMessage(pCreature, "Ancient wisdom pours into your mind. (" .. masterUsed .. "/150 holocrons absorbed)")
+        sendForceMessage(pCreature, "Ancient wisdom pours into your mind. (" .. masterUsed .. "/20 holocrons absorbed)")
 
-        if masterUsed == 150 then
+        if masterUsed == 20 then
             sendForceMessage(pCreature, "You have absorbed the final teachings. The Gatekeeper awaits you one last time. Seek them out.")
 
             local alignment = rsd(pCreature, "jedi_alignment")
@@ -667,7 +671,7 @@ function holocron_use_for_studies(pCreature, pTarget)
 
             local enclaveName = (alignment == "dark") and "Dark Jedi Enclave" or "Light Jedi Enclave"
             local enclaveCoords = (alignment == "dark") and "5079, 306" or "-5575, 4910"
-            local mailBody = "One hundred and fifty holocrons. You have meditated upon every fragment of ancient wisdom available to you. The Force has been your constant companion through all of it.\n\nThe time has come to face the final trials - those of the Jedi Master.\n\nSpeak to the Gatekeeper again. They will show you the way forward.\n\nFew reach this moment. Fewer still survive what comes next.\n\nMay the Force guide your final steps."
+            local mailBody = "Twenty holocrons. You have meditated upon every fragment of ancient wisdom available to you. The Force has been your constant companion through all of it.\n\nThe time has come to face the final trials - those of the Jedi Master.\n\nSpeak to the Gatekeeper again. They will show you the way forward.\n\nFew reach this moment. Fewer still survive what comes next.\n\nMay the Force guide your final steps."
             sendMail("The Force", "The Path to Mastery", mailBody, CreatureObject(pCreature):getFirstName())
 
             -- SUI popup notification
@@ -757,8 +761,8 @@ function holocron_speak_to_gatekeeper(pCreature, pTarget)
     local status     = rsd(pCreature, "jedi_status")
     local knightUsed = getTotalStudies(pCreature)
 
-    -- Knight trial - Padawan with 50+ holocrons
-    if status == "padawan" and knightUsed >= 50 then
+    -- Knight trial - Padawan with 10+ holocrons
+    if status == "padawan" and knightUsed >= 10 then
         holocron_begin_knight_trial(pCreature, pTarget)
         return
     end
@@ -766,11 +770,11 @@ function holocron_speak_to_gatekeeper(pCreature, pTarget)
     -- Knight who has used 150 master holocrons - begin master trial phase 1
     if status == "knight" then
         local masterUsed = getTotalStudies(pCreature)
-        if masterUsed >= 150 then
+        if masterUsed >= 20 then
             holocron_begin_master_trial(pCreature, pTarget)
             return
         else
-            sendForceMessage(pCreature, "You have more to learn. Meditate upon holocrons. (" .. masterUsed .. "/150 absorbed)")
+            sendForceMessage(pCreature, "You have more to learn. Meditate upon holocrons. (" .. masterUsed .. "/20 absorbed)")
             return
         end
     end
@@ -887,7 +891,7 @@ function HolocronJedi:showKnightUnlockPopup(pCreature, params)
 
     local sui = SuiMessageBox.new("HolocronJedi", "emptyCallback")
     sui.setTitle("The Gatekeeper Stirs")
-    sui.setPrompt(name .. ", you have absorbed the wisdom of fifty holocrons.\n\nThe Force has judged you ready for the trials of Knighthood.\n\nSpeak to the Gatekeeper again. A new path awaits you.")
+    sui.setPrompt(name .. ", you have absorbed the wisdom of ten holocrons.\n\nThe Force has judged you ready for the trials of Knighthood.\n\nSpeak to the Gatekeeper again. A new path awaits you.")
     sui.setOkButtonText("Understood")
     sui.setCancelButtonText("Close")
     sui.sendTo(pCreature)
@@ -906,7 +910,7 @@ function HolocronJedi:showMasterUnlockPopup(pCreature, params)
 
     local sui = SuiMessageBox.new("HolocronJedi", "emptyCallback")
     sui.setTitle("The Gatekeeper Stirs")
-    sui.setPrompt(name .. ", one hundred and fifty holocrons. You have absorbed every teaching available to you.\n\nThe Force has found you worthy of the final trials.\n\nSpeak to the Gatekeeper again. The last path awaits you.")
+    sui.setPrompt(name .. ", twenty holocrons. You have absorbed every teaching available to you.\n\nThe Force has found you worthy of the final trials.\n\nSpeak to the Gatekeeper again. The last path awaits you.")
     sui.setOkButtonText("Understood")
     sui.setCancelButtonText("Close")
     sui.sendTo(pCreature)
@@ -948,14 +952,14 @@ function HolocronJedi:onPlayerLoggedIn(pCreature)
     local knightUsed = tonumber(rsd(pCreature, "knight_holocrons_used")) or 0
     local masterUsed = tonumber(rsd(pCreature, "master_holocrons_used")) or 0
 
-    -- Knight reminder: padawan who has hit 50 holocrons
-    if status == "padawan" and knightUsed >= 50 then
+    -- Knight reminder: padawan who has hit 10 holocrons
+    if status == "padawan" and knightUsed >= 10 then
         createEvent(5000, "HolocronJedi", "showKnightUnlockPopup", pCreature, "")
         return
     end
 
     -- Advanced-path reminder: knight who has hit the 150-study milestone.
-    if status == "knight" and masterUsed >= 150 then
+    if status == "knight" and masterUsed >= 20 then
         createEvent(5000, "HolocronJedi", "showMasterUnlockPopup", pCreature, "")
         return
     end
@@ -978,8 +982,8 @@ function holocron_begin_knight_trial(pCreature, pTarget)
         return
     end
 
-    if knightUsed < 50 then
-        CreatureObject(pCreature):sendSystemMessage("\\#888888 You have studied " .. knightUsed .. "/50 holocrons. " .. (50 - knightUsed) .. " more are required before you may attempt the trial.")
+    if knightUsed < 10 then
+        CreatureObject(pCreature):sendSystemMessage("\\#888888 You have studied " .. knightUsed .. "/10 holocrons." .. (10 - knightUsed) .. " more are required before you may attempt the trial.")
         return
     end
 
@@ -1261,6 +1265,82 @@ function holocron_grant_padawan(pCreature)
         end
     end
 
+    -- Ghosts: award the full Jedi discipline skill set (the skills the -- trainer_jedi trainer actually teaches) so a holocron-unlocked Padawan -- is not left with only Force Sensitive skills. Bypass prereqs since the -- holocron path already replaced the Village progression.
+    local jediDisciplineSkills = {
+        -- Lightsaber
+        "force_discipline_light_saber_novice",
+        "force_discipline_light_saber_master",
+        "force_discipline_light_saber_one_hand_01",
+        "force_discipline_light_saber_one_hand_02",
+        "force_discipline_light_saber_one_hand_03",
+        "force_discipline_light_saber_one_hand_04",
+        "force_discipline_light_saber_two_hand_01",
+        "force_discipline_light_saber_two_hand_02",
+        "force_discipline_light_saber_two_hand_03",
+        "force_discipline_light_saber_two_hand_04",
+        "force_discipline_light_saber_polearm_01",
+        "force_discipline_light_saber_polearm_02",
+        "force_discipline_light_saber_polearm_03",
+        "force_discipline_light_saber_polearm_04",
+        "force_discipline_light_saber_technique_01",
+        "force_discipline_light_saber_technique_02",
+        "force_discipline_light_saber_technique_03",
+        "force_discipline_light_saber_technique_04",
+        -- Force Powers
+        "force_discipline_powers_novice",
+        "force_discipline_powers_master",
+        "force_discipline_powers_lightning_01",
+        "force_discipline_powers_lightning_02",
+        "force_discipline_powers_lightning_03",
+        "force_discipline_powers_lightning_04",
+        "force_discipline_powers_mental_01",
+        "force_discipline_powers_mental_02",
+        "force_discipline_powers_mental_03",
+        "force_discipline_powers_mental_04",
+        "force_discipline_powers_debuff_01",
+        "force_discipline_powers_debuff_02",
+        "force_discipline_powers_debuff_03",
+        "force_discipline_powers_debuff_04",
+        -- Healing
+        "force_discipline_healing_novice",
+        "force_discipline_healing_master",
+        "force_discipline_healing_healing_01",
+        "force_discipline_healing_healing_02",
+        "force_discipline_healing_healing_03",
+        "force_discipline_healing_healing_04",
+        "force_discipline_healing_stim_01",
+        "force_discipline_healing_stim_02",
+        "force_discipline_healing_stim_03",
+        "force_discipline_healing_stim_04",
+        -- Enhancements
+        "force_discipline_enhancements_novice",
+        "force_discipline_enhancements_master",
+        "force_discipline_enhancements_mind_01",
+        "force_discipline_enhancements_mind_02",
+        "force_discipline_enhancements_mind_03",
+        "force_discipline_enhancements_mind_04",
+        "force_discipline_enhancements_physical_01",
+        "force_discipline_enhancements_physical_02",
+        "force_discipline_enhancements_physical_03",
+        "force_discipline_enhancements_physical_04",
+        -- Defence
+        "force_discipline_defence_novice",
+        "force_discipline_defence_master",
+        "force_discipline_defence_active_01",
+        "force_discipline_defence_active_02",
+        "force_discipline_defence_active_03",
+        "force_discipline_defence_active_04",
+        "force_discipline_defence_passive_01",
+        "force_discipline_defence_passive_02",
+        "force_discipline_defence_passive_03",
+        "force_discipline_defence_passive_04",
+    }
+    for i = 1, #jediDisciplineSkills do
+        if not CreatureObject(pCreature):hasSkill(jediDisciplineSkills[i]) then
+            awardSkill(pCreature, jediDisciplineSkills[i], true)
+        end
+    end
+
     -- Required for the Force progression tree to display correctly.
     CreatureObject(pCreature):setScreenPlayState(
         32,
@@ -1321,6 +1401,7 @@ function holocron_grant_knight(pCreature, alignment)
     wsd(pCreature, "jedi_alignment", alignment)
     wsd(pCreature, "knight_unlocked_at", os.time())
     wsd(pCreature, "knight_holocrons_used", "0")
+    wsd(pCreature, "holocrons_used", "0")
     wsd(pCreature, "master_holocrons_used", "0")
     wsd(pCreature, "holocron_studies_total", "")
 
@@ -1628,8 +1709,8 @@ function holocron_debug_status(pCreature)
     CreatureObject(pCreature):sendSystemMessage("Status: " .. (status == "" and "none" or status))
     CreatureObject(pCreature):sendSystemMessage("Padawan Holocrons: " .. (used == "" and "0" or used) .. "/10")
     CreatureObject(pCreature):sendSystemMessage("Gatekeeper Test Done: " .. (testDone == "1" and "YES" or "NO"))
-    CreatureObject(pCreature):sendSystemMessage("Knight Holocrons: " .. (knightUsed == "" and "0" or knightUsed) .. "/50")
-    CreatureObject(pCreature):sendSystemMessage("Master Holocrons: " .. (masterUsed == "" and "0" or masterUsed) .. "/150")
+    CreatureObject(pCreature):sendSystemMessage("Knight Holocrons: " .. (knightUsed == "" and "0" or knightUsed) .. "/10")
+    CreatureObject(pCreature):sendSystemMessage("Master Holocrons: " .. (masterUsed == "" and "0" or masterUsed) .. "/20")
     CreatureObject(pCreature):sendSystemMessage("Alignment: " .. (alignment == "" and "none" or alignment))
     CreatureObject(pCreature):sendSystemMessage("=========================")
 end

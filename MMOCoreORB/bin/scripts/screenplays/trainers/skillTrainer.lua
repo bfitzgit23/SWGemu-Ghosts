@@ -175,6 +175,36 @@ function SkillTrainer:hasSurpassedTrainer(pPlayer, trainerType)
 end
 
 function SkillTrainer:hasAllPrereqSkills(pPlayer, trainerType)
+	-- Ghosts: Jedi and Grey Jedi trainers are open to anyone who has the
+	-- jedi novice title (force_title_jedi_novice) or is on a grey jedi path.
+	-- The individual skill prereqs are enforced by the skill learn system,
+	-- not by the trainer access check.
+	if trainerType == "trainer_jedi"
+		or trainerType == "trainer_jedi_grand_master"
+		or trainerType == "trainer_jedi_dark_lord"
+		or string.sub(trainerType, 1, 12) == "trainer_jedi_"
+		or trainerType == "trainer_combatjedigray"
+		or trainerType == "trainer_combatjedigrayelder"
+		or trainerType == "trainer_combatjedigrayelderrank"
+		or trainerType == "trainer_combatjedigrayelderrankcouncil"
+	then
+		local pGhost = CreatureObject(pPlayer):getPlayerObject()
+		if pGhost ~= nil then
+			if PlayerObject(pGhost):isJedi() then
+				return true
+			end
+		end
+		-- Also allow access if player has the novice title or grey jedi skills
+		if CreatureObject(pPlayer):hasSkill("force_title_jedi_novice")
+			or CreatureObject(pPlayer):hasSkill("combat_jedi_novice")
+			or CreatureObject(pPlayer):hasSkill("force_rank_gray")
+		then
+			return true
+		end
+		-- Player is not on a jedi path at all
+		return false
+	end
+
 	local prereqSkills = self:getPrerequisiteTrainerSkills(trainerType)
 
 	if prereqSkills == nil then

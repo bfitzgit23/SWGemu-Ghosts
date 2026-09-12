@@ -145,7 +145,15 @@ function GatekeeperConversation:giveInstructions(pCreature)
     local testDone      = rsd(pCreature, "padawan_test_done")
     local used          = tonumber(rsd(pCreature, "holocrons_used")) or 0
     local knightUsed    = tonumber(rsd(pCreature, "knight_holocrons_used")) or 0
+    local masterUsed    = tonumber(rsd(pCreature, "master_holocrons_used")) or 0
     local alignment     = rsd(pCreature, "jedi_alignment")
+    -- Read the correct stage counter based on player status
+    local status        = rsd(pCreature, "jedi_status")
+    if status == "padawan" then
+        used = knightUsed
+    elseif status == "knight" then
+        used = masterUsed
+    end
 
     if status == "master" then
         gkSay(pCreature, "You have walked the full path. There is nothing more I can show you, Master.")
@@ -202,10 +210,19 @@ function GatekeeperConversation:giveInstructions(pCreature)
         return
     end
 
-    if used < 10 then
+    -- Use the correct stage counter based on player status
+    local needed = 10 -- PADAWAN_STUDIES_NEEDED
+    if status == "padawan" then
+        needed = 10
+    elseif status == "knight" then
+        needed = 10 -- KNIGHT_STUDIES_NEEDED
+    else
+        needed = 10 -- default to padawan threshold
+    end
+    if used < needed then
         gkSay(pCreature, "You are not yet ready to face your trial.")
-        gkSay(pCreature, "You must study " .. (10 - used) .. " more holocron" .. (10 - used == 1 and "" or "s") .. " before I can set your trial in motion.")
-        gkSay(pCreature, "Seek holocrons in the world. Meditate on them. Use them through your radial menu. Return to me when you have studied ten.")
+        gkSay(pCreature, "You must study " .. (needed - used) .. " more holocron" .. (needed - used == 1 and "" or "s") .. " before I can set your trial in motion.")
+        gkSay(pCreature, "Seek holocrons in the world. Meditate on them. Use them through your radial menu. Return to me when you have studied " .. needed .. ".")
     else
         gkSay(pCreature, "You have studied enough to be ready. The Force stirs within you.")
         gkSay(pCreature, "Your trial is to face and destroy a dark presence I will summon. It will not be easy.")

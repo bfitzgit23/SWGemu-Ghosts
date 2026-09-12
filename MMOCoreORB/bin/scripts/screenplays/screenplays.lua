@@ -76,6 +76,7 @@ includeFile("trainers/trainerConvHandler.lua")
 
 -- GCW
 includeFile("gcw/city_control_banners.lua")
+includeFile("gcw/gcw_xp.lua")
 includeFile("gcw/city_control_landing.lua")
 includeFile("gcw/newsnet.lua")
 includeFile("gcw/recruiters/recruiterConvoHandler.lua")
@@ -288,6 +289,7 @@ includeFile("jedi/padawan/convos/padawan_the_ring_02_conv_handler.lua")
 -- because the custom Padawan grant delegates final rank setup to it.
 includeFile("jedi/gatekeeper_conversation.lua")
 includeFile("jedi/holocron.lua")
+includeFile("jedi/reset_xixx_jedi.lua")
 includeFile("jedi/light_enclave_knight.lua")
 includeFile("jedi/dark_enclave_knight.lua")
 includeFile("jedi/master_trial.lua")
@@ -810,6 +812,8 @@ includeFile("cities/hutta_city.lua")
 includeFile("cities/jakku_city.lua")
 includeFile("cities/kaas_city.lua")
 includeFile("cities/korriban_city.lua")
+includeFile("static_spawns/korriban_static_spawns.lua")
+includeFile("cities/korriban_valley.lua")
 includeFile("cities/mandalore_city.lua")
 
 

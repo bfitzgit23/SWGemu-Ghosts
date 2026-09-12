@@ -169,6 +169,84 @@ function KorribanStaticSpawnsScreenPlay:spawnMobiles()
 	end
 
 	-- =====================================================
+	-- TOMB BOSSES & NAMED ADDS
+	-- Each of the 8 tombs gets a primary Sith Lord + a Sith Sorcerer add
+	-- + 2-4 dark jedi adds depending on tomb size.
+	-- =====================================================
+
+	-- BANE'S TOMB (-1469, -407) — Darth Bane (hardest) + Sith Sorcerer + 3 adds
+	spawnMobile("korriban", "darth_bane_korriban", 600, -1469, 0, -407, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1462, 0, -402, 180, 0)
+	for i = 1, 3 do
+		local x = -1469 + getRandomNumber(40) - 20
+		local z = -407 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 1 (-1525, -674) — Revan (Sith Lord) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "revan_korriban", 600, -1525, 0, -674, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1518, 0, -668, 90, 0)
+	for i = 1, 2 do
+		local x = -1525 + getRandomNumber(40) - 20
+		local z = -674 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 2 (-1294, -577) — Exar Kun (Spirit) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "exar_kun_korriban", 600, -1294, 0, -577, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1288, 0, -572, 200, 0)
+	for i = 1, 2 do
+		local x = -1294 + getRandomNumber(40) - 20
+		local z = -577 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 3 (-1479, -948) — Revan (Sith Lord) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "revan_korriban", 600, -1479, 0, -948, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1472, 0, -942, 45, 0)
+	for i = 1, 2 do
+		local x = -1479 + getRandomNumber(40) - 20
+		local z = -948 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 4 (-1200, -834) — Exar Kun (Spirit) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "exar_kun_korriban", 600, -1200, 0, -834, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1193, 0, -829, 120, 0)
+	for i = 1, 2 do
+		local x = -1200 + getRandomNumber(40) - 20
+		local z = -834 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 5 (-1120, -1019) — Revan (Sith Lord) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "revan_korriban", 600, -1120, 0, -1019, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1114, 0, -1014, 270, 0)
+	for i = 1, 2 do
+		local x = -1120 + getRandomNumber(40) - 20
+		local z = -1019 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- SITH TEMPLE 6 (-1434, -1194) — Exar Kun (Spirit) + Sith Sorcerer + 2 adds
+	spawnMobile("korriban", "exar_kun_korriban", 600, -1434, 0, -1194, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1428, 0, -1189, 30, 0)
+	for i = 1, 2 do
+		local x = -1434 + getRandomNumber(40) - 20
+		local z = -1194 + getRandomNumber(40) - 20
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- END TEMPLE (-1125, -1347) — Darth Bane (Eternal) + Sith Sorcerer + 4 adds
+	spawnMobile("korriban", "darth_bane_korriban", 600, -1125, 0, -1347, 0, 0)
+	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -1119, 0, -1341, 160, 0)
+	for i = 1, 4 do
+		local x = -1125 + getRandomNumber(50) - 25
+		local z = -1347 + getRandomNumber(50) - 25
+		spawnMobile("korriban", "dark_jedi_master", 600, x, 0, z, getRandomNumber(360), 0)
+	end
+
+	-- =====================================================
 	-- VALLEY AREA BETWEEN TEMPLES - 170 SPAWNS SPREAD OUT!
 	-- Distributed evenly across the entire valley area
 	-- =====================================================

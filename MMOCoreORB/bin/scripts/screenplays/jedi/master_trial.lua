@@ -3,7 +3,7 @@
     Location: MMOCoreORB/bin/scripts/screenplays/jedi/master_trial.lua
 
     Flow:
-      1. Player reaches 150 holocrons as a Knight with FRS rank 10 (light or dark)
+      1. Player reaches 20 holocrons as a Knight with FRS rank 10 (light or dark)
       2. SUI popup notifies them + in-game mail sent
       3. Player speaks to Gatekeeper NPC (radial menu "Seek the Final Trial")
       4. Epic gatekeeper dialogue delivered via system messages
@@ -17,8 +17,8 @@
       12. 1 hour retry cooldown on failure
 
     FRS rank check:
-      Light Jedi  = getFrsCouncilRank(1) >= 10
-      Dark Jedi   = getFrsCouncilRank(2) >= 10
+      Light Jedi  = getFrsRank() >= 10 (Light council)
+      Dark Jedi   = getFrsRank() >= 10 (Dark council)
 
     Storage namespace: "HolocronJedi" (shared with existing system)
 
@@ -37,7 +37,7 @@ registerScreenPlay("MasterTrial", false)
 -- CONSTANTS
 -- ============================================================
 
-local MASTER_HOLOCRONS_NEEDED = 150
+local MASTER_HOLOCRONS_NEEDED = 20
 local FRS_RANK_NEEDED         = 10
 local REVAN_DESPAWN_MS        = 300000   -- 5 minutes
 local RETRY_COOLDOWN_SECS     = 3600     -- 1 hour
@@ -79,9 +79,9 @@ local function getFrsRank(pCreature, alignment)
     local pGhost = CreatureObject(pCreature):getPlayerObject()
     if pGhost == nil then return 0 end
     if alignment == "dark" then
-        return PlayerObject(pGhost):getFrsCouncilRank(2)
+        return PlayerObject(pGhost):getFrsRank()
     else
-        return PlayerObject(pGhost):getFrsCouncilRank(1)
+        return PlayerObject(pGhost):getFrsRank()
     end
 end
 
@@ -90,8 +90,8 @@ local function getAlignment(pCreature)
     local pGhost = CreatureObject(pCreature):getPlayerObject()
     if pGhost == nil then return rsd(pCreature, "jedi_alignment") end
 
-    local lightRank = PlayerObject(pGhost):getFrsCouncilRank(1)
-    local darkRank  = PlayerObject(pGhost):getFrsCouncilRank(2)
+    local lightRank = PlayerObject(pGhost):getFrsCouncil()
+    local darkRank  = PlayerObject(pGhost):getFrsCouncil()
 
     if darkRank > 0 then return "dark" end
     if lightRank > 0 then return "light" end

@@ -277,6 +277,8 @@ public:
 
 	int calculatePvpExperienceChange(CreatureObject* attacker, CreatureObject* victim, float contribution, bool isVictim);
 
+	int calculatePveExperienceChange(CreatureObject* player, int mobLevel, int pveAward);
+
 	int getBaseExperienceGain(PlayerObject* playerGhost, PlayerObject* opponentGhost, bool playerWon);
 
 	int getAvailableRankSlots(FrsRank* rankInfo);
@@ -518,6 +520,10 @@ protected:
 
 	VectorMap<uint64, Vector<int> > experienceValues;
 
+	bool frsPveXPEnabled;
+
+	VectorMap<uint64, Vector<int> > pveXPValues;
+
 	bool frsEnabled;
 
 	bool sameAccountEnclaveRestrictions;
@@ -606,6 +612,8 @@ public:
 	bool isValidFrsBattle(CreatureObject* attacker, CreatureObject* victim);
 
 	int calculatePvpExperienceChange(CreatureObject* attacker, CreatureObject* victim, float contribution, bool isVictim);
+
+	int calculatePveExperienceChange(CreatureObject* player, int mobLevel, int pveAward);
 
 	int getBaseExperienceGain(PlayerObject* playerGhost, PlayerObject* opponentGhost, bool playerWon);
 
@@ -833,6 +841,8 @@ public:
 	bool isValidFrsBattle(CreatureObject* attacker, CreatureObject* victim);
 
 	int calculatePvpExperienceChange(CreatureObject* attacker, CreatureObject* victim, float contribution, bool isVictim);
+
+	int calculatePveExperienceChange(CreatureObject* player, int mobLevel, int pveAward);
 
 	int getBaseExperienceGain(PlayerObject* playerGhost, PlayerObject* opponentGhost, bool playerWon);
 

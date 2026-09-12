@@ -79,6 +79,7 @@ void FrsManagerImplementation::stop() {
 	darkRankingData.removeAll();
 	roomRequirements.removeAll();
 	experienceValues.removeAll();
+	pveXPValues.removeAll();
 }
 
 void FrsManagerImplementation::cancelTasks() {
@@ -268,6 +269,27 @@ void FrsManagerImplementation::loadLuaConfig() {
 			}
 
 			experienceValues.put(keyHash, expValues);
+
+			entry.pop();
+		}
+	}
+
+	luaObject.pop();
+
+	// Ghosts: PvE FRS experience configuration
+	frsPveXPEnabled = lua->getGlobalInt("frsPveXPEnabled") != 0;
+
+	luaObject = lua->getGlobalObject("frsPveXPValues");
+
+	if (luaObject.isValidTable()) {
+		for(int i = 1; i <= luaObject.getTableSize(); ++i) {
+			LuaObject entry = luaObject.getObjectAt(i);
+			uint64 keyHash = entry.getStringAt(1).hashCode();
+
+			Vector<int> expValues;
+			expValues.add(entry.getIntAt(2));
+
+			pveXPValues.put(keyHash, expValues);
 
 			entry.pop();
 		}
@@ -985,6 +1007,57 @@ Vector<uint64> FrsManagerImplementation::getPlayerListByCouncil(int councilType)
 	}
 
 	return playerList;
+}
+
+int FrsManagerImplementation::calculatePveExperienceChange(CreatureObject* player, int mobLevel, int pveAward) {
+	PlayerObject* ghost = player->getPlayerObject();
+
+	if (ghost == nullptr)
+		return 0;
+
+	FrsData* playerData = ghost->getFrsData();
+	int playerRank = playerData->getRank();
+	int playerCouncil = playerData->getCouncilType();
+
+	// Only council members earn FRS experience from PvE
+	if (playerCouncil == 0)
+		return 0;
+
+	if (playerRank < 0)
+		return 0;
+
+	if (playerRank > 11)
+		playerRank = 11;
+
+	if (pveAward <= 0)
+		return 0;
+
+	String key = "rank" + String::valueOf(playerRank);
+	uint64 keyHash = key.hashCode();
+
+	if (!pveXPValues.contains(keyHash))
+		return 0;
+
+	Vector<int> expValues = pveXPValues.get(keyHash);
+	int xp = expValues.get(0);
+
+	if (xp <= 0)
+		return 0;
+
+	// Scale by target difficulty: quarter value at the low end, full value at level 45+, 2x for the toughest targets
+	float difficultyScale = (float)mobLevel / 45.f;
+
+	if (difficultyScale < 0.25f)
+		difficultyScale = 0.25f;
+	else if (difficultyScale > 2.f)
+		difficultyScale = 2.f;
+
+	xp = (int)(((float)xp * difficultyScale) + 0.5f);
+
+	if (xp < 1)
+		xp = 1;
+
+	return xp;
 }
 
 void FrsManagerImplementation::deductMaintenanceXp(CreatureObject* player) {

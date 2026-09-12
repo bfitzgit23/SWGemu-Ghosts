@@ -1840,12 +1840,6 @@ void PlayerObjectImplementation::notifyOnline() {
 		}
 	}
 
-	// --- Ghosts: announce player joining the galaxy (once per session) ---
-	String joinFirstName = playerCreature->getFirstName();
-	String joinMessage = "[Ghosts] " + joinFirstName + " has joined Ghosts";
-	ChatSystemMessage* joinMsg = new ChatSystemMessage(UnicodeString(joinMessage));
-	chatManager->broadcastMessage(joinMsg);
-
 	// Checks for DoTs that should have expired during server downtime and removes them
 	playerCreature->getDamageOverTimeList()->validateDots(playerCreature);
 

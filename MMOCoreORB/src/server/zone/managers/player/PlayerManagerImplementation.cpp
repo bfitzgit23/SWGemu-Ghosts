@@ -2179,6 +2179,26 @@ void PlayerManagerImplementation::disseminateExperience(TangibleObject* destruct
 				awardExperience(attackerCreo, xpType, xpAmount);
 			}
 
+			// Ghosts: FRS XP from PvE kills - council members earn Force Rank XP from eligible mob kills
+			FrsManager* frsPveMgr = attackerCreo->getZoneServer()->getFrsManager();
+
+			if (frsPveMgr != nullptr && frsPveMgr->isFrsEnabled()) {
+				ManagedReference<AiAgent*> frsPveAi = cast<AiAgent*>(destructedObject);
+				int frsMobLevel = (frsPveAi != nullptr) ? frsPveAi->getLevel() : 0;
+				int frsPveXp = frsPveMgr->calculatePveExperienceChange(attackerCreo, frsMobLevel, baseXp);
+
+				if (frsPveXp > 0) {
+					ManagedReference<CreatureObject*> frsPveAttackerRef = attackerCreo;
+					ManagedReference<FrsManager*> frsPveMgrRef = frsPveMgr;
+
+					Core::getTaskManager()->executeTask([frsPveAttackerRef, frsPveMgrRef, frsPveXp] () {
+						Locker locker(frsPveAttackerRef);
+						Locker clocker(frsPveMgrRef, frsPveAttackerRef);
+						frsPveMgrRef->adjustFrsExperience(frsPveAttackerRef, frsPveXp);
+					}, "FrsPveXPAdjustLambda");
+				}
+			}
+
 			awardExperience(attackerCreo, "combat_general", combatXp, true, 0.1f);
 
 

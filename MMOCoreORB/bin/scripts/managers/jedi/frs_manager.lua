@@ -131,3 +131,21 @@ frsExperienceValues = {
 	{ "rank11_win", 9750, 9750, 9750, 9750, 9750, 9750, 9750, 9750, 9750, 9750, 9750, 9750 },
 	{ "rank11_lose", 100, 250, 500, 900, 1300, 1750, 2250, 2750, 3500, 4150, 4750, 5500 },
 }
+
+-- Ghosts: FRS XP from PvE (mob kills). 1 = enabled. Per-rank award table (rank 0-11).
+frsPveXPEnabled = 1
+
+frsPveXPValues = {
+	{ "rank0", 75 },
+	{ "rank1", 90 },
+	{ "rank2", 100 },
+	{ "rank3", 110 },
+	{ "rank4", 120 },
+	{ "rank5", 130 },
+	{ "rank6", 140 },
+	{ "rank7", 150 },
+	{ "rank8", 165 },
+	{ "rank9", 180 },
+	{ "rank10", 200 },
+	{ "rank11", 220 },
+}

@@ -1,0 +1,37 @@
+-- Exar Kun - Spirit Sith Lord (Tomb Boss, Phase 1.5)
+exar_kun_korriban = Creature:new {
+    customName = "Exar Kun - Sith Spirit",
+    socialGroup = "dark_jedi",
+    pvpFaction = "",
+    faction = "",
+    level = 350,
+    chanceHit = 35.00,
+    damageMin = 2200,
+    damageMax = 3900,
+    baseXp = 350000,
+    baseHAM = 550000,
+    baseHAMmax = 780000,
+    armor = 3,
+    resists = {60,60,60,60,60,60,60,60,60},
+    meatType = "", meatAmount = 0,
+    hideType = "", hideAmount = 0,
+    boneType = "", boneAmount = 0,
+    milk = 0,
+    tamingChance = 0.0,
+    ferocity = 0,
+    pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
+    creatureBitmask = KILLER + STALKER,
+    optionsBitmask = AIENABLED + INTERESTING,
+    diet = HERBIVORE,
+    templates = {"object/mobile/costume_exar_kun_cultist.iff"},
+    lootGroups = {
+        {{group="junk",chance=5000000},{group="armor_all",chance=4500000},{group="weapons_all",chance=500000},}, lootChance=10000000,
+        {{group="wearables_all",chance=5000000},{group="loot_kit_parts",chance=2500000},{group="tailor_components",chance=2500000},}, lootChance=10000000,
+        {{group="tierone",chance=3500000},{group="tiertwo",chance=3500000},{group="tierthree",chance=1500000},{group="tierdiamond",chance=1500000},}, lootChance=10000000,
+        {{group="crystal_kuns_blood",chance=10000000},}, lootChance=10000000,
+    },
+    weapons = {"dark_jedi_weapons_gen4"},
+    reactionStf = "@npc_reaction/slang",
+    attacks = merge(lightsabermaster, forcepowermaster)
+}
+CreatureTemplates:addCreatureTemplate(exar_kun_korriban, "exar_kun_korriban")

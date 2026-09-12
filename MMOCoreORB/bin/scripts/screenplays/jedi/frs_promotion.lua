@@ -7,7 +7,7 @@
     XP-gated promotion at the enclave terminals.
 
     Players select "Request Promotion" at their enclave terminal.
-    If they have enough gcw_skill_xp for the next rank they are promoted
+    If they have enough force_rank_xp for the next rank they are promoted
     immediately. No votes, no petitions, no council cap checks.
 
     XP requirements match frs_manager.lua lightRankingData/darkRankingData:
@@ -128,11 +128,11 @@ local function getFrsCouncil(pPlayer)
     return 0
 end
 
--- Get gcw_skill_xp from player experience
+-- Get force_rank_xp (FRS experience) from player
 local function getGcwSkillXp(pPlayer)
     local pGhost = CreatureObject(pPlayer):getPlayerObject()
     if pGhost == nil then return 0 end
-    return PlayerObject(pGhost):getExperience("gcw_skill_xp") or 0
+    return PlayerObject(pGhost):getExperience("force_rank_xp") or 0
 end
 
 local function isDark(pPlayer)
@@ -176,9 +176,9 @@ function frs_request_promotion(pCreature, pTerminal, pGhost)
         -- Not enough XP
         local needed = data.xp - xp
         if dark then
-            CreatureObject(pCreature):sendSystemMessage("\\\\#FF4444 You are not yet worthy of the rank of " .. title .. ". You need " .. needed .. " more GCW Skill XP.")
+            CreatureObject(pCreature):sendSystemMessage("\\\\#FF4444 You are not yet worthy of the rank of " .. title .. ". You need " .. needed .. " more Force Rank XP.")
         else
-            CreatureObject(pCreature):sendSystemMessage("\\\\#88CCFF The Council has reviewed your deeds. You need " .. needed .. " more GCW Skill XP to reach the rank of " .. title .. ".")
+            CreatureObject(pCreature):sendSystemMessage("\\\\#88CCFF The Council has reviewed your deeds. You need " .. needed .. " more Force Rank XP to reach the rank of " .. title .. ".")
         end
         return
     end
@@ -189,12 +189,12 @@ function frs_request_promotion(pCreature, pTerminal, pGhost)
     local sui = SuiMessageBox.new("FrsPromotion", "onPromotionConfirm")
     if dark then
         sui.setTitle("Dark Council Promotion")
-        sui.setPrompt(name .. ", your deeds have been measured.\\n\\nYou have earned " .. xp .. " GCW Skill XP.\\n\\nThe Dark Council grants you the rank of:\\n\\n" .. title .. "\\n\\nDo you accept this promotion?")
+        sui.setPrompt(name .. ", your deeds have been measured.\\n\\nYou have earned " .. xp .. " Force Rank XP.\\n\\nThe Dark Council grants you the rank of:\\n\\n" .. title .. "\\n\\nDo you accept this promotion?")
         sui.setOkButtonText("I accept")
         sui.setCancelButtonText("Not yet")
     else
         sui.setTitle("Jedi Council Promotion")
-        sui.setPrompt(name .. ", the Council has deliberated.\\n\\nYou have earned " .. xp .. " GCW Skill XP.\\n\\nIt is the Council's decision to grant you the rank of:\\n\\n" .. title .. "\\n\\nMay the Force be with you.")
+        sui.setPrompt(name .. ", the Council has deliberated.\\n\\nYou have earned " .. xp .. " Force Rank XP.\\n\\nIt is the Council's decision to grant you the rank of:\\n\\n" .. title .. "\\n\\nMay the Force be with you.")
         sui.setOkButtonText("I accept")
         sui.setCancelButtonText("Not yet")
     end
@@ -226,6 +226,9 @@ function FrsPromotion:onPromotionConfirm(pPlayer, pSui, eventIndex, ...)
     if not CreatureObject(pPlayer):hasSkill(skill) then
         awardSkill(pPlayer, skill)
     end
+
+    -- Deduct the FRS XP cost for this rank
+    CreatureObject(pPlayer):awardExperience("force_rank_xp", -data.xp)
 
     -- Update FRS rank
     PlayerObject(pGhost):setFrsRank(nextRank)

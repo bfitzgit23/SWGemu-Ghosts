@@ -664,14 +664,14 @@ bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* con
 
 	// All level 1+ NPCs and creatures have an independent 5% chance to drop
 	// a piece from the standard armor pool.
-	if (creatureLevel >= 1 && System::random(9999) < 500) {
+	if (creatureLevel >= 1 && System::random(9999) < 1000) { // Ghosts: 10% (was 5%)
 		if (createLoot(trx, container, "global_standard_armor", creatureLevel, false) != 0)
 			createdLoot = true;
 	}
 
 	// High-level NPCs and creatures also have an independent 1% chance to
 	// drop a piece from the custom/high-tier armor pool.
-	if (creatureLevel >= 75 && System::random(9999) < 100) {
+	if (creatureLevel >= 75 && System::random(9999) < 200) { // Ghosts: 2% (was 1%)
 		if (createLoot(trx, container, "global_custom_armor", creatureLevel, false) != 0)
 			createdLoot = true;
 	}
@@ -684,6 +684,46 @@ bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* con
 
 		if (createLoot(trx, container, holocronGroup, creatureLevel, false) != 0)
 			createdLoot = true;
+	}
+
+	// --- Ghosts: Flurry-style bonus loot systems ---
+	// Rare Loot System: 2% on level 50+ mobs, drops from the rare loot pool.
+	if (creatureLevel >= 50 && System::random(100) < 2) {
+		if (createLoot(trx, container, "rarelootsystem", creatureLevel, false) != 0) {
+			createdLoot = true;
+			creature->playEffect("clienteffect/rare_loot.cef", "");
+			creature->showFlyText("Rare", "Loot", 0, 255, 0, true);
+		}
+	}
+
+	// Diamond Crates: 2% on level 75+ mobs.
+	if (creatureLevel >= 75 && System::random(100) < 2) {
+		if (createLoot(trx, container, "lootcollectiontierdiamonds", creatureLevel, false) != 0) {
+			createdLoot = true;
+			creature->playEffect("clienteffect/level_granted_chronicles.cef", "");
+			creature->showFlyText("Diamond", "Crate", 0, 255, 255, true);
+		}
+	}
+
+	// Bonus credit drops at milestone levels (20% chance), Flurry-style.
+	if ((creatureLevel == 25 || creatureLevel == 50 || creatureLevel == 75
+			|| creatureLevel == 100 || creatureLevel == 150 || creatureLevel == 200)
+			&& System::random(100) < 20) {
+		int bonus = 0;
+
+		switch (creatureLevel) {
+		case 25:  bonus = 250;  break;
+		case 50:  bonus = 500;  break;
+		case 75:  bonus = 1000; break;
+		case 100: bonus = 1500; break;
+		case 150: bonus = 2000; break;
+		case 200: bonus = 2500; break;
+		}
+
+		if (bonus > 0) {
+			creature->addCashCredits(bonus, true);
+			creature->showFlyText(String::valueOf(bonus) + " bonus", "Credits", 0, 255, 0, true);
+		}
 	}
 
 	if (!createdLoot)

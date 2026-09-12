@@ -1,0 +1,37 @@
+-- Darth Bane - Eternal Sith Lord (Tomb Boss, Phase 2)
+darth_bane_korriban = Creature:new {
+    customName = "Darth Bane - Eternal Sith Lord",
+    socialGroup = "dark_jedi",
+    pvpFaction = "",
+    faction = "",
+    level = 420,
+    chanceHit = 42.00,
+    damageMin = 2800,
+    damageMax = 5200,
+    baseXp = 520000,
+    baseHAM = 780000,
+    baseHAMmax = 1100000,
+    armor = 3,
+    resists = {70,70,70,70,70,70,70,70,70},
+    meatType = "", meatAmount = 0,
+    hideType = "", hideAmount = 0,
+    boneType = "", boneAmount = 0,
+    milk = 0,
+    tamingChance = 0.0,
+    ferocity = 0,
+    pvpBitmask = AGGRESSIVE + ATTACKABLE + ENEMY,
+    creatureBitmask = KILLER + STALKER,
+    optionsBitmask = AIENABLED,
+    diet = HERBIVORE,
+    templates = {"object/mobile/dressed_dark_jedi_human_male_01.iff"},
+    lootGroups = {
+        {{group="junk",chance=5000000},{group="armor_all",chance=4500000},{group="weapons_all",chance=500000},}, lootChance=10000000,
+        {{group="wearables_all",chance=5000000},{group="loot_kit_parts",chance=2500000},{group="tailor_components",chance=2500000},}, lootChance=10000000,
+        {{group="tierone",chance=3500000},{group="tiertwo",chance=3500000},{group="tierthree",chance=1500000},{group="tierdiamond",chance=1500000},}, lootChance=10000000,
+        {{group="tierone",chance=3500000},{group="tiertwo",chance=3500000},{group="tierthree",chance=1500000},{group="tierdiamond",chance=1500000},}, lootChance=10000000,
+    },
+    weapons = {"dark_jedi_weapons_gen4"},
+    reactionStf = "@npc_reaction/slang",
+    attacks = merge(lightsabermaster, forcepowermaster)
+}
+CreatureTemplates:addCreatureTemplate(darth_bane_korriban, "darth_bane_korriban")

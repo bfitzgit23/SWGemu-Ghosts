@@ -14,6 +14,7 @@ kaas_dark_jedi_master_lair_neutral_large = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 -- Dark Jedi Knight Lairs
@@ -29,6 +30,7 @@ kaas_dark_jedi_knight_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_dark_jedi_knight_lair2_neutral_medium = {
@@ -43,6 +45,7 @@ kaas_dark_jedi_knight_lair2_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_dark_jedi_knight_lair3_neutral_medium = {
@@ -57,6 +60,7 @@ kaas_dark_jedi_knight_lair3_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 -- Dark Jedi Sentinel Lairs
@@ -72,6 +76,7 @@ kaas_dark_jedi_sentinel_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_dark_jedi_sentinel_lair2_neutral_medium = {
@@ -86,6 +91,7 @@ kaas_dark_jedi_sentinel_lair2_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_dark_jedi_sentinel_imperial_lair_neutral_medium = {
@@ -100,6 +106,7 @@ kaas_dark_jedi_sentinel_imperial_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 -- Force-Sensitive NPC Lairs
@@ -115,6 +122,7 @@ kaas_force_trained_archaist_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_force_sensitive_crypt_crawler_lair_neutral_medium = {
@@ -129,6 +137,7 @@ kaas_force_sensitive_crypt_crawler_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_force_sensitive_renegade_lair_neutral_medium = {
@@ -143,6 +152,7 @@ kaas_force_sensitive_renegade_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_forsaken_force_drifter_lair_neutral_medium = {
@@ -157,6 +167,7 @@ kaas_forsaken_force_drifter_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_novice_force_mystic_lair_neutral_medium = {
@@ -171,6 +182,7 @@ kaas_novice_force_mystic_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_force_crystal_hunter_lair_neutral_medium = {
@@ -185,6 +197,7 @@ kaas_force_crystal_hunter_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 -- Sith-specific lairs
@@ -200,6 +213,7 @@ kaas_sith_ghost_lair_neutral_large = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 kaas_insane_vitiate_cultist_lair_neutral_medium = {
@@ -214,6 +228,7 @@ kaas_insane_vitiate_cultist_lair_neutral_medium = {
 	buildingsHard = {},
 	buildingsVeryHard = {},
 	mobType = "npc",
+	buildingType = "none",
 }
 
 addLairTemplate("kaas_dark_jedi_master_lair_neutral_large", kaas_dark_jedi_master_lair_neutral_large)
