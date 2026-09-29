@@ -70,12 +70,17 @@ public:
 
 			PlanetTravelPoint* planetTravelPoint = new PlanetTravelPoint(zoneName, cityRegion->getCityRegionName(), arrivalVector, arrivalVector, strongShuttle, 6.f);
 
+			// Player-city shuttles must allow interplanetary departures. Without this the
+			// city point fails isInterplanetaryTravelAllowed() and ticket purchase/boarding
+			// silently fails when leaving any player city.
+			planetTravelPoint->setInterplanetary(true);
+
 			planetManager->addPlayerCityTravelPoint(planetTravelPoint);
 			planetManager->scheduleShuttle(strongShuttle, PlanetManager::SHUTTLEPORT);
-		} else {
-						info() << "DEBUG Shuttle: zone=" << zone->getZoneName() 
-				<< " shuttlePos=(" << strongShuttle->getWorldPositionX() << "," << strongShuttle->getWorldPositionY() << "," << strongShuttle->getWorldPositionZ() << ")";
 
+			info() << "Registered player-city travel point '" << cityRegion->getCityRegionName()
+				<< "' (interplanetary) in zone " << zoneName << "; shuttle " << strongShuttle->getObjectID();
+		} else {
 			Reference<PlanetTravelPoint*> travelPoint = planetManager->getNearestPlanetTravelPoint(strongShuttle);
 
 			if (travelPoint == nullptr) {

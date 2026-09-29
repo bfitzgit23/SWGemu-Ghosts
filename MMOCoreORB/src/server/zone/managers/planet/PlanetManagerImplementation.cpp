@@ -1516,8 +1516,15 @@ bool PlanetManagerImplementation::checkShuttleStatus(CreatureObject* creature, C
 
 	Reference<ShuttleDepartureTask*> task = shuttleMap.get(shuttle->getObjectID());
 
-	if (task == nullptr)
+	if (task == nullptr) {
+		// This should not happen: every shuttle gets a departure task when it is
+		// scheduled. Make the failure visible instead of silently blocking boarding.
+		warning() << "checkShuttleStatus: no ShuttleDepartureTask for shuttle " << shuttle->getObjectID()
+			<< " in zone " << zone->getZoneName() << "; boarding is disabled until it is scheduled.";
+
+		creature->sendSystemMessage("The shuttle is currently out of service. Please try again shortly.");
 		return false;
+	}
 
 	int seconds = task->getSecondsRemaining();
 

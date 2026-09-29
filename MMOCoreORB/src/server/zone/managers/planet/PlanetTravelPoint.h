@@ -101,6 +101,12 @@ public:
 		pointName = name;
 	}
 
+	// Player-city shuttleports are registered with interplanetary travel disabled by
+	// default; this lets the scheduler enable departures once the shuttle is known.
+	void setInterplanetary(bool allowed) {
+		interplanetaryTravelAllowed = allowed;
+	}
+
 	inline const String& getPointZone() const {
 		return pointZone;
 	}
