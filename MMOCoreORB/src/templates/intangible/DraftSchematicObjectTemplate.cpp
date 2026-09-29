@@ -244,14 +244,24 @@ const Vector<Reference<ResourceWeight*> >* DraftSchematicObjectTemplate::getReso
 			tangibleTemplate = dynamic_cast<SharedTangibleObjectTemplate*> (TemplateManager::instance()->getTemplate(tanoCRC));
 
 		if (tangibleTemplate == nullptr) {
-			Logger::console.error(
-					"Template not found for server crc: "
-							+ additionalTemplates->get(0));
+			// Log the failing CRC directly. The old message called
+			// additionalTemplates->get(0) unconditionally, which threw on Lua
+			// schematics (empty additionalTemplates) and reported every failure
+			// as a generic "Unhandled exception".
+			String extra;
+			if (additionalTemplates != nullptr && additionalTemplates->size() > 0)
+				extra = additionalTemplates->get(0);
+			else
+				extra = "<no additionalTemplates>";
+
+			Logger::console.error()
+				<< "getResourceWeights: tanoCRC 0x" << String::hexvalueOf((int64)tanoCRC)
+				<< " has no SharedTangibleObjectTemplate (additionalTemplates[0]=" << extra << ")";
+
 			return nullptr;
 		}
-	} catch (...) {
-		Logger::console.error(
-				"Unhandled exception in DraftSchematicObjectTemplate::getResourceWeights");
+	} catch (Exception& e) {
+		Logger::console.error() << "Exception in getResourceWeights: " << e.getMessage();
 		return nullptr;
 	}
 
