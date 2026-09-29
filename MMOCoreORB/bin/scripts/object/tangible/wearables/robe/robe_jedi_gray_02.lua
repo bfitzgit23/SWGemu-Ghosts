@@ -233,6 +233,11 @@ object_tangible_wearables_robe_robe_jedi_gray_02 = object_tangible_wearables_rob
 	experimentalMax = {0, 0, 0, 1000},
 	experimentalPrecision = {0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 4, 4},
+	skillMods = {
+		{"jedi_force_power_max", 310},
+		{"jedi_force_power_regen", 14},
+		{"force_failure_reduction", 5},
+	}
 }
 
 ObjectTemplates: addTemplate(object_tangible_wearables_robe_robe_jedi_gray_02, "object/tangible/wearables/robe/robe_jedi_gray_02.iff")

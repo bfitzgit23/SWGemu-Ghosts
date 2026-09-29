@@ -55,6 +55,17 @@ void WearableObjectImplementation::updateCraftingValues(CraftingValues* values, 
 		if(values->hasExperimentalAttribute("sockets") && values->getCurrentValue("sockets") >= 0)
 			generateSockets(values);
 	}
+
+	// Ghosts (2026-09-29): crafted Jedi robes always come out socketed (1-2 sockets)
+	// regardless of assembly skill, per the custom robe design.
+	String craftTemplatePath = getObjectTemplate()->getFullTemplateString();
+	if (craftTemplatePath.contains("robe_jedi") || craftTemplatePath.contains("robe_s32") || craftTemplatePath.contains("robe_s33")) {
+		if (socketCount < 1) {
+			usedSocketCount = 0;
+			socketCount = 1 + System::random(1);
+			socketsGenerated = true;
+		}
+	}
 }
 
 void WearableObjectImplementation::generateSockets(CraftingValues* craftingValues) {

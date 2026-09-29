@@ -233,6 +233,11 @@ object_tangible_wearables_robe_robe_jedi_tan_02 = object_tangible_wearables_robe
 	experimentalMax = {0, 0, 0, 1000},
 	experimentalPrecision = {0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 4, 4},
+	skillMods = {
+		{"jedi_force_power_max", 300},
+		{"jedi_force_power_regen", 12},
+		{"force_assembly", 10},
+	}
 }
 
 

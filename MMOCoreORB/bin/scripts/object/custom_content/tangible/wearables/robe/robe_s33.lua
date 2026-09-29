@@ -191,6 +191,12 @@ object_tangible_wearables_robe_robe_s33 = object_tangible_wearables_robe_shared_
 	experimentalMax = {0, 0, 0, 1000, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	experimentalPrecision = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+	skillMods = {
+		{"jedi_force_power_max", 600},
+		{"jedi_force_power_regen", 25},
+		{"force_failure_reduction", 30},
+		{"jedi_toughness", 30},
+	}
 }
 
 ObjectTemplates:addTemplate(object_tangible_wearables_robe_robe_s33, "object/tangible/wearables/robe/robe_s33.iff")
