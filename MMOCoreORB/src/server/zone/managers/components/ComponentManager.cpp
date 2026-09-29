@@ -58,6 +58,7 @@
 #include "server/zone/objects/tangible/components/ForceCrystalMenuComponent.h"
 #include "server/zone/objects/tangible/components/RobeObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/ArtCrateMenuComponent.h"
+#include "server/zone/objects/tangible/components/generic/GhostsLootCrateMenuComponent.h"
 #include "server/zone/objects/tangible/components/WeaponObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/LightsaberObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/VehicleCustomKitObjectMenuComponent.h"
@@ -204,6 +205,18 @@ ComponentManager::ComponentManager() {
 	components.put("CloningTerminalMenuComponent", new CloningTerminalMenuComponent());
 
 	components.put("ArtCrateMenuComponent", new ArtCrateMenuComponent());
+	// Ghosts custom loot crates (rebuilt 2026-09-29): all crate tiers share one handler
+	components.put("ArtifactMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("NewMemberMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("WorldMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("EventMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("CollectionsilverMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("CollectiongoldMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("CollectionplatinumMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("DiamondMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("HeroicMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("FlurrypresentMenuComponent", new GhostsLootCrateMenuComponent());
+	components.put("FlurrycoalMenuComponent", new GhostsLootCrateMenuComponent());
 
 	components.put("GroundZoneContainerComponent", new GroundZoneContainerComponent());
 	components.put("SpaceZoneContainerComponent", new SpaceZoneContainerComponent());
