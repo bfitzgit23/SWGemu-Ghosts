@@ -124,16 +124,24 @@ public:
 		Reference<PlanetTravelPoint*>  destPoint = pmArrival->getPlanetTravelPoint(arrivalPoint);
 
 		if (destPoint == nullptr) {
+			info(true) << "[GHOSTS-TRAVEL] purchase: arrival point missing: " << arrivalPlanet << "/" << arrivalPoint;
 			return GENERALERROR;
 		}
 
+		// Custom world snapshots may omit the shuttle creature while retaining
+		// the configured travel point (same tolerance BoardShuttleCommand uses).
+		// Fall back to the travel point position for city/ban checks instead of
+		// silently failing the whole purchase.
 		ManagedReference<CreatureObject*> arrivalShuttle = destPoint->getShuttle();
 
-		if (arrivalShuttle == nullptr) {
-			return GENERALERROR;
-		}
+		ManagedReference<CityRegion*> destCity;
 
-		ManagedReference<CityRegion*> destCity = arrivalShuttle->getCityRegion().get();
+		if (arrivalShuttle != nullptr) {
+			destCity = arrivalShuttle->getCityRegion().get();
+		} else {
+			destCity = pmArrival->getCityRegionAt(destPoint->getDeparturePositionX(), destPoint->getDeparturePositionY());
+			info(true) << "[GHOSTS-TRAVEL] purchase: no shuttle creature at " << arrivalPlanet << "/" << arrivalPoint << " - proceeding with travel point only";
+		}
 
 		if (destCity != nullptr) {
 			if (destCity.get()->isBanned(creature->getObjectID())) {
@@ -143,15 +151,20 @@ public:
 		}
 
 		//Check to see if this point can be reached from this location.
-		if (!pmDeparture->isTravelToLocationPermitted(departurePoint, arrivalPlanet, arrivalPoint))
+		if (!pmDeparture->isTravelToLocationPermitted(departurePoint, arrivalPlanet, arrivalPoint)) {
+			info(true) << "[GHOSTS-TRAVEL] purchase: route not permitted " << departurePlanet << "/" << departurePoint << " -> " << arrivalPlanet << "/" << arrivalPoint;
 			return GENERALERROR;
+		}
 
-		if (roundTrip && !pmArrival->isTravelToLocationPermitted(arrivalPoint, departurePlanet, departurePoint))
+		if (roundTrip && !pmArrival->isTravelToLocationPermitted(arrivalPoint, departurePlanet, departurePoint)) {
+			info(true) << "[GHOSTS-TRAVEL] purchase: return route not permitted " << arrivalPlanet << "/" << arrivalPoint << " -> " << departurePlanet << "/" << departurePoint;
 			return GENERALERROR; //If they are doing a round trip, make sure they can travel back.
+		}
 
 		int baseFare = pmDeparture->getTravelFare(departurePlanet, arrivalPlanet);
 
 		if (baseFare == 0) { // Make sure that the travel route is valid
+			info(true) << "[GHOSTS-TRAVEL] purchase: zero fare route " << departurePlanet << " -> " << arrivalPlanet;
 			creature->sendSystemMessage("Invalid travel route specified.");
 			return GENERALERROR;
 		}
