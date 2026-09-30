@@ -63,9 +63,11 @@ public:
 
 		// Some custom world snapshots omit the shuttle creature while retaining the
 		// configured travel point. In that case, validate against the travel point
-		// itself so tickets remain usable without weakening the route checks below.
+		// itself (using the same 128 m radius as the travel-point search, since the
+		// snapshot's starport departure coordinates are only approximate) so tickets
+		// remain usable without weakening the route checks below.
 		bool isNearBoardingPoint = shuttle != nullptr ? shuttle->isInRange(creature, 25.f)
-				: creature->getWorldPosition().squaredDistanceTo(closestPoint->getDeparturePosition()) <= (25.f * 25.f);
+				: creature->getWorldPosition().squaredDistanceTo(closestPoint->getDeparturePosition()) <= (128.f * 128.f);
 
 		if (!isNearBoardingPoint) {
 			creature->sendSystemMessage("@player_structure:boarding_too_far"); //You are too far from the shuttle to board.
