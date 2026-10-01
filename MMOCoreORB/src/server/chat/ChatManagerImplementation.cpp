@@ -300,7 +300,10 @@ void ChatManagerImplementation::initiateRooms() {
 	mainRoom->setPrivate();
 	gameRooms.put("SWG", mainRoom);
 
-	galaxyRoom = createRoom(server->getGalaxyName(), mainRoom);
+	// GHOSTS-CHAT: brand the galaxy-level chat room as "Ghosts" regardless of
+	// the database galaxy name (room-path repair below handles persisted rooms
+	// on the rename).
+	galaxyRoom = createRoom("Ghosts", mainRoom);
 	galaxyRoom->setPrivate();
 
 	systemRoom = createRoom("system", galaxyRoom);
@@ -376,7 +379,9 @@ void ChatManagerImplementation::loadPersistentRooms() {
 		ObjectDatabaseIterator iterator(chatRoomDatabase);
 
 		uint64 objectID = 0;
-		String currentGalaxy = server->getGalaxyName();
+		// GHOSTS-CHAT: repair persisted rooms toward the branded room label
+		// ("Ghosts"), matching initiateRooms above.
+		String currentGalaxy = "Ghosts";
 
 		while (iterator.getNextKey(objectID)) {
 

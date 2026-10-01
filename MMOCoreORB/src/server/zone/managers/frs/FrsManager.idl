@@ -166,6 +166,10 @@ class FrsManager extends ManagedService implements Logger {
 
 	public native void playerLoggedIn(CreatureObject player);
 
+	// GHOSTS-AUTORANK: implementation-only auto-promotion check (not exposed to scripts).
+	@local
+	public native void checkAutoPromotion(CreatureObject player);
+
 	@arg1preLocked
 	public native void validatePlayerData(CreatureObject player, boolean verifyBan = false);
 

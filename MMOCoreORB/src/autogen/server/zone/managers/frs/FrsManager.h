@@ -584,6 +584,7 @@ public:
 	void setPlayerRank(CreatureObject* player, int rank);
 
 	void playerLoggedIn(CreatureObject* player);
+	void checkAutoPromotion(CreatureObject* player); // GHOSTS-AUTORANK (implementation-only)
 
 	void validatePlayerData(CreatureObject* player, bool verifyBan = false);
 

@@ -401,6 +401,94 @@ void FrsManagerImplementation::verifyRoomAccess(CreatureObject* player, int play
 	}
 }
 
+// GHOSTS-AUTORANK: promote players the moment they hold enough
+// force_rank_xp for the next rank.  Light/Dark council members skip the
+// petition/vote cycle (rank slot caps still apply).  Grey jedi (no council)
+// ride the light-side XP thresholds and gain their force_rank_gray_rank_NN
+// trainer-rank skills automatically.
+void FrsManagerImplementation::checkAutoPromotion(CreatureObject* player) {
+	if (player == nullptr)
+		return;
+
+	PlayerObject* ghost = player->getPlayerObject();
+
+	if (ghost == nullptr)
+		return;
+
+	FrsData* playerData = ghost->getFrsData();
+	int councilType = playerData->getCouncilType();
+	int curRank = playerData->getRank();
+
+	if (curRank >= 10)
+		return;
+
+	// Grey jedi ranks are 1..10 (FrsData starts at -1; first auto-rank is 1).
+	int nextRank = (councilType == 0) ? ((curRank < 1) ? 1 : curRank + 1) : (curRank + 1);
+
+	int curExperience = ghost->getExperience("force_rank_xp");
+
+	Reference<FrsRankingData*> nextRankData = nullptr;
+
+	if (councilType == COUNCIL_DARK)
+		nextRankData = darkRankingData.get(nextRank);
+	else
+		nextRankData = lightRankingData.get(nextRank); // light council and grey path
+
+	if (nextRankData == nullptr)
+		return;
+
+	if (curExperience < nextRankData->getRequiredExperience())
+		return;
+
+	if (councilType == COUNCIL_LIGHT || councilType == COUNCIL_DARK) {
+		// Vote-based councils still respect the rank slot caps.
+		ManagedReference<FrsRank*> rankSlotData = getFrsRank(councilType, curRank + 1);
+
+		if (rankSlotData != nullptr) {
+			Locker slotLocker(rankSlotData, player);
+
+			if (getAvailableRankSlots(rankSlotData) <= 0)
+				return;
+		}
+
+		promotePlayer(player);
+	} else {
+		// Grey jedi: advance the rank and award the matching grey rank skill
+		// (force_rank_gray_rank_01..10).  awardSkill with awardRequiredSkills
+		// and noXpRequired mirrors updatePlayerSkills' FRS skill grants.
+		// FrsData rank starts at -1 for grey jedi; the first auto-promotion
+		// lands on rank 1 and requires the trainer-taught grey path
+		// (force_rank_gray_master) as the grey equivalent of knighthood.
+		int nextRank = (curRank < 1) ? 1 : curRank + 1;
+
+		if (nextRank > 10)
+			return;
+
+		if (nextRank == 1 && !player->hasSkill("force_rank_gray_master"))
+			return;
+
+		String rankNum = String::valueOf(nextRank);
+		if (nextRank < 10)
+			rankNum = "0" + rankNum;
+
+		String greySkill = "force_rank_gray_rank_" + rankNum;
+		SkillManager* skillManager = zoneServer.get()->getSkillManager();
+
+		if (skillManager != nullptr && !player->hasSkill(greySkill))
+			skillManager->awardSkill(greySkill, player, true, true, true);
+
+		playerData->setRank(nextRank);
+
+		StringIdChatParameter param("@force_rank:rank_gained"); // You have achieved the Enclave rank of %TO.
+		String stfRank = "@force_rank:rank" + String::valueOf(nextRank);
+		param.setTO(stfRank);
+		player->sendSystemMessage(param);
+
+		log(true) << "GHOSTS-AUTORANK: grey jedi " << player->getFirstName()
+			<< " auto-ranked to " << nextRank << " with " << curExperience << " force_rank_xp";
+	}
+}
+
 void FrsManagerImplementation::playerLoggedIn(CreatureObject* player) {
 	if (!frsEnabled || player == nullptr)
 		return;
@@ -412,6 +500,9 @@ void FrsManagerImplementation::playerLoggedIn(CreatureObject* player) {
 	if (!ConfigManager::instance()->getBool("Core3.FrsManager.ImmediateMaintXpDeduction", false)) {
 		deductDebtExperience(player);
 	}
+
+	// GHOSTS-AUTORANK: evaluate promotion on every login as well.
+	checkAutoPromotion(player);
 }
 
 bool FrsManagerImplementation::isBanned(CreatureObject* player) {
@@ -902,6 +993,9 @@ void FrsManagerImplementation::adjustFrsExperience(CreatureObject* player, int a
 				message.setTO("exp_n", "force_rank_xp");
 				player->sendSystemMessage(message);
 			}
+
+			// GHOSTS-AUTORANK: capped XP means the threshold is met.
+			checkAutoPromotion(player);
 			return;
 		}
 
@@ -913,6 +1007,10 @@ void FrsManagerImplementation::adjustFrsExperience(CreatureObject* player, int a
 			param.setDI(amount);
 			player->sendSystemMessage(param);
 		}
+
+		// GHOSTS-AUTORANK: promote immediately if this gain crossed the
+		// next rank's XP threshold.
+		checkAutoPromotion(player);
 	} else {
 		FrsData* playerData = ghost->getFrsData();
 		int rank = playerData->getRank();
@@ -1019,11 +1117,9 @@ int FrsManagerImplementation::calculatePveExperienceChange(CreatureObject* playe
 	int playerRank = playerData->getRank();
 	int playerCouncil = playerData->getCouncilType();
 
-	// Only council members earn FRS experience from PvE
-	if (playerCouncil == 0)
-		return 0;
-
-	if (playerRank < 0)
+	// GHOSTS-AUTORANK: grey jedi (no council) earn FRS experience too, using
+	// the light-side rank XP tables.
+	if (playerCouncil == 0 && playerRank < 0)
 		return 0;
 
 	if (playerRank > 11)
@@ -1227,9 +1323,12 @@ int FrsManagerImplementation::getBaseExperienceGain(PlayerObject* playerGhost, P
 	FrsData* opponentData = opponentGhost->getFrsData();
 	int opponentRank = opponentData->getRank();
 
-	// Make sure player is part of a council before we grab any value to award
-	if (playerCouncil == 0)
+	// GHOSTS-AUTORANK: grey jedi (no council) earn PvP FRS experience too.
+	if (playerCouncil == 0 && playerRank < 0)
 		return 0;
+
+	if (playerRank > 11)
+		playerRank = 11;
 
 	String key = "";
 
