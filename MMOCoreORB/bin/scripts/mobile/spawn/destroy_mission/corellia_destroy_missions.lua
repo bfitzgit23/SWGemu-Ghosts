@@ -302,6 +302,18 @@ corellia_destroy_missions = {
 			maxDifficulty = 34,
 			size = 35,
 		},
+		{
+			lairTemplateName = "global_dark_jedi_master_lair_neutral_large",
+			minDifficulty = 195,
+			maxDifficulty = 250,
+			size = 35,
+		},
+		{
+			lairTemplateName = "global_light_jedi_master_lair_neutral_large",
+			minDifficulty = 195,
+			maxDifficulty = 250,
+			size = 35,
+		},
 	}
 }
 

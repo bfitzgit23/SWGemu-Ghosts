@@ -30,13 +30,6 @@ function mission_level_choice:openWindow(pPlayer)
 end
 
 function mission_level_choice:showLevels(pPlayer)
-
-	local cancelPressed = (eventIndex == 1)
-
-	if (cancelPressed) then
-		return
-	end
-
 	local sui = SuiListBox.new("mission_level_choice", "levelSelection") -- calls levelSelection on SUI window event
 
 	sui.setTargetNetworkId(SceneObject(pPlayer):getObjectID())

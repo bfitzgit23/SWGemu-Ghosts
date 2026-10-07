@@ -195,7 +195,8 @@ void ImageDesignSessionImplementation::updateImageDesign(CreatureObject* updater
 
 		int xpGranted = 0; // Minimum Image Design XP granted (base amount).
 
-		if (statMig && strongReferenceDesigner != strongReferenceTarget && strongReferenceDesigner->getParentRecursively(SceneObjectType::SALONBUILDING) && strongReferenceDesigner->getParentRecursively(SceneObjectType::SALONBUILDING)) {
+		// Ghosts: allow image designers to stat migrate anywhere (salon building no longer required)
+		if (statMig && strongReferenceDesigner != strongReferenceTarget) {
 			ManagedReference<Facade*> facade = strongReferenceTarget->getActiveSession(SessionFacadeType::MIGRATESTATS);
 			ManagedReference<MigrateStatsSession*> session = dynamic_cast<MigrateStatsSession*>(facade.get());
 

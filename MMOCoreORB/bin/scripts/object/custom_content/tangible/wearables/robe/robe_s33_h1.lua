@@ -192,9 +192,12 @@ object_tangible_wearables_robe_robe_s33_h1 = object_tangible_wearables_robe_shar
 	experimentalPrecision = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 0, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
 	skillMods = {
-		{"jedi_force_power_max", 650},
-		{"jedi_force_power_regen", 30},
+		{"jedi_force_power_max", 1000},
+		{"jedi_force_power_regen", 250},
 		{"jedi_toughness", 35},
-	}
+	},
+	jediRobe = true,
+	objectMenuComponent = "RobeObjectMenuComponent",
+	attributeListComponent = "JediRobeAttributeListComponent",
 }
 ObjectTemplates:addTemplate(object_tangible_wearables_robe_robe_s33_h1, "object/tangible/wearables/robe/robe_s33_h1.iff")

@@ -157,7 +157,25 @@ dathomir_destroy_missions = {
 			minDifficulty = 87,
 			maxDifficulty = 91,
 			size = 35,
-		}
+		},
+		{
+			lairTemplateName = "dathomir_ancient_bull_rancor_lair_neutral_large",
+			minDifficulty = 195,
+			maxDifficulty = 250,
+			size = 35,
+		},
+		{
+			lairTemplateName = "global_dark_jedi_master_lair_neutral_large",
+			minDifficulty = 195,
+			maxDifficulty = 250,
+			size = 35,
+		},
+		{
+			lairTemplateName = "global_light_jedi_master_lair_neutral_large",
+			minDifficulty = 195,
+			maxDifficulty = 250,
+			size = 35,
+		},
 	}
 }
 

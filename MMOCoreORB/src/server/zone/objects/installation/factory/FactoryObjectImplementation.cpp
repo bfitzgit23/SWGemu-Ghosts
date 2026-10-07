@@ -566,7 +566,7 @@ bool FactoryObjectImplementation::startFactory() {
 	timer = 30;
 	info(true) << "Factory Testing Timer Set To: " << timer;
 #else
-	timer = ((int)schematic->getComplexity()) * 8;
+	timer = 2.5; // Ghosts: 2.5s cycle = 1440 items/hour target (user request: 1200/hr minimum)
 #endif
 
 	if (!populateSchematicBlueprint(schematic))

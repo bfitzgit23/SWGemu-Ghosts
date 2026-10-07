@@ -41,13 +41,6 @@ function mission_direction_choice:openWindow(pPlayer)
 end
 
 function mission_direction_choice:showLevels(pPlayer)
-
-	local cancelPressed = (eventIndex == 1)
-
-	if (cancelPressed) then
-		return
-	end
-
 	local sui = SuiListBox.new("mission_direction_choice", "dirSelection") -- calls dirSelection on SUI window event
 
 	sui.setTargetNetworkId(SceneObject(pPlayer):getObjectID())

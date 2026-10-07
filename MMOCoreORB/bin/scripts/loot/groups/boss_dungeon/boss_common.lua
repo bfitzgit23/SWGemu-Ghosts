@@ -11,7 +11,9 @@ boss_common = {
 		{groupTemplate = "color_crystals", weight = 1111111}, 
 		{groupTemplate = "nonjedi_jewelry", weight = 1111111},      
 		{itemTemplate = "clothing_attachments", weight = 1111111},
-		{itemTemplate = "armor_attachments", weight = 1111111}   
+		{itemTemplate = "armor_attachments", weight = 1111111},
+		{groupTemplate = "ls_gen5_group", weight = 150000},
+		{groupTemplate = "jedi_comp_group", weight = 100000}   
 		
 	}
 }

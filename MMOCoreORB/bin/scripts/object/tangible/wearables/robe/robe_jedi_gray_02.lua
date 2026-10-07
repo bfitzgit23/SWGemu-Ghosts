@@ -234,8 +234,8 @@ object_tangible_wearables_robe_robe_jedi_gray_02 = object_tangible_wearables_rob
 	experimentalPrecision = {0, 0, 0, 0},
 	experimentalCombineType = {0, 0, 4, 4},
 	skillMods = {
-		{"jedi_force_power_max", 310},
-		{"jedi_force_power_regen", 14},
+		{"jedi_force_power_max", 767},
+		{"jedi_force_power_regen", 182},
 		{"force_failure_reduction", 5},
 	}
 }

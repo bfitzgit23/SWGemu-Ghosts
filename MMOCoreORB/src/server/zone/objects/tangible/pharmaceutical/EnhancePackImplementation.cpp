@@ -38,5 +38,12 @@ uint32 EnhancePackImplementation::calculatePower(CreatureObject* healer, Creatur
 		float modEnvironment = ((float) mod / 100);
 		float modSkill = (float) healer->getSkillMod("healing_wound_treatment");
 
-		return power * modEnvironment * (100 + modSkill) / 100;
+		// Ghosts tuning: doctor attribute enhancements are pinned to the same value
+		// the entertainer buffs land on (~5500), so pack quality / medical rating /
+		// wound-treatment skill no longer make doctor buffs weaker than ent buffs.
+		const uint32 GHOSTS_DOCTOR_ENHANCE_POWER = 5500;
+
+		uint32 calculated = (uint32) (power * modEnvironment * (100 + modSkill) / 100);
+
+		return calculated > GHOSTS_DOCTOR_ENHANCE_POWER ? calculated : GHOSTS_DOCTOR_ENHANCE_POWER;
 }

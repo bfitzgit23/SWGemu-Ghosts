@@ -182,6 +182,16 @@ void FrsManager::playerLoggedIn(CreatureObject* player) {
 	}
 }
 
+void FrsManager::checkAutoPromotion(CreatureObject* player) {
+	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		_implementation->checkAutoPromotion(player);
+	}
+}
+
 void FrsManager::validatePlayerData(CreatureObject* player, bool verifyBan) {
 	FrsManagerImplementation* _implementation = static_cast<FrsManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {

@@ -1,3 +1,4 @@
 object_tangible_deed_vehicle_deed_vehicle_deed_podracer_longtail = object_tangible_deed_vehicle_deed_shared_vehicle_deed_podracer_longtail:new {
+	generatedObjectTemplate = \"object/mobile/vehicle/podracer_longtail.iff\",
 }
 ObjectTemplates:addTemplate(object_tangible_deed_vehicle_deed_vehicle_deed_podracer_longtail, "object/tangible/deed/vehicle_deed/vehicle_deed_podracer_longtail.iff")

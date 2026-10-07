@@ -190,8 +190,8 @@ object_tangible_wearables_robe_robe_starforge = object_tangible_wearables_robe_s
 		{"force_control_light",       25},
 		{"force_power_light",         25},
 		{"force_manipulation_light",  25},
-		{"jedi_force_power_regen",    25},
-		{"jedi_force_power_max",      500},
+		{"jedi_force_power_regen",    225},
+		{"jedi_force_power_max",      900},
 	},
 
 	jediRobe = true,

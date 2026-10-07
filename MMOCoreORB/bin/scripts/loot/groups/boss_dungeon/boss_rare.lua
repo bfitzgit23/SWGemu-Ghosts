@@ -14,7 +14,8 @@ boss_rare = {
 		{groupTemplate = "g_named_crystals", weight = 955555},
 		{groupTemplate = "crystal_windus_guile", weight = 955555},      
 		{groupTemplate = "weapons_all", weight = 200000},    
-		{groupTemplate = "nge_all", weight = 600000}   
+		{groupTemplate = "nge_all", weight = 600000},
+		{groupTemplate = "ls_gen5_group", weight = 250000}   
 		
 	}
 }

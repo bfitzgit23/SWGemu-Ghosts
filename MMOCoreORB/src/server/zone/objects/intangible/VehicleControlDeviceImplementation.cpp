@@ -26,8 +26,8 @@ void VehicleControlDeviceImplementation::generateObject(CreatureObject* player) 
 	if (!isASubChildOf(player))
 		return;
 
-	if (player->getParent() != nullptr || player->isInCombat()) {
-		player->sendSystemMessage("@pet/pet_menu:cant_call_vehicle"); // You can only unpack vehicles while Outside and not in Combat.
+	if (player->getParent() != nullptr) {
+		player->sendSystemMessage("@pet/pet_menu:cant_call_vehicle"); // Ghosts: still blocked indoors; combat call now allowed.
 		return;
 	}
 
@@ -95,23 +95,8 @@ void VehicleControlDeviceImplementation::generateObject(CreatureObject* player) 
 		}
 	}
 
-	if (player->getCurrentCamp() == nullptr && player->getCityRegion() == nullptr && !ghost->isPrivileged()) {
-		Reference<CallMountTask*> callMount = new CallMountTask(_this.getReferenceUnsafeStaticCast(), player, "call_mount");
-
-		StringIdChatParameter message("pet/pet_menu", "call_vehicle_delay");
-		message.setDI(15);
-		player->sendSystemMessage(message);
-
-		player->addPendingTask("call_mount", callMount, 15 * 1000);
-
-		if (vehicleControlObserver == nullptr) {
-			vehicleControlObserver = new VehicleControlObserver(_this.getReferenceUnsafeStaticCast());
-			vehicleControlObserver->deploy();
-		}
-
-		player->registerObserver(ObserverEventType::STARTCOMBAT, vehicleControlObserver);
-
-	} else {
+	// Ghosts: instant vehicle call (removed the 15 second CallMountTask delay)
+	{
 		Locker clocker(controlledObject, player);
 		spawnObject(player);
 	}
@@ -128,8 +113,8 @@ void VehicleControlDeviceImplementation::spawnObject(CreatureObject* player) {
 	if (!isASubChildOf(player))
 		return;
 
-	if (player->getParent() != nullptr || player->isInCombat()) {
-		player->sendSystemMessage("@pet/pet_menu:cant_call_vehicle"); // You can only unpack vehicles while Outside and not in Combat.
+	if (player->getParent() != nullptr) {
+		player->sendSystemMessage("@pet/pet_menu:cant_call_vehicle"); // Ghosts: still blocked indoors; combat call now allowed.
 		return;
 	}
 
@@ -196,7 +181,8 @@ void VehicleControlDeviceImplementation::storeObject(CreatureObject* player, boo
 	/*if (!controlledObject->isInQuadTree())
 		return;*/
 
-	if (!force && (player->isInCombat() || player->isDead()))
+	// Ghosts: allow dismount/store while in combat (only block when dead)
+	if (!force && player->isDead())
 		return;
 
 	if (player->isRidingMount() && player->getParent() == controlledObject) {

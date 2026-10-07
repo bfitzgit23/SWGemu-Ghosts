@@ -896,38 +896,22 @@ void EntertainingSessionImplementation::activateEntertainerBuff(CreatureObject* 
 		if (buffStrength == 0)
 			return;
 
-		ManagedReference<PerformanceBuff*> oldBuff = nullptr;
-		switch (performanceType) {
-		case PerformanceType::MUSIC:
-		{
-			uint32 focusBuffCRC = STRING_HASHCODE("performance_enhance_music_focus");
-			uint32 willBuffCRC = STRING_HASHCODE("performance_enhance_music_willpower");
-			oldBuff = cast<PerformanceBuff*>(creature->getBuff(focusBuffCRC));
+		// Ghosts: music and dance now grant the same combined buff set
+// (mind + focus + willpower) so either performance type buffs fully.
+		struct BuffSpec { uint32 crc; int type; };
+		const BuffSpec combinedBuffs[3] = {
+			{ STRING_HASHCODE("performance_enhance_dance_mind"), PerformanceBuffType::DANCE_MIND },
+			{ STRING_HASHCODE("performance_enhance_music_focus"), PerformanceBuffType::MUSIC_FOCUS },
+			{ STRING_HASHCODE("performance_enhance_music_willpower"), PerformanceBuffType::MUSIC_WILLPOWER }
+		};
+
+		for (int bi = 0; bi < 3; ++bi) {
+			ManagedReference<PerformanceBuff*> oldBuff = cast<PerformanceBuff*>(creature->getBuff(combinedBuffs[bi].crc));
 			if (oldBuff != nullptr && oldBuff->getBuffStrength() > buffStrength)
-				return;
-			ManagedReference<PerformanceBuff*> focusBuff = new PerformanceBuff(creature, focusBuffCRC, buffStrength, buffDuration * 60, PerformanceBuffType::MUSIC_FOCUS);
-			ManagedReference<PerformanceBuff*> willBuff = new PerformanceBuff(creature, willBuffCRC, buffStrength, buffDuration * 60, PerformanceBuffType::MUSIC_WILLPOWER);
-
-			Locker locker(focusBuff);
-			creature->addBuff(focusBuff);
-			locker.release();
-
-			Locker locker2(willBuff);
-			creature->addBuff(willBuff);
-			break;
-		}
-		case PerformanceType::DANCE:
-		{
-			uint32 mindBuffCRC = STRING_HASHCODE("performance_enhance_dance_mind");
-			oldBuff = cast<PerformanceBuff*>(creature->getBuff(mindBuffCRC));
-			if (oldBuff != nullptr && oldBuff->getBuffStrength() > buffStrength)
-				return;
-			ManagedReference<PerformanceBuff*> mindBuff = new PerformanceBuff(creature, mindBuffCRC, buffStrength, buffDuration * 60, PerformanceBuffType::DANCE_MIND);
-
-			Locker locker(mindBuff);
-			creature->addBuff(mindBuff);
-			break;
-		}
+				continue;
+			ManagedReference<PerformanceBuff*> newBuff = new PerformanceBuff(creature, combinedBuffs[bi].crc, buffStrength, buffDuration * 60, combinedBuffs[bi].type);
+			Locker locker(newBuff);
+			creature->addBuff(newBuff);
 		}
 
 

@@ -5,8 +5,8 @@ rebel_easy = {
 		leadShips = {"z95_tier2"},
 		groupShips = {"z95_tier1", "ywing_tier1", "xwing_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 4,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 10,
 		capitalShip = "ykl37r_tier1",
 	},
@@ -16,8 +16,8 @@ rebel_easy = {
 		leadShips = {"awing_tier1"},
 		groupShips = {"z95_tier1", "ywing_tier1", "xwing_tier1", "bwing_tier1", "rebel_shuttle_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 50,
 		capitalShip = "",
 	},
@@ -27,8 +27,8 @@ rebel_easy = {
 		leadShips = {"xwing_tier2"},
 		groupShips = {"xwing_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 75,
 		capitalShip = "",
 	},

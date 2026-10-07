@@ -76,6 +76,7 @@ Luna<LuaSceneObject>::RegType LuaSceneObject::Register[] = {
 		{ "getObjectName", &LuaSceneObject::getObjectName },
 		{ "setDirectionalHeading", &LuaSceneObject::setDirectionalHeading },
 		{ "getZoneName", &LuaSceneObject::getZoneName },
+	{ "getHeight", &LuaSceneObject::getHeight },
 		{ "getTemplateObjectPath", &LuaSceneObject::getTemplateObjectPath },
 		{ "teleport", &LuaSceneObject::teleport },
 		{ "setObjectMenuComponent", &LuaSceneObject::setObjectMenuComponent },
@@ -213,6 +214,27 @@ int LuaSceneObject::teleport(lua_State* L) {
 	realObject->teleport(x, z, y, parentID);
 
 	return 0;
+}
+
+int LuaSceneObject::getHeight(lua_State* L) {
+	SceneObject* obj = (SceneObject*) lua_touserdata(L, -3);
+	float x = lua_tonumber(L, -2);
+	float y = lua_tonumber(L, -1);
+
+	if (obj == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	Zone* zone = obj->getZone();
+
+	if (zone == nullptr) {
+		lua_pushnil(L);
+		return 1;
+	}
+
+	lua_pushnumber(L, zone->getHeight(x, y));
+	return 1;
 }
 
 int LuaSceneObject::getZoneName(lua_State* L) {

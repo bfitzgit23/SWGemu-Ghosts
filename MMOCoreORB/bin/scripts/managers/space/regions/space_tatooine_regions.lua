@@ -1,16 +1,9 @@
---[[ Space Region Definitions
-For SPHERE and CUBOID: x, z, y are the center point.
-
-SPHERE Examples:
-{"regionName", x, z, y, {SPHERE, radius}, type},
-{"regionName", x, z, y, {SPHERE, radius}, SPACESPAWNAREA, {"spawnGroup1", "spawnGroup2"}, maxSpawnLimit}
-
-CUBOID Examples:
-{"regionName", x, z, y, {CUBOID, length, width, height}, type},
-{"regionName", x, z, y, {CUBOID, length, width, height}, SPACESPAWNAREA, {"spawnGroup1", "spawnGroup2"}, maxSpawnLimit}
-]]
+--[[ Space Region Definitions - ship spawn areas around each space station.
+     Generated from space_manager.lua station data. ]]
 
 require("scripts.managers.space.regions.regions")
 
 space_tatooine_regions = {
+	{"space_tatooine_1_traffic", 2311.89, -5872.72, 1865.29, {CUBOID, 6144, 6144, 6144}, SPAWNAREA, {"corellia_traffic"}, 100},
+	{"space_tatooine_1_nospawn", 2311.89, -5872.72, 1865.29, {SPHERE, 1024}, NOSPAWNAREA},
 }

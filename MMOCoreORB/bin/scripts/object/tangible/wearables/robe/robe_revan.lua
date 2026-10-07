@@ -190,8 +190,8 @@ object_tangible_wearables_robe_robe_revan = object_tangible_wearables_robe_share
 		{"force_control_dark",        25},
 		{"force_power_dark",          25},
 		{"force_manipulation_dark",   25},
-		{"jedi_force_power_regen",    25},
-		{"jedi_force_power_max",      500},
+		{"jedi_force_power_regen",    214},
+		{"jedi_force_power_max",      867},
 	},
 
 	jediRobe = true,

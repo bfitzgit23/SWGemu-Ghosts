@@ -2453,7 +2453,7 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 	auto skillManager = SkillManager::instance();
 	const SkillList* playerSkillList = getSkillList();
 
-	int totalSkillPointsWasted = 250;
+	int totalSkillPointsWasted = 500; // Ghosts: 500-point budget (was 250)
 
 	for (int i = 0; i < playerSkillList->size(); ++i) {
 		Skill* skill = playerSkillList->get(i);

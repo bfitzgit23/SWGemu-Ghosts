@@ -8,6 +8,9 @@
 #include "DraftSchematicObjectTemplate.h"
 #include "templates/manager/TemplateManager.h"
 
+// Ghosts tuning: factory crates hold this many items instead of the stock 25/50/100.
+#define GHOSTS_FACTORY_CRATE_SIZE 1000
+
 DraftSchematicObjectTemplate::DraftSchematicObjectTemplate() {
 	craftingToolTab = 0;
 
@@ -39,7 +42,7 @@ DraftSchematicObjectTemplate::DraftSchematicObjectTemplate() {
 	skillMods.setNoDuplicateInsertPlan();
 	skillMods.setNullValue(0);
 	labratory = 0;
-	factoryCrateSize = 25;
+	factoryCrateSize = GHOSTS_FACTORY_CRATE_SIZE;
 }
 
 DraftSchematicObjectTemplate::~DraftSchematicObjectTemplate() {
@@ -77,6 +80,13 @@ void DraftSchematicObjectTemplate::parseVariableData(const String& varName, LuaO
 		factoryCrateType = Lua::getStringParameter(state);
 	} else if (varName == "factoryCrateSize") {
 		factoryCrateSize = Lua::getIntParameter(state);
+
+		// Ghosts tuning: every schematic that already produces factory crates
+		// (size > 1) fills much larger crates - 1000 items instead of the stock
+		// 25/50/100.  Schematics that opt out of crates (size <= 1) are left
+		// alone so single-item production still works.
+		if (factoryCrateSize > 1 && factoryCrateSize < GHOSTS_FACTORY_CRATE_SIZE)
+			factoryCrateSize = GHOSTS_FACTORY_CRATE_SIZE;
 	} else if (varName == "isMagic") {
 		isMagic = Lua::getBooleanParameter(state);
 	} else if (varName == "assemblySkill") {

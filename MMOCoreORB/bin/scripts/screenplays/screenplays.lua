@@ -63,6 +63,8 @@ includeFile("tools/shuttle_dropoff.lua")
 includeFile("tools/firework_event.lua")
 includeFile("tools/MedicalDroidEnhancement.lua")
 includeFile("tools/player_mission_creator.lua")
+includeFile("tools/mission_level_choice.lua")
+includeFile("tools/mission_direction_choice.lua")
 includeFile("tools/player_entertainer_mission_creator.lua")
 
 -- Custom-planet travel points need a scheduled shuttle and ticket collector,
@@ -750,10 +752,6 @@ includeFile("record_keepers/record_keepers.lua")
 
 --Battlefields
 includeFile("battlefields/battlefield_spawner.lua");
-
---Tests
-includeFile("tests/tests.lua")
-includeFile("tests/ai_test.lua")
 
 -- Server Event Automation
 includeFile("events/ServerEventAutomation.lua")

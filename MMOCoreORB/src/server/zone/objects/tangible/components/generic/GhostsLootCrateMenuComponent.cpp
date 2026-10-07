@@ -2,9 +2,10 @@
  * GhostsLootCrateMenuComponent.cpp
  *
  * Rebuild (2026-09-29). Fixed tiered rewards per crate template.
- * Reward items are existing, verified loot item templates:
+ * Reward items are existing, verified loot item templates/groups:
  *   attachment_armor, attachment_clothing, jedi_holocron_dark,
- *   krayt_dragon_pearl_premium, force_crystal_mauls_vengence
+ *   jedi_holocron_light, krayt_dragon_pearl_premium,
+ *   force_crystal_mauls_vengence, ls_gen5_group (5th-gen saber materials)
  */
 
 #include "server/zone/objects/creature/CreatureObject.h"
@@ -29,29 +30,30 @@ namespace {
 		int rewardCount;
 	};
 
-	const CrateReward REWARDS_BASE[] = {{"jedi_holocron_dark", 1}};
-	const CrateReward REWARDS_BASE_01[] = {{"attachment_armor", 1}, {"attachment_clothing", 1}};
-	const CrateReward REWARDS_BASE_02[] = {{"attachment_armor", 2}};
-	const CrateReward REWARDS_BASE_03[] = {{"attachment_clothing", 2}};
-	const CrateReward REWARDS_SILVER[] = {{"attachment_armor", 2}, {"jedi_holocron_dark", 1}};
-	const CrateReward REWARDS_GOLD[] = {{"attachment_armor", 2}, {"attachment_clothing", 2}, {"jedi_holocron_dark", 1}};
-	const CrateReward REWARDS_PLAT[] = {{"attachment_armor", 3}, {"attachment_clothing", 2}, {"krayt_dragon_pearl_premium", 1}};
-	const CrateReward REWARDS_DIAMOND[] = {{"attachment_armor", 4}, {"attachment_clothing", 3}, {"force_crystal_mauls_vengence", 1}};
-	const CrateReward REWARDS_HEROIC[] = {{"attachment_armor", 3}, {"attachment_clothing", 3}, {"jedi_holocron_dark", 1}, {"krayt_dragon_pearl_premium", 1}};
-	const CrateReward REWARDS_XMAS[] = {{"attachment_clothing", 3}, {"jedi_holocron_dark", 1}};
+	// Note: the in-game "Ancient" crate is base_crate (ArtifactMenuComponent).
+	const CrateReward REWARDS_BASE[] = {{"attachment_armor", 1}, {"attachment_clothing", 1}, {"jedi_holocron_dark", 1}, {"ls_gen5_group", 1}};
+	const CrateReward REWARDS_BASE_01[] = {{"attachment_armor", 1}, {"attachment_clothing", 1}, {"jedi_holocron_light", 1}};
+	const CrateReward REWARDS_BASE_02[] = {{"attachment_armor", 2}, {"jedi_holocron_dark", 1}};
+	const CrateReward REWARDS_BASE_03[] = {{"attachment_clothing", 2}, {"jedi_holocron_light", 1}};
+	const CrateReward REWARDS_SILVER[] = {{"attachment_armor", 2}, {"attachment_clothing", 1}, {"jedi_holocron_dark", 1}, {"ls_gen5_group", 1}};
+	const CrateReward REWARDS_GOLD[] = {{"attachment_armor", 2}, {"attachment_clothing", 2}, {"jedi_holocron_dark", 1}, {"ls_gen5_group", 1}};
+	const CrateReward REWARDS_PLAT[] = {{"attachment_armor", 3}, {"attachment_clothing", 2}, {"krayt_dragon_pearl_premium", 1}, {"ls_gen5_group", 1}, {"jedi_holocron_light", 1}};
+	const CrateReward REWARDS_DIAMOND[] = {{"attachment_armor", 4}, {"attachment_clothing", 3}, {"force_crystal_mauls_vengence", 1}, {"ls_gen5_group", 1}, {"jedi_holocron_dark", 1}};
+	const CrateReward REWARDS_HEROIC[] = {{"attachment_armor", 3}, {"attachment_clothing", 3}, {"jedi_holocron_dark", 1}, {"jedi_holocron_light", 1}, {"krayt_dragon_pearl_premium", 1}, {"ls_gen5_group", 2}};
+	const CrateReward REWARDS_XMAS[] = {{"attachment_clothing", 3}, {"jedi_holocron_light", 1}, {"ls_gen5_group", 1}};
 	const CrateReward REWARDS_COAL[] = {{"attachment_armor", 1}};
 
 	const CrateTier TIERS[] = {
-		{"object/tangible/item/loot_crates/base_crate.iff", REWARDS_BASE, 1},
-		{"object/tangible/item/loot_crates/base_crate_01.iff", REWARDS_BASE_01, 2},
-		{"object/tangible/item/loot_crates/base_crate_02.iff", REWARDS_BASE_02, 1},
-		{"object/tangible/item/loot_crates/base_crate_03.iff", REWARDS_BASE_03, 1},
-		{"object/tangible/item/loot_crates/silver_crate.iff", REWARDS_SILVER, 2},
-		{"object/tangible/item/loot_crates/gold_crate.iff", REWARDS_GOLD, 3},
-		{"object/tangible/item/loot_crates/plat_crate.iff", REWARDS_PLAT, 3},
-		{"object/tangible/item/loot_crates/diamond_crate.iff", REWARDS_DIAMOND, 3},
-		{"object/tangible/item/loot_crates/heroic_crate.iff", REWARDS_HEROIC, 4},
-		{"object/tangible/item/loot_crates/xmas_crate.iff", REWARDS_XMAS, 2},
+		{"object/tangible/item/loot_crates/base_crate.iff", REWARDS_BASE, 4},
+		{"object/tangible/item/loot_crates/base_crate_01.iff", REWARDS_BASE_01, 3},
+		{"object/tangible/item/loot_crates/base_crate_02.iff", REWARDS_BASE_02, 2},
+		{"object/tangible/item/loot_crates/base_crate_03.iff", REWARDS_BASE_03, 2},
+		{"object/tangible/item/loot_crates/silver_crate.iff", REWARDS_SILVER, 4},
+		{"object/tangible/item/loot_crates/gold_crate.iff", REWARDS_GOLD, 4},
+		{"object/tangible/item/loot_crates/plat_crate.iff", REWARDS_PLAT, 5},
+		{"object/tangible/item/loot_crates/diamond_crate.iff", REWARDS_DIAMOND, 5},
+		{"object/tangible/item/loot_crates/heroic_crate.iff", REWARDS_HEROIC, 6},
+		{"object/tangible/item/loot_crates/xmas_crate.iff", REWARDS_XMAS, 3},
 		{"object/tangible/item/loot_crates/xmas_coal.iff", REWARDS_COAL, 1},
 	};
 }
@@ -108,8 +110,12 @@ int GhostsLootCrateMenuComponent::handleObjectMenuSelect(SceneObject* sceneObjec
 	TransactionLog trx(TrxCode::NPCLOOTCLAIM, player);
 
 	for (int i = 0; i < rewardCount; ++i) {
+		// Ghosts: roll attachments at the maximum loot level so their skill-mod
+		// bonus reaches the +25 cap instead of the +1 from a level-0 roll.
+		int rewardLevel = String(rewards[i].item).beginsWith("attachment_") ? 350 : 0;
+
 		for (int n = 0; n < rewards[i].count; ++n) {
-			if (lootManager->createLoot(trx, inventory, rewards[i].item, 0) > 0) {
+			if (lootManager->createLoot(trx, inventory, rewards[i].item, rewardLevel) > 0) {
 				given++;
 			} else {
 				trx.abort() << "GhostsLootCrate: createLoot " << rewards[i].item << " failed";

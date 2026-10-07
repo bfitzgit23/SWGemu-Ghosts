@@ -297,7 +297,8 @@ void PlayerCreationManager::loadLuaStartingItems(Lua* lua) {
 			for (int itemNumber = 1; itemNumber <= professionSpecificItemList.getTableSize(); itemNumber++) {
 				auto& val = professionDefaultsInfo.get(professions.get(professionNumber));
 				auto itemObj = professionSpecificItemList.getStringAt(itemNumber);
-				val->getStartingItems()->add(itemObj);
+				if (val != nullptr)
+					val->getStartingItems()->add(itemObj);
 			}
 			professionSpecificItemList.pop();
 		}

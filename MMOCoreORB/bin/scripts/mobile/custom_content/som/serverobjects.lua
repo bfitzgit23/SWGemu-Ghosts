@@ -139,7 +139,9 @@ includeFile("custom_content/som/volcano_cyborg_lt.lua")
 includeFile("custom_content/som/xandank.lua")
 includeFile("custom_content/som/xandank_onyx_plated.lua")
 includeFile("custom_content/som/xandank_patriarch.lua")
-
+includeFile("custom_content/som/revan.lua")
+includeFile("custom_content/som/revan_clone.lua")
+includeFile("custom_content/som/revan_quest.lua")
 
 
 --Root Folder

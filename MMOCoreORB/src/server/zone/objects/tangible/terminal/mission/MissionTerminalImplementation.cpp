@@ -36,6 +36,8 @@ void MissionTerminalImplementation::fillObjectMenuResponse(ObjectMenuResponse* m
 
 	if (terminalType == "general" || terminalType == "imperial" || terminalType == "rebel") {
 		menuResponse->addRadialMenuItem(114, 3, "Create Player Mission");
+		menuResponse->addRadialMenuItem(116, 3, "Mission Level Selection");
+		menuResponse->addRadialMenuItem(117, 3, "Mission Direction Selection");
 	}
 
 	if (terminalType == "entertainer") {
@@ -156,6 +158,26 @@ int MissionTerminalImplementation::handleObjectMenuSelect(CreatureObject* player
 
 		*creator << player;
 		creator->callFunction();
+
+		return 0;
+	} else if (selectedID == 116) {
+		Lua* lua = DirectorManager::instance()->getLuaInstance();
+
+		Reference<LuaFunction*> levelChoice =
+			lua->createFunction("mission_level_choice", "openWindow", 0);
+
+		*levelChoice << player;
+		levelChoice->callFunction();
+
+		return 0;
+	} else if (selectedID == 117) {
+		Lua* lua = DirectorManager::instance()->getLuaInstance();
+
+		Reference<LuaFunction*> dirChoice =
+			lua->createFunction("mission_direction_choice", "openWindow", 0);
+
+		*dirChoice << player;
+		dirChoice->callFunction();
 
 		return 0;
 	}

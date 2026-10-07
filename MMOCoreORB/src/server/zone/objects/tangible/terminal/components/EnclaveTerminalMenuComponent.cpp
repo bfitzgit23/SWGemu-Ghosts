@@ -8,6 +8,9 @@
 #include "server/zone/managers/frs/FrsManager.h"
 #include "server/zone/objects/tangible/TangibleObject.h"
 #include "server/zone/objects/player/variables/FrsData.h"
+#include "server/zone/managers/director/DirectorManager.h"
+#include "engine/lua/Lua.h"
+#include "engine/lua/LuaFunction.h"
 
 void EnclaveTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneObject, ObjectMenuResponse* menuResponse, CreatureObject* player) const {
 	ManagedReference<BuildingObject*> building = sceneObject->getParentRecursively(SceneObjectType::BUILDING).castTo<BuildingObject*>();
@@ -41,6 +44,11 @@ void EnclaveTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneObje
 		return;
 
 	FrsData* frsData = ghost->getFrsData();
+
+	// Ghosts: rank/council live in the force_rank_* skills (holocron
+	// progression path). Mirror them into FrsData so the enclave
+	// terminals recognize members properly.
+	syncFrsDataFromSkills(player);
 	int playerRank = frsData->getRank();
 
 	if (playerRank < 0 && !ghost->isPrivileged()) {
@@ -75,6 +83,13 @@ void EnclaveTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneObje
 			menuResponse->addRadialMenuItemToRadialID(69, 70, 3,"@force_rank:record_challenge_vote"); // Record No-Confidence Vote
 			menuResponse->addRadialMenuItemToRadialID(69, 71, 3,"@force_rank:issue_challenge_vote"); // Issue No-Confidence Vote
 		}
+
+		// Ghosts custom: master training + XP promotion
+		menuResponse->addRadialMenuItem(82, 3, "Request Promotion");
+		menuResponse->addRadialMenuItem(83, 3, "Train Lightsaber Mastery");
+		menuResponse->addRadialMenuItem(84, 3, "Train Force Powers");
+		menuResponse->addRadialMenuItem(85, 3, "Train Defence");
+		menuResponse->addRadialMenuItem(86, 3, "Train Guardian Arts");
 	} else if (terminalType == DARK_CHALLENGE) {
 		menuResponse->addRadialMenuItem(69, 3, "@pvp_rating:ch_terminal_view_scores"); // View Challenge Scores
 		menuResponse->addRadialMenuItem(70, 3, "@pvp_rating:ch_terminal_arena_status"); // Arena Status
@@ -87,6 +102,13 @@ void EnclaveTerminalMenuComponent::fillObjectMenuResponse(SceneObject* sceneObje
 
 		if (frsManager->canPlayerAcceptArenaChallenge(player))
 			menuResponse->addRadialMenuItem(72, 3, "@pvp_rating:ch_terminal_accept_challenge"); // Accept a Challenge
+
+		// Ghosts custom: master training + XP promotion
+		menuResponse->addRadialMenuItem(82, 3, "Request Promotion");
+		menuResponse->addRadialMenuItem(83, 3, "Train Lightsaber Mastery");
+		menuResponse->addRadialMenuItem(84, 3, "Train Force Powers");
+		menuResponse->addRadialMenuItem(85, 3, "Train Defence");
+		menuResponse->addRadialMenuItem(86, 3, "Train Tyrant Arts");
 #if FRS_TESTING
 		if (ghost->isPrivileged() && !frsManager->isArenaOpen())
 			menuResponse->addRadialMenuItem(76, 3, "(TESTING) Open Arena");
@@ -134,6 +156,9 @@ int EnclaveTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObjec
 		return 1;
 
 	FrsData* frsData = ghost->getFrsData();
+
+	// Ghosts: mirror skill-based rank/council into FrsData (see above).
+	syncFrsDataFromSkills(player);
 	int playerRank = frsData->getRank();
 
 	if (playerRank < 0 && !ghost->isPrivileged()) {
@@ -171,6 +196,16 @@ int EnclaveTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObjec
 			frsManager->sendChallengeVoteSUI(player, sceneObject, FrsManager::SUI_CHAL_VOTE_RECORD, enclaveType);
 		else if (selectedID == 71)
 			frsManager->sendChallengeVoteSUI(player, sceneObject, FrsManager::SUI_CHAL_VOTE_ISSUE, enclaveType);
+		else if (selectedID == 82)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_frs_promotion", 0);
+		else if (selectedID == 83)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_light_branch", 1);
+		else if (selectedID == 84)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_light_branch", 2);
+		else if (selectedID == 85)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_light_branch", 3);
+		else if (selectedID == 86)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_light_branch", 4);
 	} else if (terminalType == DARK_CHALLENGE) {
 		if (selectedID == 69)
 			frsManager->sendArenaChallengeSUI(player, sceneObject, FrsManager::SUI_ARENA_CHAL_SCORES, enclaveType);
@@ -182,6 +217,16 @@ int EnclaveTerminalMenuComponent::handleObjectMenuSelect(SceneObject* sceneObjec
 			frsManager->sendArenaChallengeSUI(player, sceneObject, FrsManager::SUI_ARENA_CHAL_ACCEPT, enclaveType);
 		else if (selectedID == 73)
 			frsManager->sendArenaChallengeSUI(player, sceneObject, FrsManager::SUI_ARENA_CHAL_ISSUE, enclaveType);
+		else if (selectedID == 82)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_frs_promotion", 0);
+		else if (selectedID == 83)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_dark_branch", 1);
+		else if (selectedID == 84)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_dark_branch", 2);
+		else if (selectedID == 85)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_dark_branch", 3);
+		else if (selectedID == 86)
+			callEnclaveTerminalLua(player, sceneObject, "enclave_terminal_train_dark_branch", 4);
 #if FRS_TESTING
 		else if (selectedID == 76 && ghost->isPrivileged())
 			frsManager->forceArenaOpen(player);
@@ -207,4 +252,81 @@ int EnclaveTerminalMenuComponent::getTerminalType(SceneObject* terminal) const {
 		return DARK_CHALLENGE;
 
 	return 0;
+}
+
+void EnclaveTerminalMenuComponent::syncFrsDataFromSkills(CreatureObject* player) const {
+	PlayerObject* ghost = player->getPlayerObject();
+
+	if (ghost == nullptr)
+		return;
+
+	FrsData* frsData = ghost->getFrsData();
+
+	if (frsData == nullptr)
+		return;
+
+	bool light = player->hasSkill("force_rank_light_novice");
+	bool dark = player->hasSkill("force_rank_dark_novice");
+
+	if (!light && !dark) {
+		if (frsData->getRank() != -1)
+			frsData->setRank(-1);
+
+		if (frsData->getCouncilType() != 0)
+			frsData->setCouncilType(0);
+
+		return;
+	}
+
+	int rank = 0;
+
+	for (int i = 10; i >= 1; i--) {
+		StringBuffer lightSkill, darkSkill;
+		lightSkill << "force_rank_light_rank_";
+		darkSkill << "force_rank_dark_rank_";
+
+		if (i < 10) {
+			lightSkill << "0";
+			darkSkill << "0";
+		}
+
+		lightSkill << i;
+		darkSkill << i;
+
+		if (player->hasSkill(lightSkill.toString()) || player->hasSkill(darkSkill.toString())) {
+			rank = i;
+			break;
+		}
+	}
+
+	if (rank == 0 && (player->hasSkill("force_rank_light_master") || player->hasSkill("force_rank_dark_master")))
+		rank = 11;
+
+	if (frsData->getRank() != rank)
+		frsData->setRank(rank);
+
+	int councilType = dark ? FrsManager::COUNCIL_DARK : FrsManager::COUNCIL_LIGHT;
+
+	if (frsData->getCouncilType() != councilType)
+		frsData->setCouncilType(councilType);
+}
+
+void EnclaveTerminalMenuComponent::callEnclaveTerminalLua(CreatureObject* player, SceneObject* terminal, const String& functionName, int branchIndex) const {
+	Lua* lua = DirectorManager::instance()->getLuaInstance();
+
+	if (lua == nullptr)
+		return;
+
+	PlayerObject* ghost = player->getPlayerObject();
+
+	if (ghost == nullptr)
+		return;
+
+	LuaFunction runMethod(lua->getLuaState(), functionName, 0);
+	runMethod << player;
+	runMethod << terminal;
+	runMethod << ghost;
+	runMethod << branchIndex;
+
+	runMethod.callFunction();
 }

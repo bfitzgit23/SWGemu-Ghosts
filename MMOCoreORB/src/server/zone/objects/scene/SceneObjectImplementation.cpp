@@ -75,8 +75,7 @@ void SceneObjectImplementation::initializeTransientMembers() {
 		if (templatePath == "object/tangible/inventory/character_inventory.iff") {
 			setContainerVolumeLimit(200);
 		} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
-			setContainerVolumeLimit(
-				templatePath.contains("pouch") || templatePath.contains("fannypack") ? 50 : 150);
+			setContainerVolumeLimit(250);
 		}
 
 		createContainerComponent();
@@ -205,8 +204,7 @@ void SceneObjectImplementation::loadTemplateData(SharedObjectTemplate* templateD
 	if (templatePath == "object/tangible/inventory/character_inventory.iff") {
 		containerVolumeLimit = 200;
 	} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
-		containerVolumeLimit =
-			(templatePath.contains("pouch") || templatePath.contains("fannypack")) ? 50 : 150;
+		containerVolumeLimit = 250;
 	}
 
 	if (templateData->getCollisionActionBlockFlags() == 255) { //loading meshes for line of sight
@@ -441,8 +439,7 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 		if (templatePath == "object/tangible/inventory/character_inventory.iff") {
 			setContainerVolumeLimit(200);
 		} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
-			setContainerVolumeLimit(
-				templatePath.contains("pouch") || templatePath.contains("fannypack") ? 50 : 150);
+			setContainerVolumeLimit(250);
 		}
 	}
 

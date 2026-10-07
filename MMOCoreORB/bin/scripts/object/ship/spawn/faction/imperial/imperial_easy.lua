@@ -5,8 +5,8 @@ imperial_easy = {
 		leadShips = {"tieinterceptor_tier2"},
 		groupShips = {"tieinterceptor_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 4,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 10,
 		capitalShip = "decimator_tier_1",
 	},
@@ -16,8 +16,8 @@ imperial_easy = {
 		leadShips = {"tieadvanced_tier1"},
 		groupShips = {"tieaggressor_tier1", "tiebomber_tier1", "tiefighter_tier1", "tiefighter_tier1", "tieoppressor_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 30,
 		capitalShip = "",
 	},
@@ -27,8 +27,8 @@ imperial_easy = {
 		leadShips = {"tiefighter_tier2"},
 		groupShips = {"tiefighter_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 60,
 		capitalShip = "",
 	},

@@ -33,24 +33,23 @@ public:
 		if (zoneServer == nullptr)
 			return GENERALERROR;
 
-		String planet = ghost->getTrainerZoneName();
+		// Ghosts: the jedi trainer assignment is always a real jedi trainer
+		// NPC (the nearest one in the player's current zone). If the stored
+		// assignment is empty, stale, or points at a non-jedi trainer from
+		// an older build, pick a fresh jedi trainer now.
+		ManagedReference<SceneObject*> trainer = findStoredJediTrainer(zoneServer, ghost);
 
-		if (planet.isEmpty()) {
-			// Pick a trainer for the Jedi
-			setJediTrainer(zoneServer, ghost);
+		if (trainer == nullptr) {
+			trainer = pickJediTrainer(zoneServer, creature);
 
-			// Retrieve trainer zone from the player object
-			planet = ghost->getTrainerZoneName();
-		} else {
-			auto trainerZone = zoneServer->getZone(planet);
-
-			if (trainerZone == nullptr) {
-				setJediTrainer(zoneServer, ghost);
-				planet = ghost->getTrainerZoneName();
-			}
+			if (trainer != nullptr)
+				assignTrainer(ghost, trainer);
 		}
 
-		uint32 planetCRC = planet.hashCode();
+		if (trainer == nullptr)
+			return GENERALERROR;
+
+		uint32 planetCRC = ghost->getTrainerZoneName().hashCode();
 
 		Vector3 coords = ghost->getJediTrainerCoordinates();
 
@@ -71,14 +70,69 @@ public:
 		return SUCCESS;
 	}
 
-	void setJediTrainer(ZoneServer* zoneServer, PlayerObject* ghost) const {
+	// Returns the stored trainer NPC if it still exists and is a jedi
+	// trainer. Matches by zone name + world x/y, the same identity the
+	// conversation handler compares through PlayerObject::isJediTrainer.
+	SceneObject* findStoredJediTrainer(ZoneServer* zoneServer, PlayerObject* ghost) const {
 		if (ghost == nullptr || zoneServer == nullptr)
-			return;
+			return nullptr;
 
-		Vector<ManagedReference<SceneObject*>> trainers;
-		Vector<uint32> trainerTypes = {STRING_HASHCODE("trainer_brawler"), STRING_HASHCODE("trainer_artisan"), STRING_HASHCODE("trainer_scout"), STRING_HASHCODE("trainer_marksman"), STRING_HASHCODE("trainer_entertainer"), STRING_HASHCODE("trainer_medic")};
+		String zoneName = ghost->getTrainerZoneName();
 
-		// Get all trainers in galaxy and build list based on above trainer sub map categories
+		if (zoneName.isEmpty())
+			return nullptr;
+
+		Zone* zone = zoneServer->getZone(zoneName);
+
+		if (zone == nullptr)
+			return nullptr;
+
+		Vector3 coords = ghost->getJediTrainerCoordinates();
+
+		SortedVector<ManagedReference<SceneObject*>> objectList = zone->getPlanetaryObjectList("trainer");
+
+		for (int i = 0; i < objectList.size(); ++i) {
+			ManagedReference<SceneObject*> trainer = objectList.get(i);
+
+			if (trainer == nullptr)
+				continue;
+
+			if (trainer->getPlanetMapSubCategoryCRC() != STRING_HASHCODE("trainer_jedi"))
+				continue;
+
+			CreatureObject* trainerCreo = trainer->asCreatureObject();
+
+			if (trainerCreo == nullptr)
+				continue;
+
+			Vector3 pos = trainerCreo->getWorldPosition();
+
+			if (pos.getX() == coords.getX() && pos.getY() == coords.getY())
+				return trainer;
+		}
+
+		return nullptr;
+	}
+
+	// Picks a jedi trainer NPC: the closest one in the player's current
+	// zone, falling back to any jedi trainer in the galaxy (e.g. when the
+	// player is on a wilderness planet without a jedi trainer).
+	SceneObject* pickJediTrainer(ZoneServer* zoneServer, CreatureObject* creature) const {
+		if (creature == nullptr || zoneServer == nullptr)
+			return nullptr;
+
+		ManagedReference<SceneObject*> closest = nullptr;
+		ManagedReference<SceneObject*> fallback = nullptr;
+		float closestDistSq = -1.f;
+
+		String homeZoneName;
+		Zone* homeZone = creature->getZone();
+
+		if (homeZone != nullptr)
+			homeZoneName = homeZone->getZoneName();
+
+		Vector3 playerPos = creature->getWorldPosition();
+
 		for (int i = 0; i < zoneServer->getZoneCount(); ++i) {
 			auto zone = zoneServer->getZone(i);
 
@@ -93,61 +147,61 @@ public:
 				if (trainer == nullptr)
 					continue;
 
-				uint32 subCatCrc = trainer->getPlanetMapSubCategoryCRC();
+				if (trainer->getPlanetMapSubCategoryCRC() != STRING_HASHCODE("trainer_jedi"))
+					continue;
 
-				for (int k = 0; k < trainerTypes.size(); ++k) {
-					uint32 typeHash = trainerTypes.get(k);
+				CreatureObject* trainerCreo = trainer->asCreatureObject();
 
-					if (subCatCrc == 0 || typeHash != subCatCrc)
-						continue;
+				if (trainerCreo == nullptr)
+					continue;
 
-					trainers.add(trainer);
+				if (!(trainerCreo->getOptionsBitmask() & OptionBitmask::CONVERSE))
+					continue;
 
-					break;
+				ManagedReference<CityRegion*> city = trainerCreo->getCityRegion().get();
+
+				// Make sure it's not a player-city trainer.
+				if (city != nullptr && !city->isClientRegion())
+					continue;
+
+				if (fallback == nullptr)
+					fallback = trainer;
+
+				if (homeZoneName.isEmpty() || zone->getZoneName() != homeZoneName)
+					continue;
+
+				Vector3 pos = trainerCreo->getWorldPosition();
+				float dx = pos.getX() - playerPos.getX();
+				float dy = pos.getY() - playerPos.getY();
+				float distSq = dx * dx + dy * dy;
+
+				if (closest == nullptr || distSq < closestDistSq) {
+					closest = trainer;
+					closestDistSq = distSq;
 				}
 			}
 		}
 
-		bool found = false;
-		Vector3 coords;
-		String zoneName = "";
-		int size = trainers.size();
+		if (closest != nullptr)
+			return closest;
 
-		if (size <= 0)
+		return fallback;
+	}
+
+	void assignTrainer(PlayerObject* ghost, SceneObject* trainer) const {
+		if (ghost == nullptr || trainer == nullptr)
 			return;
 
-		while (!found) {
-			SceneObject* trainer = trainers.get(System::random(size - 1));
+		CreatureObject* trainerCreo = trainer->asCreatureObject();
+		Zone* trainerZone = trainer->getZone();
 
-			if (trainer == nullptr)
-				continue;
+		if (trainerCreo == nullptr || trainerZone == nullptr)
+			return;
 
-			CreatureObject* trainerCreo = trainer->asCreatureObject();
+		String zoneName = trainerZone->getZoneName();
 
-			if (trainerCreo == nullptr)
-				continue;
-
-			Zone* trainerZone = trainerCreo->getZone();
-
-			if (trainerZone == nullptr || trainerZone->getZoneName() == "tutorial")
-				continue;
-
-			if (!(trainerCreo->getOptionsBitmask() & OptionBitmask::CONVERSE))
-				continue;
-
-			ManagedReference<CityRegion*> city = trainerCreo->getCityRegion().get();
-
-			// Make sure it's not a player-city trainer.
-			if (city != nullptr && !city->isClientRegion())
-				continue;
-
-			zoneName = trainerZone->getZoneName();
-			coords = trainerCreo->getWorldPosition();
-			found = true;
-		}
-
-		ghost->setTrainerCoordinates(coords);
-		ghost->setTrainerZoneName(zoneName); // For the waypoint.
+		ghost->setTrainerCoordinates(trainerCreo->getWorldPosition());
+		ghost->setTrainerZoneName(zoneName);
 	}
 };
 

@@ -48,7 +48,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_belt = Shar
 	appearanceFilename = "appearance/armor_mandalorian_belt_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/belt.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 256,
@@ -107,7 +106,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_bicep_l = S
 	appearanceFilename = "appearance/armor_mandalorian_bicep_l_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/bicep_l.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 261,
@@ -166,7 +164,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_bicep_r = S
 	appearanceFilename = "appearance/armor_mandalorian_bicep_r_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/bicep_r.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 261,
@@ -225,7 +222,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_bracer_l = 
 	appearanceFilename = "appearance/armor_mandalorian_bracer_l_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/bracer_l.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 261,
@@ -284,7 +280,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_bracer_r = 
 	appearanceFilename = "appearance/armor_mandalorian_bracer_r_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/bracer_r.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 261,
@@ -343,7 +338,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_chest_plate
 	appearanceFilename = "appearance/armor_mandalorian_chest_plate_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/vest.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 257,
@@ -402,7 +396,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_gloves = Sh
 	appearanceFilename = "appearance/armor_mandalorian_gloves_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/gauntlets.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 262,
@@ -461,7 +454,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_helmet = Sh
 	appearanceFilename = "appearance/armor_mandalorian_helmet_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/helmet_closed_full.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 258,
@@ -520,7 +512,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_leggings = 
 	appearanceFilename = "appearance/armor_mandalorian_leggings_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/pant_leggings.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 260,
@@ -579,7 +570,6 @@ object_tangible_wearables_armor_mandalorian_shared_armor_mandalorian_shoes = Sha
 	appearanceFilename = "appearance/armor_mandalorian_shoes_f.sat",
 	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/shoe.iff",
 
-	certificationsRequired = {},
 	clearFloraRadius = 0,
 	clientDataFile = "",
 	clientGameObjectType = 263,

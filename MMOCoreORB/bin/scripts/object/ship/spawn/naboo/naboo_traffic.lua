@@ -5,8 +5,8 @@ naboo_traffic = {
 		leadShips = {"hutt_light_s01_tier2", "hutt_light_s02_tier2"},
 		groupShips = {"hutt_light_s01_tier1", "hutt_light_s02_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 15,
 		capitalShip = "",
 	},
@@ -16,8 +16,8 @@ naboo_traffic = {
 		leadShips = {"blacksun_light_s01_tier2", "blacksun_light_s02_tier2", "blacksun_light_s03_tier2", "blacksun_light_s04_tier2"},
 		groupShips = {"blacksun_light_s01_tier1", "blacksun_light_s02_tier1", "blacksun_light_s03_tier1", "blacksun_light_s04_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 5,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 15,
 		capitalShip = "",
 	},
@@ -27,8 +27,8 @@ naboo_traffic = {
 		leadShips = {""},
 		groupShips = {"civshuttle", "civtaxi", "civtransport", "merchant_cruiser_light_tier1", "freighterlight_tier1", "freighterheavy_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 10,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 50,
 		capitalShip = "",
 	},
@@ -38,8 +38,8 @@ naboo_traffic = {
 		leadShips = {""},
 		groupShips = {"droid_fighter_tier1"},
 
-		spawnLimit = -1,
-		numberToSpawn = 10,
+		spawnLimit = 250,
+		numberToSpawn = 100,
 		weighting = 30,
 		capitalShip = "",
 	},

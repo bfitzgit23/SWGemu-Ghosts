@@ -846,6 +846,15 @@ void MissionManagerImplementation::randomizeFactionTerminalMissions(CreatureObje
 	}
 }
 
+static int parseIntSafe(const String& value) {
+	if (value.isEmpty())
+		return 0;
+
+	int result = 0;
+	sscanf(value.toCharArray(), "%d", &result);
+	return result;
+}
+
 void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject* player, MissionObject* mission, const uint32 faction) {
 	Zone* zone = player->getZone();
 
@@ -881,6 +890,8 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 		targetGhost->getScreenPlayData("player_mission_creator", "enabled") == "1";
 
 	int levelChoice = 0;
+	int forcedLevel = 0;
+	int missionDirection = 0;
 
 	if (customMission) {
 		levelChoice = Math::max(
@@ -904,6 +915,18 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 		}
 	} else if (!customMission) {
 		diffDisplay += playerLevel;
+	}
+
+	if (!customMission && targetGhost != nullptr) {
+		forcedLevel = Math::max(0, Math::min(250,
+			parseIntSafe(targetGhost->getScreenPlayData("mission_level_choice", "levelChoice"))));
+		missionDirection = Math::max(0, Math::min(360,
+			parseIntSafe(targetGhost->getScreenPlayData("mission_direction_choice", "directionChoice"))));
+
+		if (forcedLevel > 0) {
+			difficultyLevel = forcedLevel;
+			diffDisplay = forcedLevel;
+		}
 	}
 
 	String building = lairTemplateObject->getMissionBuilding(difficulty);
@@ -940,6 +963,15 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 
 			if (direction <= 0)
 				direction = (float)System::random(360);
+			} else if (missionDirection > 0) {
+				distance = destroyMissionBaseDistance +
+					destroyMissionDifficultyDistanceFactor * difficultyLevel;
+
+				distance += System::random(destroyMissionRandomDistance) +
+					System::random(
+						destroyMissionDifficultyRandomDistance * difficultyLevel);
+
+				direction = (float)missionDirection;
 		} else {
 			distance = destroyMissionBaseDistance +
 				destroyMissionDifficultyDistanceFactor * difficultyLevel;
@@ -951,9 +983,17 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 			direction = (float)System::random(360);
 		}
 
+		// Ghosts: getWorldCoordinate() rotates the requested bearing by the
+		// object's facing, so add the player's current heading to keep the chosen
+		// mission direction absolute (North stays North, South stays South).
+		float absoluteDirection = direction + player->getDirectionAngle();
+
+		if (customMission || missionDirection > 0)
+			info(true) << "GhostsMission: bearing=" << direction << " heading=" << player->getDirectionAngle() << " absolute=" << absoluteDirection << " dist=" << distance;
+
 		startPos = player->getWorldCoordinate(
 			(float)distance,
-			direction,
+			absoluteDirection,
 			false);
 
 		if (zone->isWithinBoundaries(startPos)) {
@@ -1006,10 +1046,10 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 	if (customMission) {
 		// Ghosts custom mission rewards:
 		// level 10 starts at 2,000 credits and scales to
-		// a maximum of 250,000 credits at level 250.
+		// a maximum of 1,000,000 credits at level 250.
 		reward = levelChoice < 10 ?
 			levelChoice * 200 :
-			2000 + ((levelChoice - 10) * 248000) / 240;
+			2000 + ((levelChoice - 10) * 998000) / 240;
 
 		String missionTypeChoice =
 			targetGhost->getScreenPlayData("player_mission_creator", "type");
@@ -1017,7 +1057,7 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 		if (missionTypeChoice == "single")
 			reward = (reward * 3) / 4;
 
-		reward = Math::min(250000, reward);
+		reward = Math::min(1000000, reward);
 	} else {
 		reward =
 			destroyMissionBaseReward +
@@ -1027,6 +1067,12 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 			System::random(destroyMissionRandomReward) +
 			System::random(
 				destroyMissionDifficultyRandomReward * difficultyLevel);
+
+		if (forcedLevel > 0) {
+			reward = forcedLevel < 10 ?
+				forcedLevel * 200 :
+				2000 + ((forcedLevel - 10) * 998000) / 240;
+		}
 	}
 
 	mission->setRewardCredits(reward);
@@ -1074,6 +1120,24 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 		mission->setRewardFactionPointsImperial(0);
 		mission->setRewardFactionPointsRebel(0);
 		break;
+	}
+
+	// Ghosts: an ordinary mission terminal's PvE destroy mission is generated
+	// neutral, and awardFactionPoints() ignores neutral missions - so these paid
+	// no GCW points. Re-tag the mission with the player's own declared faction so
+	// completing it awards that faction's points (neutral players are untouched).
+	if (faction == Factions::FACTIONNEUTRAL) {
+		uint32 playerFaction = player->getFaction();
+
+		if (playerFaction == Factions::FACTIONIMPERIAL) {
+			mission->setFaction(Factions::FACTIONIMPERIAL);
+			mission->setRewardFactionPointsImperial(factionPointsReward * 2);
+			mission->setRewardFactionPointsRebel(-factionPointsReward);
+		} else if (playerFaction == Factions::FACTIONREBEL) {
+			mission->setFaction(Factions::FACTIONREBEL);
+			mission->setRewardFactionPointsRebel(factionPointsReward * 2);
+			mission->setRewardFactionPointsImperial(-factionPointsReward);
+		}
 	}
 
 	mission->setTypeCRC(MissionTypes::DESTROY);
@@ -2028,6 +2092,26 @@ LairSpawn* MissionManagerImplementation::getRandomLairSpawn(CreatureObject* play
 		if (!matchingSpawns.isEmpty()) {
 			return matchingSpawns.get(
 				System::random(matchingSpawns.size() - 1));
+		}
+	}
+
+	if (!customMission && type == MissionTypes::DESTROY && ghost != nullptr) {
+		int forcedLevel = Math::min(250,
+			parseIntSafe(ghost->getScreenPlayData("mission_level_choice", "levelChoice")));
+
+		if (forcedLevel > 0) {
+			Vector<LairSpawn*> exactMatches;
+
+			for (int i = 0; i < availableLairList->size(); ++i) {
+				LairSpawn* spawn = availableLairList->get(i);
+
+				if (spawn != nullptr && spawn->getMinDifficulty() <= forcedLevel
+						&& spawn->getMaxDifficulty() >= forcedLevel)
+					exactMatches.add(spawn);
+			}
+
+			if (!exactMatches.isEmpty())
+				return exactMatches.get(System::random(exactMatches.size() - 1));
 		}
 	}
 

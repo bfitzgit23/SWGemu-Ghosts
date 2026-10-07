@@ -45,18 +45,18 @@ levelChance = 10
 
 --Chance dividend for attribute bonus modifiers
 baseChance = 10
-yellowChance = 25
-exceptionalChance = 50
-legendaryChance = 75
+yellowChance = 10
+exceptionalChance = 20
+legendaryChance = 50
 
 --Multiplier values for bonus modifiers
 baseModifier = 1
-yellowModifier = 2
-exceptionalModifier = 8
-legendaryModifier = 9
+yellowModifier = 1.5
+exceptionalModifier = 2.5
+legendaryModifier = 5.0
 
 --The chance for random skill mods to be on looted weapons/wearables
-skillModChance = 25 -- 1 in 1000
+skillModChance = 50 -- 1 in 500
 
 -- Dot Distribution chance by DOT type. They must equate to 1.0
 poisonDotChance = 0.50
@@ -109,6 +109,7 @@ lootableArmorAttachmentStatMods = {
 	"keep_creature",
 	"knockdown_defense",
 	"melee_defense",
+	"jedi_state_defense",
 	"onehandmelee_accuracy",
 	"onehandmelee_damage",
 	"onehandmelee_speed",
@@ -262,6 +263,7 @@ lootableArmorAttachmentStatMods = {
 	"medicine_assembly",
 	"medicine_experimentation",
 	"melee_defense",
+	"jedi_state_defense",
 	"onehandmelee_accuracy",
 	"onehandmelee_damage",
 	"onehandmelee_speed",
@@ -423,6 +425,7 @@ lootableClothingAttachmentStatMods = {
 	"medicine_assembly",
 	"medicine_experimentation",
 	"melee_defense",
+	"jedi_state_defense",
 	"onehandmelee_accuracy",
 	"onehandmelee_damage",
 	"onehandmelee_speed",
@@ -543,6 +546,7 @@ lootableArmorStatMods = {
 	"medicine_assembly",
 	"medicine_experimentation",
 	"melee_defense",
+	"jedi_state_defense",
 	"onehandmelee_accuracy",
 	"onehandmelee_damage",
 	"onehandmelee_speed",
@@ -681,6 +685,7 @@ lootableClothingStatMods = {
 	"medicine_assembly",
 	"medicine_experimentation",
 	"melee_defense",
+	"jedi_state_defense",
 	"onehandmelee_accuracy",
 	"onehandmelee_damage",
 	"onehandmelee_speed",
