@@ -16,7 +16,7 @@ krayt_dragon_pearl_flawless = {
 		{"attackmindcost",0,9,0},
 		{"forcecost",9,9.9,0},
 		{"color",31,31,0},
-		{"quality",6,6,0},
+		{"quality",5,7,0},
 	},
 	customizationStringNames = {},
 	customizationValues = {}

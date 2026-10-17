@@ -2,6 +2,10 @@ imperial_credit = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	customObjectName = "",
+	craftingValues = {},
+	customizationStringNames = {},
+	customizationValues = {},
+	skillMods = {},
 	directObjectTemplate = "object/tangible/loot/misc/imperial_credit.iff",
 	
 

@@ -9,6 +9,7 @@
 #include "server/zone/objects/scene/SceneObject.h"
 #include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/objects/tangible/weapon/WeaponObject.h"
+#include "server/zone/objects/tangible/wearables/WearableObject.h"
 #include "server/zone/managers/crafting/CraftingManager.h"
 #include "templates/LootItemTemplate.h"
 #include "templates/LootGroupTemplate.h"
@@ -435,6 +436,14 @@ TangibleObject* LootManagerImplementation::createLootObject(TransactionLog& trx,
 	// Add some condition damage to the looted item if it is a weapon or piece of armor
 	if (!maxCondition && (prototype->isWeaponObject() || prototype->isArmorObject())) {
 		addConditionDamage(prototype);
+	}
+
+	// Ghosts (2026-10-12): looted (non-crafted) armor comes with empty sockets.
+	if (prototype->isArmorObject()) {
+		auto wearable = static_cast<WearableObject*>(prototype.get());
+
+		if (wearable != nullptr)
+			wearable->generateEmptySockets(2);
 	}
 
 	trx.addState("lootAdjustment", chance);

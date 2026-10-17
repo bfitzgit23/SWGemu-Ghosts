@@ -34,7 +34,6 @@ dune_sea_krayt_dragon = Creature:new {
 	        	groups = {
 				{group = "krayt_tissue_rare", chance = 3000000},
 				{group = "krayt_dragon_common", chance = 3000000},
-				{group = "krayt_pearls_flawless", chance = 3000000},
 				{group = "weapons_all", chance = 1000000},
 			},
 			lootChance = 10000000
@@ -47,8 +46,17 @@ dune_sea_krayt_dragon = Creature:new {
 				{group = "tierdiamond", chance = 2500000},
 			},
 			lootChance = 4000000
+		},
+		{
+			-- Ghosts (2026-10-15): pearls are their own guaranteed roll - a krayt
+			-- dragon always leaves a pearl behind, on top of its normal loot.
+			groups = {
+				{group = "krayt_pearls_flawless", chance = 10000000},
+			},
+			lootChance = 10000000
 		}
 	},
+
 	weapons = {},
 	conversationTemplate = "",
 	attacks = {

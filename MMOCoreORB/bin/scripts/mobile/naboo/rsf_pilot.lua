@@ -25,7 +25,7 @@ rsf_pilot = Creature:new {
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK,
-	optionsBitmask = AIENABLED,
+	optionsBitmask = AIENABLED + CONVERSABLE,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_rsf_pilot.iff"},
@@ -41,7 +41,7 @@ rsf_pilot = Creature:new {
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
 	primaryWeapon = "rebel_weapons_medium",
 	secondaryWeapon = "unarmed",
-	conversationTemplate = "",
+	conversationTemplate = "pilot_trainer_convo_template",
 	reactionStf = "@npc_reaction/townperson",
 	
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon

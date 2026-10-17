@@ -7,6 +7,7 @@ force_power_crystal = {
 	directObjectTemplate = "object/tangible/component/weapon/lightsaber/lightsaber_module_force_crystal.iff",
 	craftingValues = {
 		{"color",31,31,0},
+		{"quality",3,3,0},
 	},
 	customizationStringNames = {},
 	customizationValues = {}

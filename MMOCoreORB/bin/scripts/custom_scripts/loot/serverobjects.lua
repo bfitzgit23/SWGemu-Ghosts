@@ -259,3 +259,10 @@ includeFile("../custom_scripts/loot/groups/armor/global_custom_armor.lua")
 
 -- Lootable Jedi robe schematic entries remain disabled until the matching
 -- shared schematic templates arrive with the schematic asset transfer.
+
+-- Ghosts (2026-10-10): Ancient Jedaii holocron furniture (cube / dode / triangle).
+-- The loot item templates under scripts/loot/items/component_loot were never
+-- included by the loot loader; register them so the loot crates can roll them.
+includeFile("items/component_loot/ancient_jedaii_holocron_cube.lua")
+includeFile("items/component_loot/ancient_jedaii_holocron_dode.lua")
+includeFile("items/component_loot/ancient_jedaii_holocron_triangle.lua")

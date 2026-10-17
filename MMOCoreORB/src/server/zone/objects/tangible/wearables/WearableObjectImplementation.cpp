@@ -66,6 +66,28 @@ void WearableObjectImplementation::updateCraftingValues(CraftingValues* values, 
 			socketsGenerated = true;
 		}
 	}
+
+	// Ghosts (2026-10-12): crafted armor always comes out socketed (2 sockets)
+	// for master-level crafters (assembly skill mod >= MIN_SOCKET_MOD).
+	if (craftTemplatePath.contains("/wearables/armor/") && socketCount < 1) {
+		int assemblySkill = 0;
+
+		auto manuSchematic = values->getManufactureSchematic();
+
+		if (manuSchematic != nullptr) {
+			auto draftSchematic = manuSchematic->getDraftSchematic();
+			auto crafter = manuSchematic->getCrafter().get();
+
+			if (draftSchematic != nullptr && crafter != nullptr)
+				assemblySkill = crafter->getSkillMod(draftSchematic->getAssemblySkill());
+		}
+
+		if (assemblySkill >= MIN_SOCKET_MOD) {
+			usedSocketCount = 0;
+			socketCount = 2;
+			socketsGenerated = true;
+		}
+	}
 }
 
 void WearableObjectImplementation::generateSockets(CraftingValues* craftingValues) {
@@ -122,6 +144,15 @@ void WearableObjectImplementation::generateSockets(CraftingValues* craftingValue
 	socketsGenerated = true;
 
 	return;
+}
+
+void WearableObjectImplementation::generateEmptySockets(int count) {
+	// Ghosts (2026-10-12): give loot/non-crafted wearables empty sockets.
+	if (socketCount < 1 && count > 0) {
+		usedSocketCount = 0;
+		socketCount = count;
+		socketsGenerated = true;
+	}
 }
 
 void WearableObjectImplementation::applyAttachment(CreatureObject* player, Attachment* attachment) {

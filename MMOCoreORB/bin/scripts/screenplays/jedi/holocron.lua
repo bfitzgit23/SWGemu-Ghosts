@@ -1265,81 +1265,11 @@ function holocron_grant_padawan(pCreature)
         end
     end
 
-    -- Ghosts: award the full Jedi discipline skill set (the skills the -- trainer_jedi trainer actually teaches) so a holocron-unlocked Padawan -- is not left with only Force Sensitive skills. Bypass prereqs since the -- holocron path already replaced the Village progression.
-    local jediDisciplineSkills = {
-        -- Lightsaber
-        "force_discipline_light_saber_novice",
-        "force_discipline_light_saber_master",
-        "force_discipline_light_saber_one_hand_01",
-        "force_discipline_light_saber_one_hand_02",
-        "force_discipline_light_saber_one_hand_03",
-        "force_discipline_light_saber_one_hand_04",
-        "force_discipline_light_saber_two_hand_01",
-        "force_discipline_light_saber_two_hand_02",
-        "force_discipline_light_saber_two_hand_03",
-        "force_discipline_light_saber_two_hand_04",
-        "force_discipline_light_saber_polearm_01",
-        "force_discipline_light_saber_polearm_02",
-        "force_discipline_light_saber_polearm_03",
-        "force_discipline_light_saber_polearm_04",
-        "force_discipline_light_saber_technique_01",
-        "force_discipline_light_saber_technique_02",
-        "force_discipline_light_saber_technique_03",
-        "force_discipline_light_saber_technique_04",
-        -- Force Powers
-        "force_discipline_powers_novice",
-        "force_discipline_powers_master",
-        "force_discipline_powers_lightning_01",
-        "force_discipline_powers_lightning_02",
-        "force_discipline_powers_lightning_03",
-        "force_discipline_powers_lightning_04",
-        "force_discipline_powers_mental_01",
-        "force_discipline_powers_mental_02",
-        "force_discipline_powers_mental_03",
-        "force_discipline_powers_mental_04",
-        "force_discipline_powers_debuff_01",
-        "force_discipline_powers_debuff_02",
-        "force_discipline_powers_debuff_03",
-        "force_discipline_powers_debuff_04",
-        -- Healing
-        "force_discipline_healing_novice",
-        "force_discipline_healing_master",
-        "force_discipline_healing_healing_01",
-        "force_discipline_healing_healing_02",
-        "force_discipline_healing_healing_03",
-        "force_discipline_healing_healing_04",
-        "force_discipline_healing_stim_01",
-        "force_discipline_healing_stim_02",
-        "force_discipline_healing_stim_03",
-        "force_discipline_healing_stim_04",
-        -- Enhancements
-        "force_discipline_enhancements_novice",
-        "force_discipline_enhancements_master",
-        "force_discipline_enhancements_mind_01",
-        "force_discipline_enhancements_mind_02",
-        "force_discipline_enhancements_mind_03",
-        "force_discipline_enhancements_mind_04",
-        "force_discipline_enhancements_physical_01",
-        "force_discipline_enhancements_physical_02",
-        "force_discipline_enhancements_physical_03",
-        "force_discipline_enhancements_physical_04",
-        -- Defence
-        "force_discipline_defence_novice",
-        "force_discipline_defence_master",
-        "force_discipline_defence_active_01",
-        "force_discipline_defence_active_02",
-        "force_discipline_defence_active_03",
-        "force_discipline_defence_active_04",
-        "force_discipline_defence_passive_01",
-        "force_discipline_defence_passive_02",
-        "force_discipline_defence_passive_03",
-        "force_discipline_defence_passive_04",
-    }
-    for i = 1, #jediDisciplineSkills do
-        if not CreatureObject(pCreature):hasSkill(jediDisciplineSkills[i]) then
-            awardSkill(pCreature, jediDisciplineSkills[i], true)
-        end
-    end
+    -- Ghosts (2026-10-12): Jedi discipline skills (lightsaber, powers, healing,
+    -- enhancements, defence) are intentionally NOT granted here any more. A
+    -- holocron-unlocked Padawan only gets force_title_jedi_rank_02 plus the
+    -- Force Sensitive (village) skill trees; disciplines are trained in-game
+    -- from the jedi trainer.
 
     -- Required for the Force progression tree to display correctly.
     CreatureObject(pCreature):setScreenPlayState(

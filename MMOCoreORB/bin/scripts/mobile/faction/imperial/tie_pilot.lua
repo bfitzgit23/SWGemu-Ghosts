@@ -23,7 +23,7 @@ tie_pilot = Creature:new {
 	ferocity = 0,
 	pvpBitmask = NONE,
 	creatureBitmask = PACK + KILLER,
-	optionsBitmask = NONE,
+	optionsBitmask = NONE + CONVERSABLE,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_tie_fighter_m.iff"},
@@ -35,7 +35,7 @@ tie_pilot = Creature:new {
 	secondaryWeapon = "none",
 	thrownWeapon = "thrown_weapons",
 
-	conversationTemplate = "",
+	conversationTemplate = "pilot_trainer_convo_template",
 
 	-- primaryAttacks and secondaryAttacks should be separate skill groups specific to the weapon type listed in primaryWeapon and secondaryWeapon
 	-- Use merge() to merge groups in creatureskills.lua together. If a weapon is set to "none", set the attacks variable to empty brackets

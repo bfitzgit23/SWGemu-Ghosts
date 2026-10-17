@@ -18,6 +18,65 @@
 #include "server/zone/managers/loot/LootManager.h"
 #include "server/zone/ZoneServer.h"
 
+namespace {
+	// The item level band each crystal quality maps to.  getCrystalQuality() is the
+	// exact inverse of these bands, so a crystal rolled up from its quality keeps the
+	// tier it was created with instead of drifting a tier on every load.
+	int itemLevelForQuality(int quality) {
+		switch (quality) {
+		case LightsaberCrystalComponentImplementation::FAIR:
+			return 40 + System::random(29); // 40-69
+		case LightsaberCrystalComponentImplementation::GOOD:
+			return 70 + System::random(29); // 70-99
+		case LightsaberCrystalComponentImplementation::QUALITY:
+			return 100 + System::random(39); // 100-139
+		case LightsaberCrystalComponentImplementation::SELECT:
+			return 140 + System::random(79); // 140-219
+		case LightsaberCrystalComponentImplementation::PREMIUM:
+			return 220 + System::random(109); // 220-329
+		case LightsaberCrystalComponentImplementation::FLAWLESS:
+			return 330 + System::random(20); // 330-350
+		case LightsaberCrystalComponentImplementation::POOR:
+		default:
+			return 1 + System::random(38); // 1-39
+		}
+	}
+
+	// Ghosts (2026-10-16): every krayt dragon pearl is a top-tier crystal, so a pearl
+	// that was created before itemLevel was being filled in (it came back POOR at item
+	// level 1-39) is lifted into the premium/flawless band instead of staying junk.
+	int itemLevelForCrystal(const String& templateFileName, int quality) {
+		int itemLevel = itemLevelForQuality(quality);
+
+		if (itemLevel < 220 && templateFileName.contains("krayt_dragon_pearl"))
+			itemLevel = 220 + System::random(109); // 220-329
+
+		return itemLevel;
+	}
+
+	// Fraction of a crystal's maximum stat that a crystal of this quality is
+	// guaranteed to roll, so a better crystal can never be the worse roll.
+	float qualityStatFloor(int quality) {
+		switch (quality) {
+		case LightsaberCrystalComponentImplementation::FAIR:
+			return 0.10f;
+		case LightsaberCrystalComponentImplementation::GOOD:
+			return 0.15f;
+		case LightsaberCrystalComponentImplementation::QUALITY:
+			return 0.20f;
+		case LightsaberCrystalComponentImplementation::SELECT:
+			return 0.25f;
+		case LightsaberCrystalComponentImplementation::PREMIUM:
+			return 0.30f;
+		case LightsaberCrystalComponentImplementation::FLAWLESS:
+			return 0.35f;
+		case LightsaberCrystalComponentImplementation::POOR:
+		default:
+			return 0.05f;
+		}
+	}
+}
+
 void LightsaberCrystalComponentImplementation::initializeTransientMembers() {
 	ComponentImplementation::initializeTransientMembers();
 
@@ -25,25 +84,22 @@ void LightsaberCrystalComponentImplementation::initializeTransientMembers() {
 }
 
 void LightsaberCrystalComponentImplementation::notifyLoadFromDatabase() {
-	// Randomize item level and stats for existing crystals based on original quality value
+	if (forceCost != 0) {
+		floatForceCost = forceCost;
+		forceCost = 0;
+	}
+
+	// Randomize item level and stats for a crystal that has none yet (every crystal the
+	// loot, crate and character builder paths created while the loot level was not being
+	// applied to itemLevel).  The stored quality is the original loot roll, so the crystal
+	// comes back at the tier it was created with instead of at item level 0 (POOR).
 	// TODO: Remove this on a server wipe when old variables are removed
 	if (color == 31 && (minimumDamage != maximumDamage || itemLevel == 0)) {
-		if (quality == POOR)
-			itemLevel = 1 + System::random(38); // 1-39
-		else if (quality == FAIR)
-			itemLevel = 40 + System::random(29); // 40-69
-		else if (quality == GOOD)
-			itemLevel = 70 + System::random(29); // 70-99
-		else if (quality == QUALITY)
-			itemLevel = 100 + System::random(39); // 100-139
-		else if (quality == SELECT)
-			itemLevel = 140 + System::random(79); // 140-219
-		else if (quality == PREMIUM)
-			itemLevel = 220 + System::random(109); // 220-329
-		else
-			itemLevel = 330 + System::random(20);
+		auto crystalTemplate = getObjectTemplate();
 
-		attackSpeed = 0.0;
+		itemLevel = itemLevelForCrystal(crystalTemplate == nullptr ? String("") : crystalTemplate->getTemplateFileName(), quality);
+
+		attackSpeed = 0.00;
 		minimumDamage = 0;
 		maximumDamage = 0;
 		sacHealth = 0;
@@ -51,7 +107,7 @@ void LightsaberCrystalComponentImplementation::notifyLoadFromDatabase() {
 		sacMind = 0;
 		woundChance = 0;
 		forceCost = 0;
-		floatForceCost = 0.0;
+		floatForceCost = 0.00;
 
 		generateCrystalStats();
 	}
@@ -72,8 +128,16 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 		return;
 	}
 
+	// Ghosts (2026-10-16): the crystal's quality sets the floor of every stat roll, so a
+	// premium/flawless pearl can no longer come out with minimum stats.  getCrystalQuality()
+	// is read from itemLevel, which is already the loot level by the time this runs, and it
+	// is what the last line of this function stores as the crystal's quality.
+	const float qualityModifier = qualityStatFloor(getCrystalQuality());
+
 	int minStat = crystalData->getMinHitpoints();
 	int maxStat = crystalData->getMaxHitpoints();
+
+	minStat = (int)(qualityModifier * maxStat); // % of max since min can be 0 for a lot of stuff
 
 	setMaxCondition(getRandomizedStat(minStat, maxStat, itemLevel));
 
@@ -81,35 +145,49 @@ void LightsaberCrystalComponentImplementation::generateCrystalStats() {
 		int minStat = crystalData->getMinDamage();
 		int maxStat = crystalData->getMaxDamage();
 
+		minStat = (int)(qualityModifier * maxStat);
+
 		damage = getRandomizedStat(minStat, maxStat, itemLevel);
 
 		minStat = crystalData->getMinHealthSac();
 		maxStat = crystalData->getMaxHealthSac();
+
+		minStat = (int)(qualityModifier * maxStat);
 
 		sacHealth = getRandomizedStat(minStat, maxStat, itemLevel);
 
 		minStat = crystalData->getMinActionSac();
 		maxStat = crystalData->getMaxActionSac();
 
+		minStat = (int)(qualityModifier * maxStat);
+
 		sacAction = getRandomizedStat(minStat, maxStat, itemLevel);
 
 		minStat = crystalData->getMinMindSac();
 		maxStat = crystalData->getMaxMindSac();
+
+		minStat = (int)(qualityModifier * maxStat);
 
 		sacMind = getRandomizedStat(minStat, maxStat, itemLevel);
 
 		minStat = crystalData->getMinWoundChance();
 		maxStat = crystalData->getMaxWoundChance();
 
+		minStat = (int)(qualityModifier * maxStat);
+
 		woundChance = getRandomizedStat(minStat, maxStat, itemLevel);
 
 		float minFloatStat = crystalData->getMinForceCost();
 		float maxFloatStat = crystalData->getMaxForceCost();
 
+		minFloatStat = qualityModifier * maxFloatStat;
+
 		floatForceCost = getRandomizedStat(minFloatStat, maxFloatStat, itemLevel);
 
 		minFloatStat = crystalData->getMinAttackSpeed();
 		maxFloatStat = crystalData->getMaxAttackSpeed();
+
+		minFloatStat = qualityModifier * maxFloatStat;
 
 		attackSpeed = Math::getPrecision(getRandomizedStat(minFloatStat, maxFloatStat, itemLevel), 2);
 	}
@@ -137,6 +215,15 @@ void LightsaberCrystalComponentImplementation::validateCrystalStats() {
 		setMaxCondition(getRandomizedStat(minStat, maxStat, itemLevel));
 
 	if (color == 31) {
+		if (minimumDamage != maximumDamage || itemLevel == 0) {
+			auto crystalTemplate = getObjectTemplate();
+
+			itemLevel = itemLevelForCrystal(crystalTemplate == nullptr ? String("") : crystalTemplate->getTemplateFileName(), quality);
+
+			minimumDamage = 0;
+			maximumDamage = 0;
+		}
+
 		minStat = crystalData->getMinDamage();
 		maxStat = crystalData->getMaxDamage();
 
@@ -211,7 +298,7 @@ int LightsaberCrystalComponentImplementation::getRandomizedStat(int min, int max
 		invertedValues = true;
 	}
 
-	float avgLevel = (float)(itemLevel - 60) / 220.f;
+	float avgLevel = (float)(itemLevel) / 220.f;
 
 	float midLevel = min + ((max - min) * avgLevel);
 
@@ -230,8 +317,15 @@ int LightsaberCrystalComponentImplementation::getRandomizedStat(int min, int max
 
 	int result = randMin + System::random(randMax - randMin);
 
-	if (invertedValues)
+	if (invertedValues) {
+		if (itemLevel > 325)
+			return invertedMax;
+
 		result = invertedMin + (invertedMax - result);
+	}
+
+	if (itemLevel > 325)
+		return max;
 
 	return result;
 }
@@ -249,7 +343,7 @@ float LightsaberCrystalComponentImplementation::getRandomizedStat(float min, flo
 		invertedValues = true;
 	}
 
-	float avgLevel = (float)(itemLevel - 60) / 220.f;
+	float avgLevel = (float)(itemLevel) / 220.f;
 
 	float midLevel = min + ((max - min) * avgLevel);
 
@@ -268,28 +362,24 @@ float LightsaberCrystalComponentImplementation::getRandomizedStat(float min, flo
 
 	float result = System::getMTRand()->rand(randMax - randMin) + randMin;
 
-	if (invertedValues)
+	if (invertedValues) {
+		if (itemLevel > 325)
+			return invertedMax;
+
 		result = invertedMin + (invertedMax - result);
+	}
+
+	if (itemLevel > 325)
+		return max;
 
 	return result;
-}
-
-// Ghosts: grey jedi (force_rank_gray / combat_jedi trees) may tune crystals too
-static bool ghostsCanTuneCrystal(CreatureObject* player) {
-	return player->hasSkill("force_title_jedi_rank_01")
-			|| player->hasSkill("force_rank_gray_novice")
-			|| player->hasSkill("combat_jedi_novice");
 }
 
 void LightsaberCrystalComponentImplementation::fillAttributeList(AttributeListMessage* alm, CreatureObject* object) {
 	TangibleObjectImplementation::fillAttributeList(alm, object);
 
-	if (object == nullptr) {
-		return;
-	}
-
 	PlayerObject* player = object->getPlayerObject();
-	if ((object->hasSkill("force_title_jedi_rank_01") || object->hasSkill("force_rank_gray_novice") || object->hasSkill("combat_jedi_novice")) || player->isPrivileged()) {
+	if (object->hasSkill("force_title_jedi_rank_01") || object->hasSkill("combat_jedi_novice") || object->hasSkill("combat_jedi_novice") || player->isPrivileged()) {
 		if (ownerID == 0) {
 			StringBuffer str;
 			str << "\\#pcontrast2 UNTUNED";
@@ -304,14 +394,19 @@ void LightsaberCrystalComponentImplementation::fillAttributeList(AttributeListMe
 			alm->insertAttribute("color", str3);
 		} else {
 			if (ownerID != 0 || player->isPrivileged()) {
-				alm->insertAttribute("mindamage", damage);
-				alm->insertAttribute("maxdamage", damage);
+				if (minimumDamage != maximumDamage || itemLevel == 0) {
+					alm->insertAttribute("mindamage", minimumDamage);
+				 	alm->insertAttribute("maxdamage", maximumDamage);
+				} else {
+				 	alm->insertAttribute("mindamage", damage);
+				 	alm->insertAttribute("maxdamage", damage);
+				}
 				alm->insertAttribute("wpn_attack_speed", attackSpeed);
 				alm->insertAttribute("wpn_wound_chance", woundChance);
 				alm->insertAttribute("wpn_attack_cost_health", sacHealth);
 				alm->insertAttribute("wpn_attack_cost_action", sacAction);
 				alm->insertAttribute("wpn_attack_cost_mind", sacMind);
-				alm->insertAttribute("forcecost", (int)getForceCost());
+				alm->insertAttribute("forcecost", (float)getForceCost());
 
 				// For debugging
 				if (player->isPrivileged()) {
@@ -330,9 +425,15 @@ void LightsaberCrystalComponentImplementation::fillAttributeList(AttributeListMe
 }
 
 void LightsaberCrystalComponentImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
-	if (ownerID == 0 && ghostsCanTuneCrystal(player) && hasPlayerAsParent(player)) {
+ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
+	if (jedi->getJediState() >= 1) {
 		String text = "@jedi_spam:tune_crystal";
 		menuResponse->addRadialMenuItem(128, 3, text);
+	} else if (jedi->getJediState() >= 1) {
+		if (color == 31 && (minimumDamage != maximumDamage || itemLevel == 0)) {
+			String text = "Publish 9: Retune";
+			menuResponse->addRadialMenuItem(132, 3, text);
+		}
 	}
 
 	PlayerObject* ghost = player->getPlayerObject();
@@ -350,7 +451,8 @@ void LightsaberCrystalComponentImplementation::fillObjectMenuResponse(ObjectMenu
 }
 
 int LightsaberCrystalComponentImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
-	if (selectedID == 128 && ghostsCanTuneCrystal(player) && hasPlayerAsParent(player) && ownerID == 0) {
+ 	ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
+	if (selectedID == 128 && jedi->getJediState() >= 1) {
 		ManagedReference<SuiMessageBox*> suiMessageBox = new SuiMessageBox(player, SuiWindowType::TUNE_CRYSTAL);
 
 		suiMessageBox->setPromptTitle("@jedi_spam:confirm_tune_title");
@@ -361,6 +463,35 @@ int LightsaberCrystalComponentImplementation::handleObjectMenuSelect(CreatureObj
 
 		player->getPlayerObject()->addSuiBox(suiMessageBox);
 		player->sendMessage(suiMessageBox->generateMessage());
+	} else if (selectedID == 132 && player->hasSkill("force_title_jedi_rank_01") && hasPlayerAsParent(player) && ownerID == player->getObjectID()) {
+		if (color == 31 && (minimumDamage != maximumDamage || itemLevel == 0)) {
+			if (quality == POOR)
+				itemLevel = 1 + System::random(38); // 1-39
+			else if (quality == FAIR)
+				itemLevel = 40 + System::random(29); // 40-69
+			else if (quality == GOOD)
+				itemLevel = 70 + System::random(29); // 70-99
+			else if (quality == QUALITY)
+				itemLevel = 100 + System::random(39); // 100-139
+			else if (quality == SELECT)
+				itemLevel = 140 + System::random(79); // 140-219
+			else if (quality == PREMIUM)
+				itemLevel = 220 + System::random(109); // 220-329
+			else
+				itemLevel = 330 + System::random(20);
+
+			attackSpeed = 0.0;
+			minimumDamage = 0;
+			maximumDamage = 0;
+			sacHealth = 0;
+			sacAction = 0;
+			sacMind = 0;
+			woundChance = 0;
+			forceCost = 0;
+			floatForceCost = 0.0;
+
+			generateCrystalStats();
+		}
 	}
 
 	PlayerObject* ghost = player->getPlayerObject();
@@ -409,7 +540,8 @@ bool LightsaberCrystalComponentImplementation::hasPlayerAsParent(CreatureObject*
 }
 
 void LightsaberCrystalComponentImplementation::tuneCrystal(CreatureObject* player) {
-	if(!ghostsCanTuneCrystal(player) || !hasPlayerAsParent(player)) {
+	ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
+	if(!player->hasSkill("force_title_jedi_rank_01") && !player->hasSkill("combat_jedi_novice")) {
 		return;
 	}
 
@@ -437,12 +569,16 @@ void LightsaberCrystalComponentImplementation::tuneCrystal(CreatureObject* playe
 
 		// Color code is lime green.
 		String tuneName = StringIdManager::instance()->getStringId(objectName.getFullPath().hashCode()).toString();
-		if (getCustomObjectName().toString().contains("(Exceptional)"))
+		if (getCustomObjectName().toString().contains("(Exceptional)")) {
 			tuneName = "\\#00FF00" + tuneName + " (Exceptional) (tuned)\\#.";
-		else if (getCustomObjectName().toString().contains("(Legendary)"))
+		} else if (getCustomObjectName().toString().contains("(Legendary)")) {
 			tuneName = "\\#00FF00" + tuneName + " (Legendary) (tuned)\\#.";
-		else
-			tuneName = "\\#00FF00" + tuneName + " (tuned)\\#.";
+		} else {
+			if (getCustomObjectName().toString() != "")
+				tuneName = "\\#00FF00" + getCustomObjectName().toString() + " (tuned)\\#.";
+			else
+				tuneName = "\\#00FF00" + tuneName + " (tuned)\\#.";
+		}
 
 		setCustomObjectName(tuneName, true);
 		player->notifyObservers(ObserverEventType::TUNEDCRYSTAL, _this.getReferenceUnsafeStaticCast(), 0);
@@ -460,7 +596,7 @@ void LightsaberCrystalComponentImplementation::updateCraftingValues(CraftingValu
 	int color = values->getCurrentValue("color");
 
 	if (colorMax != 31) {
-		int finalColor = Math::min(color, 11);
+		int finalColor = Math::min(color, 30);
 		setColor(finalColor);
 		updateCrystal(finalColor);
 	} else {
@@ -468,12 +604,37 @@ void LightsaberCrystalComponentImplementation::updateCraftingValues(CraftingValu
 		updateCrystal(31);
 	}
 
-	if (values->hasExperimentalAttribute("creatureLevel")) {
-		int level = values->getCurrentValue("creatureLevel");
-		setItemLevel(level);
-	}
+	// Ghosts (2026-10-16): the loot/crate/character builder level the item was rolled at is
+	// what its stats and quality tier come from.  This is the line whose absence made every
+	// freshly looted crystal - and every krayt dragon pearl - item level 0, i.e. POOR with
+	// minimum stats.  It must run before generateCrystalStats().
+	if (values->hasExperimentalAttribute("creatureLevel"))
+		setItemLevel(values->getCurrentValue("creatureLevel"));
 
 	generateCrystalStats();
+
+	// --- DOT Crystal Support ---
+	// Check if this crystal has DOT crafting values and apply them to the parent weapon.
+	// dotAttribute rolls 0/1/2 from Lua, mapped to HAM pools: 0=Health(0), 1=Action(3), 2=Mind(6)
+	float dotTypeVal = values->getCurrentValue("dotType");
+	if ((int)dotTypeVal > 0) {
+		ManagedReference<WeaponObject*> weapon = cast<WeaponObject*>(getParent().get()->getParent().get().get());
+
+		if (weapon != nullptr) {
+			weapon->clearDots();
+
+			int hamMap[3] = {0, 3, 6}; // Health, Action, Mind
+			int attrIndex = (int)values->getCurrentValue("dotAttribute");
+			if (attrIndex < 0 || attrIndex > 2) attrIndex = 0;
+
+			weapon->addDotType((int)dotTypeVal);
+			weapon->addDotAttribute(hamMap[attrIndex]);
+			weapon->addDotStrength((int)values->getCurrentValue("dotStrength"));
+			weapon->addDotDuration((int)values->getCurrentValue("dotDuration"));
+			weapon->addDotPotency((int)values->getCurrentValue("dotPotency"));
+			weapon->addDotUses((int)values->getCurrentValue("dotUses"));
+		}
+	}
 
 	ComponentImplementation::updateCraftingValues(values, firstUpdate);
 }
@@ -503,6 +664,9 @@ int LightsaberCrystalComponentImplementation::inflictDamage(TangibleObject* atta
 			if (getColor() != 31) {
 				weapon->setBladeColor(31);
 				weapon->setCustomizationVariable("/private/index_color_blade", 31, true);
+
+				// Clear any DOTs this color crystal was contributing
+				weapon->clearDots();
 
 				if (weapon->isEquipped()) {
 					ManagedReference<CreatureObject*> parent = cast<CreatureObject*>(weapon->getParent().get().get());

@@ -868,6 +868,12 @@ bool ShipManager::createDeedFromChassis(CreatureObject* player, ShipChassisCompo
 	if (!certification.isEmpty() && !ghost->hasAbility(certification))
 		shipCost *= NO_CERT_COST_MULTI;
 
+	// Ghosts: character builder (frog terminal) self-deals are free.
+	// The only caller passing chassisDealer == player is the SuiManager
+	// builder handler; real chassis NPCs pass themselves as the dealer.
+	if (chassisDealer == player)
+		shipCost = 0;
+
 	// Check player has the cash
 	int playerCash = player->getCashCredits();
 

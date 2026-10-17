@@ -75,3 +75,11 @@ MMOCoreORB/bin/databases
 
 MMOCoreORB/navmeshes
 *.obj
+
+# Live server binaries and pre-edit backups (multi-GB; not source)
+MMOCoreORB/bin/core3
+MMOCoreORB/bin/core3.bak*
+MMOCoreORB/bin/core3.pid
+*.bak*
+*.orig
+GameReadyAssets/

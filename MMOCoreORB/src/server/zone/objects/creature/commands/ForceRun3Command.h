@@ -24,7 +24,15 @@ public:
 	}
 
 	int doQueueCommand(CreatureObject* creature, const uint64& target, const UnicodeString& arguments) const {
-		int res = creature->hasBuff(buffCRC) ? NOSTACKJEDIBUFF : doJediSelfBuffCommand(creature);
+		// Ghosts (2026-10-12): clicking the same Force Run again while it is
+		// active toggles it off, like the other Jedi self buffs (removeBuff
+		// also removes the secondary damage-divisor buff on ranks 2 and 3).
+		if (creature->hasBuff(buffCRC)) {
+			creature->removeBuff(buffCRC);
+			return SUCCESS;
+		}
+
+		int res = doJediSelfBuffCommand(creature);
 
 		if (res == NOSTACKJEDIBUFF) {
 			creature->sendSystemMessage("@jedi_spam:already_force_running"); // You are already force running.

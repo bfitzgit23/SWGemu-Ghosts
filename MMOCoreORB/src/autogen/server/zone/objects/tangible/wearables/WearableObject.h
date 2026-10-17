@@ -91,6 +91,8 @@ public:
 
 	void applyAttachment(CreatureObject* player, Attachment* attachment);
 
+	void generateEmptySockets(int count);
+
 	void applySkillModsTo(CreatureObject* creature) const;
 
 	void removeSkillModsFrom(CreatureObject* creature);
@@ -178,6 +180,8 @@ public:
 
 	void applyAttachment(CreatureObject* player, Attachment* attachment);
 
+	void generateEmptySockets(int count);
+
 	virtual void applySkillModsTo(CreatureObject* creature) const;
 
 	virtual void removeSkillModsFrom(CreatureObject* creature);
@@ -251,6 +255,8 @@ public:
 	void initializeTransientMembers();
 
 	void applyAttachment(CreatureObject* player, Attachment* attachment);
+
+	void generateEmptySockets(int count);
 
 	void applySkillModsTo(CreatureObject* creature) const;
 

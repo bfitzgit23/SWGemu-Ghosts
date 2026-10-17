@@ -63,6 +63,7 @@
 #include "server/zone/objects/creature/commands/AuctionsayCommand.h"
 #include "server/zone/objects/creature/commands/AvoidIncapacitationCommand.h"
 #include "server/zone/objects/creature/commands/BandFlourishCommand.h"
+#include "server/zone/objects/creature/commands/BattleMeditationCommand.h"
 #include "server/zone/objects/creature/commands/BattlefieldStatusCommand.h"
 #include "server/zone/objects/creature/commands/Berserk1Command.h"
 #include "server/zone/objects/creature/commands/Berserk2Command.h"
@@ -183,6 +184,10 @@
 #include "server/zone/objects/creature/commands/EditBankCommand.h"
 #include "server/zone/objects/creature/commands/EditBankAccountCommand.h"
 #include "server/zone/objects/creature/commands/EditStatsCommand.h"
+#include "server/zone/objects/creature/commands/ElectricJudgmentCone1Command.h"
+#include "server/zone/objects/creature/commands/ElectricJudgmentCone2Command.h"
+#include "server/zone/objects/creature/commands/ElectricJudgmentSingle1Command.h"
+#include "server/zone/objects/creature/commands/ElectricJudgmentSingle2Command.h"
 #include "server/zone/objects/creature/commands/EmboldenpetsCommand.h"
 #include "server/zone/objects/creature/commands/EmptyMailTargetCommand.h"
 #include "server/zone/objects/creature/commands/EndDuelCommand.h"
@@ -465,6 +470,7 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<AuctionsayCommand>(String("auctionsay").toLowerCase());
 	commandFactory.registerCommand<AvoidIncapacitationCommand>(String("avoidIncapacitation").toLowerCase());
 	commandFactory.registerCommand<BandFlourishCommand>(String("bandFlourish").toLowerCase());
+	commandFactory.registerCommand<BattleMeditationCommand>(String("battleMeditation").toLowerCase());
 	commandFactory.registerCommand<BattlefieldStatusCommand>(String("battlefieldStatus").toLowerCase());
 	commandFactory.registerCommand<Berserk1Command>(String("berserk1").toLowerCase());
 	commandFactory.registerCommand<Berserk2Command>(String("berserk2").toLowerCase());
@@ -584,6 +590,10 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<EditBankCommand>(String("editBank").toLowerCase());
 	commandFactory.registerCommand<EditBankAccountCommand>(String("editBankAccount").toLowerCase());
 	commandFactory.registerCommand<EditStatsCommand>(String("editStats").toLowerCase());
+	commandFactory.registerCommand<ElectricJudgmentCone1Command>(String("electricJudgmentCone1").toLowerCase());
+	commandFactory.registerCommand<ElectricJudgmentCone2Command>(String("electricJudgmentCone2").toLowerCase());
+	commandFactory.registerCommand<ElectricJudgmentSingle1Command>(String("electricJudgmentSingle1").toLowerCase());
+	commandFactory.registerCommand<ElectricJudgmentSingle2Command>(String("electricJudgmentSingle2").toLowerCase());
 	commandFactory.registerCommand<EmboldenpetsCommand>(String("emboldenpets").toLowerCase());
 	commandFactory.registerCommand<EmptyMailTargetCommand>(String("emptyMailTarget").toLowerCase());
 	commandFactory.registerCommand<EndDuelCommand>(String("endDuel").toLowerCase());

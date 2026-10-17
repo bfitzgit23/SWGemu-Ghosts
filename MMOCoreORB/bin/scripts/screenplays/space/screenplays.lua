@@ -59,6 +59,7 @@ includeFile("space/ship_components/ship_interior_component_menu_component.lua")
 
 includeFile("space/conversations/defaultShipConvoHandler.lua")
 includeFile("space/conversations/chassisDealerConvoHandler.lua")
+includeFile("space/conversations/pilotTrainerConvoHandler.lua")
 
 -- Greeters
 
@@ -131,7 +132,7 @@ includeFile("space/squadrons/VortexSquadronScreenplay.lua")
 
 --includeFile("space/conversations/rebel/vortex_squadron/evinConvoHandler.lua")
 --includeFile("space/conversations/rebel/vortex_squadron/ezkielConvoHandler.lua")
---includeFile("space/conversations/rebel/vortex_squadron/v3fxConvoHandler.lua")
+includeFile("space/conversations/rebel/vortex_squadron/v3fxConvoHandler.lua")
 --includeFile("space/conversations/rebel/vortex_squadron/vrovelConvoHandler.lua")
 
 

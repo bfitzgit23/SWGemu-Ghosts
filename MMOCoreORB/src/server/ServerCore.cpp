@@ -522,6 +522,92 @@ void ServerCore::registerConsoleCommmands() {
 	addCommand("swgrealms", swgRealmsApiLambda);
 #endif // WITH_SWGREALMS_API
 
+	addCommand("relink", [this](const String& arguments) -> CommandResult {
+		// Inspect or re-attach an item that lost its equipment slot keys.
+		//   relink {itemObjectID}                         - probe: does the object still exist?
+		//   relink {playerName} {itemObjectID} [group]     - attach it as equipment
+		StringTokenizer tokenizer(arguments);
+		String name;
+		String oidText;
+		String groupText;
+
+		tokenizer.getStringToken(name);
+		tokenizer.getStringToken(oidText);
+
+		if (tokenizer.hasMoreTokens())
+			tokenizer.getStringToken(groupText);
+
+		if (name.isEmpty()) {
+			System::out << "Usage: relink {playerName} {itemObjectID} [arrangementGroup] | relink {itemObjectID} (probe)" << endl;
+
+			return ERROR;
+		}
+
+		ZoneServer* zoneServer = zoneServerRef.getForUpdate();
+
+		if (zoneServer == nullptr)
+			return ERROR;
+
+		uint64 itemID = 0;
+		int group = 0;
+		CreatureObject* player = nullptr;
+
+		try {
+			if (oidText.isEmpty()) {
+				itemID = UnsignedLong::valueOf(name);
+			} else {
+				itemID = UnsignedLong::valueOf(oidText);
+
+				if (!groupText.isEmpty())
+					group = Integer::valueOf(groupText);
+
+				player = zoneServer->getPlayerManager()->getPlayer(name);
+
+				if (player == nullptr) {
+					System::out << "relink: player '" << name << "' is not online" << endl;
+
+					return ERROR;
+				}
+			}
+		} catch (const Exception& e) {
+			System::out << "relink: bad numbers - " << e.getMessage() << endl;
+
+			return ERROR;
+		}
+
+		try {
+			Reference<DistributedObjectStub*> stub = zoneServer->getObjectManager()->loadPersistentObject(itemID);
+			SceneObject* item = stub == nullptr ? nullptr : stub.castTo<SceneObject*>();
+
+			if (item == nullptr) {
+				System::out << "relink: object " << itemID << " could not be loaded (row gone?)" << endl;
+
+				return ERROR;
+			}
+
+			String itemName = item->getDisplayedName();
+			String templatePath = item->getObjectTemplate() == nullptr ? String("?") : item->getObjectTemplate()->getFullTemplateString();
+
+			if (player == nullptr) {
+				System::out << "relink probe: " << itemName << " ID: " << itemID << " (" << templatePath << ")" << endl;
+
+				return SUCCESS;
+			}
+
+			bool ok = player->transferObject(item, 4 + group, true);
+
+			System::out << "relink: " << (ok ? "attached " : "FAILED to attach ") << itemName << " ID: " << itemID
+					<< " (" << templatePath << ") to " << player->getDisplayedName() << " ID: " << player->getObjectID()
+					<< " as containmentType " << (4 + group) << endl;
+
+			return ok ? SUCCESS : ERROR;
+		} catch (const Exception& e) {
+			System::out << "relink: exception - " << e.getMessage() << endl;
+
+			return ERROR;
+		}
+	});
+
 	addCommand("toggleModifiedObjectsDump", [this](const String& arguments) -> CommandResult {
 		DOBObjectManager::setDumpLastModifiedTraces(!DOBObjectManager::getDumpLastModifiedTraces());
 

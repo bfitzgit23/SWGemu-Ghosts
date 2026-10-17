@@ -67,6 +67,12 @@ void ArmorObjectImplementation::notifyLoadFromDatabase() {
 
 	if (rating != LIGHT && templateObject->getClientTemplateFileName().contains("armor_bounty_hunter_"))
 		rating = LIGHT;
+
+	// Ghosts (2026-10-15): RIS armor pieces are the 40% lightsaber-resist set.
+	// The resist is stored per object and only taken from the template at
+	// creation, so pieces made before the template change still read 0 here.
+	if (lightSaber < 40.f && templateObject->getClientTemplateFileName().contains("armor_ris_"))
+		setLightSaber(40.f);
 }
 
 void ArmorObjectImplementation::fillAttributeList(AttributeListMessage* alm, CreatureObject* object) {
@@ -404,6 +410,23 @@ void ArmorObjectImplementation::updateCraftingValues(CraftingValues* values, boo
 		specialProtection = values->getCurrentValue("armor_effectiveness");
 	else
 		specialProtection = values->getCurrentValue("armor_special_effectiveness");
+
+	// Ghosts (2026-10-12): crafted armor resist floors - top-tier sets 90%,
+	// everything else 80% (crafted values were coming out at 1% each).
+	float maxEffectiveness = values->getMaxValue("armor_effectiveness");
+	int resistTarget = (maxEffectiveness >= 90.f) ? 90 : 80;
+
+	if (baseProtection < resistTarget)
+		baseProtection = resistTarget;
+
+	if (specialProtection < resistTarget)
+		specialProtection = resistTarget;
+
+	// Ghosts (2026-10-15): keep the template's 40% lightsaber resist on RIS
+	// pieces - the firstUpdate block above zeroes it and the RIS crafting values
+	// carry no restrain effectiveness of their own.
+	if (lightSaber < 40.f && templateObject != nullptr && templateObject->getClientTemplateFileName().contains("armor_ris_"))
+		setLightSaber(40.f);
 }
 
 void ArmorObjectImplementation::calculateSpecialProtection(CraftingValues* craftingValues) {

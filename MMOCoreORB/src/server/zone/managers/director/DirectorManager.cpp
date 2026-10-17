@@ -5153,14 +5153,19 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 		String err = "incorrect number of arguments passed to DirectorManager::grantStarterShip";
 		printTraceError(L, err);
 		ERROR_CODE = INCORRECT_ARGUMENTS;
-		return 0;
+
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	CreatureObject* player = (CreatureObject*)lua_touserdata(L, -2);
 	String factionName = lua_tostring(L, -1);
 
 	if (player == nullptr || factionName.isEmpty()) {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	String generatedObjectTemplate = "";
@@ -5172,31 +5177,41 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 	} else if (factionName == "imperial") {
 		generatedObjectTemplate = "object/ship/player/player_prototype_tiefighter.iff";
 	} else {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	auto zoneServer = player->getZoneServer();
 
 	if (zoneServer == nullptr) {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	auto zone = player->getZone();
 
 	if (zone == nullptr) {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	auto planetManager = zone->getPlanetManager();
 
 	if (planetManager == nullptr) {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	auto travelPoint = planetManager->getNearestPlanetTravelPoint(player->getWorldPosition(), 16000.f, true);
 
 	if (travelPoint == nullptr) {
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	Locker lock(player);
@@ -5205,6 +5220,7 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 
 	if (ship == nullptr) {
 		player->error() << "Failed to generate ship object from template: " << generatedObjectTemplate;
+		lua_pushboolean(L, false);
 		return 1;
 	}
 
@@ -5229,14 +5245,18 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 
 		player->error() << "grantStarterShip - null control device: " << generatedObjectTemplate;
 
-		return 0;
+		lua_pushboolean(L, false);
+
+		return 1;
 	}
 
 	Locker deviceLock(shipControlDevice, player);
 
 	shipControlDevice->setParkingLocation(travelPoint->getPointName());
 
-	return 0;
+	lua_pushboolean(L, true);
+
+	return 1;
 }
 
 int DirectorManager::drawClientPath(lua_State* L) {

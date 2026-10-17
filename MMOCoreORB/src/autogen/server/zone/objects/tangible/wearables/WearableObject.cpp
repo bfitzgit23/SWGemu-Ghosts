@@ -12,7 +12,7 @@
  *	WearableObjectStub
  */
 
-enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 775195158,RPC_APPLYATTACHMENT__CREATUREOBJECT_ATTACHMENT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ISWEARABLEOBJECT__,RPC_ISEQUIPPED__,RPC_GETMAXSOCKETS__,RPC_GETREMAININGSOCKETS__,RPC_REPAIRATTEMPT__INT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_SETMAXSOCKETS__INT_};
+enum {RPC_INITIALIZETRANSIENTMEMBERS__ = 775195158,RPC_APPLYATTACHMENT__CREATUREOBJECT_ATTACHMENT_,RPC_GENERATEEMPTYSOCKETS__INT_,RPC_APPLYSKILLMODSTO__CREATUREOBJECT_,RPC_REMOVESKILLMODSFROM__CREATUREOBJECT_,RPC_ISWEARABLEOBJECT__,RPC_ISEQUIPPED__,RPC_GETMAXSOCKETS__,RPC_GETREMAININGSOCKETS__,RPC_REPAIRATTEMPT__INT_,RPC_ADDSKILLMOD__INT_STRING_INT_BOOL_,RPC_SETMAXSOCKETS__INT_};
 
 WearableObject::WearableObject() : TangibleObject(DummyConstructorParameter::instance()) {
 	WearableObjectImplementation* _implementation = new WearableObjectImplementation();
@@ -79,6 +79,21 @@ void WearableObject::applyAttachment(CreatureObject* player, Attachment* attachm
 		assert(this->isLockedByCurrentThread());
 		assert((player == NULL) || player->isLockedByCurrentThread());
 		_implementation->applyAttachment(player, attachment);
+	}
+}
+
+void WearableObject::generateEmptySockets(int count) {
+	WearableObjectImplementation* _implementation = static_cast<WearableObjectImplementation*>(_getImplementation());
+	if (unlikely(_implementation == NULL)) {
+		if (!deployed)
+			throw ObjectNotDeployedException(this);
+
+		DistributedMethod method(this, RPC_GENERATEEMPTYSOCKETS__INT_);
+		method.addSignedIntParameter(count);
+
+		method.executeWithVoidReturn();
+	} else {
+		_implementation->generateEmptySockets(count);
 	}
 }
 
@@ -552,6 +567,14 @@ void WearableObjectAdapter::invokeMethod(uint32 methid, DistributedMethod* inv) 
 			
 		}
 		break;
+	case RPC_GENERATEEMPTYSOCKETS__INT_:
+		{
+			int count = inv->getSignedIntParameter();
+			
+			generateEmptySockets(count);
+			
+		}
+		break;
 	case RPC_APPLYSKILLMODSTO__CREATUREOBJECT_:
 		{
 			CreatureObject* creature = static_cast<CreatureObject*>(inv->getObjectParameter());
@@ -634,6 +657,10 @@ void WearableObjectAdapter::initializeTransientMembers() {
 
 void WearableObjectAdapter::applyAttachment(CreatureObject* player, Attachment* attachment) {
 	(static_cast<WearableObject*>(stub))->applyAttachment(player, attachment);
+}
+
+void WearableObjectAdapter::generateEmptySockets(int count) {
+	(static_cast<WearableObject*>(stub))->generateEmptySockets(count);
 }
 
 void WearableObjectAdapter::applySkillModsTo(CreatureObject* creature) const {

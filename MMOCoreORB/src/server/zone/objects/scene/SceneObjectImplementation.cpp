@@ -496,6 +496,119 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 
 	}
 
+	// Re-key equipment slots from each item's current arrangement group and drop the
+	// keys it no longer claims. Equipment objects are anchored ONLY by these keys
+	// (they are never added to containerObjects), so an item must always end up keyed
+	// under the names its current arrangement claims or it would become unreachable
+	// and be unloaded for good after an arrangement change (patch/TRE update).
+	{
+		Locker locker(&containerLock);
+
+		if (slottedObjects.size() > 0) {
+			Vector<String> keys;
+			Vector<ManagedReference<SceneObject*>> objects;
+
+			for (int i = 0; i < slottedObjects.size(); ++i) {
+				keys.add(slottedObjects.elementAt(i).getKey());
+				objects.add(slottedObjects.get(i));
+			}
+
+			Vector<String> staleKeys;
+
+			for (int i = 0; i < keys.size(); ++i) {
+				const String& slotKey = keys.get(i);
+				ManagedReference<SceneObject*> slottedObj = objects.get(i);
+
+				if (slottedObj == nullptr) {
+					if (slotKey == "inventory" || slotKey == "bank" || slotKey == "datapad" || slotKey == "mission_bag"
+							|| slotKey == "ghost" || slotKey == "crafted_components" || slotKey == "saber_inv") {
+						continue;
+					}
+
+					staleKeys.add(slotKey);
+
+					continue;
+				}
+
+				// Structural containers and creatures (players riding a vehicle or sitting in a
+				// ship seat) keep their keys untouched - only ordinary equipment is re-keyed.
+				if (slottedObj->isCreatureObject() || !slottedObj->isTangibleObject())
+					continue;
+
+				int groups = slottedObj->getArrangementDescriptorSize();
+
+				if (groups == 0)
+					continue;
+
+				int group = slottedObj->getContainmentType() - 4;
+
+				if (group < 0 || group >= groups)
+					group = 0;
+
+				const Vector<String>* descriptors = slottedObj->getArrangementDescriptor(group);
+
+				bool claimed = false;
+
+				for (int j = 0; j < descriptors->size(); ++j) {
+					if (descriptors->get(j) == slotKey) {
+						claimed = true;
+
+						break;
+					}
+				}
+
+				if (claimed)
+					continue;
+
+				// The item does not claim this key. Make sure it stays anchored by one of the
+				// names its current arrangement claims before the stale key is dropped.
+				bool anchored = false;
+
+				for (int j = 0; j < descriptors->size() && !anchored; ++j) {
+					ManagedReference<SceneObject*> other = slottedObjects.get(descriptors->get(j));
+
+					if (other != nullptr && other->getObjectID() == slottedObj->getObjectID())
+						anchored = true;
+				}
+
+				if (!anchored) {
+					for (int j = 0; j < descriptors->size(); ++j) {
+						const String& name = descriptors->get(j);
+						ManagedReference<SceneObject*> other = slottedObjects.get(name);
+
+						if (other != nullptr && other->getObjectID() != slottedObj->getObjectID())
+							continue;
+
+						slottedObjects.put(name, slottedObj);
+						anchored = true;
+					}
+
+					if (anchored)
+						info() << "re-keyed " << slottedObj->getDisplayedName() << " ID: " << slottedObj->getObjectID()
+								<< " to its current arrangement on " << getObjectID();
+				}
+
+				if (anchored)
+					staleKeys.add(slotKey);
+				else
+					info() << "kept slot key '" << slotKey << "' for " << slottedObj->getDisplayedName() << " ID: "
+							<< slottedObj->getObjectID() << " (its current arrangement claims no slot)";
+			}
+
+			for (int i = 0; i < staleKeys.size(); ++i) {
+				ManagedReference<SceneObject*> staleObj = slottedObjects.get(staleKeys.get(i));
+
+				if (staleObj == nullptr)
+					info() << "cleared stale slot key '" << staleKeys.get(i) << "' on " << getObjectID() << " (object reference is gone)";
+				else
+					info() << "cleared stale slot key '" << staleKeys.get(i) << "' on " << getObjectID() << " held by "
+							<< staleObj->getDisplayedName() << " ID: " << staleObj->getObjectID();
+
+				slottedObjects.drop(staleKeys.get(i));
+			}
+		}
+	}
+
 	// Players are sent into the zone or parent when they connect
 	if (zone != nullptr && !isPlayerCreature()) {
 		class InsertZoneTask : public Task {

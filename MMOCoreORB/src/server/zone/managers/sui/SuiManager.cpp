@@ -627,7 +627,10 @@ void SuiManager::handleCharacterBuilderSelectItem(CreatureObject* player, SuiBox
 
 				locker.release();
 
-				shipManager->createDeedFromChassis(player, prototypeChassis, player);
+				if (!shipManager->createDeedFromChassis(player, prototypeChassis, player)) {
+					player->sendSystemMessage("[CharacterBuilder] Ship deed creation failed - please report this.");
+					error("CharacterBuilder: createDeedFromChassis failed for player " + player->getFirstName() + " display: " + node->getDisplayName());
+				}
 
 				return;
 			}

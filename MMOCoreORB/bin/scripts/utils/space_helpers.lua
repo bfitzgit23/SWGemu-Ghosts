@@ -504,7 +504,7 @@ function SpaceHelpers:surrenderPilot(pPlayer)
 	elseif (pilotSquadron == VORTEX_SQUADRON) then
 		pilotProfession = "rebelPilot"
 
-		-- TODO: Add VortexSquadronScreenplay reset functions
+		VortexSquadronScreenplay:resetV3fxQuests(pPlayer)
 	elseif (pilotSquadron == CRIMSON_PHOENIX_SQUADRON) then
 		pilotProfession = "rebelPilot"
 

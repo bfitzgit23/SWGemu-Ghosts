@@ -22,7 +22,7 @@ imperial_pilot = Creature:new {
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
-	optionsBitmask = AIENABLED,
+	optionsBitmask = AIENABLED + CONVERSABLE,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_stranded_imperial_pilot.iff"},
@@ -42,7 +42,7 @@ imperial_pilot = Creature:new {
 		}
 	},
 	weapons = {"imperial_weapons_medium"},
-	conversationTemplate = "",
+	conversationTemplate = "pilot_trainer_convo_template",
 	reactionStf = "@npc_reaction/military",
 	personalityStf = "@hireling/hireling_military",
 	

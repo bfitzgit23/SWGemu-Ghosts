@@ -42,3 +42,4 @@
 
 includeFile("language/serverobjects.lua")
 includeFile("staff/serverobjects.lua")
+includeFile("jedi_grand_master_xp.lua")

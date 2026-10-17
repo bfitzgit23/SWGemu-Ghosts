@@ -34,14 +34,22 @@ juvenile_canyon_krayt_dragon = Creature:new {
 		{
 			groups = {
 				{group = "krayt_dragon_common", chance = 3000000},
-				{group = "krayt_pearls", chance = 1500000},
 				{group = "krayt_tissue_uncommon", chance = 2000000},
 				{group = "armor_all", chance = 1750000},
 				{group = "weapons_all", chance = 1750000},
 			},
 			lootChance = 5500000
+		},
+		{
+			-- Ghosts (2026-10-15): pearls are their own guaranteed roll - a krayt
+			-- dragon always leaves a pearl behind, on top of its normal loot.
+			groups = {
+				{group = "krayt_pearls", chance = 10000000},
+			},
+			lootChance = 10000000
 		}
 	},
+
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary

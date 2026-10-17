@@ -55,6 +55,9 @@ class WearableObject extends TangibleObject {
 	@arg1preLocked
 	public native void applyAttachment(CreatureObject player, Attachment attachment);
 
+	// Ghosts (2026-10-12): guarantee empty sockets (loot/non-crafted wearables)
+	public native void generateEmptySockets(int count);
+
 	@read
 	public abstract native void applySkillModsTo(CreatureObject creature);
 

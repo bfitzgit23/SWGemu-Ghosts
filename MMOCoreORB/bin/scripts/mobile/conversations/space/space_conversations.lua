@@ -3,6 +3,7 @@ includeFile("conversations/space/default_ship_conv.lua")
 
 -- Chassis Dealers
 includeFile("conversations/space/chassis_dealer_conv.lua")
+includeFile("conversations/space/pilot_trainer_conv.lua")
 
 -- Space Stations
 includeFile("conversations/space/spacestation_corellia.lua")
@@ -84,7 +85,7 @@ includeFile("conversations/space/rebel/havoc_squadron/aqzow_convo.lua")
 -- Vortex Squadron
 --includeFile("conversations/space/rebel/vortex_squadron/evin_convo.lua")
 --includeFile("conversations/space/rebel/vortex_squadron/ezkiel_convo.lua")
---includeFile("conversations/space/rebel/vortex_squadron/v3fx_convo.lua")
+includeFile("conversations/space/rebel/vortex_squadron/v3fx_convo.lua")
 --includeFile("conversations/space/rebel/vortex_squadron/vrovel_convo.lua")
 
 -- Imperial Pilot

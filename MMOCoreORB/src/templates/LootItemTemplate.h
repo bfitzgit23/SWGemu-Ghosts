@@ -168,12 +168,21 @@ public:
 					attributesMap.addExperimentalAttribute(attribute, group, min, max, precision, hidden, combine);
 					attributesMap.setCurrentPercentage(attribute, 0.f, 1.f);
 
-					row.pop();
 				}
-			}
 
-			craftvals.pop();
+				// Ghosts (2026-10-12): pop unconditionally. getObjectAt() always pushes
+				// exactly one value, but the old pop lived inside the isValidTable()
+				// branch, so a malformed craftingValues row (e.g. the flat
+				// {"useCount",1,3,0} shape custom_veh_grav_motor.lua shipped with) stayed
+				// on the Lua stack and the next iteration's lua_rawgeti(L, -1, i) ran on
+				// a non-table, dereferencing Table.array through NULL and segfaulting
+				// core3 during boot. Same guard for craftvals below: getObjectField()
+				// also always pushes one value.
+				row.pop();
+			}
 		}
+
+		craftvals.pop();
 
 		LuaObject customizationStringNamesList = templateData->getObjectField("customizationStringNames");
 

@@ -11,6 +11,177 @@
 #include "server/zone/objects/player/PlayerObject.h"
 #include "server/zone/objects/player/sessions/SlicingSession.h"
 
+// ---------------------------------------------------------------------------
+// Stale equipment slot keys.
+//
+// An arrangement descriptor (abstract/slot/arrangement/wearables/*.iff) lists the slot
+// names a wearable claims while worn. When that data changes (arrangement override in a
+// patch TRE), items that are already worn keep the keys they were handed under the old
+// arrangement, and canAddObject() then refuses everything that wants one of those names
+// ("This slot is already occupied"): a robe that used to claim chest1/chest2/pants/back
+// keeps blocking shirt, vest, pants and backpacks even though its current arrangement
+// only claims `cloak`.
+//
+// releaseStaleSlotKey() recognises that case - the key points at an item whose current
+// arrangement does not claim the name. The item is re-keyed under the names it does
+// claim (worn equipment has no other anchor) and every key it no longer owns is dropped,
+// so the equip can proceed. Returns true when the key was released.
+// ---------------------------------------------------------------------------
+static bool releaseStaleSlotKey(SceneObject* container, SceneObject* blocker, const String& slotKey) {
+	if (container == nullptr || blocker == nullptr)
+		return false;
+
+	// Creatures (a player riding a vehicle or sitting in a ship seat) and non-tangible
+	// containers are anchored by keys that are not equipment arrangements.
+	if (blocker->isCreatureObject() || !blocker->isTangibleObject())
+		return false;
+
+	const int groups = blocker->getArrangementDescriptorSize();
+
+	if (groups == 0)
+		return false;
+
+	int group = blocker->getContainmentType() - 4;
+
+	if (group < 0 || group >= groups)
+		group = 0;
+
+	const Vector<String>* descriptors = blocker->getArrangementDescriptor(group);
+
+	if (descriptors == nullptr || descriptors->size() == 0)
+		return false;
+
+	for (int i = 0; i < descriptors->size(); ++i) {
+		if (descriptors->get(i) == slotKey)
+			return false; // genuinely claimed -> a real conflict, keep refusing
+	}
+
+	VectorMap<String, ManagedReference<SceneObject*> >* slottedObjects = container->getSlottedObjects();
+
+	if (slottedObjects == nullptr)
+		return false;
+
+	// Anchor the item under one of the names its current arrangement claims before any key
+	// is dropped, otherwise it could become unreachable and never be sent to the client.
+	bool anchored = false;
+
+	for (int i = 0; i < descriptors->size() && !anchored; ++i) {
+		const String& name = descriptors->get(i);
+		ManagedReference<SceneObject*> other = slottedObjects->get(name);
+
+		if (other != nullptr && other->getObjectID() != blocker->getObjectID())
+			continue; // that name belongs to a different item
+
+		slottedObjects->put(name, blocker);
+		anchored = true;
+	}
+
+	if (!anchored)
+		return false;
+
+	Vector<String> staleKeys;
+
+	for (int i = 0; i < slottedObjects->size(); ++i) {
+		const String& key = slottedObjects->elementAt(i).getKey();
+		ManagedReference<SceneObject*> held = slottedObjects->get(i);
+
+		if (held == nullptr || held->getObjectID() != blocker->getObjectID())
+			continue;
+
+		bool claimed = false;
+
+		for (int j = 0; j < descriptors->size(); ++j) {
+			if (descriptors->get(j) == key) {
+				claimed = true;
+
+				break;
+			}
+		}
+
+		if (!claimed)
+			staleKeys.add(key);
+	}
+
+	for (int i = 0; i < staleKeys.size(); ++i)
+		slottedObjects->drop(staleKeys.get(i));
+
+	container->info(true) << "[EquipSlots] re-keyed '" << blocker->getDisplayedName() << "' ID: " << blocker->getObjectID()
+			<< " to its current arrangement on " << container->getDisplayedName() << " ID: " << container->getObjectID()
+			<< " - released stale slot '" << slotKey << "'";
+
+	return true;
+}
+
+
+// ---------------------------------------------------------------------------
+// The cloak layer holds two items.
+//
+// Robes and cloaks are both authored against the single `cloak` slot (see the
+// arrangement overrides in patch_zzz_01.tre) and `cloak` is also the skeleton
+// hardpoint their meshes attach to, so there is no second slot name that would
+// render.  slottedObjects is keyed by slot name, so a second occupant would
+// overwrite the first one; it is anchored as `cloak2` instead.  Nothing else in
+// the server reads either name (there is no getSlottedObject("cloak") call) and
+// removeObject() drops keys by object identity, so the extra key is invisible to
+// every other system, including the notifyLoadFromDatabase() re-key sweep, which
+// keeps `cloak2` when `cloak` belongs to the other item and folds it back into
+// `cloak` when that item is gone.
+// ---------------------------------------------------------------------------
+static const String CLOAK_LAYER_SLOT = "cloak";
+static const String CLOAK_LAYER_EXTRA = "cloak2";
+
+// True for a wearable whose whole claim set is the cloak layer - a robe or a
+// cloak as they are arranged today.  Anything that claims `cloak` together with
+// other slots (a jumpsuit, say) is deliberately excluded: those keep the
+// original one-item-per-slot behaviour.
+static bool isCloakLayerItem(SceneObject* object) {
+	if (object == nullptr || !object->isTangibleObject() || object->isCreatureObject())
+		return false;
+
+	const int groups = object->getArrangementDescriptorSize();
+
+	if (groups == 0)
+		return false;
+
+	int group = object->getContainmentType() - 4;
+
+	if (group < 0 || group >= groups)
+		group = 0;
+
+	const Vector<String>* descriptors = object->getArrangementDescriptor(group);
+
+	if (descriptors == nullptr || descriptors->size() != 1)
+		return false;
+
+	return descriptors->get(0) == CLOAK_LAYER_SLOT;
+}
+
+// The slot key `object` should be anchored under, or an empty String when the
+// name is a real conflict.  Only the robe/cloak pair may share the layer, and
+// only two of them.
+static String resolveCloakLayerKey(SceneObject* container, SceneObject* object, const String& slotKey) {
+	if (container == nullptr || slotKey != CLOAK_LAYER_SLOT)
+		return slotKey;
+
+	VectorMap<String, ManagedReference<SceneObject*> >* slottedObjects = container->getSlottedObjects();
+
+	if (slottedObjects == nullptr || !slottedObjects->contains(CLOAK_LAYER_SLOT))
+		return slotKey;
+
+	ManagedReference<SceneObject*> held = slottedObjects->get(CLOAK_LAYER_SLOT);
+
+	if (held == nullptr || held->getObjectID() == object->getObjectID())
+		return slotKey;
+
+	if (!isCloakLayerItem(object) || !isCloakLayerItem(held))
+		return String(); // not the robe/cloak pair -> keep refusing
+
+	if (slottedObjects->contains(CLOAK_LAYER_EXTRA))
+		return String(); // the layer already holds two items
+
+	return CLOAK_LAYER_EXTRA;
+}
+
 int ContainerComponent::canAddObject(SceneObject* sceneObject, SceneObject* object, int containmentType, String& errorDescription) const {
 	if (sceneObject == object) {
 		errorDescription = "@container_error_message:container02"; //You cannot add something to itself.
@@ -137,6 +308,50 @@ int ContainerComponent::canAddObject(SceneObject* sceneObject, SceneObject* obje
 				const String& childArrangement = descriptors->get(i);
 
 				if (slottedObjects->contains(childArrangement)) {
+					ManagedReference<SceneObject*> blocker = slottedObjects->get(childArrangement);
+
+					// A key held by an item that no longer claims this slot under its current
+					// arrangement is stale, not a conflict: re-key it and retry.
+					if (blocker != nullptr && releaseStaleSlotKey(sceneObject, blocker, childArrangement)) {
+						if (!slottedObjects->contains(childArrangement))
+							continue;
+					}
+
+					// A robe and a cloak share the cloak layer: the second occupant is
+					// anchored as cloak2 by transferObject().
+					if (childArrangement == CLOAK_LAYER_SLOT && !resolveCloakLayerKey(sceneObject, object, childArrangement).isEmpty())
+						continue;
+
+					if (sceneObject->isPlayerCreature()) {
+						String blockerText = "(null)";
+
+						if (blocker != nullptr) {
+							blockerText = blocker->getDisplayedName();
+							blockerText += " (claiming: ";
+
+							int blockerGroup = blocker->getContainmentType() - 4;
+
+							if (blockerGroup < 0 || blockerGroup >= blocker->getArrangementDescriptorSize())
+								blockerGroup = 0;
+
+							const Vector<String>* blockerDescriptors = blocker->getArrangementDescriptorSize() > 0
+									? blocker->getArrangementDescriptor(blockerGroup) : nullptr;
+
+							if (blockerDescriptors != nullptr) {
+								for (int j = 0; j < blockerDescriptors->size(); ++j)
+									blockerText += (j == 0 ? String("") : String(",")) + blockerDescriptors->get(j);
+							} else {
+								blockerText += "no arrangement";
+							}
+
+							blockerText += ")";
+						}
+
+						sceneObject->info(true) << "[EquipSlots] refused item '" << object->getDisplayedName() << "' ID: " << object->getObjectID()
+								<< " containment: " << containmentType << " group: " << arrangementGroup
+								<< " slot: '" << childArrangement << "' held by: " << blockerText;
+					}
+
 					errorDescription = "@container_error_message:container04"; //This slot is already occupied.
 					return TransferErrorCode::SLOTOCCUPIED;
 				}
@@ -279,12 +494,32 @@ bool ContainerComponent::transferObject(SceneObject* sceneObject, SceneObject* o
 				const String& childArrangement = descriptors->get(i);
 
 				if (slottedObjects->contains(childArrangement)) {
+					ManagedReference<SceneObject*> holder = slottedObjects->get(childArrangement);
+
+					if (holder == nullptr || holder->getObjectID() == object->getObjectID())
+						continue;
+
+					if (releaseStaleSlotKey(sceneObject, holder, childArrangement)) {
+						if (!slottedObjects->contains(childArrangement))
+							continue;
+					}
+
+					// transferObject(): the robe/cloak pair shares this layer - the second
+					// occupant is anchored as cloak2 below.
+					if (childArrangement == CLOAK_LAYER_SLOT && !resolveCloakLayerKey(sceneObject, object, childArrangement).isEmpty())
+						continue;
+
 					return false;
 				}
 			}
 
 			for (int i = 0; i < descriptors->size(); ++i)	{
-				 slottedObjects->put(descriptors->get(i), object);
+				String cloakKey = resolveCloakLayerKey(sceneObject, object, descriptors->get(i));
+				
+				if (cloakKey.isEmpty())
+					return false; // canAddObject() should have refused: a real slot conflict
+				
+				slottedObjects->put(cloakKey, object);
 			}
 		} else {
 			return false;
@@ -409,31 +644,24 @@ bool ContainerComponent::removeObject(SceneObject* sceneObject, SceneObject* obj
 		}
 	}
 
-	int containedType = object->getContainmentType();
-	int arrangementSize = object->getArrangementDescriptorSize();
-	int arrangementGroup = Math::max(0, containedType - 4);
+	// Drop every slot key that still points at this object.
+	// A wearable's slot keys are written from its arrangement descriptor when it
+	// is equipped, but this used to drop only the names of the item's *current*
+	// arrangement group. A later arrangement change (patch/TRE update) therefore
+	// stranded the old keys on the container, and canAddObject() then rejected
+	// every item claiming those slots (container04, "slot already occupied").
+	{
+		Vector<String> ownSlotKeys;
 
-	if (arrangementSize > arrangementGroup) {
-		bool removeFromSlot = false;
+		for (int i = 0; i < slottedObjects->size(); ++i) {
+			ManagedReference<SceneObject*> slottedObj = slottedObjects->get(i);
 
-		const Vector<String>* descriptors = object->getArrangementDescriptor(arrangementGroup);
-
-		for (int i = 0; i < descriptors->size(); ++i){
-			const String& childArrangement = descriptors->get(i);
-
-			ManagedReference<SceneObject*> slottedObj = slottedObjects->get(childArrangement);
-
-			if (slottedObj == object) {
-				removeFromSlot = true;
-				break;
-			}
+			if (slottedObj != nullptr && slottedObj->getObjectID() == object->getObjectID())
+				ownSlotKeys.add(slottedObjects->elementAt(i).getKey());
 		}
 
-		if (removeFromSlot) {
-			for (int i = 0; i < descriptors->size(); ++i) {
-				slottedObjects->drop(descriptors->get(i));
-			}
-		}
+		for (int i = 0; i < ownSlotKeys.size(); ++i)
+			slottedObjects->drop(ownSlotKeys.get(i));
 	}
 
 	if (containerObjects->contains(object->getObjectID()) && !containerObjects->drop(object->getObjectID())) {

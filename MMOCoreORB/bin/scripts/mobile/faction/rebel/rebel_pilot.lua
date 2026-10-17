@@ -25,7 +25,7 @@ rebel_pilot = Creature:new {
 	ferocity = 0,
 	pvpBitmask = ATTACKABLE,
 	creatureBitmask = PACK + KILLER,
-	optionsBitmask = AIENABLED,
+	optionsBitmask = AIENABLED + CONVERSABLE,
 	diet = HERBIVORE,
 
 	templates = {
@@ -46,7 +46,7 @@ rebel_pilot = Creature:new {
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary
 	primaryWeapon = "rebel_carbine",
 	secondaryWeapon = "rebel_pistol",
-	conversationTemplate = "",
+	conversationTemplate = "pilot_trainer_convo_template",
 	reactionStf = "@npc_reaction/military",
 	personalityStf = "@hireling/hireling_military",
 

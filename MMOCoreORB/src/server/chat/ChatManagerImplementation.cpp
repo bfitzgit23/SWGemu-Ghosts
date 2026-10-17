@@ -1,3 +1,10 @@
+
+#include "server/zone/managers/group/GroupManager.h"
+#include "server/zone/objects/creature/CreatureObject.h"
+#include "server/zone/objects/player/PlayerObject.h"
+#include "server/zone/ZoneClientSession.h"
+#include <cmath>
+
 /*
  * ChatManagerImplementation.cpp
  *
@@ -1465,6 +1472,68 @@ void ChatManagerImplementation::handleSpatialChatInternalMessage(CreatureObject*
 
 //TODO: Refactor into a sendInstantMessage() method that returns a returnCode.
 void ChatManagerImplementation::handleChatInstantMessageToCharacter(ChatInstantMessageToCharacter* message) {
+
+        // === BEGIN AUTO-INVITE & SPATIAL DISTANCE PATCH ===
+        if (message != nullptr) {
+            ZoneClientSession* clientSession = message->getClient();
+            CreatureObject* sender = nullptr;
+
+            if (clientSession != nullptr) {
+                sender = clientSession->getPlayer();
+            }
+
+            String recipientName = message->getGame();
+            UnicodeString msgBody = message->getMessage();
+            String msgText = msgBody.toString().toLowerCase();
+
+            if (sender != nullptr && (msgText.contains("invite") || msgText.contains("inv"))) {
+                ManagedReference<CreatureObject*> targetObject = getPlayer(recipientName);
+
+                if (targetObject != nullptr && targetObject->isPlayerCreature()) {
+                    // 1. Zone & Cell / Building Check
+                    if (sender->getZone() == targetObject->getZone() && sender->getParentID() == targetObject->getParentID()) {
+                        
+                        // 2. Spatial Distance Calculation (3D Vector Distance)
+                        float dx = sender->getPositionX() - targetObject->getPositionX();
+                        float dy = sender->getPositionY() - targetObject->getPositionY();
+                        float dz = sender->getPositionZ() - targetObject->getPositionZ();
+                        float distance = sqrt(dx * dx + dy * dy + dz * dz);
+
+                        if (distance <= 32.0f) {
+                            GroupManager* groupManager = GroupManager::instance();
+                            
+                            if (groupManager != nullptr) {
+                                uint32 senderAccount = 0;
+                                uint32 targetAccount = 0;
+
+                                Reference<PlayerObject*> senderGhost = sender->getPlayerObject();
+                                Reference<PlayerObject*> targetGhost = targetObject->getPlayerObject();
+
+                                if (senderGhost != nullptr) senderAccount = senderGhost->getAccountID();
+                                if (targetGhost != nullptr) targetAccount = targetGhost->getAccountID();
+
+                                // 3. Account-based Alt Auto-Accept Logic
+                                if (senderAccount != 0 && senderAccount == targetAccount) {
+                                    groupManager->inviteToGroup(targetObject, sender);
+                                    groupManager->joinGroup(sender);
+                                    sender->sendSystemMessage("Auto-joined group with your account alt.");
+                                    targetObject->sendSystemMessage("Auto-accepted group invite from your account alt.");
+                                } else {
+                                    groupManager->inviteToGroup(targetObject, sender);
+                                    sender->sendSystemMessage("Requested group invite via tell.");
+                                }
+                            }
+                        } else {
+                            sender->sendSystemMessage("You are too far away to request an auto-invite.");
+                        }
+                    } else {
+                        sender->sendSystemMessage("You must be in the same building or immediate area to request an auto-invite.");
+                    }
+                }
+            }
+        }
+        // === END AUTO-INVITE & SPATIAL DISTANCE PATCH ===
+
 	ManagedReference<CreatureObject*> sender = message->getClient()->getPlayer();
 
 	bool godMode = false;
