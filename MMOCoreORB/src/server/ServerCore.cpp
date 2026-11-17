@@ -372,6 +372,15 @@ void ServerCore::registerConsoleCommmands() {
 		return SUCCESS;
 	});
 
+	addCommand("resetalljedi", [this](const String& arguments) -> CommandResult {
+		ZoneServer* zoneServer = zoneServerRef.getForUpdate();
+
+		if (zoneServer != nullptr)
+			zoneServer->getPlayerManager()->resetAllJediSkills();
+
+		return SUCCESS;
+	});
+
 	addCommand("test", [this](const String& arguments) -> CommandResult {
 		Lua* lua = DirectorManager::instance()->getLuaInstance();
 

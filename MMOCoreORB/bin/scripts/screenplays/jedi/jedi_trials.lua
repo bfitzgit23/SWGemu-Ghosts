@@ -40,8 +40,23 @@ function JediTrials:isOnPadawanTrials(pPlayer)
 	return tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "startedTrials")) == 1 and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1
 end
 
+function JediTrials:isHolocronJedi(pPlayer)
+	if (pPlayer == nil) then
+		return false
+	end
+
+	local status = readScreenPlayData(pPlayer, "HolocronJedi", "jedi_status")
+	return status ~= nil and status ~= "" and status ~= "none"
+end
+
 function JediTrials:isEligibleForKnightTrials(pPlayer)
 	if (pPlayer == nil or not self.knightTrialsEnabled) then
+		return false
+	end
+
+	-- Holocron-path Jedi use the custom light/dark enclave trials instead of
+	-- the original village shrine trials.
+	if (self:isHolocronJedi(pPlayer)) then
 		return false
 	end
 
@@ -73,7 +88,19 @@ function JediTrials:onPlayerLoggedIn(pPlayer)
 		PadawanTrials:onPlayerLoggedIn(pPlayer)
 	end
 
-	KnightTrials:onPlayerLoggedIn(pPlayer)
+	if (self:isHolocronJedi(pPlayer)) then
+		-- Drop any stock knight-trial state left on holocron-path characters
+		-- before it can resume the original shrine-hunt flow.
+		if (self:isOnKnightTrials(pPlayer)) then
+			self:resetTrialData(pPlayer, "knight")
+			deleteScreenPlayData(pPlayer, "JediTrials", "trialShrineID")
+			deleteScreenPlayData(pPlayer, "JediTrials", "huntTarget")
+			deleteScreenPlayData(pPlayer, "JediTrials", "huntTargetCount")
+			deleteScreenPlayData(pPlayer, "JediTrials", "huntTargetGoal")
+		end
+	else
+		KnightTrials:onPlayerLoggedIn(pPlayer)
+	end
 
 	-- Restore permanent rank schematics for characters that earned their
 	-- DJL/GJM boxes before the generation schematics were installed.
@@ -111,7 +138,7 @@ function JediTrials:droppedSkillDuringTrials(pPlayer, pSkill)
 	return 0
 end
 
-function JediTrials:unlockJediPadawan(pPlayer, dontSendSui, bypassRequirements)
+function JediTrials:unlockJediPadawan(pPlayer, dontSendSui, bypassRequirements, silent)
 	if (pPlayer == nil) then
 		return
 	end
@@ -158,10 +185,12 @@ function JediTrials:unlockJediPadawan(pPlayer, dontSendSui, bypassRequirements)
 		local pItem = giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 	end
 
+	if not silent then
 	sendMail("system", "@jedi_spam:welcome_subject", "@jedi_spam:welcome_body", CreatureObject(pPlayer):getFirstName())
+	end
 end
 
-function JediTrials:unlockJediKnight(pPlayer)
+function JediTrials:unlockJediKnight(pPlayer, silent)
 	if (pPlayer == nil) then
 		return
 	end
@@ -208,10 +237,12 @@ function JediTrials:unlockJediKnight(pPlayer)
 	CreatureObject(pPlayer):setFactionStatus(2) -- Overt
 	CreatureObject(pPlayer):setFaction(setFactionVal)
 
+	if not silent then
 	local sui = SuiMessageBox.new("JediTrials", "emptyCallback") -- No callback
 	sui.setTitle("@jedi_trials:knight_trials_title")
 	sui.setPrompt(unlockString)
 	sui.sendTo(pPlayer)
+	end
 
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 

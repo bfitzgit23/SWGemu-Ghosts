@@ -177,7 +177,12 @@ object_tangible_wearables_armor_rebel_assault_armor_rebel_assault_bicep_r = obje
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },		-- These are default Blue Frog stats	healthEncumbrance = 80,	actionEncumbrance = 80,	mindEncumbrance = 80,	maxCondition = 30000,	-- LIGHT, MEDIUM, HEAVY
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+},		-- These are default Blue Frog stats	healthEncumbrance = 80,	actionEncumbrance = 80,	mindEncumbrance = 80,	maxCondition = 30000,	-- LIGHT, MEDIUM, HEAVY
 	rating = LIGHT,
 
 	kinetic = 75,

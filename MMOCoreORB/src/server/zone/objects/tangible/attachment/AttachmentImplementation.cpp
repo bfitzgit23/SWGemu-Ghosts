@@ -89,6 +89,15 @@ void AttachmentImplementation::updateCraftingValues(CraftingValues* values, bool
 	}
 }
 
+void AttachmentImplementation::updateAttachmentValues(const String& modName, int value) {
+	while (skillModifiers.size() > 0) {
+		skillModifiers.removeElementAt(skillModifiers.size() - 1);
+	}
+
+	skillModifiers.put(modName, value);
+	skillModMap.put(modName, value);
+}
+
 void AttachmentImplementation::fillAttributeList(AttributeListMessage* msg, CreatureObject* object) {
 	TangibleObjectImplementation::fillAttributeList(msg, object);
 

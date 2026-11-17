@@ -46,11 +46,7 @@ function GoToDathomir:onSuccessfulSpawn(pPlayer)
 		VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS)
 		CreatureObject(pPlayer):sendSystemMessage("@quest/force_sensitive/intro:force_sensitive")
 
-		if (not PlayerObject(pGhost):isJedi()) then
-			PlayerObject(pGhost):setJediState(1)
-		end
-
-		awardSkill(pPlayer, "force_title_jedi_novice")
+		-- Village unlock disabled (Ghosts): access only, no Jedi state/title.
 	end
 end
 

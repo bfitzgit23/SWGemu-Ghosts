@@ -17,6 +17,7 @@
 #include "LootGroupMap.h"
 #include "server/zone/objects/tangible/component/lightsaber/LightsaberCrystalComponent.h"
 #include "server/zone/managers/loot/LootValues.h"
+#include "server/zone/objects/tangible/attachment/Attachment.h"
 #include "server/zone/managers/resource/ResourceManager.h"
 #include "server/zone/Zone.h"
 #include "templates/params/creature/CreatureAttribute.h"
@@ -483,6 +484,38 @@ TangibleObject* LootManagerImplementation::createShipComponent(TransactionLog& t
 
 	auto lootValues = LootValues(itemTemplate, 0, 1.f);
 	prototype->updateCraftingValues(&lootValues, true);
+
+	return prototype;
+}
+
+TangibleObject* LootManagerImplementation::createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value) {
+	if (templateObject == nullptr) {
+		return nullptr;
+	}
+
+	const String& directTemplateObject = templateObject->getDirectObjectTemplate();
+
+	ManagedReference<TangibleObject*> prototype = zoneServer->createObject(directTemplateObject.hashCode(), 2).castTo<TangibleObject*>();
+
+	if (prototype == nullptr) {
+		error() << "could not create loot attachment: " << directTemplateObject;
+		return nullptr;
+	}
+
+	Locker objLocker(prototype);
+	prototype->createChildObjects();
+	prototype->setSerialNumber(craftingManager->generateSerial());
+
+	Attachment* attachment = cast<Attachment*>(prototype.get());
+
+	if (attachment == nullptr) {
+		return nullptr;
+	}
+
+	attachment->updateAttachmentValues(modName, value);
+
+	String attachmentType = attachment->isClothingAttachment() ? "CA " : "AA ";
+	prototype->setCustomObjectName(attachmentType + prototype->getDisplayedName() + " " + String::valueOf(value), false);
 
 	return prototype;
 }

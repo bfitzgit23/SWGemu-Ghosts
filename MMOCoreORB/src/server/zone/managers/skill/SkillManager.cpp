@@ -995,16 +995,28 @@ bool SkillManager::villageKnightPrereqsMet(CreatureObject* creature, const Strin
 
 	int fullTrees = 0;
 	int totalJediPoints = 0;
+	bool usingLegacyJediTrees = false;
+
+	auto isLegacyJediTree = [](const String& name) {
+		return name.indexOf("jedi_padawan_") == 0 ||
+			name.indexOf("jedi_light_side_") == 0 ||
+			name.indexOf("jedi_dark_side_") == 0;
+	};
 
 	for (int i = 0; i < skillList->size(); ++i) {
 		Skill* skill = skillList->get(i);
 
 		String skillName = skill->getSkillName();
-		if (skillName.contains("force_discipline_") &&
+		const bool legacyTree = isLegacyJediTree(skillName);
+
+		if ((legacyTree || skillName.contains("force_discipline_")) &&
 			(skillName.indexOf("0") != -1 || skillName.contains("novice") || skillName.contains("master") )) {
 			totalJediPoints += skill->getSkillPointsRequired();
 
-			if (skillName.indexOf("4") != -1) {
+			if (legacyTree)
+				usingLegacyJediTrees = true;
+
+			if (skillName.indexOf("_04") != -1) {
 				fullTrees++;
 			}
 		}
@@ -1013,14 +1025,16 @@ bool SkillManager::villageKnightPrereqsMet(CreatureObject* creature, const Strin
 	if (!skillToDrop.isEmpty()) {
 		Skill* skillBeingDropped = skillMap.get(skillToDrop.hashCode());
 
-		if (skillToDrop.indexOf("4") != -1) {
-			fullTrees--;
-		}
+		if (skillBeingDropped != nullptr) {
+			if (skillToDrop.indexOf("_04") != -1) {
+				fullTrees--;
+			}
 
-		totalJediPoints -= skillBeingDropped->getSkillPointsRequired();
+			totalJediPoints -= skillBeingDropped->getSkillPointsRequired();
+		}
 	}
 
-	return fullTrees >= 2 && totalJediPoints >= 206;
+	return fullTrees >= 2 && (usingLegacyJediTrees || totalJediPoints >= 206);
 }
 
 void SkillManager::getPlayerDroidCommands(PlayerObject* ghost, Vector<String>& playerDroidCommands) {

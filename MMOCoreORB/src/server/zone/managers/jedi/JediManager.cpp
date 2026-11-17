@@ -113,6 +113,14 @@ void JediManager::checkForceStatusCommand(CreatureObject* creature) {
 	luaCheckForceStatusCommand->callFunction();
 }
 
+void JediManager::requestJediTrainingCommand(CreatureObject* creature) {
+	Lua* lua = DirectorManager::instance()->getLuaInstance();
+	Reference<LuaFunction*> luaRequestJediTrainingCommand = lua->createFunction(getJediManagerName(), "requestJediTrainingCommand", 0);
+	*luaRequestJediTrainingCommand << creature;
+
+	luaRequestJediTrainingCommand->callFunction();
+}
+
 void JediManager::useItem(SceneObject* item, const int itemType, CreatureObject* creature) {
 	Lua* lua = DirectorManager::instance()->getLuaInstance();
 	Reference<LuaFunction*> luaUseItem = lua->createFunction(getJediManagerName(), "useItem", 0);

@@ -49,7 +49,7 @@ the_false_sith = Creature:new {
 			}
 		}
 	},
-	weapons = {"mixed_force_weapons"},
+	weapons = {"dark_jedi_weapons_gen4"},
 	conversationTemplate = "",
 	attacks = merge(pikemanmaster, brawlermaster)
 }

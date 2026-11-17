@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_xwing = object_ship_player_shared_player_xwing:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_xwing",
 	slideFactor = 1.95,

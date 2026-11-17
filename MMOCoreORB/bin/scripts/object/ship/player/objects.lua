@@ -42,7 +42,8 @@
 
 
 object_ship_player_shared_player_awing = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_awing.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_awing.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/awing_body.apt",
@@ -101,7 +102,8 @@ object_ship_player_shared_player_awing = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_awing, "object/ship/player/shared_player_awing.iff")
 
 object_ship_player_shared_player_basic_hutt_light = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_basic_hutt_light.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_basic_hutt_light.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_light_body_s01.apt",
@@ -160,7 +162,8 @@ object_ship_player_shared_player_basic_hutt_light = SharedShipObjectTemplate:new
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_basic_hutt_light, "object/ship/player/shared_player_basic_hutt_light.iff")
 
 object_ship_player_shared_player_basic_tiefighter = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_basic_tiefighter.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_basic_tiefighter.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_fighter.apt",
@@ -219,7 +222,8 @@ object_ship_player_shared_player_basic_tiefighter = SharedShipObjectTemplate:new
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_basic_tiefighter, "object/ship/player/shared_player_basic_tiefighter.iff")
 
 object_ship_player_shared_player_basic_z95 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_basic_z95.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_basic_z95.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/z95_body.apt",
@@ -278,7 +282,8 @@ object_ship_player_shared_player_basic_z95 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_basic_z95, "object/ship/player/shared_player_basic_z95.iff")
 
 object_ship_player_shared_player_blacksun_heavy_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_heavy_body_s01.apt",
@@ -337,7 +342,8 @@ object_ship_player_shared_player_blacksun_heavy_s01 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_heavy_s01, "object/ship/player/shared_player_blacksun_heavy_s01.iff")
 
 object_ship_player_shared_player_blacksun_heavy_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_heavy_body_s01.apt",
@@ -396,7 +402,8 @@ object_ship_player_shared_player_blacksun_heavy_s02 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_heavy_s02, "object/ship/player/shared_player_blacksun_heavy_s02.iff")
 
 object_ship_player_shared_player_blacksun_heavy_s03 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s03.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s03.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_heavy_body_s02.apt",
@@ -455,7 +462,8 @@ object_ship_player_shared_player_blacksun_heavy_s03 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_heavy_s03, "object/ship/player/shared_player_blacksun_heavy_s03.iff")
 
 object_ship_player_shared_player_blacksun_heavy_s04 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s04.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_heavy_s04.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_heavy_body_s02.apt",
@@ -514,7 +522,8 @@ object_ship_player_shared_player_blacksun_heavy_s04 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_heavy_s04, "object/ship/player/shared_player_blacksun_heavy_s04.iff")
 
 object_ship_player_shared_player_blacksun_light_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_light_body_s01.apt",
@@ -573,7 +582,8 @@ object_ship_player_shared_player_blacksun_light_s01 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_light_s01, "object/ship/player/shared_player_blacksun_light_s01.iff")
 
 object_ship_player_shared_player_blacksun_light_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_light_body_s01.apt",
@@ -632,7 +642,8 @@ object_ship_player_shared_player_blacksun_light_s02 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_light_s02, "object/ship/player/shared_player_blacksun_light_s02.iff")
 
 object_ship_player_shared_player_blacksun_light_s03 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s03.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s03.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_light_body_s02.apt",
@@ -691,7 +702,8 @@ object_ship_player_shared_player_blacksun_light_s03 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_light_s03, "object/ship/player/shared_player_blacksun_light_s03.iff")
 
 object_ship_player_shared_player_blacksun_light_s04 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s04.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_light_s04.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_light_body_s02.apt",
@@ -750,7 +762,8 @@ object_ship_player_shared_player_blacksun_light_s04 = SharedShipObjectTemplate:n
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_light_s04, "object/ship/player/shared_player_blacksun_light_s04.iff")
 
 object_ship_player_shared_player_blacksun_medium_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_medium_body_s01.apt",
@@ -809,7 +822,8 @@ object_ship_player_shared_player_blacksun_medium_s01 = SharedShipObjectTemplate:
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_medium_s01, "object/ship/player/shared_player_blacksun_medium_s01.iff")
 
 object_ship_player_shared_player_blacksun_medium_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_medium_body_s01.apt",
@@ -868,7 +882,8 @@ object_ship_player_shared_player_blacksun_medium_s02 = SharedShipObjectTemplate:
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_medium_s02, "object/ship/player/shared_player_blacksun_medium_s02.iff")
 
 object_ship_player_shared_player_blacksun_medium_s03 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s03.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s03.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_medium_body_s02.apt",
@@ -927,7 +942,8 @@ object_ship_player_shared_player_blacksun_medium_s03 = SharedShipObjectTemplate:
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_medium_s03, "object/ship/player/shared_player_blacksun_medium_s03.iff")
 
 object_ship_player_shared_player_blacksun_medium_s04 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s04.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_blacksun_medium_s04.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/black_sun_fighter_medium_body_s02.apt",
@@ -986,7 +1002,8 @@ object_ship_player_shared_player_blacksun_medium_s04 = SharedShipObjectTemplate:
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_blacksun_medium_s04, "object/ship/player/shared_player_blacksun_medium_s04.iff")
 
 object_ship_player_shared_player_bwing = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_bwing.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_bwing.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/bwing_cockpit_pod.apt",
@@ -1045,7 +1062,8 @@ object_ship_player_shared_player_bwing = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_bwing, "object/ship/player/shared_player_bwing.iff")
 
 object_ship_player_shared_player_corvette = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_corvette.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_corvette.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -1104,7 +1122,8 @@ object_ship_player_shared_player_corvette = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_corvette, "object/ship/player/shared_player_corvette.iff")
 
 object_ship_player_shared_player_decimator = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_decimator.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_decimator.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -1163,7 +1182,8 @@ object_ship_player_shared_player_decimator = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_decimator, "object/ship/player/shared_player_decimator.iff")
 
 object_ship_player_shared_player_firespray = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_firespray.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_firespray.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/kse_firespray_body.apt",
@@ -1222,7 +1242,8 @@ object_ship_player_shared_player_firespray = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_firespray, "object/ship/player/shared_player_firespray.iff")
 
 object_ship_player_shared_player_hutt_heavy_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_heavy_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_heavy_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_heavy_body_s01.apt",
@@ -1281,7 +1302,8 @@ object_ship_player_shared_player_hutt_heavy_s01 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_heavy_s01, "object/ship/player/shared_player_hutt_heavy_s01.iff")
 
 object_ship_player_shared_player_hutt_heavy_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_heavy_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_heavy_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_heavy_body_s02.apt",
@@ -1340,7 +1362,8 @@ object_ship_player_shared_player_hutt_heavy_s02 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_heavy_s02, "object/ship/player/shared_player_hutt_heavy_s02.iff")
 
 object_ship_player_shared_player_hutt_light_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_light_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_light_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_light_body_s01.apt",
@@ -1399,7 +1422,8 @@ object_ship_player_shared_player_hutt_light_s01 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_light_s01, "object/ship/player/shared_player_hutt_light_s01.iff")
 
 object_ship_player_shared_player_hutt_light_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_light_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_light_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_light_body_s02.apt",
@@ -1458,7 +1482,8 @@ object_ship_player_shared_player_hutt_light_s02 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_light_s02, "object/ship/player/shared_player_hutt_light_s02.iff")
 
 object_ship_player_shared_player_hutt_medium_s01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_medium_s01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_medium_s01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_medium_body_s01.apt",
@@ -1517,7 +1542,8 @@ object_ship_player_shared_player_hutt_medium_s01 = SharedShipObjectTemplate:new 
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_medium_s01, "object/ship/player/shared_player_hutt_medium_s01.iff")
 
 object_ship_player_shared_player_hutt_medium_s02 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_medium_s02.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_medium_s02.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_medium_body_s02.apt",
@@ -1576,7 +1602,8 @@ object_ship_player_shared_player_hutt_medium_s02 = SharedShipObjectTemplate:new 
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_medium_s02, "object/ship/player/shared_player_hutt_medium_s02.iff")
 
 object_ship_player_shared_player_hutt_turret_ship = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_hutt_turret_ship.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_hutt_turret_ship.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_heavy_body_s03.apt",
@@ -1635,7 +1662,8 @@ object_ship_player_shared_player_hutt_turret_ship = SharedShipObjectTemplate:new
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_hutt_turret_ship, "object/ship/player/shared_player_hutt_turret_ship.iff")
 
 object_ship_player_shared_player_prototype_hutt_light = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_prototype_hutt_light.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_prototype_hutt_light.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/hutt_fighter_light_body_s01.apt",
@@ -1694,7 +1722,8 @@ object_ship_player_shared_player_prototype_hutt_light = SharedShipObjectTemplate
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_prototype_hutt_light, "object/ship/player/shared_player_prototype_hutt_light.iff")
 
 object_ship_player_shared_player_prototype_tiefighter = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_prototype_tiefighter.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_prototype_tiefighter.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_fighter.apt",
@@ -1753,7 +1782,8 @@ object_ship_player_shared_player_prototype_tiefighter = SharedShipObjectTemplate
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_prototype_tiefighter, "object/ship/player/shared_player_prototype_tiefighter.iff")
 
 object_ship_player_shared_player_prototype_z95 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_prototype_z95.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_prototype_z95.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/z95_body.apt",
@@ -1812,7 +1842,8 @@ object_ship_player_shared_player_prototype_z95 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_prototype_z95, "object/ship/player/shared_player_prototype_z95.iff")
 
 object_ship_player_shared_player_sorosuub_space_yacht = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_sorosuub_space_yacht.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_sorosuub_space_yacht.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -1871,7 +1902,8 @@ object_ship_player_shared_player_sorosuub_space_yacht = SharedShipObjectTemplate
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_sorosuub_space_yacht, "object/ship/player/shared_player_sorosuub_space_yacht.iff")
 
 object_ship_player_shared_player_tie_in = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tie_in.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tie_in.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_fighter_in.apt",
@@ -1930,7 +1962,8 @@ object_ship_player_shared_player_tie_in = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tie_in, "object/ship/player/shared_player_tie_in.iff")
 
 object_ship_player_shared_player_tie_light_duty = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tie_light_duty.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tie_light_duty.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_fighter.apt",
@@ -1989,7 +2022,8 @@ object_ship_player_shared_player_tie_light_duty = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tie_light_duty, "object/ship/player/shared_player_tie_light_duty.iff")
 
 object_ship_player_shared_player_tieadvanced = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tieadvanced.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tieadvanced.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_advanced.apt",
@@ -2048,7 +2082,8 @@ object_ship_player_shared_player_tieadvanced = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tieadvanced, "object/ship/player/shared_player_tieadvanced.iff")
 
 object_ship_player_shared_player_tieaggressor = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tieaggressor.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tieaggressor.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_aggressor.apt",
@@ -2107,7 +2142,8 @@ object_ship_player_shared_player_tieaggressor = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tieaggressor, "object/ship/player/shared_player_tieaggressor.iff")
 
 object_ship_player_shared_player_tiebomber = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tiebomber.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tiebomber.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_bomber_b.apt",
@@ -2166,7 +2202,8 @@ object_ship_player_shared_player_tiebomber = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tiebomber, "object/ship/player/shared_player_tiebomber.iff")
 
 object_ship_player_shared_player_tiefighter = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tiefighter.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tiefighter.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_fighter.apt",
@@ -2225,7 +2262,8 @@ object_ship_player_shared_player_tiefighter = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tiefighter, "object/ship/player/shared_player_tiefighter.iff")
 
 object_ship_player_shared_player_tieinterceptor = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tieinterceptor.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tieinterceptor.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_interceptor.apt",
@@ -2284,7 +2322,8 @@ object_ship_player_shared_player_tieinterceptor = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tieinterceptor, "object/ship/player/shared_player_tieinterceptor.iff")
 
 object_ship_player_shared_player_tieoppressor = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_tieoppressor.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_tieoppressor.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/tie_oppressor.apt",
@@ -2343,7 +2382,8 @@ object_ship_player_shared_player_tieoppressor = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_tieoppressor, "object/ship/player/shared_player_tieoppressor.iff")
 
 object_ship_player_shared_player_xwing = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_xwing.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_xwing.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/xwing_body.apt",
@@ -2402,7 +2442,8 @@ object_ship_player_shared_player_xwing = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_xwing, "object/ship/player/shared_player_xwing.iff")
 
 object_ship_player_shared_player_ykl37r = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_ykl37r.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_ykl37r.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -2461,7 +2502,8 @@ object_ship_player_shared_player_ykl37r = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_ykl37r, "object/ship/player/shared_player_ykl37r.iff")
 
 object_ship_player_shared_player_yt1300 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_yt1300.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_yt1300.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -2520,7 +2562,8 @@ object_ship_player_shared_player_yt1300 = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_yt1300, "object/ship/player/shared_player_yt1300.iff")
 
 object_ship_player_shared_player_yt1300_decorated_01 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_yt1300_decorated_01.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_yt1300_decorated_01.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "",
@@ -2579,7 +2622,8 @@ object_ship_player_shared_player_yt1300_decorated_01 = SharedShipObjectTemplate:
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_yt1300_decorated_01, "object/ship/player/shared_player_yt1300_decorated_01.iff")
 
 object_ship_player_shared_player_ywing = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_ywing.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_ywing.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/ywing_body.apt",
@@ -2638,7 +2682,8 @@ object_ship_player_shared_player_ywing = SharedShipObjectTemplate:new {
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_ywing, "object/ship/player/shared_player_ywing.iff")
 
 object_ship_player_shared_player_ywing_longprobe = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_ywing_longprobe.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_ywing_longprobe.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/ywing_body.apt",
@@ -2697,7 +2742,8 @@ object_ship_player_shared_player_ywing_longprobe = SharedShipObjectTemplate:new 
 ObjectTemplates:addClientTemplate(object_ship_player_shared_player_ywing_longprobe, "object/ship/player/shared_player_ywing_longprobe.iff")
 
 object_ship_player_shared_player_z95 = SharedShipObjectTemplate:new {
-	clientTemplateFileName = "object/ship/player/shared_player_z95.iff"
+	clientTemplateFileName = "object/ship/player/shared_player_z95.iff",
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	--Data below here is deprecated and loaded from the tres, keeping for easy lookups
 --[[
 	appearanceFilename = "appearance/z95_body.apt",

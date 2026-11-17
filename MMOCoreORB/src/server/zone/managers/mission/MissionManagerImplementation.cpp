@@ -177,8 +177,12 @@ void MissionManagerImplementation::handleMissionListRequest(MissionTerminal* mis
 
 	if (missionTerminal->isBountyTerminal()) {
 		if (!player->hasSkill("combat_bountyhunter_novice")) {
-			player->sendSystemMessage("@mission/mission_generic:not_bounty_hunter_terminal");
-			return;
+			// Ghosts: characters without bounty hunter training may still
+			// take Jedi bounty contracts (player targets).
+			if (getPotentialPlayerBountyTargets(player).size() == 0) {
+				player->sendSystemMessage("@mission/mission_generic:not_bounty_hunter_terminal");
+				return;
+			}
 		}
 	}
 
@@ -1081,11 +1085,14 @@ void MissionManagerImplementation::randomizeGenericDestroyMission(CreatureObject
 	mission->setSize(randomLairSpawn->getSize());
 	mission->setFaction(faction);
 
+	// Ghosts: scale GCW faction with the actual mission level so high-level
+	// (e.g. 200) destroy missions pay thousands instead of capping at 64.
 	int factionPointsReward = randomLairSpawn->getMinDifficulty();
 	if (factionPointsReward > 32)
 	{
 		factionPointsReward = 32;
 	}
+	factionPointsReward = Math::max(factionPointsReward, difficultyLevel * 6);
 
 	String messageDifficulty;
 	String missionType;
@@ -1219,8 +1226,11 @@ void MissionManagerImplementation::randomizeGenericSurveyMission(CreatureObject*
 }
 
 void MissionManagerImplementation::randomizeGenericBountyMission(CreatureObject* player, MissionObject* mission, const uint32 faction, Vector<ManagedReference<PlayerBounty*>>* potentialTargets) {
-	if (!player->hasSkill("combat_bountyhunter_novice")) {
-		player->sendSystemMessage("@mission/mission_generic:not_bounty_hunter_terminal");
+	// Ghosts: characters without bounty hunter training may only take
+	// Jedi bounty contracts (player targets), not NPC bounties.
+	bool allowJediContractsOnly = !player->hasSkill("combat_bountyhunter_novice");
+
+	if (allowJediContractsOnly && (potentialTargets == nullptr || potentialTargets->size() == 0)) {
 		return;
 	}
 
@@ -1244,9 +1254,9 @@ void MissionManagerImplementation::randomizeGenericBountyMission(CreatureObject*
 	bool playerTarget = false;
 	int size = potentialTargets->size();
 
-	if (level == 3 && size > 0) {
+	if (size > 0 && (level == 3 || allowJediContractsOnly)) {
 		int compareValue = size > 25 ? 25 : size < 5 ? 5 : size;
-		if (System::random(100) < compareValue) {
+		if (allowJediContractsOnly || System::random(100) < compareValue) {
 			playerTarget = true;
 			randomTexts = 6;
 		}

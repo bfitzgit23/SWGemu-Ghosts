@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_ywing = object_ship_player_shared_player_ywing:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_ywing",
 	slideFactor = 1.85,

@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_ykl37r = object_ship_player_shared_player_ykl37r:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_ykl37r",
 	slideFactor = 1.85,
 	chassisHitpoints = 5000,

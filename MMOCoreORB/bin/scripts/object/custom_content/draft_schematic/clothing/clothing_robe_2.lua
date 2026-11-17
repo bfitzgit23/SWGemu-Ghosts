@@ -5,7 +5,7 @@ object_draft_schematic_clothing_clothing_robe_2 = object_draft_schematic_clothin
    customObjectName = "New Robe 2",
 
    craftingToolTab = 8, -- (See DraftSchematicObjectTemplate.h)
-   complexity = 30, 
+   complexity = 20, 
    size = 1, 
 
    xpType = "crafting_clothing_general", 

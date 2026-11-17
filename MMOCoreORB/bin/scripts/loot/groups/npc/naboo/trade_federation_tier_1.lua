@@ -5,6 +5,8 @@ trade_federation_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "junk", weight = 1750000},
 		{groupTemplate = "loot_kit_parts", weight = 1400000},
 		{groupTemplate = "melee_weapons", weight = 1400000},

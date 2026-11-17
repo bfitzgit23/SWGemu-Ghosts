@@ -668,22 +668,28 @@ int ShipManager::addShipSpawnGroup(lua_State* L) {
 // Ship is locked coming in
 ShipControlDevice* ShipManager::createShipControlDevice(ShipObject* ship) {
 	String controlName = "object/intangible/ship/" + ship->getShipChassisName().replaceAll("player_", "") + "_pcd.iff";
+	CreatureObject* jtlOwner = ship->getOwner().get();
+	if (jtlOwner == nullptr) { error() << "JTLDBG pcd NOOWNER"; return nullptr; }
+	jtlOwner->error() << "JTLDBG pcd chassis=[" << ship->getShipChassisName() << "] control=[" << controlName << "]";
 
 	auto shot = TemplateManager::instance()->getTemplate(controlName.hashCode());
 
 	if (shot == nullptr || !(shot->getGameObjectType() & SceneObjectType::SHIPCONTROLDEVICE)) {
+		jtlOwner->error() << "JTLDBG pcd template miss control=[" << controlName << "] null=" << (shot == nullptr);
 		return nullptr;
 	}
 
 	ManagedReference<ShipControlDevice*> shipControlDevice = ServerCore::getZoneServer()->createObject(controlName.hashCode(), ship->getPersistenceLevel()).castTo<ShipControlDevice*>();
 
 	if (shipControlDevice == nullptr) {
+		jtlOwner->error() << "JTLDBG pcd createObject null control=[" << controlName << "]";
 		return nullptr;
 	}
 
 	Locker cLock(shipControlDevice, ship);
 
 	if (!shipControlDevice->transferObject(ship, PlayerArrangement::RIDER)) {
+		jtlOwner->error() << "JTLDBG pcd rider transfer failed";
 		return nullptr;
 	}
 
@@ -754,36 +760,45 @@ ShipAiAgent* ShipManager::createAiShip(const String& shipName, uint32 shipCRC) {
 }
 
 ShipObject* ShipManager::createPlayerShip(CreatureObject* owner, const String& shipName, const String& certificationRequired, bool loadComponents) {
-	if (owner == nullptr)
+	if (owner == nullptr) {
+		error() << "JTLDBG entry owner null ship=[" << shipName << "]";
 		return nullptr;
+	}
 
 	ManagedReference<SceneObject*> dataPad = owner->getDatapad();
 
 	if (dataPad == nullptr) {
+		owner->error() << "JTLDBG entry datapad null owner=" << owner->getObjectID();
 		return nullptr;
 	}
 
 	PlayerObject* ghost = owner->getPlayerObject();
 
 	if (ghost == nullptr) {
+		owner->error() << "JTLDBG entry ghost null owner=" << owner->getObjectID();
 		return nullptr;
 	}
 
 	auto shipTemp = dynamic_cast<SharedShipObjectTemplate*>(TemplateManager::instance()->getTemplate(shipName.hashCode()));
 
 	if (shipTemp == nullptr) {
+		owner->error() << "JTLDBG ship template null name=[" << shipName << "]";
 		return nullptr;
 	}
 
 	auto zoneServer = ServerCore::getZoneServer();
 
-	if (zoneServer == nullptr)
+	if (zoneServer == nullptr) {
+		owner->error() << "JTLDBG entry zoneserver null";
 		return nullptr;
+	}
+	owner->error() << "JTLDBG entry ok owner=" << owner->getObjectID() << " ship=[" << shipName << "]";
 
 	// Create ship and set persistent
 	ManagedReference<ShipObject*> ship = zoneServer->createObject(shipTemp->getServerObjectCRC(), 1).castTo<ShipObject*>();
 
 	if (ship == nullptr) {
+		owner->error() << "JTLDBG ship createObject null name=[" << shipName << "] crc=" << shipTemp->getServerObjectCRC();
 		return nullptr;
 	}
 
@@ -803,6 +818,7 @@ ShipObject* ShipManager::createPlayerShip(CreatureObject* owner, const String& s
 	auto shipControlDevice = createShipControlDevice(ship);
 
 	if (shipControlDevice == nullptr) {
+		owner->error() << "JTLDBG ship null control device name=[" << shipName << "]";
 		ship->destroyObjectFromDatabase(true);
 		ship->destroyObjectFromWorld(true);
 
@@ -825,6 +841,7 @@ ShipObject* ShipManager::createPlayerShip(CreatureObject* owner, const String& s
 		loadShipComponentObjects(ship);
 	}
 
+	owner->error() << "JTLDBG ship reaching datapad transfer name=[" << shipName << "]";
 	if (!dataPad->transferObject(shipControlDevice, -1)) {
 		shipControlDevice->destroyObjectFromWorld(true);
 		shipControlDevice->destroyObjectFromDatabase(true);

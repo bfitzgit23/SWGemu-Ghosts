@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tiefighter = object_ship_player_shared_player_tiefighter:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tiefighter",
 	slideFactor = 1.78,

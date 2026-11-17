@@ -79,7 +79,11 @@ public:
 
 			// info(true) << endl << endl << endl << "Inserting Group Member into POB ship - " << groupMember->getDisplayedName() << " Into Cell: " << randomCell << " Launch Location: " << launchLoc << " Player Arrangement: " << playerArrangement;
 
+			info(true) << "SZDBG InsertGroupMember member=" << groupMember->getDisplayedName() << " ship=" << ship->getDisplayedName() << " pob=true arrangement=" << playerArrangement << " cell=" << cell->getObjectID();
+
 			groupMember->switchZone(spaceZone->getZoneName(), launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), cell->getObjectID(), false, playerArrangement);
+
+			info(true) << "SZDBG InsertGroupMember done parent=" << groupMember->getParentID() << " containment=" << groupMember->getContainmentType();
 		} else {
 			Locker clock(groupMember, ship);
 
@@ -87,7 +91,11 @@ public:
 
 			// info(true) << "Inserting Group Member into MultiPassenger ship - " << groupMember->getDisplayedName();
 
+			info(true) << "SZDBG InsertGroupMember member=" << groupMember->getDisplayedName() << " ship=" << ship->getDisplayedName() << " pob=false arrangement=" << playerArrangement;
+
 			groupMember->switchZone(spaceZone->getZoneName(), ship->getWorldPositionX(), ship->getWorldPositionZ(), ship->getWorldPositionY(), ship->getObjectID(), false, playerArrangement);
+
+			info(true) << "SZDBG InsertGroupMember done parent=" << groupMember->getParentID() << " containment=" << groupMember->getContainmentType();
 
 			ship->addPlayerOnBoard(groupMember);
 		}

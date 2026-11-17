@@ -33,6 +33,10 @@ function FsIntro:setCurrentStep(pPlayer, step)
 end
 
 function FsIntro:isOnIntro(pPlayer)
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
+		return false
+	end
+
 	return VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_GLOWING) and not QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER)
 end
 
@@ -75,6 +79,10 @@ end
 
 function FsIntro:doDelayedStep(pPlayer)
 	if (pPlayer == nil) then
+		return
+	end
+
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
 		return
 	end
 
@@ -366,9 +374,6 @@ function FsIntro:completeVillageIntroFrog(pPlayer)
 
 	VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS)
 
-	if (not PlayerObject(pGhost):isJedi()) then
-		PlayerObject(pGhost):setJediState(1)
-	end
-
-	awardSkill(pPlayer, "force_title_jedi_novice")
+	-- Village unlock disabled (Ghosts): intro completion grants access,
+	-- not Jedi state or the novice title.
 end

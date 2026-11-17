@@ -59,7 +59,18 @@ object_tangible_wearables_shirt_nightsister_shirt_s03 = object_tangible_wearable
 				"object/mobile/vendor/sullustan_female.iff",
 				"object/mobile/vendor/trandoshan_female.iff",
 				"object/mobile/vendor/twilek_female.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/aqualish_female.iff",
+				"object/creature/player/bith_female.iff",
+				"object/creature/player/chadra_fan_female.iff",
+				"object/creature/player/chiss_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/nightsister_female.iff",
+				"object/creature/player/sanyassan_female.iff",
+				"object/creature/player/smc_female.iff",
+				"object/creature/player/togruta_female.iff",
+				"object/creature/player/zeltron_female.iff",
+			},
 }
 
 ObjectTemplates:addTemplate(object_tangible_wearables_shirt_nightsister_shirt_s03, "object/tangible/wearables/shirt/nightsister_shirt_s03.iff")

@@ -185,9 +185,30 @@ object_tangible_wearables_armor_marine_armor_marine_bracer_r = object_tangible_w
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff" },
 
-	
-object/tangible/wearables/armor/composite/armor_composite_bracer_l.iff
+	-- Damage types in WeaponObject
+	vulnerability = ACID + HEAT + STUN + LIGHTSABER,
+
+	-- These are default Blue Frog stats
+	healthEncumbrance = 15,
+	actionEncumbrance = 16,
+	mindEncumbrance = 19,
+
+	-- LIGHT, MEDIUM, HEAVY
+	rating = LIGHT,
+
+	maxCondition = 45000,
+
+	kinetic = 30,
+	energy = 30,
+	electricity = 30,
+	stun = 0,
+	blast = 30,
+	heat = 0,
+	cold = 30,
+	acid = 0,
+	lightSaber = 0
+}
 
 ObjectTemplates:addTemplate(object_tangible_wearables_armor_marine_armor_marine_bracer_r, "object/tangible/wearables/armor/marine/armor_marine_bracer_r.iff")

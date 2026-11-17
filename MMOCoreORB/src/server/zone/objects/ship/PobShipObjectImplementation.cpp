@@ -137,6 +137,7 @@ void PobShipObjectImplementation::createChildObjects() {
 	}
 
 	int conduitCount = 0;
+	int cockpitCellID = 1;
 
 	for (int i = 0; i < templateObject->getChildObjectsSize(); ++i) {
 		const ChildObject* child = templateObject->getChildObject(i);
@@ -147,6 +148,12 @@ void PobShipObjectImplementation::createChildObjects() {
 
 		const String childTemplate = child->getTemplateFile();
 		uint32 childHash = childTemplate.hashCode();
+
+		// Remember the cockpit cell so a template without a dedicated pilot chair
+		// gets its fallback chair where the cockpit actually is instead of cell 0.
+		if (child->getCellId() > 0 && (childTemplate.contains("shipcontrol") || childTemplate.contains("shipoperations"))) {
+			cockpitCellID = child->getCellId();
+		}
 
 		ManagedReference<SceneObject *> obj = zoneServer->createObject(childHash, getPersistenceLevel());
 
@@ -256,6 +263,42 @@ void PobShipObjectImplementation::createChildObjects() {
 		} catch (Exception &e) {
 			error("unreported exception caught in void SceneObjectImplementation::createChildObjects()!");
 			e.printStackTrace();
+		}
+	}
+
+	// Some POB ship data is missing the pilot chair child. Without a chair,
+	// InsertPilotIntoShipTask returns early and leaves the player standing in the ship.
+	if (getPilotChair().get() == nullptr && totalCellNumber > 0) {
+		auto pilotCell = getCell(cockpitCellID - 1);
+
+		if (pilotCell == nullptr) {
+			pilotCell = getCell(0);
+		}
+
+		if (pilotCell != nullptr) {
+			auto chair = zoneServer->createObject(STRING_HASHCODE("object/tangible/shipcontrol/pilot_chair.iff"), getPersistenceLevel());
+
+			if (chair != nullptr) {
+				Locker chairLocker(chair, asSceneObject());
+
+				chair->initializePosition(0.0f, 0.5f, 0.0f);
+
+				if (pilotCell->transferObject(chair, -1, true)) {
+					ContainerPermissions* permissions = chair->getContainerPermissionsForUpdate();
+
+					if (permissions != nullptr) {
+						permissions->setOwner(getOwnerID());
+						permissions->setInheritPermissionsFromParent(false);
+						permissions->setDefaultDenyPermission(ContainerPermissions::MOVECONTAINER);
+						permissions->setDenyPermission("owner", ContainerPermissions::MOVECONTAINER);
+					}
+
+					childObjects.put(chair);
+					setPilotChair(chair);
+				} else {
+					chair->destroyObjectFromDatabase(true);
+				}
+			}
 		}
 	}
 
@@ -483,6 +526,87 @@ void PobShipObjectImplementation::notifyInsertToZone(Zone* zone) {
 	}
 
 	locker.release();
+
+	// pilotChair is a transient member that is only set when the ship is created
+	// from its template. Ships restored from the database (or whose template has no
+	// dedicated chair) keep it null, which makes InsertPilotIntoShipTask abort and
+	// leaves the player unable to enter the cockpit.
+	if (getPilotChair().get() == nullptr) {
+		int pilotCellIndex = 0;
+
+		for (int i = 0; i < cells.size() && getPilotChair().get() == nullptr; ++i) {
+			auto& cell = cells.get(i);
+
+			if (cell == nullptr) {
+				continue;
+			}
+
+			for (int j = 0; j < cell->getContainerObjectsSize(); ++j) {
+				auto child = cell->getContainerObject(j);
+
+				if (child == nullptr) {
+					continue;
+				}
+
+				if (child->isPilotChair()) {
+					setPilotChair(child);
+					break;
+				}
+
+				auto childTemplate = child->getObjectTemplate();
+
+				if (childTemplate != nullptr) {
+					const String& templateFile = childTemplate->getFullTemplateString();
+
+					if (templateFile.contains("shipcontrol") || templateFile.contains("shipoperations")) {
+						pilotCellIndex = i;
+					}
+				}
+			}
+		}
+
+		if (getPilotChair().get() == nullptr) {
+			// Older persisted ships can predate the chair fallback in createChildObjects,
+			// so build one here in the cockpit cell instead of failing the launch.
+			auto pilotCell = getCell(pilotCellIndex);
+
+			if (pilotCell == nullptr) {
+				pilotCell = getCell(0);
+			}
+
+			if (pilotCell != nullptr) {
+				auto chair = getZoneServer()->createObject(STRING_HASHCODE("object/tangible/shipcontrol/pilot_chair.iff"), getPersistenceLevel());
+
+				if (chair != nullptr) {
+					Locker chairLocker(chair, asSceneObject());
+
+					chair->initializePosition(0.0f, 0.5f, 0.0f);
+
+					if (pilotCell->transferObject(chair, -1, true)) {
+						ContainerPermissions* permissions = chair->getContainerPermissionsForUpdate();
+
+						if (permissions != nullptr) {
+							permissions->setOwner(getOwnerID());
+							permissions->setInheritPermissionsFromParent(false);
+							permissions->setDefaultDenyPermission(ContainerPermissions::MOVECONTAINER);
+							permissions->setDenyPermission("owner", ContainerPermissions::MOVECONTAINER);
+						}
+
+						childObjects.put(chair);
+						setPilotChair(chair);
+
+						info(true) << "PobShipObjectImplementation::notifyInsertToZone - created missing pilot chair for " << getDisplayedName() << " in cell " << pilotCellIndex;
+					} else {
+						chair->destroyObjectFromDatabase(true);
+					}
+				}
+			}
+
+			if (getPilotChair().get() == nullptr) {
+				error() << "PobShipObjectImplementation::notifyInsertToZone - " << getDisplayedName() << " has no pilot chair";
+			}
+		}
+	}
 
 	// Check plasma conduits for cell fires
 	checkPlasmaConduits();

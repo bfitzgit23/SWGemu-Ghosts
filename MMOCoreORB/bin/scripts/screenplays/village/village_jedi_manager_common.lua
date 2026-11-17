@@ -267,4 +267,13 @@ function VillageJediManagerCommon.getLearnedForceSensitiveBranches(pPlayer)
 	return branchesLearned
 end
 
+function VillageJediManagerCommon.isHolocronJedi(pPlayer)
+	if (pPlayer == nil) then
+		return false
+	end
+
+	local status = readScreenPlayData(pPlayer, "HolocronJedi", "jedi_status")
+	return status ~= nil and status ~= ""
+end
+
 return VillageJediManagerCommon

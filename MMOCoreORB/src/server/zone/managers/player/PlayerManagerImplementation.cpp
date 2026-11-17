@@ -6569,6 +6569,127 @@ void PlayerManagerImplementation::cleanupCharacters() {
 
 }
 
+void PlayerManagerImplementation::resetAllJediSkills() {
+	info("**** RESETTING NON-GREY JEDI SKILL PROGRESSION ***", true);
+
+	ObjectDatabase* thisDatabase = ObjectDatabaseManager::instance()->loadObjectDatabase("sceneobjects", true, 0xFFFF, false);
+
+	if (thisDatabase == nullptr) {
+		error("resetAllJediSkills could not load sceneobjects database");
+		return;
+	}
+
+	ObjectInputStream objectData(2000);
+	ObjectDatabaseIterator iterator(thisDatabase);
+
+	uint64 objectID;
+	String className;
+	int players = 0;
+	int jediCharacters = 0;
+	int greyCharacters = 0;
+	int resetCharacters = 0;
+	int removedSkills = 0;
+	int rank02Characters = 0;
+
+	while (iterator.getNextKeyAndValue(objectID, &objectData)) {
+		if (Serializable::getVariable<String>(STRING_HASHCODE("_className"), &className, &objectData) && className == "CreatureObject") {
+			ManagedReference<CreatureObject*> object = Core::getObjectBroker()->lookUp(objectID).castTo<CreatureObject*>();
+
+			if (object != nullptr && object->isPlayerCreature()) {
+				players++;
+
+				Locker locker(object);
+
+				const SkillList* skillList = object->getSkillList();
+				bool isGrey = false;
+				Vector<String> removeSkills;
+
+				for (int i = 0; i < skillList->size(); ++i) {
+					String skillName = skillList->get(i)->getSkillName();
+
+					// Grey Jedi use the combat_jedi and force_rank_gray paths. force_sensitive
+					// is also part of normal pre-9 Jedi progression and must not mark a
+					// character as Grey by itself.
+					if (skillName.beginsWith("combat_jedi") || skillName.beginsWith("force_rank_gray")) {
+						isGrey = true;
+					}
+
+					// Regular Jedi progression: pre-9 trees, the former discipline trees,
+					// legacy FRS ranks/post-9 skills, and Jedi titles.
+					if (skillName.beginsWith("force_") || skillName.beginsWith("jedi") ||
+							skillName.beginsWith("ghosts_jedi") || skillName.beginsWith("frs")) {
+						removeSkills.add(skillName);
+					}
+				}
+
+				if (isGrey) {
+					greyCharacters++;
+					info("JEDI RESET SKIP GREY: " + object->getFirstName() + " " + object->getLastName(), true);
+				} else if (removeSkills.size() > 0) {
+					jediCharacters++;
+					int removedForCharacter = 0;
+
+					// Remove deepest skills first. A few passes handle prerequisite chains.
+					for (int pass = 0; pass < 20; ++pass) {
+						int removedThisPass = 0;
+
+						for (int i = removeSkills.size() - 1; i >= 0; --i) {
+							String skillName = removeSkills.get(i);
+
+							if (!object->hasSkill(skillName))
+								continue;
+
+							if (SkillManager::instance()->surrenderSkill(skillName, object, false, false, true)) {
+								removedThisPass++;
+								removedForCharacter++;
+								removedSkills++;
+							}
+						}
+
+						if (removedThisPass == 0)
+							break;
+					}
+
+					ManagedReference<PlayerObject*> ghost = object->getPlayerObject();
+					bool rank02Awarded = false;
+
+					if (ghost != nullptr) {
+						// The Jedi title rows require Jedi state 1. Set the
+						// Padawan state before awarding so the prerequisite chain
+						// can be learned, then fall back to 0 if the grant fails.
+						ghost->setJediState(2, false);
+
+						rank02Awarded = SkillManager::instance()->awardSkill(
+								"force_title_jedi_rank_02", object, true, true, true);
+
+						if (!rank02Awarded)
+							ghost->setJediState(0, false);
+
+						if (rank02Awarded)
+							rank02Characters++;
+					}
+
+					object->updateToDatabase();
+					resetCharacters++;
+
+					info("JEDI RESET: " + object->getFirstName() + " " + object->getLastName() +
+							" removed=" + String::valueOf(removedForCharacter) +
+							" rank02=" + (rank02Awarded ? "yes" : "no"), true);
+				}
+			}
+		}
+
+		objectData.reset();
+	}
+
+	StringBuffer summary;
+	summary << "JEDI RESET COMPLETE: players=" << players << " jedi=" << jediCharacters
+			<< " grey_skipped=" << greyCharacters << " reset=" << resetCharacters
+			<< " rank02=" << rank02Characters
+			<< " skills_removed=" << removedSkills;
+	info(summary.toString(), true);
+}
+
 bool PlayerManagerImplementation::shouldDeleteCharacter(uint64 characterID, int galaxyID) {
 #ifndef WITH_SWGREALMS_API
 	const String query = "SELECT * FROM characters WHERE character_oid = " + String::valueOf(characterID) + " AND galaxy_id = " + String::valueOf(galaxyID);

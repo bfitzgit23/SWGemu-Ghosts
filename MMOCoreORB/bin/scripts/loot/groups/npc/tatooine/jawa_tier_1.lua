@@ -5,6 +5,8 @@ jawa_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "armor_all", weight = 600000},
 		{groupTemplate = "color_crystals", weight = 200000},
 		{groupTemplate = "jawa_common", weight = 1050000},

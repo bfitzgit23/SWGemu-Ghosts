@@ -71,7 +71,7 @@ includeFile("creature/player/zabrak_male.lua")
 includeFile("creature/player/hutt_female.lua") --Hutt female
 includeFile("creature/player/hutt_male.lua") --Hutt male
 includeFile("creature/player/nautolan_male.lua") --Nautolan male
---includeFile("creature/player/togruta_female.lua") --Togruta female
+includeFile("creature/player/togruta_female.lua") --Togruta female
 includeFile("creature/player/chiss_female.lua") --Chiss female
 includeFile("creature/player/chiss_male.lua") --Chiss male
 includeFile("creature/player/devaronian_male.lua") --Devaronian male

@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_yt1300_decorated_01 = object_ship_player_shared_player_yt1300_decorated_01:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_yt1300",
 	slideFactor = 1.85,
 	chassisHitpoints = 5000,

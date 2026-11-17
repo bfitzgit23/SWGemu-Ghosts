@@ -38,6 +38,8 @@ void DraftSchematicImplementation::sendBaselinesTo(SceneObject* player) {
 }
 
 void DraftSchematicImplementation::sendDraftSlotsTo(CreatureObject* player) {
+	if (schematicTemplate == nullptr)
+		return;
 	CreatureObject* playerCreature = cast<CreatureObject*>( player);
 
 	ObjectControllerMessage* msg = new ObjectControllerMessage(player->getObjectID(), 0x0B, 0x01BF);
@@ -56,6 +58,8 @@ void DraftSchematicImplementation::sendDraftSlotsTo(CreatureObject* player) {
 }
 
 void DraftSchematicImplementation::insertIngredients(ObjectControllerMessage* msg) {
+	if (schematicTemplate == nullptr)
+		return;
 	const Vector<Reference<DraftSlot* > >* draftSlots = schematicTemplate->getDraftSlots();
 
 	msg->insertInt(draftSlots->size());
@@ -68,6 +72,8 @@ void DraftSchematicImplementation::insertIngredients(ObjectControllerMessage* ms
 }
 
 void DraftSchematicImplementation::sendResourceWeightsTo(CreatureObject* player) {
+	if (schematicTemplate == nullptr)
+		return;
 	const Vector<Reference<ResourceWeight* > >* resourceWeights = schematicTemplate->getResourceWeights();
 
 	if (resourceWeights == nullptr)
@@ -117,74 +123,130 @@ Reference<SceneObject*> DraftSchematicImplementation::createManufactureSchematic
 }
 
 int DraftSchematicImplementation::getDraftSlotCount() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getDraftSlots()->size();
 }
 
 DraftSlot* DraftSchematicImplementation::getDraftSlot(int i) {
+	if (schematicTemplate == nullptr)
+		return nullptr;
+
 	return schematicTemplate->getDraftSlots()->get(i);
 }
 
 int DraftSchematicImplementation::getResourceWeightCount() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getResourceWeights()->size();
 }
 
 ResourceWeight* DraftSchematicImplementation::getResourceWeight(int i) {
+	if (schematicTemplate == nullptr)
+		return nullptr;
+
 	return schematicTemplate->getResourceWeights()->get(i);
 }
 
 
 float DraftSchematicImplementation::getComplexity() {
+	if (schematicTemplate == nullptr)
+		return 0.f;
+
 	return (float)schematicTemplate->getComplexity();
 }
 
 uint32 DraftSchematicImplementation::getToolTab() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return (uint32)schematicTemplate->getCraftingToolTab();
 }
 
 float DraftSchematicImplementation::getSize() {
+	if (schematicTemplate == nullptr)
+		return 0.f;
+
 	return (float)schematicTemplate->getSize();
 }
 
 String DraftSchematicImplementation::getXpType() {
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getXpType();
 }
 
 int DraftSchematicImplementation::getXpAmount() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getXp();
 }
 
 bool DraftSchematicImplementation::getIsMagic() {
+	if (schematicTemplate == nullptr)
+		return false;
+
 	return schematicTemplate->getIsMagic();
 }
 
 String DraftSchematicImplementation::getAssemblySkill() {
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getAssemblySkill();
 }
 
 String DraftSchematicImplementation::getExperimentationSkill() {
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getExperimentingSkill();
 }
 
 String DraftSchematicImplementation::getCustomizationSkill() {
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getCustomizationSkill();
 }
 
 String DraftSchematicImplementation::getCustomName() {
+	// Ghosts: schematics restored without a template crash here during login-time
+	// skill awards (SchematicList::contains -> getCustomName). Treat as unnamed.
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getCustomObjectName();
 }
 
 uint32 DraftSchematicImplementation::getTanoCRC() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getTanoCRC();
 }
 
 int DraftSchematicImplementation::getLabratory() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getLabratory();
 }
 
 int DraftSchematicImplementation::getFactoryCrateSize() {
+	if (schematicTemplate == nullptr)
+		return 0;
+
 	return schematicTemplate->getFactoryCrateSize();
 }
 
 String DraftSchematicImplementation::getFactoryCrateType() {
+	if (schematicTemplate == nullptr)
+		return String();
+
 	return schematicTemplate->getFactoryCrateType();
 }

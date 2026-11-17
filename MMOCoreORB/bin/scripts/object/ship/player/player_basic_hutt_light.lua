@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_basic_hutt_light = object_ship_player_shared_player_basic_hutt_light:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_basic_hutt_light",
 
 	slideFactor = 1.95,

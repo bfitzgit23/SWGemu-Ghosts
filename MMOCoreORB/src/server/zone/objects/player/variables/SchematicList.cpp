@@ -158,6 +158,11 @@ Vector<ManagedReference<DraftSchematic* > > SchematicList::filterSchematicList(
 	for (int i = 0; i < size(); ++i) {
 		const ManagedReference<DraftSchematic*>& schematic = get(i);
 
+		// Ghosts: restored schematics can have no DraftSchematicObjectTemplate.
+		// They cannot be crafted; skip instead of crashing on getToolTab/getComplexity.
+		if (schematic == nullptr || schematic->getDraftSchematicTemplate() == nullptr)
+			continue;
+
 		for(int j = 0; j < enabledTabs->size(); ++j) {
 			if(enabledTabs->get(j) == schematic->getToolTab() &&
 					schematic->getComplexity() <= complexityLevel) {

@@ -41,6 +41,40 @@ local PADAWAN_STUDIES_NEEDED = 10
 local KNIGHT_STUDIES_NEEDED = 10
 local MASTER_STUDIES_NEEDED = 20
 
+-- Existing non-Grey Jedi get a one-time grandfather exemption from the
+-- Padawan->Knight seven-day wait. Characters who start the Padawan stage at
+-- or after this cutoff (2026-11-05 19:56:40 CET) keep the wait.
+local KNIGHT_WAIT_GRANDFATHER_CUTOFF = 1793905000
+
+local function isKnightWaitGrandfathered(pCreature, timestampKey)
+    if pCreature == nil or timestampKey ~= "padawan_unlocked_at" then
+        return false
+    end
+
+    -- Grey Jedi are deliberately excluded from the grandfather exemption.
+    local alignment = rsd(pCreature, "jedi_alignment")
+    if alignment == "grey" or alignment == "gray" then
+        return false
+    end
+
+    if CreatureObject(pCreature):hasSkill("combat_jedi_novice") then
+        return false
+    end
+
+    if rsd(pCreature, "knight_wait_grandfathered") == "1" then
+        return true
+    end
+
+    local unlockedAt = tonumber(rsd(pCreature, timestampKey)) or 0
+    if unlockedAt <= 0 or unlockedAt >= KNIGHT_WAIT_GRANDFATHER_CUTOFF then
+        return false
+    end
+
+    wsd(pCreature, "knight_wait_grandfathered", "1")
+    sendForceMessage(pCreature, "Your existing Jedi has been exempted from the seven-day Knight training wait. Future Jedi must still complete it.")
+    return true
+end
+
 -- Each rank has its own counter.  The one-time migration converts saves made
 -- by the short-lived cumulative implementation without making players repeat
 -- studies already completed during their current rank.
@@ -198,6 +232,10 @@ end
 function holocron_progression_timer_ready(pCreature, timestampKey, stageName)
     if pCreature == nil then return false end
 
+    if isKnightWaitGrandfathered(pCreature, timestampKey) then
+        return true
+    end
+
     if rsd(pCreature, "progression_timer_bypass_pending") == "1" then
         -- A bypass authorizes exactly one progression gate. Consume it here
         -- so an administrator must explicitly authorize every later stage.
@@ -226,6 +264,10 @@ end
 -- bypass. Returns true while the player must continue waiting.
 function holocron_progression_training_notice(pCreature, timestampKey, stageName)
     if pCreature == nil then return false end
+
+    if isKnightWaitGrandfathered(pCreature, timestampKey) then
+        return false
+    end
 
     if rsd(pCreature, "progression_timer_bypass_pending") == "1" then
         sendForceMessage(pCreature, "An administrator has authorized your next timed progression stage. Speak to the Gatekeeper when your studies are complete.")
@@ -1111,7 +1153,7 @@ function HolocronJedi:onKnightTrialConfirmDark(pPlayer, pSui, eventIndex, ...)
     DarkEnclaveKnight:onTrialAccept(pPlayer)
 end
 
-function holocron_grant_padawan(pCreature)
+function holocron_grant_padawan(pCreature, silent)
     if pCreature == nil then return end
 
     local pGhost = CreatureObject(pCreature):getPlayerObject()
@@ -1259,6 +1301,16 @@ function holocron_grant_padawan(pCreature)
         "force_sensitive_heightened_senses_master"
     }
 
+    -- Set the Village bypass before awarding the Force-sensitive master
+    -- boxes. Awarding those boxes fires onFSTreeCompleted, which would
+    -- otherwise start the Village outro and its old-man prompt for a
+    -- holocron unlock.
+    wsd(pCreature, "jedi_status", "padawan")
+    CreatureObject(pCreature):setScreenPlayState(
+        32,
+        "VillageJediProgression"
+    )
+
     for i = 1, #fsSkills do
         if not CreatureObject(pCreature):hasSkill(fsSkills[i]) then
             awardSkill(pCreature, fsSkills[i], true)
@@ -1271,11 +1323,7 @@ function holocron_grant_padawan(pCreature)
     -- Force Sensitive (village) skill trees; disciplines are trained in-game
     -- from the jedi trainer.
 
-    -- Required for the Force progression tree to display correctly.
-    CreatureObject(pCreature):setScreenPlayState(
-        32,
-        "VillageJediProgression"
-    )
+    -- The Village bypass was set before the FS grants above.
 
     -- Set our custom progression state.
     wsd(pCreature, "jedi_status", "padawan")
@@ -1290,7 +1338,7 @@ function holocron_grant_padawan(pCreature)
     -- Finish the standard Core3 Padawan setup, but bypass the normal
     -- Village requirements for the Jedi title ranks.
     if JediTrials ~= nil and JediTrials.unlockJediPadawan ~= nil then
-        JediTrials:unlockJediPadawan(pCreature, true, true)
+        JediTrials:unlockJediPadawan(pCreature, true, true, silent)
     else
         CreatureObject(pCreature):sendSystemMessage(
             "\\#FF4444[Jedi System] \\#FFFFFFJediTrials not found."
@@ -1302,6 +1350,8 @@ function holocron_grant_padawan(pCreature)
 
     replaceEnclaveWaypoint(pCreature, rsd(pCreature, "jedi_alignment"))
 
+    -- Silent grants (staff instant unlock) skip the roleplay mail.
+    if not silent then
     CreatureObject(pCreature):sendSystemMessage(
         "\\#AADDFF[Jedi System] \\#FFFFFFYour connection to the Force has awakened. You are now a Jedi Padawan."
     )
@@ -1317,9 +1367,10 @@ function holocron_grant_padawan(pCreature)
         "May the Force guide your path.",
         firstName
     )
+    end
 end
 
-function holocron_grant_knight(pCreature, alignment)
+function holocron_grant_knight(pCreature, alignment, silent)
     if pCreature == nil then return end
 
     local pGhost = CreatureObject(pCreature):getPlayerObject()
@@ -1367,7 +1418,7 @@ function holocron_grant_knight(pCreature, alignment)
     -- Finish normal Core3 Knight setup:
     -- FRS council/rank, Jedi state, faction, robe, music, etc.
     if JediTrials ~= nil and JediTrials.unlockJediKnight ~= nil then
-        JediTrials:unlockJediKnight(pCreature)
+        JediTrials:unlockJediKnight(pCreature, silent)
     else
         CreatureObject(pCreature):sendSystemMessage(
             "\\#FF4444[Jedi System] \\#FFFFFFJediTrials.unlockJediKnight not found."
@@ -1379,6 +1430,8 @@ function holocron_grant_knight(pCreature, alignment)
     createEvent(5000, "JediHunters", "startHunting", pCreature, "")
     createEvent(5500, "JediVisibilityHunters", "checkVisibility", pCreature, "")
 
+    -- Silent grants (staff instant unlock) skip the roleplay mail.
+    if not silent then
     if alignment == "dark" then
         CreatureObject(pCreature):sendSystemMessage(
             "\\#FF4444[Jedi System] \\#FFFFFFYou have been recognized as a Dark Jedi Knight."
@@ -1401,6 +1454,7 @@ function holocron_grant_knight(pCreature, alignment)
         "May the Force guide your path.",
         firstName
     )
+    end
 end
 
 -- ============================================================
@@ -1643,4 +1697,472 @@ function holocron_debug_status(pCreature)
     CreatureObject(pCreature):sendSystemMessage("Master Holocrons: " .. (masterUsed == "" and "0" or masterUsed) .. "/20")
     CreatureObject(pCreature):sendSystemMessage("Alignment: " .. (alignment == "" and "none" or alignment))
     CreatureObject(pCreature):sendSystemMessage("=========================")
+end
+
+
+-- ============================================================
+-- Staff: instant Jedi Knight
+-- Called by GrantPadawanTrialsEligibilityCommand with "full".
+-- ============================================================
+
+-- The instant Jedi unlock grants only the Force Sensitive trees and the
+-- Force progression ranks. Jedi discipline boxes remain trainer-earned.
+
+local MAX_JEDI_DISCIPLINE_SKILLS = {
+    -- Every Force discipline box: lightsaber, powers, healing, enhancements, defender.
+    "force_discipline_light_saber_novice",
+    "force_discipline_light_saber_master",
+    "force_discipline_light_saber_one_hand_01",
+    "force_discipline_light_saber_one_hand_02",
+    "force_discipline_light_saber_one_hand_03",
+    "force_discipline_light_saber_one_hand_04",
+    "force_discipline_light_saber_two_hand_01",
+    "force_discipline_light_saber_two_hand_02",
+    "force_discipline_light_saber_two_hand_03",
+    "force_discipline_light_saber_two_hand_04",
+    "force_discipline_light_saber_polearm_01",
+    "force_discipline_light_saber_polearm_02",
+    "force_discipline_light_saber_polearm_03",
+    "force_discipline_light_saber_polearm_04",
+    "force_discipline_light_saber_technique_01",
+    "force_discipline_light_saber_technique_02",
+    "force_discipline_light_saber_technique_03",
+    "force_discipline_light_saber_technique_04",
+    "force_discipline_powers_novice",
+    "force_discipline_powers_master",
+    "force_discipline_powers_lightning_01",
+    "force_discipline_powers_lightning_02",
+    "force_discipline_powers_lightning_03",
+    "force_discipline_powers_lightning_04",
+    "force_discipline_powers_mental_01",
+    "force_discipline_powers_mental_02",
+    "force_discipline_powers_mental_03",
+    "force_discipline_powers_mental_04",
+    "force_discipline_powers_debuff_01",
+    "force_discipline_powers_debuff_02",
+    "force_discipline_powers_debuff_03",
+    "force_discipline_powers_debuff_04",
+    "force_discipline_powers_push_01",
+    "force_discipline_powers_push_02",
+    "force_discipline_powers_push_03",
+    "force_discipline_powers_push_04",
+    "force_discipline_healing_novice",
+    "force_discipline_healing_master",
+    "force_discipline_healing_damage_01",
+    "force_discipline_healing_damage_02",
+    "force_discipline_healing_damage_03",
+    "force_discipline_healing_damage_04",
+    "force_discipline_healing_wound_01",
+    "force_discipline_healing_wound_02",
+    "force_discipline_healing_wound_03",
+    "force_discipline_healing_wound_04",
+    "force_discipline_healing_other_01",
+    "force_discipline_healing_other_02",
+    "force_discipline_healing_other_03",
+    "force_discipline_healing_other_04",
+    "force_discipline_healing_states_01",
+    "force_discipline_healing_states_02",
+    "force_discipline_healing_states_03",
+    "force_discipline_healing_states_04",
+    "force_discipline_enhancements_novice",
+    "force_discipline_enhancements_master",
+    "force_discipline_enhancements_movement_01",
+    "force_discipline_enhancements_movement_02",
+    "force_discipline_enhancements_movement_03",
+    "force_discipline_enhancements_movement_04",
+    "force_discipline_enhancements_protection_01",
+    "force_discipline_enhancements_protection_02",
+    "force_discipline_enhancements_protection_03",
+    "force_discipline_enhancements_protection_04",
+    "force_discipline_enhancements_resistance_01",
+    "force_discipline_enhancements_resistance_02",
+    "force_discipline_enhancements_resistance_03",
+    "force_discipline_enhancements_resistance_04",
+    "force_discipline_enhancements_synergy_01",
+    "force_discipline_enhancements_synergy_02",
+    "force_discipline_enhancements_synergy_03",
+    "force_discipline_enhancements_synergy_04",
+    "force_discipline_defender_novice",
+    "force_discipline_defender_master",
+    "force_discipline_defender_melee_defense_01",
+    "force_discipline_defender_melee_defense_02",
+    "force_discipline_defender_melee_defense_03",
+    "force_discipline_defender_melee_defense_04",
+    "force_discipline_defender_ranged_defense_01",
+    "force_discipline_defender_ranged_defense_02",
+    "force_discipline_defender_ranged_defense_03",
+    "force_discipline_defender_ranged_defense_04",
+    "force_discipline_defender_force_defense_01",
+    "force_discipline_defender_force_defense_02",
+    "force_discipline_defender_force_defense_03",
+    "force_discipline_defender_force_defense_04",
+    "force_discipline_defender_preternatural_defense_01",
+    "force_discipline_defender_preternatural_defense_02",
+    "force_discipline_defender_preternatural_defense_03",
+    "force_discipline_defender_preternatural_defense_04"
+}
+
+local MAX_DARK_LORD_SKILLS = {
+    -- Full Dark Lord tree; requires Jedi state 8, granted below.
+    "jedi_dark_lord_novice",
+    "jedi_dark_lord_lightsaber_01",
+    "jedi_dark_lord_lightsaber_02",
+    "jedi_dark_lord_lightsaber_03",
+    "jedi_dark_lord_lightsaber_04",
+    "jedi_dark_lord_force_powers_01",
+    "jedi_dark_lord_force_powers_02",
+    "jedi_dark_lord_force_powers_03",
+    "jedi_dark_lord_force_powers_04",
+    "jedi_dark_lord_defence_01",
+    "jedi_dark_lord_defence_02",
+    "jedi_dark_lord_defence_03",
+    "jedi_dark_lord_defence_04",
+    "jedi_dark_lord_tyrant_01",
+    "jedi_dark_lord_tyrant_02",
+    "jedi_dark_lord_tyrant_03",
+    "jedi_dark_lord_tyrant_04",
+    "jedi_dark_lord_master"
+}
+
+local MAX_GRAND_MASTER_SKILLS = {
+    -- Full Grand Master tree for light-side max builds.
+    "jedi_grand_master_novice",
+    "jedi_grand_master_lightsaber_01",
+    "jedi_grand_master_lightsaber_02",
+    "jedi_grand_master_lightsaber_03",
+    "jedi_grand_master_lightsaber_04",
+    "jedi_grand_master_force_powers_01",
+    "jedi_grand_master_force_powers_02",
+    "jedi_grand_master_force_powers_03",
+    "jedi_grand_master_force_powers_04",
+    "jedi_grand_master_defence_01",
+    "jedi_grand_master_defence_02",
+    "jedi_grand_master_defence_03",
+    "jedi_grand_master_defence_04",
+    "jedi_grand_master_guardian_01",
+    "jedi_grand_master_guardian_02",
+    "jedi_grand_master_guardian_03",
+    "jedi_grand_master_guardian_04",
+    "jedi_grand_master_master"
+}
+
+local MAX_COMBAT_SKILLS = {
+    -- Six master combat professions, 40 points each.
+    "combat_unarmed_novice",
+    "combat_unarmed_master",
+    "combat_unarmed_accuracy_01",
+    "combat_unarmed_accuracy_02",
+    "combat_unarmed_accuracy_03",
+    "combat_unarmed_accuracy_04",
+    "combat_unarmed_speed_01",
+    "combat_unarmed_speed_02",
+    "combat_unarmed_speed_03",
+    "combat_unarmed_speed_04",
+    "combat_unarmed_ability_01",
+    "combat_unarmed_ability_02",
+    "combat_unarmed_ability_03",
+    "combat_unarmed_ability_04",
+    "combat_unarmed_support_01",
+    "combat_unarmed_support_02",
+    "combat_unarmed_support_03",
+    "combat_unarmed_support_04",
+    "combat_1hsword_novice",
+    "combat_1hsword_master",
+    "combat_1hsword_accuracy_01",
+    "combat_1hsword_accuracy_02",
+    "combat_1hsword_accuracy_03",
+    "combat_1hsword_accuracy_04",
+    "combat_1hsword_speed_01",
+    "combat_1hsword_speed_02",
+    "combat_1hsword_speed_03",
+    "combat_1hsword_speed_04",
+    "combat_1hsword_ability_01",
+    "combat_1hsword_ability_02",
+    "combat_1hsword_ability_03",
+    "combat_1hsword_ability_04",
+    "combat_1hsword_support_01",
+    "combat_1hsword_support_02",
+    "combat_1hsword_support_03",
+    "combat_1hsword_support_04",
+    "combat_2hsword_novice",
+    "combat_2hsword_master",
+    "combat_2hsword_accuracy_01",
+    "combat_2hsword_accuracy_02",
+    "combat_2hsword_accuracy_03",
+    "combat_2hsword_accuracy_04",
+    "combat_2hsword_speed_01",
+    "combat_2hsword_speed_02",
+    "combat_2hsword_speed_03",
+    "combat_2hsword_speed_04",
+    "combat_2hsword_ability_01",
+    "combat_2hsword_ability_02",
+    "combat_2hsword_ability_03",
+    "combat_2hsword_ability_04",
+    "combat_2hsword_support_01",
+    "combat_2hsword_support_02",
+    "combat_2hsword_support_03",
+    "combat_2hsword_support_04",
+    "combat_polearm_novice",
+    "combat_polearm_master",
+    "combat_polearm_accuracy_01",
+    "combat_polearm_accuracy_02",
+    "combat_polearm_accuracy_03",
+    "combat_polearm_accuracy_04",
+    "combat_polearm_speed_01",
+    "combat_polearm_speed_02",
+    "combat_polearm_speed_03",
+    "combat_polearm_speed_04",
+    "combat_polearm_ability_01",
+    "combat_polearm_ability_02",
+    "combat_polearm_ability_03",
+    "combat_polearm_ability_04",
+    "combat_polearm_support_01",
+    "combat_polearm_support_02",
+    "combat_polearm_support_03",
+    "combat_polearm_support_04",
+    "combat_bountyhunter_novice",
+    "combat_bountyhunter_master",
+    "combat_bountyhunter_investigation_01",
+    "combat_bountyhunter_investigation_02",
+    "combat_bountyhunter_investigation_03",
+    "combat_bountyhunter_investigation_04",
+    "combat_bountyhunter_droidcontrol_01",
+    "combat_bountyhunter_droidcontrol_02",
+    "combat_bountyhunter_droidcontrol_03",
+    "combat_bountyhunter_droidcontrol_04",
+    "combat_bountyhunter_droidresponse_01",
+    "combat_bountyhunter_droidresponse_02",
+    "combat_bountyhunter_droidresponse_03",
+    "combat_bountyhunter_droidresponse_04",
+    "combat_bountyhunter_support_01",
+    "combat_bountyhunter_support_02",
+    "combat_bountyhunter_support_03",
+    "combat_bountyhunter_support_04",
+    "combat_commando_novice",
+    "combat_commando_master",
+    "combat_commando_heavyweapon_accuracy_01",
+    "combat_commando_heavyweapon_accuracy_02",
+    "combat_commando_heavyweapon_accuracy_03",
+    "combat_commando_heavyweapon_accuracy_04",
+    "combat_commando_heavyweapon_speed_01",
+    "combat_commando_heavyweapon_speed_02",
+    "combat_commando_heavyweapon_speed_03",
+    "combat_commando_heavyweapon_speed_04",
+    "combat_commando_thrownweapon_01",
+    "combat_commando_thrownweapon_02",
+    "combat_commando_thrownweapon_03",
+    "combat_commando_thrownweapon_04",
+    "combat_commando_support_01",
+    "combat_commando_support_02",
+    "combat_commando_support_03",
+    "combat_commando_support_04"
+}
+
+local MAX_MARKSMAN_SKILLS = {
+    -- Twenty points of marksman to reach exactly 500 spent.
+    "combat_marksman_novice",
+    "combat_marksman_rifle_01",
+    "combat_marksman_rifle_02",
+    "combat_marksman_rifle_03",
+    "combat_marksman_rifle_04",
+    "combat_marksman_pistol_01",
+    "combat_marksman_pistol_02",
+    "combat_marksman_pistol_03",
+    "combat_marksman_pistol_04"
+}
+
+local MAX_TITLE_SKILLS = {
+    -- Jedi Master title boxes; zero point cost.
+    "force_title_jedi_rank_04",
+    "force_title_jedi_master"
+}
+
+function HolocronJedi:giveInstantJediGear(pCreature)
+    if pCreature == nil then
+        return
+    end
+
+    local pInventory = SceneObject(pCreature):getSlottedObject("inventory")
+
+    if pInventory == nil then
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Your inventory could not be found. Ask staff for your lightsaber.")
+        return
+    end
+
+    if SceneObject(pInventory):isContainerFullRecursive() then
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Your inventory is full. Make room and ask staff to run the grant again for your lightsaber.")
+        return
+    end
+
+    giveItem(pInventory, "object/weapon/melee/sword/crafted_saber/sword_lightsaber_one_handed_gen4.iff", -1)
+end
+
+
+function HolocronJedi:giveMaxJediGear(pCreature, alignment)
+    if pCreature == nil then
+        return
+    end
+
+    self:giveInstantJediGear(pCreature)
+
+    local pInventory = SceneObject(pCreature):getSlottedObject("inventory")
+
+    if pInventory == nil then
+        return
+    end
+
+    local robeTemplate = "object/tangible/wearables/robe/robe_jedi_black_01.iff"
+
+    if alignment == "light" then
+        robeTemplate = "object/tangible/wearables/robe/robe_jedi_light_s01.iff"
+    end
+
+    if SceneObject(pInventory):isContainerFullRecursive() then
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Your inventory is full; the MAX robe could not be issued.")
+        return
+    end
+
+    if not inventoryContainsTemplate(pCreature, robeTemplate) then
+        giveItem(pInventory, robeTemplate, -1)
+    end
+end
+
+function HolocronJedi:instantGrantJedi(pCreature, alignment, maxed, jediOnly)
+    if pCreature == nil then
+        return
+    end
+
+    if jediOnly then
+        maxed = true
+    end
+
+    local pGhost = CreatureObject(pCreature):getPlayerObject()
+
+    if pGhost == nil then
+        return
+    end
+
+    alignment = alignment and string.lower(alignment) or ""
+
+    if alignment ~= "light" and alignment ~= "dark" then
+        alignment = rsd(pCreature, "jedi_alignment")
+    end
+
+    if alignment ~= "light" and alignment ~= "dark" then
+        alignment = "light"
+    end
+
+    local jediState = PlayerObject(pGhost):getJediState()
+
+    if jediState >= 4 and not maxed then
+        self:giveInstantJediGear(pCreature)
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] You are already a Jedi Knight. Any missing gear has been issued.")
+        return
+    end
+
+    wsd(pCreature, "jedi_alignment", alignment)
+
+    local councilType = (alignment == "dark") and 2 or 1
+    writeScreenPlayData(pCreature, "JediTrials", "JediCouncil", tostring(councilType))
+    CreatureObject(pCreature):setScreenPlayState(councilType, "HolocronKnightCouncil")
+
+    if jediState < 4 then
+        -- Foundation: Force Sensitive trees, Padawan title ranks and village access.
+        holocron_grant_padawan(pCreature, true)
+
+        -- Knight: rank_03, Force rank, Jedi state 4/8, faction, robe, enclave waypoint.
+        holocron_grant_knight(pCreature, alignment, true)
+    end
+
+    -- Do not grant the Jedi discipline template here. The instant unlock
+    -- leaves the player with the Force Sensitive trees and Force progression
+    -- ranks above; disciplines remain trainer-earned.
+
+    if maxed then
+        -- Dark Lord / Grand Master boxes require Jedi state 8. Set it before
+        -- granting so the client skill tree and titles line up.
+        PlayerObject(pGhost):setJediState(8)
+
+        local capstoneSkills = MAX_GRAND_MASTER_SKILLS
+
+        if alignment == "dark" then
+            capstoneSkills = MAX_DARK_LORD_SKILLS
+        end
+
+        local grantLists = {
+            MAX_JEDI_DISCIPLINE_SKILLS,
+            capstoneSkills
+        }
+
+        if not jediOnly then
+            table.insert(grantLists, MAX_COMBAT_SKILLS)
+            table.insert(grantLists, MAX_MARKSMAN_SKILLS)
+        end
+
+        table.insert(grantLists, MAX_TITLE_SKILLS)
+
+        -- Starting professions and any skills trained before the grant already
+        -- consume part of the 500-point budget. Check each box's real cost so
+        -- the max build never pushes a character into negative skill points.
+        local skillManager = LuaSkillManager()
+        local skippedSkills = 0
+
+        for listIndex = 1, #grantLists do
+            local skills = grantLists[listIndex]
+
+            for i = 1, #skills do
+                local skillName = skills[i]
+
+                if not CreatureObject(pCreature):hasSkill(skillName) then
+                    local skillPointer = skillManager:getSkill(skillName)
+                    local skillCost = 0
+
+                    if skillPointer ~= nil then
+                        skillCost = LuaSkill(skillPointer):getSkillPointsRequired()
+                    end
+
+                    if PlayerObject(pGhost):getSkillPoints() >= skillCost then
+                        awardSkill(pCreature, skillName, true)
+                    else
+                        skippedSkills = skippedSkills + 1
+                    end
+                end
+            end
+        end
+
+        wsd(pCreature, "jedi_status", "master")
+
+        self:giveMaxJediGear(pCreature, alignment)
+        CreatureObject(pCreature):addCashCredits(10000000, true)
+
+        local remaining = PlayerObject(pGhost):getSkillPoints()
+
+        if jediOnly then
+            if alignment == "dark" then
+                CreatureObject(pCreature):sendSystemMessage("[Jedi System] JEDI-ONLY MAX Sith build applied: every Force discipline, the Dark Lord tree, the Jedi Master title, a black robe, and 10,000,000 credits. Combat professions were skipped.")
+            else
+                CreatureObject(pCreature):sendSystemMessage("[Jedi System] JEDI-ONLY MAX Jedi build applied: every Force discipline, the Grand Master tree, the Jedi Master title, a light robe, and 10,000,000 credits. Combat professions were skipped.")
+            end
+        elseif alignment == "dark" then
+            CreatureObject(pCreature):sendSystemMessage("[Jedi System] MAX Sith build applied: every Force discipline, the Dark Lord tree, six master combat professions, a marksman package, a black robe, and 10,000,000 credits.")
+        else
+            CreatureObject(pCreature):sendSystemMessage("[Jedi System] MAX Jedi build applied: every Force discipline, the Grand Master tree, six master combat professions, a marksman package, a light robe, and 10,000,000 credits.")
+        end
+
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Skill points remaining: " .. tostring(remaining) .. "/500.")
+
+        if skippedSkills > 0 then
+            CreatureObject(pCreature):sendSystemMessage("[Jedi System] " .. tostring(skippedSkills) .. " box(es) were skipped because existing skills already use part of the 500-point budget.")
+        end
+
+        return
+    end
+
+    self:giveInstantJediGear(pCreature)
+
+    if alignment == "dark" then
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Staff have recognized you as a Dark Jedi Knight. Your lightsaber and robe have been issued.")
+    else
+        CreatureObject(pCreature):sendSystemMessage("[Jedi System] Staff have recognized you as a Jedi Knight. Your lightsaber and robe have been issued.")
+    end
 end

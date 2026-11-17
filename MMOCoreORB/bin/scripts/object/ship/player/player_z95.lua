@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_z95 = object_ship_player_shared_player_z95:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_z95",
 	slideFactor = 1.91,

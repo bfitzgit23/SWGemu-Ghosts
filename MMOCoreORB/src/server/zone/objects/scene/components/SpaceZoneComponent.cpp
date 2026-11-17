@@ -239,7 +239,10 @@ void SpaceZoneComponent::switchZone(SceneObject* sceneObject, const String& newT
 
 	ManagedReference<SceneObject*> newParent = zoneServer->getObject(parentID);
 
+	info(true) << "SZDBG switchZone obj=" << sceneObject->getDisplayedName() << " oid=" << sceneObject->getObjectID() << " fromZone=" << (zone != nullptr ? zone->getZoneName() : String("null")) << " toZone=" << newTerrainName << " parentID=" << parentID << " arrangement=" << playerArrangement << " parent=" << (newParent != nullptr ? newParent->getDisplayedName() : String("NULL")) << " parentZone=" << (newParent != nullptr && newParent->getZone() != nullptr ? newParent->getZone()->getZoneName() : String("null"));
+
 	if (newParent != nullptr && newParent->getZone() == nullptr) {
+		error() << "SZDBG switchZone parent " << parentID << " has NO ZONE - aborting";
 		return;
 	}
 
@@ -263,7 +266,11 @@ void SpaceZoneComponent::switchZone(SceneObject* sceneObject, const String& newT
 		info(true) << "SpaceZoneComponent::switchZone -- starting transfer into new parent... ";
 #endif
 
-		if (newParent->transferObject(sceneObject, playerArrangement, false, false, false)) {
+		bool szTransferred = newParent->transferObject(sceneObject, playerArrangement, false, false, false);
+
+		info(true) << "SZDBG transferIntoParent result=" << szTransferred << " newParentID=" << sceneObject->getParentID() << " containment=" << sceneObject->getContainmentType() << " zone=" << (sceneObject->getZone() != nullptr ? sceneObject->getZone()->getZoneName() : String("null")) << " rootParent=" << (sceneObject->getRootParent() != nullptr ? sceneObject->getRootParent()->getDisplayedName() : String("null"));
+
+		if (szTransferred) {
 			bool isShipParent = newParent->isPilotChair() || newParent->isCellObject() || newParent->isShipTurret() || newParent->isOperationsChair();
 
 			// For ship parents, split sendToOwner into two phases with a delay.
@@ -309,6 +316,8 @@ void SpaceZoneComponent::switchZone(SceneObject* sceneObject, const String& newT
 			}
 		}
 	} else {
+		error() << "SZDBG switchZone newParent NULL for parentID " << parentID << " - transferring bare into " << newTerrainName;
+
 		if (newZone->transferObject(sceneObject, -1, true)) {
 			// info(true) << "SpaceZoneComponent::switchZone transferred Object into space: " << sceneObject->getDisplayedName() << " Containment Type: " << playerArrangement;
 		}

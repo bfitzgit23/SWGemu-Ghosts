@@ -54,13 +54,9 @@ function VillageJediManager:onPlayerLoggedIn(pPlayer)
 		return
 	end
 
-	Glowing:onPlayerLoggedIn(pPlayer)
+	-- Village unlock chain disabled (Ghosts): do not resume Glowing.
 
-	-- Ghosts: only the vanilla village intro path auto-awards the novice title;
-	-- holocron-unlocked and grey jedi keep whatever path granted them their skills.
-	if (VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_HAS_VILLAGE_ACCESS) and QuestManager.hasCompletedQuest(pPlayer, QuestManager.quests.FS_VILLAGE_ELDER) and not CreatureObject(pPlayer):hasSkill("force_title_jedi_novice")) then
-		awardSkill(pPlayer, "force_title_jedi_novice")
-	end
+	-- Village unlock is disabled (Ghosts): access markers do not award Jedi.
 
 	-- Ghosts: village ACCESS for force-path players (holocron jedi or grey jedi).
 	-- The pre-CU client gates the Aurilia mist wall on the vanilla village-intro
@@ -86,13 +82,9 @@ function VillageJediManager:onPlayerLoggedIn(pPlayer)
 		end
 	end
 
-	if (FsIntro:isOnIntro(pPlayer)) then
-		FsIntro:onLoggedIn(pPlayer)
-	end
+	-- Village unlock chain disabled (Ghosts): do not resume FsIntro.
 
-	if (FsOutro:isOnOutro(pPlayer)) then
-		FsOutro:onLoggedIn(pPlayer)
-	end
+	-- Village unlock chain disabled (Ghosts): do not resume FsOutro.
 
 	FsPhase1:onLoggedIn(pPlayer)
 	FsPhase2:onLoggedIn(pPlayer)
@@ -112,13 +104,9 @@ function VillageJediManager:onPlayerLoggedOut(pPlayer)
 		return
 	end
 
-	if (FsIntro:isOnIntro(pPlayer)) then
-		FsIntro:onLoggedOut(pPlayer)
-	end
+	-- Village unlock chain disabled (Ghosts): do not resume FsIntro.
 
-	if (FsOutro:isOnOutro(pPlayer)) then
-		FsOutro:onLoggedOut(pPlayer)
-	end
+	-- Village unlock chain disabled (Ghosts): do not resume FsOutro.
 
 	FsPhase1:onLoggedOut(pPlayer)
 	FsPhase2:onLoggedOut(pPlayer)
@@ -161,6 +149,9 @@ end
 -- Handling of the onFSTreesCompleted event.
 -- @param pPlayer pointer to the creature object of the player
 function VillageJediManager:onFSTreeCompleted(pPlayer, branch)
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
+		return
+	end
 	if (pPlayer == nil) then
 		return
 	end
@@ -169,10 +160,7 @@ function VillageJediManager:onFSTreeCompleted(pPlayer, branch)
 		return
 	end
 
-	if (VillageJediManagerCommon.getLearnedForceSensitiveBranches(pPlayer) >= NUMBEROFTREESTOMASTER) then
-		VillageJediManagerCommon.setJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_COMPLETED_VILLAGE)
-		FsOutro:startOldMan(pPlayer)
-	end
+	-- Village unlock chain disabled (Ghosts): never start the Old Man unlock.
 end
 
 function VillageJediManager:onSkillRevoked(pPlayer, pSkill)

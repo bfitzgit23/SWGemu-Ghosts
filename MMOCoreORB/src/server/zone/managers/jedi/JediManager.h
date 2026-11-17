@@ -99,6 +99,13 @@ public:
 	void checkForceStatusCommand(CreatureObject* creature);
 
 	/**
+	 * Request Jedi training command.
+	 * Calls the requestJediTrainingCommand in the lua manager.
+	 * @param creature the creature that performed the command.
+	 */
+	void requestJediTrainingCommand(CreatureObject* creature);
+
+	/**
 	 * Get the name of the currently active lua jedi manager.
 	 * @return the name of the currently active lua jedi manager.
 	 */

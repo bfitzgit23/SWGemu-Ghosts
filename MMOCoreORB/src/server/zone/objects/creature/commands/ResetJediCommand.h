@@ -33,22 +33,40 @@ public:
 		Locker clocker(targetCreature, creature);
 
 		const SkillList* skillList = targetCreature->getSkillList();
+		Vector<String> forceSkills;
+		bool hadForceProgression = false;
 
 		for (int i = 0; i < skillList->size(); ++i) {
 			Skill* skill = skillList->get(i);
-			if (skill->getSkillName().indexOf("force_") != -1){
-				SkillManager::instance()->surrenderSkill(skill->getSkillName(), targetCreature, true);
+			String skillName = skill->getSkillName();
+
+			if (skillName.indexOf("force_") != -1) {
+				hadForceProgression = true;
+				forceSkills.add(skillName);
 			}
 		}
 
-		// Jedi State.s
+		for (int i = 0; i < forceSkills.size(); ++i) {
+			SkillManager::instance()->surrenderSkill(forceSkills.get(i), targetCreature, true);
+		}
 
 		ManagedReference<PlayerObject*> targetGhost = targetCreature->getPlayerObject();
 
 		if (targetGhost == nullptr)
 			return GENERALERROR;
 
-		targetGhost->setJediState(0);
+		if (hadForceProgression) {
+			// Jedi titles require state 1; set Padawan state before granting.
+			targetGhost->setJediState(2);
+
+			const bool rank02Awarded = SkillManager::instance()->awardSkill(
+					"force_title_jedi_rank_02", targetCreature, true, true, true);
+
+			if (!rank02Awarded)
+				targetGhost->setJediState(0);
+		} else {
+			targetGhost->setJediState(0);
+		}
 
 		return SUCCESS;
 	}

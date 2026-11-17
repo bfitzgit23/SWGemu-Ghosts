@@ -60,7 +60,26 @@ object_building_player_city_cantina_tatooine = object_building_player_city_share
 	groundZoneComponent = "StructureZoneComponent",
 	childObjects = {
 		{templateFile = "object/tangible/sign/municipal/municipal_sign_hanging_cantina.iff", x = 5, z = 3, y = 11.95, ox = 0, oy = 1, oz = 0, ow = 0, cellid = -1, containmentType = -1},
-		{templateFile = "object/tangible/terminal/terminal_player_structure.iff", x = -4.1, z = 0.750001, y = 6.1, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1}
+		{templateFile = "object/tangible/terminal/terminal_player_structure.iff", x = -4.1, z = 0.750001, y = 6.1, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		-- Ghosts cantina buffet: two tables, six chairs, and a varied food/drink spread.
+		{templateFile = "object/static/worldbuilding/furniture/cantina_table_1.iff", x = 0, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cantina_table_2.iff", x = 3.4, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = -1.4, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = 1.4, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = 0, z = 0, y = 0.6, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = 0, z = 0, y = 3.4, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = 2.0, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/static/worldbuilding/furniture/cheap/frn_all_chep_chair_s01.iff", x = 4.8, z = 0, y = 2, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dish_teltier_noodles.iff", x = -0.55, z = 1.05, y = 1.55, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dish_braised_canron.iff", x = 0.55, z = 1.05, y = 1.55, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dish_fire_stew.iff", x = 0, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dessert_ewok_berry.iff", x = -0.55, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dessert_pastebread.iff", x = 0.55, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dish_ahrisa.iff", x = 3.0, z = 1.05, y = 1.55, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/dessert_corellian_fried_icecream.iff", x = 3.8, z = 1.05, y = 1.55, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/drink_blue_milk.iff", x = 3.0, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/drink_caf.iff", x = 3.4, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1},
+		{templateFile = "object/tangible/food/generic/drink_tatooine_sunburn.iff", x = 3.8, z = 1.05, y = 2.45, ox = 0, oy = 1, oz = 0, ow = 0, cellid = 2, containmentType = -1}
 	},
 	shopSigns = {
 		{templateFile = "object/tangible/sign/municipal/municipal_sign_hanging_cantina.iff", x = 5, z = 3, y = 11.95, ox = 0, oy = 1, oz = 0, ow = 0, cellid = -1, containmentType = -1, requiredSkill = "", suiItem = "@player_structure:house_address"},

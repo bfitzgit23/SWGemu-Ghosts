@@ -183,7 +183,12 @@ object_tangible_wearables_cybernetic_cybernetic_crafted_s01_torso = object_tangi
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+			},
 
 	-- Damage types in WeaponObject
 	vulnerability = STUN + LIGHTSABER,

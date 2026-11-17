@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_decimator = object_ship_player_shared_player_decimator:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_decimator",
 	slideFactor = 1.85,
 	chassisHitpoints = 5000,

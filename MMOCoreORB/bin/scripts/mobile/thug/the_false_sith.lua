@@ -54,7 +54,7 @@ the_false_sith = Creature:new {
 			lootChance = 10000000,
 		}
 	},
-	weapons = {"mixed_force_weapons"},
+	weapons = {"dark_jedi_weapons_gen4"},
 	conversationTemplate = "",
 	attacks = merge(pikemanmaster, brawlermaster)
 }

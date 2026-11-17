@@ -72,10 +72,12 @@ void SceneObjectImplementation::initializeTransientMembers() {
 		// not update inventories and backpacks that already exist in the database.
 		const String& templatePath = templateObject->getFullTemplateString();
 
-		if (templatePath == "object/tangible/inventory/character_inventory.iff") {
+		if (templatePath.contains("object/tangible/inventory/") && templatePath.contains("character_inventory.iff")) {
 			setContainerVolumeLimit(200);
 		} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
 			setContainerVolumeLimit(250);
+		} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
+			setContainerVolumeLimit(200);
 		}
 
 		createContainerComponent();
@@ -201,10 +203,12 @@ void SceneObjectImplementation::loadTemplateData(SharedObjectTemplate* templateD
 	// Ghosts player storage policy.
 	const String& templatePath = templateData->getFullTemplateString();
 
-	if (templatePath == "object/tangible/inventory/character_inventory.iff") {
+	if (templatePath.contains("object/tangible/inventory/") && templatePath.contains("character_inventory.iff")) {
 		containerVolumeLimit = 200;
 	} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
 		containerVolumeLimit = 250;
+	} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
+		containerVolumeLimit = 200;
 	}
 
 	if (templateData->getCollisionActionBlockFlags() == 255) { //loading meshes for line of sight
@@ -436,10 +440,12 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 	if (templateObject != nullptr) {
 		const String& templatePath = templateObject->getFullTemplateString();
 
-		if (templatePath == "object/tangible/inventory/character_inventory.iff") {
+		if (templatePath.contains("object/tangible/inventory/") && templatePath.contains("character_inventory.iff")) {
 			setContainerVolumeLimit(200);
 		} else if (templatePath.contains("object/tangible/wearables/backpack/")) {
 			setContainerVolumeLimit(250);
+		} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
+			setContainerVolumeLimit(200);
 		}
 	}
 

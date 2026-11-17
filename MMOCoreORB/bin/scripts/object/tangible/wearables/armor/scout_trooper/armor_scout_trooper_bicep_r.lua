@@ -226,7 +226,12 @@ object_tangible_wearables_armor_scout_trooper_armor_scout_trooper_bicep_r = obje
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+	},
 	
 
 

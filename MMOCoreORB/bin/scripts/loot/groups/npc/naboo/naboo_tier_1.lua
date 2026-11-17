@@ -5,6 +5,8 @@ naboo_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "junk", weight = 2900000},
 		{groupTemplate = "loot_kit_parts", weight = 1600000},
 		{groupTemplate = "melee_knife", weight = 1600000},

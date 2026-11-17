@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_sorosuub_space_yacht = object_ship_player_shared_player_sorosuub_space_yacht:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_sorosuub_space_yacht",
 	slideFactor = 1.76,
 	chassisHitpoints = 1512,

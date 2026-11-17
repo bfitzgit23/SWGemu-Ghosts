@@ -220,7 +220,12 @@ object_tangible_wearables_backpack_wearable_backpack_c3po = object_tangible_wear
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+			},
 
 	numberExperimentalProperties = {1, 1, 1, 1},
 	experimentalProperties = {"XX", "XX", "XX", "XX"},

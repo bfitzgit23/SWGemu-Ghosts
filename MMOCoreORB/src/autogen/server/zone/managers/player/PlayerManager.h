@@ -703,6 +703,8 @@ public:
 
 	void cleanupCharacters();
 
+	void resetAllJediSkills();
+
 	bool shouldDeleteCharacter(unsigned long long characterID, int galaxyID);
 
 	bool doBurstRun(CreatureObject* player, float hamModifier, float cooldownModifier);
@@ -1290,6 +1292,8 @@ public:
 
 	void cleanupCharacters();
 
+	void resetAllJediSkills();
+
 	bool shouldDeleteCharacter(unsigned long long characterID, int galaxyID);
 
 	bool doBurstRun(CreatureObject* player, float hamModifier, float cooldownModifier);
@@ -1592,6 +1596,8 @@ public:
 	void getCleanupCharacterCount();
 
 	void cleanupCharacters();
+
+	void resetAllJediSkills();
 
 	bool shouldDeleteCharacter(unsigned long long characterID, int galaxyID);
 

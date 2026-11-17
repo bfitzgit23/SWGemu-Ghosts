@@ -688,6 +688,58 @@ int CombatManager::tanoTargetCombatAction(TangibleObject* attacker, WeaponObject
 
 */
 
+// Ghosts: map the generic attack-animation names produced by
+// CombatQueueCommand::getDefaultAttackAnimation() to names that actually exist
+// in the client appearance LATs (appearance/lat/*.lat). The generic names
+// (attack_mid_center_light_2, fire_1_single_light, creature_attack_light, ...)
+// resolve to nothing, so the client silently drops the whole CombatAction.
+// Command-provided animation names (specials, Force powers) pass through
+// untouched. All replacement names verified present in all_m/all_f.lat
+// (players) or the species LATs (creatures) of the shipped client stack.
+static String resolveCombatAnimName(CreatureObject* attacker, WeaponObject* weapon, const String& animation) {
+	if (animation.isEmpty())
+		return animation;
+
+	bool generic = false;
+
+	if (animation.beginsWith("attack_high_") || animation.beginsWith("attack_mid_") || animation.beginsWith("attack_low_"))
+		generic = true;
+	else if (animation.beginsWith("fire_1_single") || animation.beginsWith("fire_3_single") || animation.beginsWith("fire_5_single"))
+		generic = true;
+	else if (animation.beginsWith("creature_attack") || animation.beginsWith("droid_attack"))
+		generic = true;
+
+	if (!generic)
+		return animation;
+
+	if (attacker != nullptr && attacker->isPlayerCreature()) {
+		if (weapon == nullptr)
+			return "unarmed_combo_2a";
+
+		if (weapon->isPistolWeapon())
+			return "pistol_combat_standing_fire_1";
+
+		if (weapon->isRifleWeapon() || weapon->isCarbineWeapon() || weapon->isHeavyWeapon() || weapon->isRangedWeapon())
+			return "rifle_standing_aimed_fire_1";
+
+		if (weapon->isOneHandMeleeWeapon() || weapon->isJediOneHandedWeapon())
+			return "sword_1h_standing_ready_combo_2_a";
+
+		if (weapon->isTwoHandMeleeWeapon() || weapon->isJediTwoHandedWeapon())
+			return "sword_2h_attack_mid_center_0";
+
+		if (weapon->isPolearmWeaponObject() || weapon->isJediPolearmWeapon())
+			return "pole_standing_ready_combo_2a";
+
+		return "unarmed_combo_2a";
+	}
+
+	if (weapon != nullptr && weapon->isRangedWeapon())
+		return "cbt_attack_ranged";
+
+	return "cbt_stand_combat_attack_light";
+}
+
 void CombatManager::broadcastCombatAction(CreatureObject* attacker, WeaponObject* weapon, SortedVector<DefenderHitList*> targetDefenders, const CreatureAttackData& data) const {
 	if (attacker == nullptr) {
 		return;
@@ -704,7 +756,7 @@ void CombatManager::broadcastCombatAction(CreatureObject* attacker, WeaponObject
 			auto combatCommand = data.getCommand();
 
 			if (combatCommand != nullptr) {
-				const String& animation = combatCommand->getAnimation(attacker, defenderObject, weapon, hitList->getHitLocation(), hitList->getInitialDamage());
+				String animation = resolveCombatAnimName(attacker, weapon, combatCommand->getAnimation(attacker, defenderObject, weapon, hitList->getHitLocation(), hitList->getInitialDamage()));
 
 				if (!animation.isEmpty()) {
 					animationCRC = animation.hashCode();
@@ -2285,6 +2337,15 @@ int CombatManager::getSpeedModifier(CreatureObject* attacker, WeaponObject* weap
 
 // Toughness Mitigation
 
+// Ghosts: jedi mitigation caps. Skill/wearable/buff mods are additive and the
+// Ghosts itemisation can push them far past the stock design (observed live:
+// jedi_toughness 72, force_armor 75, which together leave ~7% of incoming
+// damage). Clamp each source independently so normal jedi are unaffected but
+// stacked gear cannot reach near-immunity.
+static const int GHOSTS_JEDI_TOUGHNESS_CAP = 25;
+static const int GHOSTS_FORCE_ARMOR_CAP = 35;
+static const int GHOSTS_FORCE_SHIELD_CAP = 35;
+
 float CombatManager::getDefenderToughnessModifier(CreatureObject* defender, int attackType, int damType, float damage) const {
 	ManagedReference<WeaponObject*> weapon = defender->getWeapon();
 
@@ -2299,6 +2360,9 @@ float CombatManager::getDefenderToughnessModifier(CreatureObject* defender, int 
 	}
 
 	int jediToughness = defender->getSkillMod("jedi_toughness");
+	if (jediToughness > GHOSTS_JEDI_TOUGHNESS_CAP)
+		jediToughness = GHOSTS_JEDI_TOUGHNESS_CAP;
+
 	if (damType != SharedWeaponObjectTemplate::LIGHTSABER && jediToughness > 0)
 		damage *= 1.f - (jediToughness / 100.f);
 
@@ -2489,6 +2553,9 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 		float rawDamage = damage;
 
 		int forceArmor = defender->getSkillMod("force_armor");
+		if (forceArmor > GHOSTS_FORCE_ARMOR_CAP)
+			forceArmor = GHOSTS_FORCE_ARMOR_CAP;
+
 		if (forceArmor > 0) {
 			float dmgAbsorbed = rawDamage - (damage *= 1.f - (forceArmor / 100.f));
 			defender->notifyObservers(ObserverEventType::FORCEARMOR, attacker, dmgAbsorbed);
@@ -2502,6 +2569,9 @@ int CombatManager::getArmorReduction(TangibleObject* attacker, WeaponObject* wea
 
 		// Force Shield
 		int forceShield = defender->getSkillMod("force_shield");
+		if (forceShield > GHOSTS_FORCE_SHIELD_CAP)
+			forceShield = GHOSTS_FORCE_SHIELD_CAP;
+
 		if (forceShield > 0) {
 			jediBuffDamage = rawDamage - (damage *= 1.f - (forceShield / 100.f));
 			defender->notifyObservers(ObserverEventType::FORCESHIELD, attacker, jediBuffDamage);

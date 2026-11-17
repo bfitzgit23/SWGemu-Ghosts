@@ -221,7 +221,12 @@ object_tangible_wearables_robe_robe_jedi_grey_s04 = object_tangible_wearables_ro
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+			},
 
 
 	numberExperimentalProperties = {1, 1, 1, 1},

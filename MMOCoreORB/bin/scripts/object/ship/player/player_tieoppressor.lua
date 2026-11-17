@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tieoppressor = object_ship_player_shared_player_tieoppressor:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tieoppressor",
 	slideFactor = 1.78,

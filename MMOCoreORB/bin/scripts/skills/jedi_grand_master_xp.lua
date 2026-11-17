@@ -30,7 +30,7 @@ jedi_grand_master_novice = {
 	moneyRequired = 0,
 	pointsRequired = 4,
 	skillsRequiredCount = 0,
-	skillsRequired = {},
+	skillsRequired = { "jedi_light_side_master_master" },
 	preclusionSkills = {},
 	xpType = "jedi_general",
 	xpCost = 500000,
@@ -41,7 +41,7 @@ jedi_grand_master_novice = {
 	skillAbility = {},
 	commands = {},
 	apprenticeshipsRequired = 0,
-	jediStateRequired = 4,
+	jediStateRequired = 0,
 	skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 5 },
@@ -95,7 +95,7 @@ jedi_grand_master_master = {
 	skillAbility = {},
 	commands = {},
 	apprenticeshipsRequired = 0,
-	jediStateRequired = 4,
+	jediStateRequired = 0,
 	skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 5 },
@@ -133,7 +133,7 @@ jedi_dark_lord_novice = {
 	moneyRequired = 0,
 	pointsRequired = 4,
 	skillsRequiredCount = 0,
-	skillsRequired = {},
+	skillsRequired = { "jedi_dark_side_master_master" },
 	preclusionSkills = {},
 	xpType = "jedi_general",
 	xpCost = 500000,
@@ -144,7 +144,7 @@ jedi_dark_lord_novice = {
 	skillAbility = {},
 	commands = {},
 	apprenticeshipsRequired = 0,
-	jediStateRequired = 8,
+	jediStateRequired = 0,
 	skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 5 },
@@ -198,7 +198,7 @@ jedi_dark_lord_master = {
 	skillAbility = {},
 	commands = {},
 	apprenticeshipsRequired = 0,
-	jediStateRequired = 8,
+	jediStateRequired = 0,
 	skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 5 },

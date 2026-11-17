@@ -3,6 +3,10 @@ local ObjectManager = require("managers.object.object_manager")
 KnightTrials = ScreenPlay:new {}
 
 function KnightTrials:startKnightTrials(pPlayer)
+	if (pPlayer == nil or JediTrials:isHolocronJedi(pPlayer)) then
+		return
+	end
+
 	local randomShrinePlanet = JediTrials:getRandomDifferentShrinePlanet(pPlayer)
 	local pRandShrine = JediTrials:getRandomShrineOnPlanet(randomShrinePlanet)
 
@@ -425,7 +429,7 @@ function KnightTrials:getTrialShrine(pPlayer)
 end
 
 function KnightTrials:onPlayerLoggedIn(pPlayer)
-	if (pPlayer == nil) then
+	if (pPlayer == nil or JediTrials:isHolocronJedi(pPlayer)) then
 		return
 	end
 

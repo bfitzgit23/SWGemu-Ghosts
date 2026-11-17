@@ -1,4 +1,4 @@
-KaasCityScreenPlay = ScreenPlay:new {
+KaasCityRuinsScreenPlay = ScreenPlay:new {
 	numberOfActs = 1;
 	
 	lootContainers = {
@@ -23,13 +23,13 @@ KaasCityScreenPlay = ScreenPlay:new {
 	},
 }
 
-registerScreenPlay("KaasCityScreenPlay", true)
+registerScreenPlay("KaasCityRuinsScreenPlay", true)
 
-function KaasCityScreenPlay:start()
+function KaasCityRuinsScreenPlay:start()
 	self:spawnMobiles()
 end
 
-function KaasCityScreenPlay:spawnMobiles()
+function KaasCityRuinsScreenPlay:spawnMobiles()
 	-- Sith Shadow Group 1
 	spawnMobile("kaas", "sith_shadow_taskmaster", 200, -6166.0, 80.0, 2786.0, -116, 0)
 	spawnMobile("kaas", "sith_shadow_mercenary", 200, -6156.69, 80.0, 2793.0, -116, 0)

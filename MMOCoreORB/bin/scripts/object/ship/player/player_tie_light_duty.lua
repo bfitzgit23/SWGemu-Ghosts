@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tie_light_duty = object_ship_player_shared_player_tie_light_duty:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tie_light_duty",
 	slideFactor = 1.78,

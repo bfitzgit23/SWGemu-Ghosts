@@ -45,6 +45,40 @@ void WearableObjectImplementation::fillAttributeList(AttributeListMessage* alm, 
 
 }
 
+bool WearableObjectImplementation::hasSeaRemovalTool(CreatureObject* player, bool removeItem) {
+	if (player == nullptr) {
+		return false;
+	}
+
+	ManagedReference<SceneObject*> inventory = player->getSlottedObject("inventory");
+
+	if (inventory == nullptr) {
+		return false;
+	}
+
+	Locker inventoryLocker(inventory);
+
+	for (int i = 0; i < inventory->getContainerObjectsSize(); ++i) {
+		ManagedReference<SceneObject*> sceno = inventory->getContainerObject(i);
+
+		if (sceno == nullptr || sceno->getObjectTemplate() == nullptr) {
+			continue;
+		}
+
+		if (sceno->getObjectTemplate()->getFullTemplateString() == "object/tangible/item/clothing_sea_removal_tool.iff") {
+			if (removeItem) {
+				Locker locker(sceno);
+				sceno->destroyObjectFromWorld(true);
+				sceno->destroyObjectFromDatabase(true);
+			}
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 void WearableObjectImplementation::updateCraftingValues(CraftingValues* values, bool initialUpdate) {
 	/*
 	 * Values available:	Range:

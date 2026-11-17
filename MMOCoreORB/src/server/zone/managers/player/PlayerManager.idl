@@ -567,6 +567,8 @@ class PlayerManager extends Observer implements Logger {
 
 	public native void cleanupCharacters();
 
+	public native void resetAllJediSkills();
+
 	public native boolean shouldDeleteCharacter(unsigned long characterID, int galaxyID);
 
 	public native boolean doBurstRun(CreatureObject player, float hamModifier, float cooldownModifier);

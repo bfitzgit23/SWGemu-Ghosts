@@ -189,6 +189,8 @@ public:
 
 	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
 
+	TangibleObject* createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value);
+
 	TangibleObject* createShipComponent(TransactionLog& trx, const LootItemTemplate* templateObject);
 
 	TangibleObject* createLootResource(const String& resourceTypeName, const String& resourceZoneName);
@@ -375,6 +377,8 @@ public:
 	void setRandomLootValues(TransactionLog& trx, TangibleObject* prototype, const LootItemTemplate* templateObject, int level, float excMod);
 
 	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+
+	TangibleObject* createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value);
 
 	TangibleObject* createShipComponent(TransactionLog& trx, const LootItemTemplate* templateObject);
 

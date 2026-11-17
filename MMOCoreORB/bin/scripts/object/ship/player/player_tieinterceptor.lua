@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tieinterceptor = object_ship_player_shared_player_tieinterceptor:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tieinterceptor",
 	slideFactor = 1.95,

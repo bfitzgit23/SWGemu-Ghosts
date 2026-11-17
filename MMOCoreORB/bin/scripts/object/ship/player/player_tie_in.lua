@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tie_in = object_ship_player_shared_player_tie_in:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tie_in",
 	slideFactor = 1.78,

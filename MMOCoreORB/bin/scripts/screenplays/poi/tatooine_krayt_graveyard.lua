@@ -2,8 +2,12 @@ KraytGraveyardScreenPlay = ScreenPlay:new {
 	numberOfActs = 1,
 
 }
--- Disabled. Krayt spawning handled by regions
-registerScreenPlay("KraytGraveyardScreenPlay", false)
+-- Ghosts (2026-10-17): enabled again. The region spawn area added for the graveyard
+-- (managers/planet/tatooine_regions.lua, group tatooine_krayt_graveyard) is configured
+-- correctly - the group resolves, the area builds and nothing errors - but it pro-
+-- duced no creatures in play. Rather than keep chasing the area spawn gate, the POI
+-- spawns its krayts directly at fixed points, which does not depend on that path.
+registerScreenPlay("KraytGraveyardScreenPlay", true)
 
 function KraytGraveyardScreenPlay:start()
 	if (isZoneEnabled("tatooine")) then

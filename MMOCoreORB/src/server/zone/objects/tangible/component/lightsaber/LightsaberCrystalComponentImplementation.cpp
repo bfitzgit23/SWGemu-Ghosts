@@ -375,11 +375,19 @@ float LightsaberCrystalComponentImplementation::getRandomizedStat(float min, flo
 	return result;
 }
 
+// Ghosts: grey jedi (force_rank_gray / combat_jedi trees) may tune pearls and
+// crystals too - the stock checks only look at the standard Jedi title.
+static bool ghostsCanTuneCrystal(CreatureObject* player) {
+	return player->hasSkill("force_title_jedi_rank_01")
+			|| player->hasSkill("force_rank_gray_novice")
+			|| player->hasSkill("combat_jedi_novice");
+}
+
 void LightsaberCrystalComponentImplementation::fillAttributeList(AttributeListMessage* alm, CreatureObject* object) {
 	TangibleObjectImplementation::fillAttributeList(alm, object);
 
 	PlayerObject* player = object->getPlayerObject();
-	if (object->hasSkill("force_title_jedi_rank_01") || object->hasSkill("combat_jedi_novice") || object->hasSkill("combat_jedi_novice") || player->isPrivileged()) {
+	if (ghostsCanTuneCrystal(object) || player->isPrivileged()) {
 		if (ownerID == 0) {
 			StringBuffer str;
 			str << "\\#pcontrast2 UNTUNED";
@@ -426,7 +434,7 @@ void LightsaberCrystalComponentImplementation::fillAttributeList(AttributeListMe
 
 void LightsaberCrystalComponentImplementation::fillObjectMenuResponse(ObjectMenuResponse* menuResponse, CreatureObject* player) {
 ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
-	if (jedi->getJediState() >= 1) {
+	if (jedi->getJediState() >= 1 || ghostsCanTuneCrystal(player)) {
 		String text = "@jedi_spam:tune_crystal";
 		menuResponse->addRadialMenuItem(128, 3, text);
 	} else if (jedi->getJediState() >= 1) {
@@ -452,7 +460,7 @@ ManagedReference<PlayerObject*> jedi = player->getPlayerObject();
 
 int LightsaberCrystalComponentImplementation::handleObjectMenuSelect(CreatureObject* player, byte selectedID) {
  	ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
-	if (selectedID == 128 && jedi->getJediState() >= 1) {
+	if (selectedID == 128 && (jedi->getJediState() >= 1 || ghostsCanTuneCrystal(player))) {
 		ManagedReference<SuiMessageBox*> suiMessageBox = new SuiMessageBox(player, SuiWindowType::TUNE_CRYSTAL);
 
 		suiMessageBox->setPromptTitle("@jedi_spam:confirm_tune_title");
@@ -541,7 +549,7 @@ bool LightsaberCrystalComponentImplementation::hasPlayerAsParent(CreatureObject*
 
 void LightsaberCrystalComponentImplementation::tuneCrystal(CreatureObject* player) {
 	ManagedReference<PlayerObject*> jedi = player->getPlayerObject(); 
-	if(!player->hasSkill("force_title_jedi_rank_01") && !player->hasSkill("combat_jedi_novice")) {
+	if (!ghostsCanTuneCrystal(player)) {
 		return;
 	}
 

@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_blacksun_heavy_s02 = object_ship_player_shared_player_blacksun_heavy_s02:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_blacksun_heavy_s02",
 	slideFactor = 1.91,

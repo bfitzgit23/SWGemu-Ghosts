@@ -53,11 +53,13 @@ swoop = "object/tangible/deed/vehicle_deed/speederbike_swoop_deed.iff"
 
 padawanRobe = "object/tangible/wearables/robe/robe_jedi_padawan.iff"
 
+trainingSaber = "object/weapon/melee/sword/crafted_saber/sword_lightsaber_training.iff"
+
 professionSpecificItems = {
 	combat_brawler = { brawlerOneHander, brawlerTwoHander, brawlerPolearm },
 	combat_marksman = { marksmanPistol, marksmanCarbine, marksmanRifle },
 	crafting_artisan = { genericTool, mineralTool, chemicalTool,unitool },
-	combat_jedi = { padawanRobe },
+	combat_jedi = { padawanRobe, trainingSaber },
 	outdoors_scout = { genericTool },
 	science_medic = { foodTool },
 	social_entertainer = { slitherhorn }

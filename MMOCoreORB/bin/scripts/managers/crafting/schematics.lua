@@ -42,6 +42,7 @@
 
 
 schematics = {
+	{path="object/draft_schematic/item/clothing_sea_removal_tool.iff"},
 	-- Post-14.1 house patch schematics
 	{path="object/draft_schematic/structure/atat_house_schem.iff"},
 	{path="object/draft_schematic/structure/bespin_house_schem.iff"},

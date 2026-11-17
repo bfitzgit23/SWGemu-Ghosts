@@ -514,15 +514,15 @@ function SpaceHelpers:surrenderPilot(pPlayer)
 	elseif (pilotSquadron == BLACK_EPSILON_SQUADRON) then
 		pilotProfession = "imperialPilot"
 
-		-- TODO: Add BlackEpsilonSquadronScreenplay reset functions
+		BlackEpsilonSquadronScreenplay:resetHakasshaQuests(pPlayer)
 	elseif (pilotSquadron == STORM_SQUADRON) then
 		pilotProfession = "imperialPilot"
 
-		-- TODO: Add StormSquadronScreenplay reset functions
+		StormSquadronScreenplay:resetAkalQuests(pPlayer)
 	elseif (pilotSquadron == INQUISITION_SQUADRON) then
 		pilotProfession = "imperialPilot"
 
-		-- TODO: Add InquisitionSquadronScreenplay reset functions
+		InquisitionSquadronScreenplay:resetBarnQuests(pPlayer)
 	end
 
 	local pilotSkills = self.pilotSkills[pilotProfession]

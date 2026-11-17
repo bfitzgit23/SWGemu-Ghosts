@@ -5,6 +5,8 @@ plasma_thief_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "junk", weight = 3500000},
 		{groupTemplate = "loot_kit_parts", weight = 1400000},
 		{groupTemplate = "plasma_thief_common", weight = 700000},

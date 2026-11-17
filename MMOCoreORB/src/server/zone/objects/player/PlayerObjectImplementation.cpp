@@ -3461,7 +3461,12 @@ int PlayerObjectImplementation::getSpentJediSkillPoints() {
 	for(int i = 0; i < skillList->size(); ++i) {
 		const Skill* jediSkill = skillList->get(i);
 
-		if (jediSkill->getSkillName().indexOf("force_discipline") != -1)
+		const String& skillName = jediSkill->getSkillName();
+
+		if (skillName.indexOf("force_discipline") != -1 ||
+			skillName.indexOf("jedi_padawan_") == 0 ||
+			skillName.indexOf("jedi_light_side_") == 0 ||
+			skillName.indexOf("jedi_dark_side_") == 0)
 			jediSkillPoints += jediSkill->getSkillPointsRequired();
 	}
 

@@ -161,9 +161,19 @@ int CraftingSessionImplementation::startSession() {
 	else
 		ocm->insertLong(0);
 
-	ocm->insertInt(currentSchematicList.size());
+	int validSchematics = 0;
+
+	for (int i = 0; i < currentSchematicList.size(); ++i) {
+		if (currentSchematicList.get(i).get() != nullptr)
+			validSchematics++;
+	}
+
+	ocm->insertInt(validSchematics);
 	for (int i = 0; i < currentSchematicList.size(); ++i) {
 		DraftSchematic* draftSchematic = currentSchematicList.get(i).get();
+
+		if (draftSchematic == nullptr)
+			continue;
 
 		ocm->insertInt(draftSchematic->getClientObjectCRC());
 		ocm->insertInt(draftSchematic->getClientObjectCRC());

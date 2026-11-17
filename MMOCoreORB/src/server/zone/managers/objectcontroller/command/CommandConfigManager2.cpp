@@ -428,6 +428,7 @@
 #include "server/zone/objects/creature/commands/MediumPoisonCommand.h"
 #include "server/zone/objects/creature/commands/MildDiseaseCommand.h"
 #include "server/zone/objects/creature/commands/MildPoisonCommand.h"
+#include "server/zone/objects/creature/commands/RequestJediTrainingCommand.h"
 #include "server/zone/objects/creature/commands/StrongPoisonCommand.h"
 #include "server/zone/objects/creature/commands/StrongDiseaseCommand.h"
 
@@ -471,7 +472,7 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<AvoidIncapacitationCommand>(String("avoidIncapacitation").toLowerCase());
 	commandFactory.registerCommand<BandFlourishCommand>(String("bandFlourish").toLowerCase());
 	commandFactory.registerCommand<BattleMeditationCommand>(String("battleMeditation").toLowerCase());
-	commandFactory.registerCommand<BattlefieldStatusCommand>(String("battlefieldStatus").toLowerCase());
+		commandFactory.registerCommand<BattlefieldStatusCommand>(String("battlefieldStatus").toLowerCase());
 	commandFactory.registerCommand<Berserk1Command>(String("berserk1").toLowerCase());
 	commandFactory.registerCommand<Berserk2Command>(String("berserk2").toLowerCase());
 	commandFactory.registerCommand<BetCommand>(String("bet").toLowerCase());
@@ -498,6 +499,7 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<ChargeShot1Command>(String("chargeShot1").toLowerCase());
 	commandFactory.registerCommand<ChargeShot2Command>(String("chargeShot2").toLowerCase());
 	commandFactory.registerCommand<CheckForceStatusCommand>(String("checkForceStatus").toLowerCase());
+	commandFactory.registerCommand<RequestJediTrainingCommand>(String("requestJediTraining").toLowerCase());
 	commandFactory.registerCommand<CitybanCommand>(String("cityban").toLowerCase());
 	commandFactory.registerCommand<CitypardonCommand>(String("citypardon").toLowerCase());
 	commandFactory.registerCommand<ClaimVeteranRewardCommand>(String("claimVeteranReward").toLowerCase());
@@ -590,7 +592,7 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<EditBankCommand>(String("editBank").toLowerCase());
 	commandFactory.registerCommand<EditBankAccountCommand>(String("editBankAccount").toLowerCase());
 	commandFactory.registerCommand<EditStatsCommand>(String("editStats").toLowerCase());
-	commandFactory.registerCommand<ElectricJudgmentCone1Command>(String("electricJudgmentCone1").toLowerCase());
+					commandFactory.registerCommand<ElectricJudgmentCone1Command>(String("electricJudgmentCone1").toLowerCase());
 	commandFactory.registerCommand<ElectricJudgmentCone2Command>(String("electricJudgmentCone2").toLowerCase());
 	commandFactory.registerCommand<ElectricJudgmentSingle1Command>(String("electricJudgmentSingle1").toLowerCase());
 	commandFactory.registerCommand<ElectricJudgmentSingle2Command>(String("electricJudgmentSingle2").toLowerCase());

@@ -201,6 +201,9 @@ class LootManager extends ManagedService implements Logger {
 	public native TangibleObject createLootObject(@dereferenced TransactionLog trx, final LootItemTemplate templateObject, int level, boolean maxCondition = false);
 
 	@local
+	public native TangibleObject createLootAttachment(final LootItemTemplate templateObject, final string modName, int value);
+
+	@local
 	public native TangibleObject createShipComponent(@dereferenced TransactionLog trx, final LootItemTemplate templateObject);
 
 	@local

@@ -5163,6 +5163,7 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 	String factionName = lua_tostring(L, -1);
 
 	if (player == nullptr || factionName.isEmpty()) {
+		if (player != nullptr) player->error() << "JTLDBG grant bad args faction=[" << factionName << "]";
 		lua_pushboolean(L, false);
 
 		return 1;
@@ -5170,21 +5171,27 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 
 	String generatedObjectTemplate = "";
 
+	// Ghosts: the prototype chassis have no client data (no
+	// clientdata/ship/client_shared_prototype_*.cdf in any TRE we ship), so the
+	// client could not render the granted ship.  Use the standard chassis for the
+	// same roles; they carry complete server and client data.
 	if (factionName == "neutral") {
-		generatedObjectTemplate = "object/ship/player/player_prototype_hutt_light.iff";
+		generatedObjectTemplate = "object/ship/player/player_hutt_light_s01.iff";
 	} else if (factionName == "rebel") {
-		generatedObjectTemplate = "object/ship/player/player_prototype_z95.iff";
+		generatedObjectTemplate = "object/ship/player/player_z95.iff";
 	} else if (factionName == "imperial") {
-		generatedObjectTemplate = "object/ship/player/player_prototype_tiefighter.iff";
+		generatedObjectTemplate = "object/ship/player/player_tiefighter.iff";
 	} else {
 		lua_pushboolean(L, false);
 
 		return 1;
 	}
 
+	player->error() << "JTLDBG grant faction=[" << factionName << "] template=[" << generatedObjectTemplate << "] player=" << player->getObjectID();
 	auto zoneServer = player->getZoneServer();
 
 	if (zoneServer == nullptr) {
+		player->error() << "JTLDBG grant zoneserver null";
 		lua_pushboolean(L, false);
 
 		return 1;
@@ -5193,6 +5200,7 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 	auto zone = player->getZone();
 
 	if (zone == nullptr) {
+		player->error() << "JTLDBG grant zone null";
 		lua_pushboolean(L, false);
 
 		return 1;
@@ -5209,14 +5217,22 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 	auto travelPoint = planetManager->getNearestPlanetTravelPoint(player->getWorldPosition(), 16000.f, true);
 
 	if (travelPoint == nullptr) {
+		player->error() << "JTLDBG grant NOTRAVEL zone=[" << zone->getZoneName() << "]";
 		lua_pushboolean(L, false);
 
 		return 1;
 	}
 
 	Locker lock(player);
-
-	ManagedReference<ShipObject*> ship = ShipManager::instance()->createPlayerShip(player, generatedObjectTemplate, "", true);
+	player->error() << "JTLDBG grant calling create datapad=" << (player->getDatapad() != nullptr) << " ghost=" << (player->getPlayerObject() != nullptr);
+	ManagedReference<ShipObject*> ship = nullptr;
+	try {
+		ship = ShipManager::instance()->createPlayerShip(player, generatedObjectTemplate, "", true);
+	} catch (Exception& e) {
+		player->error() << "JTLDBG grant exception: " << e.getMessage();
+	} catch (...) {
+		player->error() << "JTLDBG grant exception UNKNOWN";
+	}
 
 	if (ship == nullptr) {
 		player->error() << "Failed to generate ship object from template: " << generatedObjectTemplate;
@@ -5253,6 +5269,8 @@ int DirectorManager::grantStarterShip(lua_State* L) {
 	Locker deviceLock(shipControlDevice, player);
 
 	shipControlDevice->setParkingLocation(travelPoint->getPointName());
+
+	Logger::console.info(true) << "grantStarterShip: granted " << generatedObjectTemplate << " to " << player->getDisplayedName();
 
 	lua_pushboolean(L, true);
 

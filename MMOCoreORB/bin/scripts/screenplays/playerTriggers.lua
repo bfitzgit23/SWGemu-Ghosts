@@ -8,6 +8,7 @@ function PlayerTriggers:playerLoggedIn(pPlayer)
 	BestineElection:playerLoggedIn(pPlayer)
 	GCWXp:registerPlayerObservers(pPlayer)
 	ResetXixxJedi:playerLoggedIn(pPlayer)
+	RestoreResetJediRank02:playerLoggedIn(pPlayer)
 end
 
 function PlayerTriggers:playerLoggedOut(pPlayer)

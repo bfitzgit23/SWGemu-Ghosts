@@ -139,6 +139,13 @@ local function isDark(pPlayer)
     return getFrsCouncil(pPlayer) == 2
 end
 
+local function councilLeaderSeatTaken(pPlayer, pGhost)
+    local council = getFrsCouncil(pPlayer)
+    if pGhost == nil or council == 0 then return false end
+    local count = PlayerObject(pGhost):getFrsRankPlayerCount(council, 11)
+    return count ~= nil and count > 0
+end
+
 -- ============================================================
 -- MAIN ENTRY — called from enclave terminal
 -- ============================================================
@@ -166,6 +173,11 @@ function frs_request_promotion(pCreature, pTerminal, pGhost)
     end
 
     local nextRank = rank + 1
+    if nextRank == 11 and councilLeaderSeatTaken(pCreature, pGhost) then
+        CreatureObject(pCreature):sendSystemMessage("The Council Leader position for your side is already filled. Only one character per side may hold that rank.")
+        return
+    end
+
     local data = RANK_DATA[nextRank]
     local xp = getGcwSkillXp(pCreature)
     local dark = isDark(pCreature)
@@ -221,6 +233,12 @@ function FrsPromotion:onPromotionConfirm(pPlayer, pSui, eventIndex, ...)
 
     local pGhost = CreatureObject(pPlayer):getPlayerObject()
     if pGhost == nil then return end
+
+    if nextRank == 11 and councilLeaderSeatTaken(pPlayer, pGhost) then
+        CreatureObject(pPlayer):sendSystemMessage("The Council Leader position for your side is already filled. Only one character per side may hold that rank.")
+        writeScreenPlayData(pPlayer, "FrsPromotion", "pending_rank", "0")
+        return
+    end
 
     -- Grant the rank skill
     if not CreatureObject(pPlayer):hasSkill(skill) then

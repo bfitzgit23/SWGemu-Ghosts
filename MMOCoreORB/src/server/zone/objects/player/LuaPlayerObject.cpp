@@ -8,6 +8,7 @@
 #include "LuaPlayerObject.h"
 #include "engine/engine.h"
 #include "server/zone/managers/frs/FrsManager.h"
+#include "server/zone/managers/frs/FrsRank.h"
 #include "server/zone/managers/crafting/schematicmap/SchematicMap.h"
 #include "server/zone/objects/tangible/deed/eventperk/EventPerkDeed.h"
 #include "server/zone/objects/tangible/eventperk/Jukebox.h"
@@ -92,6 +93,7 @@ Luna<LuaPlayerObject>::RegType LuaPlayerObject::Register[] = {
 		{ "setFrsCouncil", &LuaPlayerObject::setFrsCouncil },
 		{ "setFrsRank", &LuaPlayerObject::setFrsRank },
 		{ "getFrsRank", &LuaPlayerObject::getFrsRank },
+			{ "getFrsRankPlayerCount", &LuaPlayerObject::getFrsRankPlayerCount },
 		{ "getFrsCouncil", &LuaPlayerObject::getFrsCouncil },
 		{ "showCouncilRank", &LuaPlayerObject::showCouncilRank },
 		{ "startSlicingSession", &LuaPlayerObject::startSlicingSession },
@@ -852,6 +854,38 @@ int LuaPlayerObject::getFrsRank(lua_State* L) {
 	FrsData* frsData = realObject->getFrsData();
 
 	lua_pushinteger(L, frsData->getRank());
+
+	return 1;
+}
+
+int LuaPlayerObject::getFrsRankPlayerCount(lua_State* L) {
+	int rank = lua_tointeger(L, -1);
+	int councilType = lua_tointeger(L, -2);
+
+	auto zoneServer = realObject->getZoneServer();
+
+	if (zoneServer == nullptr) {
+		lua_pushinteger(L, 0);
+		return 1;
+	}
+
+	FrsManager* frsManager = zoneServer->getFrsManager();
+
+	if (frsManager == nullptr || !frsManager->isFrsEnabled()) {
+		lua_pushinteger(L, 0);
+		return 1;
+	}
+
+	ManagedReference<FrsRank*> rankData = frsManager->getFrsRank(councilType, rank);
+
+	if (rankData == nullptr) {
+		lua_pushinteger(L, 0);
+		return 1;
+	}
+
+	Locker locker(rankData);
+
+	lua_pushinteger(L, rankData->getTotalPlayersInRank());
 
 	return 1;
 }

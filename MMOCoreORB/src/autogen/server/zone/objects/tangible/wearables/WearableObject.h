@@ -101,6 +101,8 @@ public:
 
 	bool isEquipped();
 
+	bool hasSeaRemovalTool(CreatureObject* player, bool removeItem);
+
 	int getMaxSockets() const;
 
 	int getRemainingSockets() const;
@@ -190,6 +192,8 @@ public:
 
 	bool isEquipped();
 
+	bool hasSeaRemovalTool(CreatureObject* player, bool removeItem);
+
 	int getMaxSockets() const;
 
 	int getRemainingSockets() const;
@@ -265,6 +269,8 @@ public:
 	bool isWearableObject();
 
 	bool isEquipped();
+
+	bool hasSeaRemovalTool(CreatureObject* player, bool removeItem);
 
 	int getMaxSockets() const;
 

@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_hutt_turret_ship = object_ship_player_shared_player_hutt_turret_ship:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_hutt_turret_ship",
 	slideFactor = 1.76,
 	chassisHitpoints = 1512,

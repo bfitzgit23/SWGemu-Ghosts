@@ -96,6 +96,7 @@ namespace player {
 		int setFrsCouncil(lua_State* L);
 		int setFrsRank(lua_State* L);
 		int getFrsRank(lua_State* L);
+			int getFrsRankPlayerCount(lua_State* L);
 		int getFrsCouncil(lua_State* L);
 		int showCouncilRank(lua_State* L);
 		int startSlicingSession(lua_State* L);

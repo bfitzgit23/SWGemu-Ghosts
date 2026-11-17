@@ -39,6 +39,7 @@ junk = {
 		{groupTemplate = "coa_encoded_disk_fragments", weight = 80000},
 		{groupTemplate = "coa2_decoder_components", weight = 80000},
 		{groupTemplate = "data_storage_unit_parts", weight = 989500},
+		{itemTemplate = "treasure_map", weight = 25000},
 	}
 }
 

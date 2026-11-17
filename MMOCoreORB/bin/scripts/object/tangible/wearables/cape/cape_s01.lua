@@ -221,7 +221,12 @@ object_tangible_wearables_cape_cape_s01 = object_tangible_wearables_cape_shared_
 				"object/creature/player/zabrak_male.iff",
 				"object/creature/player/zabrak_female.iff" ,
 				"object/mobile/vendor/zabrak_male.iff",
-				"object/mobile/vendor/zabrak_female.iff" },
+				"object/mobile/vendor/zabrak_female.iff",
+				"object/creature/player/mirialan_female.iff",
+				"object/creature/player/mirialan_male.iff",
+				"object/creature/player/zeltron_female.iff",
+				"object/creature/player/zeltron_male.iff",
+			},
 }
 
 ObjectTemplates:addTemplate(object_tangible_wearables_cape_cape_s01, "object/tangible/wearables/cape/cape_s01.iff")

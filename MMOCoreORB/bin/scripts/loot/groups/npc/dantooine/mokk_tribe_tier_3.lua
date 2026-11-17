@@ -5,6 +5,8 @@ mokk_tribe_tier_3 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "armor_attachments", weight = 400000},
 		{groupTemplate = "clothing_attachments", weight = 400000},
 		{groupTemplate = "color_crystals", weight = 400000},

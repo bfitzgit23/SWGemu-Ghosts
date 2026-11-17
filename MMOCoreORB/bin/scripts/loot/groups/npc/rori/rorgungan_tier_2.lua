@@ -5,6 +5,8 @@ rorgungan_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
+		{groupTemplate = "holocron_dark", weight = 100000},
+		{groupTemplate = "holocron_light", weight = 100000},
 		{groupTemplate = "junk", weight = 4500000},
 		{groupTemplate = "loot_kit_parts", weight = 1800000},
 		{groupTemplate = "tailor_components", weight = 1800000},

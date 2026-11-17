@@ -42,9 +42,15 @@
 
 
 object_creature_player_togruta_female = object_creature_player_shared_togruta_female:new {
+	clientTemplateFileName = "object/creature/player/shared_human_female.iff",
+	appearanceFilename = "appearance/mesh/togruta_f.lmg",
+	species = 45,
+	gender = 1,
+	objectName = "@species:togruta",
 	baseHAM = { 100, 100, 100, 100, 100, 100, 100, 100, 100 },
 	gameObjectType = 1033,
-	zoneComponent = "PlayerZoneComponent",
+	groundZoneComponent = "PlayerZoneComponent",
+	spaceZoneComponent = "PlayerSpaceZoneComponent",
 	objectMenuComponent = "PlayerObjectMenuComponent",
 	containerComponent = "PlayerContainerComponent",
 	pvpStatusBitmask = PLAYER,

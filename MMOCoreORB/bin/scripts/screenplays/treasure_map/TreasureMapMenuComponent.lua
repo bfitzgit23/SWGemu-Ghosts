@@ -64,7 +64,7 @@ function TreasureMapMenuComponent:doSearchArea(pObject, pPlayer)
 	local waypointID = readData(playerID .. ":treasureMapSearchAreaWaypointID")
 	local searchAreaID = readData(playerID .. ":treasureMapSearchAreaActiveAreaID")
 
-	if (waypointID == 0 or searchAreaID == 0) then
+	if (waypointID == nil or searchAreaID == nil or waypointID == 0 or searchAreaID == 0) then
 		CreatureObject(pPlayer):sendSystemMessage("@treasure_map/treasure_map:sys_no_waypoint") -- You must store the treasure's waypoint in your datapad before you can search for it!
 		return 0
 	end
@@ -132,7 +132,7 @@ function TreasureMapMenuComponent:doExtractTreasure(pObject, pPlayer)
 	if (treasureChestID ~= nil) then
 		local pExistingChest = getSceneObject(treasureChestID)
 		if (pExistingChest ~= nil) then
-			self:removeTreasureChest(pExistingChest)
+			TreasureMapMenuComponent:removeTreasureChest(pExistingChest)
 		end
 	end
 
@@ -315,7 +315,7 @@ function TreasureMapMenuComponent:handleTreasureMapSuiCallback(pCreature, pSui, 
 
 	local currentWaypointID = readData(playerID .. ":treasureMapSearchAreaWaypointID")
 	local exactWaypointID = readData(playerID .. ":treasureMapExactWaypointID")
-	local pExactWaypoint = getSceneObject(currentWaypointID)
+	local pExactWaypoint = getSceneObject(exactWaypointID)
 	local pWaypoint = getSceneObject(currentWaypointID)
 
 	if (pWaypoint ~= nil or pExactWaypoint ~= nil) then
@@ -333,7 +333,7 @@ function TreasureMapMenuComponent:handleTreasureMapSuiCallback(pCreature, pSui, 
 	end
 
 	local waypointID = PlayerObject(pGhost):addWaypoint(mapData.planet, "@treasure_map/treasure_map:waypoint_name", "", spawnPoint[1], 0, spawnPoint[3], WAYPOINT_GREEN, true, true, WAYPOINTTREASUREMAP, 0)
-	local activeAreaID = self:spawnSearchArea(mapType, pCreature, spawnPoint[1], spawnPoint[3])
+	local activeAreaID = TreasureMapMenuComponent:spawnSearchArea(mapType, pCreature, spawnPoint[1], spawnPoint[3])
 	writeData(playerID .. ":treasureMapSearchAreaWaypointID", waypointID)
 	writeData(playerID .. ":treasureMapSearchAreaActiveAreaID", activeAreaID)
 end

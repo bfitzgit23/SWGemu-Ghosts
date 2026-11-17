@@ -90,6 +90,8 @@ public:
 
 		ship->resetDroidCommands();
 
+		info(true) << "SZDBG LaunchShip player=" << player->getDisplayedName() << " ship=" << ship->getDisplayedName() << " pob=" << ship->isPobShip() << " zone=" << jtlZoneName << " groupMembers=" << groupMembers.size();
+
 		InsertPilotIntoShipTask* pilotTask = new InsertPilotIntoShipTask(player, ship);
 
 		if (pilotTask != nullptr) {

@@ -88,6 +88,16 @@ TangibleObject* LootManager::createLootObject(TransactionLog& trx, const LootIte
 	}
 }
 
+TangibleObject* LootManager::createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value) {
+	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
+	if (unlikely(_implementation == NULL)) {
+		throw ObjectNotLocalException(this);
+
+	} else {
+		return _implementation->createLootAttachment(templateObject, modName, value);
+	}
+}
+
 TangibleObject* LootManager::createShipComponent(TransactionLog& trx, const LootItemTemplate* templateObject) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {

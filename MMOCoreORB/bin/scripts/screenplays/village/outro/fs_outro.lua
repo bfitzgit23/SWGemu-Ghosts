@@ -28,6 +28,10 @@ function FsOutro:setCurrentStep(pPlayer, step)
 end
 
 function FsOutro:isOnOutro(pPlayer)
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
+		return false
+	end
+
 	return VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_COMPLETED_VILLAGE) and not VillageJediManagerCommon.hasJediProgressionScreenPlayState(pPlayer, VILLAGE_JEDI_PROGRESSION_DEFEATED_MELLIACHAE)
 end
 
@@ -104,6 +108,10 @@ function FsOutro:doOldManSpawn(pPlayer)
 		return
 	end
 
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
+		return
+	end
+
 	local curStep = self:getCurrentStep(pPlayer)
 
 	if (curStep == self.OLDMANMEET) then
@@ -131,6 +139,10 @@ end
 
 function FsOutro:completeVillageOutroFrog(pPlayer)
 	if (pPlayer == nil) then
+		return
+	end
+
+	if (VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
 		return
 	end
 

@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tieadvanced = object_ship_player_shared_player_tieadvanced:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_tieadvanced",
 	slideFactor = 1.82,

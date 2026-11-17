@@ -15,6 +15,11 @@
 #include "server/zone/objects/player/sui/callbacks/RenameItemSuiCallback.h"
 #include "server/zone/objects/building/BuildingObject.h"
 #include "server/zone/ZoneServer.h"
+#include "templates/LootItemTemplate.h"
+#include "server/zone/objects/tangible/wearables/WearableObject.h"
+#include "server/zone/objects/tangible/attachment/Attachment.h"
+#include "server/zone/managers/loot/LootGroupMap.h"
+#include "server/zone/managers/loot/LootManager.h"
 #include "server/zone/managers/components/ComponentManager.h"
 #include "templates/customization/AssetCustomizationManagerTemplate.h"
 
@@ -111,6 +116,18 @@ void TangibleObjectMenuComponent::fillObjectMenuResponse(SceneObject* sceneObjec
 		if (canRename)
 			menuResponse->addRadialMenuItem(80, 3, "Rename Item");
 	}
+
+	if (tano->isWearableObject() || tano->isArmorObject()) {
+		WearableObject* wearable = cast<WearableObject*>(tano);
+
+		if (wearable != nullptr && wearable->hasSeaRemovalTool(player, false) && (wearable->isWearableObject() || wearable->isArmorObject())) {
+			VectorMap<String, int>* mods = wearable->getWearableSkillMods();
+
+			if (mods != nullptr && mods->size() > 0) {
+				menuResponse->addRadialMenuItem(89, 3, "Extract Skill Mods");
+			}
+		}
+	}
 }
 
 int TangibleObjectMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject, CreatureObject* player, byte selectedID) const {
@@ -181,6 +198,36 @@ int TangibleObjectMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 		VectorMap<String, Reference<CustomizationVariable*> > variables;
 		AssetCustomizationManagerTemplate::instance()->getCustomizationVariables(appearanceFilename.hashCode(), variables, false);
 
+		// Ghosts: the client ships these meshes as .sat stubs, but the customization
+		// table is keyed by the original .lmg mesh name. Retry with the mesh name.
+		bool ghostMesh = appearanceFilename.endsWith(".sat");
+
+		if (variables.isEmpty() && ghostMesh) {
+			String meshFilename = appearanceFilename;
+			meshFilename = meshFilename.replaceAll(".sat", ".lmg");
+			AssetCustomizationManagerTemplate::instance()->getCustomizationVariables(meshFilename.hashCode(), variables, false);
+		}
+
+		// Ghosts: still nothing (mesh absent from the table) - let these cloth items
+		// use the standard palette variable so the color window still works.
+		if (variables.isEmpty() && ghostMesh) {
+			String fallbackVariable = "/private/index_color_1";
+
+			ManagedReference<SuiColorBox*> fallbackBox = new SuiColorBox(player, SuiWindowType::COLOR_ARMOR);
+			fallbackBox->setCallback(new ColorArmorSuiCallback(server));
+			fallbackBox->setColorPalette(fallbackVariable);
+			fallbackBox->setUsingObject(sceneObject);
+			fallbackBox->setSkillMod(255);
+
+			ManagedReference<PlayerObject*> fallbackGhost = player->getPlayerObject();
+			if (fallbackGhost != nullptr) {
+				fallbackGhost->addSuiBox(fallbackBox);
+				player->sendMessage(fallbackBox->generateMessage());
+			}
+
+			return 0;
+		}
+
 		if (variables.isEmpty()) {
 			player->sendSystemMessage("This item cannot be recolored.");
 			return 0;
@@ -235,7 +282,96 @@ int TangibleObjectMenuComponent::handleObjectMenuSelect(SceneObject* sceneObject
 		player->sendMessage(inputBox->generateMessage());
 
 		return 0;
-	}else
+	} else if (selectedID == 89) {
+		WearableObject* wearable = cast<WearableObject*>(tano);
+
+		if (wearable == nullptr) {
+			return 0;
+		}
+
+		ManagedReference<SceneObject*> inventory = player->getSlottedObject("inventory");
+
+		if (inventory == nullptr) {
+			return 0;
+		}
+
+		if (!wearable->hasSeaRemovalTool(player, false)) {
+			player->sendSystemMessage("This requires a specialized skill enhancing attachment removal tool.");
+			return 0;
+		}
+
+		if (!wearable->isWearableObject() && !wearable->isArmorObject()) {
+			return 0;
+		}
+
+		if (wearable->isEquipped()) {
+			player->sendSystemMessage("You must first un-equip the item.");
+			return 0;
+		}
+
+		VectorMap<String, int>* mods = wearable->getWearableSkillMods();
+
+		if (mods == nullptr || mods->size() == 0) {
+			return 0;
+		}
+
+		auto lootManager = player->getZoneServer()->getLootManager();
+		LootGroupMap* lootGroupMap = LootGroupMap::instance();
+
+		if (lootManager == nullptr || lootGroupMap == nullptr) {
+			return 0;
+		}
+
+		String objectTemplate = sceneObject->getObjectTemplate()->getFullTemplateString();
+		Reference<const LootItemTemplate*> itemTemplate = nullptr;
+
+		if (wearable->isArmorObject() ||
+			objectTemplate == "object/tangible/wearables/armor/padded/armor_padded_s01_belt.iff" ||
+			objectTemplate == "object/tangible/wearables/armor/zam/armor_zam_wesell_belt.iff") {
+			itemTemplate = lootGroupMap->getLootItemTemplate("attachment_armor");
+		} else {
+			itemTemplate = lootGroupMap->getLootItemTemplate("attachment_clothing");
+		}
+
+		if (itemTemplate == nullptr) {
+			return 0;
+		}
+
+		for (int i = 0; i < mods->size(); ++i) {
+			String modKey = mods->elementAt(i).getKey();
+			TangibleObject* sea = lootManager->createLootAttachment(itemTemplate.get(), modKey, mods->elementAt(i).getValue());
+
+			if (sea == nullptr) {
+				continue;
+			}
+
+			Attachment* attachment = cast<Attachment*>(sea);
+
+			if (attachment == nullptr) {
+				sea->destroyObjectFromDatabase(true);
+				continue;
+			}
+
+			Locker objLocker(attachment);
+
+			if (inventory->transferObject(sea, -1, true, true)) {
+				inventory->broadcastObject(sea, true);
+			} else {
+				sea->destroyObjectFromDatabase(true);
+				error() << "Unable to place Skill Attachment in player's inventory!";
+				return 0;
+			}
+		}
+
+		if (wearable->hasSeaRemovalTool(player, true)) {
+			player->sendSystemMessage("Your SEA Tool has been consumed in the process.");
+		}
+
+		wearable->destroyObjectFromWorld(true);
+		wearable->destroyObjectFromDatabase(true);
+		player->sendSystemMessage("Removing SEA");
+		return 0;
+	} else
 		return ObjectMenuComponent::handleObjectMenuSelect(sceneObject, player, selectedID);
 
 }

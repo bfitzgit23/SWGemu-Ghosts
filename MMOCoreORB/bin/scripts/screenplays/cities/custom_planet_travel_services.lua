@@ -17,6 +17,11 @@ CustomPlanetTravelServices = ScreenPlay:new {
 		{"hoth", 0, 0, -2000},
 		{"hutta", -789, 80, 1769},
 		{"jakku", -4263, 6, -2411},
+
+		-- Chandrila already has terminal objects, but its shuttle/ticket
+		-- collector chain was never registered with PlanetManager.
+		{"chandrila", 178, 6, -2961},
+		{"chandrila", -5272, 18, 264},
 		{"kaas", -5163, 80, -2238},
 		{"kashyyyk", -669.73, 18.85, -148.48},
 		{"korriban", -1751, 91, -641},
@@ -30,7 +35,16 @@ CustomPlanetTravelServices = ScreenPlay:new {
 		{"mustafar", -2475, 230.1, 1624.7},
 		{"taanab", 2100, 45, 5400},
 		{"taanab", 3610, 31.7, -5425}
-	}
+		},
+
+		-- These locations have no terminal in their city/POI screenplay.
+		travelTerminals = {
+			{"chandrila", 178, 6, -2961},
+			{"chandrila", -5272, 18, 264},
+			{"kashyyyk", -669.73, 18.85, -148.48},
+			{"mustafar", -2475, 230.1, 1624.7},
+			{"taanab", 3610, 31.7, -5425}
+		}
 }
 
 registerScreenPlay("CustomPlanetTravelServices", true)
@@ -51,6 +65,17 @@ function CustomPlanetTravelServices:start()
 			spawnSceneObject(planet,
 				"object/mobile/player_transport.iff",
 				x + 15, z, y, 0, 0)
+		end
+	end
+
+	for i = 1, #self.travelTerminals do
+		local terminal = self.travelTerminals[i]
+		local planet = terminal[1]
+
+		if isZoneEnabled(planet) then
+			spawnSceneObject(planet,
+				"object/tangible/terminal/terminal_travel.iff",
+				terminal[2], terminal[3], terminal[4], 0, 0)
 		end
 	end
 end

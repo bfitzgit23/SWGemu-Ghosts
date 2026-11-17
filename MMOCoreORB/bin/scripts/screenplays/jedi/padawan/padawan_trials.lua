@@ -3,6 +3,10 @@ local ObjectManager = require("managers.object.object_manager")
 PadawanTrials = ScreenPlay:new {}
 
 function PadawanTrials:doPadawanTrialsSetup(pPlayer)
+	if (pPlayer == nil or VillageJediManagerCommon.isHolocronJedi(pPlayer)) then
+		return
+	end
+
 	local sui = SuiMessageBox.new("JediTrials", "emptyCallback")
 
 	if (not JediTrials:isEligibleForPadawanTrials(pPlayer)) then

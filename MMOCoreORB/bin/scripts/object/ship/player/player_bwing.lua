@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_bwing = object_ship_player_shared_player_bwing:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_bwing",
 	slideFactor = 1.72,

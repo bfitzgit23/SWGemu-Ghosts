@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_corvette = object_ship_player_shared_player_corvette:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 
 	name = "player_corvette",
 	slideFactor = 1.76,

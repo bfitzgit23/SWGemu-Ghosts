@@ -42,6 +42,7 @@
 
 
 object_ship_player_player_tieaggressor = object_ship_player_shared_player_tieaggressor:new {
+	arrangementDescriptorFilename = "abstract/slot/arrangement/arrangement_ship.iff",
 	name = "player_tieaggressor",
 	slideFactor = 1.75,
 	chassisHitpoints = 1643.2,
