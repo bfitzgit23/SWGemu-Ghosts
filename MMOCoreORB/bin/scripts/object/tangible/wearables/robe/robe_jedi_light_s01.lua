@@ -107,6 +107,8 @@ object_tangible_wearables_robe_robe_jedi_light_s01 = object_tangible_wearables_r
 	volume = 1,
 	jediRobe = true,
 
+	arrangementDescriptorFilename = "abstract/slot/arrangement/wearables/cloak.iff",
+
 	skillMods = {
 		{"jedi_force_power_max", 500},
 		{"jedi_force_power_regen", 95}

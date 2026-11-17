@@ -32,6 +32,8 @@ function ForceShrineMenuComponent:handleObjectMenuSelect(pObject, pPlayer, selec
 end
 
 function ForceShrineMenuComponent:doMeditate(pObject, pPlayer)
+	ForceShrineMenuComponent:grantShrineRobes(pPlayer)
+
 	if (tonumber(readScreenPlayData(pPlayer, "KnightTrials", "completedTrials")) == 1 and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) then
 		KnightTrials:resetCompletedTrialsToStart(pPlayer)
 	end
@@ -77,6 +79,26 @@ function ForceShrineMenuComponent:doMeditate(pObject, pPlayer)
 	else
 		CreatureObject(pPlayer):sendSystemMessage("@jedi_trials:force_shrine_wisdom_" .. getRandomNumber(1, 15))
 	end
+end
+
+function ForceShrineMenuComponent:grantShrineRobes(pPlayer)
+	if (readScreenPlayData(pPlayer, "ForceShrine", "shrineRobesGranted") == "1") then
+		return
+	end
+
+	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
+
+	if (pInventory == nil or SceneObject(pInventory):isContainerFullRecursive()) then
+		CreatureObject(pPlayer):sendSystemMessage("@jedi_spam:inventory_full_jedi_robe")
+		return
+	end
+
+	giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s01.iff", -1)
+	giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s01.iff", -1)
+
+	writeScreenPlayData(pPlayer, "ForceShrine", "shrineRobesGranted", "1")
+
+	CreatureObject(pPlayer):sendSystemMessage("The shrine answers your meditation: a Jedi robe and a Dark Jedi robe materialize in your pack.")
 end
 
 function ForceShrineMenuComponent:recoverRobe(pPlayer)

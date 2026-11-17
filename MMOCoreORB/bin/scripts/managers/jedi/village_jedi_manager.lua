@@ -296,6 +296,11 @@ end
 
 --Check to ensure force skill prerequisites are maintained
 function VillageJediManager:canSurrenderSkill(pPlayer, skillName)
+	-- Ghosts admin: one-shot Bennji Jedi skill reset bypass.
+	if (readScreenPlayData(pPlayer, "ResetBennjiJedi", "allow") == "1") then
+		return true
+	end
+
 
 	if skillName == "force_title_jedi_novice" and CreatureObject(pPlayer):getForceSensitiveSkillCount(true) > 0 then
 		return false
