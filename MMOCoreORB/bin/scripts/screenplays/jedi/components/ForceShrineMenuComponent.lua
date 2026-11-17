@@ -82,10 +82,6 @@ function ForceShrineMenuComponent:doMeditate(pObject, pPlayer)
 end
 
 function ForceShrineMenuComponent:grantShrineRobes(pPlayer)
-	if (readScreenPlayData(pPlayer, "ForceShrine", "shrineRobesGranted") == "1") then
-		return
-	end
-
 	local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
 
 	if (pInventory == nil or SceneObject(pInventory):isContainerFullRecursive()) then
@@ -93,12 +89,13 @@ function ForceShrineMenuComponent:grantShrineRobes(pPlayer)
 		return
 	end
 
+	-- Padawan robe for everyone, plus the light and dark robes. Meditating again
+	-- hands out another set, so a lost robe can always be replaced.
+	giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_padawan.iff", -1)
 	giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_light_s01.iff", -1)
 	giveItem(pInventory, "object/tangible/wearables/robe/robe_jedi_dark_s01.iff", -1)
 
-	writeScreenPlayData(pPlayer, "ForceShrine", "shrineRobesGranted", "1")
-
-	CreatureObject(pPlayer):sendSystemMessage("The shrine answers your meditation: a Jedi robe and a Dark Jedi robe materialize in your pack.")
+	CreatureObject(pPlayer):sendSystemMessage("The shrine answers your meditation: a padawan robe, a Jedi robe and a Dark Jedi robe materialize in your pack.")
 end
 
 function ForceShrineMenuComponent:recoverRobe(pPlayer)
