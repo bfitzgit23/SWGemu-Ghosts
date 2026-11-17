@@ -24,6 +24,20 @@ void WearableObjectImplementation::initializeTransientMembers() {
 
 		usedSocketCount--;
 	}
+
+	// Ghosts (2026-11-17): every Jedi robe opens with the full socket count,
+	// whether it was crafted, looted or handed out by a shrine.
+	auto tpl = getObjectTemplate();
+
+	if (tpl != nullptr && !socketsGenerated) {
+		String path = tpl->getFullTemplateString();
+
+		if (path.contains("/wearables/robe/robe_jedi")) {
+			socketCount = MAXSOCKETS;
+			usedSocketCount = 0;
+			socketsGenerated = true;
+		}
+	}
 }
 
 void WearableObjectImplementation::fillAttributeList(AttributeListMessage* alm, CreatureObject* object) {
@@ -90,37 +104,23 @@ void WearableObjectImplementation::updateCraftingValues(CraftingValues* values, 
 			generateSockets(values);
 	}
 
-	// Ghosts (2026-09-29): crafted Jedi robes always come out socketed (1-2 sockets)
-	// regardless of assembly skill, per the custom robe design.
+	// Ghosts (2026-11-17): crafted Jedi robes always come out with the full
+	// socket count regardless of assembly skill, per the custom robe design.
 	String craftTemplatePath = getObjectTemplate()->getFullTemplateString();
 	if (craftTemplatePath.contains("robe_jedi") || craftTemplatePath.contains("robe_s32") || craftTemplatePath.contains("robe_s33")) {
 		if (socketCount < 1) {
 			usedSocketCount = 0;
-			socketCount = 1 + System::random(1);
+			socketCount = MAXSOCKETS;
 			socketsGenerated = true;
 		}
 	}
 
-	// Ghosts (2026-10-12): crafted armor always comes out socketed (2 sockets)
-	// for master-level crafters (assembly skill mod >= MIN_SOCKET_MOD).
+	// Ghosts (2026-11-17): crafted armor always comes out with the full socket
+	// count, no crafter skill gate.
 	if (craftTemplatePath.contains("/wearables/armor/") && socketCount < 1) {
-		int assemblySkill = 0;
-
-		auto manuSchematic = values->getManufactureSchematic();
-
-		if (manuSchematic != nullptr) {
-			auto draftSchematic = manuSchematic->getDraftSchematic();
-			auto crafter = manuSchematic->getCrafter().get();
-
-			if (draftSchematic != nullptr && crafter != nullptr)
-				assemblySkill = crafter->getSkillMod(draftSchematic->getAssemblySkill());
-		}
-
-		if (assemblySkill >= MIN_SOCKET_MOD) {
-			usedSocketCount = 0;
-			socketCount = 2;
-			socketsGenerated = true;
-		}
+		usedSocketCount = 0;
+		socketCount = MAXSOCKETS;
+		socketsGenerated = true;
 	}
 }
 
@@ -139,10 +139,11 @@ void WearableObjectImplementation::generateSockets(CraftingValues* craftingValue
 }
 
 void WearableObjectImplementation::generateEmptySockets(int count) {
-	// Ghosts (2026-10-12): give loot/non-crafted wearables empty sockets.
+	// Ghosts (2026-11-17): any wearable that is socketed outside crafting opens
+	// with the full socket count as well.
 	if (socketCount < 1 && count > 0) {
 		usedSocketCount = 0;
-		socketCount = count;
+		socketCount = MAXSOCKETS;
 		socketsGenerated = true;
 	}
 }
