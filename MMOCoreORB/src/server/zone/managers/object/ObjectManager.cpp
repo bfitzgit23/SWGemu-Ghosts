@@ -887,6 +887,17 @@ SceneObject* ObjectManager::createObject(uint32 objectCRC, int persistenceLevel,
 
 	object->setPersistent(persistenceLevel);
 
+	// Ghosts (2026-11-17): Jedi robes always come out fully socketed, wherever
+	// they were created - shrine meditation, village NPCs, loot or crafting.
+	if (object->isWearableObject()) {
+		auto wearable = cast<WearableObject*>(object);
+		auto objectTemplate = wearable != nullptr ? wearable->getObjectTemplate() : nullptr;
+
+		if (objectTemplate != nullptr && objectTemplate->getFullTemplateString().contains("/wearables/robe/robe_jedi")) {
+			wearable->setMaxSockets(8);
+		}
+	}
+
 	if (initializeTransientMembers)
 		object->initializeTransientMembers();
 

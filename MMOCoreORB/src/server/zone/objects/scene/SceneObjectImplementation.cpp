@@ -485,7 +485,7 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 					} else if (isMultiPassengerShip() && slotKey == "ship_gunner1") {
 						obj->setContainmentType(PlayerArrangement::SHIP_GUNNER1);
 					} else {
-						obj->setContainmentType(PlayerArrangement::SHIP_PILOT); // 5
+						obj->setContainmentType(PlayerArrangement::SHIP_PILOT);
 					}
 				}
 			}
