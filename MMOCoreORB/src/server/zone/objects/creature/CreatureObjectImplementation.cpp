@@ -2472,6 +2472,37 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
 
+	// Ghosts: a few Jedi commands moved between skill boxes. The saved ability
+	// list would keep the old ones, so drop any moved command that none of the
+	// character's current boxes grants.
+	static const char* movedSkillCommands[] = { "forceIntimidate1", "forceIntimidate2", "jediMindTrick", "forceMeditate" };
+
+	Vector<String> grantedAbilities;
+
+	for (int i = 0; i < playerSkillList->size(); ++i) {
+		Skill* skillBox = playerSkillList->get(i);
+
+		if (skillBox == nullptr)
+			continue;
+
+		const Vector<String>* boxAbilities = skillBox->getAbilities();
+
+		for (int j = 0; j < boxAbilities->size(); ++j)
+			grantedAbilities.add(boxAbilities->get(j));
+	}
+
+	Vector<String> staleAbilities;
+
+	for (const char* movedCommand : movedSkillCommands) {
+		String movedName(movedCommand);
+
+		if (!grantedAbilities.contains(movedName) && ghost->hasAbility(movedName) && !staleAbilities.contains(movedName))
+			staleAbilities.add(movedName);
+	}
+
+	if (staleAbilities.size() > 0)
+		skillManager->removeAbilities(ghost, staleAbilities, false);
+
 	if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 		error() << "skill points on load mismatch calculated: " << totalSkillPointsWasted << " found: " << ghost->getSkillPoints();
 		ghost->setSkillPoints(totalSkillPointsWasted);
