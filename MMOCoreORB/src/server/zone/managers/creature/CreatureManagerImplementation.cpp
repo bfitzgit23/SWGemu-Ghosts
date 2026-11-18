@@ -5,7 +5,6 @@
  *      Author: victor
  */
 
-#include "server/zone/managers/skill/SkillManager.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/objects/creature/ai/CreatureTemplate.h"
 #include "CreatureTemplateManager.h"
@@ -707,11 +706,11 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 				if (luckMod > 0)
 					lootLuck += (luckMod > 100 ? 100 : luckMod) / 100.f;
 
-				// Force sensitive characters get extra luck for every trained Force skill box.
-				int fsBoxes = SkillManager::instance()->getForceSensitiveSkillCount(player, true);
-
-				if (fsBoxes > 0)
-					lootLuck += (fsBoxes > 20 ? 20 : fsBoxes) * 0.02f;
+				// Ghosts: Force Sensitive Heightened Senses - Luck I through IV, 10% luck each.
+				for (int rank = 1; rank <= 4; ++rank) {
+					if (player->hasSkill("force_sensitive_heightened_senses_luck_0" + String::valueOf(rank)))
+						lootLuck += 0.10f;
+				}
 
 				if (lootLuck > 1.f)
 					lootLuck = 1.f;

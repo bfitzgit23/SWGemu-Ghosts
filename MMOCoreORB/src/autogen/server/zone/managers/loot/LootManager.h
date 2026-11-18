@@ -187,7 +187,7 @@ public:
 
 	void setRandomLootValues(TransactionLog& trx, TangibleObject* prototype, const LootItemTemplate* templateObject, int level, float excMod);
 
-	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false, float luck = 0.f);
 
 	TangibleObject* createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value);
 
@@ -199,15 +199,15 @@ public:
 
 	int calculateLootCredits(int level);
 
-	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature);
+	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature, float luck = 0.f);
 
 	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, ShipAiAgent* shipAgent);
 
-	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level);
+	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level, float luck = 0.f);
 
-	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false, float luck = 0.f);
 
-	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
+	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize, float luck = 0.f);
 
 	unsigned int getYellowLooted() const;
 
@@ -376,7 +376,7 @@ private:
 public:
 	void setRandomLootValues(TransactionLog& trx, TangibleObject* prototype, const LootItemTemplate* templateObject, int level, float excMod);
 
-	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false);
+	TangibleObject* createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition = false, float luck = 0.f);
 
 	TangibleObject* createLootAttachment(const LootItemTemplate* templateObject, const String& modName, int value);
 
@@ -388,15 +388,15 @@ public:
 
 	int calculateLootCredits(int level);
 
-	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature);
+	bool createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature, float luck = 0.f);
 
 	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, ShipAiAgent* shipAgent);
 
-	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level);
+	bool createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level, float luck = 0.f);
 
-	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false);
+	unsigned long long createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level = -1, bool maxCondition = false, float luck = 0.f);
 
-	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize);
+	bool createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize, float luck = 0.f);
 
 	unsigned int getYellowLooted() const;
 

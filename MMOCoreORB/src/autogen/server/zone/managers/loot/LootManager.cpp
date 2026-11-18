@@ -78,13 +78,13 @@ void LootManager::setRandomLootValues(TransactionLog& trx, TangibleObject* proto
 	}
 }
 
-TangibleObject* LootManager::createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition) {
+TangibleObject* LootManager::createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition, float luck) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->createLootObject(trx, templateObject, level, maxCondition);
+		return _implementation->createLootObject(trx, templateObject, level, maxCondition, luck);
 	}
 }
 
@@ -143,13 +143,13 @@ int LootManager::calculateLootCredits(int level) {
 	}
 }
 
-bool LootManager::createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature) {
+bool LootManager::createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature, float luck) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->createLoot(trx, container, creature);
+		return _implementation->createLoot(trx, container, creature, luck);
 	}
 }
 
@@ -163,33 +163,33 @@ unsigned long long LootManager::createLoot(TransactionLog& trx, SceneObject* con
 	}
 }
 
-bool LootManager::createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level) {
+bool LootManager::createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* collection, int level, float luck) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->createLootFromCollection(trx, container, collection, level);
+		return _implementation->createLootFromCollection(trx, container, collection, level, luck);
 	}
 }
 
-unsigned long long LootManager::createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition) {
+unsigned long long LootManager::createLoot(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, float luck) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->createLoot(trx, container, lootGroup, level, maxCondition);
+		return _implementation->createLoot(trx, container, lootGroup, level, maxCondition, luck);
 	}
 }
 
-bool LootManager::createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize) {
+bool LootManager::createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize, float luck) {
 	LootManagerImplementation* _implementation = static_cast<LootManagerImplementation*>(_getImplementationForRead());
 	if (unlikely(_implementation == NULL)) {
 		throw ObjectNotLocalException(this);
 
 	} else {
-		return _implementation->createLootSet(trx, container, lootGroup, level, maxCondition, setSize);
+		return _implementation->createLootSet(trx, container, lootGroup, level, maxCondition, setSize, luck);
 	}
 }
 
