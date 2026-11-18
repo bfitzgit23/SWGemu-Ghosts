@@ -543,6 +543,28 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	creature->sendBuffsTo(creature);
 
+	// Ghosts: a skill box's command list can change between patches, but the
+	// ability list is saved with the character, so a character trained before
+	// the change never receives the new commands. Re-grant the commands every
+	// learned box currently lists; addAbilities skips the ones already known.
+	const SkillList* learnedSkills = creature->getSkillList();
+
+	if (learnedSkills != nullptr) {
+		ZoneServer* zoneServer = getZoneServer();
+		SkillManager* skillManager = zoneServer != nullptr ? zoneServer->getSkillManager() : nullptr;
+
+		if (skillManager != nullptr) {
+			for (int i = 0; i < learnedSkills->size(); ++i) {
+				Skill* skillBox = learnedSkills->get(i);
+
+				if (skillBox == nullptr)
+					continue;
+
+				skillManager->addAbilities(asPlayerObject(), *skillBox->getAbilities(), false);
+			}
+		}
+	}
+
 	// Ghosts: abilities granted while loading a character are added with
 	// notifyClient off, so the client never hears about them. Re-send the
 	// ability list once the character is in the world so newly granted
