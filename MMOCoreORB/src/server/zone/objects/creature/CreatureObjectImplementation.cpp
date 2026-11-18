@@ -2475,7 +2475,9 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 	// Ghosts: a few Jedi commands moved between skill boxes. The saved ability
 	// list would keep the old ones, so drop any moved command that none of the
 	// character's current boxes grants.
-	static const char* movedSkillCommands[] = { "forceIntimidate1", "forceIntimidate2", "jediMindTrick", "forceMeditate" };
+	static const char* movedSkillCommands[] = { "forceIntimidate1", "forceIntimidate2", "jediMindTrick", "forceMeditate",
+		"battleMeditation", "electricJudgmentSingle1", "electricJudgmentSingle2", "electricJudgmentCone1",
+		"electricJudgmentCone2" };
 
 	Vector<String> grantedAbilities;
 
