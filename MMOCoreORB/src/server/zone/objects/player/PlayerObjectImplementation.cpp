@@ -541,6 +541,14 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	creature->sendBuffsTo(creature);
 
+	// Ghosts: abilities granted while loading a character are added with
+	// notifyClient off, so the client never hears about them. Re-send the
+	// ability list once the character is in the world so newly granted
+	// commands (Electric Judgment, Battle Meditation, ...) reach the
+	// client's command browser.
+	BaseMessage* abilityList9 = new PlayerObjectMessage9(this);
+	sendMessage(abilityList9);
+
 	sendFriendLists();
 
 	if (creature->isDead() && !isCloning()) {
