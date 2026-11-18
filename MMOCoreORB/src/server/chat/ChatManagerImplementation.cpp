@@ -1491,46 +1491,37 @@ void ChatManagerImplementation::handleChatInstantMessageToCharacter(ChatInstantM
             UnicodeString msgBody = message->getMessage();
             String msgText = msgBody.toString().toLowerCase();
 
-            if (sender != nullptr && (msgText.contains("invite") || msgText.contains("inv"))) {
+            // Ghosts: only a tell that actually asks for an invite triggers this,
+            // so ordinary messages containing "inv" are left alone.
+            bool wantsInvite = false;
+
+            {
+                StringTokenizer inviteWords(msgText);
+
+                while (inviteWords.hasMoreTokens()) {
+                    String word;
+                    inviteWords.getStringToken(word);
+
+                    if (word == "invite" || word == "inv") {
+                        wantsInvite = true;
+                        break;
+                    }
+                }
+            }
+
+            if (sender != nullptr && wantsInvite) {
                 ManagedReference<CreatureObject*> targetObject = getPlayer(recipientName);
 
                 if (targetObject != nullptr && targetObject->isPlayerCreature()) {
                     GroupManager* groupManager = GroupManager::instance();
 
                     if (groupManager != nullptr) {
-                        uint32 senderAccount = 0;
-                        uint32 targetAccount = 0;
+                        // Ghosts: the entertainer invites the player and the player
+                        // decides. Never put anyone in a group on their behalf.
+                        groupManager->inviteToGroup(targetObject, sender);
 
-                        Reference<PlayerObject*> senderGhost = sender->getPlayerObject();
-                        Reference<PlayerObject*> targetGhost = targetObject->getPlayerObject();
-
-                        if (senderGhost != nullptr) senderAccount = senderGhost->getAccountID();
-                        if (targetGhost != nullptr) targetAccount = targetGhost->getAccountID();
-
-                        // Account-based alt auto-accept. No zone, building, or distance restriction.
-                        if (senderAccount != 0 && senderAccount == targetAccount) {
-                            if (sender->isGrouped()) {
-                                sender->sendSystemMessage("You are already in a group.");
-                            } else {
-                                groupManager->inviteToGroup(targetObject, sender);
-
-                                // Only join if the entertainer actually became the inviter.
-                                // This avoids joining a stale group after a failed invite.
-                                if (sender->getGroupInviterID() == targetObject->getObjectID()) {
-                                    groupManager->joinGroup(sender);
-
-                                    if (sender->isGrouped()) {
-                                        sender->sendSystemMessage("Auto-joined group with your account alt.");
-                                        targetObject->sendSystemMessage("Auto-accepted group invite from your account alt.");
-                                    } else {
-                                        sender->sendSystemMessage("Could not auto-join your account alt group.");
-                                    }
-                                }
-                            }
-                        } else {
-                            groupManager->inviteToGroup(targetObject, sender);
-                            sender->sendSystemMessage("Requested group invite via tell.");
-                        }
+                        sender->sendSystemMessage("Asked " + targetObject->getDisplayedName()
+                                + " to invite you to their group. Accept the invite when it appears.");
                     }
                 }
             }
