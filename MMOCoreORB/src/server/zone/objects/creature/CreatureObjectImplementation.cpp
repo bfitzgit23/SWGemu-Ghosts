@@ -2463,6 +2463,12 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 
 		skillManager->awardDraftSchematics(skill, ghost, false);
 
+		// Ghosts: a skill box's command list can change after a character has
+		// been trained, but the ability list is saved with the player. Re-grant
+		// whatever the box currently lists so new commands reach already
+		// trained characters (addAbilities skips abilities we already know).
+		skillManager->addAbilities(ghost, *skill->getAbilities(), false);
+
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
 

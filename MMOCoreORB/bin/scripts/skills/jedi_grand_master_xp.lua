@@ -39,7 +39,8 @@ jedi_grand_master_novice = {
 	statsRequired = {},
 	speciesRequired = {},
 	skillAbility = {},
-	commands = {},
+	commands = { "electricJudgmentSingle1", "electricJudgmentCone1", "battleMeditation" },
+
 	apprenticeshipsRequired = 0,
 	jediStateRequired = 0,
 	skillModifiers = {
@@ -93,7 +94,9 @@ jedi_grand_master_master = {
 	statsRequired = {},
 	speciesRequired = {},
 	skillAbility = {},
-	commands = {},
+	commands = { "electricJudgmentSingle1", "electricJudgmentCone1",
+		"electricJudgmentSingle2", "electricJudgmentCone2", "battleMeditation" },
+
 	apprenticeshipsRequired = 0,
 	jediStateRequired = 0,
 	skillModifiers = {
@@ -142,7 +145,8 @@ jedi_dark_lord_novice = {
 	statsRequired = {},
 	speciesRequired = {},
 	skillAbility = {},
-	commands = {},
+	commands = { "electricJudgmentSingle1", "electricJudgmentCone1", "battleMeditation" },
+
 	apprenticeshipsRequired = 0,
 	jediStateRequired = 0,
 	skillModifiers = {
@@ -196,7 +200,9 @@ jedi_dark_lord_master = {
 	statsRequired = {},
 	speciesRequired = {},
 	skillAbility = {},
-	commands = {},
+	commands = { "electricJudgmentSingle1", "electricJudgmentCone1",
+		"electricJudgmentSingle2", "electricJudgmentCone2", "battleMeditation" },
+
 	apprenticeshipsRequired = 0,
 	jediStateRequired = 0,
 	skillModifiers = {
