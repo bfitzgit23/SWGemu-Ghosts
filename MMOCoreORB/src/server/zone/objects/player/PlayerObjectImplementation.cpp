@@ -543,53 +543,6 @@ void PlayerObjectImplementation::notifySceneReady() {
 
 	creature->sendBuffsTo(creature);
 
-	// Ghosts: characters saved before Electric Judgment and Battle Meditation
-	// were added to their Jedi skill boxes never received those commands, and
-	// boxes outside the patched set still do not grant them. Give every trained
-	// Jedi whatever of the five commands they are missing, before the ability
-	// and skill lists are re-sent below.
-	if (!hasAbility("battleMeditation") || !hasAbility("electricJudgmentSingle1")
-			|| !hasAbility("electricJudgmentSingle2") || !hasAbility("electricJudgmentCone1")
-			|| !hasAbility("electricJudgmentCone2")) {
-		const SkillList* skillList = creature->getSkillList();
-		bool isJedi = false;
-
-		if (skillList != nullptr) {
-			for (int i = 0; i < skillList->size() && !isJedi; ++i) {
-				Skill* skillBox = skillList->get(i);
-
-				if (skillBox == nullptr)
-					continue;
-
-				const String& boxName = skillBox->getSkillName();
-
-				isJedi = boxName.beginsWith("jedi_") || boxName.beginsWith("force_discipline_")
-						|| boxName.beginsWith("force_title_jedi");
-			}
-		}
-
-		if (isJedi) {
-			static const char* jediCommands[] = { "electricJudgmentSingle1", "electricJudgmentSingle2",
-				"electricJudgmentCone1", "electricJudgmentCone2", "battleMeditation" };
-
-			Vector<String> missingCommands;
-
-			for (const char* command : jediCommands) {
-				String commandName(command);
-
-				if (!hasAbility(commandName))
-					missingCommands.add(commandName);
-			}
-
-			if (missingCommands.size() > 0) {
-				server->getSkillManager()->addAbilities(asPlayerObject(), missingCommands, false);
-
-				info(true) << "Granted " << missingCommands.size() << " Jedi command(s) to "
-					<< creature->getDisplayedName() << " on zone in";
-			}
-		}
-	}
-
 	// Ghosts: abilities granted while loading a character are added with
 	// notifyClient off, so the client never hears about them. Re-send the
 	// ability list once the character is in the world so newly granted
