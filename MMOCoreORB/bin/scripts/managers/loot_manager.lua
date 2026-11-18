@@ -41,13 +41,13 @@
 --which carries forward this exception.
 
 --Chance divisor for attribute bonus modifiers
-levelChance = 10
+levelChance = 16
 
 --Chance dividend for attribute bonus modifiers
 baseChance = 10
 yellowChance = 10
-exceptionalChance = 20
-legendaryChance = 50
+exceptionalChance = 12
+legendaryChance = 25
 
 --Multiplier values for bonus modifiers
 baseModifier = 1
@@ -56,7 +56,7 @@ exceptionalModifier = 2.5
 legendaryModifier = 5.0
 
 --The chance for random skill mods to be on looted weapons/wearables
-skillModChance = 50 -- 1 in 500
+skillModChance = 40
 
 -- Dot Distribution chance by DOT type. They must equate to 1.0
 poisonDotChance = 0.50

@@ -28,19 +28,19 @@ isd_mouse_droid = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "trash_common", chance = 10000000},
+				{group = "dungeon_trash", chance = 10000000},
 			},
 			lootChance = 10000000
 		},
 		{
 			groups = {
-				{group = "trash_common", chance = 10000000},
+				{group = "dungeon_trash", chance = 10000000},
 			},
 			lootChance = 10000000
 		},
 		{
 			groups = {
-				{group = "trash_rare", chance = 10000000},
+				{group = "dungeon_trash_rare", chance = 10000000},
 			},
 			lootChance = 10000000
 		},

@@ -28,7 +28,20 @@ chiss_hunter_herald = Creature:new {
   diet = HERBIVORE,
 
 	templates = {"object/mobile/dressed_cobral_thug_rodian_male_01.iff"},
-	lootGroups = {},
+	lootGroups = {
+	{
+		groups = {
+			{group = "boss_common", chance = 10000000}
+		},
+		lootChance = 10000000
+	},
+	{
+		groups = {
+			{group = "boss_rare", chance = 10000000}
+		},
+		lootChance = 10000000
+	}
+},
 	weapons = {"pirate_weapons_heavy"},
 	conversationTemplate = "chiss_hunter_herald",
 	reactionStf = "@npc_reaction/slang",

@@ -31,7 +31,7 @@ mokk_huurton_reaper = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "trash_common", chance = 10000000},
+				{group = "dungeon_trash", chance = 10000000},
 			},
 			lootChance = 10000000
 		},
@@ -43,7 +43,7 @@ mokk_huurton_reaper = Creature:new {
 		},
 		{
 			groups = {
-				{group = "trash_rare", chance = 10000000},
+				{group = "dungeon_trash_rare", chance = 10000000},
 			},
 			lootChance = 3000000
 		},

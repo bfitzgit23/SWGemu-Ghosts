@@ -35,8 +35,8 @@ security4_droid = Creature:new {
 		},		
 		{
 			groups = {
-				{group = "trash_common", chance = 8000000},
- 				{group = "trash_rare", chance = 2000000},
+				{group = "dungeon_trash", chance = 8000000},
+ 				{group = "dungeon_trash_rare", chance = 2000000},
 			},
 			lootChance = 10000000
 		},

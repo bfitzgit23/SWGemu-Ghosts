@@ -30,13 +30,13 @@ ig_battledroid = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "trash_common", chance = 10000000},
+				{group = "dungeon_trash", chance = 10000000},
 			},
 			lootChance = 800000
 		},
 		{
 			groups = {
-				{group = "trash_rare", chance = 10000000},
+				{group = "dungeon_trash_rare", chance = 10000000},
 			},
 			lootChance = 600000
 		},

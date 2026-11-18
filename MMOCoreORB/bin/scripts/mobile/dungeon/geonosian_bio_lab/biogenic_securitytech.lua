@@ -29,7 +29,20 @@ biogenic_securitytech = Creature:new {
 	templates = {
 		"object/mobile/dressed_geonosian_scientist_01.iff",
 		"object/mobile/dressed_geonosian_scientist_02.iff"},
-	lootGroups = {},
+	lootGroups = {
+	{
+		groups = {
+			{group = "dungeon_trash", chance = 10000000}
+		},
+		lootChance = 10000000
+	},
+	{
+		groups = {
+			{group = "dungeon_trash_rare", chance = 10000000}
+		},
+		lootChance = 3500000
+	}
+},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary

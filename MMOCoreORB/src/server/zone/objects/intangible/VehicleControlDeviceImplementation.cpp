@@ -139,6 +139,12 @@ void VehicleControlDeviceImplementation::spawnObject(CreatureObject* player) {
 		vehicle = cast<CreatureObject*>(controlledObject.get());
 		vehicle->setCreatureLink(player);
 		vehicle->setControlDevice(_this.getReferenceUnsafeStaticCast());
+
+		// Ghosts: speeders felt sluggish. Base multiplier is a plain set (not a multiply) so it cannot stack up
+		// across store/call cycles. Vanilla creature base is 1.25f.
+		if (vehicle->getSpeedMultiplierBase() < 1.9f) {
+			vehicle->setSpeedMultiplierBase(1.9f, true);
+		}
 	}
 
 	zone->transferObject(controlledObject, -1, true);

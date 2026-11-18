@@ -35,8 +35,8 @@ ig88_upgrade = Creature:new {
 		},		
 		{
 			groups = {
-				{group = "trash_common", chance = 5000000},
- 				{group = "trash_rare", chance = 5000000},
+				{group = "dungeon_trash", chance = 5000000},
+ 				{group = "dungeon_trash_rare", chance = 5000000},
 			},
 			lootChance = 10000000
 		},

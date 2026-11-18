@@ -35,15 +35,15 @@ hellfire_droid = Creature:new {
 		},		
 		{
 			groups = {
-				{group = "trash_common", chance = 5000000},
- 				{group = "trash_rare", chance = 5000000},
+				{group = "dungeon_trash", chance = 5000000},
+ 				{group = "dungeon_trash_rare", chance = 5000000},
 			},
 			lootChance = 10000000
 		},
 		{
 			groups = {
-				{group = "trash_common", chance = 7000000},
- 				{group = "trash_rare", chance = 3000000},
+				{group = "dungeon_trash", chance = 7000000},
+ 				{group = "dungeon_trash_rare", chance = 3000000},
 			},
 			lootChance = 10000000
 		},    

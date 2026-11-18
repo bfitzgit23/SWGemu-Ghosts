@@ -42,7 +42,7 @@ student_force1 = Creature:new {
 		},
 		{
 			groups = {
-				{group = "trash_common", chance = 10000000}
+				{group = "dungeon_trash", chance = 10000000}
 			},
 			lootChance = 10000000
 		},

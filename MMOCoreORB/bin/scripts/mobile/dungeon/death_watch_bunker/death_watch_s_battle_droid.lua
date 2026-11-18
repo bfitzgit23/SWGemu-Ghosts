@@ -38,6 +38,13 @@ death_watch_s_battle_droid = Creature:new {
 			},
 			lootChance = 500000
 		}
+			,
+		{
+			groups = {
+				{group = "boss_rare", chance = 10000000}
+			},
+			lootChance = 5000000
+		}
 	},
 	conversationTemplate = "",
 	defaultWeapon = "object/weapon/ranged/droid/droid_droideka_ranged.iff",

@@ -37,6 +37,13 @@ death_watch_overlord_mines = Creature:new {
 			},
 			lootChance = 10000000
 		}
+			,
+		{
+			groups = {
+				{group = "boss_rare", chance = 10000000}
+			},
+			lootChance = 5000000
+		}
 	},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

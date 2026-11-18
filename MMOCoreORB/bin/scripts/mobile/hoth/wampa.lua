@@ -30,8 +30,8 @@ wampa = Creature:new {
 	lootGroups = {		
 		{
 			groups = {
-				{group = "trash_common", chance = 9000000},
- 				{group = "trash_rare", chance = 1000000},
+				{group = "dungeon_trash", chance = 9000000},
+ 				{group = "dungeon_trash_rare", chance = 1000000},
 			},
 			lootChance = 1500000
 		}

@@ -27,7 +27,20 @@ warren_altered_atst = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/atst.iff"},
-	lootGroups = {},
+	lootGroups = {
+	{
+		groups = {
+			{group = "dungeon_trash", chance = 10000000}
+		},
+		lootChance = 10000000
+	},
+	{
+		groups = {
+			{group = "dungeon_trash_rare", chance = 10000000}
+		},
+		lootChance = 3000000
+	}
+},
 	conversationTemplate = "",
 	defaultAttack = "defaultdroidattack",
 	defaultWeapon = "object/weapon/ranged/vehicle/vehicle_atst_ranged.iff"

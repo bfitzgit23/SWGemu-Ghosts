@@ -69,7 +69,7 @@ ec_reward = Creature:new {
 		},
 		{
 			groups = {
-				{group = "trash_rare", chance = 10000000},
+				{group = "dungeon_trash_rare", chance = 10000000},
 			},
 			lootChance = 10000000
 		},

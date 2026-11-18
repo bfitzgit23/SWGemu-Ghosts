@@ -31,7 +31,20 @@ death_watch_s_battle_droid_alt = Creature:new {
 		"object/mobile/death_watch_s_battle_droid.iff",
 		"object/mobile/death_watch_s_battle_droid_02.iff",
 		"object/mobile/death_watch_s_battle_droid_03.iff"},
-	lootGroups = {},
+	lootGroups = {
+	{
+		groups = {
+			{group = "dungeon_trash", chance = 10000000}
+		},
+		lootChance = 10000000
+	},
+	{
+		groups = {
+			{group = "dungeon_trash_rare", chance = 10000000}
+		},
+		lootChance = 3500000
+	}
+},
 	conversationTemplate = "",
 	defaultWeapon = "object/weapon/ranged/droid/droid_droideka_ranged.iff",
 	defaultAttack = "attack"
