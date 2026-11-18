@@ -64,6 +64,7 @@
 #include "server/zone/objects/creature/commands/AvoidIncapacitationCommand.h"
 #include "server/zone/objects/creature/commands/BandFlourishCommand.h"
 #include "server/zone/objects/creature/commands/BattleMeditationCommand.h"
+#include "server/zone/objects/creature/commands/ForceReviveCommand.h"
 #include "server/zone/objects/creature/commands/BattlefieldStatusCommand.h"
 #include "server/zone/objects/creature/commands/Berserk1Command.h"
 #include "server/zone/objects/creature/commands/Berserk2Command.h"
@@ -472,6 +473,7 @@ void CommandConfigManager::registerCommands2() {
 	commandFactory.registerCommand<AvoidIncapacitationCommand>(String("avoidIncapacitation").toLowerCase());
 	commandFactory.registerCommand<BandFlourishCommand>(String("bandFlourish").toLowerCase());
 	commandFactory.registerCommand<BattleMeditationCommand>(String("battleMeditation").toLowerCase());
+	commandFactory.registerCommand<ForceReviveCommand>(String("forceRevive").toLowerCase());
 		commandFactory.registerCommand<BattlefieldStatusCommand>(String("battlefieldStatus").toLowerCase());
 	commandFactory.registerCommand<Berserk1Command>(String("berserk1").toLowerCase());
 	commandFactory.registerCommand<Berserk2Command>(String("berserk2").toLowerCase());

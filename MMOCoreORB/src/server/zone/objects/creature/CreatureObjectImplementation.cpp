@@ -2,6 +2,7 @@
  				Copyright <SWGEmu>
 		See file COPYING for copying conditions. */
 
+#include "server/zone/objects/creature/buffs/GhostsReviveBuffStore.h"
 #include "server/zone/objects/creature/CreatureObject.h"
 #include "server/zone/objects/creature/ai/AiAgent.h"
 #include "server/zone/objects/creature/ai/HelperDroidObject.h"
@@ -3117,6 +3118,11 @@ void CreatureObjectImplementation::removeBuff(Buff* buff) {
 }
 
 void CreatureObjectImplementation::clearBuffs(bool updateclient, bool removeAll) {
+	// Ghosts: death wipes the buff list, so keep a copy of the timers
+	// while the player is down; Force Revive hands them back.
+	if (isPlayerCreature() && (isDead() || isIncapacitated()))
+		GhostsReviveBuffs::save(asCreatureObject());
+
 	creatureBuffs.clearBuffs(updateclient, removeAll);
 }
 

@@ -49,6 +49,41 @@ function JediTrials:isHolocronJedi(pPlayer)
 	return status ~= nil and status ~= "" and status ~= "none"
 end
 
+function JediTrials:hasLegacyKnightTrialsAccess(pPlayer)
+	if (pPlayer == nil) then
+		return false
+	end
+
+	return tonumber(readScreenPlayData(pPlayer, "KnightTrials", "legacyAccess")) == 1
+end
+
+-- Ghosts: the shrine knight trials used to be the only route to Knight.
+-- Characters that were already Jedi on that path keep their access; Jedi
+-- raised through the Holocron path never gain it.
+function JediTrials:grantLegacyKnightTrialsAccess(pPlayer)
+	if (pPlayer == nil or self:hasLegacyKnightTrialsAccess(pPlayer)) then
+		return
+	end
+
+	if (self:isHolocronJedi(pPlayer)) then
+		return
+	end
+
+	if (CreatureObject(pPlayer):hasSkill("force_rank_gray_novice")) then
+		return
+	end
+
+	if (not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_01")
+			and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02")
+			and not CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_03")) then
+		return
+	end
+
+	writeScreenPlayData(pPlayer, "KnightTrials", "legacyAccess", 1)
+
+	CreatureObject(pPlayer):sendSystemMessage("The Force remembers the path you walked: the shrine knight trials are open to you.")
+end
+
 function JediTrials:isEligibleForKnightTrials(pPlayer)
 	if (pPlayer == nil or not self.knightTrialsEnabled) then
 		return false
@@ -64,6 +99,12 @@ function JediTrials:isEligibleForKnightTrials(pPlayer)
 		return false
 	end
 
+	-- Ghosts: grandfathered characters keep the trials without the old
+	-- village grind, which no longer exists.
+	if (self:hasLegacyKnightTrialsAccess(pPlayer)) then
+		return true
+	end
+
 	return CreatureObject(pPlayer):villageKnightPrereqsMet("")
 end
 
@@ -76,6 +117,8 @@ function JediTrials:isOnKnightTrials(pPlayer)
 end
 
 function JediTrials:onPlayerLoggedIn(pPlayer)
+	self:grantLegacyKnightTrialsAccess(pPlayer)
+
 	if (CreatureObject(pPlayer):hasSkill("force_title_jedi_rank_02") and tonumber(readScreenPlayData(pPlayer, "PadawanTrials", "completedTrials")) ~= 1) then
 		writeScreenPlayData(pPlayer, "PadawanTrials", "completedTrials", 1)
 	end
