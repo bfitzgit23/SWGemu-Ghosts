@@ -294,7 +294,7 @@ jedi_padawan_novice = {
 	 speciesRequired = {},
 	 jediStateRequired = 0,
 	 skillAbility = {},
-	 commands = { "saberSlash1", "healBattleFatigueSelf1", "cert_onehandlightsaber", "sample", "survey", "electricJudgmentSingle1", "electricJudgmentCone1" },
+	 commands = { "saberSlash1", "healBattleFatigueSelf1", "cert_onehandlightsaber", "sample", "survey" },
 	 skillModifiers = {
 		{ "jedi_force_power_max", 200 },
 		{ "jedi_force_power_regen", 1 },
@@ -334,7 +334,7 @@ jedi_light_side_journeyman_novice = {
 	 speciesRequired = {},
 	 jediStateRequired = 0,
 	 skillAbility = {},
-	 commands = { "healAllOther1", "mindBlast2", "saber2hHit1", "saberThrow1", "cert_twohandlightsaber", "forceCurePoison", "forceCureDisease", "electricJudgmentSingle1", "electricJudgmentCone1" },
+	 commands = { "healAllOther1", "mindBlast2", "saber2hHit1", "saberThrow1", "cert_twohandlightsaber", "forceCurePoison", "forceCureDisease" },
 	 skillModifiers = {
 		{ "jedi_force_power_max", 400 },
 		{ "jedi_force_power_regen", 2 },
@@ -375,7 +375,7 @@ jedi_light_side_master_novice = {
 	 speciesRequired = {},
 	 jediStateRequired = 0,
 	 skillAbility = {},
-	 commands = { "healStatesSelf", "stopBleeding", "forceRun2", "forceWeaken1", "saberPolearmHit1", "cert_polearmlightsaber", "saberPolearmSpinAttack1", "electricJudgmentSingle1", "electricJudgmentCone1" },
+	 commands = { "healStatesSelf", "stopBleeding", "forceRun2", "forceWeaken1", "saberPolearmHit1", "cert_polearmlightsaber", "saberPolearmSpinAttack1" },
 	 skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 4 },
@@ -417,7 +417,7 @@ jedi_dark_side_journeyman_novice = {
 	 speciesRequired = {},
 	 jediStateRequired = 0,
 	 skillAbility = {},
-	 commands = { "healAllOther1", "mindBlast2", "saber2hHit1", "saberThrow1", "cert_twohandlightsaber", "forceCurePoison", "forceCureDisease", "electricJudgmentSingle1", "electricJudgmentCone1" },
+	 commands = { "healAllOther1", "mindBlast2", "saber2hHit1", "saberThrow1", "cert_twohandlightsaber", "forceCurePoison", "forceCureDisease" },
 	 skillModifiers = {
 		{ "jedi_force_power_max", 400 },
 		{ "jedi_force_power_regen", 2 },
@@ -458,7 +458,7 @@ jedi_dark_side_master_novice = {
 	 speciesRequired = {},
 	 jediStateRequired = 0,
 	 skillAbility = {},
-	 commands = { "healStatesSelf", "stopBleeding", "forceRun2", "forceWeaken1", "saberPolearmHit1", "cert_polearmlightsaber", "saberPolearmSpinAttack1", "electricJudgmentSingle1", "electricJudgmentCone1" },
+	 commands = { "healStatesSelf", "stopBleeding", "forceRun2", "forceWeaken1", "saberPolearmHit1", "cert_polearmlightsaber", "saberPolearmSpinAttack1" },
 	 skillModifiers = {
 		{ "jedi_force_power_max", 500 },
 		{ "jedi_force_power_regen", 4 },
