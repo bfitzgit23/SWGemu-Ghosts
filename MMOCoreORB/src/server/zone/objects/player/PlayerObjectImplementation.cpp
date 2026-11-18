@@ -26,6 +26,7 @@
 #include "server/zone/packets/player/PlayerObjectDeltaMessage3.h"
 #include "server/zone/packets/player/PlayerObjectDeltaMessage8.h"
 #include "server/zone/packets/player/PlayerObjectDeltaMessage9.h"
+#include "server/zone/packets/creature/CreatureObjectMessage1.h"
 #include "server/zone/packets/creature/CreatureObjectDeltaMessage6.h"
 #include "server/zone/packets/chat/ChatOnGetFriendsList.h"
 #include "server/zone/packets/chat/ChatOnGetIgnoreList.h"
@@ -548,6 +549,12 @@ void PlayerObjectImplementation::notifySceneReady() {
 	// client's command browser.
 	BaseMessage* abilityList9 = new PlayerObjectMessage9(this);
 	sendMessage(abilityList9);
+
+	// Ghosts: the command browser may be built from the learned skill list,
+	// which has the same problem. Re-send the creature baseline that carries
+	// it so the client sees the character's current skill boxes.
+	CreatureObjectMessage1* skillListMsg = new CreatureObjectMessage1(creature.get());
+	sendMessage(skillListMsg);
 
 	sendFriendLists();
 
