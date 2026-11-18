@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Put the five Pre-CU Force Discipline trees in the skill window and take the
-legacy padawan / journeyman / master / grand master / dark lord ladder out.
+"""Put the five Pre-CU Force Discipline trees in the skill window, keep the
+Grand Master and Dark Lord apex trees, and take the old padawan / light side /
+dark side ladder out.
 
 The discipline trees ship in skills.iff marked IS_HIDDEN=1 / SEARCHABLE=0, so
-the client never lists them beside the normal professions, while the old
-jedi_* ladder is visible.  This tool unhides the discipline trees and hides the
-legacy ladder.  No skill row is added or removed, so characters that already
-own legacy skills keep them.
+the client never lists them beside the normal professions, while the legacy
+jedi_* ladder is visible.  This tool unhides the discipline trees and the apex
+trees and hides the padawan / light side / dark side ladder.  No skill row is
+added or removed, so characters that already own legacy skills keep them.
 """
 
 from pathlib import Path
@@ -21,8 +22,10 @@ DISCIPLINE_TREES = (
     "force_discipline_enhancements",
     "force_discipline_defender",
 )
-# Every jedi_* row belongs to the legacy ladder the discipline trees replace.
-LEGACY_PREFIX = "jedi_"
+# The padawan / light side / dark side ladder the discipline trees replace.
+LEGACY_PREFIXES = ("jedi_padawan", "jedi_light_side_", "jedi_dark_side_")
+# The Grand Master and Dark Lord trees stay in the window.
+APEX_ROOTS = ("jedi_grand_master", "jedi_dark_lord")
 
 
 def parse(data):
@@ -114,7 +117,7 @@ def main():
         hidden_col = columns.index("IS_HIDDEN")
         search_col = columns.index("SEARCHABLE")
 
-        shown, hidden = [], []
+        shown, hidden, apex = [], [], []
         seen_trees = set()
 
         for row in rows:
@@ -126,22 +129,31 @@ def main():
                     row[search_col] = 1
                     seen_trees.add(name)
                 shown.append(name)
-            elif name.startswith(LEGACY_PREFIX):
+            elif name.startswith(LEGACY_PREFIXES):
                 row[hidden_col] = 1
                 row[search_col] = 0
                 hidden.append(name)
+            elif name.startswith(APEX_ROOTS):
+                row[hidden_col] = 0
+                if name in APEX_ROOTS:
+                    row[search_col] = 1
+                apex.append(name)
 
         missing = set(DISCIPLINE_TREES) - seen_trees
         if missing:
             raise ValueError(f"{path}: discipline tree(s) missing from skills.iff: {sorted(missing)}")
         if not hidden:
             raise ValueError(f"{path}: no legacy jedi ladder rows found")
+        missing_apex = [root for root in APEX_ROOTS if root not in apex]
+        if missing_apex:
+            raise ValueError(f"{path}: apex tree(s) missing from skills.iff: {missing_apex}")
 
         rebuilt = rebuild(data, types, rows, rows_at, rows_start, rows_end)
         path.write_bytes(rebuilt)
         print(f"patched {path}: {len(rebuilt)} bytes")
         print(f"  discipline rows visible: {len(shown)} (trees: {len(seen_trees)})")
-        print(f"  legacy ladder rows hidden: {len(hidden)}")
+        print(f"  apex rows visible: {len(apex)} (roots: {sorted(set(apex) & set(APEX_ROOTS))})")
+        print(f"  padawan/light/dark ladder rows hidden: {len(hidden)}")
 
 
 if __name__ == "__main__":
