@@ -41,17 +41,17 @@ local PADAWAN_STUDIES_NEEDED = 10
 local KNIGHT_STUDIES_NEEDED = 10
 local MASTER_STUDIES_NEEDED = 20
 
--- Existing non-Grey Jedi get a one-time grandfather exemption from the
--- Padawan->Knight seven-day wait. Characters who start the Padawan stage at
--- or after this cutoff (2026-11-05 19:56:40 CET) keep the wait.
-local KNIGHT_WAIT_GRANDFATHER_CUTOFF = 1793905000
+-- Ghosts: the seven-day training clocks only apply to characters that started
+-- a stage after the clocks existed. Anything recorded before this build, or
+-- never recorded at all, belongs to a Jedi that was already past that point.
+local PROGRESSION_CLOCK_EPOCH = 1795040343 -- 2026-11-18 23:19 CET
 
-local function isKnightWaitGrandfathered(pCreature, timestampKey)
-    if pCreature == nil or timestampKey ~= "padawan_unlocked_at" then
+local function isProgressionWaitGrandfathered(pCreature, timestampKey)
+    if pCreature == nil then
         return false
     end
 
-    -- Grey Jedi are deliberately excluded from the grandfather exemption.
+    -- Grey Jedi deliberately keep the wait.
     local alignment = rsd(pCreature, "jedi_alignment")
     if alignment == "grey" or alignment == "gray" then
         return false
@@ -66,12 +66,15 @@ local function isKnightWaitGrandfathered(pCreature, timestampKey)
     end
 
     local unlockedAt = tonumber(rsd(pCreature, timestampKey)) or 0
-    if unlockedAt <= 0 or unlockedAt >= KNIGHT_WAIT_GRANDFATHER_CUTOFF then
+    if unlockedAt > 0 and unlockedAt >= PROGRESSION_CLOCK_EPOCH then
+        -- Genuinely started this stage after the clocks were introduced.
         return false
     end
 
+    -- No clock, or a clock from before the clocks existed: this Jedi was
+    -- already past this stage, so the seven-day wait does not apply.
     wsd(pCreature, "knight_wait_grandfathered", "1")
-    sendForceMessage(pCreature, "Your existing Jedi has been exempted from the seven-day Knight training wait. Future Jedi must still complete it.")
+    sendForceMessage(pCreature, "Your existing Jedi is exempt from the training waits for the Knight, Master and final trials.")
     return true
 end
 
@@ -232,7 +235,7 @@ end
 function holocron_progression_timer_ready(pCreature, timestampKey, stageName)
     if pCreature == nil then return false end
 
-    if isKnightWaitGrandfathered(pCreature, timestampKey) then
+    if isProgressionWaitGrandfathered(pCreature, timestampKey) then
         return true
     end
 
@@ -265,7 +268,7 @@ end
 function holocron_progression_training_notice(pCreature, timestampKey, stageName)
     if pCreature == nil then return false end
 
-    if isKnightWaitGrandfathered(pCreature, timestampKey) then
+    if isProgressionWaitGrandfathered(pCreature, timestampKey) then
         return false
     end
 
