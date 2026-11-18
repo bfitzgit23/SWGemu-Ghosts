@@ -24,11 +24,18 @@ public:
 
 private:
 
+	void logStep(CreatureObject* caster, const String& message) const {
+		caster->info("ForceRevive [" + caster->getDisplayedName() + "]: " + message, true);
+	}
+
 	bool reviveTarget(CreatureObject* caster, CreatureObject* target, int& buffsRestored) const {
 		if (target == nullptr || !target->isPlayerCreature())
 			return false;
 
-		if (!target->isDead() && !target->isIncapacitated())
+		bool wasDead = target->isDead();
+		bool wasIncapacitated = target->isIncapacitated();
+
+		if (!wasDead && !wasIncapacitated)
 			return false;
 
 		Locker locker(target, caster);
@@ -44,10 +51,28 @@ private:
 				target->healDamage(caster, i, missing, false);
 		}
 
+		target->setShockWounds(0);
+		target->clearDots();
 		target->setPosture(CreaturePosture::UPRIGHT);
 		target->removeFeignedDeath();
 
+		ManagedReference<PlayerObject*> targetGhost = target->getPlayerObject();
+
+		// A dead player is parked on the clone request window. Without clearing
+		// it the client keeps showing the death screen even though the HAM
+		// pools are full again (this is what GmReviveCommand does).
+		if (wasDead && targetGhost != nullptr)
+			targetGhost->removeSuiBoxType(SuiWindowType::CLONE_REQUEST);
+
 		buffsRestored += GhostsReviveBuffs::restore(target);
+
+		target->notifyObservers(ObserverEventType::CREATUREREVIVED, caster, 0);
+		target->broadcastPvpStatusBitmask();
+
+		target->sendSystemMessage("You have been restored.");
+
+		logStep(caster, "raised " + target->getDisplayedName()
+				+ (wasDead ? " (dead)" : " (incapacitated)"));
 
 		return true;
 	}
@@ -58,16 +83,23 @@ public:
 		if (creature == nullptr || !creature->isPlayerCreature())
 			return GENERALERROR;
 
+		logStep(creature, "cast; forceCost=" + String::valueOf((int) forceCost)
+				+ " range=" + String::valueOf((int) range)
+				+ (target == 0 ? " target=none" : " target=set"));
+
 		if (!checkStateMask(creature))
 			return INVALIDSTATE;
 
 		if (!checkInvalidLocomotions(creature))
 			return INVALIDLOCOMOTION;
 
-		if (creature->isDead())
+		if (creature->isDead()) {
+			logStep(creature, "rejected: caster is dead");
 			return GENERALERROR;
+		}
 
 		if (isWearingArmor(creature)) {
+			logStep(creature, "rejected: wearing armor");
 			creature->sendSystemMessage("@jedi_spam:no_jedi_armor");
 			return NOJEDIARMOR;
 		}
@@ -75,14 +107,17 @@ public:
 		// Granted only by Master Force Healing, but keep the ability honest if
 		// it ever reaches a character through another box.
 		if (!creature->hasSkill("force_discipline_healing_master")) {
+			logStep(creature, "rejected: missing force_discipline_healing_master");
 			creature->sendSystemMessage("Only a master of Force healing can call the fallen back.");
 			return GENERALERROR;
 		}
 
 		int comResult = doCommonJediSelfChecks(creature);
 
-		if (comResult != SUCCESS)
+		if (comResult != SUCCESS) {
+			logStep(creature, "rejected: common jedi self checks " + String::valueOf(comResult));
 			return comResult;
+		}
 
 		ManagedReference<PlayerObject*> playerObject = creature->getPlayerObject();
 
@@ -90,6 +125,8 @@ public:
 			return GENERALERROR;
 
 		if (playerObject->getForcePower() < forceCost) {
+			logStep(creature, "rejected: force power " + String::valueOf(playerObject->getForcePower())
+					+ " < " + String::valueOf((int) forceCost));
 			creature->sendSystemMessage("@jedi_spam:no_force_power");
 			return GENERALERROR;
 		}
@@ -103,9 +140,16 @@ public:
 			if (targetObject != nullptr && targetObject->isCreatureObject()) {
 				CreatureObject* targetCreature = targetObject->asCreatureObject();
 
-				if (targetCreature != nullptr && targetCreature->isPlayerCreature()
-						&& checkDistance(creature, targetCreature, range))
-					candidates.add(targetCreature);
+				if (targetCreature != nullptr && targetCreature->isPlayerCreature()) {
+					if (checkDistance(creature, targetCreature, range))
+						candidates.add(targetCreature);
+					else
+						logStep(creature, "target " + targetCreature->getDisplayedName() + " out of range");
+				} else {
+					logStep(creature, "target is not a player creature");
+				}
+			} else {
+				logStep(creature, "target object not found");
 			}
 		}
 
@@ -154,6 +198,7 @@ public:
 		}
 
 		if (revived == 0) {
+			logStep(creature, "rejected: nobody needing revival among " + String::valueOf(candidates.size()) + " candidates");
 			creature->sendSystemMessage("There is nobody within reach of the Force who needs reviving.");
 			return GENERALERROR;
 		}
@@ -173,6 +218,9 @@ public:
 		creature->sendSystemMessage("The Force answers you: " + String::valueOf(revived)
 				+ (revived == 1 ? " ally returns" : " allies return") + " to the living"
 				+ (buffsRestored > 0 ? ", their blessings restored." : "."));
+
+		logStep(creature, "done; revived=" + String::valueOf(revived)
+				+ " buffs=" + String::valueOf(buffsRestored));
 
 		return SUCCESS;
 	}
