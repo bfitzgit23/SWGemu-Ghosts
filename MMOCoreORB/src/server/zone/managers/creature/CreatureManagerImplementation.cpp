@@ -5,6 +5,7 @@
  *      Author: victor
  */
 
+#include "server/zone/managers/skill/SkillManager.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/objects/creature/ai/CreatureTemplate.h"
 #include "CreatureTemplateManager.h"
@@ -697,7 +698,26 @@ int CreatureManagerImplementation::notifyDestruction(TangibleObject* destructor,
 			TransactionLog trx(TrxCode::NPCLOOT, destructedObject);
 			creatureInventory->setContainerOwnerID(ownerID);
 
-			if (lootManager->createLoot(trx, creatureInventory, destructedObject)) {
+			// Ghosts: luck and Force luck skill mods improve superior/legendary loot odds.
+			float lootLuck = 0.f;
+
+			if (player != nullptr && player->isPlayerCreature()) {
+				int luckMod = player->getSkillMod("luck") + (player->getSkillMod("force_luck") * 2);
+
+				if (luckMod > 0)
+					lootLuck += (luckMod > 100 ? 100 : luckMod) / 100.f;
+
+				// Force sensitive characters get extra luck for every trained Force skill box.
+				int fsBoxes = SkillManager::instance()->getForceSensitiveSkillCount(player, true);
+
+				if (fsBoxes > 0)
+					lootLuck += (fsBoxes > 20 ? 20 : fsBoxes) * 0.02f;
+
+				if (lootLuck > 1.f)
+					lootLuck = 1.f;
+			}
+
+			if (lootManager->createLoot(trx, creatureInventory, destructedObject, lootLuck)) {
 				trx.commit(true);
 			} else if (trx.isEnabled() && !trx.isAborted()) {
 				trx.abort() << "createLoot failed for ai object for unknown reason.";

@@ -355,7 +355,7 @@ void LootManagerImplementation::setRandomLootValues(TransactionLog& trx, Tangibl
 	}
 }
 
-TangibleObject* LootManagerImplementation::createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition) {
+TangibleObject* LootManagerImplementation::createLootObject(TransactionLog& trx, const LootItemTemplate* templateObject, int level, bool maxCondition, float luck) {
 #ifdef DEBUG_LOOT_MAN
 	info(true) << " ---------- LootManagerImplementation::createLootObject -- called ----------";
 #endif
@@ -401,6 +401,11 @@ TangibleObject* LootManagerImplementation::createLootObject(TransactionLog& trx,
 
 	// Calculate level rank value chance
 	float chance = LootValues::getLevelRankValue(Math::max(level - 50, 0), 0.f, 0.35f) * levelChance;
+
+	// Ghosts: luck / force_luck skill mods raise the superior and legendary loot odds.
+	if (luck > 0.f)
+		chance *= (1.f + luck);
+
 	float excMod = baseModifier;
 
 	if (System::random(legendaryChance) <= chance) {
@@ -695,26 +700,26 @@ String LootManagerImplementation::getRandomLootableMod(uint32 sceneObjectType) {
 	return "";
 }
 
-bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature) {
+bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* container, AiAgent* creature, float luck) {
 	auto lootCollection = creature->getLootGroups();
 	int creatureLevel = creature->getLevel();
 	bool createdLoot = false;
 
 	// Preserve each mobile's normal loot independently of the global armor rolls.
 	if (lootCollection != nullptr && lootCollection->count() > 0)
-		createdLoot = createLootFromCollection(trx, container, lootCollection, creatureLevel);
+		createdLoot = createLootFromCollection(trx, container, lootCollection, creatureLevel, luck);
 
 	// All level 1+ NPCs and creatures have an independent 5% chance to drop
 	// a piece from the standard armor pool.
 	if (creatureLevel >= 1 && System::random(9999) < 1000) { // Ghosts: 10% (was 5%)
-		if (createLoot(trx, container, "global_standard_armor", creatureLevel, false) != 0)
+		if (createLoot(trx, container, "global_standard_armor", creatureLevel, false, luck) != 0)
 			createdLoot = true;
 	}
 
 	// High-level NPCs and creatures also have an independent 1% chance to
 	// drop a piece from the custom/high-tier armor pool.
 	if (creatureLevel >= 75 && System::random(9999) < 200) { // Ghosts: 2% (was 1%)
-		if (createLoot(trx, container, "global_custom_armor", creatureLevel, false) != 0)
+		if (createLoot(trx, container, "global_custom_armor", creatureLevel, false, luck) != 0)
 			createdLoot = true;
 	}
 
@@ -724,14 +729,14 @@ bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* con
 		const String holocronGroup =
 			System::random(1) == 0 ? "holocron_light" : "holocron_dark";
 
-		if (createLoot(trx, container, holocronGroup, creatureLevel, false) != 0)
+		if (createLoot(trx, container, holocronGroup, creatureLevel, false, luck) != 0)
 			createdLoot = true;
 	}
 
 	// --- Ghosts: Flurry-style bonus loot systems ---
 	// Rare Loot System: 2% on level 50+ mobs, drops from the rare loot pool.
 	if (creatureLevel >= 50 && System::random(100) < 2) {
-		if (createLoot(trx, container, "rarelootsystem", creatureLevel, false) != 0) {
+		if (createLoot(trx, container, "rarelootsystem", creatureLevel, false, luck) != 0) {
 			createdLoot = true;
 			creature->playEffect("clienteffect/rare_loot.cef", "");
 			creature->showFlyText("Rare", "Loot", 0, 255, 0, true);
@@ -740,7 +745,7 @@ bool LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* con
 
 	// Diamond Crates: 2% on level 75+ mobs.
 	if (creatureLevel >= 75 && System::random(100) < 2) {
-		if (createLoot(trx, container, "lootcollectiontierdiamonds", creatureLevel, false) != 0) {
+		if (createLoot(trx, container, "lootcollectiontierdiamonds", creatureLevel, false, luck) != 0) {
 			createdLoot = true;
 			creature->playEffect("clienteffect/level_granted_chronicles.cef", "");
 			creature->showFlyText("Diamond", "Crate", 0, 255, 255, true);
@@ -796,7 +801,7 @@ uint64 LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* c
 	return createLoot(trx, container, lootMapEntry, 0, true);
 }
 
-bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* lootCollection, int level) {
+bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, SceneObject* container, const LootGroupCollection* lootCollection, int level, float luck) {
 	uint64 objectID = 0;
 
 	trx.addState("lootCollectionSize", lootCollection->count());
@@ -841,7 +846,7 @@ bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, Sc
 			if (tempChance < roll)
 				continue;
 
-			objectID = createLoot(trx, container, groupEntry->getLootGroupName(), level);
+			objectID = createLoot(trx, container, groupEntry->getLootGroupName(), level, false, luck);
 
 			break;
 		}
@@ -854,7 +859,7 @@ bool LootManagerImplementation::createLootFromCollection(TransactionLog& trx, Sc
 	return objectID > 0 ? true : false;
 }
 
-uint64 LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* container, const String& lootMapEntry, int level, bool maxCondition) {
+uint64 LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* container, const String& lootMapEntry, int level, bool maxCondition, float luck) {
 	String lootEntry = lootMapEntry;
 	String lootGroup = "";
 
@@ -892,7 +897,7 @@ uint64 LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* c
 	} else if (itemTemplate->isShipComponent()) {
 		obj = createShipComponent(trx, itemTemplate);
 	} else {
-		obj = createLootObject(trx, itemTemplate, level, maxCondition);
+		obj = createLootObject(trx, itemTemplate, level, maxCondition, luck);
 	}
 
 	if (obj == nullptr) {
@@ -912,7 +917,7 @@ uint64 LootManagerImplementation::createLoot(TransactionLog& trx, SceneObject* c
 	return obj != nullptr ? obj->getObjectID() : 0;
 }
 
-bool LootManagerImplementation::createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize) {
+bool LootManagerImplementation::createLootSet(TransactionLog& trx, SceneObject* container, const String& lootGroup, int level, bool maxCondition, int setSize, float luck) {
 	Reference<const LootGroupTemplate*> group = lootGroupMap->getLootGroupTemplate(lootGroup);
 
 	if (group == nullptr) {
@@ -939,7 +944,7 @@ bool LootManagerImplementation::createLootSet(TransactionLog& trx, SceneObject* 
 		TangibleObject* obj = nullptr;
 
 		if (q == 0) {
-			obj = createLootObject(trx, itemTemplate, level, maxCondition);
+			obj = createLootObject(trx, itemTemplate, level, maxCondition, luck);
 			trx.addState("lootSetNum", q);
 		} else {
 			TransactionLog trxSub = trx.newChild();
@@ -948,7 +953,7 @@ bool LootManagerImplementation::createLootSet(TransactionLog& trx, SceneObject* 
 			trxSub.addState("lootGroup", lootGroup);
 			trxSub.addState("lootSetNum", q);
 
-			obj = createLootObject(trxSub, itemTemplate, level, maxCondition);
+			obj = createLootObject(trxSub, itemTemplate, level, maxCondition, luck);
 
 			trxSub.setSubject(obj);
 		}

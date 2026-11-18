@@ -198,7 +198,7 @@ class LootManager extends ManagedService implements Logger {
 	public native void setRandomLootValues(@dereferenced TransactionLog trx, TangibleObject prototype, final LootItemTemplate templateObject, int level, float excMod);
 
 	@local
-	public native TangibleObject createLootObject(@dereferenced TransactionLog trx, final LootItemTemplate templateObject, int level, boolean maxCondition = false);
+	public native TangibleObject createLootObject(@dereferenced TransactionLog trx, final LootItemTemplate templateObject, int level, boolean maxCondition = false, float luck = 0.f);
 
 	@local
 	public native TangibleObject createLootAttachment(final LootItemTemplate templateObject, final string modName, int value);
@@ -215,19 +215,19 @@ class LootManager extends ManagedService implements Logger {
 	public native int calculateLootCredits(int level);
 
 	@local
-	public native boolean createLoot(@dereferenced TransactionLog trx, SceneObject container, AiAgent creature);
+	public native boolean createLoot(@dereferenced TransactionLog trx, SceneObject container, AiAgent creature, float luck = 0.f);
 
 	@local
 	public native unsigned long createLoot(@dereferenced TransactionLog trx, SceneObject container, ShipAiAgent shipAgent);
 
 	@local
-	public native boolean createLootFromCollection(@dereferenced TransactionLog trx, SceneObject container, final LootGroupCollection collection, int level);
+	public native boolean createLootFromCollection(@dereferenced TransactionLog trx, SceneObject container, final LootGroupCollection collection, int level, float luck = 0.f);
 
 	@local
-	public native unsigned long createLoot(@dereferenced TransactionLog trx, SceneObject container, final string lootGroup, int level = -1, boolean maxCondition = false);
+	public native unsigned long createLoot(@dereferenced TransactionLog trx, SceneObject container, final string lootGroup, int level = -1, boolean maxCondition = false, float luck = 0.f);
 
 	@local
-	public native boolean createLootSet(@dereferenced TransactionLog trx, SceneObject container, final string lootGroup, int level, boolean maxCondition,int setSize);
+	public native boolean createLootSet(@dereferenced TransactionLog trx, SceneObject container, final string lootGroup, int level, boolean maxCondition,int setSize, float luck = 0.f);
 
 	@read
 	public unsigned int getYellowLooted() {
