@@ -51,11 +51,9 @@ local function isProgressionWaitGrandfathered(pCreature, timestampKey)
         return false
     end
 
-    -- Grey Jedi deliberately keep the wait.
-    local alignment = rsd(pCreature, "jedi_alignment")
-    if alignment == "grey" or alignment == "gray" then
-        return false
-    end
+    -- Ghosts: this exemption is about when the character reached the stage,
+    -- not about which path they walk, so grey Jedi are treated exactly like
+    -- light and dark ones.
 
     if CreatureObject(pCreature):hasSkill("combat_jedi_novice") then
         return false
