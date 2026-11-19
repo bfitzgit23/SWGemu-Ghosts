@@ -305,6 +305,62 @@ void PobShipObjectImplementation::createChildObjects() {
 	updateToDatabase();
 }
 
+bool PobShipObjectImplementation::removePlayerFromShip(CreatureObject* player) {
+	if (player == nullptr) {
+		return false;
+	}
+
+	// The pilot, operator and turret gunners are stations, not passengers.
+	// Ejecting them would leave the ship flying with nobody at the controls.
+	if (player == getPilot() || player == getShipOperator() || player == getTurretOperatorTop() || player == getTurretOperatorBottom()) {
+		return false;
+	}
+
+	bool onBoard = false;
+
+	int totalPlayers = getTotalPlayersOnBoard();
+
+	for (int i = 0; i < totalPlayers; ++i) {
+		if (getPlayerOnBoard(i) == player) {
+			onBoard = true;
+			break;
+		}
+	}
+
+	if (!onBoard) {
+		return false;
+	}
+
+	auto launchZone = getSpaceLaunchZone();
+	auto launchLoc = getSpaceLaunchLocation();
+
+	// Same fallback as removeAllPlayersFromShip, in case the ship has no
+	// launch point recorded.
+	if (launchZone.isEmpty()) {
+		launchZone = "corellia";
+		launchLoc.set(-66, 28, -4711);
+	}
+
+	auto thisPob = asPobShip();
+
+	removePlayerOnBoard(player);
+
+	Locker clock(player, thisPob);
+
+	auto ghost = player->getPlayerObject();
+
+	if (ghost != nullptr) {
+		ghost->removeDroidCommands();
+	}
+
+	player->clearSpaceStates();
+	player->removeAllSpaceMissionObjects(false);
+
+	player->switchZone(launchZone, launchLoc.getX(), launchLoc.getZ(), launchLoc.getY(), 0, false, -1);
+
+	return true;
+}
+
 void PobShipObjectImplementation::destroyObjectFromDatabase(bool destroyContainedObjects) {
 	// Make sure no players remain in any of the ships slots
 	removeAllPlayersFromShip();

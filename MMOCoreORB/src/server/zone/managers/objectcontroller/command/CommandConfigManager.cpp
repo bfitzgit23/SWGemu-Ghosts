@@ -375,6 +375,7 @@ void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	createCommand(String("bstrike1").toLowerCase());
 	createCommand(String("bstrike2").toLowerCase());
 	createCommand(String("bstrike3").toLowerCase());
+	createCommand(String("kickFromShip").toLowerCase());
 
 	QueueCommand* slashCommand = createCommand(String("logout").toLowerCase());
 

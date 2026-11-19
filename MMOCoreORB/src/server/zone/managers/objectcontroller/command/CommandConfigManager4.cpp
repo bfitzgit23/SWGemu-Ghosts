@@ -148,6 +148,7 @@
 #include "server/zone/objects/creature/commands/ThrottleCommand.h"
 #include "server/zone/objects/creature/commands/MatchSpeedCommand.h"
 #include "server/zone/objects/creature/commands/ShipAbilityCommand.h"
+#include "server/zone/objects/creature/commands/KickFromShipCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOnCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOffCommand.h"
 #include "server/zone/objects/creature/commands/InspectCommand.h"
@@ -317,6 +318,7 @@ void CommandConfigManager::registerCommands4() {
 	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike1").toLowerCase());
 	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike2").toLowerCase());
 	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike3").toLowerCase());
+	commandFactory.registerCommand<KickFromShipCommand>(String("kickFromShip").toLowerCase());
 	commandFactory.registerCommand<BoosterOnCommand>(String("boosterOn").toLowerCase());
 	commandFactory.registerCommand<BoosterOffCommand>(String("boosterOff").toLowerCase());
 	commandFactory.registerCommand<InspectCommand>(String("inspect").toLowerCase());
