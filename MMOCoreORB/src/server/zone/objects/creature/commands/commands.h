@@ -796,6 +796,7 @@
 #include "OpenWingsCommand.h"
 #include "CloseWingsCommand.h"
 #include "LaunchMissileCommand.h"
+#include "WeaponGroupCommand.h"
 #include "LaunchCountermeasureCommand.h"
 #include "BoosterOnCommand.h"
 #include "BoosterOffCommand.h"

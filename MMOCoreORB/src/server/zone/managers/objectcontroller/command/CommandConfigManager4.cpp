@@ -141,6 +141,7 @@
 #include "server/zone/objects/creature/commands/CloseWingsCommand.h"
 #include "server/zone/objects/creature/commands/LaunchMissileCommand.h"
 #include "server/zone/objects/creature/commands/LaunchCountermeasureCommand.h"
+#include "server/zone/objects/creature/commands/WeaponGroupCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOnCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOffCommand.h"
 #include "server/zone/objects/creature/commands/InspectCommand.h"
@@ -287,6 +288,7 @@ void CommandConfigManager::registerCommands4() {
 	commandFactory.registerCommand<CloseWingsCommand>(String("closeWings").toLowerCase());
 	commandFactory.registerCommand<LaunchMissileCommand>(String("launchMissile").toLowerCase());
 	commandFactory.registerCommand<LaunchCountermeasureCommand>(String("launchCountermeasure").toLowerCase());
+	commandFactory.registerCommand<WeaponGroupCommand>(String("weaponGroup").toLowerCase());
 	commandFactory.registerCommand<BoosterOnCommand>(String("boosterOn").toLowerCase());
 	commandFactory.registerCommand<BoosterOffCommand>(String("boosterOff").toLowerCase());
 	commandFactory.registerCommand<InspectCommand>(String("inspect").toLowerCase());
