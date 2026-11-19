@@ -3,6 +3,24 @@
 korriban_world = {
 	lairSpawns = {
 		{
+			lairTemplateName = "global_dark_jedi_knight_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 45,
+			maxDifficulty = 75,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_dark_adept_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 40,
+			maxDifficulty = 70,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
 			lairTemplateName = "korriban_terentatek_lair",
 			spawnLimit = -1,
 			minDifficulty = 180,

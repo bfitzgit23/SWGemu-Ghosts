@@ -8,6 +8,24 @@
 nalhutta_world = {
 	lairSpawns = {
 		{
+			lairTemplateName = "global_outlaw_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 50,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_brigand_squad_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 30,
+			maxDifficulty = 55,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
 			lairTemplateName = "nalhutta_chemilizard_pack",
 			spawnLimit = -1,
 			minDifficulty = 25,
