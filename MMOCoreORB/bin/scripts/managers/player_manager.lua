@@ -111,6 +111,8 @@ veteranRewards = {
 	{templateFile = "object/tangible/veteran_reward/frn_vet_stormtrooper_toy.iff", milestone=360, oneTime=false, description="@veteran_new:mini_stormtrooper", jtlReward = false},
 	{templateFile = "object/tangible/veteran_reward/antidecay.iff", milestone=360, oneTime=true, description="@veteran_new:antidecay", jtlReward = false},
 
+	{templateFile = "object/tangible/deed/player_house_deed/shared_musty_house_deed.iff", milestone=360, oneTime=true, description="Mustafarian Bunker", jtlReward = false},
+
 	-- 450 Day Rewards
 	{templateFile = "object/tangible/camp/camp_spit_s2.iff", milestone=450, oneTime=false, description="Camp Center (Small)", jtlReward = false},
 	{templateFile = "object/tangible/camp/camp_spit_s3.iff", milestone=450, oneTime=false, description="Camp Center (Large)", jtlReward = false},
