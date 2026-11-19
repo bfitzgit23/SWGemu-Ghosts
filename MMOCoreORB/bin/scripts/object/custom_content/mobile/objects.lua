@@ -12284,3 +12284,52 @@ object_mobile_shared_passenger_speeder_tantive4_7 = SharedCreatureObjectTemplate
 }
 ObjectTemplates:addClientTemplate(object_mobile_shared_passenger_speeder_tantive4_7, "object/mobile/shared_passenger_speeder_tantive4_7.iff")
 --***************************************************
+
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_shared_sher_kar = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_sher_kar.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_sher_kar, "object/mobile/shared_sher_kar.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_shared_admiral_sait = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_admiral_sait.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_admiral_sait, "object/mobile/shared_admiral_sait.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_shared_ugnaught_static_robe = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_ugnaught_static_robe.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_ugnaught_static_robe, "object/mobile/shared_ugnaught_static_robe.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_shared_kimogila_sith = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/shared_kimogila_sith.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_shared_kimogila_sith, "object/mobile/shared_kimogila_sith.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_beast_master_shared_bm_acklay_sith = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/beast_master/shared_bm_acklay_sith.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_beast_master_shared_bm_acklay_sith, "object/mobile/beast_master/shared_bm_acklay_sith.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_beast_master_shared_bm_mutated_acklay_sith = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/beast_master/shared_bm_mutated_acklay_sith.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_beast_master_shared_bm_mutated_acklay_sith, "object/mobile/beast_master/shared_bm_mutated_acklay_sith.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_beast_master_shared_bm_mutated_rancor_sith = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/beast_master/shared_bm_mutated_rancor_sith.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_beast_master_shared_bm_mutated_rancor_sith, "object/mobile/beast_master/shared_bm_mutated_rancor_sith.iff")
+--**********************************************************************************************************************************
+--Ghosts 2026-11-19: client template was missing, so the server template that inherits from it could never load.
+object_mobile_ep3_shared_sith_hologram = SharedCreatureObjectTemplate:new {
+	clientTemplateFileName = "object/mobile/ep3/shared_sith_hologram.iff"
+}
+ObjectTemplates:addClientTemplate(object_mobile_ep3_shared_sith_hologram, "object/mobile/ep3/shared_sith_hologram.iff")
+--**********************************************************************************************************************************

@@ -27,7 +27,7 @@ mutated_rancor_sith = Creature:new {
 	diet = CARNIVORE,
 	scale = 1.0,  -- Normal size
 
-	templates = {"object/mobile/beast_master/shared_bm_mutated_rancor_sith.iff"},
+	templates = {"object/mobile/beast_master/bm_mutated_rancor_sith.iff"},
 	lootGroups = {
 		{
 			groups = {

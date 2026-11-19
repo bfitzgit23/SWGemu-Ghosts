@@ -27,7 +27,7 @@ mutated_acklay_sith = Creature:new {
 	diet = CARNIVORE,
 	scale = 2.0,  -- 2x bigger!
 
-	templates = {"object/mobile/beast_master/shared_bm_mutated_acklay_sith.iff"},
+	templates = {"object/mobile/beast_master/bm_mutated_acklay_sith.iff"},
 	lootGroups = {
 		{
 			groups = {

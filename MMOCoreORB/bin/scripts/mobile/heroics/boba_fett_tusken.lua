@@ -27,7 +27,7 @@ boba_fett_tusken = Creature:new {
 	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/shared_commoner_human_male.iff"},
+	templates = {"object/mobile/dressed_commoner_naboo_human_male_01.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "conversation",

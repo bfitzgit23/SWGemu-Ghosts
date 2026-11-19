@@ -25,7 +25,7 @@ warren_information_officer = Creature:new {
 	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_imperial_officer_human_male_01.iff"},
+	templates = {"object/mobile/dressed_imperial_officer_m.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",

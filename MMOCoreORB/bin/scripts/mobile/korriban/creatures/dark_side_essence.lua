@@ -27,7 +27,7 @@ dark_side_essence = Creature:new {
 	diet = HERBIVORE,
 	scale = 1.2,  -- Slightly larger
 
-	templates = {"object/mobile/ep3/shared_sith_hologram.iff"},
+	templates = {"object/mobile/ep3/sith_hologram.iff"},
 	lootGroups = {
 		{
 			groups = {

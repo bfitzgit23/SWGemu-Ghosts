@@ -25,7 +25,7 @@ holo_exchange = Creature:new {
 	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_trader_human_male_01.iff"},
+	templates = {"object/mobile/dressed_trader_thug_male_human_01.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",

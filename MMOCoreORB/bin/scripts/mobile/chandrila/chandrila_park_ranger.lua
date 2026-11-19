@@ -25,7 +25,7 @@ chandrila_park_ranger = Creature:new {
 	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
-	templates = {"object/mobile/dressed_rebel_guard_human_male_01.iff"},
+	templates = {"object/mobile/dressed_rebel_trooper_human_male_01.iff"},
 	lootGroups = {},
 	weapons = {},
 	conversationTemplate = "",

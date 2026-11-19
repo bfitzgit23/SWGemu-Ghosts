@@ -27,7 +27,7 @@ kimogila_sith = Creature:new {
 	diet = CARNIVORE,
 	scale = 1.0,  -- Normal size
 
-	templates = {"object/mobile/shared_kimogila_sith.iff"},
+	templates = {"object/mobile/kimogila_sith.iff"},
 	lootGroups = {
 		{
 			groups = {

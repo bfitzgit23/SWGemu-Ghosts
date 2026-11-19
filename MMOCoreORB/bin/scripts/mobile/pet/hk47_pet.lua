@@ -27,7 +27,7 @@ hk47_pet = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {
-		"object/mobile/som/shared_hk47.iff"
+		"object/mobile/som/hk47.iff"
 	},
 	lootGroups = {},
 	defaultAttack = "attack",

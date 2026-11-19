@@ -27,7 +27,7 @@ sith_dragon = Creature:new {
 	diet = CARNIVORE,
 	scale = 2.0,  -- 2x bigger!
 
-	templates = {"object/mobile/shared_kimogila_sith.iff"},
+	templates = {"object/mobile/kimogila_sith.iff"},
 	lootGroups = {
 		{
 			groups = {

@@ -27,7 +27,7 @@ acklay_sith = Creature:new {
 	diet = CARNIVORE,
 	scale = 1.0,  -- Normal size
 
-	templates = {"object/mobile/beast_master/shared_bm_acklay_sith.iff"},
+	templates = {"object/mobile/beast_master/bm_acklay_sith.iff"},
 	lootGroups = {
 		{
 			groups = {
