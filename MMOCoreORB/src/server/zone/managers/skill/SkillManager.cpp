@@ -435,13 +435,16 @@ bool SkillManager::awardSkill(const String& skillName, CreatureObject* creature,
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 500; // Ghosts: 500-point budget (was 250)
+		int totalSkillPointsWasted = 250; // Ghosts: 250-point budget - two full force trees (208) and about 40% of a third
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
+
+		if (totalSkillPointsWasted < 0)
+			totalSkillPointsWasted = 0; // Ghosts: stricter costs floor over-spent Jedi at zero
 
 		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
@@ -663,13 +666,16 @@ bool SkillManager::surrenderSkill(const String& skillName, CreatureObject* creat
 
 		const SkillList* list = creature->getSkillList();
 
-		int totalSkillPointsWasted = 500; // Ghosts: 500-point budget (was 250)
+		int totalSkillPointsWasted = 250; // Ghosts: 250-point budget - two full force trees (208) and about 40% of a third
 
 		for (int i = 0; i < list->size(); ++i) {
 			Skill* skill = list->get(i);
 
 			totalSkillPointsWasted -= skill->getSkillPointsRequired();
 		}
+
+		if (totalSkillPointsWasted < 0)
+			totalSkillPointsWasted = 0; // Ghosts: stricter costs floor over-spent Jedi at zero
 
 		if (ghost->getSkillPoints() != totalSkillPointsWasted) {
 			creature->error("skill points mismatch calculated: " + String::valueOf(totalSkillPointsWasted) + " found: " + String::valueOf(ghost->getSkillPoints()));
