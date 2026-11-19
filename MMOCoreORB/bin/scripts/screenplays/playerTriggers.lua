@@ -10,6 +10,7 @@ function PlayerTriggers:playerLoggedIn(pPlayer)
 	ResetXixxJedi:playerLoggedIn(pPlayer)
 	ResetBennjiJedi:playerLoggedIn(pPlayer)
 	RestoreResetJediRank02:playerLoggedIn(pPlayer)
+	ResetKnightTrials:playerLoggedIn(pPlayer)
 end
 
 function PlayerTriggers:playerLoggedOut(pPlayer)

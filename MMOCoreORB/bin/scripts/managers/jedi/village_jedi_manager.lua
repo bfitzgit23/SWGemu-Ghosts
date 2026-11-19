@@ -296,6 +296,9 @@ end
 
 --Check to ensure force skill prerequisites are maintained
 function VillageJediManager:canSurrenderSkill(pPlayer, skillName)
+	if (readScreenPlayData(pPlayer, "ResetKnightTrials", "allow") == "1") then
+		return true
+	end
 	-- Ghosts admin: one-shot Bennji Jedi skill reset bypass.
 	if (readScreenPlayData(pPlayer, "ResetBennjiJedi", "allow") == "1") then
 		return true
