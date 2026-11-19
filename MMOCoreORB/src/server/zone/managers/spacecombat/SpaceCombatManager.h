@@ -10,6 +10,10 @@
 
 class SpaceCombatManager : public Singleton<SpaceCombatManager>, public Logger, public Object {
 public:
+	// Shared kill path: destroys a ship at zero chassis health and notifies
+	// its destruction observers. Used by weapon damage and by the area abilities.
+	void destroyShip(ShipObject* targetShip, ShipObject* attackerShip) const;
+
 	SpaceCombatManager() {
 		setLoggingName("SpaceCombatManager");
 

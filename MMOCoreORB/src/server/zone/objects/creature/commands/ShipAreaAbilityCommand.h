@@ -8,31 +8,26 @@
 #include "QueueCommand.h"
 #include "server/zone/CloseObjectsVector.h"
 #include "server/zone/objects/ship/ShipDeltaVector.h"
-#include "server/zone/objects/ship/events/DestroyShipTask.h"
+#include "server/zone/managers/spacecombat/SpaceCombatManager.h"
 
 // Ghosts 2026-11-19: Energy Pulse and Bomber Strike are area damage, not weapon
-// shots, so they deliberately stay out of the projectile path in
-// SpaceCombatManager: no projectile, no collision result, no refire. They drain
-// the ship's capacitor and apply chassis damage directly to every attackable
-// ship inside the radius.
+// shots, so they stay out of the projectile path: no projectile, no collision
+// result, no refire. They drain the ship's capacitor and apply chassis damage
+// directly to every attackable ship inside the radius.
+//
+// Damage is a share of the target's maximum chassis health rather than a flat
+// number, so the same ability is worth the same proportion against a fighter and
+// against a capital hull.
 //
 // Every changed value goes through a ShipDeltaVector and is flushed with
 // sendMessages, the same way SpaceCombatManager ships damage deltas, so the
-// client sees one coalesced update per ship instead of a loose notifyClient
-// write under a lock.
+// client sees one coalesced update per ship.
 //
-// They can destroy a ship. When the sweep takes a ship to zero chassis health
-// the same DestroyShipTask and destruction observer notification that
-// SpaceCombatManager uses for a killing weapon hit are run for it, after the
-// lock is released, so crew, escape pods and POB interior handling still run.
+// Kills go through SpaceCombatManager::destroyShip, the shared path weapon
+// damage uses, so crew, escape pods and POB interior handling all run.
 //
-// The caster gets a summary of how many ships were hit and every player pilot
-// that was damaged is told what hit them and by whom.
-//
-// Tuning values are in metres, chassis damage points and a fraction of the
-// ship's maximum capacitor. They are the knobs to change; nothing else here
-// depends on the numbers. For scale, a stock x-wing has 519 chassis hitpoints,
-// xwing_tier1 264, xwing_tier3 1320.
+// Tuning values are metres of radius, share of the target's maximum chassis
+// health, and a fraction of the caster's maximum capacitor.
 class ShipAreaAbilityCommand : public QueueCommand {
 public:
 	ShipAreaAbilityCommand(const String& name, ZoneProcessServer* server) : QueueCommand(name, server) {
@@ -79,37 +74,37 @@ public:
 		}
 
 		float radius = 0.f;
-		float damage = 0.f;
+		float hullShare = 0.f;
 		float energyFraction = 0.f;
 
 		if (isPulse) {
 			// Energy Pulse: centred on the ship issuing it.
 			if (tier == 1) {
 				radius = 300.f;
-				damage = 120.f;
+				hullShare = 0.20f;
 				energyFraction = 0.20f;
 			} else if (tier == 2) {
 				radius = 450.f;
-				damage = 240.f;
+				hullShare = 0.40f;
 				energyFraction = 0.30f;
 			} else {
 				radius = 600.f;
-				damage = 300.f;
+				hullShare = 0.55f;
 				energyFraction = 0.45f;
 			}
 		} else {
 			// Bomber Strike: centred on the targeted ship.
 			if (tier == 1) {
 				radius = 150.f;
-				damage = 180.f;
+				hullShare = 0.30f;
 				energyFraction = 0.25f;
 			} else if (tier == 2) {
 				radius = 220.f;
-				damage = 380.f;
+				hullShare = 0.65f;
 				energyFraction = 0.40f;
 			} else {
 				radius = 300.f;
-				damage = 500.f;
+				hullShare = 0.85f;
 				energyFraction = 0.60f;
 			}
 		}
@@ -194,10 +189,12 @@ public:
 				Locker olock(otherShip.get());
 
 				float health = otherShip->getChassisCurrentHealth();
+				float maxHealth = otherShip->getChassisMaxHealth();
 
-				if (health <= 0.f)
+				if (health <= 0.f || maxHealth <= 0.f)
 					continue;
 
+				float damage = Math::max(1.f, maxHealth * hullShare);
 				float newHealth = Math::max(0.f, health - damage);
 
 				if (newHealth != health) {
@@ -239,29 +236,15 @@ public:
 			pilot->sendSystemMessage("You were hit by " + abilityLabel + " from " + attackerName + ".");
 		}
 
-		// Destroyed outside the loop so no ship lock is held while the task
-		// takes its own.
+		// Shared with weapon damage, and run outside the sweep so no ship lock
+		// is held while the destroy task takes its own.
 		for (int i = 0; i < shipsToDestroy.size(); ++i) {
 			ManagedReference<ShipObject*> destroyedShip = shipsToDestroy.get(i);
 
 			if (destroyedShip == nullptr || !destroyedShip->isShipDestroyed())
 				continue;
 
-			auto destroyTask = new DestroyShipTask(destroyedShip);
-			destroyTask->execute();
-
-			Reference<ShipObject*> refTarget = destroyedShip;
-			Reference<ShipObject*> attackerRef = ship.get();
-
-			Core::getTaskManager()->scheduleTask([refTarget, attackerRef]() {
-				if (refTarget == nullptr || attackerRef == nullptr)
-					return;
-
-				Locker lock(refTarget);
-				Locker clocker(attackerRef, refTarget);
-
-				refTarget->notifyObjectDestructionObservers(attackerRef, 0, true);
-			}, "notifyShipDestroyLambda", 200);
+			SpaceCombatManager::instance()->destroyShip(destroyedShip, ship);
 		}
 
 		return SUCCESS;

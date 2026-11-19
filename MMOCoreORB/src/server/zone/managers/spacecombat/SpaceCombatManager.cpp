@@ -200,32 +200,39 @@ void SpaceCombatManager::applyDamage(ShipObject* ship, const ShipProjectile* pro
 	}
 
 	if (targetShip->getChassisCurrentHealth() == 0.f) {
-		auto destroyTask = new DestroyShipTask(targetShip);
-		destroyTask->execute();
-
-		// If Agent ship kills player ship, remove the player from agents enemy list
-		if (targetShip->isPlayerShip() && ship->isShipAiAgent()) {
-			auto agentShip = ship->asShipAiAgent();
-
-			if (agentShip != nullptr) {
-				agentShip->removeEnemyShip(target->getObjectID());
-			}
-		}
-
-		// Notify Destruction
-		Reference<ShipObject*> refTarget = targetShip;
-		Reference<ShipObject*> attackerRef = ship;
-
-		Core::getTaskManager()->scheduleTask([refTarget, attackerRef] () {
-			if (refTarget == nullptr || attackerRef == nullptr)
-				return;
-
-			Locker lock(refTarget);
-			Locker clocker(attackerRef, refTarget);
-
-			refTarget->notifyObjectDestructionObservers(attackerRef, 0, true);
-		}, "notifyShipDestroyLambda", 200);
+		destroyShip(targetShip, ship);
 	}
+}
+
+void SpaceCombatManager::destroyShip(ShipObject* targetShip, ShipObject* attackerShip) const {
+	if (targetShip == nullptr || !targetShip->isShipDestroyed())
+		return;
+
+	auto destroyTask = new DestroyShipTask(targetShip);
+	destroyTask->execute();
+
+	// If Agent ship kills player ship, remove the player from agents enemy list
+	if (attackerShip != nullptr && targetShip->isPlayerShip() && attackerShip->isShipAiAgent()) {
+		auto agentShip = attackerShip->asShipAiAgent();
+
+		if (agentShip != nullptr) {
+			agentShip->removeEnemyShip(targetShip->getObjectID());
+		}
+	}
+
+	// Notify Destruction
+	Reference<ShipObject*> refTarget = targetShip;
+	Reference<ShipObject*> attackerRef = attackerShip;
+
+	Core::getTaskManager()->scheduleTask([refTarget, attackerRef] () {
+		if (refTarget == nullptr || attackerRef == nullptr)
+			return;
+
+		Locker lock(refTarget);
+		Locker clocker(attackerRef, refTarget);
+
+		refTarget->notifyObjectDestructionObservers(attackerRef, 0, true);
+	}, "notifyShipDestroyLambda", 200);
 }
 
 float SpaceCombatManager::applyShieldDamage(ShipObject* target, const SpaceCollisionResult& result, float damage, float effect, ShipDeltaVector* deltaVector, Vector<BasePacket*>& messages) const {
