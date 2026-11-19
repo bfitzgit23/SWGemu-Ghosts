@@ -68,6 +68,18 @@ public:
 			removeDroid(ship, player);
 		}
 
+		// Ghosts 2026-11-19: land where the player asked to land. This task is given
+		// the destination travel point, but used to ignore it and move everyone to the
+		// ship previous launch point, so the player and the parked ship ended up in
+		// different places.
+		if (!zoneName.isEmpty()) {
+			String landingZone = zoneName;
+			Vector3 landingLocation = coordinates;
+
+			ship->setSpaceLaunchZone(landingZone);
+			ship->setSpaceLaunchLocation(landingLocation);
+		}
+
 		// Make sure no players remain in the ship
 		ship->removeAllPlayersFromShip();
 
