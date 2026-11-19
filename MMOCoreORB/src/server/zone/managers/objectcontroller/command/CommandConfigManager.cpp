@@ -366,6 +366,15 @@ void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	createCommand(String("boosterToggle").toLowerCase());
 	createCommand(String("throttle").toLowerCase());
 	createCommand(String("matchSpeed").toLowerCase());
+	createCommand(String("jstart1").toLowerCase());
+	createCommand(String("jstart2").toLowerCase());
+	createCommand(String("jstart3").toLowerCase());
+	createCommand(String("epulse1").toLowerCase());
+	createCommand(String("epulse2").toLowerCase());
+	createCommand(String("epulse3").toLowerCase());
+	createCommand(String("bstrike1").toLowerCase());
+	createCommand(String("bstrike2").toLowerCase());
+	createCommand(String("bstrike3").toLowerCase());
 
 	QueueCommand* slashCommand = createCommand(String("logout").toLowerCase());
 

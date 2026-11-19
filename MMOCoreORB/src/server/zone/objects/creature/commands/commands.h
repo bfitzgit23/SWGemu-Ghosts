@@ -802,6 +802,7 @@
 #include "BoosterToggleCommand.h"
 #include "ThrottleCommand.h"
 #include "MatchSpeedCommand.h"
+#include "ShipAbilityCommand.h"
 #include "LaunchCountermeasureCommand.h"
 #include "BoosterOnCommand.h"
 #include "BoosterOffCommand.h"
