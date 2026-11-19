@@ -144,6 +144,9 @@
 #include "server/zone/objects/creature/commands/WeaponGroupCommand.h"
 #include "server/zone/objects/creature/commands/OpenCloseWingsCommand.h"
 #include "server/zone/objects/creature/commands/SpaceUtilityCommand.h"
+#include "server/zone/objects/creature/commands/BoosterToggleCommand.h"
+#include "server/zone/objects/creature/commands/ThrottleCommand.h"
+#include "server/zone/objects/creature/commands/MatchSpeedCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOnCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOffCommand.h"
 #include "server/zone/objects/creature/commands/InspectCommand.h"
@@ -301,6 +304,9 @@ void CommandConfigManager::registerCommands4() {
 	commandFactory.registerCommand<SpaceUtilityCommand>(String("leaveFormation").toLowerCase());
 	commandFactory.registerCommand<SpaceUtilityCommand>(String("assignPlayerFormation").toLowerCase());
 	commandFactory.registerCommand<SpaceUtilityCommand>(String("weaponGroupAssignment").toLowerCase());
+	commandFactory.registerCommand<BoosterToggleCommand>(String("boosterToggle").toLowerCase());
+	commandFactory.registerCommand<ThrottleCommand>(String("throttle").toLowerCase());
+	commandFactory.registerCommand<MatchSpeedCommand>(String("matchSpeed").toLowerCase());
 	commandFactory.registerCommand<BoosterOnCommand>(String("boosterOn").toLowerCase());
 	commandFactory.registerCommand<BoosterOffCommand>(String("boosterOff").toLowerCase());
 	commandFactory.registerCommand<InspectCommand>(String("inspect").toLowerCase());

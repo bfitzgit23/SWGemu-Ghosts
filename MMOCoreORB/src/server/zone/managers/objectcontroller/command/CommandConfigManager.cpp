@@ -363,6 +363,9 @@ void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	createCommand(String("leaveFormation").toLowerCase());
 	createCommand(String("assignPlayerFormation").toLowerCase());
 	createCommand(String("weaponGroupAssignment").toLowerCase());
+	createCommand(String("boosterToggle").toLowerCase());
+	createCommand(String("throttle").toLowerCase());
+	createCommand(String("matchSpeed").toLowerCase());
 
 	QueueCommand* slashCommand = createCommand(String("logout").toLowerCase());
 
