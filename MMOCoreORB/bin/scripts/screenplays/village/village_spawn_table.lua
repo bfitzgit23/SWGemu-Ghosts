@@ -120,6 +120,8 @@ villageMobileSpawns = {
 
 villageObjectSpawns = {
 	[0] = {
+		{ "object/building/tatooine/shuttleport_tatooine.iff", 5219.5, 78.5, -4050.03, 180 },
+		{ "object/tangible/terminal/terminal_mission.iff", 5286.5, 78.5, -4149.0, 0 },
 		{ "object/static/structure/general/streetlamp_large_style_02.iff", 5298.7, 78.5, -4201, 10.9 },
 		{ "object/static/structure/general/streetlamp_large_style_02.iff", 5233.7, 78.5, -4191.6, 45.25 },
 		{ "object/static/structure/general/streetlamp_large_style_02.iff", 5255.9, 78.5, -4239.2, 19.5 },
