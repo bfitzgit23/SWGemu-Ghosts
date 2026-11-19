@@ -142,6 +142,8 @@
 #include "server/zone/objects/creature/commands/LaunchMissileCommand.h"
 #include "server/zone/objects/creature/commands/LaunchCountermeasureCommand.h"
 #include "server/zone/objects/creature/commands/WeaponGroupCommand.h"
+#include "server/zone/objects/creature/commands/OpenCloseWingsCommand.h"
+#include "server/zone/objects/creature/commands/SpaceUtilityCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOnCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOffCommand.h"
 #include "server/zone/objects/creature/commands/InspectCommand.h"
@@ -289,6 +291,16 @@ void CommandConfigManager::registerCommands4() {
 	commandFactory.registerCommand<LaunchMissileCommand>(String("launchMissile").toLowerCase());
 	commandFactory.registerCommand<LaunchCountermeasureCommand>(String("launchCountermeasure").toLowerCase());
 	commandFactory.registerCommand<WeaponGroupCommand>(String("weaponGroup").toLowerCase());
+	commandFactory.registerCommand<OpenCloseWingsCommand>(String("openCloseWings").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("waypointAutopilot").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("hyperspaceMap").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("componentDetail").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("zoneMap").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("questJournal").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("enterFormation").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("leaveFormation").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("assignPlayerFormation").toLowerCase());
+	commandFactory.registerCommand<SpaceUtilityCommand>(String("weaponGroupAssignment").toLowerCase());
 	commandFactory.registerCommand<BoosterOnCommand>(String("boosterOn").toLowerCase());
 	commandFactory.registerCommand<BoosterOffCommand>(String("boosterOff").toLowerCase());
 	commandFactory.registerCommand<InspectCommand>(String("inspect").toLowerCase());

@@ -353,6 +353,16 @@ void CommandConfigManager::registerSpecialCommands(CommandList* sCommands) {
 	// Ghosts 2026-11-19: the space command table ships with no rows, so ship weapon fire has
 	// to be created here directly or it never reaches the queue command list.
 	createCommand(String("weaponGroup").toLowerCase());
+	createCommand(String("openCloseWings").toLowerCase());
+	createCommand(String("waypointAutopilot").toLowerCase());
+	createCommand(String("hyperspaceMap").toLowerCase());
+	createCommand(String("componentDetail").toLowerCase());
+	createCommand(String("zoneMap").toLowerCase());
+	createCommand(String("questJournal").toLowerCase());
+	createCommand(String("enterFormation").toLowerCase());
+	createCommand(String("leaveFormation").toLowerCase());
+	createCommand(String("assignPlayerFormation").toLowerCase());
+	createCommand(String("weaponGroupAssignment").toLowerCase());
 
 	QueueCommand* slashCommand = createCommand(String("logout").toLowerCase());
 
