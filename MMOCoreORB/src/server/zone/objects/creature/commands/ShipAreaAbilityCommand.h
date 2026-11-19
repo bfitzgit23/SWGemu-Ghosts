@@ -16,6 +16,9 @@
 // health, so the killing blow still comes from weapons and the ship destruction
 // pipeline (crew, escape pods, POB interior) runs as usual.
 //
+// The caster gets a summary of how many ships were hit and every player pilot
+// that was damaged is told what hit them and by whom.
+//
 // Tuning values are in metres, chassis damage points and a fraction of the
 // ship's maximum capacitor. They are the knobs to change; nothing else here
 // depends on the numbers.
@@ -148,6 +151,9 @@ public:
 		SortedVector<TreeEntry*> nearbyObjects;
 		closeObjects->safeCopyTo(nearbyObjects);
 
+		Vector<ManagedReference<CreatureObject*>> hitPilots;
+		int hitCount = 0;
+
 		for (int i = 0; i < nearbyObjects.size(); ++i) {
 			SceneObject* object = static_cast<SceneObject*>(nearbyObjects.get(i));
 
@@ -173,10 +179,38 @@ public:
 
 			float health = otherShip->getChassisCurrentHealth();
 
-			if (health <= 0.f)
+			// Already at the floor this ability stops at, so nothing lands.
+			if (health <= 1.f)
 				continue;
 
 			otherShip->setCurrentChassisHealth(Math::max(1.f, health - damage));
+
+			++hitCount;
+
+			auto pilot = otherShip->getPilot();
+
+			if (pilot != nullptr && pilot->isPlayerCreature())
+				hitPilots.add(pilot);
+		}
+
+		String abilityLabel = isPulse ? "Energy Pulse " : "Bomber Strike ";
+		abilityLabel += String::valueOf(tier);
+
+		if (hitCount == 0) {
+			creature->sendSystemMessage(abilityLabel + ": no ships in range.");
+		} else {
+			creature->sendSystemMessage(abilityLabel + ": hit " + String::valueOf(hitCount) + (hitCount == 1 ? " ship." : " ships."));
+		}
+
+		String attackerName = creature->getDisplayedName();
+
+		for (int i = 0; i < hitPilots.size(); ++i) {
+			ManagedReference<CreatureObject*> pilot = hitPilots.get(i);
+
+			if (pilot == nullptr)
+				continue;
+
+			pilot->sendSystemMessage("You were hit by " + abilityLabel + " from " + attackerName + ".");
 		}
 
 		return SUCCESS;
