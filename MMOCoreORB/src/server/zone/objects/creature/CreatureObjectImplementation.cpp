@@ -2454,7 +2454,7 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 	auto skillManager = SkillManager::instance();
 	const SkillList* playerSkillList = getSkillList();
 
-	int totalSkillPointsWasted = 500; // Ghosts: 500-point budget (was 250)
+	int totalSkillPointsWasted = 250; // Ghosts: 250-point budget - two force trees (208) and about 40% of a third
 
 	for (int i = 0; i < playerSkillList->size(); ++i) {
 		Skill* skill = playerSkillList->get(i);
@@ -2472,6 +2472,9 @@ void CreatureObjectImplementation::notifyLoadFromDatabase() {
 
 		totalSkillPointsWasted -= skill->getSkillPointsRequired();
 	}
+
+	if (totalSkillPointsWasted < 0)
+		totalSkillPointsWasted = 0; // Ghosts: stricter costs floor over-spent Jedi at zero
 
 	// Ghosts: a few Jedi commands moved between skill boxes. The saved ability
 	// list would keep the old ones, so drop any moved command that none of the
