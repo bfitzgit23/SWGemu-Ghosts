@@ -1,17 +1,84 @@
 -- Mustafar Spawn Groups
+--
+-- Ghosts 2026-11-19: these planets shipped with a `mobile = { ... }` table,
+-- which the spawn engine never reads (SpawnGroup only loads `lairSpawns`),
+-- so they spawned nothing at all. Rewritten as lair spawn groups.
+-- Native lava creatures plus the dark side presence around the Mensix and HK camps.
 
 mustafar_world = {
-	mobile = {
-		-- Lava creatures
-		{"sherkar", 300, -1, -1, -1, 100, 25},
-		{"sherkarmini", 300, -1, -1, -1, 100, 30},
-		
-		-- Force beings (5 types)
-		{"dark_jedi_knight", 300, -1, -1, -1, 100, 15},
-		{"dark_jedi_sentinel", 300, -1, -1, -1, 100, 15},
-		{"force_trained_archaist", 300, -1, -1, -1, 100, 20},
-		{"force_sensitive_crypt_crawler", 300, -1, -1, -1, 100, 20},
-		{"forsaken_force_drifter", 300, -1, -1, -1, 100, 20},
+	lairSpawns = {
+		{
+			lairTemplateName = "must_lava_fleas",
+			spawnLimit = -1,
+			minDifficulty = 40,
+			maxDifficulty = 55,
+			numberToSpawn = 0,
+			weighting = 25,
+			size = 20
+		},
+		{
+			lairTemplateName = "must_tulrus",
+			spawnLimit = -1,
+			minDifficulty = 50,
+			maxDifficulty = 65,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "must_xandanks",
+			spawnLimit = -1,
+			minDifficulty = 45,
+			maxDifficulty = 60,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "must_jundaks",
+			spawnLimit = -1,
+			minDifficulty = 45,
+			maxDifficulty = 60,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "must_tanrays",
+			spawnLimit = -1,
+			minDifficulty = 40,
+			maxDifficulty = 55,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "must_blistmoks",
+			spawnLimit = -1,
+			minDifficulty = 45,
+			maxDifficulty = 60,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_dark_jedi_knight_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 60,
+			maxDifficulty = 75,
+			numberToSpawn = 0,
+			weighting = 10,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_dark_jedi_master_lair_neutral_large",
+			spawnLimit = -1,
+			minDifficulty = 70,
+			maxDifficulty = 85,
+			numberToSpawn = 0,
+			weighting = 5,
+			size = 20
+		},
 	},
 }
 

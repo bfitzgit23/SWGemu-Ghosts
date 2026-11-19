@@ -1,36 +1,75 @@
 -- Hoth Spawn Groups
+--
+-- Ghosts 2026-11-19: these planets shipped with a `mobile = { ... }` table,
+-- which the spawn engine never reads (SpawnGroup only loads `lairSpawns`),
+-- so they spawned nothing at all. Rewritten as lair spawn groups.
+-- Ice plain packs, the wampa caves, and the Imperial/Rebel snow camps.
 
 hoth_world = {
-	mobile = {
-		-- Wampas
-		{"wampa", 300, -1, -1, -1, 100, 25},
-		{"giant_wampa", 300, -1, -1, -1, 100, 15},
-		{"wampa_boss", 300, -1, -1, -1, 100, 8},
-		{"wampa_baby", 300, -1, -1, -1, 100, 20},
-		{"wampa_christmas", 300, -1, -1, -1, 100, 15},
-		{"wampa_christmas_babys", 300, -1, -1, -1, 100, 15},
-		
-		-- Other creatures
-		{"tauntaun", 300, -1, -1, -1, 100, 30},
-		{"sherkar", 300, -1, -1, -1, 100, 20},
-		{"sherkarmini", 300, -1, -1, -1, 100, 20},
-		{"hoth_mynock", 300, -1, -1, -1, 100, 20},
-		
-		-- Imperial/Rebel troops
-		{"snowtrooper", 300, -1, -1, -1, 100, 20},
-		{"rebel_snow_trooper", 300, -1, -1, -1, 100, 20},
-		{"rebel_echo_officer", 300, -1, -1, -1, 100, 15},
-		{"rebel_echo_pilot", 300, -1, -1, -1, 100, 15},
-		{"rebel_echo_comm", 300, -1, -1, -1, 100, 15},
-		
-		-- Force beings (7 types)
-		{"dark_jedi_knight", 300, -1, -1, -1, 100, 12},
-		{"dark_jedi_sentinel", 300, -1, -1, -1, 100, 12},
-		{"dark_jedi_sentinel_imperial", 300, -1, -1, -1, 100, 12},
-		{"force_trained_archaist", 300, -1, -1, -1, 100, 15},
-		{"force_sensitive_crypt_crawler", 300, -1, -1, -1, 100, 15},
-		{"force_sensitive_renegade", 300, -1, -1, -1, 100, 15},
-		{"forsaken_force_drifter", 300, -1, -1, -1, 100, 15},
+	lairSpawns = {
+		{
+			lairTemplateName = "hoth_taun_taun_lair",
+			spawnLimit = -1,
+			minDifficulty = 12,
+			maxDifficulty = 30,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_tauntaun_pack",
+			spawnLimit = -1,
+			minDifficulty = 10,
+			maxDifficulty = 25,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_wampa_lair",
+			spawnLimit = -1,
+			minDifficulty = 20,
+			maxDifficulty = 40,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_wampa_pack",
+			spawnLimit = -1,
+			minDifficulty = 18,
+			maxDifficulty = 35,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_mynock_pack",
+			spawnLimit = -1,
+			minDifficulty = 12,
+			maxDifficulty = 28,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_snowtrooper_camp",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 10,
+			size = 20
+		},
+		{
+			lairTemplateName = "hoth_rebel_camp",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 10,
+			size = 20
+		},
 	},
 }
 

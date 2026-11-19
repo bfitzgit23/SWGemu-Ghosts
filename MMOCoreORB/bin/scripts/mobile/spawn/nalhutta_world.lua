@@ -1,18 +1,66 @@
 -- Nal Hutta Spawn Groups
+--
+-- Ghosts 2026-11-19: these planets shipped with a `mobile = { ... }` table,
+-- which the spawn engine never reads (SpawnGroup only loads `lairSpawns`),
+-- so they spawned nothing at all. Rewritten as lair spawn groups.
+-- Hutta wildlife, Gamorrean muscle and the criminal crews of the swamps.
 
 nalhutta_world = {
-	mobile = {
-		-- Hutta guards
-		{"gamorrean_guard", 300, -1, -1, -1, 100, 25},
-		
-		-- Force beings (7 types)
-		{"dark_jedi_knight", 300, -1, -1, -1, 100, 15},
-		{"dark_jedi_sentinel", 300, -1, -1, -1, 100, 15},
-		{"force_trained_archaist", 300, -1, -1, -1, 100, 18},
-		{"force_sensitive_crypt_crawler", 300, -1, -1, -1, 100, 18},
-		{"force_sensitive_renegade", 300, -1, -1, -1, 100, 18},
-		{"forsaken_force_drifter", 300, -1, -1, -1, 100, 18},
-		{"novice_force_mystic", 300, -1, -1, -1, 100, 20},
+	lairSpawns = {
+		{
+			lairTemplateName = "nalhutta_chemilizard_pack",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "nalhutta_dragonsnake_pack",
+			spawnLimit = -1,
+			minDifficulty = 30,
+			maxDifficulty = 50,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "nalhutta_xuuva_pack",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 20,
+			size = 20
+		},
+		{
+			lairTemplateName = "hutt_thug",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_criminal_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 25,
+			maxDifficulty = 45,
+			numberToSpawn = 0,
+			weighting = 15,
+			size = 20
+		},
+		{
+			lairTemplateName = "global_black_sun_neutral_none",
+			spawnLimit = -1,
+			minDifficulty = 30,
+			maxDifficulty = 50,
+			numberToSpawn = 0,
+			weighting = 12,
+			size = 20
+		},
 	},
 }
 
