@@ -803,6 +803,7 @@
 #include "ThrottleCommand.h"
 #include "MatchSpeedCommand.h"
 #include "ShipAbilityCommand.h"
+#include "ShipAreaAbilityCommand.h"
 #include "KickFromShipCommand.h"
 #include "LaunchCountermeasureCommand.h"
 #include "BoosterOnCommand.h"

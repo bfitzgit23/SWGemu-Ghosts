@@ -148,6 +148,7 @@
 #include "server/zone/objects/creature/commands/ThrottleCommand.h"
 #include "server/zone/objects/creature/commands/MatchSpeedCommand.h"
 #include "server/zone/objects/creature/commands/ShipAbilityCommand.h"
+#include "server/zone/objects/creature/commands/ShipAreaAbilityCommand.h"
 #include "server/zone/objects/creature/commands/KickFromShipCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOnCommand.h"
 #include "server/zone/objects/creature/commands/BoosterOffCommand.h"
@@ -312,12 +313,12 @@ void CommandConfigManager::registerCommands4() {
 	commandFactory.registerCommand<ShipAbilityCommand>(String("jstart1").toLowerCase());
 	commandFactory.registerCommand<ShipAbilityCommand>(String("jstart2").toLowerCase());
 	commandFactory.registerCommand<ShipAbilityCommand>(String("jstart3").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("epulse1").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("epulse2").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("epulse3").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike1").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike2").toLowerCase());
-	commandFactory.registerCommand<ShipAbilityCommand>(String("bstrike3").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("epulse1").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("epulse2").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("epulse3").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("bstrike1").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("bstrike2").toLowerCase());
+	commandFactory.registerCommand<ShipAreaAbilityCommand>(String("bstrike3").toLowerCase());
 	commandFactory.registerCommand<KickFromShipCommand>(String("kickFromShip").toLowerCase());
 	commandFactory.registerCommand<BoosterOnCommand>(String("boosterOn").toLowerCase());
 	commandFactory.registerCommand<BoosterOffCommand>(String("boosterOff").toLowerCase());
