@@ -7,6 +7,7 @@
 
 #include "QueueCommand.h"
 #include "server/zone/CloseObjectsVector.h"
+#include "server/zone/objects/ship/ShipDeltaVector.h"
 #include "server/zone/objects/ship/events/DestroyShipTask.h"
 
 // Ghosts 2026-11-19: Energy Pulse and Bomber Strike are area damage, not weapon
@@ -15,8 +16,13 @@
 // the ship's capacitor and apply chassis damage directly to every attackable
 // ship inside the radius.
 //
-// They can now destroy a ship. When the sweep takes a ship to zero chassis
-// health the same DestroyShipTask and destruction observer notification that
+// Every changed value goes through a ShipDeltaVector and is flushed with
+// sendMessages, the same way SpaceCombatManager ships damage deltas, so the
+// client sees one coalesced update per ship instead of a loose notifyClient
+// write under a lock.
+//
+// They can destroy a ship. When the sweep takes a ship to zero chassis health
+// the same DestroyShipTask and destruction observer notification that
 // SpaceCombatManager uses for a killing weapon hit are run for it, after the
 // lock is released, so crew, escape pods and POB interior handling still run.
 //
@@ -88,7 +94,7 @@ public:
 				energyFraction = 0.30f;
 			} else {
 				radius = 600.f;
-				damage = 400.f;
+				damage = 300.f;
 				energyFraction = 0.45f;
 			}
 		} else {
@@ -103,7 +109,7 @@ public:
 				energyFraction = 0.40f;
 			} else {
 				radius = 300.f;
-				damage = 700.f;
+				damage = 500.f;
 				energyFraction = 0.60f;
 			}
 		}
@@ -142,7 +148,10 @@ public:
 					return GENERALERROR;
 				}
 
-				ship->setCapacitorEnergy(ship->getCapacitorEnergy() - cost);
+				ShipDeltaVector shipDelta(ship.get());
+
+				ship->setCapacitorEnergy(ship->getCapacitorEnergy() - cost, false, nullptr, &shipDelta);
+				shipDelta.sendMessages(ship.get());
 			}
 		}
 
@@ -191,7 +200,12 @@ public:
 
 				float newHealth = Math::max(0.f, health - damage);
 
-				otherShip->setCurrentChassisHealth(newHealth);
+				if (newHealth != health) {
+					ShipDeltaVector deltaVector(otherShip.get());
+
+					otherShip->setCurrentChassisHealth(newHealth, false, nullptr, &deltaVector);
+					deltaVector.sendMessages(otherShip.get());
+				}
 
 				if (newHealth <= 0.f)
 					shipsToDestroy.add(otherShip);
