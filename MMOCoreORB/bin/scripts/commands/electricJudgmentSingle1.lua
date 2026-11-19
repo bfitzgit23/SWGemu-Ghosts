@@ -52,7 +52,7 @@ ElectricJudgmentSingle1Command = {
 
 	accuracySkillMod = "forcelightning_accuracy",
 
-	animation = "electric_judgment_1_particle_level_1",
+	animation = "force_lightning_1_particle_level_1",
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "electricjudgmentsingle1",

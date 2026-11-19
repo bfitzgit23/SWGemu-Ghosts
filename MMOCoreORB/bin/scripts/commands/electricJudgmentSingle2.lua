@@ -63,7 +63,7 @@ ElectricJudgmentSingle2Command = {
 		)
 	},
 
-	animation = "electric_judgment_1_particle_level_3",
+	animation = "force_lightning_1_particle_level_3",
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "electricjudgmentsingle2",

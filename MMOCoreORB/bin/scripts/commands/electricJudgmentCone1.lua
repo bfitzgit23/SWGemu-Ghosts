@@ -53,7 +53,7 @@ ElectricJudgmentCone1Command = {
 	coneAction = true,
 	visMod = 25,
 
-	animation = "electric_judgment_1_arc_particle_level_1",
+	animation = "force_lightning_1_arc_particle_level_1",
 	animType = GENERATE_INTENSITY,
 
 	combatSpam = "electricjudgmentcone1",

@@ -99,6 +99,11 @@ public:
 		else
 			playerObject->setForcePower(forcePower - forceCost);
 
+		// The base heal command only animates when it heals somebody else, and this
+		// override never reaches it, so play the meditation animation here.
+		if (animationCRC != 0)
+			creature->doCombatAnimation(animationCRC);
+
 		if (!clientEffect.isEmpty())
 			creature->playEffect(clientEffect, "");
 
