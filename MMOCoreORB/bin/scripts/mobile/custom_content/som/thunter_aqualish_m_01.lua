@@ -28,6 +28,12 @@ thunter_aqualish_m_01 = Creature:new {
 	templates = {"object/mobile/som/thunter_aqualish_m_01.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

@@ -28,6 +28,12 @@ cww8a_battle_droid = Creature:new {
 	templates = {"object/mobile/som/cww8a_battle_droid.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

@@ -26,7 +26,13 @@ tanray = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/tanray.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},},
 	scale = 0.18,
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",

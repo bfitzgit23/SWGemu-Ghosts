@@ -28,6 +28,12 @@ som_crazed_mustafarian_hermit = Creature:new {
 	templates = {"object/mobile/som/som_crazed_mustafarian_hermit.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

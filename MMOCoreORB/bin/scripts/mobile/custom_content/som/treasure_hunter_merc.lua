@@ -28,6 +28,12 @@ treasure_hunter_merc = Creature:new {
 	templates = {"object/mobile/som/treasure_hunter_merc.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

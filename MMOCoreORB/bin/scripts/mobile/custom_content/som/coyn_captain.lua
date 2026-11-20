@@ -28,6 +28,12 @@ coyn_captain = Creature:new {
 	templates = {"object/mobile/som/coyn_captain.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

@@ -26,7 +26,13 @@ miner_hens = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/miner_hens.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)

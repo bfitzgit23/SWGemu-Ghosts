@@ -28,6 +28,12 @@ som_kenobi_reunite_inquisitorium_hunter = Creature:new {
 	templates = {"object/mobile/som/som_kenobi_reunite_inquisitorium_hunter.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

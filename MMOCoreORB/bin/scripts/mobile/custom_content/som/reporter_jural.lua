@@ -28,6 +28,12 @@ reporter_jural = Creature:new {
 	templates = {"object/mobile/som/reporter_jural.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

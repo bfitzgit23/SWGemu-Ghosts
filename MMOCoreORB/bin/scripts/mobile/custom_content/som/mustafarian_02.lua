@@ -28,6 +28,12 @@ mustafarian_02 = Creature:new {
 	templates = {"object/mobile/som/mustafarian_02.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

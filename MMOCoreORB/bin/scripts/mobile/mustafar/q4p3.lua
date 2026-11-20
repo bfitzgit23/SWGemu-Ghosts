@@ -28,7 +28,13 @@ q4p3 = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/3po_protocol_droid_red.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)
 	-- Unarmed should be put on secondary unless the mobile doesn't use weapons, in which case "unarmed" should be put primary and "none" as secondary

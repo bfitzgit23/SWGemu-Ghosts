@@ -30,6 +30,12 @@ sherkarmini = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "dungeon_trash", chance = 10000000},
 			},
 			lootChance = 10000000

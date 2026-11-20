@@ -28,6 +28,12 @@ tulrus_magma_drenched = Creature:new {
 	templates = {"object/mobile/som/tulrus_magma_drenched.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

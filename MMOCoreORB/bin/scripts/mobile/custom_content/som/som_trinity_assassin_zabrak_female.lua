@@ -28,6 +28,12 @@ som_trinity_assassin_zabrak_female = Creature:new {
 	templates = {"object/mobile/som/som_trinity_assassin_zabrak_female.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

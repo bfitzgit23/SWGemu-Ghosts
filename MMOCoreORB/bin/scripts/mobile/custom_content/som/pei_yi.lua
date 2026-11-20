@@ -28,6 +28,12 @@ pei_yi = Creature:new {
 	templates = {"object/mobile/som/pei_yi.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

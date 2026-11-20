@@ -28,6 +28,12 @@ traveler_f = Creature:new {
 	templates = {"object/mobile/som/traveler_f.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

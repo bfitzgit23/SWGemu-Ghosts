@@ -28,6 +28,12 @@ obi_wan_ghost = Creature:new {
 	templates = {"object/mobile/som/obi_wan_ghost.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

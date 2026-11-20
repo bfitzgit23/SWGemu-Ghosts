@@ -28,6 +28,12 @@ som_mustafarian_computer_technician = Creature:new {
 	templates = {"object/mobile/som/som_mustafarian_computer_technician.iff"},
 	lootGroups = {
 		{
+			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
 			groups = {},
 			lootChance = 2100000
 		}

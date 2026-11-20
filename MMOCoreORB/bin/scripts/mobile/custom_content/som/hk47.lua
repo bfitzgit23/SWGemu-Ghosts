@@ -29,6 +29,12 @@ hk47 = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "hk47_loot", chance = 10000000},
 			},
 			lootChance = 2100000

@@ -31,6 +31,12 @@ revan = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "junk", chance = 5000000},
 				{group = "armor_all", chance = 4500000},
 				{group = "weapons_all", chance = 500000}
