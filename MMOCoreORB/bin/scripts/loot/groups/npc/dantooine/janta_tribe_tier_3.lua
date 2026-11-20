@@ -7,8 +7,8 @@ janta_tribe_tier_3 = {
 	lootItems = {
 		{groupTemplate = "holocron_dark", weight = 100000},
 		{groupTemplate = "holocron_light", weight = 100000},
-		{groupTemplate = "janta_common", weight = 1400000},
-		{groupTemplate = "junk", weight = 5000000},
+		{groupTemplate = "janta_common", weight = 2800000},
+		{groupTemplate = "junk", weight = 3400000},
 		{groupTemplate = "loot_kit_parts", weight = 2700000},
 		{groupTemplate = "wearables_all", weight = 300000},
 		{groupTemplate = "resource_creature", weight = 450000},
