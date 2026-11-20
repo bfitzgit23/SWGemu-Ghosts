@@ -41,7 +41,7 @@
 --this exception also makes it possible to release a modified version 
 
 
-object_weapon_ranged_rifle_rifle_pvp_imperial = object_weapon_ranged_rifle_shared_rifle_pvp_imperial:new {
+object_weapon_ranged_rifle_rifle_pvp_imperial = object_weapon_ranged_shared_rifle_pvp_imperial:new {
 	
 	playerRaces = { "object/creature/player/abyssin_male.iff",
 				"object/creature/player/abyssin_female.iff",

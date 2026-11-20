@@ -41,7 +41,7 @@
 --this exception also makes it possible to release a modified version 
 
 
-object_weapon_ranged_rifle_rifle_ep3_loot_corellian = object_weapon_ranged_rifle_shared_rifle_ep3_loot_corellian:new {
+object_weapon_ranged_rifle_rifle_ep3_loot_corellian = object_weapon_ranged_shared_rifle_ep3_loot_corellian:new {
 	
 	playerRaces = { "object/creature/player/abyssin_male.iff",
 				"object/creature/player/abyssin_female.iff",
