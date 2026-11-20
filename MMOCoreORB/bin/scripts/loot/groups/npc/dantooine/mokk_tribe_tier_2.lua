@@ -5,17 +5,17 @@ mokk_tribe_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
-		{groupTemplate = "armor_attachments", weight = 400000},
-		{groupTemplate = "clothing_attachments", weight = 400000},
-		{groupTemplate = "color_crystals", weight = 500000},
-		{groupTemplate = "junk", weight = 3800000},
-		{groupTemplate = "loot_kit_parts", weight = 2500000},
-		{groupTemplate = "wearables_common", weight = 800000},
-		{groupTemplate = "wearables_uncommon", weight = 800000},
-		{groupTemplate = "resource_creature", weight = 600000},
-		{groupTemplate = "resource_water", weight = 200000},
+		{groupTemplate = "holocron_dark", weight = 98039},
+		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "armor_attachments", weight = 392157},
+		{groupTemplate = "clothing_attachments", weight = 392157},
+		{groupTemplate = "color_crystals", weight = 490196},
+		{groupTemplate = "junk", weight = 3725491},
+		{groupTemplate = "loot_kit_parts", weight = 2450980},
+		{groupTemplate = "wearables_common", weight = 784314},
+		{groupTemplate = "wearables_uncommon", weight = 784314},
+		{groupTemplate = "resource_creature", weight = 588235},
+		{groupTemplate = "resource_water", weight = 196078},
 	}
 }
 

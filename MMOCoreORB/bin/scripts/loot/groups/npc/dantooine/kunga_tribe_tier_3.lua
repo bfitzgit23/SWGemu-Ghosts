@@ -5,16 +5,16 @@ kunga_tribe_tier_3 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
-		{groupTemplate = "armor_attachments", weight = 400000},
-		{groupTemplate = "clothing_attachments", weight = 400000},
-		{groupTemplate = "junk", weight = 2800000},
-		{groupTemplate = "loot_kit_parts", weight = 2400000},
-		{groupTemplate = "power_crystals", weight = 300000},
-		{groupTemplate = "wearables_all", weight = 3100000},
-		{groupTemplate = "resource_creature", weight = 450000},
-		{groupTemplate = "resource_water", weight = 150000},
+		{groupTemplate = "holocron_dark", weight = 98039},
+		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "armor_attachments", weight = 392157},
+		{groupTemplate = "clothing_attachments", weight = 392157},
+		{groupTemplate = "junk", weight = 2745098},
+		{groupTemplate = "loot_kit_parts", weight = 2352941},
+		{groupTemplate = "power_crystals", weight = 294118},
+		{groupTemplate = "wearables_all", weight = 3039216},
+		{groupTemplate = "resource_creature", weight = 441176},
+		{groupTemplate = "resource_water", weight = 147059},
 	}
 }
 

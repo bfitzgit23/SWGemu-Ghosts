@@ -5,14 +5,14 @@ jinda_tribe_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
-		{groupTemplate = "armor_attachments", weight = 400000},
-		{groupTemplate = "clothing_attachments", weight = 400000},
-		{groupTemplate = "ewok", weight = 7500000},
-		{groupTemplate = "wearables_uncommon", weight = 900000},
-		{groupTemplate = "resource_creature", weight = 600000},
-		{groupTemplate = "resource_water", weight = 200000},
+		{groupTemplate = "holocron_dark", weight = 98039},
+		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "armor_attachments", weight = 392157},
+		{groupTemplate = "clothing_attachments", weight = 392157},
+		{groupTemplate = "ewok", weight = 7352942},
+		{groupTemplate = "wearables_uncommon", weight = 882353},
+		{groupTemplate = "resource_creature", weight = 588235},
+		{groupTemplate = "resource_water", weight = 196078},
 	}
 }
 

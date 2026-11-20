@@ -5,12 +5,12 @@ panshee_tribe_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
-		{groupTemplate = "ewok", weight = 7600000},
-		{groupTemplate = "wearables_all", weight = 1600000},
-		{groupTemplate = "resource_creature", weight = 600000},
-		{groupTemplate = "resource_water", weight = 200000},
+		{groupTemplate = "holocron_dark", weight = 98039},
+		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "ewok", weight = 7450982},
+		{groupTemplate = "wearables_all", weight = 1568627},
+		{groupTemplate = "resource_creature", weight = 588235},
+		{groupTemplate = "resource_water", weight = 196078},
 	}
 }
 

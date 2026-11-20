@@ -3,11 +3,11 @@ backpacks_b02 = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-    {itemTemplate = "rebel_endor_backpack", weight = 2500000},
-    {itemTemplate = "imperial_endor_backpack", weight = 2500000},
-    {itemTemplate = "armored_backpack", weight = 2500000},
-    {itemTemplate = "recon_backpack", weight = 2500000},
-    --{itemTemplate = "yoda_backpack", weight = 2000000},
+    {itemTemplate = "rebel_endor_backpack", weight = 2083334},
+    {itemTemplate = "imperial_endor_backpack", weight = 2083333},
+    {itemTemplate = "armored_backpack", weight = 2083333},
+    {itemTemplate = "recon_backpack", weight = 2083333},
+    --{itemTemplate = "yoda_backpack", weight = 1666667},
 	}
 }
 

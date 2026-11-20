@@ -7,13 +7,13 @@ dungeon_trash = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{groupTemplate = "junk", weight = 3200000},
-		{groupTemplate = "clothing_attachments", weight = 1500000},
-		{groupTemplate = "armor_attachments", weight = 1500000},
-		{groupTemplate = "collectiontiertwo", weight = 1400000},
-		{groupTemplate = "power_crystals", weight = 700000},
-		{groupTemplate = "krayt_pearls", weight = 400000},
-		{groupTemplate = "ls_gen5_group", weight = 40000}
+		{groupTemplate = "junk", weight = 1758242},
+		{groupTemplate = "clothing_attachments", weight = 824176},
+		{groupTemplate = "armor_attachments", weight = 824176},
+		{groupTemplate = "collectiontiertwo", weight = 769231},
+		{groupTemplate = "power_crystals", weight = 384615},
+		{groupTemplate = "krayt_pearls", weight = 219780},
+		{groupTemplate = "ls_gen5_group", weight = 21978}
 	}
 }
 
@@ -24,12 +24,12 @@ dungeon_trash_rare = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{groupTemplate = "clothing_attachments", weight = 2400000},
-		{groupTemplate = "armor_attachments", weight = 2400000},
-		{groupTemplate = "krayt_pearls", weight = 1600000},
-		{groupTemplate = "power_crystals", weight = 1600000},
-		{groupTemplate = "collectiontiertwo", weight = 1400000},
-		{groupTemplate = "ls_gen5_group", weight = 60000}
+		{groupTemplate = "clothing_attachments", weight = 1318681},
+		{groupTemplate = "armor_attachments", weight = 1318681},
+		{groupTemplate = "krayt_pearls", weight = 879121},
+		{groupTemplate = "power_crystals", weight = 879121},
+		{groupTemplate = "collectiontiertwo", weight = 769231},
+		{groupTemplate = "ls_gen5_group", weight = 32967}
 	}
 }
 
