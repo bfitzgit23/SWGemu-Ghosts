@@ -29,6 +29,12 @@ kubaza_beetle = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "mustafar_relics", chance = 2000000},
 			},
 			lootChance = 2100000

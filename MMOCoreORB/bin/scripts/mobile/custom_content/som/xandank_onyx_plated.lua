@@ -29,6 +29,12 @@ xandank_onyx_plated = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "mustafar_hunt_xandank", chance = 3000000},
 			},
 			lootChance = 2100000

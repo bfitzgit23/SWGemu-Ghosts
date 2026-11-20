@@ -757,3 +757,5 @@ includeFile("groups/mustafar_hunt_jundak.lua")
 includeFile("groups/mustafar_hunt_xandank.lua")
 includeFile("groups/mustafar_relics.lua")
 includeFile("groups/mustafar_storm_lord_loot.lua")
+
+includeFile("groups/mustafar_glowing.lua")

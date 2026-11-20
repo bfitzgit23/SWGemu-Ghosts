@@ -29,6 +29,12 @@ storm_lord = Creature:new {
 	lootGroups = {
 		{
 			groups = {
+				{group = "mustafar_glowing", chance = 10000000},
+			},
+			lootChance = 3000000
+		},
+		{
+			groups = {
 				{group = "mustafar_storm_lord_loot", chance = 10000000},
 			},
 			lootChance = 5000000
