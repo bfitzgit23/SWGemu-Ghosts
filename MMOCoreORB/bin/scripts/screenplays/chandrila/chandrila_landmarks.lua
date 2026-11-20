@@ -33,6 +33,7 @@ function chandrilaLandmarks:start()
 
 		self:spawnCanyonGuardians()
 		self:spawnLakeJobs()
+		self:spawnEmitaStarportTerminal()
 	end
 end
 
@@ -142,4 +143,10 @@ function chandrilaLandmarks:notifyLakeJob(pArea, pMovingObject, pPlayer)
 	creature:sendSystemMessage("\#66FF66The Lake Sah'ot rangers pay you 4,000 credits for the day's catch.")
 	creature:playMusicMessage("sound/ui_npe2_quest_credits.snd")
 	return 0
+end
+
+function chandrilaLandmarks:spawnEmitaStarportTerminal()
+	-- Emita's dock gets a public starship terminal, so pilots can launch and
+	-- land from the village instead of walking back to a Chandrila shuttleport.
+	spawnSceneObject("chandrila", "object/tangible/terminal/terminal_travel.iff", -5866, 18, -630, 0, math.rad(200))
 end

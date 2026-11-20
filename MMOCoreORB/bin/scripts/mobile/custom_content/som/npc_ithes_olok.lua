@@ -20,21 +20,16 @@ npc_ithes_olok = Creature:new {
 	milk = 0,
 	tamingChance = 0.0,
 	ferocity = 0,
-	pvpBitmask = ATTACKABLE,
-	creatureBitmask = PACK + STALKER,
-	optionsBitmask = AIENABLED,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/npc_ithes_olok.iff"},
-	lootGroups = {
-		{
-			groups = {},
-			lootChance = 2100000
-		}
-	},
-	weapons = {"pirate_weapons_light"},
-	conversationTemplate = "",
-	attacks = merge(marksmannovice,brawlernovice)
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "ithes_olok_conv",
+	attacks = {}
 }
 
 CreatureTemplates:addCreatureTemplate(npc_ithes_olok, "npc_ithes_olok")

@@ -20,23 +20,16 @@ must_foreman_chivos = Creature:new {
 	milk = 0,
 	tamingChance = 0.0,
 	ferocity = 0,
-	pvpBitmask = ATTACKABLE,
-	creatureBitmask = PACK + STALKER,
-	optionsBitmask = AIENABLED,
+	pvpBitmask = NONE,
+	creatureBitmask = NONE,
+	optionsBitmask = AIENABLED + CONVERSABLE + INTERESTING,
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/must_foreman_chivos.iff"},
-	lootGroups = {
-		{
-			groups = {
-				{group = "mustafar_relics", chance = 10000000},
-			},
-			lootChance = 2100000
-		}
-	},
-	weapons = {"pirate_weapons_light"},
-	conversationTemplate = "",
-	attacks = merge(marksmannovice,brawlernovice)
+	lootGroups = {},
+	weapons = {},
+	conversationTemplate = "foreman_chivos_conv",
+	attacks = {}
 }
 
 CreatureTemplates:addCreatureTemplate(must_foreman_chivos, "must_foreman_chivos")

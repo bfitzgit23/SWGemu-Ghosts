@@ -337,3 +337,7 @@ includeFile("conversations/junk_dealer/junk_dealer_quich_conv.lua")
 includeFile("conversations/junk_dealer/junk_dealer_reggi_conv.lua")
 includeFile("conversations/junk_dealer/junk_dealer_sheani_conv.lua")
 includeFile("conversations/junk_dealer/junk_dealer_sneg_conv.lua")
+
+-- Mustafar quest dialogue
+includeFile("custom_content/conversations/mustafar/ithes_olok_conv.lua")
+includeFile("custom_content/conversations/mustafar/foreman_chivos_conv.lua")
