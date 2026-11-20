@@ -28,7 +28,9 @@ xandank_onyx_plated = Creature:new {
 	templates = {"object/mobile/som/xandank_onyx_plated.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_hunt_xandank", chance = 3000000},
+			},
 			lootChance = 2100000
 		}
 	},

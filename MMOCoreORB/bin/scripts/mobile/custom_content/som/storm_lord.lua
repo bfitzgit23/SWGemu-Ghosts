@@ -26,7 +26,14 @@ storm_lord = Creature:new {
 	diet = HERBIVORE,
 
 	templates = {"object/mobile/som/storm_lord.iff"},
-	lootGroups = {},
+	lootGroups = {
+		{
+			groups = {
+				{group = "mustafar_storm_lord_loot", chance = 10000000},
+			},
+			lootChance = 5000000
+		}
+	},
 	weapons = {"pirate_weapons_light"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)

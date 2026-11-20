@@ -2317,3 +2317,10 @@ includeFile("items/force_crystal_strength_of_luminaria.lua")
 includeFile("items/force_crystal_sunriders_destiny.lua")
 includeFile("items/force_crystal_ulics_redemption.lua")
 includeFile("items/force_crystal_windus_guile.lua")
+
+-- Mustafar hunt trophies, boss relics
+includeFile("items/mustafar_trophy_blistmok_skin.lua")
+includeFile("items/mustafar_trophy_jundak_skull.lua")
+includeFile("items/mustafar_trophy_xandank_head.lua")
+includeFile("items/mustafar_old_republic_tech.lua")
+includeFile("items/mustafar_som_relic_pistol.lua")

@@ -28,7 +28,9 @@ blistmok_shrieker = Creature:new {
 	templates = {"object/mobile/som/blistmok_shrieker.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_hunt_blistmok", chance = 2500000},
+			},
 			lootChance = 2100000
 		}
 	},

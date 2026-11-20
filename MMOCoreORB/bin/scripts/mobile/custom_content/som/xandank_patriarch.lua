@@ -28,7 +28,9 @@ xandank_patriarch = Creature:new {
 	templates = {"object/mobile/som/xandank_patriarch.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_hunt_xandank", chance = 4000000},
+			},
 			lootChance = 2100000
 		}
 	},

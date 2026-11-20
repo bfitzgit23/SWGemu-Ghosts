@@ -28,7 +28,9 @@ jundak_devourer = Creature:new {
 	templates = {"object/mobile/som/jundak_devourer.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_hunt_jundak", chance = 3000000},
+			},
 			lootChance = 2100000
 		}
 	},

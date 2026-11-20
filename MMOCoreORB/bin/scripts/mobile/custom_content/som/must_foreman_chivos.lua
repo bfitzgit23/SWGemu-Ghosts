@@ -28,7 +28,9 @@ must_foreman_chivos = Creature:new {
 	templates = {"object/mobile/som/must_foreman_chivos.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_relics", chance = 10000000},
+			},
 			lootChance = 2100000
 		}
 	},

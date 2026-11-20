@@ -750,3 +750,10 @@ includeFile("groups/collectiontiertwo.lua")
 includeFile("groups/collectiontierthree.lua")
 includeFile("groups/collectiondiamond.lua")
 includeFile("groups/npc/dungeon_trash.lua")
+
+-- Mustafar hunt trophies, boss relics
+includeFile("groups/mustafar_hunt_blistmok.lua")
+includeFile("groups/mustafar_hunt_jundak.lua")
+includeFile("groups/mustafar_hunt_xandank.lua")
+includeFile("groups/mustafar_relics.lua")
+includeFile("groups/mustafar_storm_lord_loot.lua")

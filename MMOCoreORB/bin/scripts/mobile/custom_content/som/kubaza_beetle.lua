@@ -28,7 +28,9 @@ kubaza_beetle = Creature:new {
 	templates = {"object/mobile/som/kubaza_beetle.iff"},
 	lootGroups = {
 		{
-			groups = {},
+			groups = {
+				{group = "mustafar_relics", chance = 2000000},
+			},
 			lootChance = 2100000
 		}
 	},
