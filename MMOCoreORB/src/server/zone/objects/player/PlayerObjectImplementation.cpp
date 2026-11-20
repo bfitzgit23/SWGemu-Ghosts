@@ -554,14 +554,35 @@ void PlayerObjectImplementation::notifySceneReady() {
 		SkillManager* skillManager = zoneServer != nullptr ? zoneServer->getSkillManager() : nullptr;
 
 		if (skillManager != nullptr) {
+			bool battleMeditationBox = false;
+			bool electricJudgmentBox = false;
+
 			for (int i = 0; i < learnedSkills->size(); ++i) {
 				Skill* skillBox = learnedSkills->get(i);
 
 				if (skillBox == nullptr)
 					continue;
 
-				skillManager->addAbilities(asPlayerObject(), *skillBox->getAbilities(), false);
+				const Vector<String>* boxAbilities = skillBox->getAbilities();
+
+				for (int j = 0; j < boxAbilities->size(); ++j) {
+					const String& boxCommand = boxAbilities->get(j);
+
+					if (boxCommand == "battleMeditation")
+						battleMeditationBox = true;
+					else if (boxCommand == "electricJudgmentSingle1")
+						electricJudgmentBox = true;
+				}
+
+				skillManager->addAbilities(asPlayerObject(), *boxAbilities, false);
 			}
+
+			info(true) << "Ghosts grant check: " << creature->getDisplayedName()
+				<< " skills=" << learnedSkills->size()
+				<< " bmBox=" << battleMeditationBox << " ejBox=" << electricJudgmentBox
+				<< " hasBM=" << hasAbility("battleMeditation")
+				<< " hasEJ=" << hasAbility("electricJudgmentSingle1")
+				<< " abilities=" << getAbilityList()->size();
 		}
 	}
 
