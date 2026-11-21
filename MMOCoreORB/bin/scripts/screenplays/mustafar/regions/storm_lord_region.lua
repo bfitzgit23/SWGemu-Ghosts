@@ -7,7 +7,7 @@ storm_lord_region = ScreenPlay:new {
   screenplayName = "storm_lord_region"
 }
 
-registerScreenPlay("storm_lord_region", false) -- Disabled: storm_lord_zealot mobile is absent.
+registerScreenPlay("storm_lord_region", true)
 
 function storm_lord_region:start()
   if (isZoneEnabled("mustafar")) then
@@ -43,21 +43,21 @@ function storm_lord_region:spawnMobiles()
   self:setMoodString(pMinion1, "neutral")
   local pMinion2 = spawnMobile("mustafar", "storm_lord_minion",120,395.3,201.9,4352.8,165,0)
   self:setMoodString(pMinion2, "neutral")
-  local pZealot1 = spawnMobile("mustafar", "storm_lord_zealot",120,379.9,217.3,4369.3,143,0)
+  local pZealot1 = spawnMobile("mustafar", "storm_lord_touched",120,379.9,217.3,4369.3,143,0)
   self:setMoodString(pZealot1, "neutral")
 
 -- Scavenger Camp 
-  local pScavenger1 = spawnMobile("mustafar", "scavenger",120,309.1,129.9,4260,9,0)
+  local pScavenger1 = spawnMobile("mustafar", "must_scout",120,309.1,129.9,4260,9,0)
   self:setMoodString(pScavenger1, "idlewander")
-  local pScavenger2 = spawnMobile("mustafar", "scavenger",120,335,129.9,4253,143,0)
+  local pScavenger2 = spawnMobile("mustafar", "must_scout",120,335,129.9,4253,143,0)
   self:setMoodString(pScavenger2, "idlewander")
-  local pScavenger3 = spawnMobile("mustafar", "scavenger",120,323,129.9,4206,-29,0)
+  local pScavenger3 = spawnMobile("mustafar", "must_scout",120,323,129.9,4206,-29,0)
   self:setMoodString(pScavenger3, "neutral")
-  local pScavenger4 = spawnMobile("mustafar", "scavenger",120,277,129.9,4282,143,0)
+  local pScavenger4 = spawnMobile("mustafar", "must_scout",120,277,129.9,4282,143,0)
   self:setMoodString(pScavenger2, "idlewander")
-  local pScavenger5 = spawnMobile("mustafar", "scavenger",120,308,129.9,4291,143,0)
+  local pScavenger5 = spawnMobile("mustafar", "must_scout",120,308,129.9,4291,143,0)
   self:setMoodString(pScavenger5, "idlewander")
-  local pScavenger6 = spawnMobile("mustafar", "scavenger",120,302,129.9,4286,-110,0)
+  local pScavenger6 = spawnMobile("mustafar", "must_scout",120,302,129.9,4286,-110,0)
   self:setMoodString(pScavenger6, "idlewander")
   
   local pMinion3 = spawnMobile("mustafar", "storm_lord_minion",120,299,129.5,4304,23,0)

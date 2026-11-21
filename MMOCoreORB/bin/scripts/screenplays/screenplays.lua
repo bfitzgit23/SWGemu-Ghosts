@@ -656,6 +656,12 @@ includeFile("cities/tatooine_wayfar.lua")
 includeFile("cities/yavin4_labor_outpost.lua")
 includeFile("cities/yavin4_mining_outpost.lua")
 
+-- Mustafar
+includeFile("mustafar/mensix/mensix_mining_facility_main.lua")
+includeFile("mustafar/regions/mensix_facility_region.lua")
+includeFile("mustafar/regions/storm_lord_region.lua")
+includeFile("mustafar/regions/smoking_forest_region.lua")
+
 -- POIs
 includeFile("poi/corellia_rogue_corsec_base.lua")
 includeFile("poi/corellia_rebel_hideout.lua")

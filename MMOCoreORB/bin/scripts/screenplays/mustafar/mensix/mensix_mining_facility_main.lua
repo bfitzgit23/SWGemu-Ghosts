@@ -6,7 +6,7 @@ mensix_mining_facility_main = ScreenPlay:new {
 	screenplayName = "mensix_mining_facility_main"
 }
 
-registerScreenPlay("mensix_mining_facility_main", false) -- Disabled: required miner mobile templates are absent.
+registerScreenPlay("mensix_mining_facility_main", true)
 
 function mensix_mining_facility_main:start()
 	if (isZoneEnabled("mustafar")) then
@@ -43,31 +43,31 @@ function mensix_mining_facility_main:spawnMobiles()
      writeData("mensix_mining_facility_main:traveler_m_objectID", SceneObject(pTraveler_m):getObjectID() )
      writeData("mensix_mining_facility_main:traveler_f_objectID", SceneObject(pTraveler_f):getObjectID() )    
      
-     local pMiner1 = spawnMobile("mustafar", "mustafarian_miner_02",0,-2384.0,210.2,1809.9,-35,0)
-     local pMiner2 = spawnMobile("mustafar", "mustafarian_miner_01",0,-2384.3,210.2,1813.2,165,0)
-     local pMiner3 = spawnMobile("mustafar", "mustafarian_miner_01",0,-2387.6,210.2,1812.2,123,0)
+     local pMiner1 = spawnMobile("mustafar", "mustafarian_m_02",0,-2384.0,210.2,1809.9,-35,0)
+     local pMiner2 = spawnMobile("mustafar", "mustafarian_m_01",0,-2384.3,210.2,1813.2,165,0)
+     local pMiner3 = spawnMobile("mustafar", "mustafarian_m_01",0,-2387.6,210.2,1812.2,123,0)
      
      writeData("mensix_mining_facility_main:pMiner1_objectID", SceneObject(pMiner1):getObjectID() )
      writeData("mensix_mining_facility_main:pMiner2_objectID", SceneObject(pMiner2):getObjectID() )
      writeData("mensix_mining_facility_main:pMiner3_objectID", SceneObject(pMiner3):getObjectID() )
      
-     spawnMobile("mustafar", "junk_dealer_mustafar",0,-90,22.7,-47.8,23,12112245)
+     spawnMobile("mustafar", "must_junk",0,-90,22.7,-47.8,23,12112245)
      
      
      -- Background NPCs
-     local pMiner_b1 = spawnMobile("mustafar", "mustafarian_miner_01",0,-82.4,23.2,-35.5,-3,12112245)
+     local pMiner_b1 = spawnMobile("mustafar", "mustafarian_m_01",0,-82.4,23.2,-35.5,-3,12112245)
      self:setMoodString(pMiner_b1, "npc_use_terminal_high")  
-     local pMiner_b2 = spawnMobile("mustafar", "mustafarian_miner_01",0,-154.4,19.1,-66.4,-158,12112243)
+     local pMiner_b2 = spawnMobile("mustafar", "mustafarian_m_01",0,-154.4,19.1,-66.4,-158,12112243)
      self:setMoodString(pMiner_b2, "npc_use_terminal_high") 
-     local pMiner_b3 = spawnMobile("mustafar", "mustafarian_miner_01",0,-78.8,14.9,1.7,88,12112236)
+     local pMiner_b3 = spawnMobile("mustafar", "mustafarian_m_01",0,-78.8,14.9,1.7,88,12112236)
      self:setMoodString(pMiner_b3, "npc_use_terminal_high")
-     local pMiner_b4 = spawnMobile("mustafar", "mustafarian_miner_01",0,-88.3,10.8,49.4,28,12112226)
+     local pMiner_b4 = spawnMobile("mustafar", "mustafarian_m_01",0,-88.3,10.8,49.4,28,12112226)
      self:setMoodString(pMiner_b4, "entertained")
-     local pMiner_b5 = spawnMobile("mustafar", "mustafarian_miner_01",0,-86.8,10.8,41.9,113,12112226)
+     local pMiner_b5 = spawnMobile("mustafar", "mustafarian_m_01",0,-86.8,10.8,41.9,113,12112226)
      self:setMoodString(pMiner_b5, "entertained")
-     local pMiner_b6 = spawnMobile("mustafar", "mustafarian_miner_01",0,-80.6,10.8,42.2,179,12112226)
+     local pMiner_b6 = spawnMobile("mustafar", "mustafarian_m_01",0,-80.6,10.8,42.2,179,12112226)
      self:setMoodString(pMiner_b6, "npc_accusing")
-     local pMiner_b7 = spawnMobile("mustafar", "mustafarian_miner_01",0,-81.1,10.8,39.7,1,12112226)
+     local pMiner_b7 = spawnMobile("mustafar", "mustafarian_m_01",0,-81.1,10.8,39.7,1,12112226)
      self:setMoodString(pMiner_b7, "npc_accusing")
      
      -- Quest Givers

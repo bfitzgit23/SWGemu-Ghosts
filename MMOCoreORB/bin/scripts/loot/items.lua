@@ -16,6 +16,9 @@ includeFile("items/collection/collectiontierone.lua")
 includeFile("items/collection/collectiontiertwo.lua")
 includeFile("items/collection/collectiontierthree.lua")
 includeFile("items/collection/collectiondiamond.lua")
+includeFile("items/collection/rareloot1.lua")
+includeFile("items/collection/rareloot2.lua")
+includeFile("items/collection/rareloot3.lua")
 
 --items folder
 includeFile("items/attachment_armor.lua")

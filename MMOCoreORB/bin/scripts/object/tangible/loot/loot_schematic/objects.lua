@@ -4937,3 +4937,18 @@ object_tangible_loot_loot_schematic_shared_utensils_schematic = SharedTangibleOb
 }
 
 ObjectTemplates:addClientTemplate(object_tangible_loot_loot_schematic_shared_utensils_schematic, "object/tangible/loot/loot_schematic/shared_utensils_schematic.iff")
+
+object_tangible_loot_loot_schematic_shared_sword_lightsaber_one_hand_gen5 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/loot/loot_schematic/shared_sword_lightsaber_one_hand_gen5.iff"
+}
+ObjectTemplates:addClientTemplate(object_tangible_loot_loot_schematic_shared_sword_lightsaber_one_hand_gen5, "object/tangible/loot/loot_schematic/shared_sword_lightsaber_one_hand_gen5.iff")
+
+object_tangible_loot_loot_schematic_shared_sword_lightsaber_polearm_gen5 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/loot/loot_schematic/shared_sword_lightsaber_polearm_gen5.iff"
+}
+ObjectTemplates:addClientTemplate(object_tangible_loot_loot_schematic_shared_sword_lightsaber_polearm_gen5, "object/tangible/loot/loot_schematic/shared_sword_lightsaber_polearm_gen5.iff")
+
+object_tangible_loot_loot_schematic_shared_sword_lightsaber_two_hand_gen5 = SharedTangibleObjectTemplate:new {
+	clientTemplateFileName = "object/tangible/loot/loot_schematic/shared_sword_lightsaber_two_hand_gen5.iff"
+}
+ObjectTemplates:addClientTemplate(object_tangible_loot_loot_schematic_shared_sword_lightsaber_two_hand_gen5, "object/tangible/loot/loot_schematic/shared_sword_lightsaber_two_hand_gen5.iff")

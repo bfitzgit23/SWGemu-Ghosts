@@ -7,7 +7,7 @@ mensix_facility_region = ScreenPlay:new {
   screenplayName = "mensix_facility_region"
 }
 
-registerScreenPlay("mensix_facility_region", false) -- Disabled: boss_uruli mobile is absent.
+registerScreenPlay("mensix_facility_region", true)
 
 function mensix_facility_region:start()
   if (isZoneEnabled("mustafar")) then
@@ -89,6 +89,6 @@ function mensix_facility_region:spawnMobiles()
   self:setMoodString(pBandit11, "neutral")
   local pBandit12 = spawnMobile("mustafar", "must_salvage_bandit_01",120,-5998.9,81.6,-46.2,140,0)
   self:setMoodString(pBandit12, "neutral")
-  local pBossUruli = spawnMobile("mustafar", "boss_uruli",600,-6009,89.5,-73.0,8,0)
+  local pBossUruli = spawnMobile("mustafar", "must_salvage_bandit_leader_01",600,-6009,89.5,-73.0,8,0)
   self:setMoodString(pBossUruli, "neutral")
 end
