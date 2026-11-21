@@ -31,7 +31,7 @@ treasure_hunter_guard = Creature:new {
 			groups = {
 				{group = "mustafar_glowing", chance = 10000000},
 			},
-			lootChance = 3000000
+			lootChance = 800000
 		},
 		{
 			groups = {},

@@ -31,7 +31,7 @@ tanray = Creature:new {
 			groups = {
 				{group = "mustafar_glowing", chance = 10000000},
 			},
-			lootChance = 3000000
+			lootChance = 800000
 		},},
 	scale = 0.18,
 	weapons = {"pirate_weapons_light"},

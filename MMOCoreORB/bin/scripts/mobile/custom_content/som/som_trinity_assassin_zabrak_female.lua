@@ -31,7 +31,7 @@ som_trinity_assassin_zabrak_female = Creature:new {
 			groups = {
 				{group = "mustafar_glowing", chance = 10000000},
 			},
-			lootChance = 3000000
+			lootChance = 800000
 		},
 		{
 			groups = {},

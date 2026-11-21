@@ -33,7 +33,7 @@ q4p3 = Creature:new {
 			groups = {
 				{group = "mustafar_glowing", chance = 10000000},
 			},
-			lootChance = 3000000
+			lootChance = 2500000
 		},},
 
 	-- Primary and secondary weapon should be different types (rifle/carbine, carbine/pistol, rifle/unarmed, etc)

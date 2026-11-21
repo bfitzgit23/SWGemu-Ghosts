@@ -1,7 +1,7 @@
--- Ithes Olok, beside the Chu-Gon Dar cube. The dialogue only explains the cube
--- and the relics; handing out the three test relics is done from his radial
--- menu (see chugondar_cube.lua), because Lua conversation handlers are not
--- called by this server.
+-- Ithes Olok, beside the Chu-Gon Dar cube. The dialogue explains the cube, hints
+-- at combinations and points to the relics that creatures carry; handing out the
+-- three test relics is done from his radial menu (see chugondar_cube.lua), because
+-- Lua conversation handlers are not called by this server.
 
 ithesOlokConv = ConvoTemplate:new {
 	initialScreen = "intro",
@@ -17,6 +17,7 @@ local intro = ConvoScreen:new {
 	options = {
 		{ "What is this cube?", "what_is" },
 		{ "What do I put in it?", "what_goes_in" },
+		{ "Which relics go together?", "hints" },
 		{ "Nothing. Good day.", "leave" }
 	}
 }
@@ -41,6 +42,7 @@ local answers = ConvoScreen:new {
 	stopConversation = "false",
 	options = {
 		{ "Where do I find relics?", "relics" },
+		{ "Which relics go together?", "hints" },
 		{ "I will try my luck.", "leave" }
 	}
 }
@@ -49,21 +51,36 @@ ithesOlokConv:addScreen(answers)
 local whatGoesIn = ConvoScreen:new {
 	id = "what_goes_in",
 	leftDialog = "",
-	customDialogText = "The stones standing around the cube give up glowing relics. Put three of them in the cube and use it. Three, no more, no less. One barely glowing thing and two warm ones is not the same as three warm ones.",
+	customDialogText = "Anything that glows faintly with the Force. The beasts of Mustafar swallow them out in the flats, so search the creatures you put down. Other worlds trade them off in old junk now and then. Put three in the cube and use it. Three different relics, no more, no less.",
 	stopConversation = "false",
 	options = {
+		{ "Which relics go together?", "hints" },
 		{ "Give me something to test it with.", "test_relics" },
 		{ "I will find my own.", "relics" }
 	}
 }
 ithesOlokConv:addScreen(whatGoesIn)
 
+local hints = ConvoScreen:new {
+	id = "hints",
+	leftDialog = "",
+	customDialogText = "Three relics, and never the same relic twice. A few the old hands swear by: a barely glowing with a dimly glowing and a faintly glowing, and the cube gives up a humming power cell. A barely with a dimly and a warmly, and you get a painted thing worth a wall. Two faintly glowing with a warmly glowing, and it made a long table for the hall. There are seventeen answers I know of, and I have not seen every one of them with my own eyes.",
+	stopConversation = "false",
+	options = {
+		{ "Where do I find relics?", "relics" },
+		{ "Give me something to test it with.", "test_relics" },
+		{ "I will try my luck.", "leave" }
+	}
+}
+ithesOlokConv:addScreen(hints)
+
 local relics = ConvoScreen:new {
 	id = "relics",
 	leftDialog = "",
-	customDialogText = "The stones answer on their own, given a few minutes between asking. If you want to start now, right-click me and choose Use, and I will part with three that I have no more use for.",
+	customDialogText = "Hunt. The beasts of this world are full of them, and stronger beasts are worth the trouble. If you want to start now, right-click me and choose Use, and I will part with three that I have no more use for.",
 	stopConversation = "false",
 	options = {
+		{ "Which relics go together?", "hints" },
 		{ "I will try my luck.", "leave" }
 	}
 }
