@@ -435,6 +435,11 @@ public:
 
 		SkillModManager::instance()->verifyWearableSkillMods(player);
 
+		// Ghosts: re-derive the skill box modifiers from the skill list on every
+		// login, so characters trained before a skill tree was rebalanced pick up
+		// the new values and any mods added to boxes they already own.
+		SkillModManager::instance()->verifySkillBoxSkillMods(player);
+
 		// Store all of the players spawned children: Pets & vehicles, except ships (bool)
 		ghost->unloadSpawnedChildren(true);
 	}

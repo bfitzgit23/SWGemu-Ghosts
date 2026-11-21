@@ -2354,7 +2354,18 @@ float CombatManager::getDefenderToughnessModifier(CreatureObject* defender, int 
 	if (attackType == weapon->getAttackType()) {
 		for (int i = 0; i < defenseToughMods->size(); ++i) {
 			int toughMod = defender->getSkillMod(defenseToughMods->get(i));
-			if (toughMod > 0)
+
+			if (toughMod <= 0)
+				continue;
+
+			// Ghosts: the lightsaber tree now stacks to 145 lightsaber toughness
+			// (170 with a +25 tape). Taking the raw percentage off the hit turns
+			// anything past 100 into total immunity, so the lightsaber term is
+			// curved instead: 145 leaves 41% of the blow, 170 leaves 37%, and no
+			// stack can ever reach zero damage.
+			if (defenseToughMods->get(i).hashCode() == STRING_HASHCODE("lightsaber_toughness"))
+				damage *= 1.f - (toughMod / (toughMod + 100.f));
+			else
 				damage *= 1.f - (toughMod / 100.f);
 		}
 	}

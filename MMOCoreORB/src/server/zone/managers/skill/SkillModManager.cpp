@@ -530,12 +530,28 @@ bool SkillModManager::compareMods(VectorMap<String, int>& mods, CreatureObject* 
 	if (!mods.isEmpty()) {
 		match = false;
 
-		// Player has improper mods on them, remove the remaining
-		for (int i = 0; i < mods.size(); i++) {
-			String key = mods.elementAt(i).getKey();
-			int value = mods.elementAt(i).getValue();
+		// Ghosts: the skill box group is derived from the skill list, so a mod
+		// left over after the check is one the character's skills should grant
+		// but never received - a tree that gained a modifier after the character
+		// trained. Grant it, so rebalanced skill trees reach existing characters.
+		// The other groups still only report their excess.
+		if (type == SkillModManager::SKILLBOX) {
+			for (int i = 0; i < mods.size(); i++) {
+				String key = mods.elementAt(i).getKey();
+				int value = mods.elementAt(i).getValue();
 
-			compare << "Excess Modifier: " << key << " Value: " << value << "\n";
+				creature->addSkillMod(SkillModManager::SKILLBOX, key, value, true);
+
+				compare << "Missing Modifier Added: " << key << " Value: " << value << "\n";
+			}
+		} else {
+			// Player has improper mods on them, remove the remaining
+			for (int i = 0; i < mods.size(); i++) {
+				String key = mods.elementAt(i).getKey();
+				int value = mods.elementAt(i).getValue();
+
+				compare << "Excess Modifier: " << key << " Value: " << value << "\n";
+			}
 		}
 	}
 
