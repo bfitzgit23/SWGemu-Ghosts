@@ -5,8 +5,8 @@ force_tier_4 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
+		{groupTemplate = "holocron_dark", weight = 20080},
+		{groupTemplate = "holocron_light", weight = 20080},
 		{groupTemplate = "armor_attachments", weight = 700000},
 		{groupTemplate = "clothing_attachments", weight = 700000},
 		{groupTemplate = "color_crystals", weight = 1400000},

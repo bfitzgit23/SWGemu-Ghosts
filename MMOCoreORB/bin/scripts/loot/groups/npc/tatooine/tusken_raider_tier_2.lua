@@ -5,8 +5,8 @@ tusken_raider_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 98039},
-		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "holocron_dark", weight = 19687},
+		{groupTemplate = "holocron_light", weight = 19687},
 		{groupTemplate = "armor_attachments", weight = 392157},
 		{groupTemplate = "bone_armor", weight = 490196},
 		{groupTemplate = "chitin_armor", weight = 490196},

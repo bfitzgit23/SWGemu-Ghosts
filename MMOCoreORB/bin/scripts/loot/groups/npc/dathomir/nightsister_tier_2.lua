@@ -5,8 +5,8 @@ nightsister_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 98039},
-		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "holocron_dark", weight = 19687},
+		{groupTemplate = "holocron_light", weight = 19687},
 		{groupTemplate = "armor_attachments", weight = 196078},
 		{groupTemplate = "clothing_attachments", weight = 196078},
 		{groupTemplate = "color_crystals", weight = 490196},

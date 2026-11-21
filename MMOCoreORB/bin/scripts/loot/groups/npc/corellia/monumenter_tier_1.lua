@@ -5,8 +5,8 @@ monumenter_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
+		{groupTemplate = "holocron_dark", weight = 20080},
+		{groupTemplate = "holocron_light", weight = 20080},
 		{groupTemplate = "junk", weight = 3600000},
 		{groupTemplate = "melee_weapons", weight = 850000},
 		{groupTemplate = "ranged_weapons", weight = 2600000},

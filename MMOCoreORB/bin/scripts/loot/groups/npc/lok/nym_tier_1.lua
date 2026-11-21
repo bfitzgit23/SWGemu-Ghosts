@@ -5,8 +5,8 @@ nym_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
+		{groupTemplate = "holocron_dark", weight = 20080},
+		{groupTemplate = "holocron_light", weight = 20080},
 		{groupTemplate = "color_crystals", weight = 400000},
 		{groupTemplate = "junk", weight = 4500000},
 		{groupTemplate = "nyms_common", weight = 700000},

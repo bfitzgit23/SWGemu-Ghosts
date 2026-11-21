@@ -5,8 +5,8 @@ gondula_tribe_tier_2 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 98039},
-		{groupTemplate = "holocron_light", weight = 98039},
+		{groupTemplate = "holocron_dark", weight = 19687},
+		{groupTemplate = "holocron_light", weight = 19687},
 		{groupTemplate = "ewok", weight = 8235295},
 		{groupTemplate = "wearables_uncommon", weight = 784314},
 		{groupTemplate = "resource_creature", weight = 588235},

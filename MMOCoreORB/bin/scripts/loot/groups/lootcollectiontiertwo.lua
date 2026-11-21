@@ -7,8 +7,8 @@ lootcollectiontiertwo  = {
 	lootItems = {
 		{groupTemplate = "junk", weight = 714285},
 		{groupTemplate = "collectiontierthree", weight = 714295},
-		{groupTemplate = "holocron_dark", weight = 714285},
-		{groupTemplate = "holocron_light", weight = 714285},
+		{groupTemplate = "holocron_dark", weight = 17212},
+		{groupTemplate = "holocron_light", weight = 17212},
 		{groupTemplate = "power_crystals", weight = 714285},
 		{groupTemplate = "clothing_attachments", weight = 714285},
 		{groupTemplate = "armor_attachments", weight = 714285},

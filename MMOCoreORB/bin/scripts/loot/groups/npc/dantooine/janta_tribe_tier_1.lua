@@ -5,8 +5,8 @@ janta_tribe_tier_1 = {
 	minimumLevel = 0,
 	maximumLevel = -1,
 	lootItems = {
-		{groupTemplate = "holocron_dark", weight = 100000},
-		{groupTemplate = "holocron_light", weight = 100000},
+		{groupTemplate = "holocron_dark", weight = 19679},
+		{groupTemplate = "holocron_light", weight = 19679},
 		{groupTemplate = "janta_common", weight = 2800000},
 		{groupTemplate = "junk", weight = 3300000},
 		{groupTemplate = "loot_kit_parts", weight = 2700000},
