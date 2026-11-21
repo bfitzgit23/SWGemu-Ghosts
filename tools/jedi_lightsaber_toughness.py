@@ -16,11 +16,11 @@ lootableClothingAttachmentStatMods in scripts/managers/loot_manager.lua and
 stacks on top of the 145.
 
 Stray lightsaber_toughness on the other discipline trees, the defender branch
-capstones and the Grand Master / Dark Lord trees is removed so that 225 is the
+capstones and the Grand Master / Dark Lord trees is removed so that 145 is the
 true maximum a character can reach from skill boxes.  The mod is a percentage
 damage reduction against lightsaber attacks (CombatManager
-::getDefenderToughnessModifier), so the total is capped by game design here, not
-by the client.
+::getDefenderToughnessModifier), applied on a curve (T / (T + 100)) so a big
+stack can never reach immunity: 145 takes 59% off a hit, 170 takes 63%.
 """
 
 from pathlib import Path
