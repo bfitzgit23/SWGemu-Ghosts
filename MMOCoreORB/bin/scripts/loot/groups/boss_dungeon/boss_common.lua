@@ -3,7 +3,7 @@ boss_common = {
 	minimumLevel = 0,
 	maximumLevel = 0,
 	lootItems = {
-		{groupTemplate = "mustafar_glowing", weight = 500000},
+		{groupTemplate = "mustafar_glowing_elite", weight = 500000},
 		{groupTemplate = "vehicledeedsnormal", weight = 1029816},
 		{groupTemplate = "goggles_all", weight = 1029810},
 		{groupTemplate = "capes", weight = 1029809},  

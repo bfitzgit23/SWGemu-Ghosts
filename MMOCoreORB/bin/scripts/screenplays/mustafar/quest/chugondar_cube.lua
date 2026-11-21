@@ -2,10 +2,14 @@ local ObjectManager = require("managers.object.object_manager")
 
 -- The Chu-Gon Dar cube at the ruins, with Ithes Olok beside it.
 --
--- Glowing relics drop from the creatures of Mustafar. Put three of them in the
--- cube and use it: if the three are a combination the Symbols answer to, they
--- are consumed and the cube produces a single item. Any other three leave the
--- relics untouched. Combinations are matched by relic template, not by name.
+-- Glowing relics drop from the creatures of Mustafar, in tiers that depend on
+-- how dangerous the beast is: the rank and file carry barely and dimly glowing
+-- relics, the big ones carry faintly and warmly glowing relics. Put three of
+-- them in the cube and use it: if the three are a combination the Symbols
+-- answer to, they are consumed and the cube produces a single item. Any other
+-- three leave the relics untouched.
+--
+-- Combinations are matched by relic template, not by name.
 
 local BARELY_A = "object/tangible/loot/mustafar/cube/loot/cube_loot_0a.iff"
 local BARELY_B = "object/tangible/loot/mustafar/cube/loot/cube_loot_0b.iff"
@@ -68,6 +72,7 @@ end
 
 chugondarCube = ScreenPlay:new {
 	screenplayName = "chugondarCube",
+	relicTemplates = { BARELY_A, BARELY_B, DIMLY_A, DIMLY_B, FAINTLY_A, FAINTLY_B, WARMLY_A, WARMLY_B },
 	recipes = {
 		{ relics = { BARELY_A, DIMLY_A, FAINTLY_A }, template = "object/tangible/loot/mustafar/old_republic_tech_01.iff", name = "a humming Old Republic power cell" },
 		{ relics = { BARELY_B, DIMLY_B, WARMLY_A }, template = "object/tangible/loot/mustafar/must_painting_01.iff", name = "a Mustafar painting of the Cataclysm" },
@@ -127,7 +132,7 @@ function chugondarCube:giveTestRelics(pPlayer)
 	local key = SceneObject(pPlayer):getObjectID() .. ":chugondarCube:testRelics"
 
 	if (readData(key) == 1) then
-		creature:sendSystemMessage("\#CCCCCCIthes Olok: Three is all I can spare. The creatures of the flats carry more.")
+		creature:sendSystemMessage("\#CCCCCCIthes Olok: Three is all I can spare. The beasts of the flats carry more.")
 		return
 	end
 
@@ -162,13 +167,10 @@ function chugondarCube:activateCube(pPlayer)
 	local recipe, items = chugondarCube:findRecipe(pInventory)
 
 	if (recipe == nil) then
-		if (getContainerObjectByTemplate(pInventory, BARELY_A, false) == nil
-				and getContainerObjectByTemplate(pInventory, DIMLY_A, false) == nil
-				and getContainerObjectByTemplate(pInventory, FAINTLY_A, false) == nil
-				and getContainerObjectByTemplate(pInventory, WARMLY_A, false) == nil) then
-			creature:sendSystemMessage("\#CCCCCCThe face of the Chu-Gon Dar cube is dark. It wants three glowing relics.")
-		else
+		if (chugondarCube:hasRelic(pInventory)) then
 			creature:sendSystemMessage("\#CCCCCCThe Chu-Gon Dar cube shudders slightly, but nothing special seems to happen.")
+		else
+			creature:sendSystemMessage("\#CCCCCCThe face of the Chu-Gon Dar cube is dark and cold. It wants three glowing relics, no two of them alike, to answer with anything at all.")
 		end
 
 		return
@@ -216,4 +218,15 @@ function chugondarCube:findRecipe(pContainer)
 	end
 
 	return nil, nil
+end
+
+-- True when any glowing relic at all is in the container, whatever its tier.
+function chugondarCube:hasRelic(pContainer)
+	for i, template in ipairs(self.relicTemplates) do
+		if (getContainerObjectByTemplate(pContainer, template, false) ~= nil) then
+			return true
+		end
+	end
+
+	return false
 end

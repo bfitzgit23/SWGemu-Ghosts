@@ -30,7 +30,7 @@ revan_quest1 = Creature:new {
 	lootGroups = {
 		{
 			groups = {
-				{group = "mustafar_glowing", chance = 10000000},
+				{group = "mustafar_glowing_elite", chance = 10000000},
 			},
 			lootChance = 2500000
 		},
