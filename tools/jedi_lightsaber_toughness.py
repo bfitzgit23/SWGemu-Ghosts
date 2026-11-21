@@ -3,17 +3,17 @@
 
 Design (server owner, 2026-11-21):
   Lightsaber Novice ................ 10
-  One-hand  01/02/03/04 ............ 5 / 10 / 15 / 20  = 50
-  Two-hand  01/02/03/04 ............ 5 / 10 / 15 / 20  = 50
-  Polearm   01/02/03/04 ............ 5 / 10 / 15 / 20  = 50
-  Technique 01/02/03/04 ............ 5 / 10 / 15 / 20  = 50
+  One-hand  01/02/03/04 ............ 3 / 6 / 9 / 12  = 30
+  Two-hand  01/02/03/04 ............ 3 / 6 / 9 / 12  = 30
+  Polearm   01/02/03/04 ............ 3 / 6 / 9 / 12  = 30
+  Technique 01/02/03/04 ............ 3 / 6 / 9 / 12  = 30
   Lightsaber Master ................ 15
   -------------------------------------------------
-  Maximum from skill boxes ......... 225
+  Maximum from skill boxes ......... 145
 
 A CA (clothing attachment) skill tape with lightsaber_toughness is rolled from
 lootableClothingAttachmentStatMods in scripts/managers/loot_manager.lua and
-stacks on top of the 225.
+stacks on top of the 145.
 
 Stray lightsaber_toughness on the other discipline trees, the defender branch
 capstones and the Grand Master / Dark Lord trees is removed so that 225 is the
@@ -34,10 +34,10 @@ TARGETS = {
     "force_discipline_light_saber_master": 15,
 }
 for branch in ("one_hand", "two_hand", "polearm", "technique"):
-    for tier, value in zip(("01", "02", "03", "04"), (5, 10, 15, 20)):
+    for tier, value in zip(("01", "02", "03", "04"), (3, 6, 9, 12)):
         TARGETS["force_discipline_light_saber_%s_%s" % (branch, tier)] = value
 
-EXPECTED_TOTAL = 225
+EXPECTED_TOTAL = 145
 
 
 def parse(data):
