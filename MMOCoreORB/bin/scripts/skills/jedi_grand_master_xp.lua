@@ -60,7 +60,6 @@ jedi_grand_master_novice = {
 		{ "twohandlightsaber_toughness", 5 },
 		{ "polearmlightsaber_toughness", 5 },
 		{ "saber_block", 5 },
-		{ "lightsaber_toughness", 5 },
 		{ "jedi_saber_experimentation", 25 }
 	},
 	schematicsGranted = {},
@@ -116,7 +115,6 @@ jedi_grand_master_master = {
 		{ "twohandlightsaber_toughness", 5 },
 		{ "polearmlightsaber_toughness", 5 },
 		{ "saber_block", 5 },
-		{ "lightsaber_toughness", 5 },
 		{ "jedi_saber_experimentation", 25 }
 	},
 	schematicsGranted = {},
@@ -166,7 +164,6 @@ jedi_dark_lord_novice = {
 		{ "twohandlightsaber_toughness", 5 },
 		{ "polearmlightsaber_toughness", 5 },
 		{ "saber_block", 5 },
-		{ "lightsaber_toughness", 5 },
 		{ "jedi_saber_experimentation", 25 }
 	},
 	schematicsGranted = {},
@@ -222,7 +219,6 @@ jedi_dark_lord_master = {
 		{ "twohandlightsaber_toughness", 5 },
 		{ "polearmlightsaber_toughness", 5 },
 		{ "saber_block", 5 },
-		{ "lightsaber_toughness", 5 },
 		{ "jedi_saber_experimentation", 25 }
 	},
 	schematicsGranted = {},
