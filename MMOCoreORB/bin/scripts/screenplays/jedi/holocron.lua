@@ -676,16 +676,16 @@ function holocron_use_for_studies(pCreature, pTarget)
             local alignment = rsd(pCreature, "jedi_alignment")
             if alignment == "dark" then
                 replaceEnclaveWaypoint(pCreature, "dark")
-                local mailBody = "You have absorbed the wisdom of ten holocrons. The dark side has tested your resolve and found you worthy.\n\nThe time has come to face the trials of Dark Knighthood. Speak to the Gatekeeper again when you are ready."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The dark side has tested your resolve and found you worthy.\n\nThe time has come to face the trials of Dark Knighthood. Speak to the Gatekeeper again when you are ready.\n\nDo not go to the Yavin enclave yet. The Light and Dark Jedi Enclaves are for Knights - finish your Knight trial first, then travel there."
                 sendMail("The Force", "The Path to Dark Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             elseif alignment == "light" then
                 -- Light alignment already chosen
                 replaceEnclaveWaypoint(pCreature, "light")
-                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has tested your patience and found you worthy.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has tested your patience and found you worthy.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready.\n\nDo not go to the Yavin enclave yet. The Light and Dark Jedi Enclaves are for Knights - finish your Knight trial first, then travel there."
                 sendMail("The Force", "The Path to Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             else
                 -- The Gatekeeper's moral assessment chooses one path later.
-                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has found you ready.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready to choose your path."
+                local mailBody = "You have absorbed the wisdom of ten holocrons. The Force has found you ready.\n\nThe time has come to face the trials of Knighthood. Speak to the Gatekeeper again when you are ready to choose your path.\n\nDo not go to the Yavin enclave yet. The Light and Dark Jedi Enclaves are for Knights - finish your Knight trial first, then travel there."
                 sendMail("The Force", "The Path to Knighthood", mailBody, CreatureObject(pCreature):getFirstName())
             end
 
@@ -1365,6 +1365,7 @@ function holocron_grant_padawan(pCreature, silent)
         "The path of the Jedi cannot be rushed.\n\n" ..
         "You have become a Jedi Padawan. You must now complete seven days of training before you may undertake your Jedi Knight Trials.\n\n" ..
         "This waiting period represents the time required for you to grow, train, and deepen your connection to the Force.\n\n" ..
+        "Do not travel to the Light or Dark Jedi Enclave yet. The enclave on Yavin 4 is a Knight's destination - a fresh Padawan who goes there is turned away at the door, or killed by the guards outside it. Train, study your holocrons, and finish your Knight trial first; the enclave comes after that.\n\n" ..
         "May the Force guide your path.",
         firstName
     )
@@ -1451,6 +1452,7 @@ function holocron_grant_knight(pCreature, alignment, silent)
         firstName .. ",\n\n" ..
         "The path of the Jedi cannot be rushed.\n\n" ..
         "You have become a Jedi Knight. You must now complete a further seven days of training before you may undertake the trials to become " .. nextRank .. ".\n\n" ..
+        "You may now travel to the Light or Dark Jedi Enclave on Yavin 4. The enclave is where Knights go - council, robe, trainers and terminals - so this is the point where the trip makes sense.\n\n" ..
         "Use this time to train, grow, and master your connection to the Force.\n\n" ..
         "May the Force guide your path.",
         firstName
