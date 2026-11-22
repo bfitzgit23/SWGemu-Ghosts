@@ -6,8 +6,8 @@ Yavin4StaticSpawnsScreenPlay = ScreenPlay:new {
 
 	mobiles = {
 		-- Light Jedi Enclave (-5575, 4910)
-		{"light_jedi_sentinel", 10, -5579.0, 87.7, 4908.5, -179, 0},
-		{"light_jedi_sentinel", 10, -5572.6, 87.7, 4908.2, -179, 0},
+		{"light_jedi_enclave_guard", 10, -5579.0, 87.7, 4908.5, -179, 0},
+		{"light_jedi_enclave_guard", 10, -5572.6, 87.7, 4908.2, -179, 0},
 
 		-- Dark Jedi Enclave (5068, 310)
 		{"dark_jedi_enclave_guard", 10, 5074.2, 78.8, 313.9, 90, 0},
