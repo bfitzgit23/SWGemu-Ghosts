@@ -133,14 +133,36 @@ end
 local function replaceEnclaveWaypoint(pCreature, alignment)
     local pGhost = CreatureObject(pCreature):getPlayerObject()
     if pGhost == nil then return end
+
     local oldID = tonumber(rsd(pCreature, "jedi_enclave_waypoint_id")) or 0
     if oldID > 0 then PlayerObject(pGhost):removeWaypoint(oldID, true) end
-    local dark = alignment == "dark"
-    local wpID = PlayerObject(pGhost):addWaypoint("yavin4",
-        dark and "Dark Jedi Enclave" or "Light Jedi Enclave", "",
-        dark and 5079 or -5575, 0, dark and 306 or 4910,
-        WAYPOINTYELLOW, true, true, WAYPOINTQUESTTASK)
-    wsd(pCreature, "jedi_enclave_waypoint_id", wpID or 0)
+    local oldDarkID = tonumber(rsd(pCreature, "jedi_enclave_waypoint_id_dark")) or 0
+    if oldDarkID > 0 then PlayerObject(pGhost):removeWaypoint(oldDarkID, true) end
+
+    -- A Jedi who has not committed to a side is shown both enclaves, so the
+    -- choice of Light or Dark is theirs to make. Once the trial locks the
+    -- alignment, only that side's enclave stays marked.
+    local showLight, showDark = true, true
+    if rsd(pCreature, "jedi_alignment_locked") == "1" then
+        if alignment == "light" then
+            showDark = false
+        elseif alignment == "dark" then
+            showLight = false
+        end
+    end
+
+    local lightID, darkID = 0, 0
+    if showLight then
+        lightID = PlayerObject(pGhost):addWaypoint("yavin4", "Light Jedi Enclave", "",
+            -5575, 0, 4910, WAYPOINTYELLOW, true, true, WAYPOINTQUESTTASK) or 0
+    end
+    if showDark then
+        darkID = PlayerObject(pGhost):addWaypoint("yavin4", "Dark Jedi Enclave", "",
+            5079, 0, 306, WAYPOINTYELLOW, true, true, WAYPOINTQUESTTASK) or 0
+    end
+
+    wsd(pCreature, "jedi_enclave_waypoint_id", lightID)
+    wsd(pCreature, "jedi_enclave_waypoint_id_dark", darkID)
 end
 
 local function formatTrainingTime(remaining)
