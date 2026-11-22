@@ -6,8 +6,8 @@ mythosaur_tissue = {
 	customObjectName = "Mythosaur Tissues",
 	directObjectTemplate = "object/tangible/component/weapon/blaster_power_handler_enhancement_krayt.iff",
 	craftingValues = {
-		{"maxdamage",70,165,0},
-    {"mindamage",70,165,0},
+		{"maxdamage",105,250,0},
+    {"mindamage",105,250,0},
 		{"attackspeed",0,-1.2,1},
 		{"useCount",1,13,0},
 	},
