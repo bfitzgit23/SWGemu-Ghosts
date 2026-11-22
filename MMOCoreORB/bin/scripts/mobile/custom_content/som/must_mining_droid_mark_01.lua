@@ -38,7 +38,7 @@ must_mining_droid_mark_01 = Creature:new {
 			lootChance = 2100000
 		}
 	},
-	weapons = {"general_pistol"},
+	weapons = {"battle_droid_weapons"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)
 }
