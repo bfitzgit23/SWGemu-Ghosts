@@ -132,7 +132,7 @@ function chugondarCube:giveTestRelics(pPlayer)
 	local key = SceneObject(pPlayer):getObjectID() .. ":chugondarCube:testRelics"
 
 	if (readData(key) == 1) then
-		creature:sendSystemMessage("\#CCCCCCIthes Olok: Three is all I can spare. The beasts of the flats carry more.")
+		creature:sendSystemMessage("\\#CCCCCCIthes Olok: Three is all I can spare. The beasts of the flats carry more.")
 		return
 	end
 
@@ -149,7 +149,7 @@ function chugondarCube:giveTestRelics(pPlayer)
 	end
 
 	writeData(key, 1)
-	creature:sendSystemMessage("\#B266FFIthes Olok presses three relics into your hand. \"Put them in the cube and use it. Three, no more, no less.\"")
+	creature:sendSystemMessage("\\#B266FFIthes Olok presses three relics into your hand. \"Put them in the cube and use it. Three, no more, no less.\"")
 end
 
 function chugondarCube:activateCube(pPlayer)
@@ -168,9 +168,9 @@ function chugondarCube:activateCube(pPlayer)
 
 	if (recipe == nil) then
 		if (chugondarCube:hasRelic(pInventory)) then
-			creature:sendSystemMessage("\#CCCCCCThe Chu-Gon Dar cube shudders slightly, but nothing special seems to happen.")
+			creature:sendSystemMessage("\\#CCCCCCThe Chu-Gon Dar cube shudders slightly, but nothing special seems to happen.")
 		else
-			creature:sendSystemMessage("\#CCCCCCThe face of the Chu-Gon Dar cube is dark and cold. It wants three glowing relics, no two of them alike, to answer with anything at all.")
+			creature:sendSystemMessage("\\#CCCCCCThe face of the Chu-Gon Dar cube is dark and cold. It wants three glowing relics, no two of them alike, to answer with anything at all.")
 		end
 
 		return
@@ -179,7 +179,7 @@ function chugondarCube:activateCube(pPlayer)
 	local pReward = giveItem(pInventory, recipe.template, -1)
 
 	if (pReward == nil) then
-		creature:sendSystemMessage("\#CCCCCCThe cube shimmers, but you have no room to hold what it makes.")
+		creature:sendSystemMessage("\\#CCCCCCThe cube shimmers, but you have no room to hold what it makes.")
 		return
 	end
 
@@ -189,7 +189,7 @@ function chugondarCube:activateCube(pPlayer)
 		item:destroyObjectFromDatabase(true)
 	end
 
-	creature:sendSystemMessage("\#B266FFThe surface of the Chu-Gon Dar Cube shimmers with the power of the Force. Inside rests " .. recipe.name .. ".")
+	creature:sendSystemMessage("\\#B266FFThe surface of the Chu-Gon Dar Cube shimmers with the power of the Force. Inside rests " .. recipe.name .. ".")
 	creature:playMusicMessage("sound/ui_npe2_quest_completed.snd")
 end
 

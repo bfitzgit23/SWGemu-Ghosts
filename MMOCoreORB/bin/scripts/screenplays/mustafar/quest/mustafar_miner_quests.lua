@@ -156,7 +156,7 @@ function mustafarMinerQuests:foremanUse(pPlayer)
 			writeData(key .. ":done", 1)
 			deleteData(key .. ":ready")
 			deleteData(key)
-			creature:sendSystemMessage("\#66FF66" .. quest.name .. " is settled: " .. quest.credits .. " credits and " .. quest.itemName .. ".")
+			creature:sendSystemMessage("\\#66FF66" .. quest.name .. " is settled: " .. quest.credits .. " credits and " .. quest.itemName .. ".")
 			creature:playMusicMessage("sound/ui_npe2_quest_completed.snd")
 			return
 		end
@@ -169,14 +169,14 @@ function mustafarMinerQuests:foremanUse(pPlayer)
 		if (readData(key .. ":accepted") ~= 1 and readData(key .. ":done") ~= 1) then
 			writeData(key .. ":accepted", 1)
 			writeData(key, 0)
-			creature:sendSystemMessage("\#66CCFF" .. quest.name .. " is yours. " .. quest.steps[1][5])
+			creature:sendSystemMessage("\\#66CCFF" .. quest.name .. " is yours. " .. quest.steps[1][5])
 			creature:playMusicMessage("sound/ui_npe2_quest_received.snd")
 			mustafarMinerQuests:addWaypoint(pPlayer, quest.steps[1], quest.name)
 			return
 		end
 	end
 
-	creature:sendSystemMessage("\#CCCCCCForeman Chivos has nothing else for you. Every job on his slate is taken or settled.")
+	creature:sendSystemMessage("\\#CCCCCCForeman Chivos has nothing else for you. Every job on his slate is taken or settled.")
 end
 
 function mustafarMinerQuests:addWaypoint(pPlayer, step, name)
@@ -224,7 +224,7 @@ function mustafarMinerQuests:notifyStep(pArea, pMovingObject, pPlayer)
 	end
 
 	local creature = CreatureObject(pMovingObject)
-	creature:sendSystemMessage("\#66CCFF" .. quest.steps[info.step][5])
+	creature:sendSystemMessage("\\#66CCFF" .. quest.steps[info.step][5])
 
 	if (info.step < #quest.steps) then
 		writeData(key, info.step)
@@ -234,7 +234,7 @@ function mustafarMinerQuests:notifyStep(pArea, pMovingObject, pPlayer)
 
 	writeData(key, info.step)
 	writeData(key .. ":ready", 1)
-	creature:sendSystemMessage("\#66FF66" .. quest.name .. ": the trail goes cold. Return to Foreman Chivos at the Mensix Mining Facility for your pay.")
+	creature:sendSystemMessage("\\#66FF66" .. quest.name .. ": the trail goes cold. Return to Foreman Chivos at the Mensix Mining Facility for your pay.")
 	creature:playMusicMessage("sound/ui_npe2_quest_completed.snd")
 	return 0
 end
