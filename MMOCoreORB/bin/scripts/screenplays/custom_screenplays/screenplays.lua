@@ -83,7 +83,7 @@ includeFile("custom_screenplays/mandalore/mandalore_region.lua")
 --Mustafar
 --includeFile("custom_screenplays/mustafar/hk_army_teleport.lua")
 --includeFile("custom_screenplays/mustafar/hk_army_return.lua")
---includeFile("custom_screenplays/mustafar/hk_army.lua")
+includeFile("custom_screenplays/mustafar/hk_army.lua")
 --includeFile("custom_screenplays/mustafar/sherkar_teleport.lua")
 --includeFile("custom_screenplays/mustafar/sherkar_return.lua")
 --includeFile("custom_screenplays/mustafar/sherkar_cave.lua")

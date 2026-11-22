@@ -38,7 +38,7 @@ hk77 = Creature:new {
 			lootChance = 2100000
 		}
 	},
-	weapons = {"pirate_weapons_light"},
+	weapons = {"general_rifle"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)
 }
