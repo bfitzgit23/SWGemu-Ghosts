@@ -1140,13 +1140,18 @@ int FrsManagerImplementation::calculatePveExperienceChange(CreatureObject* playe
 	if (xp <= 0)
 		return 0;
 
-	// Scale by target difficulty: quarter value at the low end, full value at level 45+, 2x for the toughest targets
-	float difficultyScale = (float)mobLevel / 45.f;
+	// Scale by target difficulty: quarter value at the low end, full value at level 45,
+	// and up to ~6.7x for CL 300 targets so high-level mobs and NPCs stay worth killing.
+	constexpr float fullValueLevel = 45.f;
+	constexpr float maxDifficultyLevel = 300.f;
+	constexpr float maxDifficultyScale = maxDifficultyLevel / fullValueLevel;
+
+	float difficultyScale = (float)mobLevel / fullValueLevel;
 
 	if (difficultyScale < 0.25f)
 		difficultyScale = 0.25f;
-	else if (difficultyScale > 2.f)
-		difficultyScale = 2.f;
+	else if (difficultyScale > maxDifficultyScale)
+		difficultyScale = maxDifficultyScale;
 
 	xp = (int)(((float)xp * difficultyScale) + 0.5f);
 
