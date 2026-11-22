@@ -663,6 +663,7 @@ includeFile("mustafar/regions/storm_lord_region.lua")
 includeFile("mustafar/regions/smoking_forest_region.lua")
 includeFile("mustafar/quest/mustafar_miner_quests.lua")
 includeFile("mustafar/quest/chugondar_cube.lua")
+includeFile("mustafar/quest/surveyor_jo.lua")
 
 -- POIs
 includeFile("poi/corellia_rogue_corsec_base.lua")

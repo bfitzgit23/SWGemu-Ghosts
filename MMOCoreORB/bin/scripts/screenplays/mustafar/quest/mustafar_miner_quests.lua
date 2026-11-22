@@ -100,7 +100,7 @@ function mustafarMinerQuests:start()
 end
 
 function mustafarMinerQuests:spawnForeman()
-	local pNpc = spawnMobile("mustafar", "must_foreman_chivos", 3600, -2943.0, 133.0, 1297.0, math.rad(180), 0)
+	local pNpc = spawnMobile("mustafar", "must_foreman_chivos", 3600, -79.5, 10.8, 64.0, math.rad(-138), 12112226)
 
 	if (pNpc == nil) then
 		return
@@ -177,6 +177,44 @@ function mustafarMinerQuests:foremanUse(pPlayer)
 	end
 
 	creature:sendSystemMessage("\\#CCCCCCForeman Chivos has nothing else for you. Every job on his slate is taken or settled.")
+end
+
+function mustafarMinerQuests:acceptJob(pPlayer, questID)
+	if (pPlayer == nil) then
+		return
+	end
+
+	local creature = CreatureObject(pPlayer)
+
+	if (creature == nil) then
+		return
+	end
+
+	local playerID = SceneObject(pPlayer):getObjectID()
+
+	for i, quest in ipairs(mustafarMinerQuests.quests) do
+		if (quest.id == questID) then
+			local key = playerID .. ":mustafarMinerQuests:" .. quest.id
+
+			if (readData(key .. ":accepted") == 1) then
+				creature:sendSystemMessage("\\#CCCCCC" .. quest.name .. " is already on your slate.")
+				mustafarMinerQuests:addWaypoint(pPlayer, quest.steps[1], quest.name)
+				return
+			end
+
+			if (readData(key .. ":done") == 1) then
+				creature:sendSystemMessage("\\#CCCCCC" .. quest.name .. " is settled. I have nothing else like it.")
+				return
+			end
+
+			writeData(key .. ":accepted", 1)
+			writeData(key, 0)
+			creature:sendSystemMessage("\\#66CCFF" .. quest.name .. " is yours. " .. quest.steps[1][5])
+			creature:playMusicMessage("sound/ui_npe2_quest_received.snd")
+			mustafarMinerQuests:addWaypoint(pPlayer, quest.steps[1], quest.name)
+			return
+		end
+	end
 end
 
 function mustafarMinerQuests:addWaypoint(pPlayer, step, name)

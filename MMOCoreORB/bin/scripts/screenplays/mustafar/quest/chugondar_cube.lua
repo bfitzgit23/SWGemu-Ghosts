@@ -116,6 +116,7 @@ end
 function chugondarCube:spawnItesOlok()
 	local pNpc = spawnMobile("mustafar", "npc_ithes_olok", 3600, -2534.0, 148, 66.0, math.rad(210), 0)
 
+
 	if (pNpc == nil) then
 		return
 	end
