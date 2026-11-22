@@ -10,8 +10,8 @@ Yavin4StaticSpawnsScreenPlay = ScreenPlay:new {
 		{"light_jedi_sentinel", 10, -5572.6, 87.7, 4908.2, -179, 0},
 
 		-- Dark Jedi Enclave (5068, 310)
-		{"dark_jedi_sentinel", 10, 5074.2, 78.8, 313.9, 90, 0},
-		{"dark_jedi_sentinel", 10, 5074.3, 79.2, 306.4, 90, 0},
+		{"dark_jedi_enclave_guard", 10, 5074.2, 78.8, 313.9, 90, 0},
+		{"dark_jedi_enclave_guard", 10, 5074.3, 79.2, 306.4, 90, 0},
 
 		-- Yavin4 Ruins (-6299, -1502)
 		{"crazed_geonosian_guard",300,-6299.1,24.7,-1502,0,0},
