@@ -2,47 +2,6 @@
 -- hints at combinations and hands out the three test relics; the cube itself
 -- takes three relics and answers (see chugondar_cube.lua).
 
-ithesOlokConvHandler = {}
-
-function ithesOlokConvHandler:getNextConversationScreen(pConversationTemplate, pConversingPlayer, selectedOption)
-	local convosession = CreatureObject(pConversingPlayer):getConversationSession()
-	local lastConversationScreen = nil
-
-	if (convosession ~= nil) then
-		local session = LuaConversationSession(convosession)
-		lastConversationScreen = session:getLastConversationScreen()
-	end
-
-	local conversation = LuaConversationTemplate(pConversationTemplate)
-	local nextConversationScreen
-
-	if (lastConversationScreen ~= nil) then
-		local luaLastConversationScreen = LuaConversationScreen(lastConversationScreen)
-		local optionLink = luaLastConversationScreen:getOptionLink(selectedOption)
-
-		nextConversationScreen = conversation:getScreen(optionLink)
-
-		if nextConversationScreen == nil then
-			nextConversationScreen = conversation:getScreen("intro")
-		end
-	else
-		nextConversationScreen = conversation:getScreen("intro")
-	end
-
-	return nextConversationScreen
-end
-
-function ithesOlokConvHandler:runScreenHandlers(pConversationTemplate, pConversingPlayer, pConversingNpc, selectedOption, pConversationScreen)
-	local screen = LuaConversationScreen(pConversationScreen)
-	local screenID = screen:getScreenID()
-
-	if (screenID == "take_relics") then
-		chugondarCube:giveTestRelics(pConversingPlayer)
-	end
-
-	return pConversationScreen
-end
-
 ithesOlokConv = ConvoTemplate:new {
 	initialScreen = "intro",
 	templateType = "Lua",

@@ -304,3 +304,55 @@ function surveyorJo:payRounds(pPlayer)
 
 	return false
 end
+
+-- Conversation handler for Surveyor Jo. Conversation handlers run in the
+-- screenplay Lua state, so they have to live here rather than beside the
+-- ConvoTemplate in mobile/conversations.
+
+surveyorJoConvHandler = {}
+
+function surveyorJoConvHandler:getNextConversationScreen(pConversationTemplate, pConversingPlayer, selectedOption, pConversingNpc)
+	local conversation = LuaConversationTemplate(pConversationTemplate)
+	local convosession = CreatureObject(pConversingPlayer):getConversationSession()
+	local lastConversationScreen = nil
+
+	if (convosession ~= nil) then
+		lastConversationScreen = LuaConversationSession(convosession):getLastConversationScreen()
+	end
+
+	if (lastConversationScreen ~= nil) then
+		local optionLink = LuaConversationScreen(lastConversationScreen):getOptionLink(selectedOption)
+		local nextScreen = conversation:getScreen(optionLink)
+
+		if (nextScreen ~= nil) then
+			return nextScreen
+		end
+	end
+
+	return conversation:getScreen("intro")
+end
+
+function surveyorJoConvHandler:runScreenHandlers(pConversationTemplate, pConversingPlayer, pConversingNpc, selectedOption, pConversationScreen)
+	local screen = LuaConversationScreen(pConversationScreen)
+	local screenID = screen:getScreenID()
+
+	if (screenID == "collect_pay") then
+		surveyorJo:payRounds(pConversingPlayer)
+	elseif (screenID == "accept_berken") then
+		surveyorJo:startRound(pConversingPlayer, "berken")
+	elseif (screenID == "accept_burning") then
+		surveyorJo:startRound(pConversingPlayer, "burning")
+	elseif (screenID == "accept_volcano") then
+		surveyorJo:startRound(pConversingPlayer, "volcano")
+	elseif (screenID == "accept_crystal") then
+		surveyorJo:startRound(pConversingPlayer, "crystal")
+	elseif (screenID == "accept_mining") then
+		surveyorJo:startRound(pConversingPlayer, "mining")
+	elseif (screenID == "accept_smoking") then
+		surveyorJo:startRound(pConversingPlayer, "smoking")
+	elseif (screenID == "accept_tulrus") then
+		surveyorJo:startRound(pConversingPlayer, "tulrus")
+	end
+
+	return pConversationScreen
+end

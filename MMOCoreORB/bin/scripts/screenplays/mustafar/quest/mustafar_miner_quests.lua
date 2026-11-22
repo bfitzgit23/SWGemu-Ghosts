@@ -276,3 +276,49 @@ function mustafarMinerQuests:notifyStep(pArea, pMovingObject, pPlayer)
 	creature:playMusicMessage("sound/ui_npe2_quest_completed.snd")
 	return 0
 end
+
+-- Conversation handler for Foreman Chivos. Conversation handlers run in the
+-- screenplay Lua state, so they have to live here rather than beside the
+-- ConvoTemplate in mobile/conversations.
+
+foremanChivosConvHandler = {}
+
+function foremanChivosConvHandler:getNextConversationScreen(pConversationTemplate, pConversingPlayer, selectedOption, pConversingNpc)
+	local conversation = LuaConversationTemplate(pConversationTemplate)
+	local convosession = CreatureObject(pConversingPlayer):getConversationSession()
+	local lastConversationScreen = nil
+
+	if (convosession ~= nil) then
+		lastConversationScreen = LuaConversationSession(convosession):getLastConversationScreen()
+	end
+
+	if (lastConversationScreen ~= nil) then
+		local optionLink = LuaConversationScreen(lastConversationScreen):getOptionLink(selectedOption)
+		local nextScreen = conversation:getScreen(optionLink)
+
+		if (nextScreen ~= nil) then
+			return nextScreen
+		end
+	end
+
+	return conversation:getScreen("menu")
+end
+
+function foremanChivosConvHandler:runScreenHandlers(pConversationTemplate, pConversingPlayer, pConversingNpc, selectedOption, pConversationScreen)
+	local screen = LuaConversationScreen(pConversationScreen)
+	local screenID = screen:getScreenID()
+
+	if (screenID == "accept_strike") then
+		mustafarMinerQuests:acceptJob(pConversingPlayer, "strike")
+	elseif (screenID == "accept_madness") then
+		mustafarMinerQuests:acceptJob(pConversingPlayer, "madness")
+	elseif (screenID == "accept_fragments") then
+		mustafarMinerQuests:acceptJob(pConversingPlayer, "fragments")
+	elseif (screenID == "accept_shard") then
+		mustafarMinerQuests:acceptJob(pConversingPlayer, "shard")
+	elseif (screenID == "collect_pay") then
+		mustafarMinerQuests:foremanUse(pConversingPlayer)
+	end
+
+	return pConversationScreen
+end

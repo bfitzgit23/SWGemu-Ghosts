@@ -231,3 +231,40 @@ function chugondarCube:hasRelic(pContainer)
 
 	return false
 end
+
+-- Conversation handler for Ithes Olok. Conversation handlers run in the
+-- screenplay Lua state, so they have to live here rather than beside the
+-- ConvoTemplate in mobile/conversations.
+
+ithesOlokConvHandler = {}
+
+function ithesOlokConvHandler:getNextConversationScreen(pConversationTemplate, pConversingPlayer, selectedOption, pConversingNpc)
+	local conversation = LuaConversationTemplate(pConversationTemplate)
+	local convosession = CreatureObject(pConversingPlayer):getConversationSession()
+	local lastConversationScreen = nil
+
+	if (convosession ~= nil) then
+		lastConversationScreen = LuaConversationSession(convosession):getLastConversationScreen()
+	end
+
+	if (lastConversationScreen ~= nil) then
+		local optionLink = LuaConversationScreen(lastConversationScreen):getOptionLink(selectedOption)
+		local nextScreen = conversation:getScreen(optionLink)
+
+		if (nextScreen ~= nil) then
+			return nextScreen
+		end
+	end
+
+	return conversation:getScreen("intro")
+end
+
+function ithesOlokConvHandler:runScreenHandlers(pConversationTemplate, pConversingPlayer, pConversingNpc, selectedOption, pConversationScreen)
+	local screen = LuaConversationScreen(pConversationScreen)
+
+	if (screen:getScreenID() == "take_relics") then
+		chugondarCube:giveTestRelics(pConversingPlayer)
+	end
+
+	return pConversationScreen
+end
