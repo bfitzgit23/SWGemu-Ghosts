@@ -38,7 +38,7 @@ ig106 = Creature:new {
 			lootChance = 2100000
 		}
 	},
-	weapons = {"pirate_weapons_light"},
+	weapons = {"battle_droid_weapons"},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)
 }

@@ -38,7 +38,7 @@ som_pann_protocol_droid = Creature:new {
 			lootChance = 2100000
 		}
 	},
-	weapons = {"pirate_weapons_light"},
+	weapons = {},
 	conversationTemplate = "",
 	attacks = merge(marksmannovice,brawlernovice)
 }

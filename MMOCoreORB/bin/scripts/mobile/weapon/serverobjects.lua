@@ -100,6 +100,7 @@ includeFile("weapon/groups/marauder_melee.lua")
 
 -- Groups gotten from swgemu
 includeFile("weapon/groups/battle_droid_weapons.lua")
+includeFile("weapon/groups/droideka_weapons.lua")
 includeFile("weapon/groups/boba_fett_weapons.lua")
 includeFile("weapon/groups/captain_hassk_weapons.lua")
 includeFile("weapon/groups/cas_vankoo_weapons.lua")
