@@ -662,4 +662,4 @@ includeFile("custom_loot/items/lifeday/table.lua")
 includeFile("custom_loot/items/lifeday/tree1.lua")
 includeFile("custom_loot/items/lifeday/tree2.lua")
 includeFile("custom_loot/items/lifeday/wreath.lua")
-
+includeFile("custom_loot/ghosts_dead_loot_fix.lua")

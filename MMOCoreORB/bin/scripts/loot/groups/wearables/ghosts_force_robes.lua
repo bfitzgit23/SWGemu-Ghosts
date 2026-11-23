@@ -18,7 +18,7 @@ local remainingWeight = 10000000
 
 for index, robeName in ipairs(ghostsForceRobeNames) do
 	local weight = index == #ghostsForceRobeNames and remainingWeight or baseWeight
-	table.insert(robeLootItems, {itemTemplate = "ghosts_custom_" .. robeName, weight = weight})
+	robeLootItems[#robeLootItems + 1] = {itemTemplate = "ghosts_custom_" .. robeName, weight = weight}
 	remainingWeight = remainingWeight - weight
 end
 
