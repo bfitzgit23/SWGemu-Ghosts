@@ -30,6 +30,43 @@ local function sendForceMessage(pCreature, msg)
     CreatureObject(pCreature):sendSystemMessage("\\#FFFF00[The Force] \\#FFFFFF" .. msg)
 end
 
+-- Ghosts: a consumed holocron also replenishes the user's Force power, but at
+-- most once an hour, so holocrons cannot be chained into an endless refill.
+local HOLOCRON_FORCE_COOLDOWN_KEY = "used_holocron"
+local HOLOCRON_FORCE_COOLDOWN_MILI = 60 * 60 * 1000
+
+-- Restores Force power when a holocron is consumed. Non-Jedi, characters
+-- already at full Force, and characters that drew on a holocron within the
+-- last hour are left alone.
+local function holocron_replenish_force(pCreature)
+    if pCreature == nil then
+        return
+    end
+
+    local pGhost = CreatureObject(pCreature):getPlayerObject()
+
+    if pGhost == nil or not PlayerObject(pGhost):isJedi() then
+        return
+    end
+
+    local forcePower = PlayerObject(pGhost):getForcePower()
+    local forceMax = PlayerObject(pGhost):getForcePowerMax()
+
+    if forceMax <= 0 or forcePower >= forceMax then
+        return
+    end
+
+    if not CreatureObject(pCreature):checkCooldownRecovery(HOLOCRON_FORCE_COOLDOWN_KEY) then
+        sendForceMessage(pCreature, "The holocron has already shared its power with you. It will answer again within the hour.")
+        return
+    end
+
+    PlayerObject(pGhost):setForcePower(forceMax)
+    CreatureObject(pCreature):addCooldown(HOLOCRON_FORCE_COOLDOWN_KEY, HOLOCRON_FORCE_COOLDOWN_MILI)
+    CreatureObject(pCreature):sendSystemMessage("@jedi_spam:holocron_force_replenish")
+    sendForceMessage(pCreature, "The holocron's lingering power flows into you and your Force is restored.")
+end
+
 local POINTS_PER_HOLOCRON = 1000
 local JEDI_STAGE_DELAY_SECONDS = 604800 -- Ghosts: 7-day padawan->knight training period
 local JEDI_DISCOVERY_SKILL_BOXES = 36
@@ -632,6 +669,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         used = used + 1
         setTotalStudies(pCreature, used)
         SceneObject(pTarget):destroyObjectFromWorld()
+        holocron_replenish_force(pCreature)
 
         local searcherLines = {
             [1]  = "My master requires that artifact! Hand it over or die!",
@@ -689,6 +727,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         knightUsed = knightUsed + 1
         setTotalStudies(pCreature, knightUsed)
         SceneObject(pTarget):destroyObjectFromWorld()
+        holocron_replenish_force(pCreature)
         sendForceMessage(pCreature, "You meditate upon the holocron. Its secrets deepen your connection to the Force. (" .. knightUsed .. "/10 holocrons absorbed)")
 
         if knightUsed == 10 then
@@ -726,6 +765,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         masterUsed = masterUsed + 1
         setTotalStudies(pCreature, masterUsed)
         SceneObject(pTarget):destroyObjectFromWorld()
+        holocron_replenish_force(pCreature)
         sendForceMessage(pCreature, "Ancient wisdom pours into your mind. (" .. masterUsed .. "/20 holocrons absorbed)")
 
         if masterUsed == 20 then
