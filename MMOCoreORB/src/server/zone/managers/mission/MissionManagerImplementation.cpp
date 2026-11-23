@@ -2088,9 +2088,9 @@ LairSpawn* MissionManagerImplementation::getRandomLairSpawn(CreatureObject* play
 			bool isSingle =
 				templateName.contains("boss_01");
 
-			bool isNest =
-				templateName.contains("_lair_") ||
-				templateName.contains("_nest_");
+			// Anything that is not a single boss lair counts as a nest/lair
+			// target (nests, camps, theaters, dynamic spawn groups).
+			bool isNest = !isSingle;
 
 			if (requestedTemplate.isEmpty() &&
 				((requestedType == "single" && isSingle) ||

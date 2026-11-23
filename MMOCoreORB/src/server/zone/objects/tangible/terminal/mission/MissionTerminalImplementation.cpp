@@ -118,12 +118,10 @@ int MissionTerminalImplementation::handleObjectMenuSelect(CreatureObject* player
 
 				String templateName = spawn->getLairTemplateName();
 
-				bool supported =
-					templateName.contains("boss_01") ||
-					templateName.contains("_lair_") ||
-					templateName.contains("_nest_");
-
-				if (!supported)
+				// Every entry in the zone's destroy mission group is a valid
+				// target (lair, nest, camp/theater or dynamic spawn group).
+				// Only skip names with no registered lair template.
+				if (CreatureTemplateManager::instance()->getLairTemplate(templateName.hashCode()) == nullptr)
 					continue;
 
 				ghost->setScreenPlayData(

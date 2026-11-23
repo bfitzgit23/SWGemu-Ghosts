@@ -109,7 +109,10 @@ function player_mission_creator:showCreatureSelection(pPlayer)
 		for i = 0, catalogCount - 1 do
 			local template = readScreenPlayData(pPlayer, "player_mission_catalog", "template" .. i)
 			local isSingle = string.find(template, "boss_01", 1, true) ~= nil
-			local isNest = string.find(template, "_lair_", 1, true) ~= nil or string.find(template, "_nest_", 1, true) ~= nil
+			-- Anything that is not a single boss lair counts as a nest/lair
+			-- target, so camps, theaters and dynamic spawn groups such as the
+			-- Janta camps on Dantooine stay selectable.
+			local isNest = not isSingle
 			if (wantedType == "single" and isSingle) or (wantedType == "nest" and isNest) then
 				table.insert(choices, template)
 			end
