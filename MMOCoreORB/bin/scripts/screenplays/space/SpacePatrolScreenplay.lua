@@ -56,6 +56,8 @@ function SpacePatrolScreenplay:startQuest(pPlayer, pNpc)
 	-- Activate the Journal Quest
 	SpaceHelpers:activateSpaceQuest(pPlayer, pNpc, self.questType, self.questName, true)
 
+	Logger:log(self.className .. ":startQuest -- quest=" .. self.questName .. " zone=" .. self.questZone .. " playerZone=" .. SceneObject(pPlayer):getZoneName(), LT_INFO)
+
 	local spaceQuestHash = getHashCode(self.questZone)
 	local zoneName = SceneObject(pPlayer):getZoneName()
 	local playerZoneHash = getHashCode(zoneName)
@@ -220,6 +222,8 @@ function SpacePatrolScreenplay:spawnActiveAreas()
 
 		local questAreaID = SceneObject(pQuestArea):getObjectID()
 
+		Logger:log(self.className .. ":spawnActiveAreas -- area=" .. tostring(questAreaID) .. " patrolNumber=" .. tostring(patrolNumber) .. " zone=" .. tostring(zoneName), LT_INFO)
+
 		-- Write the patrol point number so the player goes in order
 		writeData(questAreaID .. ":" .. self.className, patrolNumber)
 
@@ -278,6 +282,8 @@ function SpacePatrolScreenplay:enteredZone(pPlayer, nill, zoneNameHash)
 	if (self.DEBUG_SPACE_PATROL) then
 		print(self.className .. ":enteredZone called -- QuestType: " .. self.questType .. " Quest Name: " .. self.questName .. " Player Zone Hash: " .. zoneNameHash .. " questZone hash: " .. spaceQuestHash)
 	end
+
+	Logger:log(self.className .. ":enteredZone -- playerZoneHash=" .. tostring(zoneNameHash) .. " questZoneHash=" .. tostring(spaceQuestHash) .. " task0Complete=" .. tostring(SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 0)), LT_INFO)
 
 	-- Player is in the correct zone
 	if (zoneNameHash == spaceQuestHash and not SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 0)) then
@@ -344,6 +350,8 @@ function SpacePatrolScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 	if (self.DEBUG_SPACE_PATROL) then
 		print(self.className .. ":notifyEnteredQuestArea - Patrol Point Number: " ..  pointNumber .. " Player Point: " .. playerPointCount)
 	end
+
+	Logger:log(self.className .. ":notifyEnteredQuestArea -- patrolPoint=" .. tostring(pointNumber) .. " playerPoint=" .. tostring(playerPointCount), LT_INFO)
 
 	-- Check to ensure player is arriving at the points in order
 	if ((pointNumber - 1) ~= playerPointCount) then

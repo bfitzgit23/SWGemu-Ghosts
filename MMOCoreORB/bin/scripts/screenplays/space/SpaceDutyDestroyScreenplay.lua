@@ -71,6 +71,8 @@ function SpaceDutyDestroyScreenplay:startQuest(pPlayer, pNpc)
 	-- Activate the Journal Quest
 	SpaceHelpers:activateSpaceQuest(pPlayer, pNpc, self.questType, self.questName, false)
 
+	Logger:log(self.className .. ":startQuest -- quest=" .. self.questName .. " zone=" .. self.questZone .. " playerZone=" .. SceneObject(pPlayer):getZoneName(), LT_INFO)
+
 	local spaceQuestHash = getHashCode(self.questZone)
 	local zoneName = SceneObject(pPlayer):getZoneName()
 	local playerZoneHash = getHashCode(zoneName)
@@ -301,6 +303,8 @@ function SpaceDutyDestroyScreenplay:getTargetLocation(pPlayer, initial)
 
 	local questAreaID = SceneObject(pQuestArea):getObjectID()
 
+	Logger:log(self.className .. ":getTargetLocation -- area=" .. tostring(questAreaID) .. " at " .. tostring(randomLocation.x) .. "," .. tostring(randomLocation.z) .. "," .. tostring(randomLocation.y), LT_INFO)
+
 	-- Write the target location ID
 	writeData(playerID .. ":" .. self.className .. ":targetArea:", questAreaID)
 
@@ -330,6 +334,8 @@ function SpaceDutyDestroyScreenplay:getTargetLocation(pPlayer, initial)
 
 	-- Store the waypointID on the player
 	setQuestStatus(playerID .. ":" .. self.className .. ":waypointID", waypointID)
+
+	Logger:log(self.className .. ":getTargetLocation -- waypoint=" .. tostring(waypointID) .. " area=" .. tostring(questAreaID), LT_INFO)
 
 	-- Player effect for player
 	CreatureObject(pPlayer):playEffect("clienteffect/ui_quest_waypoint_target.cef", "")
@@ -447,6 +453,10 @@ function SpaceDutyDestroyScreenplay:spawnAttackWave(pPlayer)
 		end
 
 		local fighterCount = currentWave + (currentLevel - 1)
+
+	Logger:log(self.className .. ":spawnAttackWave -- level=" .. tostring(currentLevel) .. " wave=" .. tostring(currentWave) .. " boss=" .. tostring(bossLevel) .. " fighters=" .. tostring(fighterCount), LT_INFO)
+
+	local spawnFailures = 0
 		local shipTableSize = #shipTable
 		local tableSet = 1
 
@@ -460,6 +470,8 @@ function SpaceDutyDestroyScreenplay:spawnAttackWave(pPlayer)
 			local pShipAgent = spawnShipAgent(shipType, self.questZone, spawnLocation[1], spawnLocation[2], spawnLocation[3], pPlayerShip)
 
 			if (pShipAgent == nil) then
+				Logger:log(self.className .. ":spawnAttackWave -- ship failed to spawn: " .. tostring(shipType), LT_ERROR)
+				spawnFailures = spawnFailures + 1
 				goto continue
 			end
 
@@ -501,6 +513,12 @@ function SpaceDutyDestroyScreenplay:spawnAttackWave(pPlayer)
 			end
 
 			::continue::
+		end
+
+		if (fighterCount > 0 and spawnFailures >= fighterCount) then
+			Logger:log(self.className .. ":spawnAttackWave -- every attack ship failed to spawn, failing the duty.", LT_ERROR)
+			self:failQuest(pPlayer)
+			return
 		end
 
 		-- Play effect for player
@@ -609,6 +627,8 @@ function SpaceDutyDestroyScreenplay:enteredZone(pPlayer, nill, zoneNameHash)
 	end
 
 	-- Player is in the correct zone
+	Logger:log(self.className .. ":enteredZone -- playerZoneHash=" .. tostring(zoneNameHash) .. " questZoneHash=" .. tostring(spaceQuestHash) .. " task0Complete=" .. tostring(SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 0)), LT_INFO)
+
 	if (zoneNameHash == spaceQuestHash and not SpaceHelpers:isSpaceQuestTaskComplete(pPlayer, self.questType, self.questName, 0)) then
 		-- Complete the quest task 0
 		SpaceHelpers:completeSpaceQuestTask(pPlayer, self.questType, self.questName, 0, false)
@@ -646,6 +666,8 @@ function SpaceDutyDestroyScreenplay:notifyEnteredQuestArea(pActiveArea, pShip)
 	local playerID = SceneObject(pPilot):getObjectID()
 	local areaID = SceneObject(pActiveArea):getObjectID()
 	local playerAreaID = readData(playerID .. ":" .. self.className .. ":targetArea:")
+
+	Logger:log(self.className .. ":notifyEnteredQuestArea -- area=" .. tostring(areaID) .. " expected=" .. tostring(playerAreaID), LT_INFO)
 
 	if (playerAreaID <= 0 or areaID ~= playerAreaID) then
 		return
