@@ -41,7 +41,7 @@
 --which carries forward this exception.
 
 --Chance divisor for attribute bonus modifiers
-levelChance = 16
+levelChance = 24
 
 --Chance dividend for attribute bonus modifiers
 baseChance = 10

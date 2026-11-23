@@ -225,6 +225,14 @@ includeFile("groups/weapon/nge_all.lua")
 includeFile("items/creature/kimogila_pearl.lua")
 includeFile("items/creature/kimogila_tissue.lua")
 
+-- Ghosts (2026-11-23): Mythosaur loot was referenced by mobile/mandalore/Mythosaur.lua
+-- but never registered, so every mythosaur_common roll aborted with a missing group.
+includeFile("items/creature/mythosaur_bone_segment.lua")
+includeFile("items/creature/mythosaur_pearl.lua")
+includeFile("items/creature/mythosaur_scales.lua")
+includeFile("items/creature/mythosaur_tissue.lua")
+includeFile("groups/creature/mythosaur_common.lua")
+
 -- Custom Nightsister loot registrations.
 includeFile("groups/nightsister1.lua")
 includeFile("groups/nightsister2.lua")
