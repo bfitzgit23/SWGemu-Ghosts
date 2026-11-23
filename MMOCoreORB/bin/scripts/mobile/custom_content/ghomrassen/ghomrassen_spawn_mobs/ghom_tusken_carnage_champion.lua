@@ -37,7 +37,7 @@ ghom_tusken_carnage_champion = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
-				{group = "crystals_select", chance = 500000}
+				{group = "color_crystals", chance = 500000}
 			},
 			lootChance = 4300000
 		}	

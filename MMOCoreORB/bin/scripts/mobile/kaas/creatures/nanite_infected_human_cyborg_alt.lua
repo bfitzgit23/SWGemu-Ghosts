@@ -32,7 +32,7 @@ nanite_infected_human_cyborg_alt = Creature:new {
 	lootGroups = {
 	{
       groups = {
-        {group = "clone_war_weapons", chance = 1000000}    -- 25% * 35% = 8.75%
+        {group = "weapons_all", chance = 1000000}    -- 25% * 35% = 8.75%
       },    
     },	
 	},

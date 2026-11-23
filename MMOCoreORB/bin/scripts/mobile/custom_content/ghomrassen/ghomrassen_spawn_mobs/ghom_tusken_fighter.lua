@@ -37,7 +37,7 @@ ghom_tusken_fighter = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
-				{group = "crystals_poor", chance = 500000}
+				{group = "color_crystals", chance = 500000}
 			},
 			lootChance = 2500000
 		}	

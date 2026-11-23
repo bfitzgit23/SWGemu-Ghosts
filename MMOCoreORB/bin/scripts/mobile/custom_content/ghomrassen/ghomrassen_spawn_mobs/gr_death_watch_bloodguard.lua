@@ -31,8 +31,8 @@ gr_death_watch_bloodguard = Creature:new {
 			groups = {
 				{group = "death_watch_bunker_commoners", chance = 500000},
 				{group = "death_watch_bunker_lieutenants", chance = 3750000},
-				{group = "mandalorian_schemes", chance = 3750000},
-				{group = "crystals_premium", chance = 2000000}
+				{group = "marauder_armor_schems", chance = 3750000},
+				{group = "color_crystals", chance = 2000000}
 			},
 			lootChance = 10000000
 		}

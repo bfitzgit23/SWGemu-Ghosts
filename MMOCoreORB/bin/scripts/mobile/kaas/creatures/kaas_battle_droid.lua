@@ -35,15 +35,15 @@ kaas_battle_droid = Creature:new {
 	lootGroups = {
     {
       groups = {
-        {group = "clone_trooper_imperial", chance = 3000000},
-        {group = "clone_trooper_neutral", chance = 4000000},
-        {group = "clone_trooper_rebel", chance = 3000000}     -- 25% * 35% = 8.75%
+        {group = "armor_all", chance = 3000000},
+        {group = "armor_all", chance = 4000000},
+        {group = "armor_all", chance = 3000000}     -- 25% * 35% = 8.75%
       },
       lootChance = 1000000    -- 25% chance of this group
     },
     {
       groups = {
-        {group = "clone_war_weapons", chance = 10000000}    -- 25% * 35% = 8.75%
+        {group = "weapons_all", chance = 10000000}    -- 25% * 35% = 8.75%
       },
       lootChance = 1000000    -- 25% chance of this group
     },

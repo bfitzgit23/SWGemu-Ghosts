@@ -38,7 +38,7 @@ ghom_tusken_gore_chief = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
-				{group = "crystals_okay", chance = 500000}
+				{group = "color_crystals", chance = 500000}
 			},
 			lootChance = 3000000
 		}		

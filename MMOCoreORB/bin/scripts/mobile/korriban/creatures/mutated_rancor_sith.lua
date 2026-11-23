@@ -56,7 +56,7 @@ mutated_rancor_sith = Creature:new {
 		},
 		{
 			groups = {
-				{group = "crystals_premium", chance = 10000000},
+				{group = "color_crystals", chance = 10000000},
 			},
 			lootChance = 6500000
 		},

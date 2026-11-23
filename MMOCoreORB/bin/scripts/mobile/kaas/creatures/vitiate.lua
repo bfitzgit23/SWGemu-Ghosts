@@ -32,11 +32,11 @@ vitiate = Creature:new {
     {
       groups = {
         {group = "holocron_dark", chance = 1000000},        
-        {group = "named_crystals", chance = 500000},
-        {group = "massassi_sith_weapons", chance = 1000000},
+        {group = "g_named_crystals", chance = 500000},
+        {group = "weapons_all", chance = 1000000},
         {group = "armor_attachments", chance = 2000000},
         {group = "clothing_attachments", chance = 2000000},
-        {group = "kaas_weapons", chance = 1000000},
+        {group = "weapons_all", chance = 1000000},
         {group = "dark_jedi_common", chance = 1000000}
       },
       lootChance = 10000000,

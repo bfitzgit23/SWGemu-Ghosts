@@ -34,13 +34,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 10000000,
 		},
@@ -48,13 +44,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 8500000,
 		},
@@ -62,13 +54,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 7000000,
 		},
@@ -76,13 +64,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 6000000,
 		},
@@ -90,13 +74,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 5000000,
 		},
@@ -104,13 +84,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 4000000,
 		},
@@ -118,13 +94,9 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 3000000,
 		},
@@ -132,27 +104,22 @@ blue = Creature:new {
 		{
 			groups = {
 				{group = "imperial_corvette_loot", chance = 2000000},
-				{group = "lok_track", chance = 500000},
 				{group = "krayt_tissue_rare", chance = 1000000},
-				{group = "veteran_rewards_720_days", chance = 1000000},
-				{group = "veteran_rewards_900_days", chance = 500000},
 				{group = "armor_attachments", chance = 2000000},
 				{group = "clothing_attachments", chance = 2000000},
-				{group = "nge_houses_all", chance = 1000000}
 			},
 				lootChance = 2500000,
 		},
 		
 		{
 			groups = {
-				{group = "token_stardust", chance = 10000000}
 			},
 				lootChance = 10000000,
 		},
 		
 		{
 			groups = {
-				{group = "krayt_tissue_enhanced", chance = 10000000}
+				{group = "krayt_tissue_rare", chance = 10000000}
 			},
 				lootChance = 1000000,
 		},

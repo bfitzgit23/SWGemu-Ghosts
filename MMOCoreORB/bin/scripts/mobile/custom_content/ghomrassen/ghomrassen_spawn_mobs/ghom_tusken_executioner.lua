@@ -37,7 +37,7 @@ ghom_tusken_executioner = Creature:new {
 				{group = "armor_attachments", chance = 500000},
 				{group = "clothing_attachments", chance = 500000},
 				{group = "color_crystals", chance = 500000},
-				{group = "crystals_premium", chance = 500000}
+				{group = "color_crystals", chance = 500000}
 			},
 			lootChance = 7000000
 		}		

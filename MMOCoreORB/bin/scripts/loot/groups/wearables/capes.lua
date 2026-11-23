@@ -17,7 +17,7 @@ capes = {
 		{itemTemplate = "wings_bat", weight = 666666},  
 		{itemTemplate = "wings_blue", weight = 666666},
 		{itemTemplate = "wings_golden", weight = 666666},      
-		{itemTemplate = "pink", weight = 666666},       
+		{itemTemplate = "wings_pink", weight = 666666},       
 	}
 }
 
