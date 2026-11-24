@@ -56,6 +56,7 @@ public:
 		int option = Integer::valueOf(args->get(0).toString());
 
 		String trainerTemplatePath = "";
+		bool recruiterNpc = false;
 
 		switch (option) {
 
@@ -159,6 +160,19 @@ public:
 				break;
 
 		case 33: trainerTemplatePath = "trainer_jedi";
+			break;
+
+		case 34: trainerTemplatePath = "imperial_recruiter";
+				recruiterNpc = true;
+				break;
+
+		case 35: trainerTemplatePath = "rebel_recruiter";
+				recruiterNpc = true;
+				break;
+
+		case 36: trainerTemplatePath = "spynet_informant";
+				recruiterNpc = true;
+				break;
 
 		}
 
@@ -186,6 +200,11 @@ public:
 			}
 
 			trainer->rotate(player->getDirectionAngle());
+
+			// Recruiters have no trainer menu component of their own, so without
+			// this the mayor would have no radial option to remove them again.
+			if (recruiterNpc)
+				trainer->setObjectMenuComponent("TrainerMenuComponent");
 			city->subtractFromCityTreasury(1000);
 			city->addSkillTrainer(trainer);
 

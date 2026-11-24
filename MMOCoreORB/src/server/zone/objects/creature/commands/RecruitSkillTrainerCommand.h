@@ -81,6 +81,9 @@ public:
 		suiTrainerType->addMenuItem("@city/city:st_unarmed", 31);
 		suiTrainerType->addMenuItem("@city/city:st_weaponsmith", 32);
 		suiTrainerType->addMenuItem("Jedi Skills Trainer", 33);
+		suiTrainerType->addMenuItem("@mob/creature_names:imperial_recruiter", 34);
+		suiTrainerType->addMenuItem("@mob/creature_names:rebel_recruiter", 35);
+		suiTrainerType->addMenuItem("Spynet Informant", 36);
 
 		ghost->addSuiBox(suiTrainerType);
 		creature->sendMessage(suiTrainerType->generateMessage());
