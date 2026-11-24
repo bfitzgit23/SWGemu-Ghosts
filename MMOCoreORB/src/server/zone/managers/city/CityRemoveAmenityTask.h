@@ -24,8 +24,12 @@ public:
 
 		if (amenity->isMissionTerminal())
 			city->removeMissionTerminal(amenity);
-		else
+		else {
+			if (amenity->isCreatureObject())
+				city->removeCityNpcByObjectID(amenity->getObjectID());
+
 			city->removeSkillTrainers(amenity);
+		}
 
 		amenity->destroyObjectFromWorld(true);
 		amenity->destroyObjectFromDatabase(true);

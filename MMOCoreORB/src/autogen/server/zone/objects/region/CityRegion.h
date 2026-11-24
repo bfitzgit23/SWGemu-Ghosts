@@ -328,6 +328,18 @@ public:
 
 	void removeSkillTrainers(SceneObject* trainer);
 
+	void addCityNpc(String& npc);
+
+	void removeCityNpcByObjectID(unsigned long long objectid);
+
+	int getCityNpcCount();
+
+	String getCityNpc(int index);
+
+	void clearCityNpcs();
+
+	void respawnCityNpcs();
+
 	void addBazaar(TangibleObject* ter);
 
 	TangibleObject* getBazaar(int idx);
@@ -552,6 +564,8 @@ protected:
 
 	SortedVector<ManagedReference<SceneObject* > > citySkillTrainers;
 
+	Vector<String> cityNpcList;
+
 	VectorMap<unsigned long long, ManagedReference<TangibleObject* > > bazaars;
 
 public:
@@ -757,6 +771,18 @@ public:
 	void removeDecoration(SceneObject* deco);
 
 	void removeSkillTrainers(SceneObject* trainer);
+
+	void addCityNpc(String& npc);
+
+	void removeCityNpcByObjectID(unsigned long long objectid);
+
+	int getCityNpcCount();
+
+	String getCityNpc(int index);
+
+	void clearCityNpcs();
+
+	void respawnCityNpcs();
 
 	void addBazaar(TangibleObject* ter);
 
@@ -1077,6 +1103,18 @@ public:
 
 	void removeSkillTrainers(SceneObject* trainer);
 
+	void addCityNpc(String& npc);
+
+	void removeCityNpcByObjectID(unsigned long long objectid);
+
+	int getCityNpcCount();
+
+	String getCityNpc(int index);
+
+	void clearCityNpcs();
+
+	void respawnCityNpcs();
+
 	void addBazaar(TangibleObject* ter);
 
 	TangibleObject* getBazaar(int idx);
@@ -1269,6 +1307,8 @@ public:
 	Optional<Vector<ManagedReference<SceneObjectPOD* > >> cityDecorations;
 
 	Optional<SortedVector<ManagedReference<SceneObjectPOD* > >> citySkillTrainers;
+
+	Optional<Vector<String>> cityNpcList;
 
 	String _className;
 	CityRegionPOD();

@@ -192,7 +192,7 @@ public:
 				return;
 			}
 
-			CreatureObject* trainer = zone->getCreatureManager()->spawnCreature(trainerTemplatePath.hashCode(),0,player->getWorldPositionX(),player->getWorldPositionZ(),player->getWorldPositionY(),0,true);
+			CreatureObject* trainer = zone->getCreatureManager()->spawnCreature(trainerTemplatePath.hashCode(),0,player->getWorldPositionX(),player->getWorldPositionZ(),player->getWorldPositionY(),0,false);
 
 			if (trainer == nullptr) {
 				player->sendSystemMessage("@city/city:st_fail"); // Failed to create the skill trainer for some reason. Try again.
@@ -207,6 +207,11 @@ public:
 				trainer->setObjectMenuComponent("TrainerMenuComponent");
 			city->subtractFromCityTreasury(1000);
 			city->addSkillTrainer(trainer);
+
+			//Remember the npc on the city so it is respawned when the city loads again.
+			String npcRecord = trainerTemplatePath + "," + String::valueOf(trainer->getObjectID()) + "," + String::valueOf(player->getWorldPositionX()) + "," + String::valueOf(player->getWorldPositionZ()) + "," + String::valueOf(player->getWorldPositionY()) + "," + String::valueOf(trainer->getDirectionAngle());
+
+			city->addCityNpc(npcRecord);
 
 			if (!city->isRegistered()) {
 				zone->unregisterObjectWithPlanetaryMap(trainer);

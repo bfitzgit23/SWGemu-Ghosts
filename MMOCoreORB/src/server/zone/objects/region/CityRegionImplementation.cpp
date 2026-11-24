@@ -29,6 +29,9 @@
 #include "server/zone/objects/creature/commands/TransferstructureCommand.h"
 #include "pathfinding/RecastNavMesh.h"
 #include "server/zone/objects/pathfinding/NavArea.h"
+#include "system/io/StringTokenizer.h"
+#include "server/zone/managers/creature/CreatureManager.h"
+#include "server/zone/managers/object/ObjectManager.h"
 
 int BoardShuttleCommand::MAXIMUM_PLAYER_COUNT = 3000;
 
@@ -819,6 +822,125 @@ void CityRegionImplementation::removeAllSkillTrainers() {
 	}
 
 	citySkillTrainers.removeAll();
+
+	cityNpcList.removeAll();
+}
+
+void CityRegionImplementation::addCityNpc(String& npc) {
+	if (!cityNpcList.contains(npc))
+		cityNpcList.add(npc);
+
+	ObjectManager::instance()->updatePersistentObject(_this.getReferenceUnsafeStaticCast());
+}
+
+void CityRegionImplementation::removeCityNpcByObjectID(unsigned long long objectid) {
+	bool removed = false;
+
+	Vector<String> remaining;
+
+	for (int i = 0; i < cityNpcList.size(); ++i) {
+		StringTokenizer tokenizer(cityNpcList.get(i));
+		tokenizer.setDelimiter(",");
+
+		if (!tokenizer.hasMoreTokens()) {
+			remaining.add(cityNpcList.get(i));
+			continue;
+		}
+
+		tokenizer.getStringToken(); //template name
+
+		if (tokenizer.hasMoreTokens() && tokenizer.getUnsignedLongToken() == objectid)
+			removed = true;
+		else
+			remaining.add(cityNpcList.get(i));
+	}
+
+	if (!removed)
+		return;
+
+	cityNpcList = remaining;
+
+	ObjectManager::instance()->updatePersistentObject(_this.getReferenceUnsafeStaticCast());
+}
+
+int CityRegionImplementation::getCityNpcCount() {
+	return cityNpcList.size();
+}
+
+String CityRegionImplementation::getCityNpc(int index) {
+	if (index < 0 || index >= cityNpcList.size())
+		return String();
+
+	return cityNpcList.get(index);
+}
+
+void CityRegionImplementation::clearCityNpcs() {
+	if (cityNpcList.size() == 0)
+		return;
+
+	cityNpcList.removeAll();
+
+	ObjectManager::instance()->updatePersistentObject(_this.getReferenceUnsafeStaticCast());
+}
+
+void CityRegionImplementation::respawnCityNpcs() {
+	Zone* zne = getZone();
+
+	if (zne == nullptr || cityNpcList.size() == 0)
+		return;
+
+	CreatureManager* creatureManager = zne->getCreatureManager();
+
+	if (creatureManager == nullptr) {
+		error("could not respawn city npcs for " + getCityRegionName() + ": no creature manager");
+		return;
+	}
+
+	Vector<String> restored;
+
+	for (int i = 0; i < cityNpcList.size(); ++i) {
+		StringTokenizer tokenizer(cityNpcList.get(i));
+		tokenizer.setDelimiter(",");
+
+		if (!tokenizer.hasMoreTokens())
+			continue;
+
+		String templateName = tokenizer.getStringToken();
+
+		if (!tokenizer.hasMoreTokens())
+			continue;
+
+		tokenizer.getUnsignedLongToken(); //objectid from the previous boot
+
+		if (!tokenizer.hasMoreTokens())
+			continue;
+
+		float x = tokenizer.getFloatToken();
+		float z = tokenizer.getFloatToken();
+		float y = tokenizer.getFloatToken();
+		float angle = tokenizer.hasMoreTokens() ? tokenizer.getFloatToken() : 0;
+
+		CreatureObject* npc = creatureManager->spawnCreature(templateName.hashCode(), 0, x, z, y, 0, false);
+
+		if (npc == nullptr) {
+			error("could not respawn city npc " + templateName + " for city " + getCityRegionName());
+			continue;
+		}
+
+		npc->rotate(angle);
+		npc->setObjectMenuComponent("TrainerMenuComponent");
+
+		if (!isRegistered())
+			zne->unregisterObjectWithPlanetaryMap(npc);
+
+		addSkillTrainer(npc);
+
+		restored.add(templateName + "," + String::valueOf(npc->getObjectID()) + "," + String::valueOf(x) + "," + String::valueOf(z) + "," + String::valueOf(y) + "," + String::valueOf(angle));
+	}
+
+	cityNpcList = restored;
+
+	ObjectManager::instance()->updatePersistentObject(_this.getReferenceUnsafeStaticCast());
 }
 
 void CityRegionImplementation::removeAllDecorations() {
@@ -1109,6 +1231,7 @@ void CityRegionImplementation::removeTrainersOutsideCity(int newRadius) {
 		if(obj != nullptr && !isInsideRadius(obj, newRadius)) {
 			//info("need to destroy the skill trainer" + obj->getObjectNameStringIdName(),true);
 
+			removeCityNpcByObjectID(obj->getObjectID());
 			removeSkillTrainers(obj);
 			sendDestroyOutsideObjectMail(obj);
 

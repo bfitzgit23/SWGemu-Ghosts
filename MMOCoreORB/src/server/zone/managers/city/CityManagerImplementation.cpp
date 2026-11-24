@@ -173,6 +173,9 @@ void CityManagerImplementation::loadCityRegions() {
 			if (cityRegion != nullptr && cityRegion->getZone() != nullptr) {
 				++i;
 				cities.put(cityRegion->getCityRegionName(), cityRegion);
+
+				Locker cityLocker(cityRegion);
+				cityRegion->respawnCityNpcs();
 			} else {
 				error("Failed to load city region with objectid: " + String::valueOf(objectID));
 			}
@@ -949,8 +952,10 @@ int CityManagerImplementation::collectNonStructureMaintenance(SceneObject* objec
 			city->removeMissionTerminal(object);
 		else if (object->isDecoration())
 			city->removeDecoration(object);
-		else if (object->isCreatureObject())
+		else if (object->isCreatureObject()) {
+			city->removeCityNpcByObjectID(object->getObjectID());
 			city->removeSkillTrainers(object);
+		}
 
 		sendMaintenanceDestroyEmail(city, object);
 

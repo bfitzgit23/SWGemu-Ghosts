@@ -128,6 +128,13 @@ class CityRegion extends ManagedObject implements Logger {
 	@dereferenced
 	protected SortedVector<SceneObject> citySkillTrainers;
 
+	//NPCs the mayor placed in the city (skill trainers, faction recruiters and
+	//spynet informants), one record per entry: "template,objectid,x,z,y,angle".
+	//They are respawned when the city loads: the in-memory trainer list does not
+	//survive a restart.
+	@dereferenced
+	protected Vector<string> cityNpcList;
+
 	@dereferenced
 	protected transient VectorMap<unsigned long, TangibleObject> bazaars;
 
@@ -604,6 +611,22 @@ class CityRegion extends ManagedObject implements Logger {
 	public void removeSkillTrainers(SceneObject trainer) {
 		citySkillTrainers.drop(trainer);
 	}
+
+	@preLocked
+	public native void addCityNpc(string npc);
+
+	@preLocked
+	public native void removeCityNpcByObjectID(unsigned long objectid);
+
+	public native int getCityNpcCount();
+
+	public native string getCityNpc(int index);
+
+	@preLocked
+	public native void clearCityNpcs();
+
+	@preLocked
+	public native void respawnCityNpcs();
 
 	@preLocked
 	public void addBazaar(TangibleObject ter) {
