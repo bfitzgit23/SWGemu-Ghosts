@@ -59,6 +59,7 @@
 #include "server/zone/objects/tangible/components/RobeObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/ArtCrateMenuComponent.h"
 #include "server/zone/objects/tangible/components/generic/GhostsLootCrateMenuComponent.h"
+#include "server/zone/objects/tangible/components/generic/RareLootCrateMenuComponent.h"
 #include "server/zone/objects/tangible/components/WeaponObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/LightsaberObjectMenuComponent.h"
 #include "server/zone/objects/tangible/components/VehicleCustomKitObjectMenuComponent.h"
@@ -217,6 +218,12 @@ ComponentManager::ComponentManager() {
 	components.put("HeroicMenuComponent", new GhostsLootCrateMenuComponent());
 	components.put("FlurrypresentMenuComponent", new GhostsLootCrateMenuComponent());
 	components.put("FlurrycoalMenuComponent", new GhostsLootCrateMenuComponent());
+	// The three rare loot crates (rarelootsystem drops) name these components in
+	// their templates; the classes were lost in afc95d435, leaving the crates with
+	// no working radial option.
+	components.put("Rarelootcrate1MenuComponent", new RareLootCrateMenuComponent());
+	components.put("Rarelootcrate2MenuComponent", new RareLootCrateMenuComponent());
+	components.put("Rarelootcrate3MenuComponent", new RareLootCrateMenuComponent());
 
 	components.put("GroundZoneContainerComponent", new GroundZoneContainerComponent());
 	components.put("SpaceZoneContainerComponent", new SpaceZoneContainerComponent());
