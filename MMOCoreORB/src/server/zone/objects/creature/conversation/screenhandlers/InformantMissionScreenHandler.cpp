@@ -40,7 +40,10 @@ MissionObject* InformantMissionScreenHandler::getBountyMissionObject(CreatureObj
 ConversationScreen* InformantMissionScreenHandler::handleScreen(CreatureObject* conversingPlayer, SceneObject* conversingNPC, int selectedOption, ConversationScreen* conversationScreen) {
 	//Get informant level.
 	int informantLevel;
-	if (conversationScreen->getOptionLink(0) == "1") {
+	if (conversationScreen->getOptionLink(0) == "0") {
+		//Informant that serves every mission level (city spynet informant).
+		informantLevel = 0;
+	} else if (conversationScreen->getOptionLink(0) == "1") {
 		informantLevel = 1;
 	} else if (conversationScreen->getOptionLink(0) == "2") {
 		informantLevel = 2;
@@ -63,10 +66,10 @@ ConversationScreen* InformantMissionScreenHandler::handleScreen(CreatureObject* 
 			conversationScreen->setDialogText(String("@mission/mission_generic:informant_no_bounty_mission"));
 		} else {
 			//Check mission level.
-			if (mission->getMissionLevel() < informantLevel) {
+			if (informantLevel != 0 && mission->getMissionLevel() < informantLevel) {
 				//Incorrect informant level.
 				conversationScreen->setDialogText(String("@mission/mission_bounty_informant:informant_find_easier"));
-			} else if (mission->getMissionLevel() > informantLevel) {
+			} else if (informantLevel != 0 && mission->getMissionLevel() > informantLevel) {
 				//Incorrect informant level.
 				conversationScreen->setDialogText(String("@mission/mission_bounty_informant:informant_find_harder"));
 			} else {
@@ -75,7 +78,7 @@ ConversationScreen* InformantMissionScreenHandler::handleScreen(CreatureObject* 
 				if (objective != nullptr) {
 					//Run mission logic.
 					if (objective->getObjectiveStatus() == BountyMissionObjective::INITSTATUS) {
-						objective->updateMissionStatus(informantLevel);
+						objective->updateMissionStatus(informantLevel == 0 ? mission->getMissionLevel() : informantLevel);
 						if (objective->getObjectiveStatus() == BountyMissionObjective::HASBIOSIGNATURESTATUS) {
 							//Player received info about target position.
 							int randomStringValue = System::random(4) + 1;

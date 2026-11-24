@@ -35,7 +35,7 @@ spynet_informant = Creature:new {
 
 	primaryWeapon = "unarmed",
 	secondaryWeapon = "none",
-	conversationTemplate = "informant_npc_lvl_1",
+	conversationTemplate = "informant_npc_lvl_0",
 
 	primaryAttacks = { {"",""} },
 	secondaryAttacks = { }

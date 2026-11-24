@@ -5,9 +5,15 @@ function createInformantTemplate(lvl)
 		screens = {}
 	}
 	
+	--The any-level informant (option link 0) has no level banner.
+	local dialog = lvl
+	if (lvl == "0") then
+		dialog = ""
+	end
+
 	informant_npc_convoscreenstart = ConvoScreen:new {
 		id = "convoscreenstart",
-		leftDialog = lvl, --Level of the informant.
+		leftDialog = dialog, --Level of the informant.
 		stopConversation = "true",
 		options = { 
 			{"level", lvl }
@@ -21,3 +27,4 @@ end
 createInformantTemplate("1")
 createInformantTemplate("2")
 createInformantTemplate("3")
+createInformantTemplate("0") --level-less informant: serves every mission level
