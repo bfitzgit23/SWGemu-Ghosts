@@ -4,6 +4,8 @@
 
 #include "InformantMissionScreenHandler.h"
 #include "server/zone/objects/mission/BountyMissionObjective.h"
+#include "server/zone/objects/creature/ai/AiAgent.h"
+#include "server/zone/objects/creature/ai/CreatureTemplate.h"
 
 const String InformantMissionScreenHandler::STARTSCREENHANDLERID = "convoscreenstart";
 
@@ -52,6 +54,23 @@ ConversationScreen* InformantMissionScreenHandler::handleScreen(CreatureObject* 
 	} else {
 		error("Informant level incorrect.");
 		return nullptr;
+	}
+
+	//The city spynet informant is one npc and has to hand out missions of every
+	//level, no matter which level its conversation screen was written with.
+	if (conversingNPC != nullptr) {
+		AiAgent* informant = conversingNPC->asAiAgent();
+
+		if (informant != nullptr) {
+			const CreatureTemplate* informantTemplate = informant->getCreatureTemplate();
+
+			if (informantTemplate != nullptr && informantTemplate->getTemplateName().contains("spynet_informant")) {
+				if (informantLevel != 0)
+					info("Spynet informant used a level " + String::valueOf(informantLevel) + " conversation, serving every level instead.", true);
+
+				informantLevel = 0;
+			}
+		}
 	}
 
 	//Check if player is bounty hunter.
