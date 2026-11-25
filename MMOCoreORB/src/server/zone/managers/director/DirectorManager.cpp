@@ -537,6 +537,7 @@ void DirectorManager::initializeLuaEngine(Lua* luaEngine) {
 	luaEngine->registerFunction("makeCreatureName", makeCreatureName);
 	luaEngine->registerFunction("getGCWDiscount", getGCWDiscount);
 	luaEngine->registerFunction("getTerrainHeight", getTerrainHeight);
+	luaEngine->registerFunction("getTerrainHeightForZone", getTerrainHeightForZone);
 	luaEngine->registerFunction("awardSkill", awardSkill);
 	luaEngine->registerFunction("getCityRegionAt", getCityRegionAt);
 	luaEngine->registerFunction("setDungeonTicketAttributes", setDungeonTicketAttributes);
@@ -4057,6 +4058,39 @@ int DirectorManager::getGCWDiscount(lua_State* L){
 		return 0;
 
 	lua_pushnumber(L, gcwMan->getGCWDiscount(creature));
+	return 1;
+}
+
+int DirectorManager::getTerrainHeightForZone(lua_State* L) {
+	if (checkArgumentCount(L, 3) != 0) {
+		String err = "incorrect number of arguments passed to DirectorManager::getTerrainHeightForZone";
+		printTraceError(L, err);
+		ERROR_CODE = INCORRECT_ARGUMENTS;
+
+		lua_pushnumber(L, 0);
+		return 1;
+	}
+
+	float z = lua_tonumber(L, -1);
+	float x = lua_tonumber(L, -2);
+	String zoneName = lua_tostring(L, -3);
+
+	ZoneServer* zoneServer = ServerCore::getZoneServer();
+
+	if (zoneServer == nullptr) {
+		lua_pushnumber(L, 0);
+		return 1;
+	}
+
+	Zone* zone = zoneServer->getZone(zoneName);
+
+	if (zone == nullptr) {
+		lua_pushnumber(L, 0);
+		return 1;
+	}
+
+	lua_pushnumber(L, zone->getHeight(x, z));
+
 	return 1;
 }
 
