@@ -928,6 +928,9 @@ void CityRegionImplementation::respawnCityNpcs() {
 		}
 
 		npc->rotate(angle);
+		//Spawned from a record rather than walking into the region, so the enter
+		//event never ran and the npc has no city: the mayor's remove radial needs it.
+		npc->setCityRegion(_this.getReferenceUnsafeStaticCast());
 		npc->setObjectMenuComponent("TrainerMenuComponent");
 
 		if (!isRegistered())

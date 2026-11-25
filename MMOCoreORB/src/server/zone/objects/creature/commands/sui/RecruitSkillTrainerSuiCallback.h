@@ -222,6 +222,7 @@ public:
 			}
 
 			trainer->rotate(player->getDirectionAngle());
+			trainer->setCityRegion(city);
 
 			// Recruiters have no trainer menu component of their own, so without
 			// this the mayor would have no radial option to remove them again.
