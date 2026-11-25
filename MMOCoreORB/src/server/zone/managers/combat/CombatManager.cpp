@@ -1476,10 +1476,10 @@ float CombatManager::getLightningPathDamageMultiplier(CreatureObject* attacker) 
 		return 1.f;
 
 	if (attacker->hasSkill("force_rank_gray_novice"))
-		return 8.f;
+		return 4.f;
 
 	if (attacker->hasSkill("force_rank_light_novice") || attacker->hasSkill("force_rank_dark_novice"))
-		return 7.f;
+		return 3.5f;
 
 	ManagedReference<PlayerObject*> ghost = attacker->getPlayerObject();
 
@@ -1488,9 +1488,9 @@ float CombatManager::getLightningPathDamageMultiplier(CreatureObject* attacker) 
 
 	// Holocron-path Jedi carry no force_rank box: the Jedi state names the side.
 	if (ghost->isJediLight() || ghost->isJediDark())
-		return 7.f;
+		return 3.5f;
 
-	return 8.f;
+	return 4.f;
 }
 
 int CombatManager::calculatePoolsToDamage(int poolsToDamage) const {
