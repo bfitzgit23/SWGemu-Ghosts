@@ -1448,6 +1448,49 @@ void CombatManager::getFrsModifiedForceAttackDamage(CreatureObject* attacker, fl
 		if (maxMod > 0)
 			maxDmg += (int)((powerModifier * maxMod) + 0.5);
 	}
+
+	// Ghosts: the lightning powers were stuck on their datatable damage, a few
+	// hundred against a lightsaber's thousands, because the only scaling they had
+	// was the FRS council bonus. They now scale with the Jedi path instead, so
+	// lightning stays in the saber's weight class. The other force powers keep
+	// their original damage.
+	if (!attacker->isPlayerCreature())
+		return;
+
+	const String& commandName = data.getCommandName();
+
+	if (!commandName.beginsWith("forcelightning") && !commandName.beginsWith("electricjudgment"))
+		return;
+
+	const float pathMultiplier = getLightningPathDamageMultiplier(attacker);
+
+	minDmg *= pathMultiplier;
+	maxDmg *= pathMultiplier;
+}
+
+// Ghosts: how hard Force lightning and Electric Judgment hit for a given Jedi
+// path. Light and Dark share a multiplier; Grey Jedi, who walk the village's
+// gray rank tree and get no council bonus, use a slightly higher one.
+float CombatManager::getLightningPathDamageMultiplier(CreatureObject* attacker) const {
+	if (attacker == nullptr)
+		return 1.f;
+
+	if (attacker->hasSkill("force_rank_gray_novice"))
+		return 8.f;
+
+	if (attacker->hasSkill("force_rank_light_novice") || attacker->hasSkill("force_rank_dark_novice"))
+		return 7.f;
+
+	ManagedReference<PlayerObject*> ghost = attacker->getPlayerObject();
+
+	if (ghost == nullptr || !ghost->isJedi())
+		return 1.f;
+
+	// Holocron-path Jedi carry no force_rank box: the Jedi state names the side.
+	if (ghost->isJediLight() || ghost->isJediDark())
+		return 7.f;
+
+	return 8.f;
 }
 
 int CombatManager::calculatePoolsToDamage(int poolsToDamage) const {

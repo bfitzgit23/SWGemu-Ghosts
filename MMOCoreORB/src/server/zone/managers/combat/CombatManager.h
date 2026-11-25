@@ -210,6 +210,7 @@ public:
 
 	void checkForTefs(CreatureObject* attacker, CreatureObject* defender, bool* shouldGcwCrackdownTef, bool* shouldGcwTef, bool* shouldBhTef) const;
 	void getFrsModifiedForceAttackDamage(CreatureObject* attacker, float& minDmg, float& maxDmg, const CreatureAttackData& data) const;
+	float getLightningPathDamageMultiplier(CreatureObject* attacker) const;
 
 	int getArmorObjectReduction(ArmorObject* armor, int damageType) const;
 	ArmorObject* getPSGArmor(CreatureObject* defender) const;
