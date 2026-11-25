@@ -195,12 +195,18 @@ function KorribanStaticSpawnsScreenPlay:spawnMobiles()
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -9, -37.3, -9, 90, 42000043)
 	spawnMobile("korriban", "dark_jedi_master", 600, 6.6, -37.3, 12.8, 180, 42000043)
 	spawnMobile("korriban", "dark_jedi_master", 600, 10.2, -37.3, 4.8, 90, 42000043)
+	spawnMobile("korriban", "revan_clone", 600, 10.9, -37.3, -3.9, 90, 42000043)
+	spawnMobile("korriban", "dark_jedi_knight", 600, 12.4, -1.3, 32.4, 180, 42000042)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -12.8, -1.3, 32, 0, 42000042)
 
 	-- BLUELEAF TEMPLE 2 (-1295, -577) - Exar Kun + Sith Sorcerer + 2 adds
 	spawnMobile("korriban", "exar_kun_korriban", 600, -0.6, -37.3, -28.3, 0, 42000046)
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -9, -37.3, -9, 90, 42000046)
 	spawnMobile("korriban", "dark_jedi_master", 600, -10.5, -37.3, 4.2, 0, 42000046)
 	spawnMobile("korriban", "dark_jedi_master", 600, -12.1, -37.3, 18.2, 180, 42000046)
+	spawnMobile("korriban", "revan_clone", 600, 10.2, -37.3, 4.8, 90, 42000046)
+	spawnMobile("korriban", "dark_jedi_knight", 600, 12.4, -1.3, 32.4, 180, 42000045)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -12.8, -1.3, 32, 0, 42000045)
 
 	-- WOOLAMANDER TEMPLE 1 (-1510, -956) - Revan + Sith Sorcerer + 2 adds
 	spawnMobile("korriban", "revan_korriban", 600, -13.5, 2, -4.7, 0, 42000018)
@@ -209,28 +215,44 @@ function KorribanStaticSpawnsScreenPlay:spawnMobiles()
 	spawnMobile("korriban", "dark_jedi_master", 600, 18.5, 2, 1, 180, 42000018)
 	spawnMobile("korriban", "dark_jedi_knight", 600, -60.5, 2, 22, 180, 42000022)
 	spawnMobile("korriban", "dark_jedi_knight", 600, -46, 2, -13.4, 0, 42000022)
+	spawnMobile("korriban", "revan_clone", 600, 13.5, 2, -4.7, 90, 42000018)
+	spawnMobile("korriban", "dark_jedi_master", 600, 62.4, 2, 18.5, 180, 42000025)
+	spawnMobile("korriban", "dark_jedi_master", 600, 76.2, 2, -9, 0, 42000025)
 
 	-- WOOLAMANDER TEMPLE 2 (-1171, -832) - Exar Kun + Sith Sorcerer + 2 adds
 	spawnMobile("korriban", "exar_kun_korriban", 600, -13.5, 2, -4.7, 0, 42000007)
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, 8.2, 2, -9.4, 90, 42000007)
 	spawnMobile("korriban", "dark_jedi_master", 600, -19, 2, 1.4, 0, 42000007)
 	spawnMobile("korriban", "dark_jedi_master", 600, 18.5, 2, 1, 180, 42000007)
+	spawnMobile("korriban", "revan_clone", 600, -8.2, 2, -9.2, 90, 42000007)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -73, 2, -12, 180, 42000011)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -46, 2, -13.4, 0, 42000011)
+	spawnMobile("korriban", "dark_jedi_master", 600, 62.4, 2, 18.5, 180, 42000014)
+	spawnMobile("korriban", "dark_jedi_master", 600, 76.2, 2, -9, 0, 42000014)
 
 	-- BLUELEAF TEMPLE 5 (-1110, -1005) - Revan + Sith Sorcerer + 2 adds
 	spawnMobile("korriban", "revan_korriban", 600, -0.6, -37.3, -28.3, 0, 42000040)
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -9, -37.3, -9, 90, 42000040)
 	spawnMobile("korriban", "dark_jedi_master", 600, 10.9, -37.3, -3.9, 90, 42000040)
+	spawnMobile("korriban", "revan_clone", 600, -10.5, -37.3, 4.2, 90, 42000040)
+	spawnMobile("korriban", "dark_jedi_knight", 600, 12.4, -1.3, 32.4, 180, 42000039)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -12.8, -1.3, 32, 0, 42000039)
 
 	-- BLUELEAF TEMPLE 6 (-1474, -1210) - Exar Kun + Sith Sorcerer + 2 adds
 	spawnMobile("korriban", "exar_kun_korriban", 600, -0.6, -37.3, -28.3, 0, 42000003)
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -9, -37.3, -9, 90, 42000003)
 	spawnMobile("korriban", "dark_jedi_master", 600, 6.6, -37.3, 12.8, 180, 42000003)
+	spawnMobile("korriban", "revan_clone", 600, 10.9, -37.3, -3.9, 90, 42000003)
+	spawnMobile("korriban", "dark_jedi_knight", 600, 12.4, -1.3, 32.4, 180, 42000002)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -12.8, -1.3, 32, 0, 42000002)
 
 	-- SITH ACADEMY (-1125, -1347) - Darth Bane (Eternal) + Sith Sorcerer
 	spawnMobile("korriban", "darth_bane_korriban", 600, 0, 55, -30, 180, 42000037)
 	spawnMobile("korriban", "sith_sorcerer_korriban", 600, -11, 55, -5, 90, 42000037)
 	spawnMobile("korriban", "dark_jedi_master", 600, 10, 55, -20, 180, 42000037)
 	spawnMobile("korriban", "dark_jedi_master", 600, -9, 55, 4, 0, 42000037)
+	spawnMobile("korriban", "revan_clone", 600, 0, 55, -15, 90, 42000037)
+	spawnMobile("korriban", "dark_jedi_knight", 600, -10, 55, -20, 0, 42000037)
 
 	-- EXAR KUN'S TOMB (temple_exar_kun) - Exar Kun in the grand hall,
 	-- Darth Bane and the revan_clone extra boss on the lower level.
