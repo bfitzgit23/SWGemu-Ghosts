@@ -23,7 +23,7 @@ darth_bane_korriban = Creature:new {
     creatureBitmask = KILLER + STALKER,
     optionsBitmask = AIENABLED,
     diet = HERBIVORE,
-    templates = {"object/mobile/dressed_dark_jedi_human_male_01.iff"},
+    templates = {"object/mobile/dressed_sith_shadow_hum_m_01.iff"},
     lootGroups = {
         {{group="junk",chance=5000000},{group="armor_all",chance=4500000},{group="weapons_all",chance=500000},}, lootChance=10000000,
         {{group="wearables_all",chance=5000000},{group="loot_kit_parts",chance=2500000},{group="tailor_components",chance=2500000},}, lootChance=10000000,

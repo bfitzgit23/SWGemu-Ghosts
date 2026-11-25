@@ -23,7 +23,7 @@ exar_kun_korriban = Creature:new {
     creatureBitmask = KILLER + STALKER,
     optionsBitmask = AIENABLED + INTERESTING,
     diet = HERBIVORE,
-    templates = {"object/mobile/costume_exar_kun_cultist.iff"},
+    templates = {"object/mobile/exar_kun.iff"},
     lootGroups = {
         {{group="junk",chance=5000000},{group="armor_all",chance=4500000},{group="weapons_all",chance=500000},}, lootChance=10000000,
         {{group="wearables_all",chance=5000000},{group="loot_kit_parts",chance=2500000},{group="tailor_components",chance=2500000},}, lootChance=10000000,
