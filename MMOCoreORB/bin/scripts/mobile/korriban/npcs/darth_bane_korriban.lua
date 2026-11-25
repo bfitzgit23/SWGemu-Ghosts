@@ -30,7 +30,6 @@ darth_bane_korriban = Creature:new {
         {{group="junk",chance=5000000},{group="armor_all",chance=4500000},{group="weapons_all",chance=500000},}, lootChance=10000000,
         {{group="wearables_all",chance=5000000},{group="loot_kit_parts",chance=2500000},{group="tailor_components",chance=2500000},}, lootChance=10000000,
         {{group="tierone",chance=3500000},{group="tiertwo",chance=3500000},{group="tierthree",chance=1500000},{group="tierdiamond",chance=1500000},}, lootChance=10000000,
-        {{group="tierone",chance=3500000},{group="tiertwo",chance=3500000},{group="tierthree",chance=1500000},{group="tierdiamond",chance=1500000},}, lootChance=10000000,
     },
     weapons = {"dark_jedi_weapons_gen4"},
     reactionStf = "@npc_reaction/slang",
