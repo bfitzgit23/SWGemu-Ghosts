@@ -430,7 +430,21 @@ TangibleObject* LootManagerImplementation::createLootObject(TransactionLog& trx,
 
 	// Chance to add skill modifiers to weapons and wearable objects (clothing, armor)
 	if (prototype->isWeaponObject() || prototype->isWearableObject()) {
-		setSkillMods(prototype, templateObject, level, excMod);
+		// Ghosts: an attachment's skill mod is rolled from the mob's level, which
+		// left low-level drops such as the Nightsister stronghold's at +6 to +12
+		// instead of the +25 cap. Every attachment now rolls at the level that
+		// reaches the cap, whatever killed it.
+		int skillModLevel = level;
+
+		const String& lootTemplateName = templateObject->getTemplateName();
+		const uint32 lootObjectType = prototype->getGameObjectType();
+
+		if (lootTemplateName == "attachment_armor" || lootTemplateName == "attachment_clothing"
+				|| lootObjectType == SceneObjectType::ARMORATTACHMENT || lootObjectType == SceneObjectType::CLOTHINGATTACHMENT) {
+			skillModLevel = 350;
+		}
+
+		setSkillMods(prototype, templateObject, skillModLevel, excMod);
 	}
 
 	// Add static DoT's to weapons and check for chance to add random DoTs
