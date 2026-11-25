@@ -83,7 +83,10 @@ public:
 		suiTrainerType->addMenuItem("Jedi Skills Trainer", 33);
 		suiTrainerType->addMenuItem("@mob/creature_names:imperial_recruiter", 34);
 		suiTrainerType->addMenuItem("@mob/creature_names:rebel_recruiter", 35);
-		suiTrainerType->addMenuItem("Spynet Informant", 36);
+		suiTrainerType->addMenuItem("Place Spynet Informant", 36);
+		suiTrainerType->addMenuItem("Remove the Spynet Informant", 37);
+		suiTrainerType->addMenuItem("Remove the Imperial Recruiter", 38);
+		suiTrainerType->addMenuItem("Remove the Rebel Recruiter", 39);
 
 		ghost->addSuiBox(suiTrainerType);
 		creature->sendMessage(suiTrainerType->generateMessage());

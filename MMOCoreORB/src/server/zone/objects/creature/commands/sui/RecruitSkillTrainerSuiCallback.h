@@ -12,6 +12,9 @@
 #include "server/zone/Zone.h"
 #include "server/zone/managers/creature/CreatureManager.h"
 #include "server/zone/managers/city/CityManager.h"
+#include "server/zone/managers/city/CityRemoveAmenityTask.h"
+#include "server/zone/objects/scene/SceneObject.h"
+#include "system/lang/Long.h"
 
 class RecruitSkillTrainerSuiCallback : public SuiCallback {
 public:
@@ -39,11 +42,6 @@ public:
 		if (!city->isMayor(player->getObjectID()))
 			return;
 
-		if (!cityManager->canSupportMoreTrainers(city)) {
-					player->sendSystemMessage("@city/city:no_more_trainers"); // Your city can't support any more trainers at its current rank!
-					return;
-		}
-
 		Zone* zone = player->getZone();
 
 		PlayerObject* ghost = player->getPlayerObject();
@@ -54,6 +52,30 @@ public:
 			return;
 
 		int option = Integer::valueOf(args->get(0).toString());
+
+		//Removing these npcs has to work even when the city is already at its trainer cap.
+		if (option == 37) {
+			removeCityNpcs(player, city, "spynet_informant", "Spynet Informant");
+
+			return;
+		}
+
+		if (option == 38) {
+			removeCityNpcs(player, city, "imperial_recruiter", "Imperial Recruiter");
+
+			return;
+		}
+
+		if (option == 39) {
+			removeCityNpcs(player, city, "rebel_recruiter", "Rebel Recruiter");
+
+			return;
+		}
+
+		if (!cityManager->canSupportMoreTrainers(city)) {
+					player->sendSystemMessage("@city/city:no_more_trainers"); // Your city can't support any more trainers at its current rank!
+					return;
+		}
 
 		String trainerTemplatePath = "";
 		bool recruiterNpc = false;
@@ -217,6 +239,57 @@ public:
 				zone->unregisterObjectWithPlanetaryMap(trainer);
 			}
 		}
+	}
+
+protected:
+	/**
+	 * Removes every city npc whose template matches templateMatch, using the
+	 * records the city keeps so the npcs can be respawned after a restart.
+	 */
+	void removeCityNpcs(CreatureObject* player, CityRegion* city, const String& templateMatch, const String& npcName) {
+		Vector<uint64> npcs;
+		int count = city->getCityNpcCount();
+
+		for (int i = 0; i < count; ++i) {
+			String record = city->getCityNpc(i);
+			int templateEnd = record.indexOf(',');
+
+			if (templateEnd == -1)
+				continue;
+
+			if (!record.subString(0, templateEnd).contains(templateMatch))
+				continue;
+
+			int objectIDEnd = record.indexOf(',', templateEnd + 1);
+
+			if (objectIDEnd == -1)
+				continue;
+
+			npcs.add(UnsignedLong::valueOf(record.subString(templateEnd + 1, objectIDEnd)));
+		}
+
+		if (npcs.isEmpty()) {
+			player->sendSystemMessage(String("There is no ") + npcName + " in this city.");
+			return;
+		}
+
+		ZoneServer* zoneServer = player->getZoneServer();
+
+		for (int i = 0; i < npcs.size(); ++i) {
+			uint64 npcID = npcs.get(i);
+			ManagedReference<SceneObject*> npc = zoneServer->getObject(npcID);
+
+			if (npc == nullptr || !npc->isCreatureObject()) {
+				//Already gone from the zone, so there is only the record left to drop.
+				city->removeCityNpcByObjectID(npcID);
+				continue;
+			}
+
+			CityRemoveAmenityTask* task = new CityRemoveAmenityTask(npc, city);
+			task->execute();
+		}
+
+		player->sendSystemMessage(npcName + " has been removed from the city.");
 	}
 };
 
