@@ -86,6 +86,14 @@ function VillageJediManager:useItem(pSceneObject, itemType, pPlayer)
 			VillageJediManagerHolocron.useHolocron(pSceneObject, pPlayer)
 		end
 	end
+	if itemType == ITEMHOLOCRONREFILL then
+		-- Ghosts: the holocron's "Recharge Force" radial option.
+		if holocron_force_recharge ~= nil then
+			holocron_force_recharge(pPlayer, pSceneObject)
+		else
+			VillageJediManagerHolocron.useHolocron(pSceneObject, pPlayer)
+		end
+	end
 	if itemType == ITEMWAYPOINTDATAPAD then
 		SithShadowEncounter:useWaypointDatapad(pSceneObject, pPlayer)
 	end

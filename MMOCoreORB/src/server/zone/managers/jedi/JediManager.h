@@ -47,7 +47,8 @@ public:
 	enum {
 		ITEMHOLOCRON,         // Item type holocron.
 		ITEMWAYPOINTDATAPAD,  // Item type waypoint datapad.
-		ITEMTHEATERDATAPAD    // ITEMTHEATERDATAPAD
+		ITEMTHEATERDATAPAD,   // ITEMTHEATERDATAPAD
+		ITEMHOLOCRONREFILL    // Ghosts: consume a holocron for a full Force refill.
 	};
 
 	/**

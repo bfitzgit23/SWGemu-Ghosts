@@ -67,6 +67,46 @@ local function holocron_replenish_force(pCreature)
     sendForceMessage(pCreature, "The holocron's lingering power flows into you and your Force is restored.")
 end
 
+-- Ghosts: a holocron a Jedi can no longer learn from is still worth consuming.
+-- It restores all of their Force power, at most once an hour.
+local function holocron_consume_for_force(pCreature, pTarget)
+    if pCreature == nil or pTarget == nil then
+        return false
+    end
+
+    local pGhost = CreatureObject(pCreature):getPlayerObject()
+
+    if pGhost == nil or not PlayerObject(pGhost):isJedi() then
+        sendForceMessage(pCreature, "The holocron has nothing to share with you.")
+        return false
+    end
+
+    local forceMax = PlayerObject(pGhost):getForcePowerMax()
+
+    if forceMax <= 0 or PlayerObject(pGhost):getForcePower() >= forceMax then
+        CreatureObject(pCreature):sendSystemMessage("@jedi_spam:holocron_force_max")
+        return false
+    end
+
+    if not CreatureObject(pCreature):checkCooldownRecovery(HOLOCRON_FORCE_COOLDOWN_KEY) then
+        sendForceMessage(pCreature, "The holocron has already shared its power with you. It will answer again within the hour.")
+        return false
+    end
+
+    SceneObject(pTarget):destroyObjectFromWorld()
+    SceneObject(pTarget):destroyObjectFromDatabase(true)
+    PlayerObject(pGhost):setForcePower(forceMax)
+    CreatureObject(pCreature):addCooldown(HOLOCRON_FORCE_COOLDOWN_KEY, HOLOCRON_FORCE_COOLDOWN_MILI)
+    CreatureObject(pCreature):sendSystemMessage("@jedi_spam:holocron_force_replenish")
+    sendForceMessage(pCreature, "The holocron's lingering power flows into you and your Force is restored.")
+    return true
+end
+
+-- Entry point for the holocron's explicit "Recharge Force" radial option.
+function holocron_force_recharge(pCreature, pTarget)
+    return holocron_consume_for_force(pCreature, pTarget)
+end
+
 local POINTS_PER_HOLOCRON = 1000
 local JEDI_STAGE_DELAY_SECONDS = 604800 -- Ghosts: 7-day padawan->knight training period
 local JEDI_DISCOVERY_SKILL_BOXES = 36
@@ -662,7 +702,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         local used = totalStudies
 
         if used >= 10 then
-            sendForceMessage(pCreature, "You have absorbed all you can from these teachings. Seek the Gatekeeper.")
+            holocron_consume_for_force(pCreature, pTarget)
             return
         end
 
@@ -720,7 +760,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         local knightUsed = totalStudies
 
         if knightUsed >= 10 then
-            sendForceMessage(pCreature, "You have meditated upon enough holocrons. The Gatekeeper senses your growing power. Seek them out.")
+            holocron_consume_for_force(pCreature, pTarget)
             return
         end
 
@@ -758,7 +798,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         local masterUsed = totalStudies
 
         if masterUsed >= 20 then
-            sendForceMessage(pCreature, "You have absorbed all the holocron teachings you can. The Gatekeeper awaits.")
+            holocron_consume_for_force(pCreature, pTarget)
             return
         end
 
@@ -784,7 +824,7 @@ function holocron_use_for_studies(pCreature, pTarget)
         end
 
     else
-        sendForceMessage(pCreature, "You have already transcended what this holocron can teach you.")
+        holocron_consume_for_force(pCreature, pTarget)
     end
 end
 
@@ -899,7 +939,7 @@ function holocron_speak_to_gatekeeper(pCreature, pTarget)
 
     -- Already a full master
     if status == "master" then
-        sendForceMessage(pCreature, "You have already transcended what this holocron can teach you.")
+        holocron_consume_for_force(pCreature, pTarget)
         return
     end
 
