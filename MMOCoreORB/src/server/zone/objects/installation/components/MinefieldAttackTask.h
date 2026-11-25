@@ -16,6 +16,11 @@
 #include "server/zone/objects/installation/components/MinefieldDataComponent.h"
 #include "server/zone/objects/installation/components/TurretDataComponent.h"
 
+// Ghosts: a detonation used the mine's raw weapon damage, which left mines
+// hitting for a few hundred while a lightsaber lands for thousands. Scale the
+// blast so a placed mine is a real hazard next to a saber.
+static const float GHOSTS_MINE_DAMAGE_MULTIPLIER = 12.f;
+
 class MinefieldAttackTask : public Task {
 	ManagedWeakReference<TangibleObject*> weakMinefield;
 	ManagedWeakReference<CreatureObject*> weakTarget;
@@ -147,7 +152,9 @@ public:
 			float minDamage = weapon->getMinDamage();
 			float maxDamage = weapon->getMaxDamage();
 
-			CombatManager::instance()->doObjectDetonation(minefield, targetCreo, (System::frandom(maxDamage - minDamage) + minDamage), weapon);
+			float mineDamage = (System::frandom(maxDamage - minDamage) + minDamage) * GHOSTS_MINE_DAMAGE_MULTIPLIER;
+
+			CombatManager::instance()->doObjectDetonation(minefield, targetCreo, mineDamage, weapon);
 		}
 
 		Locker lockerw(weapon, minefield);
