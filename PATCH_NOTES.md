@@ -30,3 +30,29 @@
   cap, whatever level the creature that dropped it was.
 - This fixes the Nightsister stronghold, faction, and other low-level drops that
   were arriving as +6, +10 or +12 at best.
+
+## Korriban - Temples and Tombs
+- Creatures across the Korriban valley now stand on the real ground instead of
+  floating or sinking into it, and the temples are populated inside as well as
+  outside.
+- The named Sith Lords have moved inside their tombs. Revan, Exar Kun and Darth
+  Bane were standing in the courtyards; they now hold the halls of their own
+  temples, each with a Sith Sorcerer and dark jedi guard.
+- Exar Kun's tomb is fully occupied - the grand hall, both upper rooms and the
+  lower level all have defenders.
+- Every tomb now holds a second boss: a **Revan (Clone)** guards the inner hall
+  alongside the tomb's named lord.
+- Exar Kun now uses his own model instead of a cultist costume.
+- Darth Bane has a custom look: black robe, hood, dark gauntlets and boots, on a
+  larger frame than the other lords.
+- Darth Bane was rolling his loot table twice per kill; he now rolls it once.
+
+## Launcher 2.2.19
+- The launcher now connects to the CU server, and the channel button reads
+  **SWG GHOSTS - CU**.
+- Existing 2.2.18 Windows installs update to 2.2.19 automatically on launch.
+- The macOS builds stay on 2.2.18 for now.
+
+## Fixes
+- **Regain Consciousness** now works on incapacitated players instead of being
+  applied to the corpse state and doing nothing.
