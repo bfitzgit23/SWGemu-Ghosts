@@ -38,43 +38,43 @@ registerScreenPlay("FrsPromotion", false)
 -- { requiredXP, lightSkill, darkSkill, lightRobe, darkRobe, lightTitle, darkTitle }
 -- XP values taken directly from skills.iff XP_COST column
 local RANK_DATA = {
-    [1]  = { xp = 10000,  lightSkill = "force_rank_light_rank_01", darkSkill = "force_rank_dark_rank_01",
+    [1] = { xp = 10000,  lightSkill = "force_rank_light_rank_01", darkSkill = "force_rank_dark_rank_01",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s02.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s02.iff",
              lightTitle = "Sentinel I",       darkTitle = "Sith Disciple I" },
-    [2]  = { xp = 125000, lightSkill = "force_rank_light_rank_02", darkSkill = "force_rank_dark_rank_02",
+    [2] = { xp = 20000, lightSkill = "force_rank_light_rank_02", darkSkill = "force_rank_dark_rank_02",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s02.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s02.iff",
              lightTitle = "Sentinel II",      darkTitle = "Sith Disciple II" },
-    [3]  = { xp = 175000, lightSkill = "force_rank_light_rank_03", darkSkill = "force_rank_dark_rank_03",
+    [3] = { xp = 30000, lightSkill = "force_rank_light_rank_03", darkSkill = "force_rank_dark_rank_03",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s02.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s02.iff",
              lightTitle = "Sentinel III",     darkTitle = "Sith Disciple III" },
-    [4]  = { xp = 200000, lightSkill = "force_rank_light_rank_04", darkSkill = "force_rank_dark_rank_04",
+    [4] = { xp = 40000, lightSkill = "force_rank_light_rank_04", darkSkill = "force_rank_dark_rank_04",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s02.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s02.iff",
              lightTitle = "Sentinel IV",      darkTitle = "Sith Disciple IV" },
-    [5]  = { xp = 200000, lightSkill = "force_rank_light_rank_05", darkSkill = "force_rank_dark_rank_05",
+    [5] = { xp = 60000, lightSkill = "force_rank_light_rank_05", darkSkill = "force_rank_dark_rank_05",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s03.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s03.iff",
              lightTitle = "Jedi Guardian",    darkTitle = "Sith Warrior" },
-    [6]  = { xp = 225000, lightSkill = "force_rank_light_rank_06", darkSkill = "force_rank_dark_rank_06",
+    [6] = { xp = 80000, lightSkill = "force_rank_light_rank_06", darkSkill = "force_rank_dark_rank_06",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s03.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s03.iff",
              lightTitle = "Jedi Weaponmaster", darkTitle = "Sith Juggernaut" },
-    [7]  = { xp = 225000, lightSkill = "force_rank_light_rank_07", darkSkill = "force_rank_dark_rank_07",
+    [7] = { xp = 100000, lightSkill = "force_rank_light_rank_07", darkSkill = "force_rank_dark_rank_07",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s03.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s03.iff",
              lightTitle = "Jedi Ace",         darkTitle = "Sith Destroyer" },
-    [8]  = { xp = 250000, lightSkill = "force_rank_light_rank_08", darkSkill = "force_rank_dark_rank_08",
+    [8] = { xp = 150000, lightSkill = "force_rank_light_rank_08", darkSkill = "force_rank_dark_rank_08",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s04.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s04.iff",
              lightTitle = "Jedi Crusader",    darkTitle = "Sith Inquisitor" },
-    [9]  = { xp = 275000, lightSkill = "force_rank_light_rank_09", darkSkill = "force_rank_dark_rank_09",
+    [9] = { xp = 200000, lightSkill = "force_rank_light_rank_09", darkSkill = "force_rank_dark_rank_09",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s04.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s04.iff",
              lightTitle = "Jedi Champion",    darkTitle = "Sith Champion" },
-    [10] = { xp = 325000, lightSkill = "force_rank_light_rank_10", darkSkill = "force_rank_dark_rank_10",
+    [10] = { xp = 300000, lightSkill = "force_rank_light_rank_10", darkSkill = "force_rank_dark_rank_10",
              lightRobe = "object/tangible/wearables/robe/robe_jedi_light_s05.iff",
              darkRobe  = "object/tangible/wearables/robe/robe_jedi_dark_s05.iff",
              lightTitle = "Jedi Master",      darkTitle = "Sith Lord" },
@@ -245,10 +245,8 @@ function FrsPromotion:onPromotionConfirm(pPlayer, pSui, eventIndex, ...)
         awardSkill(pPlayer, skill)
     end
 
-    -- Deduct the FRS XP cost for this rank
-    CreatureObject(pPlayer):awardExperience("force_rank_xp", -data.xp)
-
-    -- Update FRS rank
+    -- Update FRS rank. The skill award above already deducted the rank's
+    -- force_rank_xp cost, so deducting it again here would charge twice.
     PlayerObject(pGhost):setFrsRank(nextRank)
 
     -- Give rank robe
@@ -274,6 +272,56 @@ function FrsPromotion:onPromotionConfirm(pPlayer, pSui, eventIndex, ...)
     writeScreenPlayData(pPlayer, "FrsPromotion", "pending_rank", "0")
 end
 
+
+-- ============================================================
+-- SHARED RANK REWARDS
+-- Used by the terminal promotion and by enclave trainers that teach an FRS box.
+-- ============================================================
+
+function frs_apply_rank_rewards(pPlayer, skillName)
+    if pPlayer == nil or skillName == nil then return false end
+
+    local rank = nil
+
+    for r = 1, 11 do
+        local data = RANK_DATA[r]
+        if data.lightSkill == skillName or data.darkSkill == skillName then
+            rank = r
+            break
+        end
+    end
+
+    if rank == nil then return false end
+
+    local pGhost = CreatureObject(pPlayer):getPlayerObject()
+    if pGhost == nil then return false end
+
+    local data = RANK_DATA[rank]
+    local dark = isDark(pPlayer)
+    local title = dark and data.darkTitle or data.lightTitle
+    local name = CreatureObject(pPlayer):getFirstName()
+
+    PlayerObject(pGhost):setFrsRank(rank)
+
+    local robe = dark and data.darkRobe or data.lightRobe
+    local pInventory = SceneObject(pPlayer):getSlottedObject("inventory")
+
+    if pInventory ~= nil and robe ~= nil and not SceneObject(pInventory):isContainerFullRecursive() then
+        giveItem(pInventory, robe, -1)
+    end
+
+    if dark then
+        CreatureObject(pPlayer):sendSystemMessage("\\#FF4444 The Dark Council recognises your power. You are now " .. title .. ", " .. name .. ". Serve the darkness well.")
+    else
+        CreatureObject(pPlayer):sendSystemMessage("\\#88CCFF The Jedi Council is honoured to grant you the rank of " .. title .. ", " .. name .. ". May the Force guide your path.")
+    end
+
+    if rank >= 8 then
+        createEvent(2000, "JediVisibilityHunters", "checkFrsRank", pPlayer, "")
+    end
+
+    return true
+end
 
 -- ============================================================
 -- MASTER DISCIPLINE TRAINER

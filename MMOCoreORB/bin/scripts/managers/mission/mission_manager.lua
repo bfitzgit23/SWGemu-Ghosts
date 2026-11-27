@@ -64,6 +64,14 @@ bh_targets_at_mission_level = {
 	}
 }
 
+-- Ghosts: max-level bounty contracts (CL 900). Appended to the hardest tier only
+-- for level 90 hunters; a fresh investigator never draws one.
+bh_max_contracts = {
+	"bh_max_contract_sith_lord",
+	"bh_max_contract_imperial_executor",
+	"bh_max_contract_underworld_kingpin"
+}
+
 enable_factional_crafting_missions = "true"
 
 enable_factional_recon_missions = "true"

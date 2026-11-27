@@ -387,6 +387,10 @@ bool SlicingSessionImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<bool >::parseFromBinaryStream(&keypadSlice, stream);
 		return true;
 
+	case 0xed0a4b72: //SlicingSession.awaitingSliceType
+		TypeInfo<bool >::parseFromBinaryStream(&awaitingSliceType, stream);
+		return true;
+
 	}
 
 	return false;
@@ -495,6 +499,15 @@ int SlicingSessionImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	stream->writeInt(_offset, _totalSize);
 	_count++;
 
+	_nameHashCode = 0xed0a4b72; //SlicingSession.awaitingSliceType
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&awaitingSliceType, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
 
 	return _count;
 }
@@ -522,6 +535,8 @@ void SlicingSessionImplementation::writeJSON(nlohmann::json& j) {
 	thisObject["baseSlice"] = baseSlice;
 
 	thisObject["keypadSlice"] = keypadSlice;
+
+	thisObject["awaitingSliceType"] = awaitingSliceType;
 
 	j["SlicingSession"] = thisObject;
 }
@@ -852,6 +867,9 @@ void SlicingSessionPOD::writeJSON(nlohmann::json& j) {
 	if (keypadSlice)
 		thisObject["keypadSlice"] = keypadSlice.value();
 
+	if (awaitingSliceType)
+		thisObject["awaitingSliceType"] = awaitingSliceType.value();
+
 	j["SlicingSession"] = thisObject;
 }
 
@@ -979,6 +997,17 @@ int SlicingSessionPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (awaitingSliceType) {
+	_nameHashCode = 0xed0a4b72; //SlicingSession.awaitingSliceType
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<bool >::toBinaryStream(&awaitingSliceType.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 
 	return _count;
 }
@@ -1068,6 +1097,14 @@ bool SlicingSessionPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
+	case 0xed0a4b72: //SlicingSession.awaitingSliceType
+		{
+			bool _mnawaitingSliceType;
+			TypeInfo<bool >::parseFromBinaryStream(&_mnawaitingSliceType, stream);
+			awaitingSliceType = std::move(_mnawaitingSliceType);
+		}
+		return true;
+
 	}
 
 	return false;
@@ -1113,6 +1150,8 @@ void SlicingSessionPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<bool >::toBinaryStream(&baseSlice.value(), stream);
 
 	TypeInfo<bool >::toBinaryStream(&keypadSlice.value(), stream);
+
+	TypeInfo<bool >::toBinaryStream(&awaitingSliceType.value(), stream);
 
 
 }

@@ -286,6 +286,8 @@ protected:
 
 	VectorMap<unsigned int, Vector<String> > bhTargetsAtMissionLevel;
 
+	Vector<String> bhMaxContracts;
+
 	VectorMap<unsigned long long, ManagedReference<PlayerBounty* > > playerBountyList;
 
 	Mutex playerBountyListMutex;
@@ -590,6 +592,8 @@ public:
 	Optional<Vector<String>> bhTargetZones;
 
 	Optional<VectorMap<unsigned int, Vector<String> >> bhTargetsAtMissionLevel;
+
+	Optional<Vector<String>> bhMaxContracts;
 
 	Optional<VectorMap<unsigned long long, ManagedReference<PlayerBountyPOD* > >> playerBountyList;
 

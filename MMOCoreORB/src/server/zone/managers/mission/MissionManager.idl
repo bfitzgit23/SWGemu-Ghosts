@@ -43,6 +43,9 @@ class MissionManager extends Observer implements Logger {
 	protected VectorMap bhTargetsAtMissionLevel;
 
 	@dereferenced
+	protected Vector<string> bhMaxContracts;
+
+	@dereferenced
 	protected VectorMap<unsigned long, PlayerBounty> playerBountyList;
 
 	@dereferenced

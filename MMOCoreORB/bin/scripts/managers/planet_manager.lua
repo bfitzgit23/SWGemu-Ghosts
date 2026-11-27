@@ -45,16 +45,16 @@ print("LOADED: scripts/managers/planet_manager.lua")
 --which carries forward this exception.
 
 --Time, in seconds, that a shuttle is away for
-shuttleportAwayTime = 60
-starportAwayTime = 60
+shuttleportAwayTime = 10
+starportAwayTime = 10
 
 --Time, in seconds, that a shuttle takes to land
-shuttleportLandingTime = 11
-starportLandingTime = 14
+shuttleportLandingTime = 5
+starportLandingTime = 5
 
 --Time, in seconds, that a shuttle is landed for
-shuttleportLandedTime = 240
-starportLandedTime = 240
+shuttleportLandedTime = 15
+starportLandedTime = 15
 
 dungeon1 = {
 	weatherEnabled = 0,

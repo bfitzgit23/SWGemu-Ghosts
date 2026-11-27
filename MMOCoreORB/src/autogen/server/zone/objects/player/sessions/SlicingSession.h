@@ -163,6 +163,8 @@ protected:
 
 	bool keypadSlice;
 
+	bool awaitingSliceType;
+
 public:
 	SlicingSessionImplementation(CreatureObject* parent);
 
@@ -219,13 +221,13 @@ private:
 
 	void handleSlice(SuiListBox* suiBox);
 
-	void handleWeaponSlice();
+	void handleWeaponSlice(byte sliceType);
 
 	void handleSliceDamage(byte percent);
 
 	void handleSliceSpeed(byte percent);
 
-	void handleArmorSlice();
+	void handleArmorSlice(byte sliceType);
 
 	void handleSliceEncumbrance(byte percent);
 
@@ -360,6 +362,8 @@ public:
 	Optional<bool> baseSlice;
 
 	Optional<bool> keypadSlice;
+
+	Optional<bool> awaitingSliceType;
 
 	String _className;
 	SlicingSessionPOD();

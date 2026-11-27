@@ -986,6 +986,33 @@ void FrsManagerImplementation::adjustFrsExperience(CreatureObject* player, int a
 	if (!player->isOnline())
 		sendSystemMessage = false;
 
+	// GHOSTS-CUMULATIVE-FRS: rank progress accumulates. A deduction (daily
+	// maintenance, banked debt, challenge or demote cost) may never push the
+	// player below the Force Rank XP threshold of the rank they already hold,
+	// so every tier builds on the last instead of starting over.
+	if (amount < 0) {
+		FrsData* floorData = ghost->getFrsData();
+		int floorRank = floorData->getRank();
+
+		if (floorRank > 0) {
+			int floorCouncil = floorData->getCouncilType();
+			Reference<FrsRankingData*> floorRankData = nullptr;
+
+			if (floorCouncil == COUNCIL_DARK)
+				floorRankData = darkRankingData.get(floorRank);
+			else
+				floorRankData = lightRankingData.get(floorRank); // light council and grey path
+
+			if (floorRankData != nullptr) {
+				int floorXp = floorRankData->getRequiredExperience();
+				int floorCurXp = ghost->getExperience("force_rank_xp");
+
+				if (floorCurXp > floorXp && (floorCurXp + amount) < floorXp)
+					amount = floorXp - floorCurXp;
+			}
+		}
+	}
+
 	if (amount > 0) {
 		if (ghost->hasCappedExperience("force_rank_xp")) {
 			if (sendSystemMessage) {

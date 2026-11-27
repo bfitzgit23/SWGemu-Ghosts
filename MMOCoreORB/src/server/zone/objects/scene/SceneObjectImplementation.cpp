@@ -78,6 +78,9 @@ void SceneObjectImplementation::initializeTransientMembers() {
 			setContainerVolumeLimit(250);
 		} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
 			setContainerVolumeLimit(200);
+		} else if (templatePath.contains("object/building/") && templateObject->getContainerVolumeLimit() > 0) {
+			// Ghosts: housing storage x10, reapplied on load because the limit is serialized.
+			setContainerVolumeLimit(templateObject->getContainerVolumeLimit() * 10);
 		}
 
 		createContainerComponent();
@@ -209,6 +212,9 @@ void SceneObjectImplementation::loadTemplateData(SharedObjectTemplate* templateD
 		containerVolumeLimit = 250;
 	} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
 		containerVolumeLimit = 200;
+	} else if (templatePath.contains("object/building/") && containerVolumeLimit > 0) {
+		// Ghosts: housing storage x10 (houses, guild halls, player bases).
+		containerVolumeLimit *= 10;
 	}
 
 	if (templateData->getCollisionActionBlockFlags() == 255) { //loading meshes for line of sight
@@ -446,6 +452,9 @@ void SceneObjectImplementation::notifyLoadFromDatabase() {
 			setContainerVolumeLimit(250);
 		} else if (templatePath.contains("object/tangible/bank/") && templatePath.contains("character_bank.iff")) {
 			setContainerVolumeLimit(200);
+		} else if (templatePath.contains("object/building/") && templateObject->getContainerVolumeLimit() > 0) {
+			// Ghosts: housing storage x10, reapplied on load because the limit is serialized.
+			setContainerVolumeLimit(templateObject->getContainerVolumeLimit() * 10);
 		}
 	}
 

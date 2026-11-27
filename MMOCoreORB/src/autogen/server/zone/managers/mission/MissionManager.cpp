@@ -568,6 +568,10 @@ bool MissionManagerImplementation::readObjectMember(ObjectInputStream* stream, c
 		TypeInfo<VectorMap<unsigned int, Vector<String> > >::parseFromBinaryStream(&bhTargetsAtMissionLevel, stream);
 		return true;
 
+	case 0xfc27701a: //MissionManager.bhMaxContracts
+		TypeInfo<Vector<String> >::parseFromBinaryStream(&bhMaxContracts, stream);
+		return true;
+
 	case 0xe9a8cdb8: //MissionManager.playerBountyList
 		TypeInfo<VectorMap<unsigned long long, ManagedReference<PlayerBounty* > > >::parseFromBinaryStream(&playerBountyList, stream);
 		return true;
@@ -687,6 +691,15 @@ int MissionManagerImplementation::writeObjectMembers(ObjectOutputStream* stream)
 	_offset = stream->getOffset();
 	stream->writeInt(0);
 	TypeInfo<VectorMap<unsigned int, Vector<String> > >::toBinaryStream(&bhTargetsAtMissionLevel, stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+
+	_nameHashCode = 0xfc27701a; //MissionManager.bhMaxContracts
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<Vector<String> >::toBinaryStream(&bhMaxContracts, stream);
 	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
 	stream->writeInt(_offset, _totalSize);
 	_count++;
@@ -1277,6 +1290,17 @@ int MissionManagerPOD::writeObjectMembers(ObjectOutputStream* stream) {
 	_count++;
 	}
 
+	if (bhMaxContracts) {
+	_nameHashCode = 0xfc27701a; //MissionManager.bhMaxContracts
+	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
+	_offset = stream->getOffset();
+	stream->writeInt(0);
+	TypeInfo<Vector<String> >::toBinaryStream(&bhMaxContracts.value(), stream);
+	_totalSize = (uint32) (stream->getOffset() - (_offset + 4));
+	stream->writeInt(_offset, _totalSize);
+	_count++;
+	}
+
 	if (playerBountyList) {
 	_nameHashCode = 0xe9a8cdb8; //MissionManager.playerBountyList
 	TypeInfo<uint32>::toBinaryStream(&_nameHashCode, stream);
@@ -1491,6 +1515,14 @@ bool MissionManagerPOD::readObjectMember(ObjectInputStream* stream, const uint32
 		}
 		return true;
 
+	case 0xfc27701a: //MissionManager.bhMaxContracts
+		{
+			Vector<String> _mnbhMaxContracts;
+			TypeInfo<Vector<String> >::parseFromBinaryStream(&_mnbhMaxContracts, stream);
+			bhMaxContracts = std::move(_mnbhMaxContracts);
+		}
+		return true;
+
 	case 0xe9a8cdb8: //MissionManager.playerBountyList
 		{
 			VectorMap<unsigned long long, ManagedReference<PlayerBountyPOD* > > _mnplayerBountyList;
@@ -1646,6 +1678,8 @@ void MissionManagerPOD::writeObjectCompact(ObjectOutputStream* stream) {
 	TypeInfo<Vector<String> >::toBinaryStream(&bhTargetZones.value(), stream);
 
 	TypeInfo<VectorMap<unsigned int, Vector<String> > >::toBinaryStream(&bhTargetsAtMissionLevel.value(), stream);
+
+	TypeInfo<Vector<String> >::toBinaryStream(&bhMaxContracts.value(), stream);
 
 	TypeInfo<VectorMap<unsigned long long, ManagedReference<PlayerBountyPOD* > > >::toBinaryStream(&playerBountyList.value(), stream);
 

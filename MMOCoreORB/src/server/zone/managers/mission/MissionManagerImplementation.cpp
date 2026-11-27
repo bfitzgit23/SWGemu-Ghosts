@@ -76,6 +76,18 @@ void MissionManagerImplementation::loadLuaSettings() {
 
 		targetsAtMissionLevel.pop();
 
+		LuaObject maxContracts = lua->getGlobalObject("bh_max_contracts");
+
+		if (maxContracts.isValidTable()) {
+			for (int i = 1; i <= maxContracts.getTableSize(); i++) {
+				bhMaxContracts.add(maxContracts.getStringAt(i));
+			}
+		}
+
+		maxContracts.pop();
+
+		info("Loaded " + String::valueOf(bhMaxContracts.size()) + " max-level bounty contracts.", true);
+
 		String value = lua->getGlobalString("enable_factional_crafting_missions");
 
 		if (value.toLowerCase() == "true") {
@@ -1359,7 +1371,17 @@ void MissionManagerImplementation::randomizeGenericBountyMission(CreatureObject*
 		Vector3 endPos = getRandomBountyTargetPosition(player, planet);
 		mission->setEndPosition(endPos.getX(), endPos.getY(), planet, true);
 
-		String targetTemplate = bhTargetsAtMissionLevel.get((unsigned int)level).get(System::random(bhTargetsAtMissionLevel.get((unsigned int)level).size() - 1));
+		Vector<String> targetPool = bhTargetsAtMissionLevel.get((unsigned int)level);
+
+		// Ghosts: the CL 900 master contracts are only offered to max-level bounty hunters,
+		// so a fresh investigator is never handed a target they cannot possibly kill.
+		if (level == 3 && player->getLevel() >= 90 && !bhMaxContracts.isEmpty()) {
+			for (int i = 0; i < bhMaxContracts.size(); ++i) {
+				targetPool.add(bhMaxContracts.get(i));
+			}
+		}
+
+		String targetTemplate = targetPool.get(System::random(targetPool.size() - 1));
 		mission->setTargetOptionalTemplate(targetTemplate);
 
 		CreatureTemplate* creoTemplate = CreatureTemplateManager::instance()->getTemplate(mission->getTargetOptionalTemplate());
@@ -1370,6 +1392,10 @@ void MissionManagerImplementation::randomizeGenericBountyMission(CreatureObject*
 		if (creoTemplate != nullptr) {
 			creoLevel = creoTemplate->getLevel();
 		}
+
+		// Ghosts: keep contract pays sane for very high CL templates.
+		if (creoLevel > 150)
+			creoLevel = 150;
 
 		if (level == 1) {
 			reward = creoLevel * (200 + System::random(200));
